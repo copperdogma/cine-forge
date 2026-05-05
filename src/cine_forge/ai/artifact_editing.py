@@ -8,6 +8,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
+from cine_forge.artifacts.bible_identity import detect_unsupported_identity_edit
 from cine_forge.artifacts.edit_policy import get_artifact_edit_restriction
 
 
@@ -409,6 +410,16 @@ def _prepare_bible_manifest_proposal(
 
     next_master = copy.deepcopy(current_master)
     _apply_changes(next_master, changes)
+    blocker = detect_unsupported_identity_edit(
+        entity_type=str(manifest.get("entity_type") or ""),
+        entity_id=str(manifest.get("entity_id") or ""),
+        current_master=current_master,
+        next_master=next_master,
+        changes=changes,
+    )
+    if blocker is not None:
+        return blocker
+
     diff_lines = _compute_artifact_diff(current_master, next_master)
     if not diff_lines:
         return {
@@ -439,8 +450,6 @@ def _select_master_definition_filename(
             and entry.get("filename") in bible_files
         ):
             return str(entry["filename"])
-    if bible_files:
-        return next(iter(bible_files.keys()))
     return None
 
 

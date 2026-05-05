@@ -11,6 +11,7 @@ from cine_forge.modules.world_building.entity_graph_v1.main import (
     _generate_signature_edges,
     run_module,
 )
+from cine_forge.schemas import EntityEdge
 
 
 @pytest.fixture
@@ -268,6 +269,302 @@ def test_signature_edges_resolve_canonical_char_id() -> None:
     assert len(edges) == 1
     assert edges[0].target_id == "mariner", (
         "Expected canonical ID 'mariner', got AI-written 'the_mariner'"
+    )
+
+
+@pytest.mark.unit
+def test_char_resolver_maps_canonical_name_alias_and_article_variants() -> None:
+    resolver = _build_char_resolver(
+        [
+            {
+                "character_id": "brick",
+                "name": "BRICK BRADDOCK",
+                "aliases": ["THE CHAMP"],
+            }
+        ]
+    )
+
+    assert resolver["brick"] == "brick"
+    assert resolver["the_brick"] == "brick"
+    assert resolver["BRICK BRADDOCK"] == "brick"
+    assert resolver["brick_braddock"] == "brick"
+    assert resolver["the_brick_braddock"] == "brick"
+    assert resolver["THE CHAMP"] == "brick"
+    assert resolver["the_champ"] == "brick"
+    assert resolver["champ"] == "brick"
+
+
+@pytest.mark.unit
+def test_signature_edges_resolve_display_alias_char_id() -> None:
+    resolver = _build_char_resolver(
+        [{"character_id": "brick", "name": "BRICK", "aliases": ["BRICK BRADDOCK"]}]
+    )
+    prop_bibles = [
+        {
+            "prop_id": "badge",
+            "name": "Badge",
+            "scene_presence": [],
+            "associated_characters": ["BRICK BRADDOCK"],
+        }
+    ]
+
+    edges = _generate_signature_edges(prop_bibles, resolver)
+
+    assert len(edges) == 1
+    assert edges[0].target_id == "brick"
+
+
+@pytest.mark.unit
+def test_entity_graph_resolves_scene_aliases_to_canonical_character() -> None:
+    inputs = {
+        "breakdown_scenes": {
+            "entries": [
+                {
+                    "scene_id": "scene_001",
+                    "location": "PATIO",
+                    "characters_present": ["BRICK", "BRICK BRADDOCK"],
+                },
+                {
+                    "scene_id": "scene_002",
+                    "location": "GARAGE",
+                    "characters_present": ["BRICK"],
+                },
+            ],
+            "unique_locations": ["PATIO", "GARAGE"],
+        },
+        "character_bible": [
+            {
+                "character_id": "brick",
+                "name": "BRICK",
+                "aliases": ["BRICK BRADDOCK"],
+                "relationships": [],
+            }
+        ],
+        "location_bible": [],
+        "prop_bible": [
+            {
+                "prop_id": "badge",
+                "name": "Badge",
+                "scene_presence": ["scene_001"],
+                "associated_characters": ["brick_braddock"],
+            }
+        ],
+    }
+
+    result = run_module(inputs=inputs, params={"model": "mock"}, context={})
+    graph_data = result["artifacts"][0]["data"]
+    edges = graph_data["edges"]
+    character_ids = {
+        edge[key]
+        for edge in edges
+        for key in ("source_id", "target_id")
+        if edge[key.replace("_id", "_type")] == "character"
+    }
+
+    assert graph_data["entity_count"]["character"] == 1
+    assert "brick" in character_ids
+    assert "brick_braddock" not in character_ids
+    assert not any(
+        edge["source_type"] == "character"
+        and edge["target_type"] == "character"
+        and edge["source_id"] == edge["target_id"]
+        for edge in edges
+    )
+    assert any(
+        edge["source_type"] == "prop"
+        and edge["source_id"] == "badge"
+        and edge["target_type"] == "character"
+        and edge["target_id"] == "brick"
+        for edge in edges
+    )
+
+
+@pytest.mark.unit
+def test_scene_pre_slugged_alias_ids_dedupe_to_canonical_character() -> None:
+    resolver = _build_char_resolver(
+        [{"character_id": "brick", "name": "BRICK", "aliases": ["BRICK BRADDOCK"]}]
+    )
+    scene_index = {
+        "entries": [
+            {
+                "scene_id": "scene_001",
+                "location": "PATIO",
+                "characters_present": ["BRICK", "BRICK BRADDOCK"],
+                "characters_present_ids": ["brick", "brick_braddock"],
+            }
+        ],
+        "unique_locations": ["PATIO"],
+    }
+
+    edges = _generate_co_occurrence_edges(scene_index, char_resolver=resolver)
+
+    assert sum(edge.source_id == "brick" for edge in edges) == 1
+    assert not any(
+        edge.source_type == "character"
+        and edge.target_type == "character"
+        and edge.source_id == edge.target_id
+        for edge in edges
+    )
+    assert "brick_braddock" not in {
+        entity_id
+        for edge in edges
+        for entity_type, entity_id in (
+            (edge.source_type, edge.source_id),
+            (edge.target_type, edge.target_id),
+        )
+        if entity_type == "character"
+    }
+
+
+@pytest.mark.unit
+def test_relationship_stub_alias_target_resolves_and_drops_self_edge() -> None:
+    inputs = {
+        "breakdown_scenes": {
+            "entries": [
+                {
+                    "scene_id": "scene_001",
+                    "location": "PATIO",
+                    "characters_present": ["BRICK"],
+                }
+            ],
+            "unique_locations": ["PATIO"],
+        },
+        "character_bible": [
+            {
+                "character_id": "brick",
+                "name": "BRICK",
+                "aliases": ["BRICK BRADDOCK"],
+                "relationships": [
+                    {
+                        "target_character": "BRICK BRADDOCK",
+                        "relationship_type": "same_person",
+                        "evidence": "Brick Braddock is Brick's full name.",
+                        "confidence": 0.95,
+                    }
+                ],
+            }
+        ],
+        "location_bible": [],
+        "prop_bible": [],
+    }
+
+    result = run_module(inputs=inputs, params={"model": "mock"}, context={})
+    edges = result["artifacts"][0]["data"]["edges"]
+
+    assert not any(edge["relationship_type"] == "same_person" for edge in edges)
+    assert not any(
+        edge["source_type"] == "character"
+        and edge["target_type"] == "character"
+        and edge["source_id"] == edge["target_id"]
+        for edge in edges
+    )
+    assert "brick_braddock" not in {
+        edge[key]
+        for edge in edges
+        for key in ("source_id", "target_id")
+        if edge[key.replace("_id", "_type")] == "character"
+    }
+
+
+@pytest.mark.unit
+def test_ai_relationship_edges_resolve_display_alias_and_drop_self_edge(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def _fake_extract_new_relationships(
+        character_bibles: list[dict[str, Any]],
+        location_bibles: list[dict[str, Any]],
+        prop_bibles: list[dict[str, Any]],
+        scene_index: dict[str, Any],
+        work_model: str,
+    ):
+        return [
+            EntityEdge(
+                source_type="character",
+                source_id="BRICK BRADDOCK",
+                target_type="character",
+                target_id="BRICK",
+                relationship_type="same_person",
+                direction="symmetric",
+                evidence=["AI emitted an alias edge."],
+                confidence=0.8,
+            ),
+            EntityEdge(
+                source_type="prop",
+                source_id="badge",
+                target_type="character",
+                target_id="BRICK BRADDOCK",
+                relationship_type="signature_prop_of",
+                direction="source_to_target",
+                evidence=["AI emitted display text for the target character."],
+                confidence=0.8,
+            ),
+        ], {
+            "model": work_model,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+        }
+
+    monkeypatch.setattr(
+        entity_graph_main,
+        "_extract_new_relationships",
+        _fake_extract_new_relationships,
+    )
+    inputs = {
+        "breakdown_scenes": {
+            "entries": [
+                {
+                    "scene_id": "scene_001",
+                    "location": "PATIO",
+                    "characters_present": ["BRICK"],
+                }
+            ],
+            "unique_locations": ["PATIO"],
+        },
+        "character_bible": [
+            {
+                "character_id": "brick",
+                "name": "BRICK",
+                "aliases": ["BRICK BRADDOCK"],
+                "relationships": [],
+            }
+        ],
+        "location_bible": [],
+        "prop_bible": [
+            {
+                "prop_id": "badge",
+                "name": "Badge",
+                "scene_presence": [],
+                "associated_characters": [],
+            }
+        ],
+    }
+
+    result = run_module(inputs=inputs, params={"model": "test-model"}, context={})
+    edges = result["artifacts"][0]["data"]["edges"]
+    character_ids = {
+        edge[key]
+        for edge in edges
+        for key in ("source_id", "target_id")
+        if edge[key.replace("_id", "_type")] == "character"
+    }
+
+    assert "brick" in character_ids
+    assert "brick_braddock" not in character_ids
+    assert "BRICK BRADDOCK" not in character_ids
+    assert not any(
+        edge["source_type"] == "character"
+        and edge["target_type"] == "character"
+        and edge["source_id"] == edge["target_id"]
+        for edge in edges
+    )
+    assert any(
+        edge["source_type"] == "prop"
+        and edge["source_id"] == "badge"
+        and edge["target_type"] == "character"
+        and edge["target_id"] == "brick"
+        and edge["relationship_type"] == "signature_prop_of"
+        for edge in edges
     )
 
 

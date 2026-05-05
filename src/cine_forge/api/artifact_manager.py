@@ -25,6 +25,18 @@ from cine_forge.services.injected_assets import list_text_extensions
 
 log = logging.getLogger(__name__)
 
+_STAGE_CURRENT_ARTIFACT_TYPES = frozenset(
+    {
+        "bible_manifest",
+        "character_bible",
+        "continuity_index",
+        "continuity_state",
+        "entity_graph",
+        "location_bible",
+        "prop_bible",
+    }
+)
+
 
 class ArtifactManager:
     """Browse, read, and edit versioned artifacts for a project.
@@ -54,6 +66,7 @@ class ArtifactManager:
         if not artifacts_root.exists():
             return []
         store = ArtifactStore(project_dir=project_path)
+        current_entities_by_type = _load_stage_current_entities(project_path)
         groups: list[dict[str, Any]] = []
         for artifact_type_dir in sorted(
             path for path in artifacts_root.iterdir() if path.is_dir()
@@ -66,6 +79,12 @@ class ArtifactManager:
                 )
                 for entity_type_dir in sorted(bibles_iter):
                     entity_id = entity_type_dir.name
+                    if not _is_current_stage_group(
+                        current_entities_by_type,
+                        "bible_manifest",
+                        entity_id,
+                    ):
+                        continue
                     refs = store.list_versions(
                         artifact_type="bible_manifest", entity_id=entity_id
                     )
@@ -90,6 +109,12 @@ class ArtifactManager:
                 entity_id = (
                     None if entity_dir.name == "__project__" else entity_dir.name
                 )
+                if not _is_current_stage_group(
+                    current_entities_by_type,
+                    artifact_type,
+                    entity_id,
+                ):
+                    continue
                 refs = store.list_versions(
                     artifact_type=artifact_type, entity_id=entity_id
                 )
@@ -557,6 +582,78 @@ class ArtifactManager:
             assessing_role="media_validation_v1",
             updated_at=None,
         )
+
+
+def _load_stage_current_entities(project_path: Path) -> dict[str, set[str | None]]:
+    """Return current stage-owned artifact groups from the project stage cache."""
+    stage_cache_path = project_path / "stage_cache.json"
+    if not stage_cache_path.exists():
+        return {}
+
+    try:
+        with stage_cache_path.open("r", encoding="utf-8") as file:
+            raw_cache = json.load(file)
+    except (OSError, json.JSONDecodeError):
+        log.warning("Could not read stage cache at %s", stage_cache_path, exc_info=True)
+        return {}
+
+    if not isinstance(raw_cache, dict):
+        return {}
+
+    current_entities: dict[str, set[str | None]] = {}
+    for recipe_cache in raw_cache.values():
+        if not isinstance(recipe_cache, dict):
+            continue
+        for stage_entry in recipe_cache.values():
+            ref_payloads: Any = stage_entry
+            if isinstance(stage_entry, dict):
+                ref_payloads = stage_entry.get("artifact_refs", [])
+            if not isinstance(ref_payloads, list):
+                continue
+            for payload in ref_payloads:
+                if not isinstance(payload, dict):
+                    continue
+                artifact_type = payload.get("artifact_type")
+                if artifact_type not in _STAGE_CURRENT_ARTIFACT_TYPES:
+                    continue
+                path_value = payload.get("path")
+                if not isinstance(path_value, str):
+                    continue
+                if not (project_path / path_value).exists():
+                    continue
+                entity_id = payload.get("entity_id")
+                if entity_id == "__project__":
+                    entity_id = None
+                if entity_id is not None and not isinstance(entity_id, str):
+                    continue
+                current_entities.setdefault(artifact_type, set()).add(entity_id)
+    return current_entities
+
+
+def _is_current_stage_group(
+    current_entities_by_type: dict[str, set[str | None]],
+    artifact_type: str,
+    entity_id: str | None,
+) -> bool:
+    current_entities = current_entities_by_type.get(artifact_type)
+    if not current_entities:
+        return True
+    if artifact_type == "bible_manifest":
+        entity_namespace = _bible_manifest_namespace(entity_id)
+        current_entities = {
+            current_entity
+            for current_entity in current_entities
+            if _bible_manifest_namespace(current_entity) == entity_namespace
+        }
+        if not current_entities:
+            return True
+    return entity_id in current_entities
+
+
+def _bible_manifest_namespace(entity_id: str | None) -> str | None:
+    if not entity_id or "_" not in entity_id:
+        return None
+    return entity_id.split("_", 1)[0]
 
 
 def _validation_suggested_revision(validation: MediaValidationArtifact) -> str | None:

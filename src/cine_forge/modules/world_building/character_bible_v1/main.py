@@ -3,16 +3,17 @@
 from __future__ import annotations
 
 import logging
-import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime
 from typing import Any
 
-from cine_forge.ai import adjudicate_entity_candidates
 from cine_forge.ai.llm import call_llm
+from cine_forge.modules.world_building.character_bible_v1.candidate_resolution import (
+    _slugify,
+    prepare_character_candidates,
+)
 from cine_forge.schemas import (
     CharacterBible,
-    EntityAdjudicationDecision,
     QAResult,
 )
 
@@ -20,64 +21,6 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_CHARACTER_BIBLE_MAX_TOKENS = 8192
 DEFAULT_MINOR_CHARACTER_BIBLE_MAX_TOKENS = 4096
-
-CHARACTER_STOPWORDS = {
-    "A",
-    "AN",
-    "AND",
-    "AS",
-    "AT",
-    "BACK",
-    "BLACK",
-    "BEGIN",
-    "CONTINUOUS",
-    "CUT",
-    "DAY",
-    "END",
-    "ENDFLASHBACK",
-    "EXT",
-    "FADE",
-    "FOR",
-    "FROM",
-    "GO",
-    "HE",
-    "HER",
-    "HIS",
-    "I",
-    "IN",
-    "INT",
-    "IT",
-    "LATER",
-    "NIGHT",
-    "NO",
-    "NOBODY",
-    "NOW",
-    "OF",
-    "ON",
-    "OUT",
-    "PRESENT",
-    "SHE",
-    "THE",
-    "THEY",
-    "THWACK",
-    "TO",
-    "UNKNOWN",
-    "UNSPECIFIED",
-    "WE",
-    "YOU",
-    "LUXURIOUS",
-    "CLEAN",
-    "DIMLY",
-    "LIT",
-    "DISCARDED",
-    "BOTTLES",
-    "RUG",
-    "RUSTY",
-    "WEIGHTS",
-    "WEEDS",
-    "OPENING",
-    "TITLE",
-}
 
 
 def run_module(
@@ -92,7 +35,7 @@ def run_module(
         adjudication_rejections,
         adjudication_decisions,
         adjudication_cost,
-    ) = _prepare_character_candidates(
+    ) = prepare_character_candidates(
         canonical_script=canonical_script,
         scene_index=scene_index,
         discovery_results=discovery_results,
@@ -208,82 +151,6 @@ def _resolve_execution_options(
             or DEFAULT_MINOR_CHARACTER_BIBLE_MAX_TOKENS
         ),
     }
-
-
-def _prepare_character_candidates(
-    canonical_script: dict[str, Any],
-    scene_index: dict[str, Any],
-    discovery_results: dict[str, Any] | None,
-    min_appearances: int,
-    model: str,
-) -> tuple[
-    list[dict[str, Any]],
-    list[dict[str, Any]],
-    list[dict[str, Any]],
-    list[dict[str, Any]],
-    dict[str, Any],
-]:
-    if discovery_results and discovery_results.get("characters"):
-        ranked, candidates = _build_discovery_character_candidates(
-            canonical_script=canonical_script,
-            scene_index=scene_index,
-            discovery_results=discovery_results,
-        )
-        candidates = [c for c in candidates if _is_plausible_character_name(c["name"])]
-        print(
-            "[character_bible] Skipping second-pass adjudication for discovery-backed candidates."
-        )
-        return ranked, candidates, [], [], _empty_cost(model)
-
-    characters = _aggregate_characters(scene_index)
-    ranked = _rank_characters(characters, canonical_script, scene_index)
-    candidates = [
-        candidate
-        for candidate in ranked
-        if (candidate["scene_count"] >= min_appearances) or (candidate["dialogue_count"] >= 1)
-    ]
-    candidates = [c for c in candidates if _is_plausible_character_name(c["name"])]
-    candidates, rejected, decisions, cost = _adjudicate_candidates(
-        candidates=candidates,
-        script_text=canonical_script["script_text"],
-        model=model,
-    )
-    return ranked, candidates, rejected, decisions, cost
-
-
-def _build_discovery_character_candidates(
-    canonical_script: dict[str, Any],
-    scene_index: dict[str, Any],
-    discovery_results: dict[str, Any],
-) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    approved_names: set[str] = set()
-    for name in discovery_results["characters"]:
-        normalized = _normalize_character_name(name)
-        if normalized:
-            approved_names.add(normalized)
-
-    print(f"[character_bible] Using {len(approved_names)} characters from discovery results.")
-    all_chars = _aggregate_characters(scene_index)
-    ranked = _rank_characters(all_chars, canonical_script, scene_index)
-    candidates = [candidate for candidate in ranked if candidate["name"] in approved_names]
-
-    # Discovery may contain characters the scene parser normalized differently
-    # (e.g. "THUG 1"/"THUG 2" collapsed to "THUG", "YOUNG MARINER" to "MARINER").
-    # Create stub entries so they still get extracted.
-    matched_names = {candidate["name"] for candidate in candidates}
-    for name in sorted(approved_names - matched_names):
-        candidates.append(
-            {
-                "name": name,
-                "scene_count": 0,
-                "dialogue_count": 0,
-                "score": 0,
-                "scene_presence": [],
-            }
-        )
-
-    candidates.sort(key=lambda item: item["score"], reverse=True)
-    return ranked, candidates
 
 
 def _extract_character_artifacts(
@@ -450,7 +317,7 @@ def _process_character(
         "created_at": datetime.now(UTC).isoformat(),
     }
     annotation = _adjudication_annotation(
-        input_count=len(ranked),
+        input_count=len(adjudication_decisions) or len(ranked),
         approved_count=len(candidates),
         rejected=adjudication_rejections,
         decisions=adjudication_decisions,
@@ -543,7 +410,7 @@ def _process_minor_character(
         "created_at": datetime.now(UTC).isoformat(),
     }
     annotation = _adjudication_annotation(
-        input_count=len(ranked),
+        input_count=len(adjudication_decisions) or len(ranked),
         approved_count=len(candidates),
         rejected=adjudication_rejections,
         decisions=adjudication_decisions,
@@ -609,54 +476,6 @@ def _extract_inputs(
     return canonical_script, scene_index, discovery_results
 
 
-def _aggregate_characters(scene_index: dict[str, Any]) -> list[str]:
-    raw_names = scene_index.get("unique_characters", [])
-    normalized = [_normalize_character_name(n) for n in raw_names]
-    # Filter noise
-    plausible = [n for n in normalized if _is_plausible_character_name(n)]
-    # Filter derivative
-    base_tokens = {n for n in plausible if " " not in n and len(n) >= 4}
-    unique = [n for n in plausible if not _looks_like_derivative_noise(n, base_tokens)]
-    return sorted(list(set(unique)))
-
-
-def _rank_characters(
-    names: list[str], script: dict[str, Any], index: dict[str, Any]
-) -> list[dict[str, Any]]:
-    scene_counts = {name: 0 for name in names}
-    scene_presence = {name: [] for name in names}
-    for entry in index.get("entries", []):
-        for raw_char in entry.get("characters_present", []):
-            norm = _normalize_character_name(raw_char)
-            if norm in scene_counts:
-                scene_counts[norm] += 1
-                if entry["scene_id"] not in scene_presence[norm]:
-                    scene_presence[norm].append(entry["scene_id"])
-
-    # Dialogue counts
-    script_text = script.get("script_text", "")
-    dialogue_counts = {name: 0 for name in names}
-    for line in script_text.splitlines():
-        norm = _normalize_character_name(line)
-        if norm in dialogue_counts:
-            dialogue_counts[norm] += 1
-
-    results = []
-    for name in names:
-        results.append(
-            {
-                "name": name,
-                "scene_count": scene_counts[name],
-                "scene_presence": scene_presence[name],
-                "dialogue_count": dialogue_counts[name],
-                "score": (scene_counts[name] * 2) + dialogue_counts[name],
-            }
-        )
-
-    results.sort(key=lambda x: x["score"], reverse=True)
-    return results
-
-
 def _extract_character_definition(
     char_name: str,
     entry: dict[str, Any],
@@ -667,7 +486,7 @@ def _extract_character_definition(
     max_tokens: int = DEFAULT_CHARACTER_BIBLE_MAX_TOKENS,
 ) -> tuple[CharacterBible, dict[str, Any]]:
     if model == "mock":
-        return _mock_extract(char_name, entry), {
+        return _definition_with_entry_aliases(_mock_extract(char_name, entry), entry), {
             "model": "mock",
             "input_tokens": 0,
             "output_tokens": 0,
@@ -683,7 +502,7 @@ def _extract_character_definition(
         fail_on_truncation=True,
         enable_caching=True,
     )
-    return definition, cost
+    return _definition_with_entry_aliases(definition, entry), cost
 
 
 def _extract_minor_character_definition(
@@ -696,7 +515,7 @@ def _extract_minor_character_definition(
 ) -> tuple[CharacterBible, dict[str, Any]]:
     """Lightweight extraction for minor characters — cheaper than full extraction."""
     if model == "mock":
-        return _mock_minor_extract(char_name, entry), {
+        return _definition_with_entry_aliases(_mock_minor_extract(char_name, entry), entry), {
             "model": "mock",
             "input_tokens": 0,
             "output_tokens": 0,
@@ -712,137 +531,7 @@ def _extract_minor_character_definition(
         fail_on_truncation=True,
         enable_caching=True,
     )
-    return definition, cost
-
-
-def _adjudicate_candidates(
-    candidates: list[dict[str, Any]],
-    script_text: str,
-    model: str,
-) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
-    if not candidates:
-        return [], [], [], _empty_cost(model)
-
-    adjudication_input = [
-        {
-            "candidate": item["name"],
-            "scene_count": item["scene_count"],
-            "dialogue_count": item["dialogue_count"],
-            "scene_presence": item["scene_presence"][:8],
-            "source_hint": "scene_index.unique_characters",
-        }
-        for item in candidates
-    ]
-    decisions, cost = adjudicate_entity_candidates(
-        entity_type="character",
-        candidates=adjudication_input,
-        script_text=script_text,
-        model=model,
-    )
-
-    source_by_name = {item["name"]: item for item in candidates}
-    merged: dict[str, dict[str, Any]] = {}
-    rejected: list[dict[str, Any]] = []
-    decision_log: list[dict[str, Any]] = []
-    for decision in decisions:
-        source = source_by_name.get(decision.candidate)
-        if not source:
-            decision_log.append(
-                {
-                    "candidate": decision.candidate,
-                    "decision_verdict": decision.verdict,
-                    "target_entity_type": decision.target_entity_type,
-                    "canonical_name": decision.canonical_name,
-                    "llm_rationale": decision.rationale,
-                    "llm_confidence": decision.confidence,
-                    "outcome": "ignored_unknown_candidate",
-                }
-            )
-            continue
-        if decision.verdict != "valid":
-            entry = _decision_to_rejection(decision)
-            rejected.append(entry)
-            decision_log.append({**entry, "outcome": "rejected_by_verdict"})
-            continue
-        canonical, resolution_mode = _resolve_character_name(
-            decision=decision,
-            original_candidate=source["name"],
-        )
-        if not _is_plausible_character_name(canonical):
-            entry = {
-                **_decision_to_rejection(decision),
-                "resolution_mode": resolution_mode,
-                "outcome": "rejected_after_resolution",
-                "rationale": "resolved candidate failed plausibility checks",
-            }
-            rejected.append(entry)
-            decision_log.append(entry)
-            continue
-        if resolution_mode == "fallback_to_original_candidate":
-            decision_log.append(
-                {
-                    **_decision_to_rejection(decision),
-                    "resolved_name": canonical,
-                    "resolution_mode": resolution_mode,
-                    "outcome": "accepted_after_fallback",
-                }
-            )
-        else:
-            decision_log.append(
-                {
-                    **_decision_to_rejection(decision),
-                    "resolved_name": canonical,
-                    "resolution_mode": resolution_mode,
-                    "outcome": "accepted",
-                }
-            )
-
-        existing = merged.get(canonical)
-        if not existing:
-            merged[canonical] = {
-                "name": canonical,
-                "scene_count": source["scene_count"],
-                "dialogue_count": source["dialogue_count"],
-                "scene_presence": list(source["scene_presence"]),
-                "score": (source["scene_count"] * 2) + source["dialogue_count"],
-            }
-            continue
-        existing["scene_count"] += source["scene_count"]
-        existing["dialogue_count"] += source["dialogue_count"]
-        existing["scene_presence"] = sorted(
-            list(set(existing["scene_presence"] + list(source["scene_presence"])))
-        )
-        existing["score"] = (existing["scene_count"] * 2) + existing["dialogue_count"]
-
-    approved = sorted(merged.values(), key=lambda item: item["score"], reverse=True)
-    return approved, rejected, decision_log, cost
-
-
-def _resolve_character_name(
-    decision: EntityAdjudicationDecision, original_candidate: str
-) -> tuple[str, str]:
-    canonical_candidate = _normalize_character_name(
-        decision.canonical_name or decision.candidate
-    )
-    if _is_plausible_character_name(canonical_candidate):
-        return canonical_candidate, "canonical_or_candidate"
-
-    fallback = _normalize_character_name(original_candidate)
-    if _is_plausible_character_name(fallback):
-        return fallback, "fallback_to_original_candidate"
-
-    return canonical_candidate, "canonical_invalid_and_fallback_invalid"
-
-
-def _decision_to_rejection(decision: EntityAdjudicationDecision) -> dict[str, Any]:
-    return {
-        "candidate": decision.candidate,
-        "decision_verdict": decision.verdict,
-        "target_entity_type": decision.target_entity_type,
-        "canonical_name": decision.canonical_name,
-        "llm_rationale": decision.rationale,
-        "llm_confidence": decision.confidence,
-    }
+    return _definition_with_entry_aliases(definition, entry), cost
 
 
 def _adjudication_annotation(
@@ -890,6 +579,77 @@ def _run_character_qa(
     )
 
 
+def _extract_entry_script_context(
+    script_text: str,
+    scene_index: dict[str, Any],
+    entry: dict[str, Any],
+    fallback_name: str,
+) -> str:
+    scene_ids = {str(scene_id) for scene_id in entry.get("scene_presence", []) if scene_id}
+    if not scene_ids:
+        from cine_forge.ai import extract_scenes_for_entity
+
+        return extract_scenes_for_entity(
+            script_text=script_text,
+            scene_index=scene_index,
+            entity_type="character",
+            entity_name=fallback_name,
+        )
+
+    lines = script_text.splitlines()
+    snippets: list[str] = []
+    seen: set[str] = set()
+    for scene_entry in scene_index.get("entries", []):
+        if str(scene_entry.get("scene_id")) not in scene_ids:
+            continue
+        span = scene_entry.get("source_span") or {}
+        if "start_line" in span and "end_line" in span:
+            start = max(int(span["start_line"]) - 1, 0)
+            end = min(int(span["end_line"]), len(lines))
+            snippet = "\n".join(lines[start:end])
+        else:
+            snippet = script_text
+        if snippet and snippet not in seen:
+            snippets.append(snippet)
+            seen.add(snippet)
+
+    if snippets:
+        return "\n\n".join(snippets)
+
+    from cine_forge.ai import extract_scenes_for_entity
+
+    return extract_scenes_for_entity(
+        script_text=script_text,
+        scene_index=scene_index,
+        entity_type="character",
+        entity_name=fallback_name,
+    )
+
+
+def _alias_context_line(entry: dict[str, Any]) -> str:
+    aliases = entry.get("aliases") or []
+    if not aliases:
+        return ""
+    return f"    - Known aliases: {', '.join(str(alias) for alias in aliases)}\n"
+
+
+def _definition_with_entry_aliases(
+    definition: CharacterBible, entry: dict[str, Any]
+) -> CharacterBible:
+    merged_aliases = list(definition.aliases)
+    seen = {alias.strip().upper() for alias in merged_aliases if str(alias).strip()}
+    for alias in entry.get("aliases") or []:
+        alias_text = str(alias).strip()
+        if not alias_text:
+            continue
+        alias_key = alias_text.upper()
+        if alias_key in seen:
+            continue
+        merged_aliases.append(alias_text)
+        seen.add(alias_key)
+    return definition.model_copy(update={"aliases": merged_aliases})
+
+
 def _build_extraction_prompt(
     char_name: str,
     entry: dict[str, Any],
@@ -897,15 +657,14 @@ def _build_extraction_prompt(
     index: dict[str, Any],
     feedback: str = "",
 ) -> str:
-    from cine_forge.ai import extract_scenes_for_entity
-
-    relevant_text = extract_scenes_for_entity(
+    relevant_text = _extract_entry_script_context(
         script_text=script["script_text"],
         scene_index=index,
-        entity_type="character",
-        entity_name=char_name,
+        entry=entry,
+        fallback_name=char_name,
     )
     feedback_block = f"\nQA Feedback to address: {feedback}\n" if feedback else ""
+    alias_context = _alias_context_line(entry)
     return f"""You are a character analyst. Extract a master definition for character: {char_name}.
     Base every field strictly on evidence from the provided screenplay \
 text. If a trait, relationship, or detail cannot be determined from the \
@@ -921,6 +680,7 @@ inventing plausible details.
     {feedback_block}
     Character Context:
     - Name: {char_name}
+{alias_context}\
     - Scene Count: {entry['scene_count']}
     - Dialogue Count: {entry['dialogue_count']}
 
@@ -940,14 +700,13 @@ def _build_lightweight_prompt(
     index: dict[str, Any],
 ) -> str:
     """Minimal extraction prompt for minor/walk-on characters."""
-    from cine_forge.ai import extract_scenes_for_entity
-
-    relevant_text = extract_scenes_for_entity(
+    relevant_text = _extract_entry_script_context(
         script_text=script["script_text"],
         scene_index=index,
-        entity_type="character",
-        entity_name=char_name,
+        entry=entry,
+        fallback_name=char_name,
     )
+    alias_context = _alias_context_line(entry)
     return f"""You are a character analyst. Extract a brief definition \
 for minor character: {char_name}.
     Base all fields on evidence from the provided scene text. Do not \
@@ -964,6 +723,7 @@ invent backstory, motivations, or details not present in the screenplay.
 
     Character Context:
     - Name: {char_name}
+{alias_context}\
     - Scene Count: {entry['scene_count']}
     - Dialogue Count: {entry['dialogue_count']}
 
@@ -976,7 +736,7 @@ def _mock_extract(char_name: str, entry: dict[str, Any]) -> CharacterBible:
     return CharacterBible(
         character_id=_slugify(char_name),
         name=char_name,
-        aliases=[],
+        aliases=list(entry.get("aliases", [])),
         description=f"A character named {char_name}.",
         prominence="secondary",
         explicit_evidence=[],
@@ -994,7 +754,7 @@ def _mock_minor_extract(char_name: str, entry: dict[str, Any]) -> CharacterBible
     return CharacterBible(
         character_id=_slugify(char_name),
         name=char_name,
-        aliases=[],
+        aliases=list(entry.get("aliases", [])),
         description=f"A minor character: {char_name}.",
         prominence="minor",
         explicit_evidence=[],
@@ -1006,55 +766,3 @@ def _mock_minor_extract(char_name: str, entry: dict[str, Any]) -> CharacterBible
         relationships=[],
         overall_confidence=0.7,
     )
-
-
-def _normalize_character_name(value: Any) -> str:
-    text = str(value or "").strip().upper()
-    text = re.sub(r"\s*\((V\.O\.|O\.S\.|CONT'D|CONT'D|OFF|ON RADIO)\)\s*$", "", text)
-
-    # Strip non-alphanumeric except spaces and apostrophes (e.g. MR. SALVATORI -> MR SALVATORI)
-    text = re.sub(r"[^A-Z0-9' ]+", "", text)
-
-    # Strip leading "THE " prefix if it's followed by 4+ letters
-    if text.startswith("THE "):
-        remainder = text[4:].strip()
-        if len(remainder) >= 4:
-            text = remainder
-
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
-
-
-def _is_plausible_character_name(name: str) -> bool:
-    if not name:
-        return False
-    if len(name) < 2 or len(name) > 28:
-        return False
-    tokens = name.split()
-    if len(tokens) > 3:
-        return False
-    if any(not re.match(r"^[A-Z0-9']+$", token) for token in tokens):
-        return False
-    if any(len(token) > 12 for token in tokens):
-        return False
-    if any(token in CHARACTER_STOPWORDS for token in tokens):
-        return False
-    if not any(char.isalpha() for char in name):
-        return False
-    if re.match(r"^\d+$", name):
-        return False
-    return True
-
-
-def _looks_like_derivative_noise(name: str, base_tokens: set[str]) -> bool:
-    for token in name.split():
-        for base in base_tokens:
-            if token == base:
-                continue
-            if token.startswith(base) and len(token) >= len(base) + 3:
-                return True
-    return False
-
-
-def _slugify(name: str) -> str:
-    return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")

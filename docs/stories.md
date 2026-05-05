@@ -18,7 +18,7 @@ Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b
 
 ## Current Execution Map
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first render route, and Stories 191-196 closed the Brick & Steel production-readiness, design-study lifecycle, prompt truth, render-clip planning, multi-clip rendering, xAI previz readiness, and product-truth scrub wave. Story 196 found the current surfaced route healthy and created Story 201 for a focused keyframe-affordance follow-up. Story 198 remains the sequence-sensitive character-adjudication owner, while Stories 185, 197, and 199 hold routed UI, reference-pack, and casting/table-read decisions.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first render route, and Stories 191-196 closed the Brick & Steel production-readiness, design-study lifecycle, prompt truth, render-clip planning, multi-clip rendering, xAI previz readiness, and product-truth scrub wave. Story 196 found the current surfaced route healthy and created Story 201 for a focused keyframe-affordance follow-up. Story 198 closed the Brick & Steel character-adjudication build, while Stories 185, 197, and 199 hold routed UI, reference-pack, and casting/table-read decisions.
 
 ### Pending — Ready To Build Now
 
@@ -32,7 +32,6 @@ No stories currently in progress.
 
 | Story | Why |
 |---|---|
-| **198** Brick & Steel Character Adjudication | Build once the scene-generation lane is not blocked by prod readiness, or sooner if character/reference correctness becomes the active surface: reproduce Brick vs Brick Braddock and prove artifact-edit merge/deprecation. |
 | **201** Keyframe Affordance Truth | Focused follow-up from Story 196: fix the Render/Previz keyframe warning so missing optional keyframes either have a real route or no longer appear as actionable hidden homework. |
 
 ### Draft — Scope Or Decision Needed First
@@ -132,7 +131,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 198 | Brick & Steel Character Adjudication | High | Pending | — | spec:2, spec:3, spec:5, spec:8 | 055, 081, 097, 124, 129 | [story-198](stories/story-198-brick-steel-character-adjudication.md) |
 | 185 | Project Home Script Hierarchy and Supporting Surface Placement | High | Draft | — | spec:2, spec:5, spec:10 | 093, 142, 166, 167 | [story-185](stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md) |
 | 048 | PDF Input Preview Uses Binary Decode Instead of Text Extraction | High | Done | — | spec:2, spec:5 | — | [story-048](stories/story-048-pdf-input-preview-decode.md) |
 | 049 | Import Normalization Format Suite | High | Done | — | spec:2, spec:8 | — | [story-049](stories/story-049-import-normalization-format-suite.md) |
@@ -148,6 +146,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 142 | Initial Intake Should Not Self-Stale | High | Done | — | spec:1, spec:2, spec:5 | 031, 062, 127 | [story-142](stories/story-142-intake-onboarding-should-not-self-stale.md) |
 | 148 | Scene-Scoped Planning and Honest Downstream Generation | High | Done | — | spec:2, spec:5, spec:6, spec:7, spec:10 | 025, 028, 099, 132, 143, 144 | [story-148](stories/story-148-scene-scoped-planning-and-honest-downstream-generation.md) |
 | 189 | GPT-5.5 Frontier Eval Refresh | High | Done | — | spec:2, spec:3, spec:8 | 035 | [story-189](stories/story-189-gpt-55-frontier-eval-refresh.md) |
+| 198 | Brick & Steel Character Adjudication | High | Done | — | spec:2, spec:3, spec:5, spec:8 | 055, 081, 097, 124, 129 | [story-198](stories/story-198-brick-steel-character-adjudication.md) |
 | 200 | Grok 4.3 Text and Image Reasoning Eval Refresh | High | Done | — | spec:2, spec:4, spec:6, spec:7, spec:8 | 035 | [story-200](stories/story-200-grok-43-text-image-reasoning-eval-refresh.md) |
 | 064 | Screenplay Format Round-Trip: Converter Upgrade + Fidelity Test Suite | Medium | Done | — | spec:2 | — | [story-064](stories/story-064-screenplay-format-round-trip.md) |
 | 070 | Script View Scene Dividers & Entity Hotlinks | Medium | Done | — | spec:2, spec:3, spec:5 | 045 | [story-070](stories/story-070-script-view-scene-dividers-and-hotlinks.md) |

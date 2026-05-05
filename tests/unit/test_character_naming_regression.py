@@ -1,7 +1,7 @@
 
 import pytest
 
-from cine_forge.modules.world_building.character_bible_v1.main import (
+from cine_forge.modules.world_building.character_bible_v1.candidate_resolution import (
     _is_plausible_character_name,
     _normalize_character_name,
 )
@@ -26,7 +26,7 @@ def test_normalize_character_name(input_name, expected):
     ("THE", False),
     ("DAD", True),
     ("MR SALVATORI", True),
-    ("THUG", False), # In stopword list
+    ("THUG", True),
 ])
 def test_is_plausible_character_name(name, expected):
     assert _is_plausible_character_name(name) == expected

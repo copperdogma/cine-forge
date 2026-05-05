@@ -6,8 +6,9 @@ from pathlib import Path
 import pytest
 
 from cine_forge.api.artifact_editing import apply_artifact_edit
+from cine_forge.api.exceptions import ServiceError
 from cine_forge.artifacts.store import ArtifactStore
-from cine_forge.schemas import ArtifactMetadata
+from cine_forge.schemas import ArtifactMetadata, ArtifactRef
 
 
 def _seed_metadata() -> ArtifactMetadata:
@@ -17,6 +18,33 @@ def _seed_metadata() -> ArtifactMetadata:
         confidence=1.0,
         source="human",
         producing_module="tests.seed",
+    )
+
+
+def _seed_brick_bible(store: ArtifactStore) -> ArtifactRef:
+    return store.save_bible_entry(
+        entity_type="character",
+        entity_id="brick_braddock",
+        display_name="BRICK BRADDOCK",
+        files=[
+            {
+                "filename": "master_v1.json",
+                "purpose": "master_definition",
+                "version": 1,
+                "provenance": "system",
+            }
+        ],
+        data_files={
+            "master_v1.json": json.dumps(
+                {
+                    "character_id": "brick_braddock",
+                    "name": "BRICK BRADDOCK",
+                    "description": "Duplicate full-name artifact.",
+                },
+                indent=2,
+            )
+        },
+        metadata=_seed_metadata(),
     )
 
 
@@ -38,7 +66,11 @@ def test_apply_artifact_edit_versions_bible_manifest_and_master_file(tmp_path: P
         ],
         data_files={
             "master_v1.json": json.dumps(
-                {"name": "Aria", "description": "A sharp-eyed mechanic."},
+                {
+                    "character_id": "aria",
+                    "name": "Aria",
+                    "description": "A sharp-eyed mechanic.",
+                },
                 indent=2,
             )
         },
@@ -57,6 +89,7 @@ def test_apply_artifact_edit_versions_bible_manifest_and_master_file(tmp_path: P
         chat_message_id="user_789",
         bible_files={
             "master_v1.json": {
+                "character_id": "aria",
                 "name": "Aria",
                 "description": "An older, sharp-eyed mechanic with deep crow's feet.",
             }
@@ -85,6 +118,595 @@ def test_apply_artifact_edit_versions_bible_manifest_and_master_file(tmp_path: P
     assert latest_metadata.producing_role == "assistant"
     assert latest_metadata.annotations["chat_message_id"] == "user_789"
     assert latest_metadata.annotations["edit_origin"] == "chat"
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_bible_identity_merge_in_master_file(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = _seed_brick_bible(store)
+    manifest, _ = store.load_bible_entry(initial_ref)
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest.model_dump(mode="json"),
+            rationale="Merge duplicate Brick Braddock into Brick.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+            bible_files={
+                "master_v1.json": {
+                    "character_id": "brick",
+                    "name": "BRICK",
+                    "description": "Canonical Brick artifact.",
+                }
+            },
+        )
+
+    assert excinfo.value.code == "unsupported_artifact_edit"
+    assert "identity merge/deprecation" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_bible_identity_removal_in_master_file(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = _seed_brick_bible(store)
+    manifest, _ = store.load_bible_entry(initial_ref)
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest.model_dump(mode="json"),
+            rationale="Deprecate duplicate Brick Braddock without updating references.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+            bible_files={
+                "master_v1.json": {
+                    "name": "BRICK BRADDOCK",
+                    "description": "Duplicate full-name artifact.",
+                }
+            },
+        )
+
+    assert excinfo.value.code == "unsupported_artifact_edit"
+    assert "identity merge/deprecation" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_bible_camel_identity_drift_in_master_file(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = _seed_brick_bible(store)
+    manifest, _ = store.load_bible_entry(initial_ref)
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest.model_dump(mode="json"),
+            rationale="Merge duplicate Brick Braddock into Brick.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+            bible_files={
+                "master_v1.json": {
+                    "character_id": "brick_braddock",
+                    "characterId": "brick",
+                    "name": "BRICK BRADDOCK",
+                    "description": "Duplicate full-name artifact.",
+                }
+            },
+        )
+
+    assert excinfo.value.code == "unsupported_artifact_edit"
+    assert "identity merge/deprecation" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_bible_generic_entity_id_drift_in_master_file(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = _seed_brick_bible(store)
+    manifest, _ = store.load_bible_entry(initial_ref)
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest.model_dump(mode="json"),
+            rationale="Merge duplicate Brick Braddock into Brick.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+            bible_files={
+                "master_v1.json": {
+                    "character_id": "brick_braddock",
+                    "entityId": "brick",
+                    "name": "BRICK BRADDOCK",
+                    "description": "Duplicate full-name artifact.",
+                }
+            },
+        )
+
+    assert excinfo.value.code == "unsupported_artifact_edit"
+    assert "identity merge/deprecation" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    "identity_payload",
+    [
+        {"profile": {"characterId": "brick"}},
+        {"profile.characterId": "brick"},
+        {"character.id": "brick"},
+        {"entity.id": "brick"},
+        {"profile": {"character": {"id": "brick"}}},
+        {"references": [{"character": {"id": "brick"}}]},
+    ],
+)
+def test_apply_artifact_edit_rejects_nested_identity_drift_in_master_file(
+    tmp_path: Path,
+    identity_payload: dict[str, object],
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = _seed_brick_bible(store)
+    manifest, _ = store.load_bible_entry(initial_ref)
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest.model_dump(mode="json"),
+            rationale="Merge duplicate Brick Braddock into Brick.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+            bible_files={
+                "master_v1.json": {
+                    "character_id": "brick_braddock",
+                    **identity_payload,
+                    "name": "BRICK BRADDOCK",
+                    "description": "Duplicate full-name artifact.",
+                }
+            },
+        )
+
+    assert excinfo.value.code == "unsupported_artifact_edit"
+    assert "identity merge/deprecation" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_bible_merge_marker_in_master_file(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = _seed_brick_bible(store)
+    manifest, _ = store.load_bible_entry(initial_ref)
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest.model_dump(mode="json"),
+            rationale="Mark duplicate Brick Braddock as merged into Brick.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+            bible_files={
+                "master_v1.json": {
+                    "character_id": "brick_braddock",
+                    "name": "BRICK BRADDOCK",
+                    "description": "Duplicate full-name artifact.",
+                    "merge_into": "brick",
+                }
+            },
+        )
+
+    assert excinfo.value.code == "unsupported_artifact_edit"
+    assert "identity merge/deprecation" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_nested_canonical_marker_in_master_file(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = _seed_brick_bible(store)
+    manifest, _ = store.load_bible_entry(initial_ref)
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest.model_dump(mode="json"),
+            rationale="Mark duplicate Brick Braddock as canonicalized into Brick.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+            bible_files={
+                "master_v1.json": {
+                    "character_id": "brick_braddock",
+                    "name": "BRICK BRADDOCK",
+                    "description": "Duplicate full-name artifact.",
+                    "canonical": {"characterId": "brick"},
+                }
+            },
+        )
+
+    assert excinfo.value.code == "unsupported_artifact_edit"
+    assert "identity merge/deprecation" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_bible_manifest_identity_drift(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = _seed_brick_bible(store)
+    manifest, _ = store.load_bible_entry(initial_ref)
+    drifted_manifest = manifest.model_copy(update={"entity_id": "brick"})
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=drifted_manifest.model_dump(mode="json"),
+            rationale="Move duplicate Brick Braddock into Brick.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+        )
+
+    assert excinfo.value.code == "unsupported_artifact_edit"
+    assert "identity merge/deprecation" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+    assert store.list_versions("bible_manifest", "character_brick") == []
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_existing_master_identity_drift(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = store.save_bible_entry(
+        entity_type="character",
+        entity_id="brick_braddock",
+        display_name="BRICK BRADDOCK",
+        files=[
+            {
+                "filename": "master_v1.json",
+                "purpose": "master_definition",
+                "version": 1,
+                "provenance": "system",
+            }
+        ],
+        data_files={
+            "master_v1.json": json.dumps(
+                {
+                    "character_id": "brick",
+                    "name": "BRICK",
+                    "description": "Drifted master-definition artifact.",
+                },
+                indent=2,
+            )
+        },
+        metadata=_seed_metadata(),
+    )
+    manifest, _ = store.load_bible_entry(initial_ref)
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest.model_copy(update={"display_name": "Brick"}).model_dump(
+                mode="json"
+            ),
+            rationale="Rename only the manifest display label.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+        )
+
+    assert excinfo.value.code == "unsupported_artifact_edit"
+    assert "identity merge/deprecation" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_existing_missing_master_identity(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = store.save_bible_entry(
+        entity_type="character",
+        entity_id="brick_braddock",
+        display_name="BRICK BRADDOCK",
+        files=[
+            {
+                "filename": "master_v1.json",
+                "purpose": "master_definition",
+                "version": 1,
+                "provenance": "system",
+            }
+        ],
+        data_files={
+            "master_v1.json": json.dumps(
+                {
+                    "name": "BRICK BRADDOCK",
+                    "description": "Master definition has lost its identity field.",
+                },
+                indent=2,
+            )
+        },
+        metadata=_seed_metadata(),
+    )
+    manifest, _ = store.load_bible_entry(initial_ref)
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest.model_copy(update={"display_name": "Brick"}).model_dump(
+                mode="json"
+            ),
+            rationale="Rename only the manifest display label.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+        )
+
+    assert excinfo.value.code == "unsupported_artifact_edit"
+    assert "identity merge/deprecation" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_existing_master_drift_even_if_removed(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = store.save_bible_entry(
+        entity_type="character",
+        entity_id="brick_braddock",
+        display_name="BRICK BRADDOCK",
+        files=[
+            {
+                "filename": "master_v1.json",
+                "purpose": "master_definition",
+                "version": 1,
+                "provenance": "system",
+            }
+        ],
+        data_files={
+            "master_v1.json": json.dumps(
+                {
+                    "character_id": "brick_braddock",
+                    "entityId": "brick",
+                    "name": "BRICK BRADDOCK",
+                    "description": "Master definition has drifted toward Brick.",
+                },
+                indent=2,
+            )
+        },
+        metadata=_seed_metadata(),
+    )
+    manifest, _ = store.load_bible_entry(initial_ref)
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest.model_dump(mode="json"),
+            rationale="Remove the drifted identity field while updating description.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+            bible_files={
+                "master_v1.json": {
+                    "character_id": "brick_braddock",
+                    "name": "BRICK BRADDOCK",
+                    "description": "Keep the duplicate artifact description current.",
+                }
+            },
+        )
+
+    assert excinfo.value.code == "unsupported_artifact_edit"
+    assert "identity merge/deprecation" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_existing_merge_marker_even_if_removed(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = store.save_bible_entry(
+        entity_type="character",
+        entity_id="brick_braddock",
+        display_name="BRICK BRADDOCK",
+        files=[
+            {
+                "filename": "master_v1.json",
+                "purpose": "master_definition",
+                "version": 1,
+                "provenance": "system",
+            }
+        ],
+        data_files={
+            "master_v1.json": json.dumps(
+                {
+                    "character_id": "brick_braddock",
+                    "merge_into": "brick",
+                    "name": "BRICK BRADDOCK",
+                    "description": "Master definition has a merge marker.",
+                },
+                indent=2,
+            )
+        },
+        metadata=_seed_metadata(),
+    )
+    manifest, _ = store.load_bible_entry(initial_ref)
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest.model_dump(mode="json"),
+            rationale="Remove the merge marker while updating description.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+            bible_files={
+                "master_v1.json": {
+                    "character_id": "brick_braddock",
+                    "name": "BRICK BRADDOCK",
+                    "description": "Keep the duplicate artifact description current.",
+                }
+            },
+        )
+
+    assert excinfo.value.code == "unsupported_artifact_edit"
+    assert "identity merge/deprecation" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_empty_master_definition_update(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = _seed_brick_bible(store)
+    manifest, _ = store.load_bible_entry(initial_ref)
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest.model_dump(mode="json"),
+            rationale="Replace the duplicate master with an empty file.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+            bible_files={"master_v1.json": {}},
+        )
+
+    assert excinfo.value.code == "artifact_edit_invalid"
+    assert "structured JSON content" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_removed_master_definition_entry(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = _seed_brick_bible(store)
+    manifest, _ = store.load_bible_entry(initial_ref)
+    manifest_without_master = manifest.model_copy(update={"files": []})
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=manifest_without_master.model_dump(mode="json"),
+            rationale="Remove the duplicate master definition.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+        )
+
+    assert excinfo.value.code == "artifact_edit_invalid"
+    assert "preserve the current master-definition entry" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
+
+
+@pytest.mark.unit
+def test_apply_artifact_edit_rejects_master_entry_metadata_drift(
+    tmp_path: Path,
+) -> None:
+    store = ArtifactStore(project_dir=tmp_path)
+    initial_ref = _seed_brick_bible(store)
+    manifest, _ = store.load_bible_entry(initial_ref)
+    drifted_entry = manifest.files[0].model_copy(
+        update={"version": 99, "provenance": "user_injected"}
+    )
+    drifted_manifest = manifest.model_copy(update={"files": [drifted_entry]})
+
+    with pytest.raises(ServiceError) as excinfo:
+        apply_artifact_edit(
+            project_path=tmp_path,
+            artifact_type="bible_manifest",
+            entity_id="character_brick_braddock",
+            data=drifted_manifest.model_dump(mode="json"),
+            rationale="Rewrite master entry metadata without a replacement payload.",
+            source="ai",
+            producing_role="assistant",
+            chat_message_id="user_198",
+        )
+
+    assert excinfo.value.code == "artifact_edit_invalid"
+    assert "preserve the current master-definition entry" in excinfo.value.message
+    assert store.list_versions("bible_manifest", "character_brick_braddock") == [
+        initial_ref
+    ]
 
 
 @pytest.mark.unit

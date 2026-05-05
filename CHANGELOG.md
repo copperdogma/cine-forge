@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-05-05-03] — Repair Brick & Steel character canon (Story 198)
+
+### Added
+- Added Story 198 evidence for the Brick/Brick Braddock baseline, live refresh, desktop/mobile Characters route, and chat-action artifact-edit blocker.
+- Added focused regression coverage for discovery-backed character adjudication, alias preservation, unsupported bible identity edits, graph alias resolution, and current-stage artifact-group filtering.
+
+### Changed
+- Changed character-bible candidate resolution so discovery-backed character names still pass through adjudication before extraction and preserve alias scene context.
+- Changed entity graph and artifact-group listing behavior so stage-retired Brick Braddock graph, bible, and continuity refs no longer appear as current canon while immutable history remains readable.
+
+### Fixed
+- Fixed AI artifact-edit paths so single-artifact bible edits cannot masquerade as identity merge/deprecation or falsify master-definition metadata.
+
 ## [2026-05-05-02] — Scrub Brick & Steel product truth (Story 196)
 
 ### Added

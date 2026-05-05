@@ -85,6 +85,34 @@ def _build_prompt(
             }
         )
 
+    if entity_type == "character":
+        canonical_name_rules = (
+            "- canonical_name should normalize spelling/casing and may collapse aliases,\n"
+            "  nicknames, dialogue cues, and full names into one canonical character when the\n"
+            "  candidate evidence and script context show they are the same person. Use the\n"
+            "  same canonical_name for every candidate that refers to that one person.\n"
+            "- Do NOT collapse candidates only because one string contains another, shares a\n"
+            "  surname, or shares a role label. Keep numbered/ordinal role variants such as\n"
+            "  THUG 1 and THUG 2 separate unless the script explicitly shows one individual.\n"
+        )
+        target_type_rules = (
+            "- Named minor characters (e.g., THUG 1, GUARD 2, NURSE, COP 3) are VALID,\n"
+            "  even if they appear only once. Only reject formatting tokens, sound cues,\n"
+            "  and non-character strings (e.g., VOICE ON INTERCOM, THWACK, CUT TO).\n"
+        )
+    else:
+        canonical_name_rules = (
+            "- canonical_name should normalize spelling/casing only when useful. Do NOT\n"
+            "  collapse candidates unless script evidence clearly shows they are the same\n"
+            "  target entity.\n"
+            "- Do NOT collapse candidates only because one string contains another or shares\n"
+            "  a descriptive word.\n"
+        )
+        target_type_rules = (
+            f"- Reject formatting tokens, dialogue fragments, sound cues, and non-{entity_type}\n"
+            "  strings.\n"
+        )
+
     return (
         "You are an entity adjudicator for screenplay world-building.\n"
         "Classify each candidate for the requested target type.\n"
@@ -97,11 +125,9 @@ def _build_prompt(
         "Rules:\n"
         "- Do NOT invent entities not present in candidates.\n"
         "- Keep candidate string exact in decision.candidate.\n"
-        "- canonical_name should normalize spelling/casing only when useful.\n"
+        f"{canonical_name_rules}"
         "- confidence must be 0..1.\n"
-        "- Named minor characters (e.g., THUG 1, GUARD 2, NURSE, COP 3) are VALID,\n"
-        "  even if they appear only once. Only reject formatting tokens, sound cues,\n"
-        "  and non-character strings (e.g., VOICE ON INTERCOM, THWACK, CUT TO).\n\n"
+        f"{target_type_rules}\n"
         f"Candidates JSON:\n{json.dumps(compact_candidates, ensure_ascii=True, indent=2)}\n\n"
         "Script excerpt (truncated):\n"
         f"{script_text[:7000]}"

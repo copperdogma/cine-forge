@@ -1,0 +1,122 @@
+{
+  "captured_at": "2026-05-05T13:41:51Z",
+  "source_project": "/Users/cam/Documents/Projects/cine-forge/output/brick-steel-full-retired",
+  "disposable_project_copy": "/tmp/story198-chat-action-smoke-20260505-074141",
+  "project_id": "story198-chat-action-smoke-20260505-074141",
+  "opened_project_status": {
+    "project_id": "story198-chat-action-smoke-20260505-074141",
+    "display_name": "Brick & Steel: Full Retired",
+    "artifact_groups": 175,
+    "run_count": 0,
+    "has_inputs": true,
+    "input_files": [
+      "Brick-_-Steel.pdf"
+    ],
+    "ui_preferences": {},
+    "human_control_mode": "autonomous",
+    "production_format": "live_action",
+    "interaction_mode": "balanced",
+    "default_model": null,
+    "work_model": null,
+    "verify_model": null,
+    "escalate_model": null,
+    "project_budget_limit_usd": null,
+    "default_run_budget_limit_usd": null,
+    "budget_warning_threshold_ratio": 0.8,
+    "preference_learning_enabled": true,
+    "preference_learning_cleared_at": null,
+    "style_packs": {}
+  },
+  "direct_api_control": {
+    "status": 422,
+    "payload": {
+      "code": "unsupported_artifact_edit",
+      "message": "Character identity merge/deprecation is not supported through single-artifact edits.",
+      "hint": "Fix upstream entity resolution or use a dedicated merge workflow that can version the canonical bible, preserve aliases/reference assets, and update downstream graph and scene references together."
+    },
+    "expected": true
+  },
+  "versions_before": [
+    1,
+    2
+  ],
+  "versions_after": [
+    1,
+    2
+  ],
+  "no_new_bible_manifest_version_created": true,
+  "browser": {
+    "desktop": {
+      "name": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "route": "http://127.0.0.1:5198/story198-chat-action-smoke-20260505-074141/characters",
+      "before_screenshot": "/Users/cam/.codex/worktrees/5967/cine-forge/docs/reports/story-198-brick-steel-character-adjudication/browser/chat-action-desktop-before.png",
+      "after_screenshot": "/Users/cam/.codex/worktrees/5967/cine-forge/docs/reports/story-198-brick-steel-character-adjudication/browser/chat-action-desktop-after.png",
+      "saw_characters": true,
+      "saw_brick": true,
+      "saw_brick_braddock": true,
+      "saw_error_message": true
+    },
+    "mobile": {
+      "name": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "route": "http://127.0.0.1:5198/story198-chat-action-smoke-20260505-074141/characters",
+      "before_screenshot": "/Users/cam/.codex/worktrees/5967/cine-forge/docs/reports/story-198-brick-steel-character-adjudication/browser/chat-action-mobile-before.png",
+      "after_screenshot": "/Users/cam/.codex/worktrees/5967/cine-forge/docs/reports/story-198-brick-steel-character-adjudication/browser/chat-action-mobile-after.png",
+      "saw_characters": true,
+      "saw_brick": true,
+      "saw_brick_braddock": true,
+      "saw_error_message": true
+    },
+    "console_events": [
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      },
+      {
+        "type": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)"
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      },
+      {
+        "type": "info",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+      }
+    ],
+    "page_errors": [],
+    "response_events": [
+      {
+        "url": "http://127.0.0.1:5198/api/projects/story198-chat-action-smoke-20260505-074141/artifacts/bible_manifest/character_brick_braddock/edit",
+        "status": 422
+      }
+    ],
+    "unexpected_response_errors": []
+  },
+  "interpretation": {
+    "route_state_is_stale_duplicate_data": true,
+    "chat_action_path_exercised_with_synthetic_seed": true,
+    "live_llm_tool_selection_exercised": false,
+    "production_artifacts_mutated": false
+  }
+}

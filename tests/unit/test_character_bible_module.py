@@ -4,13 +4,18 @@ from typing import Any
 
 import pytest
 
-from cine_forge.modules.world_building.character_bible_v1.main import (
+from cine_forge.ai.entity_adjudication import _build_prompt as _build_entity_adjudication_prompt
+from cine_forge.modules.world_building.character_bible_v1.candidate_resolution import (
     _aggregate_characters,
+    _is_plausible_character_name,
+    _rank_characters,
+    prepare_character_candidates,
+)
+from cine_forge.modules.world_building.character_bible_v1.main import (
+    _build_extraction_prompt,
     _extract_character_definition,
     _extract_minor_character_definition,
-    _is_plausible_character_name,
     _mock_minor_extract,
-    _rank_characters,
     run_module,
 )
 from cine_forge.modules.world_building.character_bible_v1.main import (
@@ -141,7 +146,7 @@ def test_run_module_skips_invalid_candidates_via_adjudication(
         }
 
     monkeypatch.setattr(
-        "cine_forge.modules.world_building.character_bible_v1.main.adjudicate_entity_candidates",
+        "cine_forge.modules.world_building.character_bible_v1.candidate_resolution.adjudicate_entity_candidates",
         _fake_adjudication,
     )
 
@@ -192,7 +197,7 @@ def test_run_module_skips_retyped_candidates(
         }
 
     monkeypatch.setattr(
-        "cine_forge.modules.world_building.character_bible_v1.main.adjudicate_entity_candidates",
+        "cine_forge.modules.world_building.character_bible_v1.candidate_resolution.adjudicate_entity_candidates",
         _fake_adjudication,
     )
 
@@ -242,7 +247,7 @@ def test_run_module_keeps_valid_candidate_when_llm_canonical_name_is_not_plausib
         }
 
     monkeypatch.setattr(
-        "cine_forge.modules.world_building.character_bible_v1.main.adjudicate_entity_candidates",
+        "cine_forge.modules.world_building.character_bible_v1.candidate_resolution.adjudicate_entity_candidates",
         _fake_adjudication,
     )
 
@@ -478,31 +483,106 @@ def test_discovery_only_characters_still_extracted() -> None:
     assert "aria" in bible_ids
     assert "thug_1" in bible_ids, f"THUG 1 missing from bibles: {bible_ids}"
     assert "thug_2" in bible_ids, f"THUG 2 missing from bibles: {bible_ids}"
+    for artifact in result["artifacts"]:
+        if artifact["artifact_type"] != "character_bible":
+            continue
+        adjudication = artifact["metadata"]["annotations"]["entity_adjudication"]
+        assert adjudication["input_candidate_count"] == 3
+        assert adjudication["approved_candidate_count"] == 3
+        assert adjudication["decision_trace_count"] == 3
+
+
+def _scene_index_with_brick_aliases() -> dict[str, Any]:
+    return {
+        "total_scenes": 2,
+        "unique_characters": ["BRICK", "BRICK BRADDOCK"],
+        "unique_locations": ["PATIO", "GARAGE"],
+        "estimated_runtime_minutes": 2.0,
+        "entries": [
+            {
+                "scene_id": "scene_001",
+                "characters_present": ["BRICK", "BRICK BRADDOCK"],
+            },
+            {
+                "scene_id": "scene_002",
+                "characters_present": ["BRICK"],
+            },
+        ],
+    }
+
+
+def _canonical_payload_with_brick_aliases() -> dict[str, Any]:
+    return {
+        "title": "Brick Alias Test",
+        "script_text": """EXT. BRICK'S PATIO - DAY
+Brick Braddock sits beside the pool.
+
+BRICK
+Retirement is killing me.
+
+INT. GARAGE - DAY
+BRICK
+Let's go.""",
+        "line_count": 9,
+        "scene_count": 2,
+        "normalization": {
+            "source_format": "screenplay",
+            "strategy": "test",
+            "rationale": "test",
+            "overall_confidence": 1.0,
+        },
+    }
 
 
 @pytest.mark.unit
-def test_discovery_backed_candidates_skip_second_pass_adjudication(
+def test_discovery_backed_aliases_are_adjudicated_and_collapsed(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    def _unexpected_adjudication(
-        **_: Any,
+    seen_candidates: list[str] = []
+    seen_source_hints: list[str] = []
+
+    def _fake_adjudication(
+        **kwargs: Any,
     ) -> tuple[list[EntityAdjudicationDecision], dict[str, Any]]:
-        raise AssertionError("discovery-backed candidates should not be re-adjudicated")
+        seen_candidates.extend(item["candidate"] for item in kwargs["candidates"])
+        seen_source_hints.extend(str(item.get("source_hint")) for item in kwargs["candidates"])
+        decisions = [
+            EntityAdjudicationDecision(
+                candidate="BRICK",
+                verdict="valid",
+                canonical_name="BRICK",
+                rationale="dialogue cue for Brick Braddock",
+                confidence=0.97,
+            ),
+            EntityAdjudicationDecision(
+                candidate="BRICK BRADDOCK",
+                verdict="valid",
+                canonical_name="BRICK",
+                rationale="full name for the same character",
+                confidence=0.97,
+            ),
+        ]
+        return decisions, {
+            "model": "fixture-adjudicator",
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+        }
 
     monkeypatch.setattr(
-        "cine_forge.modules.world_building.character_bible_v1.main.adjudicate_entity_candidates",
-        _unexpected_adjudication,
+        "cine_forge.modules.world_building.character_bible_v1.candidate_resolution.adjudicate_entity_candidates",
+        _fake_adjudication,
     )
 
     result = run_module(
         inputs={
-            "scene_index": _scene_index_with_minor_characters(),
-            "canonical_script": _canonical_payload_with_thugs(),
+            "scene_index": _scene_index_with_brick_aliases(),
+            "canonical_script": _canonical_payload_with_brick_aliases(),
             "discovery_results": {
-                "characters": ["ARIA", "NOAH", "THUG 1", "THUG 2"],
+                "characters": ["BRICK", "BRICK BRADDOCK"],
                 "locations": [],
                 "props": [],
-                "script_title": "Test",
+                "script_title": "Brick Alias Test",
                 "processing_metadata": {},
             },
         },
@@ -515,7 +595,310 @@ def test_discovery_backed_candidates_skip_second_pass_adjudication(
         for artifact in result["artifacts"]
         if artifact["artifact_type"] == "character_bible"
     }
-    assert {"aria", "noah", "thug_1", "thug_2"} <= bible_ids
+    assert seen_candidates == ["BRICK", "BRICK BRADDOCK"]
+    assert seen_source_hints == [
+        "entity_discovery+scene_index.unique_characters",
+        "entity_discovery+scene_index.unique_characters",
+    ]
+    assert "brick" in bible_ids
+    assert "brick_braddock" not in bible_ids
+
+    brick_bible = next(
+        artifact
+        for artifact in result["artifacts"]
+        if artifact["artifact_type"] == "character_bible" and artifact["entity_id"] == "brick"
+    )
+    assert brick_bible["data"]["scene_presence"] == ["scene_001", "scene_002"]
+    assert brick_bible["data"]["aliases"] == ["BRICK BRADDOCK"]
+    adjudication = brick_bible["metadata"]["annotations"]["entity_adjudication"]
+    assert adjudication["input_candidate_count"] == 2
+    assert adjudication["approved_candidate_count"] == 1
+    assert adjudication["decision_trace_count"] == 2
+
+
+@pytest.mark.unit
+def test_discovery_backed_candidates_reach_adjudication_before_plausibility_filter() -> None:
+    seen_candidates: list[str] = []
+
+    def _fake_adjudication(
+        **kwargs: Any,
+    ) -> tuple[list[EntityAdjudicationDecision], dict[str, Any]]:
+        seen_candidates.extend(item["candidate"] for item in kwargs["candidates"])
+        return [
+            EntityAdjudicationDecision(
+                candidate="VOICE ON INTERCOM",
+                verdict="invalid",
+                rationale="sound cue, not a character",
+                confidence=0.98,
+            )
+        ], {
+            "model": "fixture-adjudicator",
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+        }
+
+    _, candidates, rejected, decisions, _ = prepare_character_candidates(
+        canonical_script={"script_text": "VOICE ON INTERCOM\nStay alert."},
+        scene_index={
+            "unique_characters": ["VOICE ON INTERCOM"],
+            "entries": [
+                {
+                    "scene_id": "scene_001",
+                    "characters_present": ["VOICE ON INTERCOM"],
+                }
+            ],
+        },
+        discovery_results={
+            "characters": ["VOICE ON INTERCOM"],
+            "locations": [],
+            "props": [],
+            "script_title": "Adjudication Trace Test",
+            "processing_metadata": {},
+        },
+        min_appearances=3,
+        model="mock",
+        adjudicator=_fake_adjudication,
+    )
+
+    assert seen_candidates == ["VOICE ON INTERCOM"]
+    assert candidates == []
+    assert rejected[0]["candidate"] == "VOICE ON INTERCOM"
+    assert decisions[0]["outcome"] == "rejected_by_verdict"
+
+
+@pytest.mark.unit
+def test_alias_merge_deduplicates_shared_scene_counts() -> None:
+    def _fake_adjudication(
+        **_: Any,
+    ) -> tuple[list[EntityAdjudicationDecision], dict[str, Any]]:
+        return [
+            EntityAdjudicationDecision(
+                candidate="BRICK",
+                verdict="valid",
+                canonical_name="BRICK",
+                rationale="dialogue cue for Brick Braddock",
+                confidence=0.97,
+            ),
+            EntityAdjudicationDecision(
+                candidate="BRICK BRADDOCK",
+                verdict="valid",
+                canonical_name="BRICK",
+                rationale="full name for the same character",
+                confidence=0.97,
+            ),
+        ], {
+            "model": "fixture-adjudicator",
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+        }
+
+    _, candidates, rejected, decisions, _ = prepare_character_candidates(
+        canonical_script=_canonical_payload_with_brick_aliases(),
+        scene_index=_scene_index_with_brick_aliases(),
+        discovery_results={
+            "characters": ["BRICK", "BRICK BRADDOCK"],
+            "locations": [],
+            "props": [],
+            "script_title": "Brick Alias Test",
+            "processing_metadata": {},
+        },
+        min_appearances=3,
+        model="mock",
+        adjudicator=_fake_adjudication,
+    )
+
+    assert rejected == []
+    assert len(decisions) == 2
+    assert candidates == [
+        {
+            "name": "BRICK",
+            "aliases": ["BRICK BRADDOCK"],
+            "scene_count": 2,
+            "dialogue_count": 2,
+            "scene_presence": ["scene_001", "scene_002"],
+            "score": 6,
+        }
+    ]
+
+
+@pytest.mark.unit
+def test_alias_merge_keeps_strongest_source_candidate_as_surviving_identity() -> None:
+    def _fake_adjudication(
+        **_: Any,
+    ) -> tuple[list[EntityAdjudicationDecision], dict[str, Any]]:
+        return [
+            EntityAdjudicationDecision(
+                candidate="BRICK",
+                verdict="valid",
+                canonical_name="BRICK BRADDOCK",
+                rationale="dialogue cue and full name refer to one character",
+                confidence=0.97,
+            ),
+            EntityAdjudicationDecision(
+                candidate="BRICK BRADDOCK",
+                verdict="valid",
+                canonical_name="BRICK BRADDOCK",
+                rationale="full name for the same character",
+                confidence=0.97,
+            ),
+        ], {
+            "model": "fixture-adjudicator",
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+        }
+
+    _, candidates, rejected, decisions, _ = prepare_character_candidates(
+        canonical_script=_canonical_payload_with_brick_aliases(),
+        scene_index=_scene_index_with_brick_aliases(),
+        discovery_results={
+            "characters": ["BRICK", "BRICK BRADDOCK"],
+            "locations": [],
+            "props": [],
+            "script_title": "Brick Alias Test",
+            "processing_metadata": {},
+        },
+        min_appearances=3,
+        model="mock",
+        adjudicator=_fake_adjudication,
+    )
+
+    assert rejected == []
+    assert len(decisions) == 2
+    assert {decision["resolved_name"] for decision in decisions} == {"BRICK BRADDOCK"}
+    assert {decision["surviving_name"] for decision in decisions} == {"BRICK"}
+    assert candidates == [
+        {
+            "name": "BRICK",
+            "aliases": ["BRICK BRADDOCK"],
+            "scene_count": 2,
+            "dialogue_count": 2,
+            "scene_presence": ["scene_001", "scene_002"],
+            "score": 6,
+        }
+    ]
+
+
+@pytest.mark.unit
+def test_character_extraction_prompt_uses_alias_scene_presence_context() -> None:
+    script = {
+        "script_text": "\n".join(
+            [
+                "EXT. PATIO - DAY",
+                "Brick Braddock watches the empty pool.",
+                "",
+                "INT. GARAGE - DAY",
+                "BRICK",
+                "Let's go.",
+            ]
+        )
+    }
+    scene_index = {
+        "entries": [
+            {
+                "scene_id": "scene_001",
+                "characters_present": ["BRICK BRADDOCK"],
+                "source_span": {"start_line": 1, "end_line": 3},
+            },
+            {
+                "scene_id": "scene_002",
+                "characters_present": ["BRICK"],
+                "source_span": {"start_line": 4, "end_line": 6},
+            },
+        ]
+    }
+    entry = {
+        "name": "BRICK",
+        "aliases": ["BRICK BRADDOCK"],
+        "scene_count": 2,
+        "dialogue_count": 1,
+        "scene_presence": ["scene_001", "scene_002"],
+    }
+
+    prompt = _build_extraction_prompt(
+        char_name="BRICK",
+        entry=entry,
+        script=script,
+        index=scene_index,
+    )
+
+    assert "Known aliases: BRICK BRADDOCK" in prompt
+    assert "Brick Braddock watches the empty pool." in prompt
+    assert "BRICK\nLet's go." in prompt
+
+
+@pytest.mark.unit
+def test_character_extraction_preserves_entry_aliases_when_model_omits_them(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    entry = {
+        "name": "BRICK",
+        "aliases": ["BRICK BRADDOCK"],
+        "scene_count": 2,
+        "dialogue_count": 1,
+        "scene_presence": ["scene_001", "scene_002"],
+        "score": 5,
+    }
+
+    def _fake_call_llm(**_: Any) -> tuple[Any, dict[str, Any]]:
+        definition = _mock_character_extract("BRICK", {**entry, "aliases": []})
+        return definition, {
+            "model": "fixture",
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "estimated_cost_usd": 0.0,
+        }
+
+    monkeypatch.setattr(
+        "cine_forge.modules.world_building.character_bible_v1.main.call_llm",
+        _fake_call_llm,
+    )
+
+    definition, _ = _extract_character_definition(
+        char_name="BRICK",
+        entry=entry,
+        canonical_script=_canonical_payload_with_brick_aliases(),
+        scene_index=_scene_index_with_brick_aliases(),
+        model="fixture-model",
+    )
+
+    assert definition.aliases == ["BRICK BRADDOCK"]
+
+
+@pytest.mark.unit
+def test_entity_adjudication_prompt_allows_safe_aliases_without_numbered_role_merges() -> None:
+    prompt = _build_entity_adjudication_prompt(
+        entity_type="character",
+        candidates=[
+            {"candidate": "BRICK", "scene_count": 2, "dialogue_count": 2},
+            {"candidate": "BRICK BRADDOCK", "scene_count": 1, "dialogue_count": 0},
+            {"candidate": "THUG 1", "scene_count": 1, "dialogue_count": 1},
+            {"candidate": "THUG 2", "scene_count": 1, "dialogue_count": 1},
+        ],
+        script_text="Brick Braddock is called BRICK. THUG 1 and THUG 2 are different men.",
+    )
+
+    assert "may collapse aliases" in prompt
+    assert "Do NOT collapse candidates only because one string contains another" in prompt
+    assert "THUG 1 and THUG 2 separate" in prompt
+
+
+@pytest.mark.unit
+def test_entity_adjudication_prompt_keeps_character_specific_alias_rules_out_of_locations() -> None:
+    prompt = _build_entity_adjudication_prompt(
+        entity_type="location",
+        candidates=[
+            {"candidate": "BRICK'S HOUSE", "scene_count": 2},
+            {"candidate": "BRADDOCK HOME", "scene_count": 1},
+        ],
+        script_text="Brick's house is not necessarily every Braddock home.",
+    )
+
+    assert "target entity" in prompt
+    assert "canonical character" not in prompt
+    assert "THUG 1" not in prompt
 
 
 @pytest.mark.unit

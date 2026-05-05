@@ -1,0 +1,270 @@
+{
+  "captured_at": "2026-05-05T14:07:57.989239+00:00",
+  "route": "http://127.0.0.1:5199/brick-steel-full-retired/characters",
+  "api": {
+    "artifact_group_count": 161,
+    "brick_groups": [
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_brick",
+        "latest_version": 2,
+        "health": "valid",
+        "health_details": {
+          "health": "valid",
+          "source_kind": null,
+          "reason": null,
+          "trigger_ref": null,
+          "source_artifact_ref": null,
+          "upstream_change_summary": null,
+          "suggested_revision": null,
+          "confidence": null,
+          "assessing_role": null,
+          "decided_by": null,
+          "updated_at": null
+        }
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_brick_s_patio",
+        "latest_version": 1,
+        "health": "valid",
+        "health_details": {
+          "health": "valid",
+          "source_kind": null,
+          "reason": null,
+          "trigger_ref": null,
+          "source_artifact_ref": null,
+          "upstream_change_summary": null,
+          "suggested_revision": null,
+          "confidence": null,
+          "assessing_role": null,
+          "decided_by": null,
+          "updated_at": null
+        }
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_brick_s_pool",
+        "latest_version": 1,
+        "health": "valid",
+        "health_details": {
+          "health": "valid",
+          "source_kind": null,
+          "reason": null,
+          "trigger_ref": null,
+          "source_artifact_ref": null,
+          "upstream_change_summary": null,
+          "suggested_revision": null,
+          "confidence": null,
+          "assessing_role": null,
+          "decided_by": null,
+          "updated_at": null
+        }
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "brick",
+        "latest_version": 2,
+        "health": "valid",
+        "health_details": {
+          "health": "valid",
+          "source_kind": null,
+          "reason": null,
+          "trigger_ref": null,
+          "source_artifact_ref": null,
+          "upstream_change_summary": null,
+          "suggested_revision": null,
+          "confidence": null,
+          "assessing_role": null,
+          "decided_by": null,
+          "updated_at": null
+        }
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_brick_scene_001",
+        "latest_version": 2,
+        "health": "valid",
+        "health_details": {
+          "health": "valid",
+          "source_kind": null,
+          "reason": null,
+          "trigger_ref": null,
+          "source_artifact_ref": null,
+          "upstream_change_summary": null,
+          "suggested_revision": null,
+          "confidence": null,
+          "assessing_role": null,
+          "decided_by": null,
+          "updated_at": null
+        }
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_brick_scene_004",
+        "latest_version": 2,
+        "health": "valid",
+        "health_details": {
+          "health": "valid",
+          "source_kind": null,
+          "reason": null,
+          "trigger_ref": null,
+          "source_artifact_ref": null,
+          "upstream_change_summary": null,
+          "suggested_revision": null,
+          "confidence": null,
+          "assessing_role": null,
+          "decided_by": null,
+          "updated_at": null
+        }
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_brick_scene_005",
+        "latest_version": 2,
+        "health": "valid",
+        "health_details": {
+          "health": "valid",
+          "source_kind": null,
+          "reason": null,
+          "trigger_ref": null,
+          "source_artifact_ref": null,
+          "upstream_change_summary": null,
+          "suggested_revision": null,
+          "confidence": null,
+          "assessing_role": null,
+          "decided_by": null,
+          "updated_at": null
+        }
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_brick_s_patio_scene_001",
+        "latest_version": 2,
+        "health": "valid",
+        "health_details": {
+          "health": "valid",
+          "source_kind": null,
+          "reason": null,
+          "trigger_ref": null,
+          "source_artifact_ref": null,
+          "upstream_change_summary": null,
+          "suggested_revision": null,
+          "confidence": null,
+          "assessing_role": null,
+          "decided_by": null,
+          "updated_at": null
+        }
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_brick_s_pool_scene_003",
+        "latest_version": 2,
+        "health": "valid",
+        "health_details": {
+          "health": "valid",
+          "source_kind": null,
+          "reason": null,
+          "trigger_ref": null,
+          "source_artifact_ref": null,
+          "upstream_change_summary": null,
+          "suggested_revision": null,
+          "confidence": null,
+          "assessing_role": null,
+          "decided_by": null,
+          "updated_at": null
+        }
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "brick_s_patio",
+        "latest_version": 1,
+        "health": "valid",
+        "health_details": {
+          "health": "valid",
+          "source_kind": null,
+          "reason": null,
+          "trigger_ref": null,
+          "source_artifact_ref": null,
+          "upstream_change_summary": null,
+          "suggested_revision": null,
+          "confidence": null,
+          "assessing_role": null,
+          "decided_by": null,
+          "updated_at": null
+        }
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "brick_s_pool",
+        "latest_version": 1,
+        "health": "valid",
+        "health_details": {
+          "health": "valid",
+          "source_kind": null,
+          "reason": null,
+          "trigger_ref": null,
+          "source_artifact_ref": null,
+          "upstream_change_summary": null,
+          "suggested_revision": null,
+          "confidence": null,
+          "assessing_role": null,
+          "decided_by": null,
+          "updated_at": null
+        }
+      }
+    ],
+    "has_any_brick_braddock_group": false,
+    "has_character_brick_braddock": false,
+    "has_manifest_character_brick_braddock": false,
+    "has_continuity_character_brick_braddock": false
+  },
+  "desktop": {
+    "label": "desktop",
+    "url": "http://127.0.0.1:5199/brick-steel-full-retired/characters",
+    "heading_texts": [
+      "Brick",
+      "Steel",
+      "Boy Band",
+      "Dan",
+      "Jack",
+      "Cognito",
+      "Point Blank Sniper",
+      "Scorpio",
+      "Sparrow",
+      "Handsome Man",
+      "Minion"
+    ],
+    "has_brick_heading": true,
+    "has_brick_braddock_heading": false,
+    "body_includes_brick_braddock": true,
+    "console_errors": [],
+    "page_errors": [],
+    "response_errors": [],
+    "screenshot": "characters-desktop.png"
+  },
+  "mobile": {
+    "label": "mobile",
+    "url": "http://127.0.0.1:5199/brick-steel-full-retired/characters",
+    "heading_texts": [
+      "Brick",
+      "Steel",
+      "Boy Band",
+      "Dan",
+      "Jack",
+      "Cognito",
+      "Point Blank Sniper",
+      "Scorpio",
+      "Sparrow",
+      "Handsome Man",
+      "Minion"
+    ],
+    "has_brick_heading": true,
+    "has_brick_braddock_heading": false,
+    "body_includes_brick_braddock": true,
+    "console_errors": [],
+    "page_errors": [],
+    "response_errors": [],
+    "screenshot": "characters-mobile.png"
+  }
+}

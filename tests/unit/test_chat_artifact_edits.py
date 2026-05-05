@@ -9,6 +9,46 @@ from cine_forge.ai.artifact_editing import build_artifact_edit_tool_result
 from cine_forge.ai.chat import execute_tool
 
 
+def _brick_bible_service() -> MagicMock:
+    service = MagicMock()
+    service.role_catalog.can_propose_artifact.return_value = True
+    service.project_summary.return_value = {"human_control_mode": "checkpoint"}
+    service.list_artifact_groups.return_value = [
+        {
+            "artifact_type": "bible_manifest",
+            "entity_id": "character_brick_braddock",
+            "latest_version": 2,
+        }
+    ]
+    service.read_artifact.return_value = {
+        "payload": {
+            "data": {
+                "entity_type": "character",
+                "entity_id": "brick_braddock",
+                "display_name": "BRICK BRADDOCK",
+                "files": [
+                    {
+                        "filename": "master_v1.json",
+                        "purpose": "master_definition",
+                        "version": 1,
+                        "provenance": "ai_extracted",
+                    }
+                ],
+                "version": 2,
+            }
+        },
+        "bible_files": {
+            "master_v1.json": {
+                "character_id": "brick_braddock",
+                "name": "BRICK BRADDOCK",
+                "aliases": ["Brick"],
+                "description": "Duplicate full-name artifact.",
+            }
+        },
+    }
+    return service
+
+
 @pytest.mark.unit
 def test_propose_artifact_edit_blocks_read_only_render_prompt() -> None:
     service = MagicMock()
@@ -84,6 +124,7 @@ def test_checkpoint_mode_builds_bible_manifest_confirmation_payload() -> None:
         },
         "bible_files": {
             "master_v1.json": {
+                "character_id": "mariner",
                 "name": "The Mariner",
                 "description": "A weathered sailor.",
             }
@@ -120,6 +161,341 @@ def test_checkpoint_mode_builds_bible_manifest_confirmation_payload() -> None:
         confirm_action["payload"]["bible_files"]["master_v1.json"]["description"]
         == "An older sailor with a heavy moustache."
     )
+    service.edit_artifact.assert_not_called()
+
+
+@pytest.mark.unit
+def test_character_bible_identity_merge_returns_unsupported_blocker() -> None:
+    service = _brick_bible_service()
+
+    result = build_artifact_edit_tool_result(
+        {
+            "artifact_type": "character_bible",
+            "entity_id": "brick_braddock",
+            "changes": {
+                "character_id": "brick",
+                "name": "BRICK",
+                "aliases": ["Brick Braddock"],
+            },
+            "rationale": "Merge duplicate Brick Braddock into Brick.",
+        },
+        service=service,
+        project_id="brick-steel-full-retired",
+        role_id="assistant",
+        chat_message_id="user_198",
+    )
+
+    payload = json.loads(result.content)
+
+    assert payload["status"] == "unsupported_action"
+    assert "identity merge/deprecation" in payload["error"]
+    assert "dedicated merge workflow" in payload["hint"]
+    assert result.actions == []
+    service.edit_artifact.assert_not_called()
+
+
+@pytest.mark.unit
+def test_character_bible_identity_removal_returns_unsupported_blocker() -> None:
+    service = _brick_bible_service()
+
+    result = build_artifact_edit_tool_result(
+        {
+            "artifact_type": "character_bible",
+            "entity_id": "brick_braddock",
+            "changes": {
+                "character_id": "",
+                "description": "Keep the duplicate text but erase the identity.",
+            },
+            "rationale": "Deprecate the duplicate without changing references.",
+        },
+        service=service,
+        project_id="brick-steel-full-retired",
+        role_id="assistant",
+        chat_message_id="user_198",
+    )
+
+    payload = json.loads(result.content)
+
+    assert payload["status"] == "unsupported_action"
+    assert "identity merge/deprecation" in payload["error"]
+    assert result.actions == []
+    service.edit_artifact.assert_not_called()
+
+
+@pytest.mark.unit
+def test_character_bible_camel_identity_key_returns_unsupported_blocker() -> None:
+    service = _brick_bible_service()
+
+    result = build_artifact_edit_tool_result(
+        {
+            "artifact_type": "character_bible",
+            "entity_id": "brick_braddock",
+            "changes": {
+                "characterId": "brick",
+                "description": "Keep the duplicate text but point it at Brick.",
+            },
+            "rationale": "Merge duplicate Brick Braddock into Brick.",
+        },
+        service=service,
+        project_id="brick-steel-full-retired",
+        role_id="assistant",
+        chat_message_id="user_198",
+    )
+
+    payload = json.loads(result.content)
+
+    assert payload["status"] == "unsupported_action"
+    assert "identity merge/deprecation" in payload["error"]
+    assert result.actions == []
+    service.edit_artifact.assert_not_called()
+
+
+@pytest.mark.unit
+def test_character_bible_generic_entity_id_returns_unsupported_blocker() -> None:
+    service = _brick_bible_service()
+
+    result = build_artifact_edit_tool_result(
+        {
+            "artifact_type": "character_bible",
+            "entity_id": "brick_braddock",
+            "changes": {
+                "entityId": "brick",
+                "description": "Keep character_id but point generic identity at Brick.",
+            },
+            "rationale": "Merge duplicate Brick Braddock into Brick.",
+        },
+        service=service,
+        project_id="brick-steel-full-retired",
+        role_id="assistant",
+        chat_message_id="user_198",
+    )
+
+    payload = json.loads(result.content)
+
+    assert payload["status"] == "unsupported_action"
+    assert "identity merge/deprecation" in payload["error"]
+    assert result.actions == []
+    service.edit_artifact.assert_not_called()
+
+
+@pytest.mark.unit
+def test_character_bible_canonical_identity_path_returns_unsupported_blocker() -> None:
+    service = _brick_bible_service()
+
+    result = build_artifact_edit_tool_result(
+        {
+            "artifact_type": "character_bible",
+            "entity_id": "brick_braddock",
+            "changes": {
+                "canonical.characterId": "brick",
+                "description": "Keep this as a deprecated duplicate.",
+            },
+            "rationale": "Mark duplicate Brick Braddock as canonicalized into Brick.",
+        },
+        service=service,
+        project_id="brick-steel-full-retired",
+        role_id="assistant",
+        chat_message_id="user_198",
+    )
+
+    payload = json.loads(result.content)
+
+    assert payload["status"] == "unsupported_action"
+    assert "identity merge/deprecation" in payload["error"]
+    assert result.actions == []
+    service.edit_artifact.assert_not_called()
+
+
+@pytest.mark.unit
+def test_character_bible_nested_identity_key_returns_unsupported_blocker() -> None:
+    service = _brick_bible_service()
+
+    result = build_artifact_edit_tool_result(
+        {
+            "artifact_type": "character_bible",
+            "entity_id": "brick_braddock",
+            "changes": {
+                "profile.characterId": "brick",
+                "description": "Keep the duplicate text but point it at Brick.",
+            },
+            "rationale": "Merge duplicate Brick Braddock into Brick.",
+        },
+        service=service,
+        project_id="brick-steel-full-retired",
+        role_id="assistant",
+        chat_message_id="user_198",
+    )
+
+    payload = json.loads(result.content)
+
+    assert payload["status"] == "unsupported_action"
+    assert "identity merge/deprecation" in payload["error"]
+    assert result.actions == []
+    service.edit_artifact.assert_not_called()
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"character.id": "brick"},
+        {"entity.id": "brick"},
+        {"references": [{"character": {"id": "brick"}}]},
+    ],
+)
+def test_character_bible_split_identity_paths_return_unsupported_blocker(
+    changes: dict[str, object],
+) -> None:
+    service = _brick_bible_service()
+
+    result = build_artifact_edit_tool_result(
+        {
+            "artifact_type": "character_bible",
+            "entity_id": "brick_braddock",
+            "changes": {
+                **changes,
+                "description": "Keep the duplicate text but point it at Brick.",
+            },
+            "rationale": "Merge duplicate Brick Braddock into Brick.",
+        },
+        service=service,
+        project_id="brick-steel-full-retired",
+        role_id="assistant",
+        chat_message_id="user_198",
+    )
+
+    payload = json.loads(result.content)
+
+    assert payload["status"] == "unsupported_action"
+    assert "identity merge/deprecation" in payload["error"]
+    assert result.actions == []
+    service.edit_artifact.assert_not_called()
+
+
+@pytest.mark.unit
+def test_character_bible_existing_merge_marker_returns_unsupported_blocker() -> None:
+    service = _brick_bible_service()
+    service.read_artifact.return_value["bible_files"]["master_v1.json"][
+        "merge_into"
+    ] = "brick"
+
+    result = build_artifact_edit_tool_result(
+        {
+            "artifact_type": "character_bible",
+            "entity_id": "brick_braddock",
+            "changes": {
+                "description": "This duplicate needs a richer description.",
+            },
+            "rationale": "Improve the artifact without changing identity.",
+        },
+        service=service,
+        project_id="brick-steel-full-retired",
+        role_id="assistant",
+        chat_message_id="user_198",
+    )
+
+    payload = json.loads(result.content)
+
+    assert payload["status"] == "unsupported_action"
+    assert "identity merge/deprecation" in payload["error"]
+    assert result.actions == []
+    service.edit_artifact.assert_not_called()
+
+
+@pytest.mark.unit
+def test_character_bible_existing_nested_canonical_marker_returns_blocker() -> None:
+    service = _brick_bible_service()
+    service.read_artifact.return_value["bible_files"]["master_v1.json"][
+        "canonical"
+    ] = {"characterId": "brick"}
+
+    result = build_artifact_edit_tool_result(
+        {
+            "artifact_type": "character_bible",
+            "entity_id": "brick_braddock",
+            "changes": {
+                "description": "This duplicate needs a richer description.",
+            },
+            "rationale": "Improve the artifact without changing identity.",
+        },
+        service=service,
+        project_id="brick-steel-full-retired",
+        role_id="assistant",
+        chat_message_id="user_198",
+    )
+
+    payload = json.loads(result.content)
+
+    assert payload["status"] == "unsupported_action"
+    assert "identity merge/deprecation" in payload["error"]
+    assert result.actions == []
+    service.edit_artifact.assert_not_called()
+
+
+@pytest.mark.unit
+def test_character_bible_existing_missing_identity_returns_blocker() -> None:
+    service = _brick_bible_service()
+    del service.read_artifact.return_value["bible_files"]["master_v1.json"][
+        "character_id"
+    ]
+
+    result = build_artifact_edit_tool_result(
+        {
+            "artifact_type": "character_bible",
+            "entity_id": "brick_braddock",
+            "changes": {
+                "description": "This duplicate needs a richer description.",
+            },
+            "rationale": "Improve the artifact without changing identity.",
+        },
+        service=service,
+        project_id="brick-steel-full-retired",
+        role_id="assistant",
+        chat_message_id="user_198",
+    )
+
+    payload = json.loads(result.content)
+
+    assert payload["status"] == "unsupported_action"
+    assert "identity merge/deprecation" in payload["error"]
+    assert result.actions == []
+    service.edit_artifact.assert_not_called()
+
+
+@pytest.mark.unit
+def test_character_bible_without_master_definition_returns_error() -> None:
+    service = _brick_bible_service()
+    service.read_artifact.return_value["payload"]["data"]["files"] = [
+        {
+            "filename": "evidence_v1.json",
+            "purpose": "evidence",
+            "version": 1,
+            "provenance": "ai_extracted",
+        }
+    ]
+    service.read_artifact.return_value["bible_files"] = {
+        "evidence_v1.json": {
+            "quote": "Brick Braddock is mentioned in the draft.",
+        }
+    }
+
+    result = build_artifact_edit_tool_result(
+        {
+            "artifact_type": "character_bible",
+            "entity_id": "brick_braddock",
+            "changes": {"quote": "Treat this as the master description."},
+            "rationale": "Edit the only available bible file.",
+        },
+        service=service,
+        project_id="brick-steel-full-retired",
+        role_id="assistant",
+        chat_message_id="user_198",
+    )
+
+    payload = json.loads(result.content)
+
+    assert "no editable master-definition file" in payload["error"]
+    assert result.actions == []
     service.edit_artifact.assert_not_called()
 
 
@@ -267,6 +643,7 @@ def test_creative_role_can_broker_edit_request_to_assistant() -> None:
         },
         "bible_files": {
             "master_v1.json": {
+                "character_id": "mariner",
                 "name": "The Mariner",
                 "description": "A weathered sailor.",
             }

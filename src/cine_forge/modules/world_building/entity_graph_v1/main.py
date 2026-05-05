@@ -78,8 +78,7 @@ def run_module(
     edges: list[EntityEdge] = []
 
     # 2. Generate Co-occurrence Edges (Deterministic)
-    # Scene-derived IDs are already canonical slugs — no resolver needed here.
-    edges.extend(_generate_co_occurrence_edges(scene_index, prop_bibles))
+    edges.extend(_generate_co_occurrence_edges(scene_index, prop_bibles, char_resolver))
 
     # 3. Signature prop edges (AI-extracted ownership relationships)
     edges.extend(_generate_signature_edges(prop_bibles, char_resolver))
@@ -101,8 +100,8 @@ def run_module(
         edges.extend(new_edges)
         total_cost = cost
     
-    # 6. Deduplicate and Resolve Conflicts
-    final_edges = _deduplicate_edges(edges)
+    # 6. Resolve IDs, deduplicate, and resolve conflicts
+    final_edges = _deduplicate_edges(_resolve_character_edge_ids(edges, char_resolver))
 
     # 7. Build final graph artifact
     entity_counts = {
@@ -142,6 +141,7 @@ def run_module(
 def _generate_co_occurrence_edges(
     scene_index: dict[str, Any],
     prop_bibles: list[dict[str, Any]] | None = None,
+    char_resolver: dict[str, str] | None = None,
 ) -> list[EntityEdge]:
     """Create edges between entities that share scenes."""
     edges: list[EntityEdge] = []
@@ -154,10 +154,7 @@ def _generate_co_occurrence_edges(
     for entry in scene_index.get("entries", []):
         scene_id = entry["scene_id"]
         location = entry.get("location")
-        # Prefer pre-slugified IDs; fall back to slugifying display names
-        char_ids = entry.get("characters_present_ids") or [
-            _slugify(c) for c in entry.get("characters_present", [])
-        ]
+        char_ids = _scene_character_ids(entry, char_resolver)
 
         # Character <-> Location
         if location:
@@ -177,6 +174,8 @@ def _generate_co_occurrence_edges(
         # Character <-> Character co-occurrence
         for i, char_a in enumerate(char_ids):
             for char_b in char_ids[i+1:]:
+                if char_a == char_b:
+                    continue
                 edges.append(EntityEdge(
                     source_type="character",
                     source_id=char_a,
@@ -199,9 +198,7 @@ def _generate_co_occurrence_edges(
             if not entry:
                 continue
             location = entry.get("location")
-            char_ids = entry.get("characters_present_ids") or [
-                _slugify(c) for c in entry.get("characters_present", [])
-            ]
+            char_ids = _scene_character_ids(entry, char_resolver)
             for char_id in char_ids:
                 edges.append(EntityEdge(
                     source_type="prop",
@@ -230,6 +227,27 @@ def _generate_co_occurrence_edges(
     return edges
 
 
+def _scene_character_ids(
+    entry: dict[str, Any],
+    char_resolver: dict[str, str] | None = None,
+) -> list[str]:
+    raw_ids = entry.get("characters_present_ids") or [
+        _slugify(c) for c in entry.get("characters_present", [])
+    ]
+    resolved_ids: list[str] = []
+    seen: set[str] = set()
+    for raw_char_id in raw_ids:
+        raw_text = str(raw_char_id).strip()
+        if not raw_text:
+            continue
+        char_id = _resolve_char_id(raw_text, char_resolver)
+        if char_id in seen:
+            continue
+        seen.add(char_id)
+        resolved_ids.append(char_id)
+    return resolved_ids
+
+
 def _generate_signature_edges(
     prop_bibles: list[dict[str, Any]],
     char_resolver: dict[str, str] | None = None,
@@ -242,7 +260,7 @@ def _generate_signature_edges(
             continue
         for raw_char_id in prop.get("associated_characters", []):
             # Resolve AI-written ID (e.g. "the_mariner") to canonical ID (e.g. "mariner")
-            char_id = (char_resolver or {}).get(raw_char_id, raw_char_id)
+            char_id = _resolve_char_id(str(raw_char_id), char_resolver)
             edges.append(EntityEdge(
                 source_type="prop",
                 source_id=prop_id,
@@ -343,9 +361,42 @@ def _deduplicate_edges(edges: list[EntityEdge]) -> list[EntityEdge]:
     return list(seen.values())
 
 
+def _resolve_character_edge_ids(
+    edges: list[EntityEdge],
+    char_resolver: dict[str, str] | None = None,
+) -> list[EntityEdge]:
+    resolved_edges: list[EntityEdge] = []
+    for edge in edges:
+        edge_data = edge.model_dump(mode="json")
+        if edge.source_type == "character":
+            edge_data["source_id"] = _resolve_char_id(edge.source_id, char_resolver)
+        if edge.target_type == "character":
+            edge_data["target_id"] = _resolve_char_id(edge.target_id, char_resolver)
+        if (
+            edge_data["source_type"] == "character"
+            and edge_data["target_type"] == "character"
+            and edge_data["source_id"] == edge_data["target_id"]
+        ):
+            continue
+        resolved_edges.append(EntityEdge.model_validate(edge_data))
+    return resolved_edges
+
+
 def _slugify(name: str) -> str:
     import re
     return re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")
+
+
+def _resolve_char_id(
+    raw_char_id: str,
+    char_resolver: dict[str, str] | None = None,
+) -> str:
+    if not char_resolver:
+        return raw_char_id
+    normalized = raw_char_id.strip()
+    if not normalized:
+        return normalized
+    return char_resolver.get(normalized) or char_resolver.get(_slugify(normalized), normalized)
 
 
 _ARTICLE_PREFIXES = ("the_", "a_", "an_")
@@ -361,7 +412,9 @@ def _build_char_resolver(
     dialogue cue ``MARINER``).  This resolver catches that mismatch by
     indexing every character under:
       - its canonical ``character_id``
+      - exact display text for ``name`` and ``aliases``
       - ``_slugify(name)``
+      - ``_slugify(alias)`` for known aliases
       - article-stripped variants (``the_mariner`` → ``mariner``)
     """
     mapping: dict[str, str] = {}
@@ -369,19 +422,26 @@ def _build_char_resolver(
         cid = char.get("character_id", "")
         if not cid:
             continue
-        # canonical ID maps to itself
-        mapping[cid] = cid
-        # slugified display name → canonical ID
-        name_slug = _slugify(char.get("name", ""))
-        if name_slug:
-            mapping[name_slug] = cid
-        # article-stripped variants of both the canonical ID and name slug
-        for slug in (cid, name_slug):
-            for prefix in _ARTICLE_PREFIXES:
-                if slug.startswith(prefix):
-                    mapping[slug[len(prefix):]] = cid
-            # also add the article-prefixed form pointing to canonical
-            # so "the_mariner" → cid when cid == "mariner"
-            for prefix in _ARTICLE_PREFIXES:
-                mapping[prefix + slug] = cid
+        _add_char_resolver_text(mapping, cid, cid)
+        _add_char_resolver_text(mapping, char.get("name", ""), cid)
+        for alias in char.get("aliases", []) or []:
+            _add_char_resolver_text(mapping, alias, cid)
     return mapping
+
+
+def _add_char_resolver_text(mapping: dict[str, str], value: Any, canonical_id: str) -> None:
+    text = str(value).strip()
+    if not text:
+        return
+    mapping[text] = canonical_id
+    _add_char_resolver_slug(mapping, _slugify(text), canonical_id)
+
+
+def _add_char_resolver_slug(mapping: dict[str, str], slug: str, canonical_id: str) -> None:
+    if not slug:
+        return
+    mapping[slug] = canonical_id
+    for prefix in _ARTICLE_PREFIXES:
+        if slug.startswith(prefix):
+            mapping[slug[len(prefix):]] = canonical_id
+        mapping[prefix + slug] = canonical_id
