@@ -11,6 +11,14 @@ from .creative_brief import VisualCreativeBrief
 
 EntityType = Literal["character", "location", "prop"]
 DesignStudyRoundStatus = Literal["generating", "completed", "failed"]
+DesignStudyGenerationMode = Literal["manual_design_study", "default_backfill"]
+DesignStudySelectionSource = Literal["human", "system_default"]
+DesignStudyBackfillStatus = Literal[
+    "generated",
+    "skipped_existing_reference",
+    "skipped_no_bible",
+    "failed",
+]
 
 ImageDecision = Literal[
     "pending",
@@ -66,6 +74,8 @@ class DesignStudyRound(BaseModel):
     sources_used: list[str] = Field(default_factory=list)
     learned_preferences_used: list[str] = Field(default_factory=list)
     creative_brief_preview: VisualCreativeBrief | None = None
+    generation_mode: DesignStudyGenerationMode = "manual_design_study"
+    estimated_cost_usd: float | None = Field(default=None, ge=0.0)
     count: int = 1
     created_at: datetime = Field(default_factory=datetime.now)
     status: DesignStudyRoundStatus = "completed"
@@ -80,6 +90,7 @@ class DesignStudyState(BaseModel):
     entity_type: EntityType
     rounds: list[DesignStudyRound] = Field(default_factory=list)
     selected_final_filename: str | None = None
+    selected_final_source: DesignStudySelectionSource | None = None
     last_updated: datetime = Field(default_factory=datetime.now)
 
     def all_images(self) -> list[DesignStudyImage]:
@@ -103,3 +114,32 @@ class DesignStudyState(BaseModel):
             return self.selected_final_filename
         fav = self.latest_favorite()
         return fav.filename if fav else None
+
+
+class DesignStudyBackfillItem(BaseModel):
+    """Result for one default design-study backfill target."""
+
+    entity_type: EntityType
+    entity_id: str
+    display_name: str
+    status: DesignStudyBackfillStatus
+    reason: str | None = None
+    image_filename: str | None = None
+    model: str | None = None
+    estimated_cost_usd: float | None = Field(default=None, ge=0.0)
+    sources_used: list[str] = Field(default_factory=list)
+
+
+class DesignStudyBackfillResult(BaseModel):
+    """Aggregate result for a scene default design-study backfill pass."""
+
+    scene_id: str
+    items: list[DesignStudyBackfillItem] = Field(default_factory=list)
+
+    @property
+    def generated_count(self) -> int:
+        return sum(1 for item in self.items if item.status == "generated")
+
+    @property
+    def skipped_count(self) -> int:
+        return sum(1 for item in self.items if item.status.startswith("skipped_"))

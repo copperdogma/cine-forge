@@ -55,6 +55,7 @@ stages:
     module: render_adapter_v1
     params:
       require_render_clip_plan: true
+      default_design_study_backfill: true
     after: [render_clip_planning]
     store_inputs:
       track_manifest: track_manifest

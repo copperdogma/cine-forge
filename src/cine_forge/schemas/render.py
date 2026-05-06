@@ -37,6 +37,7 @@ RenderInputKind = Literal[
     "project_injected_audio",
     "character_injected_image",
     "location_injected_image",
+    "prop_injected_image",
 ]
 
 

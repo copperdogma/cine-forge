@@ -2,11 +2,15 @@
 
 import pytest
 
-from cine_forge.ai.image import build_image_prompt, synthesize_image_prompt
 from cine_forge.schemas.design_study import (
+    DesignStudyBackfillItem,
     DesignStudyImage,
     DesignStudyRound,
     DesignStudyState,
+)
+from cine_forge.services.still_image_prompt_compiler import (
+    build_image_prompt,
+    synthesize_image_prompt,
 )
 
 # ---------------------------------------------------------------------------
@@ -143,6 +147,28 @@ def test_design_study_round_tracks_sources_used():
     assert round_.sources_used == ["entity_bible", "project_config"]
 
 
+@pytest.mark.unit
+def test_design_study_cost_fields_reject_negative_values():
+    with pytest.raises(ValueError):
+        DesignStudyRound(
+            round_number=1,
+            prompt="test",
+            model="imagen-4.0-generate-001",
+            entity_type="character",
+            entity_id="character_mariner",
+            estimated_cost_usd=-0.01,
+        )
+
+    with pytest.raises(ValueError):
+        DesignStudyBackfillItem(
+            entity_type="character",
+            entity_id="character_mariner",
+            display_name="The Mariner",
+            status="generated",
+            estimated_cost_usd=-0.01,
+        )
+
+
 # ---------------------------------------------------------------------------
 # Prompt synthesis tests
 # ---------------------------------------------------------------------------
@@ -240,6 +266,8 @@ def test_build_image_prompt_tracks_creative_brief_sources():
     assert "Robert Eggers" in prompt
     assert "project_config" in sources_used
     assert "directive" in sources_used
+    assert "still_image_reference_contract" in sources_used
+    assert "Reference still contract" in prompt
 
 
 @pytest.mark.unit
@@ -356,3 +384,18 @@ def test_build_image_prompt_includes_learned_preferences_context():
     assert "recently approved design direction" in prompt
     assert "more weathered, darker costume" in prompt
     assert "learned_preferences" in sources_used
+
+
+@pytest.mark.unit
+def test_build_image_prompt_default_backfill_uses_conservative_reference_contract():
+    prompt, sources_used = build_image_prompt(
+        "character",
+        {"name": "Brick Braddock", "description": "A retired detective."},
+        generation_mode="default_backfill",
+    )
+
+    assert "automatic default reference" in prompt
+    assert "downstream AI video generation" in prompt
+    assert "no text" in prompt.lower() or "typography" in prompt.lower()
+    assert "default_backfill_contract" in sources_used
+    assert "still_image_reference_contract" in sources_used

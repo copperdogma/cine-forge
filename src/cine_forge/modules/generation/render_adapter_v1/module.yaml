@@ -63,3 +63,13 @@ parameters:
     required: false
     default: "standard"
     description: "Previz-only prompt-shaping profile, for example standard or compact."
+  default_design_study_backfill:
+    type: boolean
+    required: false
+    default: false
+    description: "When true, generate default entity design-study stills before render reference resolution."
+  default_design_study_backfill_model:
+    type: string
+    required: false
+    default: "imagen-4.0-generate-001"
+    description: "Image model used for automatic default design-study backfill."

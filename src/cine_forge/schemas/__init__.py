@@ -58,6 +58,8 @@ from .cost_tracking import (
 )
 from .creative_brief import CreativeBriefProjectReference, VisualCreativeBrief
 from .design_study import (
+    DesignStudyBackfillItem,
+    DesignStudyBackfillResult,
     DesignStudyImage,
     DesignStudyRound,
     DesignStudyState,
@@ -476,6 +478,8 @@ __all__ = [
     "ScriptBible",
     "ThematicElement",
     "DesignStudyImage",
+    "DesignStudyBackfillItem",
+    "DesignStudyBackfillResult",
     "DesignStudyRound",
     "DesignStudyState",
     "DesignStudyEntityType",

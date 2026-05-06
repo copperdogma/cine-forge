@@ -19,6 +19,11 @@ from cine_forge.ai.image import ImageGenerationError
 from cine_forge.api.app import create_app
 from cine_forge.artifacts.store import ArtifactStore
 from cine_forge.schemas import ArtifactMetadata
+from cine_forge.schemas.design_study import (
+    DesignStudyImage,
+    DesignStudyRound,
+    DesignStudyState,
+)
 from cine_forge.services import InjectedAssetService
 
 
@@ -560,6 +565,90 @@ def test_design_study_clearing_selected_final_clears_visual_reference_image(
     assert len(manifest_refs) == 3
     latest_manifest, _ = store.load_bible_entry(manifest_refs[-1])
     assert latest_manifest.visual_reference_image is None
+
+
+@pytest.mark.integration
+def test_design_study_reselecting_system_default_marks_human_selected(
+    tmp_path: Path,
+) -> None:
+    workspace_root = Path(__file__).resolve().parents[2]
+    app = create_app(workspace_root=workspace_root)
+    client = TestClient(app)
+
+    project_path = tmp_path / "design-study-human-accepts-default"
+    created = client.post("/api/projects/new", json={"project_path": str(project_path)})
+    assert created.status_code == 200
+    project_id = created.json()["project_id"]
+
+    entity_id = "character_mariner"
+    _create_mock_bible(project_path, entity_id)
+
+    filename = "design_study_r1_img1.jpg"
+    bible_dir = project_path / "artifacts" / "bibles" / entity_id
+    bible_dir.mkdir(parents=True, exist_ok=True)
+    (bible_dir / filename).write_bytes(_FAKE_JPEG)
+
+    store = ArtifactStore(project_dir=project_path)
+    manifest_ref = store.list_versions("bible_manifest", entity_id)[-1]
+    manifest, _ = store.load_bible_entry(manifest_ref)
+    store.save_bible_entry(
+        entity_type=manifest.entity_type,
+        entity_id=manifest.entity_id,
+        display_name=manifest.display_name,
+        files=[entry.model_dump(mode="json") for entry in manifest.files],
+        data_files={},
+        metadata=_metadata("seed system default visual reference"),
+        visual_reference_image=filename,
+    )
+
+    state = DesignStudyState(
+        entity_id=entity_id,
+        entity_type="character",
+        selected_final_filename=filename,
+        selected_final_source="system_default",
+        rounds=[
+            DesignStudyRound(
+                round_number=1,
+                prompt="automatic default reference prompt",
+                model="mock",
+                entity_type="character",
+                entity_id=entity_id,
+                generation_mode="default_backfill",
+                images=[
+                    DesignStudyImage(
+                        filename=filename,
+                        decision="selected_final",
+                        prompt_used="automatic default reference prompt",
+                        model="mock",
+                        round_number=1,
+                    )
+                ],
+            )
+        ],
+    )
+    (bible_dir / "design_study_state.json").write_text(
+        state.model_dump_json(indent=2),
+        encoding="utf-8",
+    )
+
+    before_versions = store.list_versions("bible_manifest", entity_id)
+    resp = client.post(
+        f"/api/projects/{project_id}/design-study/{entity_id}/decide",
+        json={"filename": filename, "decision": "selected_final"},
+    )
+    assert resp.status_code == 200
+
+    fetched = client.get(f"/api/projects/{project_id}/design-study/{entity_id}")
+    assert fetched.status_code == 200
+    final_state = fetched.json()
+    assert final_state["selected_final_filename"] == filename
+    assert final_state["selected_final_source"] == "human"
+
+    after_versions = store.list_versions("bible_manifest", entity_id)
+    assert len(after_versions) == len(before_versions) + 1
+    latest_manifest, latest_metadata = store.load_bible_entry(after_versions[-1])
+    assert latest_manifest.visual_reference_image == filename
+    assert latest_metadata.source == "human"
 
 
 @pytest.mark.integration

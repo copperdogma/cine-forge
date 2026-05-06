@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-05-05-04] — Backfill default design studies (Story 202)
+
+### Added
+- Added a still-image prompt compiler and default design-study backfill service for missing character, location, and prop visual references.
+- Added schema and test coverage for system-default image source truth, prompt provenance, cost metadata, backfill persistence, and render reference transport.
+
+### Changed
+- Changed render and AI-previz recipes so they can backfill default still references before prompt and reference resolution.
+- Changed manual design-study generation and default backfill to share the same still-image prompt compiler while preserving human-vs-system source truth.
+
+### Fixed
+- Fixed the skip-ahead render path where missing design studies let the video generator improvise entity appearance from sparse text alone.
+
 ## [2026-05-05-03] — Repair Brick & Steel character canon (Story 198)
 
 ### Added

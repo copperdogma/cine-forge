@@ -369,7 +369,8 @@
           "189",
           "197",
           "198",
-          "199"
+          "199",
+          "202"
         ],
         "adrIds": [
           "ADR-001",
@@ -826,7 +827,8 @@
           "196",
           "197",
           "200",
-          "201"
+          "201",
+          "202"
         ],
         "adrIds": [
           "ADR-002",
@@ -930,7 +932,8 @@
           "197",
           "199",
           "200",
-          "201"
+          "201",
+          "202"
         ],
         "adrIds": [
           "ADR-002",
@@ -1050,7 +1053,8 @@
           "195",
           "197",
           "198",
-          "200"
+          "200",
+          "202"
         ],
         "adrIds": [
           "ADR-001",
@@ -1604,7 +1608,8 @@
           "195",
           "197",
           "198",
-          "200"
+          "200",
+          "202"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1647,7 +1652,8 @@
             "195",
             "197",
             "198",
-            "200"
+            "200",
+            "202"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -1772,7 +1778,8 @@
           "197",
           "199",
           "200",
-          "201"
+          "201",
+          "202"
         ],
         "evalIds": [],
         "actionability": {
@@ -1798,7 +1805,8 @@
             "197",
             "199",
             "200",
-            "201"
+            "201",
+            "202"
           ],
           "evalIds": []
         }
@@ -13140,6 +13148,95 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "202",
+      "title": "Default Design Studies and Still-Image Prompt Compiler",
+      "path": "docs/stories/story-202-default-design-studies-still-image-prompt-compiler.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R11 (production readiness per scene)",
+        "R12 (transparency & control)",
+        "R17 (real-world production assets as first-class inputs)",
+        "R7 (generate -> react -> refine)",
+        "R8 (professional-grade production artifacts)",
+        "vision-level preference: easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:3.3",
+        "spec:6.2",
+        "spec:6.3",
+        "spec:7.1",
+        "spec:7.2",
+        "spec:8.1",
+        "spec:8.2",
+        "spec:8.3"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3",
+        "C6"
+      ],
+      "dependsOn": [
+        "029",
+        "056",
+        "119",
+        "120",
+        "168",
+        "190",
+        "191",
+        "192"
+      ],
+      "categoryRefs": [
+        "spec:3",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization",
+        "ingest_and_world_building"
+      ],
+      "roadmapTags": [
+        "design-study",
+        "prompt-compiler",
+        "reference-images",
+        "render-backfill",
+        "scene-generation",
+        "still-images",
+        "visual-consistency"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260505-1931",
+        "date": "2026-05-05",
+        "summary": "mark-story-done: marked Story 202 Done after close-out review. Evidence carried forward: `/validate` found no material implementation defects; required `src/ tests/` Ruff, project-venv unit suite, targeted design-study/…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "202",
+        "sourcePath": "docs/stories/story-202-default-design-studies-still-image-prompt-compiler.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "mark-story-done: marked Story 202 Done after close-out review. Evidence carried forward: `/validate` found no material implementation defects; required `src/ tests/` Ruff, project-venv unit suite, targeted design-study/…",
+        "lastRelevantAction": {
+          "date": "2026-05-05",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-202-default-design-studies-still-image-prompt-compiler.md",
+          "summary": "mark-story-done: marked Story 202 Done after close-out review. Evidence carried forward: `/validate` found no material implementation defects; required `src/ tests/` Ruff, project-venv unit suite, targeted design-study/…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -15252,7 +15349,7 @@
         },
         {
           "id": "scene-generation-completion",
-          "status": "completed",
+          "status": "active",
           "story_refs": [
             "164",
             "165",
@@ -15265,15 +15362,17 @@
             "192",
             "193",
             "194",
-            "195"
+            "195",
+            "201",
+            "202"
           ],
-          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair; Story 192 closed the separate GPT-image design-study completion/error follow-up. Story 193 closed the scene-duration/render-clip planning artifact, Story 194 closed the dependent multi-clip scene-render execution slice, and Story 195 closed the production xAI AI-previz readiness surface for the shipped lane."
+          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair; Story 192 closed the separate GPT-image design-study completion/error follow-up. Story 193 closed the scene-duration/render-clip planning artifact, Story 194 closed the dependent multi-clip scene-render execution slice, Story 195 closed the production xAI AI-previz readiness surface for the shipped lane, and Story 202 closed the default design-study still-image backfill plus still-image prompt compiler requested from the inbox. Story 201 remains the current pending scene-generation truth follow-up for keyframe affordance honesty."
         }
       ]
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first render route, and Stories 191-196 closed the Brick & Steel production-readiness, design-study lifecycle, prompt truth, render-clip planning, multi-clip rendering, xAI previz readiness, and product-truth scrub wave. Story 196 found the current surfaced route healthy and created Story 201 for a focused keyframe-affordance follow-up. Story 198 closed the Brick & Steel character-adjudication build, while Stories 185, 197, and 199 hold routed UI, reference-pack, and casting/table-read decisions.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first render route, and Stories 191-196 closed the Brick & Steel production-readiness, design-study lifecycle, prompt truth, render-clip planning, multi-clip rendering, xAI previz readiness, and product-truth scrub wave. Story 196 found the current surfaced route healthy and created Story 201 for a focused keyframe-affordance follow-up. Story 202 closed the high-priority scene-generation follow-up from the inbox: default design-study still backfill plus a still-image prompt compiler for render/AI-previz consistency. Story 198 closed the Brick & Steel character-adjudication build, while Stories 185, 197, and 199 hold routed UI, reference-pack, and casting/table-read decisions.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -15455,9 +15554,10 @@
             "168",
             "169",
             "183",
-            "187"
+            "187",
+            "202"
           ],
-          "stories_since_audit": 2,
+          "stories_since_audit": 3,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -15480,9 +15580,10 @@
             "182",
             "184",
             "185",
-            "192"
+            "192",
+            "202"
           ],
-          "stories_since_audit": 3,
+          "stories_since_audit": 4,
           "open_findings": [
             "Project Home still stacks Script Bible, healthy Artifact Health, and Final Output above the screenplay; Story 185 is the existing owner and should resolve placement rather than creating a second shell."
           ],
@@ -15523,9 +15624,10 @@
             "186",
             "188",
             "190",
-            "192"
+            "192",
+            "202"
           ],
-          "stories_since_audit": 10,
+          "stories_since_audit": 11,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",

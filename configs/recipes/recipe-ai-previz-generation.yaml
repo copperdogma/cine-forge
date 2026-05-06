@@ -66,6 +66,7 @@ stages:
       video_artifact_type: ai_previz_video
       track_type: ai_previz_video
       engine_pack_id: xai_grok_imagine_video
+      default_design_study_backfill: true
       require_render_clip_plan: true
       duration_seconds: 4
       resolution: 480p

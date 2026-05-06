@@ -78,6 +78,11 @@ from cine_forge.services.creative_brief import (
     build_visual_creative_brief,
     creative_brief_source_artifact_types,
 )
+from cine_forge.services.design_study_backfill import (
+    DEFAULT_DESIGN_STUDY_BACKFILL_MODEL,
+    DefaultDesignStudyBackfillService,
+    read_design_study_state,
+)
 from cine_forge.services.injected_assets import manifest_entity_id
 
 _SLUG_RE = re.compile(r"[^a-z0-9]+")
@@ -87,6 +92,7 @@ _IMAGE_KINDS = {
     "project_injected_image",
     "character_injected_image",
     "location_injected_image",
+    "prop_injected_image",
 }
 _AUDIO_KINDS = {"scene_injected_audio", "project_injected_audio"}
 
@@ -132,6 +138,15 @@ def run_module(
         params.get("compiler_model")
         or runtime_params.get("compiler_model")
         or output_contract["default_compiler_model"]
+    )
+    default_design_study_backfill = _default_design_study_backfill_enabled(
+        params=params,
+        runtime_params=runtime_params,
+    )
+    default_design_study_backfill_model = _default_design_study_backfill_model(
+        params=params,
+        runtime_params=runtime_params,
+        compiler_model=compiler_model,
     )
     requested_duration_seconds = float(
         params.get("duration_seconds") or runtime_params.get("duration_seconds") or 8.0
@@ -180,6 +195,8 @@ def run_module(
             output_contract=output_contract,
             scene_action_preflight=scene_action_preflight,
             selected_render_clip_ids=selected_render_clip_ids,
+            default_design_study_backfill=default_design_study_backfill,
+            default_design_study_backfill_model=default_design_study_backfill_model,
         )
         for failure in scene_failures:
             render_failures.append(failure)
@@ -280,6 +297,8 @@ def _render_scene_outputs(
     output_contract: dict[str, Any],
     scene_action_preflight: SceneActionPreflight | None,
     selected_render_clip_ids: set[str] | None,
+    default_design_study_backfill: bool,
+    default_design_study_backfill_model: str,
 ) -> tuple[list[tuple[dict[str, Any], dict[str, Any], dict[str, Any]]], list[dict[str, Any]]]:
     render_clip_plan = source_maps["render_clip_plan"].get(plan.scene_id)
     render_clips = _render_clips_for_scene(
@@ -290,6 +309,12 @@ def _render_scene_outputs(
     )
     outputs: list[tuple[dict[str, Any], dict[str, Any], dict[str, Any]]] = []
     failures: list[dict[str, Any]] = []
+    if default_design_study_backfill:
+        _backfill_default_design_studies(
+            store=store,
+            scene=scene,
+            image_model=default_design_study_backfill_model,
+        )
     for render_clip in render_clips:
         try:
             outputs.append(
@@ -313,6 +338,30 @@ def _render_scene_outputs(
             if _should_abort_remaining_render_units(exc):
                 break
     return outputs, failures
+
+
+def _backfill_default_design_studies(
+    *,
+    store: ArtifactStore,
+    scene: Scene,
+    image_model: str,
+) -> None:
+    result = DefaultDesignStudyBackfillService(
+        store.project_dir,
+        image_model=image_model,
+    ).backfill_scene(scene)
+    failures = [item for item in result.items if item.status == "failed"]
+    if failures:
+        details = "; ".join(
+            f"{item.entity_id}: {item.reason or 'unknown failure'}" for item in failures
+        )
+        raise ValueError(f"Default design-study backfill failed before render: {details}")
+    if result.generated_count:
+        print(
+            "[render_adapter] Backfilled "
+            f"{result.generated_count} default design-study reference(s) "
+            f"for {scene.scene_id} with {image_model}."
+        )
 
 
 def _should_abort_remaining_render_units(exc: Exception) -> bool:
@@ -790,6 +839,44 @@ def _scene_action_preflight(runtime_params: dict[str, Any]) -> SceneActionPrefli
     return None
 
 
+def _default_design_study_backfill_enabled(
+    *,
+    params: dict[str, Any],
+    runtime_params: dict[str, Any],
+) -> bool:
+    raw = params.get("default_design_study_backfill")
+    if raw is None:
+        raw = runtime_params.get("default_design_study_backfill")
+    if raw is None:
+        return False
+    return _bool_param(raw)
+
+
+def _default_design_study_backfill_model(
+    *,
+    params: dict[str, Any],
+    runtime_params: dict[str, Any],
+    compiler_model: str,
+) -> str:
+    configured = _optional_string(
+        params.get("default_design_study_backfill_model")
+        or runtime_params.get("default_design_study_backfill_model")
+    )
+    if configured:
+        return configured
+    if compiler_model == "mock":
+        return "mock"
+    return DEFAULT_DESIGN_STUDY_BACKFILL_MODEL
+
+
+def _bool_param(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() not in {"0", "false", "no", "off"}
+    return bool(value)
+
+
 def _build_preview_provenance(
     *,
     output_contract: dict[str, Any],
@@ -1132,7 +1219,7 @@ def _collect_resolved_inputs(
             target_id=character_id,
         )
         if visual_ref is not None:
-            path, ref = visual_ref
+            path, ref, selection_source = visual_ref
             inputs.append(
                 RenderResolvedInput(
                     input_id=f"character_visual_{character_id}",
@@ -1141,8 +1228,9 @@ def _collect_resolved_inputs(
                     relative_path=path,
                     media_type=media_type_for_image(path),
                     source_ref=ref,
-                    lock_status="selected_visual_reference",
+                    lock_status=_visual_reference_lock_status(selection_source),
                     required=False,
+                    notes=_visual_reference_note(selection_source),
                 )
             )
 
@@ -1153,7 +1241,7 @@ def _collect_resolved_inputs(
         target_id=location_id,
     )
     if visual_ref is not None:
-        path, ref = visual_ref
+        path, ref, selection_source = visual_ref
         inputs.append(
             RenderResolvedInput(
                 input_id=f"location_visual_{location_id}",
@@ -1162,8 +1250,35 @@ def _collect_resolved_inputs(
                 relative_path=path,
                 media_type=media_type_for_image(path),
                 source_ref=ref,
-                lock_status="selected_visual_reference",
+                lock_status=_visual_reference_lock_status(selection_source),
                 required=False,
+                notes=_visual_reference_note(selection_source),
+            )
+        )
+
+    for prop_name in scene.props_mentioned:
+        if not isinstance(prop_name, str) or not prop_name.strip():
+            continue
+        prop_id = _slugify(prop_name)
+        visual_ref = _bible_visual_reference(
+            store=store,
+            target_kind="prop",
+            target_id=prop_id,
+        )
+        if visual_ref is None:
+            continue
+        path, ref, selection_source = visual_ref
+        inputs.append(
+            RenderResolvedInput(
+                input_id=f"prop_visual_{prop_id}",
+                kind="prop_injected_image",
+                label=f"Prop visual reference: {prop_name}",
+                relative_path=path,
+                media_type=media_type_for_image(path),
+                source_ref=ref,
+                lock_status=_visual_reference_lock_status(selection_source),
+                required=False,
+                notes=_visual_reference_note(selection_source),
             )
         )
     return inputs
@@ -1179,6 +1294,24 @@ def _relevant_manifests(
         manifest = source_maps["injected_manifests"].get(key)
         if manifest is not None:
             manifests[key] = manifest
+    for character_id in scene.characters_present_ids:
+        if isinstance(character_id, str) and character_id:
+            key = ("character", character_id)
+            manifest = source_maps["injected_manifests"].get(key)
+            if manifest is not None:
+                manifests[key] = manifest
+    location_name = scene.location
+    if isinstance(location_name, str) and location_name:
+        key = ("location", _slugify(location_name))
+        manifest = source_maps["injected_manifests"].get(key)
+        if manifest is not None:
+            manifests[key] = manifest
+    for prop_name in scene.props_mentioned:
+        if isinstance(prop_name, str) and prop_name:
+            key = ("prop", _slugify(prop_name))
+            manifest = source_maps["injected_manifests"].get(key)
+            if manifest is not None:
+                manifests[key] = manifest
     return manifests
 
 
@@ -1187,7 +1320,7 @@ def _bible_visual_reference(
     store: ArtifactStore,
     target_kind: str,
     target_id: str,
-) -> tuple[str, ArtifactRef] | None:
+) -> tuple[str, ArtifactRef, str | None] | None:
     manifest_ref = latest_entity_ref(store, "bible_manifest", f"{target_kind}_{target_id}")
     if manifest_ref is None:
         return None
@@ -1202,7 +1335,28 @@ def _bible_visual_reference(
     )
     if not (store.project_dir / rel_path).exists():
         return None
-    return rel_path, manifest_ref
+    selection_source = None
+    state = read_design_study_state(store.project_dir, f"{target_kind}_{target_id}")
+    if state is not None and state.selected_final_filename == filename:
+        selection_source = state.selected_final_source
+    return rel_path, manifest_ref, selection_source
+
+
+def _visual_reference_lock_status(selection_source: str | None) -> str:
+    if selection_source == "system_default":
+        return "system_default_visual_reference"
+    return "selected_visual_reference"
+
+
+def _visual_reference_note(selection_source: str | None) -> str | None:
+    if selection_source == "system_default":
+        return (
+            "system_default_design_study=true; generated as render/AI-previz backfill "
+            "and not yet human-approved"
+        )
+    if selection_source == "human":
+        return "human_selected_design_study=true"
+    return None
 
 
 def _shape_generation_request(
@@ -2409,6 +2563,12 @@ def _pop_priority_input(
 def _manifest_asset_kind(target_kind: str, asset_type: str) -> str:
     if asset_type == "audio":
         return "scene_injected_audio" if target_kind == "scene" else "project_injected_audio"
+    if target_kind == "character":
+        return "character_injected_image"
+    if target_kind == "location":
+        return "location_injected_image"
+    if target_kind == "prop":
+        return "prop_injected_image"
     return "scene_injected_image" if target_kind == "scene" else "project_injected_image"
 
 
@@ -2426,11 +2586,13 @@ def _lock_priority_rank(lock_status: str | None) -> int:
         return 0
     if lock_status == "selected_visual_reference":
         return 1
-    if lock_status == "soft_locked":
+    if lock_status == "system_default_visual_reference":
         return 2
-    if lock_status == "unlocked":
+    if lock_status == "soft_locked":
         return 3
-    return 4
+    if lock_status == "unlocked":
+        return 4
+    return 5
 
 
 def _kind_priority_rank(kind: str | None) -> int:
@@ -2440,11 +2602,13 @@ def _kind_priority_rank(kind: str | None) -> int:
         return 1
     if kind == "location_injected_image":
         return 2
-    if kind == "scene_injected_image":
+    if kind == "prop_injected_image":
         return 3
-    if kind == "project_injected_image":
+    if kind == "scene_injected_image":
         return 4
-    return 5
+    if kind == "project_injected_image":
+        return 5
+    return 6
 
 
 def _slugify(value: str) -> str:

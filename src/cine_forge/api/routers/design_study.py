@@ -21,11 +21,7 @@ from pydantic import BaseModel, Field
 
 from cine_forge.ai.image import (
     ImageGenerationError,
-    build_image_prompt,
     generate_image,
-)
-from cine_forge.api.routers.design_study_failures import (
-    design_study_failure_from_exception,
 )
 from cine_forge.api.routers.design_study_support import (
     apply_image_decision,
@@ -42,7 +38,9 @@ from cine_forge.schemas.design_study import (
 )
 from cine_forge.services import PreferenceService
 from cine_forge.services.creative_brief import build_visual_creative_brief
+from cine_forge.services.design_study_failures import design_study_failure_from_exception
 from cine_forge.services.injected_assets import InjectedAssetService, manifest_entity_id
+from cine_forge.services.still_image_prompt_compiler import build_image_prompt
 
 if TYPE_CHECKING:
     from cine_forge.api.service import OperatorConsoleService
@@ -462,6 +460,7 @@ async def decide_design_study(
         raise HTTPException(status_code=404, detail=f"No design study found for '{entity_id}'.")
 
     previous_selected_final = state.selected_final_filename
+    previous_selected_final_source = state.selected_final_source
     round_, image, auto_cleared_final_filename = apply_image_decision(
         state,
         filename=body.filename,
@@ -470,7 +469,15 @@ async def decide_design_study(
     )
 
     store = ArtifactStore(project_dir=project_path)
-    if state.selected_final_filename != previous_selected_final:
+    if body.decision == "selected_final":
+        state.selected_final_source = "human"
+    elif state.selected_final_filename != previous_selected_final:
+        state.selected_final_source = "human" if state.selected_final_filename else None
+
+    if (
+        state.selected_final_filename != previous_selected_final
+        or state.selected_final_source != previous_selected_final_source
+    ):
         _persist_visual_reference_image(
             store,
             entity_id=entity_id,

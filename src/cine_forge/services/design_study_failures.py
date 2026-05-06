@@ -23,9 +23,7 @@ def design_study_failure_from_exception(
     model_used = exc.model or model
     classification = _classify_image_generation_failure(exc)
     request_fragment = f" Request ID: {exc.request_id}." if exc.request_id else ""
-    status_fragment = (
-        f" HTTP {exc.status_code}." if exc.status_code is not None else ""
-    )
+    status_fragment = f" HTTP {exc.status_code}." if exc.status_code is not None else ""
     operator_message = (
         f"{_provider_label(provider)} failed while generating design-study image "
         f"{failed_image_index}/{requested_count} with `{model_used}` "
