@@ -20,8 +20,16 @@ Use this to orchestrate repeated parallel verification across a bounded scope.
 ## Defaults
 
 - Default to worker agents that both inspect and fix their owned scope.
-- Default to the inherited model and reasoning level. Only downshift if the
-  work is clearly easy and the failure cost is low.
+- Default the coordinator to the inherited model and reasoning level. For
+  worker agents, choose the cheapest model and reasoning level that can
+  honestly inspect the shard. Downshift for mechanical checks, generated
+  wrapper parity, typo-only docs cleanup, and other low-risk local work; keep
+  the inherited strength or escalate reasoning for semantic contracts, API
+  boundaries, security, eval correctness, cross-repo rollouts, or anything
+  where a miss would cause expensive rework.
+- Do not hard-code "best model" as the default for every worker. If you
+  override model or reasoning per shard, record the short rationale in the
+  round plan and keep the override tied to task risk, not prestige.
 - Use fresh agents each round. Do not rely on stale worker context after files
   changed underneath them.
 - Default to fix-capable workers. Only fall back to find-only workers if shared
@@ -68,12 +76,42 @@ usually should not trigger another full round. If a worker finds many minor
 issues, it should fix only the obvious bounded set or report the pattern. Do
 not start another full round just to hunt for more minor issues.
 
+## Upstream Boundary
+
+Before launching workers and while classifying findings, state the boundary
+between the current repo/scope and any upstream or outside-owned surface.
+
+Upstream-owned findings include:
+
+- the root cause is in another tracked repo, provider, external tool, source
+  artifact, or service that is not in the current loop scope
+- the current repo can only paper over the issue rather than fix it honestly
+- validation depends on a dependency, fixture, generated artifact, or upstream
+  contract that is already wrong
+- fixing the issue would require editing a target repo that has not been
+  placed in an explicit dedicated worktree for this task
+
+When a worker finds an upstream-owned issue:
+
+- do not let the worker broaden into that upstream repo or service
+- require the worker to report the upstream surface, evidence, local impact,
+  and whether any local work can still be validated independently
+- stop the loop as `blocked` if the upstream issue prevents an honest local
+  clean round
+- otherwise continue only the local loop, keep a concise upstream issue list,
+  and finish when the current repo has no further material local issues
+- if the upstream surface is a repo Cam controls, name the repo/path and the
+  smallest suggested follow-up route; do not claim the upstream issue is fixed
+  until that repo receives its own scoped work
+
 ## Round Protocol
 
 1. Define the exact scope.
    - Name the task in one sentence.
    - List the files, paths, or items in scope.
    - Decide the sharding plan before launching agents.
+   - State what is in-bounds local work and what should be reported as
+     upstream-owned instead of fixed inside this loop.
 2. Partition into disjoint ownership.
    - Give each worker a unique shard.
    - Avoid overlapping write ownership inside a round.
@@ -152,6 +190,9 @@ Task: inspect your shard for material issues related to <goal>. Fix material
 issues that are local to your shard. You may fix obvious bounded typos or
 formatting issues, but do not hunt for nits or broaden into cleanup. Do not
 widen scope. You are not alone in the codebase; do not revert others' edits.
+If the root cause appears upstream, outside the current repo, or outside your
+assigned shard, report the upstream surface, evidence, and local impact instead
+of fixing outside your scope.
 End with exactly one of RESULT: fixed, RESULT: no-issue, or RESULT: blocked.
 List files inspected, changed files, checks run, and whether each fix was
 material or minor.
@@ -177,6 +218,8 @@ material or minor.
 - round count
 - per-round status summary
 - materiality decision for any `RESULT: fixed`
+- upstream-owned findings or blockers, if any, with the local impact and
+  suggested follow-up route
 - final state: converged, blocked, or non-convergent
 - checks run
 
@@ -196,6 +239,13 @@ material fixes that only prove the current loop did useful work. If it returns
 - Do not use this skill as an excuse to spawn agents for trivial work.
 - Do not mark a round clean if any material fix occurred anywhere in that
   round.
+- Do not keep rerunning local shards when the remaining failure is upstream
+  owned and outside the current loop scope. Stop blocked, or finish with a
+  clearly separated upstream issue list if local verification can still close
+  honestly.
+- Do not mutate upstream repos, provider config, source artifacts, or external
+  services from inside a local loop unless the task explicitly includes that
+  upstream surface and a dedicated worktree or safe execution path exists.
 - Do not reset the full loop for harmless typo/formatting fixes once their
   local check has passed.
 - Do not ask workers to exhaustively polish prose, formatting, comments, or

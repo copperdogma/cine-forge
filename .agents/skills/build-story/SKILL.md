@@ -123,6 +123,8 @@ code, or hybrid implementation honestly.
 
 ## Optional Delegation After the Plan Gate
 
+When launching post-plan sidecars, size each worker model and reasoning level to shard risk. Use cheaper or lower-reasoning workers for lookup, wrapper parity, and mechanical scans; keep stronger workers for semantic contracts, security, eval correctness, cross-repo decisions, or high-cost misses. Record any explicit override rationale in the plan or work log.
+
 After the user approves the Phase 2 plan, the main thread may use
 subagents/sidecars for non-trivial work when delegation reduces risk or protects
 context. Keep routine small stories single-threaded.

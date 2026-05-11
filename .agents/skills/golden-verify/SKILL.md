@@ -28,7 +28,7 @@ Repeat until there's no work left:
 ### 1. Check inbox
 
 Scan `benchmarks/golden/_inbox/` for new input directories. For each one,
-launch an opus subagent to run `/golden-create`.
+launch a high-capability subagent to run `/golden-create`.
 
 ### 2. Find work
 
@@ -42,7 +42,7 @@ If nothing needs work, report done and stop.
 
 ### 3. Launch subagents
 
-Use your judgment on parallelism — one fixture per subagent, all `model: "opus"`.
+Use your judgment on parallelism — usually one fixture per subagent. Default to a high-capability worker for semantic golden verification; use cheaper or lower-reasoning workers only for mechanical inbox scans, wrapper parity, or validator-only follow-up where fixture judgment is not required. Record explicit model/reasoning overrides in the batch notes.
 
 **Tooling check:** Before launching, identify the project's execution pattern (e.g., `.venv/bin/python`, `npx tsx`) and include it in the subagent instructions so they don't fail silently with the wrong interpreter.
 
@@ -76,7 +76,7 @@ Report batch results, then loop back to step 1.
 ## Guardrails
 
 - **Never read fixture content.** Subagents do the work. You stay lean.
-- **All subagents use opus.** Golden work requires SOTA judgment.
+- **Do not underpower semantic golden verification.** Most fixture verification needs high-capability judgment; downshift only for mechanical or validator-only work, and say why.
 - **Don't verify what you just created.** New goldens get PENDING status; a
   different subagent verifies them next iteration. This is how we get context
   isolation — the verifier has zero memory of how the golden was written.

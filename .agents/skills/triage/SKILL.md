@@ -33,6 +33,10 @@ CineForge's Ideal test is product-facing: if using the app feels like work,
 something is wrong. Story/eval/tooling surfaces exist to move the project
 toward that Ideal, not to create backlog motion for its own sake.
 
+## Worker Model Sizing
+
+When full-sweep triage launches neutral lane packets with subagents, size each worker model and reasoning level to lane risk. Use cheaper or lower-reasoning workers for factual scans and mechanical packet gathering; keep stronger workers for semantic contracts, security, eval correctness, cross-repo decisions, or high-cost misses. Record any explicit override rationale in the triage report.
+
 ## Routing
 
 | Invocation | Behavior |
