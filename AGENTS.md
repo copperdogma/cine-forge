@@ -438,10 +438,10 @@ When building or substantially redesigning a UI, follow this process:
 #### 3. Build Loop (screenshot-verified)
 - Build one component or page at a time.
 - Before changing a state-specific screen, confirm that the view is actually wired into the active route tree. This repo still contains alternate components that are not the live path (for example, `AnalyzedView` in `ui/src/pages/ProjectHome.tsx`), so code in the wrong branch can look finished while users never see it.
-- After each significant change: take a screenshot via Chrome MCP → inspect the result → fix issues → screenshot again.
+- After each significant change: choose the browser tool with `docs/runbooks/browser-automation-and-mcp.md`, then take a screenshot → inspect the result → fix issues → screenshot again.
 - **Never generate large amounts of UI code without visual verification.** This is the #1 anti-pattern — blind CSS/HTML generation produces garbage.
 - **After wiring pages to real API data**, reload the app with the backend running and click through every modified page. Check `read_console_messages` for runtime errors. `npm run build` passing does NOT mean the UI works — runtime data mismatches (e.g., backend sends `'done'` but switch handles `'completed'`) only crash in the browser.
-- Use the Chrome MCP tools: `screenshot` to see results, `read_page` to inspect DOM, `read_console_messages` to catch errors, `find` to locate elements.
+- In Codex, prefer Browser / in-app browser for local unauthenticated UI checks; use Chrome when the proof requires the user's profile, cookies, existing tabs, or extension behavior; use Playwright for deterministic, repeatable, or file-upload proof; use Computer Use only for native browser/OS surfaces or blocked browser tooling.
 - If browser MCP tooling is unavailable or failing, follow `docs/runbooks/browser-automation-and-mcp.md`.
 
 #### 4. Checkpoints

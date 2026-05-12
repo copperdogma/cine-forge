@@ -5,6 +5,7 @@ Canonical operational guide for browser-based validation in AI-led workflows.
 Use this for:
 - UI screenshot verification
 - Browser console error checks
+- Browser tool selection
 - Browser automation troubleshooting
 - MCP setup/recovery across agent environments
 
@@ -17,12 +18,39 @@ Keep responsibilities split:
 
 This keeps instruction files small and stable while preserving concrete fix procedures.
 
+## Codex Browser Tool Selection
+
+For current Codex app sessions, choose the smallest browser tool that can prove
+the behavior:
+
+| Tool | Use when | Avoid when |
+|---|---|---|
+| Browser / in-app browser | Localhost, file, or public unauthenticated UI checks need DOM inspection, screenshots, clicks, typed input, and console capture. | The flow needs the user's Chrome profile, existing tabs, extension behavior, or file upload. |
+| Chrome / Codex Chrome Extension | The task depends on the user's Chrome profile: signed-in sessions, cookies, existing tabs, extensions, or authenticated remote pages. | The same proof can run in the isolated in-app browser. Extension-origin console noise and profile state make evidence less clean. |
+| Playwright / repo test tooling | The proof must be deterministic, repeatable, selector-driven, file-upload capable, or close to CI/e2e coverage. | The task is exploratory product judgment where screenshots and direct inspection matter more than a script. |
+| Computer Use | A native browser surface is required: browser chrome, OS dialogs, OAuth handoffs, permission prompts, or another desktop app involved in the flow. | Normal page DOM work, console checks, screenshots, and form filling are available through Browser, Chrome, or Playwright. |
+
+Observed limitations from first-hand testing:
+
+- Browser / in-app browser handled local navigation, DOM reads, clicks, typed
+  input, screenshots, and console capture, but file upload was unsupported.
+- Chrome handled profile-backed navigation, DOM reads, clicks, typed input,
+  screenshots, console capture, and existing-tab visibility, but extension-origin
+  console noise must be filtered and file upload can be blocked by extension
+  access rules.
+- Playwright handled deterministic selectors, screenshots, console capture, and
+  file upload. Prefer it for repeatable evidence and CI-shaped probes.
+- Computer Use handled OS/browser-level interaction, but lacks DOM/test-id and
+  console ergonomics. Keep it for native surfaces and fallbacks.
+
 ## Environment Matrix
 
 ### Codex
 - MCP config path: `~/.codex/config.toml` (or via `codex mcp ...`)
 - List servers: `codex mcp list`
 - Add Playwright MCP: `codex mcp add playwright -- npx -y @playwright/mcp@latest`
+- Prefer Browser / in-app browser for ordinary local UI checks before adding or
+  debugging Playwright MCP.
 - Validate browser tooling via nested run:
   - `mkdir -p tmp/browser-smoke tmp/browser-smoke/logs`
   - `codex exec --sandbox workspace-write --skip-git-repo-check -o tmp/browser-smoke/logs/landing.txt "Use playwright MCP to navigate to https://cineforge.copper-dog.com/, take screenshot tmp/browser-smoke/mcp-landing.png, and report console errors at level error."`
@@ -86,6 +114,7 @@ A browser setup is considered working only when all are true:
 1. Navigate to app URL successfully.
 2. Save a screenshot artifact.
 3. Return browser console errors at `error` level.
+4. Record which browser tool was used and why.
 
 For CineForge production smoke:
 - Landing page: `https://cineforge.copper-dog.com/`
@@ -96,21 +125,23 @@ For CineForge production smoke:
 
 ## Troubleshooting Flow
 
-1. Confirm whether browser MCP tools are visible in the current agent session.
-2. If not visible, verify MCP server is configured for the current environment (not a different tool's config).
-3. Restart the host app/CLI session after MCP config changes.
-4. Re-run the minimal browser probe.
-5. If still failing, classify failure:
+1. Confirm the task actually needs MCP/Playwright. For ordinary Codex localhost
+   UI checks, try Browser / in-app browser first.
+2. Confirm whether browser MCP tools are visible in the current agent session.
+3. If not visible, verify MCP server is configured for the current environment (not a different tool's config).
+4. Restart the host app/CLI session after MCP config changes.
+5. Re-run the minimal browser probe.
+6. If still failing, classify failure:
    - MCP server missing
    - MCP server start failure
    - Browser launch failure
    - Page navigation failure
    - Screenshot/console tool failure
    - Local UI server bound to the wrong host/port
-6. If the error looks like a wedged Playwright profile (`Opening in existing browser session`, `UKM database locked`, `bootstrap_check_in ... Permission denied`, or attach timeouts), reset only the Playwright-scoped session and retry once:
+7. If the error looks like a wedged Playwright profile (`Opening in existing browser session`, `UKM database locked`, `bootstrap_check_in ... Permission denied`, or attach timeouts), reset only the Playwright-scoped session and retry once:
    - `python3 scripts/reset_playwright_mcp.py`
    - If the current MCP transport closes because the reset killed the stale `playwright-mcp` process itself, restart the host session once and re-run the probe
-7. If the error is `ENOENT` / permission denied around `/.playwright-mcp`, treat it as a broken MCP working-directory/output-root setup, not an app failure:
+8. If the error is `ENOENT` / permission denied around `/.playwright-mcp`, treat it as a broken MCP working-directory/output-root setup, not an app failure:
    - Cause: Playwright MCP resolves its artifact output root from the server `cwd`; if the Codex MCP server starts with `cwd=/`, it tries to create `/.playwright-mcp`
    - Fix the Codex MCP config in `~/.codex/config.toml` so the Playwright server has a writable cwd and explicit output/profile dirs, for example:
      ```toml
@@ -125,14 +156,14 @@ For CineForge production smoke:
      PLAYWRIGHT_MCP_USER_DATA_DIR = "/Users/<you>/Library/Caches/ms-playwright/mcp-chrome-profile"
      ```
    - Then restart the host Codex session and rerun the minimal probe
-8. For local Vite-backed probes in this repo, prefer a direct Vite invocation over the npm script wrapper:
+9. For local Vite-backed probes in this repo, prefer a direct Vite invocation over the npm script wrapper:
    - Use `pnpm --dir ui exec vite --host 127.0.0.1 --port 5174`
    - Avoid `pnpm --dir ui run dev -- --host 127.0.0.1 --port 5174` for automation here; in this workspace it leaves Vite on `localhost`, which can produce `ERR_CONNECTION_REFUSED` when the probe hits `127.0.0.1`
-9. Capture evidence:
+10. Capture evidence:
    - exact command/tool call
    - error text
    - whether API fallback checks passed
-10. Use fallback HTTP checks only when browser path is blocked:
+11. Use fallback HTTP checks only when browser path is blocked:
    - `curl -sf https://cineforge.copper-dog.com/` and verify `<title>CineForge</title>`
    - verify JS bundle returns HTTP 200
 
