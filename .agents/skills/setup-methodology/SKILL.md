@@ -124,15 +124,25 @@ silently forking the setup contract.
    and the implementation stories that exist because those evals fail. For
    Conductor or other non-product supervisor packages, preserve local
    supervisor evidence surfaces instead and mark product-only evidence lanes
-   absent or deferred.
-5. **Keep recurring work separate.** The bootstrap skill installs the package
+   absent or deferred. When setup or story work identifies a new AI
+   compromise, attach or create the owning compromise/deletion eval, or record
+   an explicit deferral with the trigger that would make the eval worth
+   creating later.
+5. **Choose the eval substrate by proof shape.** Default to PromptFoo when the
+   proof is prompt/model comparison, rubric or judge scoring, or repeated
+   output-quality checks over a stable case set. Prefer a custom runner, script,
+   browser check, artifact inspection, golden verifier, or runtime benchmark
+   when the proof is structural behavior, deterministic pipeline truth,
+   browser/UI behavior, visual or media artifacts, or instrumentation that
+   PromptFoo cannot represent honestly.
+6. **Keep recurring work separate.** The bootstrap skill installs the package
    and preserves optional recurring lanes that are already part of it. Ongoing
    product work uses `/create-eval`, `/improve-eval`, `/align`,
    `/triage-architecture`, the local `ui-scout` lane when `state.ui_scout`
    exists, story/build skills, and normal ADR/story workflows. Conductor
    supervisor work uses `/align-projects`, `/scout`, `/triage-stories`, the
    core story loop, and normal ADR/story workflows.
-6. **Core story-loop setup is part of refresh.** Install or refresh
+7. **Core story-loop setup is part of refresh.** Install or refresh
    `/create-story`, `/build-story`, and `/validate` with the accepted
    core-loop guidance: the main thread owns Ideal/spec judgment, story
    boundaries, build plans, and final validation disposition; subagents gather
@@ -141,14 +151,14 @@ silently forking the setup contract.
    is reserved for repeated material review/fix rounds. Do not make subagents
    mandatory for ordinary setup, no-code repos, routine story creation, or
    small validation passes.
-7. **Canonical public surface only.** AGENTS/docs should advertise
+8. **Canonical public surface only.** AGENTS/docs should advertise
    `/init-project` for greenfield idea intake and `/setup-methodology` for
    full package setup. Do not reintroduce the old phased setup skills.
-8. **No-code repos get a sparse package, not a long forensic loop.** When a
+9. **No-code repos get a sparse package, not a long forensic loop.** When a
    repo has little or no code, install the methodology surfaces quickly around
    the authored Ideal/spec, mark unavailable lanes as absent or deferred, and
    avoid asking agents to infer runtime truth that cannot exist yet.
-9. **Shared skill surfaces should be copied exactly.** When this setup skill or
+10. **Shared skill surfaces should be copied exactly.** When this setup skill or
    the shared triage/core story-loop/loop-verify package changes, upgrade one
    source copy, perform a local propagation sweep, then copy the exact shared
    files to the other repos and run wrapper checks. Do not independently
@@ -251,6 +261,14 @@ without spending many rounds proving absent evidence. Do this:
      reason and a next trigger
    - Ensure any day-zero child evals record their parent eval and measured
      failure mode
+   - Ensure each new AI compromise has an owning compromise/deletion eval, or
+     an explicit deferral reason plus the trigger that would make the eval
+     worth creating later
+   - Choose PromptFoo only when it fits the proof shape: prompt/model
+     comparison, rubric or judge scoring, or repeated output-quality checks over
+     a stable case set. Use custom runners, scripts, browser checks, artifact
+     inspection, golden verifiers, or runtime benchmarks when those prove the
+     actual behavior more honestly.
    - Ensure the eval package exists and is wired together: `docs/evals/README.md`,
      `docs/evals/registry.yaml`, `docs/evals/attempt-template.md`,
      `docs/runbooks/promptfoo.md` when promptfoo applies, and the linked
