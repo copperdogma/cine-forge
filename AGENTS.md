@@ -706,3 +706,12 @@ Treat this section as a living memory. Entry format: `YYYY-MM-DD — short title
 - 2026-02-21 — Screenplay Fidelity: FDX round-trip requires careful handling of non-standard headings via forced headings ('.' prefix in Fountain) and strict spacing rules (no blank line between character and dialogue) to preserve structural integrity. PDF extraction fidelity is significantly improved by using `pdfplumber` with `layout=True` compared to `pypdf`, as it preserves visual columns and whitespace better.
 - 2026-03-01 — Eval-first applies to implementation decisions, not just pipeline stages: Stories can pre-decide "pure code" for tasks that AI handles better. The `create-story` "AI Considerations" section asked "can AI do this?" and accepted "no" without evidence. Fix: renamed to "Approach Evaluation" — lists candidate approaches without pre-deciding, with the eval that distinguishes them. Approach selection happens during `build-story`'s eval-first gate with measured baselines.
 - 2026-03-14 — Artifact writers must create parent directories for nested payload files: Once bible/artifact manifests can carry structured children like `user_assets/...`, thumbnails, or waveform JSON, any write path that assumes flat filenames will fail at runtime. Create parent folders immediately before writing versioned sidecar files (`src/cine_forge/artifacts/store.py`, `src/cine_forge/services/injected_assets.py`).
+
+## npm Supply-Chain Guardrail
+
+This repo is self-contained for npm incident checks. When triaging a supply-chain
+incident or changing dependencies, lockfiles, package-manager scripts, install
+scripts, GitHub Actions, publish/deploy jobs, cache behavior, or OIDC/token
+permissions, follow `docs/runbooks/npm-supply-chain-hardening.md` and run the
+repo-local scanner (`make supply-chain-scan`, `npm run supply-chain:scan`, or
+`python3 scripts/npm_supply_chain_scan.py --strict`).

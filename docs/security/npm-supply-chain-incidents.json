@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "incidents": [
+    {
+      "id": "tanstack-mini-shai-hulud-2026-05-11",
+      "title": "Mini Shai-Hulud TanStack npm compromise",
+      "published_window_utc": "2026-05-11T19:20:00Z/2026-05-11T19:26:00Z",
+      "sources": [
+        "https://www.aikido.dev/blog/mini-shai-hulud-is-back-tanstack-compromised",
+        "https://tanstack.com/blog/npm-supply-chain-compromise-postmortem",
+        "https://github.com/TanStack/router/security/advisories/GHSA-g7cv-rxg3-hmpx"
+      ],
+      "iocs": [
+        {
+          "type": "package",
+          "value": "@tanstack/setup",
+          "note": "Malicious optional dependency used in the compromised TanStack packages."
+        },
+        {
+          "type": "file",
+          "value": "router_init.js",
+          "note": "Payload file name reported in the TanStack advisory."
+        },
+        {
+          "type": "file",
+          "value": "tanstack_runner.js",
+          "note": "Payload helper file name reported in public incident analysis."
+        },
+        {
+          "type": "git-ref",
+          "value": "github:tanstack/router#79ac49eedf774dd4b0cfa308722bc463cfe5885c",
+          "note": "Malicious dependency ref reported in public incident analysis."
+        }
+      ],
+      "clean_package_notes": [
+        {
+          "pattern": "@tanstack/(query-core|react-query|query-devtools|react-query-devtools|angular-query|solid-query|svelte-query|vue-query)",
+          "note": "TanStack's postmortem lists @tanstack/query* packages as confirmed clean for this incident."
+        }
+      ],
+      "affected_packages": [
+        {
+          "name": "@tanstack/arktype-adapter",
+          "versions": ["1.166.12", "1.166.15"]
+        },
+        {
+          "name": "@tanstack/eslint-plugin-router",
+          "versions": ["1.161.9", "1.161.12"]
+        },
+        {
+          "name": "@tanstack/eslint-plugin-start",
+          "versions": ["0.0.4", "0.0.7"]
+        },
+        {
+          "name": "@tanstack/history",
+          "versions": ["1.161.9", "1.161.12"]
+        },
+        {
+          "name": "@tanstack/nitro-v2-vite-plugin",
+          "versions": ["1.154.12", "1.154.15"]
+        },
+        {
+          "name": "@tanstack/react-router",
+          "versions": ["1.169.5", "1.169.8"]
+        },
+        {
+          "name": "@tanstack/react-router-devtools",
+          "versions": ["1.166.16", "1.166.19"]
+        },
+        {
+          "name": "@tanstack/react-router-ssr-query",
+          "versions": ["1.166.15", "1.166.18"]
+        },
+        {
+          "name": "@tanstack/react-start",
+          "versions": ["1.167.68", "1.167.71"]
+        },
+        {
+          "name": "@tanstack/react-start-client",
+          "versions": ["1.166.51", "1.166.54"]
+        },
+        {
+          "name": "@tanstack/react-start-rsc",
+          "versions": ["0.0.47", "0.0.50"]
+        },
+        {
+          "name": "@tanstack/react-start-server",
+          "versions": ["1.166.55", "1.166.58"]
+        },
+        {
+          "name": "@tanstack/router-cli",
+          "versions": ["1.166.46", "1.166.49"]
+        },
+        {
+          "name": "@tanstack/router-core",
+          "versions": ["1.169.5", "1.169.8"]
+        },
+        {
+          "name": "@tanstack/router-devtools",
+          "versions": ["1.166.16", "1.166.19"]
+        },
+        {
+          "name": "@tanstack/router-devtools-core",
+          "versions": ["1.167.6", "1.167.9"]
+        },
+        {
+          "name": "@tanstack/router-generator",
+          "versions": ["1.166.45", "1.166.48"]
+        },
+        {
+          "name": "@tanstack/router-plugin",
+          "versions": ["1.167.38", "1.167.41"]
+        },
+        {
+          "name": "@tanstack/router-ssr-query-core",
+          "versions": ["1.168.3", "1.168.6"]
+        },
+        {
+          "name": "@tanstack/router-utils",
+          "versions": ["1.161.11", "1.161.14"]
+        },
+        {
+          "name": "@tanstack/router-vite-plugin",
+          "versions": ["1.166.53", "1.166.56"]
+        },
+        {
+          "name": "@tanstack/solid-router",
+          "versions": ["1.169.5", "1.169.8"]
+        },
+        {
+          "name": "@tanstack/solid-router-devtools",
+          "versions": ["1.166.16", "1.166.19"]
+        },
+        {
+          "name": "@tanstack/solid-router-ssr-query",
+          "versions": ["1.166.15", "1.166.18"]
+        },
+        {
+          "name": "@tanstack/solid-start",
+          "versions": ["1.167.65", "1.167.68"]
+        },
+        {
+          "name": "@tanstack/solid-start-client",
+          "versions": ["1.166.50", "1.166.53"]
+        },
+        {
+          "name": "@tanstack/solid-start-server",
+          "versions": ["1.166.54", "1.166.57"]
+        },
+        {
+          "name": "@tanstack/start-client-core",
+          "versions": ["1.168.5", "1.168.8"]
+        },
+        {
+          "name": "@tanstack/start-fn-stubs",
+          "versions": ["1.161.9", "1.161.12"]
+        },
+        {
+          "name": "@tanstack/start-plugin-core",
+          "versions": ["1.169.23", "1.169.26"]
+        },
+        {
+          "name": "@tanstack/start-server-core",
+          "versions": ["1.167.33", "1.167.36"]
+        },
+        {
+          "name": "@tanstack/start-static-server-functions",
+          "versions": ["1.166.44", "1.166.47"]
+        },
+        {
+          "name": "@tanstack/start-storage-context",
+          "versions": ["1.166.38", "1.166.41"]
+        },
+        {
+          "name": "@tanstack/valibot-adapter",
+          "versions": ["1.166.12", "1.166.15"]
+        },
+        {
+          "name": "@tanstack/virtual-file-routes",
+          "versions": ["1.161.10", "1.161.13"]
+        },
+        {
+          "name": "@tanstack/vue-router",
+          "versions": ["1.169.5", "1.169.8"]
+        },
+        {
+          "name": "@tanstack/vue-router-devtools",
+          "versions": ["1.166.16", "1.166.19"]
+        },
+        {
+          "name": "@tanstack/vue-router-ssr-query",
+          "versions": ["1.166.15", "1.166.18"]
+        },
+        {
+          "name": "@tanstack/vue-start",
+          "versions": ["1.167.61", "1.167.64"]
+        },
+        {
+          "name": "@tanstack/vue-start-client",
+          "versions": ["1.166.46", "1.166.49"]
+        },
+        {
+          "name": "@tanstack/vue-start-server",
+          "versions": ["1.166.50", "1.166.53"]
+        },
+        {
+          "name": "@tanstack/zod-adapter",
+          "versions": ["1.166.12", "1.166.15"]
+        }
+      ]
+    }
+  ]
+}

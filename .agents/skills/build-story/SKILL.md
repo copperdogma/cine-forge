@@ -239,3 +239,18 @@ ordinary build closeout.
 - Never commit without running the required checks for changed scope
 - Always update the work log, even for partial progress
 - If blocked, record the blocker and stop — don't guess
+
+## npm Supply-Chain Guardrail
+
+When the story changes dependencies, `package.json`, lockfiles, package-manager
+scripts, install scripts, `.github/workflows`, publish jobs, deploy jobs, cache
+behavior, or OIDC/token permissions, run the repo-local scanner during planning
+and again after changes:
+
+```bash
+python3 scripts/npm_supply_chain_scan.py
+```
+
+If the work is responding to a new incident, update
+`docs/security/npm-supply-chain-incidents.json` from first-party incident
+sources before treating a clean scan as evidence.

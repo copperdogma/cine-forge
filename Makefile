@@ -1,7 +1,7 @@
 PYTHON ?= python3
 PYTHONPATH ?= src
 
-.PHONY: test test-unit test-integration test-smoke smoke-test live-test lint format skills-sync skills-check triage-facts triage-facts-check check-size
+.PHONY: test test-unit test-integration test-smoke smoke-test live-test lint format skills-sync skills-check triage-facts triage-facts-check check-size supply-chain-scan
 
 test:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest
@@ -45,3 +45,6 @@ check-size:
 	@echo ""
 	@echo "TypeScript source files over 400 lines:"
 	@find ui/src -name "*.ts" -o -name "*.tsx" | xargs wc -l 2>/dev/null | sort -rn | awk '$$1 > 400 && $$2 != "total" {print "  LARGE: " $$1 " lines — " $$2}'
+
+supply-chain-scan:
+	$(PYTHON) scripts/npm_supply_chain_scan.py

@@ -229,3 +229,14 @@ ordinary validation closeout.
 - **Mandatory UI Checks**: Never skip UI `lint` and `tsc -b` for code changes, even if you think only the backend was touched.
 - Prefer project-native checks over generic templates
 - Use `tsc -b` (not `tsc --noEmit`) for UI type checks in this repo
+
+## npm Supply-Chain Validation
+
+If the story or current diff touches dependencies, lockfiles, package-manager
+scripts, install scripts, `.github/workflows`, publish jobs, deploy jobs, cache
+behavior, or OIDC/token permissions, run the repo-local scanner and include its
+summary in validation findings:
+
+```bash
+python3 scripts/npm_supply_chain_scan.py
+```
