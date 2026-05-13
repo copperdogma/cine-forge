@@ -32,10 +32,13 @@ folder with no real Ideal/spec, stop and route to `/init-project new-idea`.
 - core story-loop bootstrap: `/create-story`, `/build-story`, and `/validate`
   guidance for optional sidecar evidence, plan-gated delegation, parallel
   validation, and `/loop-verify` escalation
+- fresh upstream documentation as an active dependency for drift-prone
+  providers, SDKs, model/provider slugs, browser/tooling plugins,
+  UI/component libraries, auth/payment/storage providers, and framework APIs
 - upgraded triage bootstrap: `/triage`, lane-packet leaf skills,
   `/triage-health`, sparse-safe triage facts, and wrapper sync
-- upgraded verification bootstrap: `/loop-verify` materiality/no-hard-cap
-  guidance with a minor-only stop rule
+- upgraded verification bootstrap: `/loop-verify` mode selection, budgeted
+  defaults, docs/ADR inspect-only behavior, and strict clean-round escalation
 - optional recurring methodology lanes already encoded in the package, such as
   `architecture_audits` / `/triage-architecture` and `ui_scout` /
   `docs/ui-scout*`
@@ -135,14 +138,33 @@ silently forking the setup contract.
    when the proof is structural behavior, deterministic pipeline truth,
    browser/UI behavior, visual or media artifacts, or instrumentation that
    PromptFoo cannot represent honestly.
-6. **Keep recurring work separate.** The bootstrap skill installs the package
+6. **Treat fresh upstream docs as an active dependency for drift-prone external
+   surfaces.** When setup, story, triage, scout, or validation work touches an
+   API provider, SDK, model/provider slug, browser/tooling plugin,
+   UI/component library, auth/payment/storage provider, or framework API, check
+   current first-party docs, release notes, changelogs, official repositories,
+   or a source-specific docs connector before changing code, defaults, prompts,
+   SDK calls, config, or methodology advice. This is not ritual browsing:
+   stable repo-local behavior can use local docs/tests first when no external
+   interface fact is at issue. Upstream docs answer "what is true now";
+   repo-local Ideal/spec/compromise/eval surfaces answer "what is good and
+   safe for this product."
+7. **Prefer outcome-first prompt contracts over inherited process stacks.**
+   Prompts and skills should state the desired outcome, constraints, available
+   evidence, final answer shape, and real local guardrails. Keep detailed
+   process where it protects against known failures such as dirty checkouts,
+   destructive git, exact-path mistakes, UI/browser proof gaps, eval
+   completeness, provider freshness, or data-loss risk. Soften or remove
+   generic process text that only compensates for older model behavior and
+   narrows the model without improving proof.
+8. **Keep recurring work separate.** The bootstrap skill installs the package
    and preserves optional recurring lanes that are already part of it. Ongoing
    product work uses `/create-eval`, `/improve-eval`, `/align`,
    `/triage-architecture`, the local `ui-scout` lane when `state.ui_scout`
    exists, story/build skills, and normal ADR/story workflows. Conductor
    supervisor work uses `/align-projects`, `/scout`, `/triage-stories`, the
    core story loop, and normal ADR/story workflows.
-7. **Core story-loop setup is part of refresh.** Install or refresh
+9. **Core story-loop setup is part of refresh.** Install or refresh
    `/create-story`, `/build-story`, and `/validate` with the accepted
    core-loop guidance: the main thread owns Ideal/spec judgment, story
    boundaries, build plans, and final validation disposition; subagents gather
@@ -151,18 +173,20 @@ silently forking the setup contract.
    is reserved for repeated material review/fix rounds. Do not make subagents
    mandatory for ordinary setup, no-code repos, routine story creation, or
    small validation passes.
-8. **Canonical public surface only.** AGENTS/docs should advertise
+10. **Canonical public surface only.** AGENTS/docs should advertise
    `/init-project` for greenfield idea intake and `/setup-methodology` for
    full package setup. Do not reintroduce the old phased setup skills.
-9. **No-code repos get a sparse package, not a long forensic loop.** When a
+11. **No-code repos get a sparse package, not a long forensic loop.** When a
    repo has little or no code, install the methodology surfaces quickly around
    the authored Ideal/spec, mark unavailable lanes as absent or deferred, and
    avoid asking agents to infer runtime truth that cannot exist yet.
-10. **Shared skill surfaces should be copied exactly.** When this setup skill or
+12. **Shared skill surfaces should be copied exactly.** When this setup skill or
    the shared triage/core story-loop/loop-verify package changes, upgrade one
-   source copy, perform a local propagation sweep, then copy the exact shared
-   files to the other repos and run wrapper checks. Do not independently
-   rewrite the same skill in each repo.
+   source copy and perform a local propagation sweep. Cross-repo propagation is
+   separate repo-local adoption work: use dedicated target-repo worktrees or an
+   explicit safe execution path, copy exact shared files there, and run that
+   repo's wrapper checks before claiming the target repo is updated. Do not
+   independently rewrite the same skill in each repo.
 
 ## Greenfield / No-Code Fast Path
 
@@ -184,7 +208,9 @@ without spending many rounds proving absent evidence. Do this:
      `/loop-verify` only when a complete material clean round matters
    - triage leaf skills in packet mode where their lanes are present
    - `/triage-health` for sparse health/freshness packets
-   - `/loop-verify` with material-vs-minor stop rules and no hard round cap
+   - `/loop-verify` with budgeted default mode, docs/ADR inspect-only mode,
+     strict clean-round mode for approved objective proof, and
+     material-vs-minor stop rules
 4. Add a sparse-safe triage fact collector when the repo has enough tooling to
    support one. It should report absent/deferred/empty statuses directly rather
    than treating missing reports, missing codebase scans, missing UI scouts, or
@@ -288,6 +314,10 @@ without spending many rounds proving absent evidence. Do this:
    - Ensure `/validate` preserves main-thread final disposition while allowing
      optional parallel validation packets and `/loop-verify` escalation for
      material repeated review/fix rounds
+   - Ensure `/build-story` and `/validate` both require current upstream docs
+     evidence, or an explicit local-only rationale, when a story or diff
+     touches drift-prone providers, SDKs, browser/tooling plugins,
+     UI/component libraries, model/provider slugs, or framework APIs
 
 8. **Install the upgraded triage, core story-loop, and verification surface**:
    - Install or refresh `/triage` as the orchestration skill: Ideal/spec first,
@@ -314,10 +344,15 @@ without spending many rounds proving absent evidence. Do this:
    - Install or refresh a sparse-safe triage fact collector when repo tooling
      exists. It must be cheap, read-only, deterministic, and parseable through
      the direct script command.
-   - Install or refresh `/loop-verify` with materiality guidance: material
-     semantic/executable/contract/generated changes reset a full fresh pass;
-     minor typo/formatting/non-contract wording fixes only need targeted
-     checks; no hard round cap.
+   - Install or refresh `/loop-verify` with mode and materiality guidance:
+     ordinary loops use a budgeted default, docs/ADR alignment uses find-only
+     workers plus main-agent fixes, strict clean-round loops are reserved for
+     explicit or objective contract-critical proof, material executable or
+     contract fixes reset strict loops, and minor typo/formatting/non-contract
+     wording fixes only need targeted checks.
+   - Install or refresh source-routing guidance so provider/component/model
+     work checks current official upstream docs first when those facts are
+     likely to drift, then ties any adoption back to local Ideal/spec/evals.
 
 9. **Run the shared-surface propagation sweep**:
    - Check that setup, triage, core story-loop skills, triage leaves,
@@ -360,6 +395,10 @@ without spending many rounds proving absent evidence. Do this:
 - Core story-loop skill surfaces installed or refreshed with sidecar,
   plan-gated delegation, parallel validation, and loop-verify escalation
   guardrails
+- Fresh-doc dependency guidance installed for drift-prone providers,
+  components, SDKs, model/provider slugs, tooling plugins, and framework APIs
+- Outcome-first prompt contract guidance installed without deleting
+  failure-proven local guardrails
 - Upgraded triage, triage-health, sparse facts, and loop-verify surfaces
   installed or explicitly deferred by lane
 - Cross-CLI wrappers regenerated and checked
