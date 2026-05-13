@@ -47,7 +47,7 @@ MODEL_PRICING_PER_M_TOKEN: dict[str, tuple[float, float]] = {
     "gemini-2.5-flash": (0.15, 0.60),
     "gemini-2.5-pro": (1.25, 10.0),
     "gemini-3-flash-preview": (0.15, 0.60),
-    "gemini-3.1-flash-lite-preview": (0.10, 0.40),
+    "gemini-3.1-flash-lite": (0.10, 0.40),
     "gemini-3.1-pro-preview": (1.50, 10.0),
 }
 

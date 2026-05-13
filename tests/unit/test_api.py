@@ -1494,7 +1494,7 @@ def test_project_model_settings_persist_and_clear(tmp_path: Path) -> None:
         f"/api/projects/{project_id}/settings",
         json={
             "default_model": "gpt-5.4",
-            "work_model": "gemini-3.1-flash-lite-preview",
+            "work_model": "gemini-3.1-flash-lite",
             "verify_model": "gpt-4.1-mini",
             "escalate_model": "claude-opus-4-6",
         },
@@ -1502,14 +1502,14 @@ def test_project_model_settings_persist_and_clear(tmp_path: Path) -> None:
     assert update_resp.status_code == 200
     payload = update_resp.json()
     assert payload["default_model"] == "gpt-5.4"
-    assert payload["work_model"] == "gemini-3.1-flash-lite-preview"
+    assert payload["work_model"] == "gemini-3.1-flash-lite"
     assert payload["verify_model"] == "gpt-4.1-mini"
     assert payload["escalate_model"] == "claude-opus-4-6"
 
     project_path = tmp_path / "output" / "model-pref-test"
     project_json = json.loads((project_path / "project.json").read_text(encoding="utf-8"))
     assert project_json["default_model"] == "gpt-5.4"
-    assert project_json["work_model"] == "gemini-3.1-flash-lite-preview"
+    assert project_json["work_model"] == "gemini-3.1-flash-lite"
     assert project_json["verify_model"] == "gpt-4.1-mini"
     assert project_json["escalate_model"] == "claude-opus-4-6"
 
