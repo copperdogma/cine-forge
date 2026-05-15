@@ -139,6 +139,27 @@ If a worker finds one minor issue, or a small bounded set of minor issues, that
 usually should not trigger another full round. If a worker finds many minor
 issues, it should fix only the obvious bounded set or report the pattern.
 
+## Finding Disposition
+
+Keep a concise finding ledger for every worker report or verifier signal that
+claims an issue:
+
+- `accepted`: a real in-scope defect, regression, missed contract, or material
+  validation gap that must be fixed or reported as a blocker
+- `rejected`: not actually an issue after checking the real code, docs,
+  artifacts, or task contract; record the short reason
+- `follow-up`: valid but upstream-owned, expansion work, or outside the current
+  loop scope
+
+Treat model or worker findings as evidence, not truth. The coordinator owns the
+final disposition and should verify findings against the scoped task before
+fixing or resetting the loop.
+
+When the scoped verifier is clean, stop. Do not run extra loop rounds only to
+get nicer wording, a redundant second opinion, or a stronger-sounding closeout
+line. Escalate to `/validate` for closure judgment; do not turn `/loop-verify`
+into story closure.
+
 ## Upstream And Expansion Boundary
 
 Before launching workers and while classifying findings, state the boundary

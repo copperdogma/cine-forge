@@ -27,6 +27,32 @@ Assess whether a story's implementation meets its requirements.
      verification limits.
    - Do not let green checks or tidy story bookkeeping hide a real defect.
 
+1c. **Use `codex review` as an extra signal for non-trivial code diffs:**
+   - Run it when the user asks for a second-model/code review, the diff is broad
+     or high-risk, behavior/security/API/tooling code changed, test coverage is
+     uncertain, or the work is nearing commit/ship and a review signal is worth
+     the token cost.
+   - Skip it for docs-only scout/alignment/inbox routing, generated index
+     refreshes, tiny obvious patches, and product/taste decisions. If skipped
+     for a code diff, name the reason briefly.
+   - Choose the target deliberately:
+     - dirty local work: `codex review --uncommitted`
+     - branch or PR work: `git fetch origin`, then `codex review --base`
+       against the PR base or `origin/main`
+     - single committed change: `codex review --commit HEAD`
+   - Do not use a clean `--uncommitted` review on a clean checkout as evidence
+     that committed branch work is clean; it only proves there is no local
+     patch.
+   - Treat review output as advisory. Verify each finding against the real code
+     path and relevant docs/types before accepting it, reject speculative or
+     over-broad findings, and prefer small fixes at the right ownership
+     boundary.
+   - Keep a terse accepted/rejected finding ledger. If an accepted finding
+     changes code, rerun the focused affected tests/checks and rerun the review
+     signal for the changed scope.
+   - Do not replace `/validate` with `codex review`; it is one evidence source,
+     while `/validate` remains the closure authority.
+
 2. **Read the story** — Load `docs/stories/story-{NNN}-*.md`. Note all acceptance criteria and tasks.
 
 2b. **Check workflow gates** — Read the `Workflow Gates` section if present. If it is missing on an older story, add equivalent gates before continuing so the handoff state is explicit.
