@@ -88,7 +88,22 @@ Run the strongest available deterministic checks first. Verify tools exist befor
    - Do not require remote npm helpers or standalone optimizer skills for this
      scan.
 
-5. **Targeted reads:**
+5. **Optional semantic review detector:**
+   - Use external repo-wide AI reviewers such as Clawpatch only as occasional
+     report-only detectors, not validation, CI, or every-scan requirements.
+   - Natural usage is the pilot: run when codebase-improvement freshness is
+     stale, churn is high, tests are thin around important code, or a cleanup
+     pass needs another latent-bug signal.
+   - Run in an isolated worktree, pin the package version or source commit, keep
+     generated state outside the repo when possible, start with a small review
+     limit, and record the exact command/source in the report.
+   - Do not run tool-managed fix commands such as `clawpatch fix` during
+     scout-mode use.
+   - Treat output as leads until local code reads and repo-native tests,
+     provider/runtime checks, artifact evidence, or browser/UI evidence verify
+     the issue.
+
+6. **Targeted reads:**
    - Inspect the top hotspot files
    - Inspect recent stories affecting those areas
    - Check whether an apparent issue is already tracked or intentionally suppressed
@@ -140,6 +155,14 @@ scan can answer:
 - tests, benchmarks, profiler/browser evidence, artifact evidence, or manual
   measurements needed
 
+For semantic review candidates, classification is incomplete until the scan can
+answer:
+- exact tool version/source and command
+- local evidence confirming the finding
+- affected feature, hot path, and severity
+- repo-native test, provider/runtime, artifact, or browser/UI proof needed
+- whether to suppress, create a story, or rerun later
+
 ## Phase 3 — Write the Scan Report
 
 Fill the generated report with:
@@ -147,6 +170,8 @@ Fill the generated report with:
 - detectors used / unavailable
 - complexity findings with current pattern, estimated current complexity,
   recommended change, estimated complexity after, risk level, and proof needed
+- semantic-review findings with tool version/source, command, accepted/rejected
+  disposition, local evidence, and proof needed
 - top findings with classification
 - one recommended next step
 - story candidate(s)
