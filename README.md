@@ -133,18 +133,35 @@ Per-run execution state is written to `output/runs/<run_id>/`:
 
 ## Running the App
 
-Start the API and UI in two terminals:
+Use the local launcher for day-to-day app work:
 
 ```bash
-# Terminal 1: API (hot-reloads on save)
-PYTHONPATH=src python -m cine_forge.api
-
-# Terminal 2: UI
-cd ui && npm ci && npm run dev
+npm run local:app
 ```
 
-- **API**: http://localhost:8000 (OpenAPI docs at `/docs`)
-- **UI**: http://localhost:5174
+Primary checkout ports remain **http://localhost:8000** for the API and
+**http://localhost:5174** for the UI. Worktrees read Conductor's
+`local-dev-ports.json`, persist a slot in `~/.codex/local-dev-ports.json`, and
+derive ports inside CineForge's reserved ranges: UI `5300-5399`, services
+`3300-3399`.
+
+When testing an unlanded Conductor worktree, set
+`CONDUCTOR_LOCAL_DEV_PORTS_FILE=/path/to/local-dev-ports.json` before launching.
+
+Use `npm run local:status` to inspect port ownership and health, and
+`npm run local:stop` to stop same-checkout services. The compatibility command
+`npm run dev:local` delegates to the same launcher.
+
+The lower-level manual commands still work when you explicitly want one raw
+process:
+
+```bash
+# API only
+PYTHONPATH=src python -m cine_forge.api
+
+# UI only
+cd ui && npm ci && npm run dev
+```
 
 ## Dependency Freshness Hardening
 

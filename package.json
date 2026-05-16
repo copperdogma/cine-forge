@@ -1,6 +1,9 @@
 {
   "scripts": {
-    "dev:local": "bash scripts/dev-local",
+    "dev:local": "node scripts/local-service.mjs start app",
+    "local:app": "node scripts/local-service.mjs start app",
+    "local:status": "node scripts/local-service.mjs status app",
+    "local:stop": "node scripts/local-service.mjs stop app",
     "methodology:compile": "node scripts/methodology-graph.js build",
     "methodology:check": "node scripts/methodology-graph.js check"
   },
