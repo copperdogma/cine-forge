@@ -23,8 +23,10 @@ letting the loop widen or recurse.
 
 ## Mode Selection
 
-Before launching workers, state the selected mode, budget, materiality gate, and
-local/upstream boundary.
+Before launching workers, state the selected mode, budget, materiality gate,
+validation tier, and local/upstream boundary. In strict-until-clean mode, also
+state the current phase: discovery, systemic-fix, focused-confirmation, or
+candidate-close.
 
 ### Budgeted Mode
 
@@ -64,13 +66,48 @@ objectively contract-critical and bounded: executable behavior, tests, scripts,
 generated outputs, schemas, API/output contracts, eval correctness, security, or
 similarly high-risk validation surfaces.
 
-- Workers may be fix-capable when ownership is disjoint.
-- Any material fix resets a fresh full pass over the original scope.
-- Continue while material findings are real, convergence is clear, and the scope
-  is not widening.
+- Start with a discovery phase before fixing when the risk is cross-cutting:
+  portability, privacy, cache identity, manifests, source/user-controlled
+  strings, schema/output contracts, security boundaries, generated artifact
+  contracts, or other surfaces where one defect class may repeat across files.
+- Discovery workers should usually be find-only breadth scanners over disjoint
+  threat surfaces, not serial fixers. Their output should be a finding ledger
+  grouped by defect class.
+- Once a defect class repeats, stop treating each instance as its own loop
+  reset. Switch to systemic-fix: map the affected input/output surface, patch
+  the class centrally or with one clearly owned implementation slice, then run
+  focused confirmation for the whole class.
+- Workers may be fix-capable only after discovery when ownership is disjoint and
+  the coordinator has identified the class or shard they own.
+- Any material fix during candidate-close resets a fresh full pass over the
+  original scope. Material fixes before candidate-close reset only the focused
+  discovery or confirmation needed for that defect class unless the fix changes
+  the overall threat model.
+- Continue while material findings are real, convergence is clear, the scope is
+  not widening, and validation cost still fits the current phase.
 - Stop when a full round is clean, a blocker remains unresolved, findings become
   minor-only, the loop is non-convergent, or continuing would exceed the
   approved scope. Do not keep going just because new adjacent work can be found.
+
+### Validation Tiers
+
+Use validation tiers to avoid paying closeout costs while findings are still
+likely.
+
+- Tier 0: direct probes, helper scripts, schema checks, static searches, and
+  tiny reproductions.
+- Tier 1: focused regression tests for the affected defect class.
+- Tier 2: affected suite or package-level checks.
+- Tier 3: generated docs, proof artifacts, snapshots, changelog/story updates,
+  and other regenerated evidence surfaces.
+- Tier 4: full test suite, advisory review, broad evals, deploy smoke, or other
+  expensive final confidence signals.
+
+While the finding ledger is still dirty, stay in Tier 0-1 unless a higher tier
+is the only way to reproduce the defect. Run Tier 2 only when focused
+confirmation is stable enough to justify it. Run Tier 3-4 only in
+candidate-close, after discovery and focused confirmation stop producing new
+material defect classes.
 
 ## Coordinator Defaults
 
@@ -97,6 +134,10 @@ similarly high-risk validation surfaces.
   the only fixes made were clearly minor/local and passed a targeted check.
 - Do not chase nits. A loop is for catching material secondary effects, not for
   perfecting every typo, whitespace mark, or phrasing preference.
+- Keep coordinator context compact: finding ledger grouped by defect class,
+  disposition, touched files, current strict-mode phase, current validation
+  tier, and remaining blockers. Do not manually reread huge diffs or logs every
+  cycle unless a disposition depends on it.
 
 ## Materiality Gate
 
@@ -151,6 +192,10 @@ claims an issue:
 - `follow-up`: valid but upstream-owned, expansion work, or outside the current
   loop scope
 
+Group accepted findings by defect class when the same kind of issue appears in
+multiple places. A repeated class is a signal to patch the class systemically,
+not to keep running instance-by-instance reset loops.
+
 Treat model or worker findings as evidence, not truth. The coordinator owns the
 final disposition and should verify findings against the scoped task before
 fixing or resetting the loop.
@@ -159,6 +204,28 @@ When the scoped verifier is clean, stop. Do not run extra loop rounds only to
 get nicer wording, a redundant second opinion, or a stronger-sounding closeout
 line. Escalate to `/validate` for closure judgment; do not turn `/loop-verify`
 into story closure.
+
+## Non-Convergence And Systemic Audit Trigger
+
+Stop the normal loop and switch to `final state: systemic-audit-needed` or
+`final state: non-convergent` when the loop shows that it is still mapping the
+defect landscape rather than closing a candidate:
+
+- two consecutive passes find same-class material issues
+- two material resets happen without narrowing the remaining risk
+- workers keep finding new instances after a class-level pattern is already
+  visible
+- the scope expands beyond the original threat model, owner boundary, or
+  approved file/output surface
+- candidate validation becomes more expensive than another discovery pass is
+  likely to justify
+- full-suite, proof-generation, docs, changelog, or methodology work is being
+  repeated after non-final fixes
+
+When this triggers, stop fixing instance by instance. Report the defect class,
+known affected surfaces, local impact, focused probes already run, and the
+smallest recommended systemic audit or follow-up story. If local work can still
+be validated independently, separate that from the systemic follow-up.
 
 ## Upstream And Expansion Boundary
 
@@ -202,7 +269,8 @@ When a worker finds an upstream-owned or expansion issue:
 1. Define the exact scope.
    - Name the task in one sentence.
    - Select `budgeted`, `docs/ADR alignment`, or `strict-until-clean` mode.
-   - State the budget and continuation rule.
+   - State the budget, continuation rule, validation tier, and, for strict
+     mode, the current phase.
    - List the files, paths, or items in scope.
    - Decide the sharding plan before launching agents.
    - State what is in-bounds local work and what should be reported as
@@ -212,6 +280,8 @@ When a worker finds an upstream-owned or expansion issue:
    - Avoid overlapping write ownership inside a round.
    - For docs/ADR alignment or shared semantic surfaces, use find-only workers
      and let the main agent apply coordinated fixes.
+   - For strict-mode discovery over cross-cutting contracts, shard by threat
+     surface or data flow first and default workers to find-only.
    - If a cross-cutting rule touches all files, still shard by file set and let a
      later approved round catch secondary effects.
 3. Record the baseline.
@@ -235,13 +305,18 @@ When a worker finds an upstream-owned or expansion issue:
    - `RESULT: blocked` means the worker hit a real ambiguity, shared-surface
      conflict, upstream-owned issue, expansion finding, or required human
      judgment.
+   - Record each issue's defect class, disposition, affected surface, and
+     validation tier.
 6. Decide whether the loop resets or stops.
    - If any shard is `RESULT: blocked` and the blocker is still unresolved at
      the end of the round, stop and report the blocker unless the main agent can
      resolve it locally without widening scope.
    - For every `RESULT: fixed`, classify the change as material or minor.
-   - In strict-until-clean mode, any material fix resets the full original scope
-     if the loop is still converging and still inside the approved task.
+   - In strict-until-clean mode, run discovery before candidate-close for
+     cross-cutting contracts. Repeated same-class findings switch to
+     systemic-fix instead of another full reset. Candidate-close material fixes
+     reset the full original scope if the loop is still converging and still
+     inside the approved task.
    - In budgeted mode, run at most the confirmation that fits the stated budget;
      if another full pass is needed, stop with `final state:
      continuation-needed`.
@@ -250,8 +325,8 @@ When a worker finds an upstream-owned or expansion issue:
      honest close.
    - Minor fixes do not automatically reset the loop. Accept them when the
      secondary effect is confined to that shard and a targeted check passes.
-   - If all shards are `RESULT: no-issue`, stop the loop and run final top-level
-     validation.
+   - If all shards are `RESULT: no-issue`, stop the loop and run the narrowest
+     final validation appropriate to the current tier and mode.
 7. Rebuild context before any approved next round.
    - Refresh `git status --short`, diffs, and any generated surfaces affected by
      the prior round.
@@ -272,6 +347,7 @@ Require each worker report to include:
 - the files changed, if any
 - a terse explanation of the issue, blocker, upstream finding, or expansion
   finding
+- the defect class and affected surface for each finding
 - any checks run
 - whether each fix was material or minor
 
@@ -298,7 +374,8 @@ assigned shard, or in related docs/stories/ADRs not named above, report the
 surface, evidence, and local impact instead of fixing outside your scope.
 
 End with exactly one of RESULT: fixed, RESULT: no-issue, or RESULT: blocked.
-List changed files, checks run, and whether each fix was material or minor.
+List changed files, checks run, each finding's defect class and affected
+surface, and whether each fix was material or minor.
 ```
 
 Use a find-only prompt shape like:
@@ -320,7 +397,8 @@ change the named contract or proof surface.
 
 End with exactly one of RESULT: fixed, RESULT: no-issue, or RESULT: blocked.
 Because this is inspect-only, use RESULT: fixed only if the main agent fixed a
-reported issue before the round ended. List files inspected and checks run.
+reported issue before the round ended. List files inspected, checks run, and
+each finding's defect class and affected surface.
 ```
 
 ## Examples
@@ -341,6 +419,15 @@ expansion.
 ```
 
 ```text
+/loop-verify Review the portable bundle contract for privacy-safe source strings
+and manifest-declared files. Use strict-until-clean mode, starting with
+find-only discovery across input strings, generated manifests, cache identity,
+and exported artifact metadata. Stay in Tier 0-1 while findings are likely,
+switch to systemic-fix if a defect class repeats, and run generated proofs/full
+suites only after candidate-close.
+```
+
+```text
 /loop-verify Review these ADR and spec files for contradictions about the
 source-model contract. Use docs/ADR alignment mode: find-only workers, no
 recursive agents, main-agent fixes, and stop if the review discovers related
@@ -354,11 +441,16 @@ stories or ADRs outside the named files.
   launching workers.
 - Review returned diffs briefly before accepting them.
 - Keep a round summary with shard, status, changed files, and any blocker.
+- Keep a finding ledger grouped by defect class with accepted/rejected/follow-up
+  disposition, affected surfaces, touched files, current validation tier, and
+  remaining blockers.
 - Classify every fix as material or minor before deciding whether the loop
   resets, stops, or needs explicit continuation.
 - Apply docs/ADR alignment fixes directly when workers are find-only.
 - Run the narrowest honest validation after the final clean, budgeted, blocked,
   or continuation-needed state.
+- In strict-until-clean mode, keep Tier 3-4 closeout work frozen until
+  candidate-close unless a higher tier is required to reproduce the defect.
 - Stop and report non-convergence if repeated rounds keep generating new issues
   because the scope is too coupled, workers are interfering indirectly, or
   verification is discovering new work beyond the intended scope.
@@ -369,14 +461,16 @@ stories or ADRs outside the named files.
 ## Output Shape
 
 - scope
-- mode and budget
+- mode, strict-mode phase when applicable, budget, and validation tier
 - round count
 - per-round status summary
+- finding ledger grouped by defect class with accepted/rejected/follow-up
+  disposition
 - materiality decision for any `RESULT: fixed`
 - upstream-owned findings, expansion findings, or blockers, if any, with the
   local impact and suggested follow-up route
-- final state: converged, budget-complete, continuation-needed, blocked, or
-  non-convergent
+- final state: converged, budget-complete, continuation-needed, blocked,
+  systemic-audit-needed, or non-convergent
 - checks run
 - learning-review result when the loop exposed material repeated issues,
   blockers, non-convergence, explicit user correction, missing guardrail, or a
@@ -406,6 +500,13 @@ stories or ADRs outside the named files.
   approval.
 - Do not continue a docs/ADR loop when the review is discovering new related
   alignment work beyond the intended scope; report the expansion instead.
+- Do not run generated docs, proof artifacts, changelog/story closeout,
+  methodology compile, full suites, or advisory review after every dirty strict
+  pass. Save Tier 3-4 work for candidate-close unless it is required to
+  reproduce the defect.
+- Do not keep doing instance-by-instance fixes after repeated same-class
+  findings show that the honest next step is systemic audit or a class-level
+  patch.
 - Do not let workers fight over the same files.
 - Do not ignore secondary effects from earlier fixes in strict-until-clean mode;
   rerunning the full loop is the point when the approved task needs that proof.
