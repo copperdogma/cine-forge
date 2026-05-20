@@ -1,4 +1,4 @@
-discovered: '2026-05-20T15:00:07Z'
+discovered: '2026-05-20T19:21:52Z'
 providers:
   openai:
     api_key_set: true
@@ -387,7 +387,7 @@ providers:
     env_key: CINE_FORGE_XAI_API_KEY
     legacy_env_key: XAI_API_KEY
     status: ok
-    model_count: 4
+    model_count: 5
     models:
     - id: grok-4.3
       provider: xai
@@ -401,6 +401,18 @@ providers:
       prompt_text_token_price: 12500
       completion_text_token_price: 25000
       tier: sota
+    - id: grok-build-0.1
+      provider: xai
+      display_name: grok-build-0.1
+      created: '2026-04-16'
+      input_modalities:
+      - text
+      - image
+      output_modalities:
+      - text
+      prompt_text_token_price: 10000
+      completion_text_token_price: 20000
+      tier: mid
     - id: grok-4.20-0309-non-reasoning
       provider: xai
       display_name: grok-4.20-0309-non-reasoning
@@ -436,4 +448,92 @@ providers:
       - text
       prompt_text_token_price: 12500
       completion_text_token_price: 25000
+      tier: sota
+  moonshot:
+    api_key_set: true
+    env_key: CINE_FORGE_MOONSHOT_API_KEY
+    legacy_env_key: MOONSHOT_API_KEY
+    status: ok
+    model_count: 9
+    models:
+    - id: moonshot-v1-auto
+      provider: moonshot
+      display_name: moonshot-v1-auto
+      created: '2026-05-19'
+      input_token_limit: 131072
+      supports_image_in: null
+      supports_video_in: null
+      supports_reasoning: null
+      tier: mid
+    - id: moonshot-v1-8k-vision-preview
+      provider: moonshot
+      display_name: moonshot-v1-8k-vision-preview
+      created: '2026-05-19'
+      input_token_limit: 8192
+      supports_image_in: true
+      supports_video_in: null
+      supports_reasoning: null
+      tier: mid
+    - id: moonshot-v1-8k
+      provider: moonshot
+      display_name: moonshot-v1-8k
+      created: '2026-05-19'
+      input_token_limit: 8192
+      supports_image_in: null
+      supports_video_in: null
+      supports_reasoning: null
+      tier: mid
+    - id: moonshot-v1-32k-vision-preview
+      provider: moonshot
+      display_name: moonshot-v1-32k-vision-preview
+      created: '2026-05-19'
+      input_token_limit: 32768
+      supports_image_in: true
+      supports_video_in: null
+      supports_reasoning: null
+      tier: mid
+    - id: moonshot-v1-32k
+      provider: moonshot
+      display_name: moonshot-v1-32k
+      created: '2026-05-19'
+      input_token_limit: 32768
+      supports_image_in: null
+      supports_video_in: null
+      supports_reasoning: null
+      tier: mid
+    - id: moonshot-v1-128k-vision-preview
+      provider: moonshot
+      display_name: moonshot-v1-128k-vision-preview
+      created: '2026-05-19'
+      input_token_limit: 131072
+      supports_image_in: true
+      supports_video_in: null
+      supports_reasoning: null
+      tier: mid
+    - id: moonshot-v1-128k
+      provider: moonshot
+      display_name: moonshot-v1-128k
+      created: '2026-05-19'
+      input_token_limit: 131072
+      supports_image_in: null
+      supports_video_in: null
+      supports_reasoning: null
+      tier: mid
+    - id: kimi-k2.6
+      provider: moonshot
+      display_name: kimi-k2.6
+      created: '2026-05-19'
+      input_token_limit: 262144
+      supports_image_in: true
+      supports_video_in: true
+      supports_reasoning: true
+      tier: sota
+    - id: kimi-k2.5
+      provider: moonshot
+      display_name: kimi-k2.5
+      created: '2026-05-19'
+      input_token_limit: 262144
+      supports_image_in: true
+      supports_video_in: true
+      supports_reasoning: true
       tier: sota

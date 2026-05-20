@@ -46,6 +46,17 @@ def test_export_legacy_provider_envs_sets_generic_aliases(monkeypatch) -> None:
     assert preferred_env_name("ANTHROPIC_API_KEY") == "CINE_FORGE_ANTHROPIC_API_KEY"
 
 
+def test_export_legacy_provider_envs_sets_moonshot_alias(monkeypatch) -> None:
+    monkeypatch.setenv("CINE_FORGE_MOONSHOT_API_KEY", "moonshot-key")
+    monkeypatch.delenv("MOONSHOT_API_KEY", raising=False)
+
+    exported = export_legacy_provider_envs()
+
+    assert exported["MOONSHOT_API_KEY"] == "moonshot-key"
+    assert os.environ["MOONSHOT_API_KEY"] == "moonshot-key"
+    assert preferred_env_name("MOONSHOT_API_KEY") == "CINE_FORGE_MOONSHOT_API_KEY"
+
+
 def test_export_legacy_provider_envs_overrides_stale_google_api_key(monkeypatch) -> None:
     monkeypatch.setenv("CINE_FORGE_GEMINI_API_KEY", "repo-gemini-key")
     monkeypatch.setenv("GEMINI_API_KEY", "stale-gemini-key")

@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-05-20-02] — Evaluate Kimi K2.6 model slots (Story 205)
+
+### Added
+- Added Story 205 and raw Kimi K2.6 benchmark evidence for script bible, character extraction, entity discovery, and QA pass.
+- Added Moonshot/Kimi model discovery support, repo-scoped Moonshot env aliasing, and Kimi K2.6 benchmark cost estimates.
+
+### Changed
+- Added Kimi K2.6 promptfoo lanes and refreshed the eval registry/model cache with measured Kimi quality, latency, cost, and mismatch classifications.
+- Updated model-discovery skill guidance to reflect current OpenAI, Anthropic, Google/Gemini, xAI, and Moonshot/Kimi coverage.
+
 ## [2026-05-20-01] — Evaluate Gemini 3.5 Flash model slots (Story 204)
 
 ### Added

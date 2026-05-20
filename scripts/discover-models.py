@@ -66,6 +66,7 @@ TIER_PATTERNS: list[tuple[str, str]] = [
     (r"^o3-",                   "reasoning"),
     (r"^o4\b",                  "reasoning"),
     (r"^o4-",                   "reasoning"),
+    (r"^kimi-k2-thinking",      "reasoning"),
 
     # ── Budget qualifiers — checked FIRST so "gpt-4.1-mini" hits cheap,
     #    not the mid-tier gpt-4.1 pattern below it. Same for flash-lite.
@@ -134,6 +135,12 @@ TIER_PATTERNS: list[tuple[str, str]] = [
     (r"^grok-4-",               "sota"),
     (r"^grok-3-mini",           "cheap"),
     (r"^grok-3\b",              "mid"),
+
+    # ── Moonshot / Kimi ──────────────────────────────────────────────────────
+    (r"^kimi-k2\.6\b",          "sota"),
+    (r"^kimi-k2\.5\b",          "sota"),
+    (r"^kimi-k2",               "sota"),
+    (r"^moonshot-v1",           "mid"),
 ]
 
 TIER_LABELS = {
@@ -187,6 +194,13 @@ PROVIDERS = {
         "display": "xAI",
         "setup_url": "https://console.x.ai/",
         "setup_hint": f"export {preferred_env_name('XAI_API_KEY')}='xai-...'",
+    },
+    "moonshot": {
+        "env_key": "MOONSHOT_API_KEY",
+        "preferred_env_key": preferred_env_name("MOONSHOT_API_KEY"),
+        "display": "Moonshot (Kimi)",
+        "setup_url": "https://platform.kimi.ai/",
+        "setup_hint": f"export {preferred_env_name('MOONSHOT_API_KEY')}='sk-...'",
     },
 }
 
@@ -424,11 +438,49 @@ def query_xai(api_key: str) -> list[dict]:
     return models
 
 
+def query_moonshot(api_key: str) -> list[dict]:
+    """Query Moonshot /v1/models for Kimi/Moonshot chat models."""
+    resp = httpx.get(
+        "https://api.moonshot.ai/v1/models",
+        headers={"Authorization": f"Bearer {api_key}"},
+        timeout=15,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+
+    models = []
+    for m in data.get("data") or data.get("models", []):
+        model_id = m["id"]
+        created_raw = m.get("created") or m.get("created_at")
+        if isinstance(created_raw, str):
+            created = created_raw[:10]
+        elif isinstance(created_raw, (int, float)) and created_raw > 0:
+            created = datetime.fromtimestamp(created_raw, tz=UTC).strftime("%Y-%m-%d")
+        else:
+            created = "unknown"
+
+        models.append({
+            "id": model_id,
+            "provider": "moonshot",
+            "display_name": model_id,
+            "created": created,
+            "input_token_limit": m.get("context_length"),
+            "supports_image_in": m.get("supports_image_in"),
+            "supports_video_in": m.get("supports_video_in"),
+            "supports_reasoning": m.get("supports_reasoning"),
+            "tier": classify_tier(model_id),
+        })
+
+    models.sort(key=lambda x: (x.get("created", ""), x["id"]), reverse=True)
+    return models
+
+
 QUERY_FUNCS = {
     "openai": query_openai,
     "anthropic": query_anthropic,
     "google": query_google,
     "xai": query_xai,
+    "moonshot": query_moonshot,
 }
 
 

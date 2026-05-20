@@ -123,6 +123,17 @@ providers:
       max_tokens: 4096
       response_format: { type: "json_object" }
 
+  - id: openai:kimi-k2.6
+    label: "Kimi K2.6"
+    config:
+      apiBaseUrl: "https://api.moonshot.ai/v1"
+      apiKeyEnvar: "MOONSHOT_API_KEY"
+      temperature: 1.0
+      top_p: 0.95
+      max_tokens: 32768
+      showThinking: false
+      response_format: { type: "json_object" }
+
   - id: google:gemini-3-pro-preview
     label: "Gemini 3 Pro"
     config:

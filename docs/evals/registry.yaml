@@ -65,6 +65,16 @@ evals:
       cost_usd_max: 0.10
 
     scores:
+      - model: "Kimi K2.6"
+        metrics:
+          overall: 0.8780
+        latency_ms: 126827
+        cost_usd: 0.0507
+        cost_estimated: true
+        measured: 2026-05-20
+        git_sha: "eb5de87"
+        result_file: benchmarks/results/character-extraction-kimi-k26-2026-05-20.json
+        note: "Story 205 Moonshot probe passed all three cases, but trailed the Claude/GPT leaders and missed the 30s latency target by a wide margin. Model-wrong misses were mostly evidence grounding plus ROSE trait coverage and DAD narrative-role classification; non-runtime-blocking because Kimi was not adopted as the character-bible default."
       - model: "GPT-5.5"
         metrics:
           overall: 0.9496
@@ -1216,6 +1226,16 @@ evals:
       note: "QA should be near-perfect — false positives waste pipeline budget"
 
     scores:
+      - model: "Kimi K2.6"
+        metrics:
+          overall: 0.5938
+        latency_ms: 21321
+        cost_usd: 0.0101
+        cost_estimated: true
+        measured: 2026-05-20
+        git_sha: "eb5de87"
+        result_file: benchmarks/results/qa-pass-kimi-k26-2026-05-20.json
+        note: "Story 205 Moonshot probe caught the bad extraction but false-negatived the known-good scene. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default."
       - model: "GPT-5.5"
         metrics:
           overall: 0.5982
@@ -2825,6 +2845,16 @@ evals:
       cost_usd_max: 0.02
 
     scores:
+      - model: "Kimi K2.6"
+        metrics:
+          overall: 0.9250
+        latency_ms: 70902
+        cost_usd: 0.0340
+        cost_estimated: true
+        measured: 2026-05-20
+        git_sha: "eb5de87"
+        result_file: benchmarks/results/entity-discovery-kimi-k26-2026-05-20.json
+        note: "Story 205 Moonshot probe found all required entities and passed the harness, but remained below the 0.93 target and missed both latency and cost budgets. No entity-discovery default change; remaining quality gap is model-wrong/non-runtime-blocking for this scout."
       - model: "GPT-5.5"
         metrics:
           overall: 0.9250
@@ -3038,6 +3068,16 @@ evals:
       cost_usd_max: 0.01
 
     scores:
+      - model: "Kimi K2.6"
+        metrics:
+          overall: 0.9750
+        latency_ms: 78620
+        cost_usd: 0.0362
+        cost_estimated: true
+        measured: 2026-05-20
+        git_sha: "eb5de87"
+        result_file: benchmarks/results/script-bible-kimi-k26-2026-05-20.json
+        note: "Story 205 Moonshot probe is the measured quality leader on this single script-bible run, but it misses latency and cost budgets and is weaker value than the existing Grok/Gemini full-script lanes. Kimi thinking output must be hidden from promptfoo scoring (`showThinking: false`); the visible-thinking control failed JSON parsing while the final-content JSON scored 0.975. Useful as a frontier comparison/fallback, not a default."
       - model: "GPT-5.5"
         metrics:
           overall: 0.9400

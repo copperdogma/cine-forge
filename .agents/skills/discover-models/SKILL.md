@@ -8,7 +8,7 @@ user-invocable: true
 
 > ADR check: If this task raises an architectural, workflow, schema, or UX question, read the relevant decision record(s) in `docs/decisions/` and supporting docs in `docs/design/` before choosing an approach. If none apply, say so explicitly.
 
-Query OpenAI, Anthropic, and Google model APIs to see what's available, flag untested models, and identify new SOTA options for eval work.
+Query configured provider model APIs to see what's available, flag untested models, and identify new SOTA options for eval work. Current coverage includes OpenAI, Anthropic, Google/Gemini, xAI, and Moonshot/Kimi.
 
 ## Steps
 
@@ -39,7 +39,7 @@ This writes to `docs/evals/models-available.yaml` for other skills to reference.
 
 ## Notes
 
-- The script checks environment variables for API keys: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`
+- The script checks repo-scoped provider API keys first, then legacy names: `CINE_FORGE_OPENAI_API_KEY` / `OPENAI_API_KEY`, `CINE_FORGE_ANTHROPIC_API_KEY` / `ANTHROPIC_API_KEY`, `CINE_FORGE_GEMINI_API_KEY` / `GEMINI_API_KEY`, `CINE_FORGE_XAI_API_KEY` / `XAI_API_KEY`, and `CINE_FORGE_MOONSHOT_API_KEY` / `MOONSHOT_API_KEY`.
 - If a key is missing, the script reports setup instructions
 - Models are filtered to chat/completion models only (no embeddings, TTS, image gen, etc.)
 - `[TESTED]` means the model appears in `docs/evals/registry.yaml`

@@ -72,3 +72,58 @@ def test_grok_registry_matching_handles_human_label() -> None:
         "grok-4.3",
         {"Grok 4.3"},
     )
+
+
+@pytest.mark.unit
+def test_moonshot_provider_is_discoverable() -> None:
+    module = _load_discover_models_module()
+
+    assert "moonshot" in module.PROVIDERS
+    assert module.PROVIDERS["moonshot"]["env_key"] == "MOONSHOT_API_KEY"
+    assert module.classify_tier("kimi-k2.6") == "sota"
+    assert module.classify_tier("kimi-k2-thinking") == "reasoning"
+
+
+@pytest.mark.unit
+def test_query_moonshot_uses_models_endpoint(monkeypatch: pytest.MonkeyPatch) -> None:
+    module = _load_discover_models_module()
+    seen: dict[str, Any] = {}
+
+    class FakeResponse:
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> dict[str, Any]:
+            return {
+                "data": [
+                    {
+                        "id": "moonshot-v1-8k",
+                        "context_length": 8192,
+                    },
+                    {
+                        "id": "kimi-k2.6",
+                        "context_length": 262144,
+                        "supports_image_in": True,
+                        "supports_video_in": True,
+                        "supports_reasoning": True,
+                    },
+                ]
+            }
+
+    def fake_get(url: str, *, headers: dict[str, str], timeout: int) -> FakeResponse:
+        seen["url"] = url
+        seen["headers"] = headers
+        seen["timeout"] = timeout
+        return FakeResponse()
+
+    monkeypatch.setattr(module.httpx, "get", fake_get)
+
+    models = module.query_moonshot("moonshot-test-key")
+
+    assert seen["url"] == "https://api.moonshot.ai/v1/models"
+    assert seen["headers"] == {"Authorization": "Bearer moonshot-test-key"}
+    assert seen["timeout"] == 15
+    assert [model["id"] for model in models] == ["moonshot-v1-8k", "kimi-k2.6"]
+    assert models[1]["provider"] == "moonshot"
+    assert models[1]["tier"] == "sota"
+    assert models[1]["input_token_limit"] == 262144

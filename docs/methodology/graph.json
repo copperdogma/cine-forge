@@ -285,7 +285,8 @@
           "189",
           "198",
           "200",
-          "204"
+          "204",
+          "205"
         ],
         "adrIds": [
           "ADR-003"
@@ -372,7 +373,8 @@
           "198",
           "199",
           "202",
-          "204"
+          "204",
+          "205"
         ],
         "adrIds": [
           "ADR-001",
@@ -1062,7 +1064,8 @@
           "198",
           "200",
           "202",
-          "204"
+          "204",
+          "205"
         ],
         "adrIds": [
           "ADR-001",
@@ -1560,7 +1563,8 @@
           "189",
           "198",
           "200",
-          "204"
+          "204",
+          "205"
         ],
         "evalIds": [
           "compromise-C2-qa-validation"
@@ -1584,7 +1588,8 @@
             "189",
             "198",
             "200",
-            "204"
+            "204",
+            "205"
           ],
           "evalIds": [
             "compromise-C2-qa-validation"
@@ -1621,7 +1626,8 @@
           "198",
           "200",
           "202",
-          "204"
+          "204",
+          "205"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1666,7 +1672,8 @@
             "198",
             "200",
             "202",
-            "204"
+            "204",
+            "205"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -13407,6 +13414,73 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "205",
+      "title": "Kimi K2.6 Model-Slot Eval Scout",
+      "path": "docs/stories/story-205-kimi-k26-model-slot-eval-scout.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)",
+        "R2 (character understanding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C2",
+        "C3"
+      ],
+      "dependsOn": [
+        "035",
+        "204"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "kimi-k2.6",
+        "model-refresh",
+        "moonshot"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "205",
+        "sourcePath": "docs/stories/story-205-kimi-k26-model-slot-eval-scout.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-205-kimi-k26-model-slot-eval-scout.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -13553,12 +13627,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "GPT-5.5",
-        "measured": "2026-04-24",
+        "model": "Kimi K2.6",
+        "measured": "2026-05-20",
         "metrics": {
-          "overall": 0.9496
+          "overall": 0.878
         },
-        "note": "New measured leader, effectively at the quality threshold, but misses latency and cost targets; not a value default over Sonnet 4.6."
+        "note": "Story 205 Moonshot probe passed all three cases, but trailed the Claude/GPT leaders and missed the 30s latency target by a wide margin. Model-wrong misses were mostly evidence grounding plus ROSE trait coverage and DAD narrative-role classification; non-runtime-blocking because Kimi was not adopted as the character-bible default."
       },
       "declaredSpecRefs": [
         "spec:3",
@@ -13581,14 +13655,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "New measured leader, effectively at the quality threshold, but misses latency and cost targets; not a value default over Sonnet 4.6.",
+        "whyNow": "Story 205 Moonshot probe passed all three cases, but trailed the Claude/GPT leaders and missed the 30s latency target by a wide margin. Model-wrong misses were mostly evidence grounding plus ROSE trait coverage and DAD narrative-role classification; non-runtime-blocking because Kimi was not adopted as the character-bible default.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-24",
+          "date": "2026-05-20",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "New measured leader, effectively at the quality threshold, but misses latency and cost targets; not a value default over Sonnet 4.6."
+          "summary": "Story 205 Moonshot probe passed all three cases, but trailed the Claude/GPT leaders and missed the 30s latency target by a wide margin. Model-wrong misses were mostly evidence grounding plus ROSE trait coverage and DAD narrative-role classification; non-runtime-blocking because Kimi was not adopted as the character-bible default."
         }
       }
     },
@@ -14002,12 +14076,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Gemini 3.5 Flash",
+        "model": "Kimi K2.6",
         "measured": "2026-05-20",
         "metrics": {
-          "overall": 0.92
+          "overall": 0.925
         },
-        "note": "Story 204 probe found all required entities and passed the harness, but remains below the 0.93 registry target and offers no value win over cheaper entity-discovery defaults. No design-study backfill/entity-discovery default change."
+        "note": "Story 205 Moonshot probe found all required entities and passed the harness, but remained below the 0.93 target and missed both latency and cost budgets. No entity-discovery default change; remaining quality gap is model-wrong/non-runtime-blocking for this scout."
       },
       "declaredSpecRefs": [
         "spec:3",
@@ -14033,14 +14107,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 204 probe found all required entities and passed the harness, but remains below the 0.93 registry target and offers no value win over cheaper entity-discovery defaults. No design-study backfill/entity-discovery default change.",
+        "whyNow": "Story 205 Moonshot probe found all required entities and passed the harness, but remained below the 0.93 target and missed both latency and cost budgets. No entity-discovery default change; remaining quality gap is model-wrong/non-runtime-blocking for this scout.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-05-20",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 204 probe found all required entities and passed the harness, but remains below the 0.93 registry target and offers no value win over cheaper entity-discovery defaults. No design-study backfill/entity-discovery default change."
+          "summary": "Story 205 Moonshot probe found all required entities and passed the harness, but remained below the 0.93 target and missed both latency and cost budgets. No entity-discovery default change; remaining quality gap is model-wrong/non-runtime-blocking for this scout."
         }
       }
     },
@@ -14977,12 +15051,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Gemini 3.5 Flash",
+        "model": "Kimi K2.6",
         "measured": "2026-05-20",
         "metrics": {
-          "overall": 0.91
+          "overall": 0.975
         },
-        "note": "Story 204 probe passed the script-bible quality and latency targets, but misses the cost budget and is weaker value than the existing full-script leaders. No script-bible default change."
+        "note": "Story 205 Moonshot probe is the measured quality leader on this single script-bible run, but it misses latency and cost budgets and is weaker value than the existing Grok/Gemini full-script lanes. Kimi thinking output must be hidden from promptfoo scoring (`showThinking: false`); the visible-thinking control failed JSON parsing while the final-content JSON scored 0.975. Useful as a frontier compa…"
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -15005,14 +15079,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 204 probe passed the script-bible quality and latency targets, but misses the cost budget and is weaker value than the existing full-script leaders. No script-bible default change.",
+        "whyNow": "Story 205 Moonshot probe is the measured quality leader on this single script-bible run, but it misses latency and cost budgets and is weaker value than the existing Grok/Gemini full-script lanes. Kimi thinking output must be hidden from promptfoo scoring (`showThinking: false`); the visible-thinking control failed JSON parsing while the final-content JSON scored 0.975. Useful as a frontier compa…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-05-20",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 204 probe passed the script-bible quality and latency targets, but misses the cost budget and is weaker value than the existing full-script leaders. No script-bible default change."
+          "summary": "Story 205 Moonshot probe is the measured quality leader on this single script-bible run, but it misses latency and cost budgets and is weaker value than the existing Grok/Gemini full-script lanes. Kimi thinking output must be hidden from promptfoo scoring (`showThinking: false`); the visible-thinking control failed JSON parsing while the final-content JSON scored 0.975. Useful as a frontier compa…"
         }
       }
     },
