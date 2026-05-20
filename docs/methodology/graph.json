@@ -13298,9 +13298,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260519-2127",
+        "timestamp": "20260519-2135",
         "date": "2026-05-19",
-        "summary": "marked-done: `/mark-story-done` closed Story 203 after confirming build and validation gates were checked, all acceptance criteria and tasks were complete, no eval registry updates were required, and no UI browser verif…"
+        "summary": "check-in-loop-verify-fix: strict-until-clean `/loop-verify` during `/finish-and-push` found one material close-out routing issue: `memory/codebase-improvement-state.yaml` still described Story 203 as active and told fut…"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -13310,12 +13310,12 @@
         "sourcePath": "docs/stories/story-203-render-adapter-scene-generation-decomposition.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "marked-done: `/mark-story-done` closed Story 203 after confirming build and validation gates were checked, all acceptance criteria and tasks were complete, no eval registry updates were required, and no UI browser verif…",
+        "whyNow": "check-in-loop-verify-fix: strict-until-clean `/loop-verify` during `/finish-and-push` found one material close-out routing issue: `memory/codebase-improvement-state.yaml` still described Story 203 as active and told fut…",
         "lastRelevantAction": {
           "date": "2026-05-19",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-203-render-adapter-scene-generation-decomposition.md",
-          "summary": "marked-done: `/mark-story-done` closed Story 203 after confirming build and validation gates were checked, all acceptance criteria and tasks were complete, no eval registry updates were required, and no UI browser verif…"
+          "summary": "check-in-loop-verify-fix: strict-until-clean `/loop-verify` during `/finish-and-push` found one material close-out routing issue: `memory/codebase-improvement-state.yaml` still described Story 203 as active and told fut…"
         }
       }
     }
