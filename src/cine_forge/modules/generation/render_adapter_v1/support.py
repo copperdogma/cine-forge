@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import Any
 
@@ -11,6 +12,16 @@ from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import ArtifactRef, EnginePack, TrackEntry
 
 ENGINE_PACK_DIR = Path(__file__).resolve().parent / "engine_packs"
+SLUG_RE = re.compile(r"[^a-z0-9]+")
+IMAGE_KINDS = {
+    "keyframe",
+    "scene_injected_image",
+    "project_injected_image",
+    "character_injected_image",
+    "location_injected_image",
+    "prop_injected_image",
+}
+AUDIO_KINDS = {"scene_injected_audio", "project_injected_audio"}
 
 
 def load_engine_pack(pack_id: str) -> EnginePack:
@@ -147,6 +158,16 @@ def normalize_duration_seconds(
     raise ValueError(
         f"Requested duration {requested_seconds:.1f}s exceeds engine maximum {supported[-1]}s."
     )
+
+
+def optional_string(value: Any) -> str | None:
+    if isinstance(value, str) and value.strip():
+        return value.strip()
+    return None
+
+
+def slugify(value: str) -> str:
+    return SLUG_RE.sub("_", value.strip().lower()).strip("_")
 
 
 def first_or_none(values: list[Any]) -> Any | None:

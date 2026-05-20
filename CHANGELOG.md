@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-05-19-01] — Decompose render adapter scene generation (Story 203)
+
+### Added
+- Added focused render-adapter helper modules for orchestration, resolved inputs, request shaping, prompt context, dialogue contracts, and output/cost/track artifact construction.
+- Added the 2026-05-19 codebase-improvement report and Story 203 closeout evidence for the render-adapter decomposition.
+
+### Changed
+- Changed `render_adapter_v1/main.py` from a 2,630-line scene-generation owner into a smaller entrypoint while preserving recipe behavior, prompt semantics, artifact contracts, costs, and track-manifest updates.
+- Updated methodology and scout state so future codebase-improvement scans route render-adapter cleanup to Story 203 instead of creating duplicate decomposition stories.
+
 ## [2026-05-05-04] — Backfill default design studies (Story 202)
 
 ### Added
