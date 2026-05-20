@@ -17,6 +17,8 @@ Companion runbook: `docs/runbooks/align.md`
 Any time something changes that might ripple through the methodology graph:
 
 - an ADR is decided
+- an ADR appears ready to align but remaining decisions are unclear; run
+  `/triage-adr` first
 - the Ideal changes
 - the spec changes
 - methodology state or generated dashboards change materially

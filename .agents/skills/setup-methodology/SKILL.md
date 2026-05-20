@@ -35,6 +35,8 @@ folder with no real Ideal/spec, stop and route to `/init-project new-idea`.
 - optional `/ideation` helper bootstrap for high-ambiguity Ideal/spec drafting,
   ADR option expansion, story-boundary shaping, and story-plan alternatives
   where option quality is the blocker
+- optional `/triage-adr` helper bootstrap for existing ADRs whose remaining
+  decisions, maturity, or next route are unclear
 - fresh upstream documentation as an active dependency for drift-prone
   providers, SDKs, model/provider slugs, browser/tooling plugins,
   UI/component libraries, auth/payment/storage providers, and framework APIs
@@ -263,6 +265,9 @@ without spending many rounds proving absent evidence. Do this:
    - `/ideation` as an optional helper for high-ambiguity Ideal/spec drafting,
      ADR options, story boundaries, and build-plan alternatives where option
      quality is the blocker, with final judgment left to the caller
+   - `/triage-adr` as an optional helper for existing ADRs whose remaining
+     Cam decisions, technical recommendations, evidence gaps, or alignment
+     route are unclear
    - `/build-story` with delegation only after the plan gate, only for bounded
      non-blocking work with disjoint ownership
    - `/validate` with optional parallel validation packets and escalation to
@@ -393,6 +398,9 @@ without spending many rounds proving absent evidence. Do this:
    - Ensure `/ideation` is installed as an optional helper for high-ambiguity
      Ideal/spec drafting, ADR options, story boundaries, and build-plan
      alternatives where option quality is the blocker
+   - Ensure `/triage-adr` is installed as an optional helper for existing ADRs
+     that need a decision inventory, maturity read, and next-route
+     recommendation
    - Ensure `/validate` preserves main-thread final disposition while allowing
      optional parallel validation packets and `/loop-verify` escalation for
      material repeated review/fix rounds
@@ -415,6 +423,9 @@ without spending many rounds proving absent evidence. Do this:
    - Install or refresh `/ideation` as an optional helper for high-ambiguity
      Ideal/spec drafting, ADR option expansion, story-boundary shaping, and
      build-plan alternatives. Caller skills keep final decision authority.
+   - Install or refresh `/triage-adr` as an optional helper for existing ADRs
+     whose decision inventory, evidence gaps, or align/story route are unclear.
+     ADRs and repo-local normative surfaces keep final decision authority.
    - Install or refresh `/validate` so parallel validation packets can inspect
      changed files, acceptance criteria, checks, and architecture/intent fit
      when the diff warrants it. The main thread synthesizes the report and
