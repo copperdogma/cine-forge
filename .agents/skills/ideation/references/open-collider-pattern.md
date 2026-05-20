@@ -61,7 +61,7 @@ Reject or demote ideas that are:
 
 ## Evidence And Limits
 
-Scout 035 records the adoption decision. The source research reports stronger
+Scout 036 records the adoption decision. The source research reports stronger
 originality and semantic distance for distant-domain collision outputs than
 direct prompting, "be original" instructions, or longer same-domain briefs.
 The quality signal is weaker than the originality signal, so local curation is
