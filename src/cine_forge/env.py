@@ -66,6 +66,10 @@ def export_legacy_provider_envs() -> dict[str, str]:
         value = resolve_env(generic_name)
         if value:
             exported[generic_name] = value
+    gemini_value = os.environ.get("GEMINI_API_KEY")
+    if gemini_value:
+        os.environ["GOOGLE_API_KEY"] = gemini_value
+        exported["GOOGLE_API_KEY"] = gemini_value
     return exported
 
 

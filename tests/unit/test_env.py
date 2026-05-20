@@ -46,6 +46,19 @@ def test_export_legacy_provider_envs_sets_generic_aliases(monkeypatch) -> None:
     assert preferred_env_name("ANTHROPIC_API_KEY") == "CINE_FORGE_ANTHROPIC_API_KEY"
 
 
+def test_export_legacy_provider_envs_overrides_stale_google_api_key(monkeypatch) -> None:
+    monkeypatch.setenv("CINE_FORGE_GEMINI_API_KEY", "repo-gemini-key")
+    monkeypatch.setenv("GEMINI_API_KEY", "stale-gemini-key")
+    monkeypatch.setenv("GOOGLE_API_KEY", "stale-google-key")
+
+    exported = export_legacy_provider_envs()
+
+    assert exported["GEMINI_API_KEY"] == "repo-gemini-key"
+    assert exported["GOOGLE_API_KEY"] == "repo-gemini-key"
+    assert os.environ["GEMINI_API_KEY"] == "repo-gemini-key"
+    assert os.environ["GOOGLE_API_KEY"] == "repo-gemini-key"
+
+
 def test_load_cine_forge_dotenv_uses_worktree_and_shared_checkout_roots(
     monkeypatch,
     tmp_path: Path,

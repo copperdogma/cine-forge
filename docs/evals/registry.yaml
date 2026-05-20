@@ -697,7 +697,9 @@ evals:
     description: >
       Scene boundaries, headings, characters, summaries from full screenplay.
       Tests structural parsing combined with narrative understanding.
-      Gemini providers excluded (parse issues at time of testing).
+      Earlier Gemini providers were excluded after parse issues at time of
+      testing; newer Gemini lanes should use generous output caps and record
+      whether failures are parser/runtime issues or model-quality misses.
     pipeline_stage: extract
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/scene-extraction.yaml --no-cache -j 3"
@@ -743,6 +745,16 @@ evals:
         git_sha: "f2d0f13"
         result_file: benchmarks/results/scene-extraction-grok43-2026-05-04.json
         note: "Story 200 Grok 4.3 probe failed the single full-screenplay extraction case. Classification: model-wrong/output-format - it emitted a reasoning preamble before the JSON despite the strict JSON lane, so the scorer could not parse it. Runtime-blocking if used as a scene-extraction default; also misses the 60s latency target."
+      - model: "Gemini 3.5 Flash"
+        metrics:
+          overall: 0.8108
+        latency_ms: 38265
+        cost_usd: 0.0247
+        cost_estimated: true
+        measured: 2026-05-20
+        git_sha: "0b5ae05"
+        result_file: benchmarks/results/scene-extraction-gemini35flash-2026-05-20.json
+        note: "Story 204 Gemini 3.5 Flash probe parsed strict JSON with a 65k output cap, but misses the 0.90 quality target. Classification: model-wrong/non-runtime-blocking for default selection - it over-split the screenplay to 17 scenes and missed key character refs in the scorer. No scene-extraction default change."
       - model: "GPT-5.2"
         metrics:
           overall: 0.925
@@ -1020,6 +1032,16 @@ evals:
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-scene-enrichment-2026-04-24.json
         note: "Passed both cases but offers no value win over GPT-5.5 or the current Claude lane."
+      - model: "Gemini 3.5 Flash"
+        metrics:
+          overall: 0.8842
+        latency_ms: 9982
+        cost_usd: 0.0052
+        cost_estimated: true
+        measured: 2026-05-20
+        git_sha: "0b5ae05"
+        result_file: benchmarks/results/scene-enrichment-gemini35flash-2026-05-20.json
+        note: "Story 204 probe passed both scene-enrichment cases, but remains below the 0.93 quality target and the Sonnet 4.6 default. Classification: model-wrong/non-runtime-blocking for default selection, mainly weaker elevator tone/time scoring and flashback nuance."
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.959
@@ -1214,6 +1236,16 @@ evals:
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-qa-pass-2026-04-24.json
         note: "Model-wrong: same false negative on the known-good scene case; runtime-blocking if used as the QA default."
+      - model: "Gemini 3.5 Flash"
+        metrics:
+          overall: 0.6250
+        latency_ms: 8320
+        cost_usd: 0.0044
+        cost_estimated: true
+        measured: 2026-05-20
+        git_sha: "0b5ae05"
+        result_file: benchmarks/results/qa-pass-gemini35flash-2026-05-20.json
+        note: "Story 204 verification-slot probe caught the bad extraction but false-negatived the known-good scene. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default."
       - model: "GPT-4.1 Mini"
         metrics:
           overall: 1.000
@@ -1552,6 +1584,16 @@ evals:
         git_sha: "f2d0f13"
         result_file: benchmarks/results/video-understanding-grok43-2026-05-04.json
         note: "Story 200 Grok 4.3 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON, but five misses were model-wrong director/shot-read failures, mainly weak camera/motion/reveal reads and shallow summaries. Latency also misses the 15s pilot target. No role-modality or generated-output-QA default change."
+      - model: "Gemini 3.5 Flash"
+        metrics:
+          overall: 0.5562
+        latency_ms: 11037
+        cost_usd: 0.0120
+        cost_estimated: true
+        measured: 2026-05-20
+        git_sha: "0b5ae05"
+        result_file: benchmarks/results/video-understanding-gemini35flash-2026-05-20.json
+        note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
       - id: "002"
@@ -2803,6 +2845,16 @@ evals:
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-entity-discovery-2026-04-24.json
         note: "Tied GPT-5.5 quality with much higher latency and cost."
+      - model: "Gemini 3.5 Flash"
+        metrics:
+          overall: 0.9200
+        latency_ms: 14305
+        cost_usd: 0.0099
+        cost_estimated: true
+        measured: 2026-05-20
+        git_sha: "0b5ae05"
+        result_file: benchmarks/results/entity-discovery-gemini35flash-2026-05-20.json
+        note: "Story 204 probe found all required entities and passed the harness, but remains below the 0.93 registry target and offers no value win over cheaper entity-discovery defaults. No design-study backfill/entity-discovery default change."
       - model: "GPT-4.1"
         metrics:
           overall: 0.940
@@ -3016,6 +3068,16 @@ evals:
         git_sha: "f2d0f13"
         result_file: benchmarks/results/script-bible-grok43-2026-05-04.json
         note: "Story 200 Grok 4.3 passed the script-bible quality target, but misses latency and cost budgets and is weaker/slower/more expensive than the existing Grok 4.1 Fast Reasoning full-script value candidate. No script-bible default change."
+      - model: "Gemini 3.5 Flash"
+        metrics:
+          overall: 0.9100
+        latency_ms: 20739
+        cost_usd: 0.0215
+        cost_estimated: true
+        measured: 2026-05-20
+        git_sha: "0b5ae05"
+        result_file: benchmarks/results/script-bible-gemini35flash-2026-05-20.json
+        note: "Story 204 probe passed the script-bible quality and latency targets, but misses the cost budget and is weaker value than the existing full-script leaders. No script-bible default change."
       - model: "GPT-5.4"
         metrics:
           overall: 0.970

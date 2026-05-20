@@ -149,6 +149,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 189 | GPT-5.5 Frontier Eval Refresh | High | Done | — | spec:2, spec:3, spec:8 | 035 | [story-189](stories/story-189-gpt-55-frontier-eval-refresh.md) |
 | 198 | Brick & Steel Character Adjudication | High | Done | — | spec:2, spec:3, spec:5, spec:8 | 055, 081, 097, 124, 129 | [story-198](stories/story-198-brick-steel-character-adjudication.md) |
 | 200 | Grok 4.3 Text and Image Reasoning Eval Refresh | High | Done | — | spec:2, spec:4, spec:6, spec:7, spec:8 | 035 | [story-200](stories/story-200-grok-43-text-image-reasoning-eval-refresh.md) |
+| 204 | Gemini 3.5 Flash Model-Slot Eval Refresh | High | Done | — | spec:2, spec:3, spec:4, spec:6, spec:7, spec:8 | 035, 119, 202 | [story-204](stories/story-204-gemini-35-flash-model-slot-eval-refresh.md) |
 | 064 | Screenplay Format Round-Trip: Converter Upgrade + Fidelity Test Suite | Medium | Done | — | spec:2 | — | [story-064](stories/story-064-screenplay-format-round-trip.md) |
 | 070 | Script View Scene Dividers & Entity Hotlinks | Medium | Done | — | spec:2, spec:3, spec:5 | 045 | [story-070](stories/story-070-script-view-scene-dividers-and-hotlinks.md) |
 | 072 | Live Entity Discovery Feedback | Medium | Done | — | spec:2, spec:5 | 062 | [story-072](stories/story-072-live-entity-discovery-feedback.md) |

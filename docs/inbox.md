@@ -14,16 +14,6 @@ Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is 
   Pro/frontier matrix unless the default-lane screen wins. Source:
   https://openai.com/index/gpt-5-5-instant/
 
-- 2026-05-19 — From Conductor Scout 035: Google's Gemini API `gemini-3.5-flash`
-  is worth a CineForge model-slot eval for text/multimodal reasoning, not as a
-  video renderer. Start with `discover-models` and provider health, then test it
-  as a challenger for scene/script understanding, design-study backfill prompt
-  compilation, storyboard/AI-previz QA, and the role-modality/tiered-model
-  compromises. Keep Gemini Omni out of scope until Google publishes a callable
-  API model ID; do not touch render-video defaults without eval evidence from
-  the repo's existing cost/quality surfaces. Source:
-  `/Users/cam/.codex/worktrees/dfe1/conductor/docs/scout/scout-035-google-gemini-35-flash-api-eval-opportunities.md`
-
 - Default Design Study and Image Prompt Compiler: Looking at the look and feel of the characters, locations, and props is critical for consistency. So I know we have a lane where the user can basically skip most everything just to get to the rendering if they want, but we still have to backfill a bunch of stuff to make sure that the AI model gets all of the information it needs to do that render in a way that's possibly going to be satisfying. Likely, it's not going to look like they imagined because they didn't put any work into specifying what the character should look like by working their way through the design study, but that's fine. We're allowing them that path. But in doing so, we need to make sure that when we backfill all of the stuff, the world details, the direction, stuff like that, we also need to generate the visual design studies for the characters, locations, and props. Otherwise, they're going to end up being very inconsistent throughout the render, which isn't great. So I think we need to add that to our backfilling pipeline, and we just want to use basically the absolute cheapest, quickest image generator we have. To generate something, it needs to have a consistent style, so anything we generate visually needs a prompt compiler built into it. So for the final render, we have a prompt compiler where it takes all of the various details that we or the user have specified and compiles them down into a prompt to make sure that the look and feel of everything is consistent and aligned. That's for the AI video generations, but for the design studies, for the stills that we generate, we need to do the exact same thing. We need a prompt compiler to make sure that the characters are going to look more or less the same every time. Not visually identical, obviously. If it says Brick Braddock is a retired detective and that's the only description, he's going to look quite different each time. But we need to make sure we have that information in there. And we need, in that prompt compiler for any of the visual renderings, to have a strong description of how we want these things generated in the first place so they come out in a format that's easy and useful for the AI video generator to use as an input reference, which is mostly what these are for.
 
 - Scout: https://www.bilibili.com/video/BV1FFRQB2Eqw/?share_source=copy_web&vd_source=1895a0980329837a670140ed16f23619

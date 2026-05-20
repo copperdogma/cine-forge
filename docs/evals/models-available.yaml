@@ -1,4 +1,4 @@
-discovered: '2026-05-05T00:08:48Z'
+discovered: '2026-05-20T15:00:07Z'
 providers:
   openai:
     api_key_set: true
@@ -284,8 +284,14 @@ providers:
     env_key: CINE_FORGE_GEMINI_API_KEY
     legacy_env_key: GEMINI_API_KEY
     status: ok
-    model_count: 13
+    model_count: 16
     models:
+    - id: antigravity-preview-05-2026
+      provider: google
+      display_name: Antigravity Agent Preview
+      input_token_limit: 131072
+      output_token_limit: 65536
+      tier: mid
     - id: gemini-2.5-computer-use-preview-10-2025
       provider: google
       display_name: Gemini 2.5 Computer Use Preview 10-2025
@@ -328,12 +334,24 @@ providers:
       input_token_limit: 1048576
       output_token_limit: 65536
       tier: cheap
+    - id: gemini-3.1-flash-lite-preview
+      provider: google
+      display_name: Gemini 3.1 Flash Lite Preview
+      input_token_limit: 1048576
+      output_token_limit: 65536
+      tier: cheap
     - id: gemini-3.1-pro-preview
       provider: google
       display_name: Gemini 3.1 Pro Preview
       input_token_limit: 1048576
       output_token_limit: 65536
       tier: sota
+    - id: gemini-3.5-flash
+      provider: google
+      display_name: Gemini 3.5 Flash
+      input_token_limit: 1048576
+      output_token_limit: 65536
+      tier: mid
     - id: gemini-flash-latest
       provider: google
       display_name: Gemini Flash Latest
@@ -369,7 +387,7 @@ providers:
     env_key: CINE_FORGE_XAI_API_KEY
     legacy_env_key: XAI_API_KEY
     status: ok
-    model_count: 11
+    model_count: 4
     models:
     - id: grok-4.3
       provider: xai
@@ -419,85 +437,3 @@ providers:
       prompt_text_token_price: 12500
       completion_text_token_price: 25000
       tier: sota
-    - id: grok-4-1-fast-non-reasoning
-      provider: xai
-      display_name: grok-4-1-fast-non-reasoning
-      created: '2025-11-19'
-      input_modalities:
-      - text
-      - image
-      output_modalities:
-      - text
-      prompt_text_token_price: 2000
-      completion_text_token_price: 5000
-      tier: mid
-    - id: grok-4-1-fast-reasoning
-      provider: xai
-      display_name: grok-4-1-fast-reasoning
-      created: '2025-11-19'
-      input_modalities:
-      - text
-      - image
-      output_modalities:
-      - text
-      prompt_text_token_price: 2000
-      completion_text_token_price: 5000
-      tier: mid
-    - id: grok-4-fast-non-reasoning
-      provider: xai
-      display_name: grok-4-fast-non-reasoning
-      created: '2025-09-04'
-      input_modalities:
-      - text
-      - image
-      output_modalities:
-      - text
-      prompt_text_token_price: 2000
-      completion_text_token_price: 5000
-      tier: mid
-    - id: grok-4-fast-reasoning
-      provider: xai
-      display_name: grok-4-fast-reasoning
-      created: '2025-09-04'
-      input_modalities:
-      - text
-      - image
-      output_modalities:
-      - text
-      prompt_text_token_price: 2000
-      completion_text_token_price: 5000
-      tier: mid
-    - id: grok-4-0709
-      provider: xai
-      display_name: grok-4-0709
-      created: '2025-07-09'
-      input_modalities:
-      - text
-      - image
-      output_modalities:
-      - text
-      prompt_text_token_price: 30000
-      completion_text_token_price: 150000
-      tier: sota
-    - id: grok-3
-      provider: xai
-      display_name: grok-3
-      created: '2025-04-04'
-      input_modalities:
-      - text
-      output_modalities:
-      - text
-      prompt_text_token_price: 30000
-      completion_text_token_price: 150000
-      tier: mid
-    - id: grok-3-mini
-      provider: xai
-      display_name: grok-3-mini
-      created: '2025-04-04'
-      input_modalities:
-      - text
-      output_modalities:
-      - text
-      prompt_text_token_price: 3000
-      completion_text_token_price: 5000
-      tier: cheap

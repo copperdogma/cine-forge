@@ -318,6 +318,7 @@ All eval scores, targets, and improvement attempts are tracked in **`docs/evals/
 - **Triage what to work on next**: `/triage` for cross-system prioritization, `/triage-evals` for eval-only triage
 - **Improve an eval**: `/improve-eval`
 - **Re-run for a new model**: Add provider block to `benchmarks/tasks/*.yaml` → `promptfoo eval -c tasks/<name>.yaml --no-cache --filter-providers "ModelName" -j 3` → update `docs/evals/registry.yaml` with new scores
+- **Close out with an adoption recommendation**: After any eval or model-slot refresh, report whether to adopt, where to adopt it, and the reasoning behind that decision.
 
 All evals use dual scoring (Python structural scorer + LLM rubric), judge = Opus 4.6. Benchmark configs live in `benchmarks/tasks/`.
 

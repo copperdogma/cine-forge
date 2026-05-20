@@ -89,6 +89,12 @@ providers:
       temperature: 0
       maxOutputTokens: 16384
 
+  - id: google:gemini-3.5-flash
+    label: "Gemini 3.5 Flash"
+    config:
+      temperature: 0
+      maxOutputTokens: 16384
+
   # --- SOTA tier ---
   - id: anthropic:messages:claude-opus-4-6
     label: "Claude Opus 4.6"

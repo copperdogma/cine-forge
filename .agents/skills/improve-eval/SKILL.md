@@ -286,6 +286,19 @@ Regardless of success or failure:
    - What the score, latency, and cost changes were
    - What the next steps are (if any)
 
+## Closeout Report
+
+After any eval run or model-slot refresh, end with a concise operator report:
+
+- What was evaluated and where the raw/registry evidence was recorded.
+- Key scores with quality, latency, and cost.
+- Recommendation: adopt, do not adopt, or adopt conditionally.
+- Where to adopt it, if anywhere: specific module default, QA gate, eval lane, or "nowhere yet."
+- Reasoning: quality target, latency/cost target, safety/runtime blockers, and compromise/default implications.
+- Any follow-up eval needed before changing defaults.
+
+Do not leave the user to infer adoption from scores alone.
+
 ## Boundaries
 
 ### Always do

@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-05-20-01] — Evaluate Gemini 3.5 Flash model slots (Story 204)
+
+### Added
+- Added Story 204 and raw benchmark result evidence for Gemini 3.5 Flash across scene extraction, scene enrichment, QA pass, entity discovery, script bible, and video understanding.
+- Added eval closeout guidance so future model-slot refreshes report whether to adopt, where to adopt, and why.
+
+### Changed
+- Added Gemini 3.5 Flash benchmark lanes, pricing estimates, eval registry rows, and refreshed model-discovery cache.
+- Removed the completed Gemini 3.5 Flash inbox item after recording registry evidence.
+
+### Fixed
+- Fixed legacy Google provider env export so promptfoo uses the resolved CineForge Gemini API key instead of a stale `GOOGLE_API_KEY`.
+
 ## [2026-05-19-01] — Decompose render adapter scene generation (Story 203)
 
 ### Added

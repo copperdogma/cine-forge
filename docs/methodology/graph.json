@@ -284,7 +284,8 @@
           "187",
           "189",
           "198",
-          "200"
+          "200",
+          "204"
         ],
         "adrIds": [
           "ADR-003"
@@ -370,7 +371,8 @@
           "197",
           "198",
           "199",
-          "202"
+          "202",
+          "204"
         ],
         "adrIds": [
           "ADR-001",
@@ -533,7 +535,8 @@
           "178",
           "197",
           "199",
-          "200"
+          "200",
+          "204"
         ],
         "adrIds": [
           "ADR-002",
@@ -829,7 +832,8 @@
           "200",
           "201",
           "202",
-          "203"
+          "203",
+          "204"
         ],
         "adrIds": [
           "ADR-002",
@@ -935,7 +939,8 @@
           "200",
           "201",
           "202",
-          "203"
+          "203",
+          "204"
         ],
         "adrIds": [
           "ADR-002",
@@ -1056,7 +1061,8 @@
           "197",
           "198",
           "200",
-          "202"
+          "202",
+          "204"
         ],
         "adrIds": [
           "ADR-001",
@@ -1553,7 +1559,8 @@
         "storyIds": [
           "189",
           "198",
-          "200"
+          "200",
+          "204"
         ],
         "evalIds": [
           "compromise-C2-qa-validation"
@@ -1576,7 +1583,8 @@
           "storyIds": [
             "189",
             "198",
-            "200"
+            "200",
+            "204"
           ],
           "evalIds": [
             "compromise-C2-qa-validation"
@@ -1612,7 +1620,8 @@
           "197",
           "198",
           "200",
-          "202"
+          "202",
+          "204"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1656,7 +1665,8 @@
             "197",
             "198",
             "200",
-            "202"
+            "202",
+            "204"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -1683,7 +1693,8 @@
           "183",
           "187",
           "189",
-          "200"
+          "200",
+          "204"
         ],
         "evalIds": [
           "compromise-C4-two-tier-scenes",
@@ -1710,7 +1721,8 @@
             "183",
             "187",
             "189",
-            "200"
+            "200",
+            "204"
           ],
           "evalIds": [
             "full-script-throughput",
@@ -1731,7 +1743,8 @@
         },
         "storyIds": [
           "199",
-          "200"
+          "200",
+          "204"
         ],
         "evalIds": [
           "compromise-C5-role-modality"
@@ -1753,7 +1766,8 @@
           },
           "storyIds": [
             "199",
-            "200"
+            "200",
+            "204"
           ],
           "evalIds": [
             "compromise-C5-role-modality"
@@ -13318,6 +13332,81 @@
           "summary": "check-in-loop-verify-fix: strict-until-clean `/loop-verify` during `/finish-and-push` found one material close-out routing issue: `memory/codebase-improvement-state.yaml` still described Story 203 as active and told fut…"
         }
       }
+    },
+    {
+      "id": "204",
+      "title": "Gemini 3.5 Flash Model-Slot Eval Refresh",
+      "path": "docs/stories/story-204-gemini-35-flash-model-slot-eval-refresh.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:4",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C2",
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "dependsOn": [
+        "035",
+        "119",
+        "202"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:4",
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "generation_and_visualization",
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "gemini-3.5-flash",
+        "google",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "204",
+        "sourcePath": "docs/stories/story-204-gemini-35-flash-model-slot-eval-refresh.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-204-gemini-35-flash-model-slot-eval-refresh.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -13913,12 +14002,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "GPT-5.5 Pro",
-        "measured": "2026-04-24",
+        "model": "Gemini 3.5 Flash",
+        "measured": "2026-05-20",
         "metrics": {
-          "overall": 0.925
+          "overall": 0.92
         },
-        "note": "Tied GPT-5.5 quality with much higher latency and cost."
+        "note": "Story 204 probe found all required entities and passed the harness, but remains below the 0.93 registry target and offers no value win over cheaper entity-discovery defaults. No design-study backfill/entity-discovery default change."
       },
       "declaredSpecRefs": [
         "spec:3",
@@ -13944,14 +14033,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Tied GPT-5.5 quality with much higher latency and cost.",
+        "whyNow": "Story 204 probe found all required entities and passed the harness, but remains below the 0.93 registry target and offers no value win over cheaper entity-discovery defaults. No design-study backfill/entity-discovery default change.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-24",
+          "date": "2026-05-20",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Tied GPT-5.5 quality with much higher latency and cost."
+          "summary": "Story 204 probe found all required entities and passed the harness, but remains below the 0.93 registry target and offers no value win over cheaper entity-discovery defaults. No design-study backfill/entity-discovery default change."
         }
       }
     },
@@ -14401,12 +14490,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Grok 4.3",
-        "measured": "2026-05-04",
+        "model": "Gemini 3.5 Flash",
+        "measured": "2026-05-20",
         "metrics": {
-          "overall": 0.2625
+          "overall": 0.625
         },
-        "note": "Story 200 Grok 4.3 verification-slot probe failed both QA cases. Classification: model-wrong/output-format plus unsafe judgment - it emitted reasoning before JSON and false-negatived the known-good scene while catching the bad case. Runtime-blocking if used as a QA default."
+        "note": "Story 204 verification-slot probe caught the bad extraction but false-negatived the known-good scene. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default."
       },
       "declaredSpecRefs": [
         "spec:8"
@@ -14426,14 +14515,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 200 Grok 4.3 verification-slot probe failed both QA cases. Classification: model-wrong/output-format plus unsafe judgment - it emitted reasoning before JSON and false-negatived the known-good scene while catching the bad case. Runtime-blocking if used as a QA default.",
+        "whyNow": "Story 204 verification-slot probe caught the bad extraction but false-negatived the known-good scene. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-05-04",
+          "date": "2026-05-20",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 200 Grok 4.3 verification-slot probe failed both QA cases. Classification: model-wrong/output-format plus unsafe judgment - it emitted reasoning before JSON and false-negatived the known-good scene while catching the bad case. Runtime-blocking if used as a QA default."
+          "summary": "Story 204 verification-slot probe caught the bad extraction but false-negatived the known-good scene. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default."
         }
       }
     },
@@ -14769,12 +14858,12 @@
         }
       ],
       "latestScore": {
-        "model": "Grok 4.3",
-        "measured": "2026-05-04",
+        "model": "Gemini 3.5 Flash",
+        "measured": "2026-05-20",
         "metrics": {
-          "overall": 0.4
+          "overall": 0.8842
         },
-        "note": "Story 200 Grok 4.3 probe failed both scene-enrichment fixtures. Classification: model-wrong/output-format - both outputs started with reasoning text before the JSON, so strict parsing failed. No default change; this is below the current Sonnet 4.6 lane and misses the latency target."
+        "note": "Story 204 probe passed both scene-enrichment cases, but remains below the 0.93 quality target and the Sonnet 4.6 default. Classification: model-wrong/non-runtime-blocking for default selection, mainly weaker elevator tone/time scoring and flashback nuance."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -14797,7 +14886,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 200 Grok 4.3 probe failed both scene-enrichment fixtures. Classification: model-wrong/output-format - both outputs started with reasoning text before the JSON, so strict parsing failed. No default change; this is below the current Sonnet 4.6 lane and misses the latency target.",
+        "whyNow": "Story 204 probe passed both scene-enrichment cases, but remains below the 0.93 quality target and the Sonnet 4.6 default. Classification: model-wrong/non-runtime-blocking for default selection, mainly weaker elevator tone/time scoring and flashback nuance.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
@@ -14814,7 +14903,7 @@
       "name": "Scene Extraction",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/scene-extraction.yaml --no-cache -j 3",
-      "description": "Scene boundaries, headings, characters, summaries from full screenplay. Tests structural parsing combined with narrative understanding. Gemini providers excluded (parse issues at time of testing).",
+      "description": "Scene boundaries, headings, characters, summaries from full screenplay. Tests structural parsing combined with narrative understanding. Earlier Gemini providers were excluded after parse issues at time of testing; newer Gemini lanes should use generous output caps and record whether failures are parser/runtime issues or model-quality misses.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:2",
@@ -14829,12 +14918,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Grok 4.3",
-        "measured": "2026-05-04",
+        "model": "Gemini 3.5 Flash",
+        "measured": "2026-05-20",
         "metrics": {
-          "overall": 0.41
+          "overall": 0.8108
         },
-        "note": "Story 200 Grok 4.3 probe failed the single full-screenplay extraction case. Classification: model-wrong/output-format - it emitted a reasoning preamble before the JSON despite the strict JSON lane, so the scorer could not parse it. Runtime-blocking if used as a scene-extraction default; also misses the 60s latency target."
+        "note": "Story 204 Gemini 3.5 Flash probe parsed strict JSON with a 65k output cap, but misses the 0.90 quality target. Classification: model-wrong/non-runtime-blocking for default selection - it over-split the screenplay to 17 scenes and missed key character refs in the scorer. No scene-extraction default change."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -14857,14 +14946,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 200 Grok 4.3 probe failed the single full-screenplay extraction case. Classification: model-wrong/output-format - it emitted a reasoning preamble before the JSON despite the strict JSON lane, so the scorer could not parse it. Runtime-blocking if used as a scene-extraction default; also misses the 60s latency target.",
+        "whyNow": "Story 204 Gemini 3.5 Flash probe parsed strict JSON with a 65k output cap, but misses the 0.90 quality target. Classification: model-wrong/non-runtime-blocking for default selection - it over-split the screenplay to 17 scenes and missed key character refs in the scorer. No scene-extraction default change.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-05-04",
+          "date": "2026-05-20",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 200 Grok 4.3 probe failed the single full-screenplay extraction case. Classification: model-wrong/output-format - it emitted a reasoning preamble before the JSON despite the strict JSON lane, so the scorer could not parse it. Runtime-blocking if used as a scene-extraction default; also misses the 60s latency target."
+          "summary": "Story 204 Gemini 3.5 Flash probe parsed strict JSON with a 65k output cap, but misses the 0.90 quality target. Classification: model-wrong/non-runtime-blocking for default selection - it over-split the screenplay to 17 scenes and missed key character refs in the scorer. No scene-extraction default change."
         }
       }
     },
@@ -14888,12 +14977,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Grok 4.3",
-        "measured": "2026-05-04",
+        "model": "Gemini 3.5 Flash",
+        "measured": "2026-05-20",
         "metrics": {
-          "overall": 0.905
+          "overall": 0.91
         },
-        "note": "Story 200 Grok 4.3 passed the script-bible quality target, but misses latency and cost budgets and is weaker/slower/more expensive than the existing Grok 4.1 Fast Reasoning full-script value candidate. No script-bible default change."
+        "note": "Story 204 probe passed the script-bible quality and latency targets, but misses the cost budget and is weaker value than the existing full-script leaders. No script-bible default change."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -14916,14 +15005,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 200 Grok 4.3 passed the script-bible quality target, but misses latency and cost budgets and is weaker/slower/more expensive than the existing Grok 4.1 Fast Reasoning full-script value candidate. No script-bible default change.",
+        "whyNow": "Story 204 probe passed the script-bible quality and latency targets, but misses the cost budget and is weaker value than the existing full-script leaders. No script-bible default change.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-05-04",
+          "date": "2026-05-20",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 200 Grok 4.3 passed the script-bible quality target, but misses latency and cost budgets and is weaker/slower/more expensive than the existing Grok 4.1 Fast Reasoning full-script value candidate. No script-bible default change."
+          "summary": "Story 204 probe passed the script-bible quality and latency targets, but misses the cost budget and is weaker value than the existing full-script leaders. No script-bible default change."
         }
       }
     },
@@ -15077,12 +15166,12 @@
         }
       ],
       "latestScore": {
-        "model": "Grok 4.3",
-        "measured": "2026-05-04",
+        "model": "Gemini 3.5 Flash",
+        "measured": "2026-05-20",
         "metrics": {
-          "overall": 0.572
+          "overall": 0.5562
         },
-        "note": "Story 200 Grok 4.3 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON, but five misses were model-wrong director/shot-read failures, mainly weak camera/motion/reveal reads and shallow summaries. Latency also misses the 15s pilot target. No role-modality or generated-output-QA default change."
+        "note": "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
       },
       "declaredSpecRefs": [
         "spec:7",
@@ -15110,7 +15199,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "trigger-exhausted",
-        "whyNow": "Story 200 Grok 4.3 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON, but five misses were model-wrong director/shot-read failures, mainly weak camera/motion/reveal reads and shallow summaries. Latency also misses the 15s pilot target. No role-modality or generated-output-QA default change.",
+        "whyNow": "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change.",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
           "new-approach"
