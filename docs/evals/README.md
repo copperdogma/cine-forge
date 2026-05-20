@@ -210,3 +210,12 @@ The registry now contains the full tradeoff surface for each eval. Before pickin
 a model for a pipeline stage, check all scores to find the cheapest/fastest model
 that still meets the quality target. A model at 0.89 quality in 4 seconds is often
 more valuable than 0.94 quality in 50 seconds.
+
+## Reasoning-Effort Model Sweeps
+
+When a new OpenAI reasoning model or Responses-only API path reopens an eval,
+measure effort explicitly instead of treating the model name as one result. Use
+a bounded `low`, `medium`, and `high` sweep first; record quality, latency,
+cost, cached-input tokens, and reasoning tokens when the provider exposes them.
+Do not promote a model, provider path, or effort tier to runtime defaults unless
+that exact tier beats the maintained winner on the relevant gate.

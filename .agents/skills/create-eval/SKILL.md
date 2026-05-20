@@ -32,6 +32,22 @@ decomposition. Prefer a child eval or failure-classification attempt when the
 parent failure is still too vague to choose AI-only, multi-call AI, deterministic
 code, or hybrid implementation honestly.
 
+## Reasoning-Effort Sweeps
+
+When a new OpenAI reasoning model or Responses-only capability is the trigger,
+make the scaffold ready for an explicit effort comparison instead of a single
+opaque provider label:
+
+- Include `low`, `medium`, and `high` variants when the model supports
+  `reasoning.effort`; skip `xhigh` unless `high` is valid and value-competitive.
+- Prefer the repo's existing promptfoo or custom provider surface. Add a tiny
+  repo-local Responses provider only when built-in routing cannot set effort,
+  cost, cached-input, or reasoning-token metadata accurately.
+- Keep the sweep eval-only until measured quality, latency, and cost beat the
+  maintained winner on the relevant gate.
+- Record the chosen effort, token usage, latency, cost, and any "do not retry"
+  result in the registry or attempt note.
+
 ## Workspace Assumptions
 
 Use the repo-equivalent paths if the benchmark workspace is laid out

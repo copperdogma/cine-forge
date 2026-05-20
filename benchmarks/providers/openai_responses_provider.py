@@ -71,6 +71,7 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
     output_tokens = int(usage.get("output_tokens") or 0)
     cost = estimate_cost_usd(model, input_tokens, output_tokens)
 
+    input_details = usage.get("input_tokens_details") or {}
     output_details = usage.get("output_tokens_details") or {}
     return {
         "output": output,
@@ -79,6 +80,7 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
             "prompt": input_tokens,
             "completion": output_tokens,
             "completionDetails": {
+                "cachedPrompt": int(input_details.get("cached_tokens") or 0),
                 "reasoning": int(output_details.get("reasoning_tokens") or 0),
             },
         },

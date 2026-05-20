@@ -40,6 +40,15 @@ decomposition. Prefer a child eval or failure-classification attempt when the
 parent failure is still too vague to choose AI-only, multi-call AI, deterministic
 code, or hybrid implementation honestly.
 
+## Reasoning-Effort Sweeps
+
+If the retry trigger is a new OpenAI reasoning model or a Responses-only
+capability, prefer a bounded `low` / `medium` / `high` effort sweep over testing
+one opaque provider label. Skip `xhigh` unless `high` is valid and already
+value-competitive. Treat effort as a measured quality/latency/cost dimension,
+not as a runtime default change by itself, and record token usage including
+cached-input and reasoning tokens when the provider exposes them.
+
 ## Phase 0 — Situational Awareness
 
 1. **Record the worker model.** Note which AI model is executing this skill (you, the agent).
