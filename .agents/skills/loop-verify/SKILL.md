@@ -76,7 +76,7 @@ similarly high-risk validation surfaces.
 
 - Default the coordinator to the inherited model and reasoning level. For
   worker agents, choose the cheapest model and reasoning level that can honestly
-  inspect the shard. Downshift for mechanical checks, generated wrapper parity,
+  inspect the shard. Downshift for mechanical checks, generated compatibility-link or optional-alias checks,
   typo-only docs cleanup, and other low-risk local work; keep inherited strength
   or escalate reasoning for semantic contracts, API boundaries, security, eval
   correctness, cross-repo rollouts, or anything where a miss would cause

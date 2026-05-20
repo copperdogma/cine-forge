@@ -19,7 +19,7 @@ boundaries or solution approaches, and may run in a bounded subagent when the
 user has explicitly authorized delegation, but `/create-story` still owns
 whether a story is warranted and which boundary is durable.
 
-When launching sidecars, size each worker model and reasoning level to shard risk. Use cheaper or lower-reasoning workers for lookup, wrapper parity, and mechanical scans; keep stronger workers for semantic contracts, security, eval correctness, cross-repo decisions, or high-cost misses. Record any explicit override rationale in the handoff.
+When launching sidecars, size each worker model and reasoning level to shard risk. Use cheaper or lower-reasoning workers for lookup, compatibility-link or optional-alias checks, and mechanical scans; keep stronger workers for semantic contracts, security, eval correctness, cross-repo decisions, or high-cost misses. Record any explicit override rationale in the handoff.
 
 For non-trivial or cross-cutting story creation, the main thread may use
 subagents or sidecar agents to gather bounded evidence before deciding whether

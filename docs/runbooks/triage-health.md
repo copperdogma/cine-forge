@@ -13,7 +13,7 @@ the final recommendation against `docs/ideal.md`.
 - `docs/evals/registry.yaml`, `docs/evals/attempts/`, and
   `docs/evals/models-available.yaml`
 - latest `docs/reports/codebase-improvement/*.md`
-- `.agents/skills`, `.gemini/commands`, and `scripts/sync-agent-skills.sh --check`
+- `.agents/skills`, compatibility links, optional command aliases, and `scripts/sync-agent-skills.sh --check`
 
 ## Candidate Types
 

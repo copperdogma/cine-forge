@@ -151,7 +151,7 @@ These patterns have been validated across multiple AI-coded projects. Include al
 - **CHANGELOG.md** — updated by mark-story-done skill
 
 ### Canonical Skill Surface
-Canonical location: `.agents/skills/` with symlinks for `.claude/skills`, `.cursor/skills`, and generated `.gemini/commands/*.toml` wrappers. Use `scripts/sync-agent-skills.sh` to wire everything up.
+Canonical location: `.agents/skills/`, with compatibility links for `.claude/skills`, `.cursor/skills`, and `skills`. Optional `.gemini/commands/*.toml` aliases are generated only when a repo intentionally keeps slash-command aliases. Use `scripts/sync-agent-skills.sh` to wire the standard skill surface.
 
 - `/setup-methodology`
 - `/create-eval`
@@ -165,7 +165,7 @@ Canonical location: `.agents/skills/` with symlinks for `.claude/skills`, `.curs
 - `/triage` — Identify the highest-leverage methodology gap and recommend the next action
 - `/scout` — Research external sources for adoptable patterns
 - `/create-adr` — Create ADR with research scaffolding (bootstrap script + templates)
-- `/create-cross-cli-skill` — Create new skills in canonical cross-CLI format
+- `/create-cross-cli-skill` — Create new skills in canonical Agent Skills format
 - `/deploy` — Deploy to production (scaffold early, fill in when ready)
 
 Do not install the old phased setup aliases in a fresh repo. The public setup
@@ -256,7 +256,7 @@ docs/
 skills -> .agents/skills
 .claude/skills -> ../.agents/skills
 .cursor/skills -> ../.agents/skills
-.gemini/commands/*.toml
+optional .gemini/commands/*.toml aliases
 scripts/sync-agent-skills.sh
 .gitignore
 ```

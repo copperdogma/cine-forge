@@ -158,7 +158,7 @@ When invoked with no scope:
      python scripts/triage_facts.py --json
      ```
 
-   - Use the facts for branch/dirty state, generated wrapper drift,
+   - Use the facts for branch/dirty state, skill-surface link or optional-alias drift,
      story/eval recommendations, inbox counts, architecture-audit cadence,
      UI-scout status, codebase-improvement freshness, lane presence, and recent
      churn.

@@ -86,7 +86,7 @@ Treat these as **minor** unless they reveal a larger underlying problem:
 - missing workflow-gate checkbox or stale story status row
 - stale generated planning surfaces resolved by rerunning `pnpm methodology:compile`
 - missing or incomplete `CHANGELOG.md` entry
-- generated skill wrapper drift fixed by `scripts/sync-agent-skills.sh`
+- skill-surface link or optional-alias drift fixed by `scripts/sync-agent-skills.sh`
 - small doc or metadata mismatch caused by the current work
 - narrow lint/test failure with an obvious, low-risk local fix
 - missing re-run of a required check after a small patch

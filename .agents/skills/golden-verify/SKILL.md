@@ -42,7 +42,7 @@ If nothing needs work, report done and stop.
 
 ### 3. Launch subagents
 
-Use your judgment on parallelism — usually one fixture per subagent. Default to a high-capability worker for semantic golden verification; use cheaper or lower-reasoning workers only for mechanical inbox scans, wrapper parity, or validator-only follow-up where fixture judgment is not required. Record explicit model/reasoning overrides in the batch notes.
+Use your judgment on parallelism — usually one fixture per subagent. Default to a high-capability worker for semantic golden verification; use cheaper or lower-reasoning workers only for mechanical inbox scans, compatibility-link or optional-alias checks, or validator-only follow-up where fixture judgment is not required. Record explicit model/reasoning overrides in the batch notes.
 
 **Tooling check:** Before launching, identify the project's execution pattern (e.g., `.venv/bin/python`, `npx tsx`) and include it in the subagent instructions so they don't fail silently with the wrong interpreter.
 

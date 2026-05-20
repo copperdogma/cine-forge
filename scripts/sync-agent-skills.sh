@@ -2,16 +2,30 @@
 set -euo pipefail
 
 MODE="apply"
-if [[ "${1:-}" == "--check" ]]; then
-  MODE="check"
-fi
+case "${1:-}" in
+  "")
+    ;;
+  "--check")
+    MODE="check"
+    ;;
+  "--sync-aliases")
+    MODE="sync_aliases"
+    ;;
+  "--check-aliases")
+    MODE="check_aliases"
+    ;;
+  *)
+    echo "Usage: sync-agent-skills.sh [--check|--sync-aliases|--check-aliases]" >&2
+    exit 2
+    ;;
+esac
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CANONICAL="$ROOT/.agents/skills"
 LEGACY="$ROOT/skills"
 CLAUDE_LINK="$ROOT/.claude/skills"
 CURSOR_LINK="$ROOT/.cursor/skills"
-GEMINI_DIR="$ROOT/.gemini/commands"
+GEMINI_COMMANDS_DIR="$ROOT/.gemini/commands"
 
 fail() {
   echo "ERROR: $*" >&2
@@ -56,7 +70,7 @@ parse_frontmatter_field() {
   ' "$skill_file"
 }
 
-render_wrapper() {
+render_alias() {
   local skill_name="$1"
   local desc="$2"
   cat <<TOML
@@ -71,65 +85,95 @@ If the user passed command arguments, incorporate them here: {{args}}
 TOML
 }
 
+validate_canonical_skills() {
+  local skill_count=0
+  while IFS= read -r skill_file; do
+    [[ -n "$skill_file" ]] || continue
+    invocable="$(parse_frontmatter_field "$skill_file" "user-invocable")"
+    [[ -n "$invocable" ]] || fail "$skill_file is missing required frontmatter field: user-invocable"
+    desc="$(parse_frontmatter_field "$skill_file" "description")"
+    [[ -n "$desc" ]] || fail "$skill_file is missing required frontmatter field: description"
+    skill_count=$((skill_count + 1))
+  done < <(find "$CANONICAL" -mindepth 2 -maxdepth 2 -name SKILL.md | LC_ALL=C sort)
+
+  [[ "$skill_count" -gt 0 ]] || fail "No canonical skills found in $CANONICAL"
+  echo "$skill_count"
+}
+
+sync_aliases() {
+  mkdir -p "$GEMINI_COMMANDS_DIR"
+  rm -f "$GEMINI_COMMANDS_DIR"/*.toml
+
+  local alias_count=0
+  while IFS= read -r skill_file; do
+    [[ -n "$skill_file" ]] || continue
+    skill_dir="$(dirname "$skill_file")"
+    skill_name="$(basename "$skill_dir")"
+    invocable="$(parse_frontmatter_field "$skill_file" "user-invocable")"
+    [[ "$invocable" == "false" ]] && continue
+    desc="$(parse_frontmatter_field "$skill_file" "description")"
+    printf '%s\n' "$(render_alias "$skill_name" "$desc")" > "$GEMINI_COMMANDS_DIR/$skill_name.toml"
+    alias_count=$((alias_count + 1))
+  done < <(find "$CANONICAL" -mindepth 2 -maxdepth 2 -name SKILL.md | LC_ALL=C sort)
+
+  echo "$alias_count"
+}
+
+check_aliases() {
+  local alias_count=0
+  while IFS= read -r skill_file; do
+    [[ -n "$skill_file" ]] || continue
+    skill_dir="$(dirname "$skill_file")"
+    skill_name="$(basename "$skill_dir")"
+    invocable="$(parse_frontmatter_field "$skill_file" "user-invocable")"
+    [[ "$invocable" == "false" ]] && continue
+    desc="$(parse_frontmatter_field "$skill_file" "description")"
+    out_file="$GEMINI_COMMANDS_DIR/$skill_name.toml"
+    expected_alias="$(render_alias "$skill_name" "$desc")"
+    [[ -f "$out_file" ]] || fail "Missing command alias: $out_file"
+    actual_alias="$(cat "$out_file")"
+    [[ "$actual_alias" == "$expected_alias" ]] || fail "Command alias content drifted: $out_file"
+    alias_count=$((alias_count + 1))
+  done < <(find "$CANONICAL" -mindepth 2 -maxdepth 2 -name SKILL.md | LC_ALL=C sort)
+
+  local file_count
+  if [[ -d "$GEMINI_COMMANDS_DIR" ]]; then
+    file_count="$(find "$GEMINI_COMMANDS_DIR" -maxdepth 1 -name '*.toml' | wc -l | tr -d ' ')"
+  else
+    file_count="0"
+  fi
+  [[ "$file_count" -eq "$alias_count" ]] || fail "Command alias count ($file_count) != invocable skills ($alias_count)"
+  echo "$alias_count"
+}
+
 [[ -d "$CANONICAL" ]] || fail "Canonical skills dir missing: $CANONICAL"
 
 if [[ "$MODE" == "check" ]]; then
   [[ -L "$LEGACY" ]] || fail "$LEGACY is not a symlink"
   [[ "$(readlink "$LEGACY")" == ".agents/skills" ]] || fail "$LEGACY should point to .agents/skills"
 else
-  if [[ -d "$LEGACY" && ! -L "$LEGACY" ]]; then
+  if [[ "$MODE" == "apply" && -d "$LEGACY" && ! -L "$LEGACY" ]]; then
     fail "Refusing to overwrite non-symlink $LEGACY. Migrate manually first."
   fi
-  rm -rf "$LEGACY"
-  ln -s .agents/skills "$LEGACY"
+  if [[ "$MODE" == "apply" ]]; then
+    rm -rf "$LEGACY"
+    ln -s .agents/skills "$LEGACY"
+  fi
+fi
+
+if [[ "$MODE" == "sync_aliases" ]]; then
+  alias_count="$(sync_aliases)"
+  echo "alias-sync: OK ($alias_count command aliases)"
+  exit 0
+fi
+
+if [[ "$MODE" == "check_aliases" ]]; then
+  alias_count="$(check_aliases)"
+  echo "alias-check: OK ($alias_count command aliases)"
+  exit 0
 fi
 
 ensure_symlink "$CLAUDE_LINK" "../.agents/skills"
 ensure_symlink "$CURSOR_LINK" "../.agents/skills"
-
-mkdir -p "$GEMINI_DIR"
-
-# In apply mode, clean stale wrappers before regenerating
-if [[ "$MODE" != "check" ]]; then
-  rm -f "$GEMINI_DIR"/*.toml
-fi
-
-# Generate command wrappers from invocable skills.
-skill_count=0
-while IFS= read -r skill_file; do
-  [[ -n "$skill_file" ]] || continue
-  skill_dir="$(dirname "$skill_file")"
-  skill_name="$(basename "$skill_dir")"
-
-  # Skip non-invocable skills (e.g., deploy)
-  invocable="$(parse_frontmatter_field "$skill_file" "user-invocable")"
-  [[ -n "$invocable" ]] || fail "$skill_file is missing required frontmatter field: user-invocable"
-  if [[ "$invocable" == "false" ]]; then
-    continue
-  fi
-
-  desc="$(parse_frontmatter_field "$skill_file" "description")"
-  if [[ -z "$desc" ]]; then
-    desc="Run the $skill_name project skill from .agents/skills."
-  fi
-
-  out_file="$GEMINI_DIR/$skill_name.toml"
-  expected_wrapper="$(render_wrapper "$skill_name" "$desc")"
-  if [[ "$MODE" == "check" ]]; then
-    [[ -f "$out_file" ]] || fail "Missing Gemini wrapper: $out_file"
-    actual_wrapper="$(cat "$out_file")"
-    [[ "$actual_wrapper" == "$expected_wrapper" ]] || fail "Gemini wrapper content drifted: $out_file"
-  else
-    printf '%s\n' "$expected_wrapper" > "$out_file"
-  fi
-
-  skill_count=$((skill_count + 1))
-done < <(find "$CANONICAL" -mindepth 2 -maxdepth 2 -name SKILL.md | LC_ALL=C sort)
-
-if [[ "$MODE" == "check" ]]; then
-  wrapper_count="$(find "$GEMINI_DIR" -maxdepth 1 -name '*.toml' | wc -l | tr -d ' ')"
-  [[ "$wrapper_count" -eq "$skill_count" ]] || fail "Gemini wrapper count ($wrapper_count) != invocable skills ($skill_count)"
-  echo "skills-check: OK ($skill_count skills, $wrapper_count gemini wrappers)"
-else
-  echo "skills-sync: OK ($skill_count skills synced)"
-fi
+skill_count="$(validate_canonical_skills)"
+echo "skills-check: OK ($skill_count canonical skills; compatibility links ok; command aliases optional)"

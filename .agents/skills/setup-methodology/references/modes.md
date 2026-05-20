@@ -21,7 +21,7 @@ Use when the repo already has meaningful docs, code, stories, or ADRs.
 
 Use when the repo already has the package but it has drifted.
 
-- Refresh AGENTS / runbook / skill wrappers
+- Refresh AGENTS / runbook / skill-surface checks
 - Refresh the checklist structure
 - Refresh eval/golden/day-to-day workflow docs
 - Audit for stale references to the old setup surface

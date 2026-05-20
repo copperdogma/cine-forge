@@ -40,7 +40,7 @@ health winner.
    - `docs/evals/attempts/`
    - `docs/evals/models-available.yaml`
    - `docs/methodology/state.yaml` architecture-audit and UI-scout state
-   - `.agents/skills`, `.gemini/commands`, and `scripts/sync-agent-skills.sh --check`
+   - `.agents/skills`, compatibility links, optional command aliases, and `scripts/sync-agent-skills.sh --check`
    - `pyproject.toml`, `package.json`, and existing dependency/provider notes when relevant
 
 ## Candidate Areas
@@ -56,7 +56,7 @@ Return up to three health candidates:
 - **Eval/model/golden freshness** — stale scores, ready retry triggers, new
   model evidence already recorded, missing root/parent/child eval proof, or
   golden-build debt.
-- **Methodology/tooling health** — wrapper drift, generated graph drift,
+- **Methodology/tooling health** — skill-surface link or optional-alias drift, generated graph drift,
   missing active surfaces, setup checklist drift, or skill-sync problems.
 - **Architecture-audit health** — due domains from `architecture_audits`,
   open findings, repeated drift, or stale recent-story references.

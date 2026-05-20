@@ -39,7 +39,7 @@ folder with no real Ideal/spec, stop and route to `/init-project new-idea`.
   providers, SDKs, model/provider slugs, browser/tooling plugins,
   UI/component libraries, auth/payment/storage providers, and framework APIs
 - upgraded triage bootstrap: `/triage`, lane-packet leaf skills,
-  `/triage-health`, sparse-safe triage facts, and wrapper sync
+  `/triage-health`, sparse-safe triage facts, and skill-surface sync
 - codebase-improvement lane setup when the repo has enough code for a scan:
   report-first discovery, optional algorithmic-complexity detector guidance,
   optional periodic semantic-review detector guidance, local proof
@@ -53,7 +53,8 @@ folder with no real Ideal/spec, stop and route to `/init-project new-idea`.
   `architecture_audits` / `/triage-architecture` and `ui_scout` /
   `docs/ui-scout*`
 - `AGENTS.md` methodology wiring and state/graph-first operating rules
-- cross-CLI skill sync via `scripts/sync-agent-skills.sh`
+- canonical `.agents/skills` sync via `scripts/sync-agent-skills.sh`, with
+  provider-specific command aliases only when a repo explicitly keeps them
 - repo-specific package variants, including Conductor's supervisor routing,
   scouting, and alignment surfaces when the repo identity is Conductor
 
@@ -101,7 +102,7 @@ silently forking the setup contract.
 
 - **Product repos** use the full product methodology package: Ideal/spec,
   state/graph, eval/golden bootstrap or explicit deferral, story loop, triage,
-  optional recurring lanes, AGENTS, and wrappers.
+  optional recurring lanes, AGENTS, canonical skills, and compatibility links.
 - **Conductor** uses the supervisor package: `projects.yaml`, `inbox.md`,
   `docs/scout.md`, `docs/scout/`, `docs/align-projects.md`,
   `docs/alignments/`, and supervisor skills such as `/align-projects`,
@@ -213,8 +214,8 @@ silently forking the setup contract.
    source copy and perform a local propagation sweep. Cross-repo propagation is
    separate repo-local adoption work: use dedicated target-repo worktrees or an
    explicit safe execution path, copy exact shared files there, and run that
-   repo's wrapper checks before claiming the target repo is updated. Do not
-   independently rewrite the same skill in each repo.
+   repo's skill-surface checks before claiming the target repo is updated. Do
+   not independently rewrite the same skill in each repo.
 13. **Local runtime setup uses Conductor allocation.** When a repo has a local
     browser UI, API, internal authoring server, catalog review server, or other
     human/AI runtime, add a repo-local launcher that reads Conductor's
@@ -264,15 +265,15 @@ without spending many rounds proving absent evidence. Do this:
    - eval/golden lanes: present only when there is an actual initial eval or an
      explicit deferral with a trigger
    - codebase-improvement: absent until there is enough code for a scan
-6. Run cheap validation only: skill wrapper check, methodology compile/check,
+6. Run cheap validation only: skill-surface check, methodology compile/check,
    direct fact JSON parse if a fact script exists, and whitespace/diff checks.
    Do not run heavy evals, browser scouts, provider calls, or repeated
    subagent verification just because evidence is absent by design.
 7. Before the first `/loop-verify`, run a local propagation sweep for shared
    semantics across the main triage skill, core story-loop skills, leaves,
-   health runbook, fact script, tests, and wrappers. This prevents Echo-style
-   long loops where the same fact meaning is rediscovered one adjacent surface
-   at a time.
+   health runbook, fact script, tests, and skill-surface checks. This prevents
+   Echo-style long loops where the same fact meaning is rediscovered one
+   adjacent surface at a time.
 8. If the repo already exposes, or this setup creates, a local browser/API
    runtime, install the local runtime launcher pattern. Use the Conductor
    allocation file for primary ports, worktree ranges, and service offsets;
@@ -397,8 +398,8 @@ without spending many rounds proving absent evidence. Do this:
      recommendations, kickoff phrasing, or yes-ready handoffs.
    - Install or refresh `/triage-health` only as a sparse health/freshness
      packet lane. It reports architecture, UI, eval, codebase, methodology,
-     wrapper, dependency, or provider risks without running deeper audits by
-     default.
+     skill-surface, dependency, or provider risks without running deeper audits
+     by default.
    - Install or refresh a sparse-safe triage fact collector when repo tooling
      exists. It must be cheap, read-only, deterministic, and parseable through
      the direct script command.
@@ -414,14 +415,15 @@ without spending many rounds proving absent evidence. Do this:
 
 9. **Run the shared-surface propagation sweep**:
    - Check that setup, triage, core story-loop skills, triage leaves,
-     triage-health, loop-verify, runbooks, fact script/tests, and wrappers
-     agree on the same terms.
+     triage-health, loop-verify, runbooks, fact script/tests, and skill-surface
+     checks agree on the same terms.
    - For no-code repos, confirm absent/deferred lanes are explicit and do not
      create fake triage pressure.
    - Confirm direct fact commands are separate from convenience package scripts
      so package-manager banners cannot corrupt JSON proof.
-   - Confirm wrapper facts distinguish `absent`, `ok`, and `drift`; UI/eval
-     facts distinguish empty paths, deferred evidence, and broken pointers.
+   - Confirm skill-surface facts distinguish canonical `.agents/skills`,
+     compatibility links, optional command aliases, and drift; UI/eval facts
+     distinguish empty paths, deferred evidence, and broken pointers.
    - Confirm local runtime docs and launchers agree on Conductor-owned port
      allocation. Runtime-heavy repos should expose launch/status/stop commands;
      headless or no-code repos should explicitly defer launchers while keeping
@@ -436,6 +438,10 @@ without spending many rounds proving absent evidence. Do this:
    - `ui_scout` is documented only when the package includes the UI
      product-truth lane
    - `init-project` seeds Ideal/spec first, then imports the appropriate package
+   - do not create provider-specific skill variants when standard `SKILL.md`
+     discovery from `.agents/skills` is sufficient
+   - generate command aliases only when a repo explicitly keeps typed
+     slash-command UX as a separate compatibility surface
    - run `scripts/sync-agent-skills.sh`
    - validate with `scripts/sync-agent-skills.sh --check`
 
@@ -463,7 +469,8 @@ without spending many rounds proving absent evidence. Do this:
   failure-proven local guardrails
 - Upgraded triage, triage-health, sparse facts, and loop-verify surfaces
   installed or explicitly deferred by lane
-- Cross-CLI wrappers regenerated and checked
+- Canonical `.agents/skills` packages and cheap compatibility links checked;
+  provider-specific command aliases generated only when explicitly retained
 - Local runtime launcher installed or explicitly deferred according to whether
   the repo has a real browser/API/runtime surface
 

@@ -90,7 +90,7 @@ them, use `/setup-methodology` instead.
    - phased setup skills are removed rather than kept as hidden aliases
    - `init-project` installs the same package
 
-7. `[script]` Sync the skill wrappers.
+7. `[script]` Sync the skill-surface links.
    - `./scripts/sync-agent-skills.sh`
    - `./scripts/sync-agent-skills.sh --check`
 

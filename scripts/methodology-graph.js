@@ -253,7 +253,6 @@ function collectActiveSurfacePaths() {
     [
       ...STATIC_ACTIVE_SURFACE_PATHS,
       ...listFilesRecursively(ADRS_DIR, (_path, name) => name === "adr.md"),
-      ...listFilesRecursively(join(ROOT, ".gemini/commands"), (_path, name) => name.endsWith(".toml")),
     ].filter((path) => existsSync(path)),
   );
 }

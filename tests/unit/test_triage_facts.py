@@ -43,14 +43,11 @@ def test_collect_facts_core_cine_forge_lanes(monkeypatch):
     assert set(module.LANE_SKILLS) == expected_lanes
     assert set(facts["lanes"]) == expected_lanes
     assert all(status == "present" for status in facts["lanes"].values())
-    lane_wrappers = {
-        path.stem for path in (ROOT / ".gemini" / "commands").glob("*.toml")
-    }
-    assert expected_lanes <= lane_wrappers
     assert facts["ui_scout"]["status"] == "present"
     assert facts["architecture"]["status"] == "present"
-    assert facts["methodology_tooling"]["missing_gemini_wrappers"] == []
-    assert facts["methodology_tooling"]["extra_gemini_wrappers"] == []
+    assert facts["methodology_tooling"]["command_alias_status"] == "absent"
+    assert facts["methodology_tooling"]["missing_command_aliases"] == []
+    assert facts["methodology_tooling"]["extra_command_aliases"] == []
 
 
 @pytest.mark.unit

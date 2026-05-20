@@ -11,7 +11,7 @@ when Cam explicitly asks to draft, review, accept, dismiss, or promote a
 workflow-learning candidate.
 
 This skill manages candidate artifacts. It does not silently mutate live
-skills, `AGENTS.md`, methodology docs, or other project repos.
+skills, `AGENTS.md`, methodology docs, memory, or target-project repos.
 
 ## Storage
 
@@ -202,14 +202,18 @@ underspecified candidate.
 Promotion means applying the approved change to the target surface through the
 smallest honest workflow:
 
-- skill patch: edit the named `.agents/skills/<name>/SKILL.md`, sync generated
-  wrappers if needed, and run the repo-native skill wrapper check.
+- skill patch: edit the named `.agents/skills/<name>/SKILL.md`, refresh
+  canonical skill compatibility links with `make skills-sync` when needed, and
+  run `make skills-check`. Generate provider-specific command aliases only when
+  the target repo explicitly keeps them as a separate compatibility surface.
 - runbook or methodology doc: patch the named doc and run the relevant repo
   checks.
-- local planning or scout note: create or update the repo-local artifact and route any
+- memory guidance: update only through the approved memory-maintenance path;
+  do not write global memory directly from this skill.
+- alignment or scout lane: create or update the lane artifact and route any
   follow-up as a story or inbox note.
-- outside-this-repo changes are not a promotion target for this repo-local
-  workflow; report the routing need instead.
+- target-project change: create or use an isolated target-project worktree or
+  repo-native story unless Cam explicitly requested in-place edits.
 
 After promotion, update the candidate to `Promoted` and link the commit, story,
 diff, or validation evidence that proves live behavior changed.
