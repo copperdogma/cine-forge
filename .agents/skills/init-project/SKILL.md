@@ -32,6 +32,15 @@ make that root path fail.
 5. Leaves the new repo ready to use `/setup-methodology greenfield` as the
    canonical day-zero workflow.
 
+### Ideation Option Expansion
+
+Use `/ideation` during idea intake or before drafting `docs/ideal.md` when the
+possibility space is thin, all proposed product directions are same-shaped, or
+Cam explicitly wants broader options. The ideation packet may run in a bounded
+subagent when the user has explicitly authorized delegation, but `/init-project`
+keeps the interview, raw intake, Ideal/spec synthesis, and final document
+edits.
+
 ## Steps
 
 1. **Read reference repos** — For each provided repo, read:

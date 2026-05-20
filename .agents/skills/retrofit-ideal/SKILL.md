@@ -60,6 +60,11 @@ were unlimited" for integration components, "if users could express intent
 perfectly" for interaction components. If no, the Ideal describes what would
 exist instead.
 
+If Phase 2 produces a thin Ideal or all inferred directions are same-shaped,
+use `/ideation` before presenting the draft. Keep it grounded in the read
+evidence; use subagent mode only when the user has explicitly authorized
+delegation, and treat its packet as option expansion rather than retrofit truth.
+
 Present the draft to the user. This is where the Socratic conversation happens —
 but it's informed by existing architecture, so you can ask much sharper questions:
 

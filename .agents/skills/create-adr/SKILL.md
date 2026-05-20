@@ -10,6 +10,12 @@ user-invocable: true
 
 Create a new ADR with proper structure, research scaffolding, and generated planning-surface integration.
 
+Use `/ideation` before decision closure when the considered options are thin, all
+options are same-neighborhood variants, or the sticky choice needs a stronger
+divergent option set. If the user has explicitly authorized delegation, a
+bounded ideation subagent is a good fit for generating the option packet.
+`/create-adr` still owns the decision, ADR text, and follow-up route.
+
 ## Example
 
 ```

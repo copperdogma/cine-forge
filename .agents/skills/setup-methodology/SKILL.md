@@ -32,6 +32,9 @@ folder with no real Ideal/spec, stop and route to `/init-project new-idea`.
 - core story-loop bootstrap: `/create-story`, `/build-story`, and `/validate`
   guidance for optional sidecar evidence, plan-gated delegation, parallel
   validation, and `/loop-verify` escalation
+- optional `/ideation` helper bootstrap for high-ambiguity Ideal/spec drafting,
+  ADR option expansion, story-boundary shaping, and story-plan alternatives
+  where option quality is the blocker
 - fresh upstream documentation as an active dependency for drift-prone
   providers, SDKs, model/provider slugs, browser/tooling plugins,
   UI/component libraries, auth/payment/storage providers, and framework APIs
@@ -189,14 +192,15 @@ silently forking the setup contract.
    and manually verified. Do not put it in CI, normal `/validate`, or every
    story closeout, and do not run tool-managed fix paths during scout-mode use.
 10. **Core story-loop setup is part of refresh.** Install or refresh
-   `/create-story`, `/build-story`, and `/validate` with the accepted
-   core-loop guidance: the main thread owns Ideal/spec judgment, story
-   boundaries, build plans, and final validation disposition; subagents gather
-   bounded sidecar evidence or handle disjoint non-blocking work only when that
+   `/create-story`, `/build-story`, `/validate`, and the optional `/ideation`
+   helper with the accepted core-loop guidance: the main thread owns
+   Ideal/spec judgment, story boundaries, build plans, option selection, and
+   final validation disposition; subagents gather bounded sidecar evidence,
+   divergent option packets, or disjoint non-blocking work only when that
    reduces risk; sequential fallback is explicit; and `/loop-verify` escalation
-   is reserved for repeated material review/fix rounds. Do not make subagents
-   mandatory for ordinary setup, no-code repos, routine story creation, or
-   small validation passes.
+   is reserved for repeated material review/fix rounds. Do not make subagents,
+   `/ideation`, or `/loop-verify` mandatory for ordinary setup, no-code repos,
+   routine story creation, or small validation passes.
 11. **Canonical public surface only.** AGENTS/docs should advertise
    `/init-project` for greenfield idea intake and `/setup-methodology` for
    full package setup. Do not reintroduce the old phased setup skills.
@@ -238,6 +242,9 @@ without spending many rounds proving absent evidence. Do this:
      and one final yes-ready recommendation
    - `/create-story` with optional sidecar evidence for non-trivial story
      scoping while the main thread owns the final story boundary
+   - `/ideation` as an optional helper for high-ambiguity Ideal/spec drafting,
+     ADR options, story boundaries, and build-plan alternatives where option
+     quality is the blocker, with final judgment left to the caller
    - `/build-story` with delegation only after the plan gate, only for bounded
      non-blocking work with disjoint ownership
    - `/validate` with optional parallel validation packets and escalation to
@@ -356,6 +363,9 @@ without spending many rounds proving absent evidence. Do this:
      story boundary
    - Ensure `/build-story` preserves the human plan gate and allows delegation
      only after that gate for bounded, disjoint, non-blocking work
+   - Ensure `/ideation` is installed as an optional helper for high-ambiguity
+     Ideal/spec drafting, ADR options, story boundaries, and build-plan
+     alternatives where option quality is the blocker
    - Ensure `/validate` preserves main-thread final disposition while allowing
      optional parallel validation packets and `/loop-verify` escalation for
      material repeated review/fix rounds
@@ -375,6 +385,9 @@ without spending many rounds proving absent evidence. Do this:
      required plan/human gate and only for bounded sidecar exploration,
      disjoint implementation slices, tests, or review work. The main thread
      owns the plan, scope coherence, and final handoff.
+   - Install or refresh `/ideation` as an optional helper for high-ambiguity
+     Ideal/spec drafting, ADR option expansion, story-boundary shaping, and
+     build-plan alternatives. Caller skills keep final decision authority.
    - Install or refresh `/validate` so parallel validation packets can inspect
      changed files, acceptance criteria, checks, and architecture/intent fit
      when the diff warrants it. The main thread synthesizes the report and
