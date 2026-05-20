@@ -49,6 +49,9 @@ folder with no real Ideal/spec, stop and route to `/init-project new-idea`.
 - local runtime allocation bootstrap for repos that expose a local web/API
   surface: Conductor-owned port allocation, repo-local launch/status/stop
   scripts, strict binding, health identity, and README/Codex action guidance
+- Codex worktree dependency bootstrap for repos with validation or runtime
+  tools: repo-owned setup command, `.codex/environments/environment.toml`
+  wiring, and no-source-mutation guardrails
 - optional recurring methodology lanes already encoded in the package, such as
   `architecture_audits` / `/triage-architecture` and `ui_scout` /
   `docs/ui-scout*`
@@ -228,6 +231,20 @@ silently forking the setup contract.
     explicitly forced, and stop only same-checkout processes by default. Repos
     with no local runtime should record reserved ranges in README/setup docs
     and defer the launcher until a real runtime exists.
+14. **Codex worktree setup is explicit dependency bootstrap, not runtime
+    launch.** When a repo needs local dependencies before validation or Codex
+    Run actions work, add a repo-owned setup command such as
+    `scripts/codex-setup` and point `.codex/environments/environment.toml`
+    `[setup].script` at that command. Keep package-manager logic in the repo
+    command, not in TOML. Setup commands must be idempotent,
+    lockfile-respecting, and limited to restoring ignored dependency/tool
+    artifacts such as `.venv`, `.runtime`, or `node_modules`. They must not
+    rewrite source files, lockfiles, generated methodology outputs, user data,
+    or start local servers. After adding an environment file, confirm it is
+    visible to git; if `.codex/` is ignored, add a narrow unignore rule for the
+    environment TOML or record that the wiring is intentionally local-only.
+    Repos without local dependency needs may use a cheap check-only setup hook
+    or explicitly defer the hook.
 
 ## Greenfield / No-Code Fast Path
 
@@ -279,6 +296,11 @@ without spending many rounds proving absent evidence. Do this:
    allocation file for primary ports, worktree ranges, and service offsets;
    document the command in README and Codex actions. If no runtime exists,
    document the reserved range and defer launcher implementation.
+9. If the repo needs local dependencies for validation or runtime commands,
+   install a Codex worktree setup hook. Point
+   `.codex/environments/environment.toml` at the repo-owned setup command and
+   keep Run actions separate from setup so dependency hydration never silently
+   starts a server.
 
 ## Steps
 
@@ -329,6 +351,10 @@ without spending many rounds proving absent evidence. Do this:
      local launcher surface: allocation-file lookup, stable worktree slot
      derivation, strict ports, health identity, status/start/stop commands,
      README guidance, and Codex action wiring
+   - for repos with local validation or runtime dependencies, preserve or
+     install a Codex worktree setup hook that restores ignored dependency
+     artifacts without mutating source, lockfiles, generated methodology
+     outputs, or user data
 
 6. **Bootstrap baseline evidence infrastructure**:
    - For Conductor or another non-product supervisor package, preserve local

@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+tracked_status() {
+  git status --short --untracked-files=no
+}
+
+without_conda_env() {
+  env \
+    -u CONDA_PREFIX \
+    -u CONDA_DEFAULT_ENV \
+    -u CONDA_SHLVL \
+    -u CONDA_EXE \
+    -u CONDA_PYTHON_EXE \
+    -u CONDA_PROMPT_MODIFIER \
+    -u _CE_CONDA \
+    "$@"
+}
+
+before="$(tracked_status)"
+
+PYTHON_BIN="${CODEX_PYTHON:-}"
+if [[ -z "$PYTHON_BIN" ]]; then
+  if command -v python3.12 >/dev/null 2>&1; then
+    PYTHON_BIN="$(command -v python3.12)"
+  else
+    PYTHON_BIN="$(command -v python3)"
+  fi
+fi
+
+desired_version="$("$PYTHON_BIN" -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
+if [[ -x .venv/bin/python ]]; then
+  current_version="$(.venv/bin/python -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
+  if [[ "$current_version" != "$desired_version" ]]; then
+    echo "Removing .venv built with Python $current_version; setup requires $desired_version."
+    rm -rf .venv
+  fi
+fi
+
+echo "CineForge Codex setup"
+echo "Restoring Python dependencies into .venv using $PYTHON_BIN..."
+"$PYTHON_BIN" -m venv .venv
+without_conda_env .venv/bin/python -m pip install --upgrade pip
+without_conda_env .venv/bin/python -m pip install -e '.[dev]'
+
+echo "Restoring root Node dependencies with npm ci..."
+npm ci
+
+echo "Restoring UI Node dependencies with npm ci..."
+(cd ui && npm ci)
+
+after="$(tracked_status)"
+if [[ "$before" != "$after" ]]; then
+  echo "Codex setup changed tracked files; refusing to hide setup drift." >&2
+  git status --short --untracked-files=no >&2
+  exit 1
+fi
+
+echo "CineForge Codex setup complete"
