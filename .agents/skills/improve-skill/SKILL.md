@@ -22,13 +22,16 @@ You are a SOTA model. Use your judgment. This skill gives you framing and constr
 
 3. **The hard filter: generic over specific.** Every proposed improvement must pass this test: *would a different project using this same skill benefit from this change?* If it only helps because of our specific app, domain, or stack — note it for the user's awareness but don't propose editing the skill for it. Skills are portable. App-specific knowledge belongs in AGENTS.md, not in skills.
 
-4. **Present a numbered list of recommendations.** For each: what went wrong, why, and what to change. Be concrete — quote the current wording and propose the replacement. Ask the user to approve all, pick specific items, or skip.
+4. **Run a description-budget pass.** If an improvement touches frontmatter or routing behavior, check whether `description` is doing routing work or just prose work. Keep it concise, preserve trigger nouns, remove repeated explanation already covered by the body, and use Conductor's `skill-surface-audit` only as an optional central check after broad skill edits or before shared-skill rollouts.
 
-5. **Implement approved changes.** Edit the SKILL.md. Run `scripts/sync-agent-skills.sh`. Re-read the file to confirm.
+5. **Present a numbered list of recommendations.** For each: what went wrong, why, and what to change. Be concrete — quote the current wording and propose the replacement. Ask the user to approve all, pick specific items, or skip.
+
+6. **Implement approved changes.** Edit the SKILL.md. Run `scripts/sync-agent-skills.sh`. Re-read the file to confirm.
 
 ## Guardrails
 
 - Don't add app-specific knowledge to skills — they're portable across projects
 - Don't bloat a skill for a one-off edge case — improve for patterns, not incidents
+- Don't use the frontmatter description as a mini-runbook; keep long guidance in the body
 - Don't weaken existing guardrails unless they actively caused harm
 - Get approval before editing anything
