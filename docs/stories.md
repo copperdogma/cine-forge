@@ -104,7 +104,7 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:6`, `spec:7`
-- UI scout freshness: attention needed — last run 2026-04-12 is 38 days old against a 14-day cadence
+- UI scout freshness: attention needed — last run 2026-04-12 is 46 days old against a 14-day cadence
 - Sequencing bias: `scene-generation-completion` — Keep `spec:6` / `spec:7` as the active product lane even after Story 164 closed the first surfaced real-scene render route. The next slice should deepen scene-generation completeness from that honest operator path instead of retreating to throughput-only or eval-polish work.
 - Sequencing bias: `pipeline-throughput-efficiency` — Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
