@@ -74,6 +74,12 @@ providers:
       temperature: 0
       max_tokens: 4096
 
+  - id: file://../providers/anthropic_messages_provider.py
+    label: "Claude Opus 4.8"
+    config:
+      model: claude-opus-4-8
+      max_tokens: 4096
+
   - id: openai:gpt-5.4
     label: "GPT-5.4"
     config:

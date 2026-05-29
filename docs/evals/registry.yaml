@@ -65,6 +65,16 @@ evals:
       cost_usd_max: 0.10
 
     scores:
+      - model: "Opus 4.8"
+        metrics:
+          overall: 0.9326
+        latency_ms: 30934
+        cost_usd: 0.1034
+        cost_estimated: true
+        measured: 2026-05-29
+        git_sha: "35700fe"
+        result_file: benchmarks/results/character-extraction-opus48-2026-05-29.json
+        note: "Story 206 Opus 4.8 probe passed all three character cases, but stayed below the 0.95 quality target and narrowly missed latency/cost budgets. Remaining gaps are model-wrong/non-runtime-blocking for default selection: ROSE trait coverage missed resourceful/sharp-tongued/brave, DAD evidence/fact recall trailed the golden, and outputs used JSON fences. No character-bible default change; Sonnet 4.6 remains the value default."
       - model: "Kimi K2.6"
         metrics:
           overall: 0.8780
@@ -3068,6 +3078,16 @@ evals:
       cost_usd_max: 0.01
 
     scores:
+      - model: "Opus 4.8"
+        metrics:
+          overall: 0.9025
+        latency_ms: 53251
+        cost_usd: 0.1334
+        cost_estimated: true
+        measured: 2026-05-29
+        git_sha: "35700fe"
+        result_file: benchmarks/results/script-bible-opus48-2026-05-29.json
+        note: "Story 206 Opus 4.8 probe cleared the 0.90 script-bible quality target, but only barely, missed latency/cost budgets, and did not beat existing quality or value leaders. The Python scorer was strong (0.985) while the Opus rubric score was 0.82, mainly penalizing genre/classification nuance and an overlong fenced JSON answer. No script-bible default change; this is a quality pass but a value/latency miss."
       - model: "Kimi K2.6"
         metrics:
           overall: 0.9750

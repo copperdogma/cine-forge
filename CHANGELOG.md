@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-05-29-01] — Evaluate Opus 4.8 model slots (Story 206)
+
+### Added
+- Added Story 206 and raw Opus 4.8 benchmark evidence for script bible and character extraction.
+- Added a repo-local Anthropic promptfoo provider for Opus 4.8 while promptfoo's built-in Anthropic provider still sends deprecated temperature.
+
+### Changed
+- Added Opus 4.8 benchmark lanes, pricing estimates, eval registry rows, and refreshed model-discovery cache.
+- Removed the completed Opus 4.8 inbox item after recording registry evidence.
+
+### Fixed
+- Fixed CineForge Anthropic runtime payloads so `claude-opus-4-8` calls omit unsupported `temperature`.
+
 ## [2026-05-20-02] — Evaluate Kimi K2.6 model slots (Story 205)
 
 ### Added

@@ -286,7 +286,8 @@
           "198",
           "200",
           "204",
-          "205"
+          "205",
+          "206"
         ],
         "adrIds": [
           "ADR-003"
@@ -374,7 +375,8 @@
           "199",
           "202",
           "204",
-          "205"
+          "205",
+          "206"
         ],
         "adrIds": [
           "ADR-001",
@@ -1065,7 +1067,8 @@
           "200",
           "202",
           "204",
-          "205"
+          "205",
+          "206"
         ],
         "adrIds": [
           "ADR-001",
@@ -1627,7 +1630,8 @@
           "200",
           "202",
           "204",
-          "205"
+          "205",
+          "206"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1673,7 +1677,8 @@
             "200",
             "202",
             "204",
-            "205"
+            "205",
+            "206"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -13481,6 +13486,73 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "206",
+      "title": "Opus 4.8 Model-Slot Eval Refresh",
+      "path": "docs/stories/story-206-opus-48-model-slot-eval-refresh.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)",
+        "R2 (character understanding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "dependsOn": [
+        "035",
+        "204",
+        "205"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "anthropic",
+        "evals",
+        "model-refresh",
+        "opus-4.8"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "206",
+        "sourcePath": "docs/stories/story-206-opus-48-model-slot-eval-refresh.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-206-opus-48-model-slot-eval-refresh.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -13627,12 +13699,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Kimi K2.6",
-        "measured": "2026-05-20",
+        "model": "Opus 4.8",
+        "measured": "2026-05-29",
         "metrics": {
-          "overall": 0.878
+          "overall": 0.9326
         },
-        "note": "Story 205 Moonshot probe passed all three cases, but trailed the Claude/GPT leaders and missed the 30s latency target by a wide margin. Model-wrong misses were mostly evidence grounding plus ROSE trait coverage and DAD narrative-role classification; non-runtime-blocking because Kimi was not adopted as the character-bible default."
+        "note": "Story 206 Opus 4.8 probe passed all three character cases, but stayed below the 0.95 quality target and narrowly missed latency/cost budgets. Remaining gaps are model-wrong/non-runtime-blocking for default selection: ROSE trait coverage missed resourceful/sharp-tongued/brave, DAD evidence/fact recall trailed the golden, and outputs used JSON fences. No character-bible default change; Sonnet 4.6 r…"
       },
       "declaredSpecRefs": [
         "spec:3",
@@ -13655,14 +13727,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 205 Moonshot probe passed all three cases, but trailed the Claude/GPT leaders and missed the 30s latency target by a wide margin. Model-wrong misses were mostly evidence grounding plus ROSE trait coverage and DAD narrative-role classification; non-runtime-blocking because Kimi was not adopted as the character-bible default.",
+        "whyNow": "Story 206 Opus 4.8 probe passed all three character cases, but stayed below the 0.95 quality target and narrowly missed latency/cost budgets. Remaining gaps are model-wrong/non-runtime-blocking for default selection: ROSE trait coverage missed resourceful/sharp-tongued/brave, DAD evidence/fact recall trailed the golden, and outputs used JSON fences. No character-bible default change; Sonnet 4.6 r…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-05-20",
+          "date": "2026-05-29",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 205 Moonshot probe passed all three cases, but trailed the Claude/GPT leaders and missed the 30s latency target by a wide margin. Model-wrong misses were mostly evidence grounding plus ROSE trait coverage and DAD narrative-role classification; non-runtime-blocking because Kimi was not adopted as the character-bible default."
+          "summary": "Story 206 Opus 4.8 probe passed all three character cases, but stayed below the 0.95 quality target and narrowly missed latency/cost budgets. Remaining gaps are model-wrong/non-runtime-blocking for default selection: ROSE trait coverage missed resourceful/sharp-tongued/brave, DAD evidence/fact recall trailed the golden, and outputs used JSON fences. No character-bible default change; Sonnet 4.6 r…"
         }
       }
     },
@@ -15051,12 +15123,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Kimi K2.6",
-        "measured": "2026-05-20",
+        "model": "Opus 4.8",
+        "measured": "2026-05-29",
         "metrics": {
-          "overall": 0.975
+          "overall": 0.9025
         },
-        "note": "Story 205 Moonshot probe is the measured quality leader on this single script-bible run, but it misses latency and cost budgets and is weaker value than the existing Grok/Gemini full-script lanes. Kimi thinking output must be hidden from promptfoo scoring (`showThinking: false`); the visible-thinking control failed JSON parsing while the final-content JSON scored 0.975. Useful as a frontier compa…"
+        "note": "Story 206 Opus 4.8 probe cleared the 0.90 script-bible quality target, but only barely, missed latency/cost budgets, and did not beat existing quality or value leaders. The Python scorer was strong (0.985) while the Opus rubric score was 0.82, mainly penalizing genre/classification nuance and an overlong fenced JSON answer. No script-bible default change; this is a quality pass but a value/latenc…"
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -15079,14 +15151,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 205 Moonshot probe is the measured quality leader on this single script-bible run, but it misses latency and cost budgets and is weaker value than the existing Grok/Gemini full-script lanes. Kimi thinking output must be hidden from promptfoo scoring (`showThinking: false`); the visible-thinking control failed JSON parsing while the final-content JSON scored 0.975. Useful as a frontier compa…",
+        "whyNow": "Story 206 Opus 4.8 probe cleared the 0.90 script-bible quality target, but only barely, missed latency/cost budgets, and did not beat existing quality or value leaders. The Python scorer was strong (0.985) while the Opus rubric score was 0.82, mainly penalizing genre/classification nuance and an overlong fenced JSON answer. No script-bible default change; this is a quality pass but a value/latenc…",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-05-20",
+          "date": "2026-05-29",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 205 Moonshot probe is the measured quality leader on this single script-bible run, but it misses latency and cost budgets and is weaker value than the existing Grok/Gemini full-script lanes. Kimi thinking output must be hidden from promptfoo scoring (`showThinking: false`); the visible-thinking control failed JSON parsing while the final-content JSON scored 0.975. Useful as a frontier compa…"
+          "summary": "Story 206 Opus 4.8 probe cleared the 0.90 script-bible quality target, but only barely, missed latency/cost budgets, and did not beat existing quality or value leaders. The Python scorer was strong (0.985) while the Opus rubric score was 0.82, mainly penalizing genre/classification nuance and an overlong fenced JSON answer. No script-bible default change; this is a quality pass but a value/latenc…"
         }
       }
     },
@@ -15886,7 +15958,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 46 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 47 days old against a 14-day cadence"
     ]
   }
 }

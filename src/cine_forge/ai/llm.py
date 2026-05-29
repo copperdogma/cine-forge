@@ -40,6 +40,7 @@ MODEL_PRICING_PER_M_TOKEN: dict[str, tuple[float, float]] = {
     "claude-sonnet-4-5": (3.0, 15.0),
     "claude-sonnet-4-5-20250929": (3.0, 15.0),
     "claude-sonnet-4-6": (3.0, 15.0),
+    "claude-opus-4-8": (5.0, 25.0),
     "claude-opus-4-6": (15.0, 75.0),
     "claude-haiku-4-5-20251001": (0.80, 4.0),
     # Google
@@ -50,6 +51,10 @@ MODEL_PRICING_PER_M_TOKEN: dict[str, tuple[float, float]] = {
     "gemini-3.1-flash-lite": (0.10, 0.40),
     "gemini-3.1-pro-preview": (1.50, 10.0),
     "gemini-3.5-flash": (1.50, 9.0),
+}
+
+ANTHROPIC_MODELS_WITHOUT_TEMPERATURE = {
+    "claude-opus-4-8",
 }
 
 OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions"
@@ -494,9 +499,10 @@ def _build_anthropic_payload(
     payload: dict[str, Any] = {
         "model": model,
         "messages": [{"role": "user", "content": user_content}],
-        "temperature": temperature,
         "max_tokens": max_tokens or 16384,
     }
+    if model not in ANTHROPIC_MODELS_WITHOUT_TEMPERATURE:
+        payload["temperature"] = temperature
     if response_schema:
         schema_json = json.dumps(response_schema.model_json_schema(), indent=2)
         payload["system"] = (

@@ -116,6 +116,12 @@ providers:
       temperature: 0
       max_tokens: 4096
 
+  - id: file://../providers/anthropic_messages_provider.py
+    label: "Claude Opus 4.8"
+    config:
+      model: claude-opus-4-8
+      max_tokens: 4096
+
   - id: openai:kimi-k2.6
     label: "Kimi K2.6"
     config:

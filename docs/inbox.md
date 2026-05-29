@@ -3,16 +3,6 @@ Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is 
 
 ## Untriaged
 
-- 2026-05-28 — From Conductor Scout 043: Anthropic's `claude-opus-4-8`
-  is a strong CineForge challenger for long-form script understanding, creative
-  direction quality, prompt compilation, character/continuity reasoning, and
-  codebase-scale agentic work. It is not a render-video or still-image model.
-  First run live provider discovery/smoke and pricing checks, then add one or
-  two bounded model-slot evals where the tiered model strategy is still below
-  a single-model bar. Compare quality, latency, and cost before touching any
-  default creative, analysis, or prompt-compiler lane. Source:
-  `/Users/cam/.codex/worktrees/1375/conductor/docs/scout/scout-043-claude-opus-48-api-eval-opportunities.md`
-
 - 2026-05-06 - From Conductor inbox: OpenAI's 2026-05-05 GPT-5.5
   Instant release says the ChatGPT default now uses GPT-5.5 Instant and the
   API exposure is `chat-latest`. Treat this as a cheap/default-lane challenger,
