@@ -97,30 +97,38 @@ This file is the project-wide source of truth for agent behavior and engineering
 - **Core Stack**: Python 3.12+, Pydantic (schemas), YAML (recipes), React (UI).
 - **Core Pattern**: Driver orchestrates Modules which consume/produce versioned Artifacts stored in an ArtifactStore.
 
-## Subagent Strategy
+## Cost-Aware Delegation
 
-Use subagents aggressively to parallelize work and protect the main context window. The orchestrating agent (Opus) is responsible for final quality — always review subagent output before accepting it.
+Use subagents to parallelize independent work and protect the main context
+window when the task is large enough to justify the overhead. For delegated
+work, choose the lowest model strength and reasoning level that can honestly
+handle the shard; do not name or hard-code a specific model in repo
+instructions.
 
-### Model Selection by Task Type
+Use lower-strength sidecars for mechanical work such as file search, simple
+reads, command execution, git or diff inventory, generated-file freshness,
+link or alias checks, and narrow docs consistency scans. Keep the main thread
+responsible for scope, final quality, semantic judgment, architecture
+decisions, security judgment, eval correctness, staging, commits, pushes,
+deploy decisions, rollback decisions, and user-facing synthesis.
 
-| Task | Model | Rationale |
-|------|-------|-----------|
-| File search, glob, grep, simple reads | **Haiku** | Fast, cheap, mechanical |
-| Write a single focused component/page | **Sonnet** | Good code quality, fast enough |
-| Multi-file refactor, architecture decisions | **Opus** | Needs full context and judgment |
-| Research/exploration across codebase | **Sonnet** | Good at synthesis, thorough |
-| Writing tests for existing code | **Sonnet** | Needs to understand contracts |
-| Reviewing/validating generated code | **Opus** | Quality gate, catches subtle issues |
-| Writing docs, updating AGENTS.md | **Haiku** | Mechanical text, Opus reviews |
-
-### Guidelines
-- **Parallelize independent work only when ownership is clear**: If building 3 pages that don't depend on each other and the write boundaries are already clear, launch 3 subagents simultaneously. If ownership is overlapping or unclear, keep one primary execution path and use subagents for exploration/review instead of concurrent edits.
-- **Opus orchestrates, delegates, reviews**: The main agent reads results, spots issues, and iterates — never blindly trusts.
-- **Context protection**: Use subagents for tasks that produce large output (exploration, research) to avoid flooding the main context.
-- **Fail fast**: If a subagent produces bad output, don't retry the same prompt — adjust the approach or do it yourself.
+- **Parallelize independent work only when ownership is clear**: If building
+  pages that do not depend on each other and the write boundaries are already
+  clear, launch subagents simultaneously. If ownership is overlapping or
+  unclear, keep one primary execution path and use subagents for
+  exploration/review instead of concurrent edits.
+- **Coordinator owns judgment**: The main agent reads results, spots issues,
+  and iterates; never blindly trust delegated output.
+- **Context protection**: Use subagents for tasks that produce large output
+  when that protects the main context.
+- **Fail fast**: If a subagent produces bad output, do not retry the same
+  prompt; adjust the approach or do it yourself.
+- **No recursion**: Delegated workers must not spawn more workers, invoke
+  `/loop-verify`, or widen their assignment.
 
 ### Running Log
-Track model performance observations in `/memory/subagent-log.md` to refine the table above over time.
+Track delegation performance observations in `/memory/subagent-log.md` to
+refine task-strength guidance over time.
 
 ## Architecture Rules
 

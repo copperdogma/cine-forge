@@ -75,15 +75,16 @@ similarly high-risk validation surfaces.
 ## Coordinator Defaults
 
 - Default the coordinator to the inherited model and reasoning level. For
-  worker agents, choose the cheapest model and reasoning level that can honestly
-  inspect the shard. Downshift for mechanical checks, generated compatibility-link or optional-alias checks,
-  typo-only docs cleanup, and other low-risk local work; keep inherited strength
-  or escalate reasoning for semantic contracts, API boundaries, security, eval
-  correctness, cross-repo rollouts, or anything where a miss would cause
-  expensive rework.
-- Do not hard-code "best model" as the default for every worker. If you override
-  model or reasoning per shard, record the short rationale in the round plan and
-  keep the override tied to task risk, not prestige.
+  worker agents, choose the lowest model strength and reasoning level that can
+  honestly inspect the shard. Downshift for mechanical checks,
+  compatibility-link or optional-alias checks, typo-only docs cleanup, and other
+  low-risk local work; keep inherited strength or escalate reasoning for
+  semantic contracts, API boundaries, security, eval correctness, cross-repo
+  rollouts, or anything where a miss would cause expensive rework.
+- Do not name or hard-code a specific model in this skill, and do not default to
+  "best model" for every worker. If you override model strength or reasoning per
+  shard, record the short rationale in the round plan and keep the override
+  tied to task risk, not prestige.
 - Use fresh agents each round. Do not rely on stale worker context after files
   changed underneath them.
 - Before launching workers, close no-longer-needed old agents when practical. If

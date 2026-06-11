@@ -95,7 +95,11 @@ Assess whether a story's implementation meets its requirements.
      targets, evals, or architecture questions. Require fresh evidence from
      this validation pass, and preserve CineForge's backend, UI, browser,
      eval, methodology, and skill-sync gates.
-   - When launching parallel validation packets, size each worker model and reasoning level to shard risk. Use cheaper or lower-reasoning workers for lookup, compatibility-link or optional-alias checks, and mechanical scans; keep stronger workers for semantic contracts, security, eval correctness, cross-repo decisions, or high-cost misses. Record any explicit override rationale in the validation report.
+   - For mechanical packets such as command execution, generated-file checks,
+     link or alias scans, and narrow changed-file inventories, choose the
+     lowest model strength and reasoning level that can honestly complete the
+     packet. Record the short rationale when downshifting.
+   - Do not name or hard-code a specific model in validation instructions.
    - Subagents may gather evidence or flag findings, but the main thread keeps
      the final grade, closure recommendation, story handoff state, and
      yes-ready next step.
