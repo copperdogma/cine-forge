@@ -735,6 +735,16 @@ evals:
       cost_usd_max: 0.10
 
     scores:
+      - model: "Grok 4.5"
+        metrics:
+          overall: 0.9066
+        latency_ms: 104242
+        cost_usd: 0.0603
+        cost_estimated: true
+        measured: 2026-07-20
+        git_sha: "dea7024"
+        result_file: benchmarks/results/scene-extraction-grok45-2026-07-20.json
+        note: "Story 207 quality pass: strict final-content JSON parsed and all 15 scenes were recovered, fixing Grok 4.3's harness-visible reasoning failure. It misses the 60s latency target and trails GPT-5.2 on quality, latency, and cost, so no scene-extraction default change. Classification: model-correct for quality; non-runtime-blocking value/latency miss for default selection."
       - model: "GPT-5.5"
         metrics:
           overall: 0.9059
@@ -1032,6 +1042,16 @@ evals:
       cost_usd_max: 0.05
 
     scores:
+      - model: "Grok 4.5"
+        metrics:
+          overall: 0.9442
+        latency_ms: 13728
+        cost_usd: 0.0079
+        cost_estimated: true
+        measured: 2026-07-20
+        git_sha: "dea7024"
+        result_file: benchmarks/results/scene-enrichment-grok45-2026-07-20.json
+        note: "Story 207 passed both maintained fixtures and cleared quality, latency, and cost targets after `showThinking: false` kept xAI reasoning metadata out of strict JSON scoring. It is cheaper than Sonnet 4.6 but scores below the repeatedly verified Sonnet lane; useful as a challenger, not enough evidence for a default change. Classification: model-correct/non-runtime-blocking."
       - model: "GPT-5.5"
         metrics:
           overall: 0.9313
@@ -1236,6 +1256,16 @@ evals:
       note: "QA should be near-perfect — false positives waste pipeline budget"
 
     scores:
+      - model: "Grok 4.5"
+        metrics:
+          overall: 0.5982
+        latency_ms: 10152
+        cost_usd: 0.0092
+        cost_estimated: true
+        measured: 2026-07-20
+        git_sha: "dea7024"
+        result_file: benchmarks/results/qa-pass-grok45-2026-07-20.json
+        note: "Story 207 caught the deliberately bad extraction but false-negatived the known-good case, inventing seven errors that the fixture does not contain. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default. It also narrowly misses the 10s latency target."
       - model: "Kimi K2.6"
         metrics:
           overall: 0.5938
@@ -1534,6 +1564,16 @@ evals:
       note: "Do not switch defaults until the full 20-clip matrix clears the pilot floor."
 
     scores:
+      - model: "Grok 4.5"
+        metrics:
+          overall: 0.7017
+        latency_ms: 6622
+        cost_usd: 0.0067
+        cost_estimated: true
+        measured: 2026-07-20
+        git_sha: "dea7024"
+        result_file: benchmarks/results/video-understanding-grok45-2026-07-20.json
+        note: "Story 207 passed 3/6 anchor clips and cleared latency/cost budgets, improving substantially over Grok 4.3 but missing the 0.80 pilot floor and GPT-5.4 leader. Classification: model-wrong/non-runtime-blocking for the current default; misses were prop-swap camera/motion nuance, a hallucinated static geometric neon scene that missed the crane reveal, and incorrect central-subject/emotion reads in the muzak tableau."
       - model: "GPT-5.4"
         metrics:
           overall: 0.7923
@@ -3078,6 +3118,16 @@ evals:
       cost_usd_max: 0.01
 
     scores:
+      - model: "Grok 4.5"
+        metrics:
+          overall: 0.9750
+        latency_ms: 41760
+        cost_usd: 0.0247
+        cost_estimated: true
+        measured: 2026-07-20
+        git_sha: "dea7024"
+        result_file: benchmarks/results/script-bible-grok45-2026-07-20.json
+        note: "Story 207 ties Kimi K2.6 for the measured quality lead on this single full-screenplay fixture and is much faster than Kimi, but still misses the 30s latency and $0.01 cost budgets and loses the value-default comparison to Grok 4.1 Fast Reasoning. Classification: model-correct for quality; non-runtime-blocking value/latency miss. Useful frontier fallback, no default change."
       - model: "Opus 4.8"
         metrics:
           overall: 0.9025

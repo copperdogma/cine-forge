@@ -128,6 +128,7 @@ TIER_PATTERNS: list[tuple[str, str]] = [
     (r"gemini-1-",              "legacy"),
 
     # ── xAI ──────────────────────────────────────────────────────────────────
+    (r"^grok-4\.5\b",           "sota"),
     (r"^grok-4\.3\b",           "sota"),
     (r"^grok-4\.20",            "sota"),
     (r"^grok-4-1-fast",         "mid"),
@@ -492,6 +493,18 @@ def _normalize_model_name(name: str) -> str:
     return name.lower().replace(" ", "-").replace(".", "-").replace("_", "-")
 
 
+def _model_family(normalized_name: str) -> str | None:
+    """Return a provider/model family for API IDs and human registry labels."""
+    if normalized_name.startswith(("claude-", "opus-", "sonnet-", "haiku-")):
+        return "claude"
+    for family in ("gpt", "gemini", "grok", "kimi", "moonshot"):
+        if normalized_name.startswith(f"{family}-"):
+            return family
+    if re.match(r"^o\d(?:-|$)", normalized_name):
+        return "openai-o"
+    return None
+
+
 def _matches_registry(model_id: str, display_name: str, registry_models: set[str]) -> bool:
     """Check if a discovered model matches any model in the registry.
 
@@ -510,10 +523,18 @@ def _matches_registry(model_id: str, display_name: str, registry_models: set[str
             return True
         # Handle "Sonnet 4.6" matching "claude-sonnet-4-6"
         # Strip provider prefix and compare
+        family_id = _model_family(norm_id)
+        family_rm = _model_family(norm_rm)
         stripped_id = re.sub(r"^(claude|gpt|gemini|grok|o\d)-?", "", norm_id)
-        stripped_rm = re.sub(r"^(claude|gpt|gemini|grok|o\d)-?", "", norm_rm)
+        stripped_rm = re.sub(
+            r"^(claude-|opus-|sonnet-|haiku-|gpt-|gemini-|grok-|o\d-?)",
+            "",
+            norm_rm,
+        )
         if (
-            stripped_id
+            family_id is not None
+            and family_id == family_rm
+            and stripped_id
             and stripped_rm
             and (stripped_rm in stripped_id or stripped_id in stripped_rm)
         ):

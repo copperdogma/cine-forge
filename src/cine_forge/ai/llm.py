@@ -36,6 +36,7 @@ MODEL_PRICING_PER_M_TOKEN: dict[str, tuple[float, float]] = {
     "gpt-5.4-nano": (0.20, 1.25),
     # xAI
     "grok-4.3": (1.25, 2.50),
+    "grok-4.5": (2.0, 6.0),
     # Anthropic
     "claude-sonnet-4-5": (3.0, 15.0),
     "claude-sonnet-4-5-20250929": (3.0, 15.0),

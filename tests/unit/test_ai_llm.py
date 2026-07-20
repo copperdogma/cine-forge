@@ -205,6 +205,7 @@ def test_estimate_cost_usd_uses_known_model_pricing() -> None:
         ("gemini-3.1-pro-preview", 11.5),
         ("gemini-3.1-flash-lite", 0.5),
         ("grok-4.3", 3.75),
+        ("grok-4.5", 8.0),
     ],
 )
 def test_estimate_cost_usd_supports_newly_added_models(model: str, expected: float) -> None:

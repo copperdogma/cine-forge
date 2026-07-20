@@ -287,7 +287,8 @@
           "200",
           "204",
           "205",
-          "206"
+          "206",
+          "207"
         ],
         "adrIds": [
           "ADR-003"
@@ -944,7 +945,8 @@
           "201",
           "202",
           "203",
-          "204"
+          "204",
+          "207"
         ],
         "adrIds": [
           "ADR-002",
@@ -1068,7 +1070,8 @@
           "202",
           "204",
           "205",
-          "206"
+          "206",
+          "207"
         ],
         "adrIds": [
           "ADR-001",
@@ -1567,7 +1570,8 @@
           "198",
           "200",
           "204",
-          "205"
+          "205",
+          "207"
         ],
         "evalIds": [
           "compromise-C2-qa-validation"
@@ -1592,7 +1596,8 @@
             "198",
             "200",
             "204",
-            "205"
+            "205",
+            "207"
           ],
           "evalIds": [
             "compromise-C2-qa-validation"
@@ -1631,7 +1636,8 @@
           "202",
           "204",
           "205",
-          "206"
+          "206",
+          "207"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1678,7 +1684,8 @@
             "202",
             "204",
             "205",
-            "206"
+            "206",
+            "207"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -13553,6 +13560,73 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "207",
+      "title": "Grok 4.5 Model-Slot Eval Refresh",
+      "path": "docs/stories/story-207-grok-45-model-slot-eval-refresh.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:7",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C2",
+        "C3"
+      ],
+      "dependsOn": [
+        "035",
+        "200"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "generation_and_visualization",
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "grok-4.5",
+        "model-refresh",
+        "xai"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "207",
+        "sourcePath": "docs/stories/story-207-grok-45-model-slot-eval-refresh.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-207-grok-45-model-slot-eval-refresh.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -14636,12 +14710,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Gemini 3.5 Flash",
-        "measured": "2026-05-20",
+        "model": "Grok 4.5",
+        "measured": "2026-07-20",
         "metrics": {
-          "overall": 0.625
+          "overall": 0.5982
         },
-        "note": "Story 204 verification-slot probe caught the bad extraction but false-negatived the known-good scene. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default."
+        "note": "Story 207 caught the deliberately bad extraction but false-negatived the known-good case, inventing seven errors that the fixture does not contain. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default. It also narrowly misses the 10s latency target."
       },
       "declaredSpecRefs": [
         "spec:8"
@@ -14661,14 +14735,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 204 verification-slot probe caught the bad extraction but false-negatived the known-good scene. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default.",
+        "whyNow": "Story 207 caught the deliberately bad extraction but false-negatived the known-good case, inventing seven errors that the fixture does not contain. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default. It also narrowly misses the 10s latency target.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-05-20",
+          "date": "2026-07-20",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 204 verification-slot probe caught the bad extraction but false-negatived the known-good scene. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default."
+          "summary": "Story 207 caught the deliberately bad extraction but false-negatived the known-good case, inventing seven errors that the fixture does not contain. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default. It also narrowly misses the 10s latency target."
         }
       }
     },
@@ -15004,12 +15078,12 @@
         }
       ],
       "latestScore": {
-        "model": "Gemini 3.5 Flash",
-        "measured": "2026-05-20",
+        "model": "Grok 4.5",
+        "measured": "2026-07-20",
         "metrics": {
-          "overall": 0.8842
+          "overall": 0.9442
         },
-        "note": "Story 204 probe passed both scene-enrichment cases, but remains below the 0.93 quality target and the Sonnet 4.6 default. Classification: model-wrong/non-runtime-blocking for default selection, mainly weaker elevator tone/time scoring and flashback nuance."
+        "note": "Story 207 passed both maintained fixtures and cleared quality, latency, and cost targets after `showThinking: false` kept xAI reasoning metadata out of strict JSON scoring. It is cheaper than Sonnet 4.6 but scores below the repeatedly verified Sonnet lane; useful as a challenger, not enough evidence for a default change. Classification: model-correct/non-runtime-blocking."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -15032,7 +15106,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 204 probe passed both scene-enrichment cases, but remains below the 0.93 quality target and the Sonnet 4.6 default. Classification: model-wrong/non-runtime-blocking for default selection, mainly weaker elevator tone/time scoring and flashback nuance.",
+        "whyNow": "Story 207 passed both maintained fixtures and cleared quality, latency, and cost targets after `showThinking: false` kept xAI reasoning metadata out of strict JSON scoring. It is cheaper than Sonnet 4.6 but scores below the repeatedly verified Sonnet lane; useful as a challenger, not enough evidence for a default change. Classification: model-correct/non-runtime-blocking.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
@@ -15064,12 +15138,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Gemini 3.5 Flash",
-        "measured": "2026-05-20",
+        "model": "Grok 4.5",
+        "measured": "2026-07-20",
         "metrics": {
-          "overall": 0.8108
+          "overall": 0.9066
         },
-        "note": "Story 204 Gemini 3.5 Flash probe parsed strict JSON with a 65k output cap, but misses the 0.90 quality target. Classification: model-wrong/non-runtime-blocking for default selection - it over-split the screenplay to 17 scenes and missed key character refs in the scorer. No scene-extraction default change."
+        "note": "Story 207 quality pass: strict final-content JSON parsed and all 15 scenes were recovered, fixing Grok 4.3's harness-visible reasoning failure. It misses the 60s latency target and trails GPT-5.2 on quality, latency, and cost, so no scene-extraction default change. Classification: model-correct for quality; non-runtime-blocking value/latency miss for default selection."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -15092,14 +15166,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 204 Gemini 3.5 Flash probe parsed strict JSON with a 65k output cap, but misses the 0.90 quality target. Classification: model-wrong/non-runtime-blocking for default selection - it over-split the screenplay to 17 scenes and missed key character refs in the scorer. No scene-extraction default change.",
+        "whyNow": "Story 207 quality pass: strict final-content JSON parsed and all 15 scenes were recovered, fixing Grok 4.3's harness-visible reasoning failure. It misses the 60s latency target and trails GPT-5.2 on quality, latency, and cost, so no scene-extraction default change. Classification: model-correct for quality; non-runtime-blocking value/latency miss for default selection.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-05-20",
+          "date": "2026-07-20",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 204 Gemini 3.5 Flash probe parsed strict JSON with a 65k output cap, but misses the 0.90 quality target. Classification: model-wrong/non-runtime-blocking for default selection - it over-split the screenplay to 17 scenes and missed key character refs in the scorer. No scene-extraction default change."
+          "summary": "Story 207 quality pass: strict final-content JSON parsed and all 15 scenes were recovered, fixing Grok 4.3's harness-visible reasoning failure. It misses the 60s latency target and trails GPT-5.2 on quality, latency, and cost, so no scene-extraction default change. Classification: model-correct for quality; non-runtime-blocking value/latency miss for default selection."
         }
       }
     },
@@ -15123,12 +15197,12 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": {
-        "model": "Opus 4.8",
-        "measured": "2026-05-29",
+        "model": "Grok 4.5",
+        "measured": "2026-07-20",
         "metrics": {
-          "overall": 0.9025
+          "overall": 0.975
         },
-        "note": "Story 206 Opus 4.8 probe cleared the 0.90 script-bible quality target, but only barely, missed latency/cost budgets, and did not beat existing quality or value leaders. The Python scorer was strong (0.985) while the Opus rubric score was 0.82, mainly penalizing genre/classification nuance and an overlong fenced JSON answer. No script-bible default change; this is a quality pass but a value/latenc…"
+        "note": "Story 207 ties Kimi K2.6 for the measured quality lead on this single full-screenplay fixture and is much faster than Kimi, but still misses the 30s latency and $0.01 cost budgets and loses the value-default comparison to Grok 4.1 Fast Reasoning. Classification: model-correct for quality; non-runtime-blocking value/latency miss. Useful frontier fallback, no default change."
       },
       "declaredSpecRefs": [
         "spec:2",
@@ -15151,14 +15225,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 206 Opus 4.8 probe cleared the 0.90 script-bible quality target, but only barely, missed latency/cost budgets, and did not beat existing quality or value leaders. The Python scorer was strong (0.985) while the Opus rubric score was 0.82, mainly penalizing genre/classification nuance and an overlong fenced JSON answer. No script-bible default change; this is a quality pass but a value/latenc…",
+        "whyNow": "Story 207 ties Kimi K2.6 for the measured quality lead on this single full-screenplay fixture and is much faster than Kimi, but still misses the 30s latency and $0.01 cost budgets and loses the value-default comparison to Grok 4.1 Fast Reasoning. Classification: model-correct for quality; non-runtime-blocking value/latency miss. Useful frontier fallback, no default change.",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-05-29",
+          "date": "2026-07-20",
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 206 Opus 4.8 probe cleared the 0.90 script-bible quality target, but only barely, missed latency/cost budgets, and did not beat existing quality or value leaders. The Python scorer was strong (0.985) while the Opus rubric score was 0.82, mainly penalizing genre/classification nuance and an overlong fenced JSON answer. No script-bible default change; this is a quality pass but a value/latenc…"
+          "summary": "Story 207 ties Kimi K2.6 for the measured quality lead on this single full-screenplay fixture and is much faster than Kimi, but still misses the 30s latency and $0.01 cost budgets and loses the value-default comparison to Grok 4.1 Fast Reasoning. Classification: model-correct for quality; non-runtime-blocking value/latency miss. Useful frontier fallback, no default change."
         }
       }
     },
@@ -15312,12 +15386,12 @@
         }
       ],
       "latestScore": {
-        "model": "Gemini 3.5 Flash",
-        "measured": "2026-05-20",
+        "model": "Grok 4.5",
+        "measured": "2026-07-20",
         "metrics": {
-          "overall": 0.5562
+          "overall": 0.7017
         },
-        "note": "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
+        "note": "Story 207 passed 3/6 anchor clips and cleared latency/cost budgets, improving substantially over Grok 4.3 but missing the 0.80 pilot floor and GPT-5.4 leader. Classification: model-wrong/non-runtime-blocking for the current default; misses were prop-swap camera/motion nuance, a hallucinated static geometric neon scene that missed the crane reveal, and incorrect central-subject/emotion reads in th…"
       },
       "declaredSpecRefs": [
         "spec:7",
@@ -15345,7 +15419,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "trigger-exhausted",
-        "whyNow": "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change.",
+        "whyNow": "Story 207 passed 3/6 anchor clips and cleared latency/cost budgets, improving substantially over Grok 4.3 but missing the 0.80 pilot floor and GPT-5.4 leader. Classification: model-wrong/non-runtime-blocking for the current default; misses were prop-swap camera/motion nuance, a hallucinated static geometric neon scene that missed the crane reveal, and incorrect central-subject/emotion reads in th…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
           "new-approach"
@@ -15958,7 +16032,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 47 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 99 days old against a 14-day cadence"
     ]
   }
 }

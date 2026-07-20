@@ -56,6 +56,18 @@ providers:
       timeout: 300000
 
   - id: file://../providers/video_understanding_provider.py
+    label: "Grok 4.5"
+    config:
+      provider: xai
+      model: grok-4.5
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: video-understanding-v1
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
     label: "Gemini 2.5 Pro"
     config:
       provider: google

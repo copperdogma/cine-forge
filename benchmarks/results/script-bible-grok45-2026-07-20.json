@@ -1,0 +1,486 @@
+{
+  "evalId": "eval-bsg-2026-07-20T18:25:31",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-07-20T18:25:31.991Z",
+    "prompts": [
+      {
+        "raw": "You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (short label like \"Setup\", \"Confrontation\", \"Resolution\")\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement.\n7. **genre** — Primary genre (e.g. \"Action-Thriller\", \"Drama\", \"Sci-Fi Horror\").\n8. **tone** — Dominant tone (e.g. \"Gritty and intense\", \"Darkly comedic\").\n9. **protagonist_journey** — The protagonist's transformation arc.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Do not write generic analysis that could apply to any film.",
+        "label": "prompts/script-bible.txt: You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (short label like \"Setup\", \"Confrontation\", \"Resolution\")\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement.\n7. **genre** — Primary genre (e.g. \"Action-Thriller\", \"Drama\", \"Sci-Fi Horror\").\n8. **tone** — Dominant tone (e.g. \"Gritty and intense\", \"Darkly comedic\").\n9. **protagonist_journey** — The protagonist's transformation arc.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Do not write generic analysis that could apply to any film.",
+        "id": "92a15e576577c0129889b746c950c7dad1be7274afab7170cfde1bd04632c5fd",
+        "provider": "Grok 4.5",
+        "metrics": {
+          "score": 0.975,
+          "testPassCount": 1,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 0,
+          "totalLatencyMs": 41760,
+          "tokenUsage": {
+            "prompt": 4954,
+            "completion": 2051,
+            "cached": 0,
+            "total": 7415,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 410,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 3270,
+              "prompt": 2583,
+              "completion": 687,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.975,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 3270,
+            "prompt": 2583,
+            "completion": 687,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "act_structure=1.00 | field_completeness=1.00 | json_valid=1.00 | logline_grounding=1.00 | protagonist_journey=1.00 | setting_grounding=1.00 | synopsis_length=1.00 | theme_grounding=1.00 | themes=1.00 | title_correct=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/script_bible_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this script bible for the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Is the logline specific to THIS screenplay — does it name The Mariner as protagonist, identify the gang/Salvatori as antagonist, and mention the building/floor stakes?\n2. Does the synopsis cover the full arc: Mariner's vigilante crusade, Rose's revelation about stolen crypto, the father's dark truth, and the climactic confrontation?\n3. Are the themes specific and grounded? Expect: father/legacy/disillusionment, identity/hero myth, loyalty/family, truth vs. comfortable lies.\n4. Is the act structure accurate? The script has 3 acts roughly: setup of vigilante world → escalating gang conflict + Rose twist → climax on 15th floor + father revelation.\n5. Is the protagonist journey correct? Mariner begins believing his father was a hero, discovers the man was abusive and alive, ends redefining heroism on his own terms.\n6. Is the setting grounded in specifics? Expect: a contemporary post-collapse urban setting, the Ruddy & Greene Building (15th floor final confrontation), and Mariner's fishing-themed vigilante aesthetic.\n7. Is the genre identified correctly? This is an Action-Thriller or Superhero-Noir — not drama or comedy.\n8. Does the analysis avoid generic statements that could apply to any film?\n\nScore strictly: 0.8+ only if the bible could serve as a production reference document for THIS specific screenplay.\n"
+              },
+              "pass": true,
+              "score": 0.95,
+              "reason": "The script bible is highly specific to 'The Mariner' screenplay and meets all key criteria:\n\n1. **Logline**: Names The Mariner as protagonist, identifies the gang/Salvatori as antagonist, mentions the building and the sister rescue, crypto theft, and father lie. Highly specific.\n\n2. **Synopsis**: Covers the full arc comprehensively — the vigilante assault on the Ruddy & Greene Building, Rose's crypto theft revelation ($20M blockchain password), the father's dark truth (alive, abusive, deadbeat in Chimney Bay), and the climactic confrontation with Salvatori on the 15th floor. Includes specific character names (Rosco, Vinnie, Mikey, Carlos), gear details (metal-edged oar, flare gun), and plot devices (AirTag tracking).\n\n3. **Themes**: All four themes are specific and well-grounded with direct evidence from the screenplay. 'Constructed vs. Authentic Heroism,' 'Toxic Legacy and Family Myths,' 'Moral Codes in a Collapsed World,' and 'Sibling Loyalty and Tough Love' are all supported with specific quotes and scene references. These are not generic — they directly address the father/legacy/disillusionment, identity/hero myth, loyalty/family, and truth vs. comfortable lies.\n\n4. **Act structure**: Accurately maps three acts — Act 1 (setup/rescue through elevator ambush), Act 2 (escalating conflict + Rose's crypto twist + father revelation), Act 3 (climax on 15th floor with Salvatori). Turning points are specific and correctly placed.\n\n5. **Protagonist journey**: Correctly traces Billy from myth-dependent vigilante honoring an idealized father → discovery that father was abusive and alive → reduction to 'Nobody' → Rose's speech reframing him as self-made hero → resolved to fight on his own terms.\n\n6. **Setting**: Grounded in specifics — post-collapse 2020s city, Ruddy & Greene Building (15-story sandstone), 15th floor luxurious gang lair, Canadian/Newfoundland cultural markers (Tim Hortons, 'b'y', 'pogey', McAngus Fish & Brewis), fishing-themed vigilante aesthetic.\n\n7. **Genre**: Correctly identified as Action-Thriller. Tone description ('gritty, darkly comedic, emotionally raw') is apt and specific.\n\n8. **Specificity**: The bible avoids generic statements throughout. Nearly every claim is backed by character names, scene locations, dialogue quotes, or plot specifics. It could genuinely serve as a production reference document.\n\nMinor notes: The confidence score of 0.92 is appropriate. The narrative arc description is insightful and specific to this screenplay's structure. The central conflict statement effectively synthesizes both external and internal conflicts.",
+              "tokensUsed": {
+                "total": 3270,
+                "prompt": 2583,
+                "completion": 687,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"title\\\":\\\"The Mariner\\\",\\\"logline\\\":\\\"When a costumed vigilante storms a gang stronghold to rescue his sister, he discovers she stole millions in crypto and that his entire heroic identity was built on a lie about their deadbeat father, forcing him to choose whether to become a real hero as the gang boss closes in.\\\",\\\"synopsis\\\":\\\"In a post-pandemic, post-collapse 2020s city reduced to no-go zones, the hulking vigilante known as The Mariner (Billy MacAngus) storms the Ruddy & Greene Building in his fishing-themed gear to extract his sister Rose from gangsters. Using an AirTag he hid in her purse, he fights floor-by-floor with his metal-edged oar and flare gun while Rose insists on retrieving the purse containing a blockchain password to $20 million she stole from the Salvatori crew. As they ascend through ambushes by thugs like Rosco, Vinnie, Mikey, and Carlos, flashbacks reveal Billy’s idealized memories of his fisherman father teaching him heroism, strength, and never running from a fight.\\\\n\\\\nOn the luxurious 15th floor, Rose retrieves the purse but shatters Billy’s origin myth: their father is alive in Chimney Bay, a deadbeat who abandoned and abused him rather than the heroic mentor of Billy’s memories. Gang boss Salvatori—an all-white-suited Russian crime lord—corners them demanding the password. Rose delivers a defiant speech reframing Billy as the true hero who forged his own code of honesty, bravery, and grit from a toxic legacy. As Salvatori screams for the password and aims at Rose, Billy clenches his fists with a smile, ready to fight.\\\",\\\"act_structure\\\":[{\\\"act_number\\\":1,\\\"title\\\":\\\"Setup / Inciting Rescue\\\",\\\"start_scene\\\":\\\"EXT. CITY CENTRE - NIGHT\\\",\\\"end_scene\\\":\\\"INT. RUDDY & GREEN BUILDING - ELEVATOR (after first thug ambush on floor 12)\\\",\\\"summary\\\":\\\"In a ruined near-future city, The Mariner storms the Ruddy & Greene Building, extracts bloodied Rose from captivity, and they begin escaping while arguing over her purse and his AirTag tracking.\\\",\\\"turning_points\\\":[\\\"Mariner’s violent multi-floor assault establishing his persona and gear\\\",\\\"Reveal he tracked Rose via AirTag planted at Thanksgiving\\\",\\\"Elevator ambush by three thugs forces them to improvise (stairs up)\\\"]},{\\\"act_number\\\":2,\\\"title\\\":\\\"Confrontation / Myth Unravels\\\",\\\"start_scene\\\":\\\"INT. 11TH FLOOR - CONTINUOUS\\\",\\\"end_scene\\\":\\\"INT. 15TH FLOOR (Rose’s revelation about their father)\\\",\\\"summary\\\":\\\"Rose and Mariner fight upward through gang patrols; flashbacks idealize their father while present-day combat and Rose’s confession that she stole $20M in gang crypto expose cracks in Billy’s heroic self-image and family story.\\\",\\\"turning_points\\\":[\\\"First idealized flashback of dad teaching casting and heroism on the boat\\\",\\\"Rose admits stealing gang money and blockchain password; Mariner’s code is challenged\\\",\\\"Flare-gun fight kills Vinnie and others; Rose bandages Mariner\\\",\\\"Second flashback of dad teaching weightlifting; Rose reveals dad is alive, abusive, and abandoned them\\\"]},{\\\"act_number\\\":3,\\\"title\\\":\\\"Climax / Reclaimed Heroism\\\",\\\"start_scene\\\":\\\"INT. 15TH FLOOR (Salvatori enters)\\\",\\\"end_scene\\\":\\\"CUT TO BLACK (Mariner clenches fists)\\\",\\\"summary\\\":\\\"Salvatori and thugs corner them; Rose’s speech dismantles Billy’s false origin while affirming he became a real hero anyway, sparking his resolve to fight as the screen cuts to black.\\\",\\\"turning_points\\\":[\\\"Contrasting abusive flashbacks undercut the heroic dad myth\\\",\\\"Salvatori demands the password at gunpoint; Mariner kneels defeated calling himself 'Nobody'\\\",\\\"Rose’s monologue redefines Billy as the true model of the Mariner’s code\\\",\\\"Billy smiles and fists clench, ready to never back down\\\"]}],\\\"themes\\\":[{\\\"theme\\\":\\\"Constructed vs. Authentic Heroism\\\",\\\"description\\\":\\\"The story interrogates whether heroism comes from inherited myths or self-forged character; Billy’s entire vigilante identity is built on a romanticized father who was actually abusive and absent.\\\",\\\"evidence\\\":[\\\"Mariner’s code speech: 'honesty, bravery, and grit. A true hero never backs down from a fight'\\\",\\\"Idealized boat and weightlifting flashbacks vs. later abusive versions of the same scenes\\\",\\\"Rose: 'He somehow turned a deadbeat father into a superhero. Then became a real one.'\\\",\\\"Final smile and clenched fists after being called 'Nobody'\\\"]},{\\\"theme\\\":\\\"Toxic Legacy and Family Myths\\\",\\\"description\\\":\\\"Children rewrite abusive or absent parents into origin stories; confronting the truth is necessary to break the cycle.\\\",\\\"evidence\\\":[\\\"Rose reveals dad lives in Chimney Bay 'with some skank' and was on pogey while ditching Billy\\\",\\\"Abusive flashback: Dad punches young Billy and calls him 'a bag a sad'\\\",\\\"Billy’s 'Dad' heart tattoo and insistence 'Dad taught me everything'\\\",\\\"Rose: 'Is that what you told yourself? Is that why you thought he never came to see you?'\\\"]},{\\\"theme\\\":\\\"Moral Codes in a Collapsed World\\\",\\\"description\\\":\\\"In a lawless post-collapse city, personal codes (Mariner’s, Rose’s pragmatic theft, Salvatori’s greed) define characters more than institutions.\\\",\\\"evidence\\\":[\\\"Opening title cards on pandemic, bank failures, and vigilantes arising\\\",\\\"Mariner refuses to steal even from criminals: 'I don’t steal, Rose. It’s against my code'\\\",\\\"Rose justifies theft as collapsing the gang\\\",\\\"Salvatori’s luxurious 15th-floor lair amid ruined building\\\"]},{\\\"theme\\\":\\\"Sibling Loyalty and Tough Love\\\",\\\"description\\\":\\\"Rose both endangers and ultimately redeems Billy through brutal honesty and faith in who he chose to become.\\\",\\\"evidence\\\":[\\\"AirTag planted 'Just in case! I worry about--'\\\",\\\"Rose’s angry laugh: 'You think they’re after you?'\\\",\\\"Her speech while Salvatori holds them at gunpoint\\\",\\\"She bandages his wound and kicks Vinnie’s body\\\"]}],\\\"narrative_arc\\\":\\\"The story follows a compressed rising-action structure typical of a short film or contained thriller: a kinetic rescue mission that doubles as an identity crisis. External action (floor-by-floor combat ascending the building) runs parallel to internal deconstruction (flashbacks that progressively corrupt the heroic father myth). The midpoint shift occurs when Rose admits the theft and challenges the code; the climax fuses both threads as Salvatori’s threat forces Billy to either collapse under the ruined origin story or claim the code as his own invention. It ends on the cusp of violent catharsis rather than resolution, emphasizing the moment of self-reclamation.\\\",\\\"genre\\\":\\\"Action-Thriller\\\",\\\"tone\\\":\\\"Gritty, darkly comedic, and emotionally raw—cartoonishly violent set-pieces and absurd costume details undercut by sincere pathos about abuse and self-invention\\\",\\\"protagonist_journey\\\":\\\"Billy 'The Mariner' MacAngus begins as a sincere, almost childlike vigilante whose entire identity, costume, and code are an homage to an idealized dead fisherman father. Through combat, Rose’s revelations, and increasingly dark flashbacks, that origin is annihilated—he is reduced to kneeling and calling himself 'Nobody.' Rose’s final speech reframes him as the actual author of his heroism; he ends transformed from myth-dependent sidekick of a false legend into a self-made hero who smiles and prepares to fight on his own terms.\\\",\\\"central_conflict\\\":\\\"Billy’s need to embody the heroic 'Mariner’s code' inherited from his father collides with the truth that the father was an abusive deadbeat and that his sister’s crypto theft has made them targets of ruthless gangsters led by Salvatori; he must decide whether the code still has meaning once its source is destroyed.\\\",\\\"setting_overview\\\":\\\"Near-future dystopian North American city (post-2020 pandemic, 2025 bank/commercial real-estate collapse) where skyscraper cores have become lawless no-go zones ruled by gangs. Primary location is the bullet-riddled, graffiti-covered 15-story Ruddy & Greene sandstone building—lower floors ruined offices, top floor a luxurious gang nightclub/office. Flashbacks occur on a golden coastline sailboat and a progressively revealed rundown backyard. Cultural texture includes Tim Hortons uniforms, Canadian/Newfoundland-inflected dialogue ('b’y', 'pogey', McAngus Fish & Brewis), and crypto/blockchain references.\\\",\\\"confidence\\\":0.92}\\n</Output>\\n<Rubric>\\nEvaluate this script bible for the screenplay \\\"The Mariner.\\\"\\n\\nKey quality criteria:\\n1. Is the logline specific to THIS screenplay — does it name The Mariner as protagonist, identify the gang/Salvatori as antagonist, and mention the building/floor stakes?\\n2. Does the synopsis cover the full arc: Mariner's vigilante crusade, Rose's revelation about stolen crypto, the father's dark truth, and the climactic confrontation?\\n3. Are the themes specific and grounded? Expect: father/legacy/disillusionment, identity/hero myth, loyalty/family, truth vs. comfortable lies.\\n4. Is the act structure accurate? The script has 3 acts roughly: setup of vigilante world → escalating gang conflict + Rose twist → climax on 15th floor + father revelation.\\n5. Is the protagonist journey correct? Mariner begins believing his father was a hero, discovers the man was abusive and alive, ends redefining heroism on his own terms.\\n6. Is the setting grounded in specifics? Expect: a contemporary post-collapse urban setting, the Ruddy & Greene Building (15th floor final confrontation), and Mariner's fishing-themed vigilante aesthetic.\\n7. Is the genre identified correctly? This is an Action-Thriller or Superhero-Noir — not drama or comedy.\\n8. Does the analysis avoid generic statements that could apply to any film?\\n\\nScore strictly: 0.8+ only if the bible could serve as a production reference document for THIS specific screenplay.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "6eefe467-00bc-4022-b4b4-cb1f2ea28449",
+        "latencyMs": 41760,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (short label like \"Setup\", \"Confrontation\", \"Resolution\")\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement.\n7. **genre** — Primary genre (e.g. \"Action-Thriller\", \"Drama\", \"Sci-Fi Horror\").\n8. **tone** — Dominant tone (e.g. \"Gritty and intense\", \"Darkly comedic\").\n9. **protagonist_journey** — The protagonist's transformation arc.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Do not write generic analysis that could apply to any film.",
+          "label": "prompts/script-bible.txt: You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (short label like \"Setup\", \"Confrontation\", \"Resolution\")\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement.\n7. **genre** — Primary genre (e.g. \"Action-Thriller\", \"Drama\", \"Sci-Fi Horror\").\n8. **tone** — Dominant tone (e.g. \"Gritty and intense\", \"Darkly comedic\").\n9. **protagonist_journey** — The protagonist's transformation arc.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Do not write generic analysis that could apply to any film.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "92a15e576577c0129889b746c950c7dad1be7274afab7170cfde1bd04632c5fd",
+        "promptIdx": 0,
+        "provider": {
+          "id": "xai:grok-4.5",
+          "label": "Grok 4.5"
+        },
+        "response": {
+          "output": "{\n  \"title\": \"The Mariner\",\n  \"logline\": \"When a costumed vigilante storms a gang stronghold to rescue his sister, he discovers she stole millions in crypto and that his entire heroic identity was built on a lie about their deadbeat father, forcing him to choose whether to become a real hero as the gang boss closes in.\",\n  \"synopsis\": \"In a post-pandemic, post-collapse 2020s city reduced to no-go zones, the hulking vigilante known as The Mariner (Billy MacAngus) storms the Ruddy & Greene Building in his fishing-themed gear to extract his sister Rose from gangsters. Using an AirTag he hid in her purse, he fights floor-by-floor with his metal-edged oar and flare gun while Rose insists on retrieving the purse containing a blockchain password to $20 million she stole from the Salvatori crew. As they ascend through ambushes by thugs like Rosco, Vinnie, Mikey, and Carlos, flashbacks reveal Billy’s idealized memories of his fisherman father teaching him heroism, strength, and never running from a fight.\\n\\nOn the luxurious 15th floor, Rose retrieves the purse but shatters Billy’s origin myth: their father is alive in Chimney Bay, a deadbeat who abandoned and abused him rather than the heroic mentor of Billy’s memories. Gang boss Salvatori—an all-white-suited Russian crime lord—corners them demanding the password. Rose delivers a defiant speech reframing Billy as the true hero who forged his own code of honesty, bravery, and grit from a toxic legacy. As Salvatori screams for the password and aims at Rose, Billy clenches his fists with a smile, ready to fight.\",\n  \"act_structure\": [\n    {\n      \"act_number\": 1,\n      \"title\": \"Setup / Inciting Rescue\",\n      \"start_scene\": \"EXT. CITY CENTRE - NIGHT\",\n      \"end_scene\": \"INT. RUDDY & GREEN BUILDING - ELEVATOR (after first thug ambush on floor 12)\",\n      \"summary\": \"In a ruined near-future city, The Mariner storms the Ruddy & Greene Building, extracts bloodied Rose from captivity, and they begin escaping while arguing over her purse and his AirTag tracking.\",\n      \"turning_points\": [\n        \"Mariner’s violent multi-floor assault establishing his persona and gear\",\n        \"Reveal he tracked Rose via AirTag planted at Thanksgiving\",\n        \"Elevator ambush by three thugs forces them to improvise (stairs up)\"\n      ]\n    },\n    {\n      \"act_number\": 2,\n      \"title\": \"Confrontation / Myth Unravels\",\n      \"start_scene\": \"INT. 11TH FLOOR - CONTINUOUS\",\n      \"end_scene\": \"INT. 15TH FLOOR (Rose’s revelation about their father)\",\n      \"summary\": \"Rose and Mariner fight upward through gang patrols; flashbacks idealize their father while present-day combat and Rose’s confession that she stole $20M in gang crypto expose cracks in Billy’s heroic self-image and family story.\",\n      \"turning_points\": [\n        \"First idealized flashback of dad teaching casting and heroism on the boat\",\n        \"Rose admits stealing gang money and blockchain password; Mariner’s code is challenged\",\n        \"Flare-gun fight kills Vinnie and others; Rose bandages Mariner\",\n        \"Second flashback of dad teaching weightlifting; Rose reveals dad is alive, abusive, and abandoned them\"\n      ]\n    },\n    {\n      \"act_number\": 3,\n      \"title\": \"Climax / Reclaimed Heroism\",\n      \"start_scene\": \"INT. 15TH FLOOR (Salvatori enters)\",\n      \"end_scene\": \"CUT TO BLACK (Mariner clenches fists)\",\n      \"summary\": \"Salvatori and thugs corner them; Rose’s speech dismantles Billy’s false origin while affirming he became a real hero anyway, sparking his resolve to fight as the screen cuts to black.\",\n      \"turning_points\": [\n        \"Contrasting abusive flashbacks undercut the heroic dad myth\",\n        \"Salvatori demands the password at gunpoint; Mariner kneels defeated calling himself 'Nobody'\",\n        \"Rose’s monologue redefines Billy as the true model of the Mariner’s code\",\n        \"Billy smiles and fists clench, ready to never back down\"\n      ]\n    }\n  ],\n  \"themes\": [\n    {\n      \"theme\": \"Constructed vs. Authentic Heroism\",\n      \"description\": \"The story interrogates whether heroism comes from inherited myths or self-forged character; Billy’s entire vigilante identity is built on a romanticized father who was actually abusive and absent.\",\n      \"evidence\": [\n        \"Mariner’s code speech: 'honesty, bravery, and grit. A true hero never backs down from a fight'\",\n        \"Idealized boat and weightlifting flashbacks vs. later abusive versions of the same scenes\",\n        \"Rose: 'He somehow turned a deadbeat father into a superhero. Then became a real one.'\",\n        \"Final smile and clenched fists after being called 'Nobody'\"\n      ]\n    },\n    {\n      \"theme\": \"Toxic Legacy and Family Myths\",\n      \"description\": \"Children rewrite abusive or absent parents into origin stories; confronting the truth is necessary to break the cycle.\",\n      \"evidence\": [\n        \"Rose reveals dad lives in Chimney Bay 'with some skank' and was on pogey while ditching Billy\",\n        \"Abusive flashback: Dad punches young Billy and calls him 'a bag a sad'\",\n        \"Billy’s 'Dad' heart tattoo and insistence 'Dad taught me everything'\",\n        \"Rose: 'Is that what you told yourself? Is that why you thought he never came to see you?'\"\n      ]\n    },\n    {\n      \"theme\": \"Moral Codes in a Collapsed World\",\n      \"description\": \"In a lawless post-collapse city, personal codes (Mariner’s, Rose’s pragmatic theft, Salvatori’s greed) define characters more than institutions.\",\n      \"evidence\": [\n        \"Opening title cards on pandemic, bank failures, and vigilantes arising\",\n        \"Mariner refuses to steal even from criminals: 'I don’t steal, Rose. It’s against my code'\",\n        \"Rose justifies theft as collapsing the gang\",\n        \"Salvatori’s luxurious 15th-floor lair amid ruined building\"\n      ]\n    },\n    {\n      \"theme\": \"Sibling Loyalty and Tough Love\",\n      \"description\": \"Rose both endangers and ultimately redeems Billy through brutal honesty and faith in who he chose to become.\",\n      \"evidence\": [\n        \"AirTag planted 'Just in case! I worry about--'\",\n        \"Rose’s angry laugh: 'You think they’re after you?'\",\n        \"Her speech while Salvatori holds them at gunpoint\",\n        \"She bandages his wound and kicks Vinnie’s body\"\n      ]\n    }\n  ],\n  \"narrative_arc\": \"The story follows a compressed rising-action structure typical of a short film or contained thriller: a kinetic rescue mission that doubles as an identity crisis. External action (floor-by-floor combat ascending the building) runs parallel to internal deconstruction (flashbacks that progressively corrupt the heroic father myth). The midpoint shift occurs when Rose admits the theft and challenges the code; the climax fuses both threads as Salvatori’s threat forces Billy to either collapse under the ruined origin story or claim the code as his own invention. It ends on the cusp of violent catharsis rather than resolution, emphasizing the moment of self-reclamation.\",\n  \"genre\": \"Action-Thriller\",\n  \"tone\": \"Gritty, darkly comedic, and emotionally raw—cartoonishly violent set-pieces and absurd costume details undercut by sincere pathos about abuse and self-invention\",\n  \"protagonist_journey\": \"Billy 'The Mariner' MacAngus begins as a sincere, almost childlike vigilante whose entire identity, costume, and code are an homage to an idealized dead fisherman father. Through combat, Rose’s revelations, and increasingly dark flashbacks, that origin is annihilated—he is reduced to kneeling and calling himself 'Nobody.' Rose’s final speech reframes him as the actual author of his heroism; he ends transformed from myth-dependent sidekick of a false legend into a self-made hero who smiles and prepares to fight on his own terms.\",\n  \"central_conflict\": \"Billy’s need to embody the heroic 'Mariner’s code' inherited from his father collides with the truth that the father was an abusive deadbeat and that his sister’s crypto theft has made them targets of ruthless gangsters led by Salvatori; he must decide whether the code still has meaning once its source is destroyed.\",\n  \"setting_overview\": \"Near-future dystopian North American city (post-2020 pandemic, 2025 bank/commercial real-estate collapse) where skyscraper cores have become lawless no-go zones ruled by gangs. Primary location is the bullet-riddled, graffiti-covered 15-story Ruddy & Greene sandstone building—lower floors ruined offices, top floor a luxurious gang nightclub/office. Flashbacks occur on a golden coastline sailboat and a progressively revealed rundown backyard. Cultural texture includes Tim Hortons uniforms, Canadian/Newfoundland-inflected dialogue ('b’y', 'pogey', McAngus Fish & Brewis), and crypto/blockchain references.\",\n  \"confidence\": 0.92\n}",
+          "tokenUsage": {
+            "total": 7415,
+            "prompt": 4954,
+            "completion": 2051,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 410,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 41760,
+          "finishReason": "stop",
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-allow-origin": "*",
+                "access-control-expose-headers": "*",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "a1e4025078f6d95b-YVR",
+                "connection": "keep-alive",
+                "content-encoding": "gzip",
+                "content-type": "application/json",
+                "date": "Mon, 20 Jul 2026 18:26:13 GMT",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=QXagrPUZ5VSA.WWB7VLPxAP2U9nZ2UrnvGVM18TdOQg-1784571932.2350504-1.0.1.1-2i1s_hT0xXUn6tC.28e5vVoPQga4RrTxDech.cf4KoGVVRdyPgKL2cv_uxzBLa63K_ui1nDIwPWy8_5TUhXy4ChSK2Hfy1xsO97WJ5FYIf9943DRjMl66Or4aD5vZmNn; HttpOnly; SameSite=None; Secure; Path=/; Domain=x.ai; Expires=Mon, 20 Jul 2026 18:56:13 GMT",
+                "strict-transport-security": "max-age=31536000",
+                "traceparent": "00-f2cc7b873093e5b5c558c68c1a6ec2e6-c29e01a100004caf-01",
+                "transfer-encoding": "chunked",
+                "vary": "origin, access-control-request-method, access-control-request-headers",
+                "x-data-retention": "general",
+                "x-metrics-e2e-ms": "41550.2",
+                "x-metrics-mean-itl-ms": "16.7",
+                "x-metrics-ttft-ms": "327.0",
+                "x-ratelimit-limit-requests": "8300",
+                "x-ratelimit-limit-tokens": "53000000",
+                "x-ratelimit-remaining-requests": "8300",
+                "x-ratelimit-remaining-tokens": "53000000",
+                "x-request-id": "81332a9c-7b6e-9c19-9fd8-0c54e6374786",
+                "x-zero-data-retention": "false"
+              }
+            }
+          }
+        },
+        "score": 0.975,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-script-bible.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/script_bible_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this script bible for the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Is the logline specific to THIS screenplay — does it name The Mariner as protagonist, identify the gang/Salvatori as antagonist, and mention the building/floor stakes?\n2. Does the synopsis cover the full arc: Mariner's vigilante crusade, Rose's revelation about stolen crypto, the father's dark truth, and the climactic confrontation?\n3. Are the themes specific and grounded? Expect: father/legacy/disillusionment, identity/hero myth, loyalty/family, truth vs. comfortable lies.\n4. Is the act structure accurate? The script has 3 acts roughly: setup of vigilante world → escalating gang conflict + Rose twist → climax on 15th floor + father revelation.\n5. Is the protagonist journey correct? Mariner begins believing his father was a hero, discovers the man was abusive and alive, ends redefining heroism on his own terms.\n6. Is the setting grounded in specifics? Expect: a contemporary post-collapse urban setting, the Ruddy & Greene Building (15th floor final confrontation), and Mariner's fishing-themed vigilante aesthetic.\n7. Is the genre identified correctly? This is an Action-Thriller or Superhero-Noir — not drama or comedy.\n8. Does the analysis avoid generic statements that could apply to any film?\n\nScore strictly: 0.8+ only if the bible could serve as a production reference document for THIS specific screenplay.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-script-bible.json"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-allow-origin": "*",
+              "access-control-expose-headers": "*",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "a1e4025078f6d95b-YVR",
+              "connection": "keep-alive",
+              "content-encoding": "gzip",
+              "content-type": "application/json",
+              "date": "Mon, 20 Jul 2026 18:26:13 GMT",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=QXagrPUZ5VSA.WWB7VLPxAP2U9nZ2UrnvGVM18TdOQg-1784571932.2350504-1.0.1.1-2i1s_hT0xXUn6tC.28e5vVoPQga4RrTxDech.cf4KoGVVRdyPgKL2cv_uxzBLa63K_ui1nDIwPWy8_5TUhXy4ChSK2Hfy1xsO97WJ5FYIf9943DRjMl66Or4aD5vZmNn; HttpOnly; SameSite=None; Secure; Path=/; Domain=x.ai; Expires=Mon, 20 Jul 2026 18:56:13 GMT",
+              "strict-transport-security": "max-age=31536000",
+              "traceparent": "00-f2cc7b873093e5b5c558c68c1a6ec2e6-c29e01a100004caf-01",
+              "transfer-encoding": "chunked",
+              "vary": "origin, access-control-request-method, access-control-request-headers",
+              "x-data-retention": "general",
+              "x-metrics-e2e-ms": "41550.2",
+              "x-metrics-mean-itl-ms": "16.7",
+              "x-metrics-ttft-ms": "327.0",
+              "x-ratelimit-limit-requests": "8300",
+              "x-ratelimit-limit-tokens": "53000000",
+              "x-ratelimit-remaining-requests": "8300",
+              "x-ratelimit-remaining-tokens": "53000000",
+              "x-request-id": "81332a9c-7b6e-9c19-9fd8-0c54e6374786",
+              "x-zero-data-retention": "false"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 1,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 4954,
+        "completion": 2051,
+        "cached": 0,
+        "total": 7415,
+        "numRequests": 1,
+        "completionDetails": {
+          "reasoning": 410,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 3270,
+          "prompt": 2583,
+          "completion": 687,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 64066,
+      "evaluationDurationMs": 64066
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Script bible extraction from screenplay — The Mariner",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/grok-45-eval-20260720/cine-forge/benchmarks/prompts/script-bible.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.1-flash-lite",
+        "label": "Gemini 3.1 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.5-flash",
+        "label": "Gemini 3.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "file://../providers/anthropic_messages_provider.py",
+        "label": "Claude Opus 4.8",
+        "config": {
+          "model": "claude-opus-4-8",
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "openai:gpt-5.4",
+        "label": "GPT-5.4",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-5.5",
+        "label": "GPT-5.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "file://../providers/openai_responses_provider.py",
+        "label": "GPT-5.5 Pro",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "xai:grok-4.3",
+        "label": "Grok 4.3",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "xai:grok-4.5",
+        "label": "Grok 4.5",
+        "config": {
+          "max_tokens": 4096,
+          "reasoning_effort": "high",
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:kimi-k2.6",
+        "label": "Kimi K2.6",
+        "config": {
+          "apiBaseUrl": "https://api.moonshot.ai/v1",
+          "apiKeyEnvar": "[REDACTED]",
+          "temperature": 1,
+          "top_p": 0.95,
+          "max_tokens": 32768,
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.1-pro-preview",
+        "label": "Gemini 3.1 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-script-bible.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/script_bible_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this script bible for the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Is the logline specific to THIS screenplay — does it name The Mariner as protagonist, identify the gang/Salvatori as antagonist, and mention the building/floor stakes?\n2. Does the synopsis cover the full arc: Mariner's vigilante crusade, Rose's revelation about stolen crypto, the father's dark truth, and the climactic confrontation?\n3. Are the themes specific and grounded? Expect: father/legacy/disillusionment, identity/hero myth, loyalty/family, truth vs. comfortable lies.\n4. Is the act structure accurate? The script has 3 acts roughly: setup of vigilante world → escalating gang conflict + Rose twist → climax on 15th floor + father revelation.\n5. Is the protagonist journey correct? Mariner begins believing his father was a hero, discovers the man was abusive and alive, ends redefining heroism on his own terms.\n6. Is the setting grounded in specifics? Expect: a contemporary post-collapse urban setting, the Ruddy & Greene Building (15th floor final confrontation), and Mariner's fishing-themed vigilante aesthetic.\n7. Is the genre identified correctly? This is an Action-Thriller or Superhero-Noir — not drama or comedy.\n8. Does the analysis avoid generic statements that could apply to any film?\n\nScore strictly: 0.8+ only if the bible could serve as a production reference document for THIS specific screenplay.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/script-bible-grok45-2026-07-20.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-07-20T18:26:36.096Z",
+    "evaluationCreatedAt": "2026-07-20T18:25:31.991Z"
+  }
+}

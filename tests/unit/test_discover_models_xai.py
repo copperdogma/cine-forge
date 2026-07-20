@@ -25,6 +25,7 @@ def test_xai_provider_is_discoverable() -> None:
     assert "xai" in module.PROVIDERS
     assert module.PROVIDERS["xai"]["env_key"] == "XAI_API_KEY"
     assert module.classify_tier("grok-4.3") == "sota"
+    assert module.classify_tier("grok-4.5") == "sota"
 
 
 @pytest.mark.unit
@@ -71,6 +72,17 @@ def test_grok_registry_matching_handles_human_label() -> None:
         "grok-4.3",
         "grok-4.3",
         {"Grok 4.3"},
+    )
+
+
+@pytest.mark.unit
+def test_grok_registry_matching_does_not_cross_model_families() -> None:
+    module = _load_discover_models_module()
+
+    assert not module._matches_registry(
+        "grok-4.5",
+        "grok-4.5",
+        {"Haiku 4.5", "Claude Opus 4.5"},
     )
 
 
