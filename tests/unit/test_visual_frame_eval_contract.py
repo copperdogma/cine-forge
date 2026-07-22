@@ -70,4 +70,4 @@ def test_video_provider_records_the_repaired_frame_packet_prompt_version() -> No
 
     assert {
         provider["config"]["prompt_version"] for provider in task["providers"]
-    } == {"video-understanding-frame-packet-v2"}
+    } == {"video-understanding-frame-packet-v3"}

@@ -27,8 +27,22 @@ from cine_forge.env import load_cine_forge_dotenv  # noqa: E402
 
 load_cine_forge_dotenv(REPO_ROOT)
 
-estimate_cost_usd = importlib.import_module("cine_forge.ai.llm").estimate_cost_usd
+_llm = importlib.import_module("cine_forge.ai.llm")
+estimate_cost_usd = _llm.estimate_cost_usd
+_to_gemini_schema = _llm._to_gemini_schema
 require_env = importlib.import_module("cine_forge.env").require_env
+VideoAnalysisPrediction = importlib.import_module(
+    "cine_forge.schemas"
+).VideoAnalysisPrediction
+
+
+def _gemini_response_schema() -> dict[str, Any]:
+    schema = VideoAnalysisPrediction.model_json_schema()
+    schema["required"] = list(schema.get("properties", {}))
+    return _to_gemini_schema(schema)
+
+
+_VIDEO_ANALYSIS_RESPONSE_SCHEMA = _gemini_response_schema()
 
 _transport = importlib.import_module("video_understanding_transport")
 _build_anthropic_payload = _transport.build_anthropic_payload
@@ -252,6 +266,7 @@ def _call_gemini(
         frames=frames,
         max_tokens=max_tokens,
         temperature=temperature,
+        response_schema=_VIDEO_ANALYSIS_RESPONSE_SCHEMA,
     )
     url = f"{GEMINI_MODELS_URL}/{urllib.parse.quote(model, safe='')}:generateContent?key={api_key}"
     response = _request_json(

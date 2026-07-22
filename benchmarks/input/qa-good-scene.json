@@ -1,19 +1,20 @@
 {
-  "scene_number": 4,
+  "scene_number": null,
   "heading": "INT. RUDDY & GREEN BUILDING - ELEVATOR",
   "int_ext": "INT",
   "location": "RUDDY & GREEN BUILDING - ELEVATOR",
   "time_of_day": null,
   "characters_present": ["ROSE", "MARINER", "THUG 1", "THUG 2", "THUG 3"],
-  "summary": "Blood-spattered Rose and Mariner catch their breath in an elevator while romantic muzak plays; Rose drops a bloody scrap of scalp and Mariner's fishing-themed vigilante costume is revealed. Mariner admits that he hid an AirTag in Rose's purse at Thanksgiving, and they argue about returning for it and about why the thugs targeted her. When the doors open on twelve, three armed thugs attack: Mariner deflects a gun with his oar, kicks one thug into the others, and Rose works the close-door button as gunfire follows them into the elevator. After Mariner strikes through the closing doors, Rose chooses eleven so they can take the stairs back up, then mocks his outfit before he calls it functional and an homage.",
+  "summary": "Mid-30s Rose, wearing a Tim Hortons uniform with messy hair and blood on her face, catches her breath beside the far bloodier Mariner while romantic muzak plays. She picks up, snorts at, and drops an unidentified bloody scrap with hair before asking whether it is skull. Mariner's face, beard, red cap, and mask are described before a full-screen title card introduces him; the screenplay then details his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar. Mariner admits that he hid an AirTag in Rose's purse at Thanksgiving; when he assumes the armed men targeted her because of him, Rose laughs and challenges that assumption. Three armed thugs attack when the doors open on twelve, and Mariner deflects a gun with his oar and kicks one thug into the others while Rose closes the doors under gunfire. After a thug orders the group down to eight, Rose chooses eleven so she and Mariner can take the stairs back up, then silently questions his outfit before he calls it functional and an homage.",
   "narrative_beats": [
-    {"beat_type": "character_introduction", "description": "Full description of Mariner's fishing-themed vigilante costume — oar, net cape, bracers, shell bandolier, fish hooks.", "confidence": 0.95},
-    {"beat_type": "comic_relief", "description": "Rose discovers a skull fragment while muzak plays, establishing the dark comedy tone.", "confidence": 0.90},
+    {"beat_type": "character_introduction", "description": "Rose is introduced in a Tim Hortons uniform with messy hair and blood on her face. The source describes the much bloodier Mariner's face, beard, red cap, and mask, presents a full-screen title card naming him, then details his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar.", "confidence": 0.99},
+    {"beat_type": "comic_relief", "description": "Rose handles an unidentified bloody scrap with hair and asks whether it is skull while romantic muzak plays, establishing the dark comedy tone without resolving what the scrap is.", "confidence": 0.99},
     {"beat_type": "revelation", "description": "Mariner admits he stashed an AirTag in Rose's purse at Thanksgiving, and Rose realizes the purse was left behind.", "confidence": 0.98},
     {"beat_type": "conflict", "description": "Rose and Mariner argue about returning for the purse and whether the armed men targeted her because of him.", "confidence": 0.96},
+    {"beat_type": "revelation", "description": "Rose laughs at Mariner's belief that the attackers went after her because of him, implying that his assumption about their target is wrong.", "confidence": 0.97},
     {"beat_type": "conflict", "description": "Three armed thugs confront them on twelve; Mariner uses his oar and a kick to break the attack while Rose closes the elevator doors under gunfire.", "confidence": 0.99},
-    {"beat_type": "character_development", "description": "Rose sends the elevator to eleven so they can take the stairs up, showing improvisational resolve despite Mariner's objection.", "confidence": 0.96},
-    {"beat_type": "comic_relief", "description": "Rose silently challenges Mariner's strange costume, and he insists that it is functional and an homage.", "confidence": 0.97}
+    {"beat_type": "character_development", "description": "After a muffled thug orders the group down to eight, Rose sends the elevator to eleven so she and Mariner can take the stairs up, showing improvisational resolve despite his objection.", "confidence": 0.98},
+    {"beat_type": "comic_relief", "description": "Rose raises an eyebrow at Mariner's strange costume, and he insists that it is functional and an homage.", "confidence": 0.99}
   ],
   "tone_mood": "darkly comic, tense, intimate, and violently kinetic",
   "confidence": 0.98

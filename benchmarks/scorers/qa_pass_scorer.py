@@ -130,6 +130,8 @@ TOKEN_ALIASES = {
     "plans": "plan",
     "rejected": "reject",
     "rejects": "reject",
+    "revelation": "reveal",
+    "revelations": "reveal",
     "speaking": "speak",
     "three": "3",
     "unfaithful": "inaccurate",
@@ -355,24 +357,27 @@ def _bad_case_scores(
     requirements = golden.get("required_issues", [])
     statuses = _required_issue_statuses(requirements, issues)
     denominator = max(1, len(requirements))
-    reason_recall = sum(matched for matched, _, _ in statuses) / denominator
-    actionable_recall = sum(actionable for _, actionable, _ in statuses) / denominator
+    matched_reason_count = sum(matched for matched, _, _ in statuses)
+    actionable_count = sum(actionable for _, actionable, _ in statuses)
     matched_error_count = sum(error for _, _, error in statuses)
+    reason_recall = matched_reason_count / denominator
+    actionable_recall = actionable_count / denominator
     error_quota = min(1.0, matched_error_count / max(1, min_errors))
     issue_detection = 0.6 * reason_recall + 0.4 * error_quota
     severity = 0.5 * actionable_recall + 0.5 * error_quota
     summary_quality = _bad_summary_quality(result.get("summary"), requirements)
-    hard_gate = (
-        reason_recall == 1.0
-        and actionable_recall == 1.0
-        and matched_error_count >= min_errors
-        and summary_quality == 1.0
-    )
+    hard_gate = matched_error_count >= min_errors and summary_quality == 1.0
     reasons = []
-    if reason_recall < 1.0:
-        reasons.append("Required issue fields/reason concepts were not all detected")
-    if actionable_recall < 1.0:
-        reasons.append("Every required issue must be a warning or error, not a note")
+    if matched_reason_count < min_errors:
+        reasons.append(
+            f"Only {matched_reason_count} required issue fields/reason concepts were "
+            f"detected; need {min_errors}"
+        )
+    if actionable_count < min_errors:
+        reasons.append(
+            f"Only {actionable_count} required issues are actionable "
+            f"(warning or error, not a note); need {min_errors}"
+        )
     if matched_error_count < min_errors:
         reasons.append(
             f"Only {matched_error_count} required issues have error severity; need {min_errors}"

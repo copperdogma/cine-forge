@@ -61,7 +61,7 @@ def get_assert(output: str, context: dict) -> dict:
             output=output,
             target_path=target_path,
             model_label="promptfoo-provider",
-            prompt_version="video-understanding-frame-packet-v2",
+            prompt_version="video-understanding-frame-packet-v3",
             expected_clip_id=evaluation_id,
         )
         return finalize_score(

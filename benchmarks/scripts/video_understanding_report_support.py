@@ -10,7 +10,7 @@ from typing import Any
 
 import yaml
 
-CURRENT_PROMPT_VERSION = "video-understanding-frame-packet-v2"
+CURRENT_PROMPT_VERSION = "video-understanding-frame-packet-v3"
 CURRENT_FRAME_POLICY = "five_evenly_spaced_jpegs_v1"
 CURRENT_MODALITY = "ordered_jpeg_frame_packet"
 QUALITY_FLOOR = 0.80

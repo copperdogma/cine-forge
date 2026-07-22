@@ -15,6 +15,18 @@ SPEC.loader.exec_module(manifest)
 
 
 @pytest.mark.unit
+def test_current_story_208_manifest_rolls_forward_without_rewriting_v1() -> None:
+    assert manifest.DEFAULT_OUTPUT.name == "story-208-contract-manifest-v2.json"
+    payload = manifest.build_manifest(
+        REPO_ROOT,
+        manifest.DEFAULT_LEDGER,
+        manifest.DEFAULT_OUTPUT,
+    )
+    assert payload["manifest_id"] == "story-208-eval-contracts-v2"
+    assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v1.json").exists()
+
+
+@pytest.mark.unit
 def test_manifest_collects_contracts_but_excludes_result_caches(tmp_path: Path) -> None:
     prompt = tmp_path / "benchmarks/prompts/demo.txt"
     result = tmp_path / "benchmarks/results/demo.json"

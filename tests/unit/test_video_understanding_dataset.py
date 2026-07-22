@@ -103,8 +103,20 @@ def test_all_frame_eval_tasks_keep_titles_out_of_subject_variables() -> None:
 @pytest.mark.unit
 def test_prompt_binds_evidence_to_submitted_frame_indices() -> None:
     prompt = PROMPT_PATH.read_text()
-    assert "`frame_index` of one submitted image (0 through 4)" in prompt
+    assert "exact `frame_index` and `cue` keys" in prompt
+    assert "cite one submitted image (0 through 4)" in prompt
     assert "timestamp_seconds" not in prompt
+
+
+@pytest.mark.unit
+def test_prompt_declares_the_exact_nested_output_types() -> None:
+    prompt = PROMPT_PATH.read_text()
+
+    assert "`continuity_notes` and `audio_notes` are arrays of strings" in prompt
+    assert "`evidence` is an array of 2-4 objects" in prompt
+    assert '"frame_index": <integer 0 through 4>' in prompt
+    assert '"cue": "<visible cue>"' in prompt
+    assert "never strings" in prompt
 
 
 @pytest.mark.unit

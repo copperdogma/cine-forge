@@ -81,6 +81,7 @@ def test_provider_payload_builders_include_all_frames() -> None:
         frames=frames,
         max_tokens=1200,
         temperature=0.0,
+        response_schema=provider._VIDEO_ANALYSIS_RESPONSE_SCHEMA,
     )
 
     assert len(openai_payload["messages"][0]["content"]) == 5
@@ -90,6 +91,17 @@ def test_provider_payload_builders_include_all_frames() -> None:
     assert anthropic_payload["messages"][0]["content"][3]["text"] == "frame_index: 1"
     assert gemini_payload["contents"][0]["parts"][3]["text"] == "frame_index: 1"
     assert "temperature" not in gemini_payload["generationConfig"]
+    response_schema = gemini_payload["generationConfig"]["responseSchema"]
+    properties = response_schema["properties"]
+    assert set(response_schema["required"]) == set(properties)
+    assert properties["continuity_status"]["type"] == "STRING"
+    assert properties["continuity_notes"]["type"] == "ARRAY"
+    assert properties["continuity_notes"]["items"]["type"] == "STRING"
+    assert properties["evidence"]["type"] == "ARRAY"
+    assert set(properties["evidence"]["items"]["required"]) == {
+        "frame_index",
+        "cue",
+    }
 
 
 @pytest.mark.unit
@@ -180,11 +192,11 @@ def test_gemini_transport_rejects_impossible_usage(
 def test_gemini_transport_bills_reasoning_when_total_is_absent(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setattr(provider, "_require_env", lambda _: "test-key")
-    monkeypatch.setattr(
-        provider,
-        "_request_json",
-        lambda *args, **kwargs: {
+    seen: dict[str, object] = {}
+
+    def fake_request_json(*_args: object, **kwargs: object) -> dict[str, object]:
+        seen["body"] = kwargs["body"]
+        return {
             "responseId": "gemini-video-reasoning",
             "candidates": [{"content": {"parts": [{"text": "{}"}]}}],
             "modelVersion": "gemini-3.6-flash",
@@ -193,8 +205,10 @@ def test_gemini_transport_bills_reasoning_when_total_is_absent(
                 "candidatesTokenCount": 10,
                 "thoughtsTokenCount": 1000,
             },
-        },
-    )
+        }
+
+    monkeypatch.setattr(provider, "_require_env", lambda _: "test-key")
+    monkeypatch.setattr(provider, "_request_json", fake_request_json)
 
     result = provider._call_gemini(
         model="gemini-3.6-flash",
@@ -219,6 +233,11 @@ def test_gemini_transport_bills_reasoning_when_total_is_absent(
             "thoughtsTokenCount": 1000,
         }
     }
+    body = seen["body"]
+    assert isinstance(body, dict)
+    assert body["generationConfig"]["responseSchema"] == (
+        provider._VIDEO_ANALYSIS_RESPONSE_SCHEMA
+    )
 
 
 @pytest.mark.unit

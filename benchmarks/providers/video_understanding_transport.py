@@ -201,6 +201,7 @@ def build_gemini_payload(
     frames: list[dict[str, str]],
     max_tokens: int,
     temperature: float | None = None,
+    response_schema: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build Gemini generateContent input without unsupported sampling controls."""
     del temperature  # Compatibility-only argument; Gemini 3.x requests omit it.
@@ -215,10 +216,13 @@ def build_gemini_payload(
                 }
             }
         )
+    generation_config: dict[str, Any] = {
+        "maxOutputTokens": max_tokens,
+        "responseMimeType": "application/json",
+    }
+    if response_schema is not None:
+        generation_config["responseSchema"] = response_schema
     return {
         "contents": [{"role": "user", "parts": parts}],
-        "generationConfig": {
-            "maxOutputTokens": max_tokens,
-            "responseMimeType": "application/json",
-        },
+        "generationConfig": generation_config,
     }

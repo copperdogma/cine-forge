@@ -23,6 +23,14 @@ Return one strict JSON object with exactly these keys:
 - evidence
 - overall_confidence
 
+Use these exact JSON types:
+- `clip_id`, `summary`, and `continuity_status` are strings.
+- Every field ending in `_tags` is an array of strings.
+- `continuity_notes` and `audio_notes` are arrays of strings, never strings.
+- `evidence` is an array of 2-4 objects. Every evidence object has exactly
+  `{"frame_index": <integer 0 through 4>, "cue": "<visible cue>"}`.
+- `overall_confidence` is a number.
+
 Allowed `tone_tags`:
 ["detached","hopeful","intimate","mournful","nostalgic","ominous","playful","regretful","surreal","tense","triumphant","urgent"]
 
@@ -51,10 +59,13 @@ Rules:
   visible change across those samples supports the claim.
 - Do not infer an edit or action hidden between non-adjacent still samples.
 - Mention a continuity break only if the ordered samples directly show it.
+- Put each continuity observation in `continuity_notes` as a separate string;
+  use an empty array when there is no supported observation.
 - Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim
   and is invalid because audio was not submitted.
-- `evidence` must be 2-4 distinct visible cues. Each item must cite the zero-based
-  `frame_index` of one submitted image (0 through 4) and describe concrete image
-  content supporting the analysis. Generic rationale is not evidence.
+- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the
+  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),
+  and describe concrete image content supporting the analysis. Generic rationale
+  is not evidence.
 - `overall_confidence` must be a number between 0 and 1.
 - Do not wrap the JSON in markdown fences.

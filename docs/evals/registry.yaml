@@ -1477,6 +1477,32 @@ evals:
     scores:
       - model: "Gemini 3.6 Flash"
         metrics:
+          overall: 0.58745
+          deterministic: 0.5999
+          rubric: 0.575
+        latency_ms: 6228
+        cost_usd: 0.011336
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "d1a1284"
+        result_file: benchmarks/results/qa-pass-story-208-post-repair-2026-07-22.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Attempt 018 diagnostic on the first immutable repaired contract. Both generic positive-case summaries were model-wrong because they omitted all three required source anchors; the negative response also supplied only four matched error-level findings plus one warning against the maintained six-error minimum. The run additionally exposed remaining positive-fixture chronology/uncertainty defects and is not decision-grade. Non-runtime-blocking for this challenger; rerun only after the v2 contract commit."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.61245
+          deterministic: 0.5999
+          rubric: 0.625
+        latency_ms: 1484
+        cost_usd: 0.001133
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "d1a1284"
+        result_file: benchmarks/results/qa-pass-story-208-post-repair-2026-07-22.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Attempt 018 diagnostic on the first immutable repaired contract. The generic positive judgment was model-wrong, while its six grounded negative-case errors earned 0.95 from Opus but were scorer-wrong under an all-eight hard gate that contradicted min_errors=6 and missed revelation/reveal. Remaining positive-fixture defects also invalidate the run. Non-runtime-blocking for this challenger; rerun only after the v2 contract commit."
+      - model: "Gemini 3.6 Flash"
+        metrics:
           overall: 0.58125
         latency_ms: 5729
         cost_usd: 0.0038
@@ -1644,7 +1670,21 @@ evals:
         result_file: benchmarks/results/qa-pass-grok43-2026-05-04.json
         note: "Story 200 Grok 4.3 verification-slot probe failed both QA cases. Classification: model-wrong/output-format plus unsafe judgment - it emitted reasoning before JSON and false-negatived the known-good scene while catching the bad case. Runtime-blocking if used as a QA default."
 
-    attempts: []
+    attempts:
+      - id: "018"
+        story: attempts/018-qa-pass-post-commit-calibration.md
+        date: 2026-07-22
+        status: in-progress
+        approach: "Preserved the first post-commit four-row run as diagnostic, repaired the remaining source uncertainty and six-error accounting defects, and will rerun the same two subjects only after the v2 contract manifest is committed."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-07-22
+        subject_model: "Gemini 3.6 Flash and Gemini 3.5 Flash-Lite"
+        score_before: null
+        score_after: null
+        retry_status: ready-after-contract-commit
+        retry_when:
+          - condition: architecture-change
+            note: "Rerun the exact four-row matrix after the corrected positive fixture, scorer accounting, and v2 manifest have an immutable commit identity."
 
   - id: continuity-extraction
     name: Continuity Extraction
@@ -1836,6 +1876,32 @@ evals:
     scores:
       - model: "Gemini 3.6 Flash"
         metrics:
+          overall: 0.193333
+          deterministic: 0.0
+          rubric: 0.386667
+        latency_ms: 7093
+        cost_usd: 0.019037
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "d1a1284"
+        result_file: benchmarks/results/video-understanding-story-208-post-repair-2026-07-22.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Attempt 019 diagnostic on frame-packet v2. All six deterministic components were contract parse failures because the prompt did not declare nested output types and Gemini received no responseSchema; Opus also found substantive model-wrong visual misses. This run cannot support the generated hold report or any default decision. Non-runtime-blocking for this challenger; rerun only on committed v3 lineage."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.185833
+          deterministic: 0.0
+          rubric: 0.371667
+        latency_ms: 2520
+        cost_usd: 0.002628
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "d1a1284"
+        result_file: benchmarks/results/video-understanding-story-208-post-repair-2026-07-22.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Attempt 019 diagnostic on frame-packet v2. All six deterministic components were contract parse failures because the prompt did not declare nested output types and Gemini received no responseSchema; Opus also found substantive model-wrong visual misses. This run cannot support the generated hold report or any default decision. Non-runtime-blocking for this challenger; rerun only on committed v3 lineage."
+      - model: "Gemini 3.6 Flash"
+        metrics:
           overall: 0.588392
         latency_ms: 8362
         cost_usd: 0.01154
@@ -1984,6 +2050,20 @@ evals:
         retry_when:
           - condition: new-approach
             note: "Only retry after a materially new native-video Gemini provider path exists; rerunning the current sampled-frames harness is exhausted."
+      - id: "019"
+        story: attempts/019-video-understanding-post-commit-calibration.md
+        date: 2026-07-22
+        status: in-progress
+        approach: "Preserved the first post-commit twelve-row run as diagnostic, rolled the output contract to v3 with exact nested types and Gemini responseSchema, and will rerun the same subjects only after the v2 contract manifest is committed."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-07-22
+        subject_model: "Gemini 3.6 Flash and Gemini 3.5 Flash-Lite"
+        score_before: null
+        score_after: null
+        retry_status: ready-after-contract-commit
+        retry_when:
+          - condition: architecture-change
+            note: "Rerun the exact twelve-row matrix after the v3 prompt, schema transport, lineage, and v2 manifest have an immutable commit identity."
 
   - id: previz-usefulness
     name: Previz Usefulness

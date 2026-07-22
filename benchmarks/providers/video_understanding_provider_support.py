@@ -20,7 +20,7 @@ def prepare_subject_request(prompt: str, options: object, context: object) -> di
         raise RuntimeError("provider config and test vars must be mappings")
     base_path = Path(config.get("basePath", Path.cwd()))
     prompt_version = str(
-        config.get("prompt_version", "video-understanding-frame-packet-v2")
+        config.get("prompt_version", "video-understanding-frame-packet-v3")
     )
     if (
         prompt_version == _subject_contract.FINAL_RENDER_PROMPT_VERSION

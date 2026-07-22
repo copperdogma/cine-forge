@@ -1,0 +1,110 @@
+{
+  "eval_id": "video-understanding",
+  "prompt_version": "video-understanding-frame-packet-v2",
+  "expected_cases": [
+    "alarm_chase_whip_pan",
+    "dialogue_confession_push_in",
+    "prop_swap_continuity_break",
+    "quiet_bedside_vigil",
+    "rooftop_escape_crash_zoom",
+    "storm_tunnel_lateral_run"
+  ],
+  "models": [
+    {
+      "model": "Gemini 3.6 Flash",
+      "python_overall": 0.0,
+      "rubric_overall": 0.3867,
+      "overall": 0.1933,
+      "latency_ms": 7093,
+      "cost_usd": 0.019037,
+      "value_score_per_dollar": 10.15,
+      "dimension_scores": {
+        "audio": 0.0,
+        "camera": 0.0,
+        "color": 0.0,
+        "continuity": 0.0,
+        "emotion": 0.0,
+        "evidence": 0.0,
+        "hard_constraints": 0.0,
+        "motion": 0.0,
+        "summary": 0.0,
+        "tone": 0.0
+      },
+      "calls": 6,
+      "observed_cases": [
+        "alarm_chase_whip_pan",
+        "dialogue_confession_push_in",
+        "prop_swap_continuity_break",
+        "quiet_bedside_vigil",
+        "rooftop_escape_crash_zoom",
+        "storm_tunnel_lateral_run"
+      ],
+      "missing_cases": [],
+      "extra_cases": [],
+      "duplicate_cases": [],
+      "incomplete_cases": [],
+      "failed_cases": [
+        "alarm_chase_whip_pan",
+        "dialogue_confession_push_in",
+        "prop_swap_continuity_break",
+        "quiet_bedside_vigil",
+        "rooftop_escape_crash_zoom",
+        "storm_tunnel_lateral_run"
+      ],
+      "contract_errors": [],
+      "regrade_errors": [],
+      "data_complete": true,
+      "previous_overall": null
+    },
+    {
+      "model": "Gemini 3.5 Flash-Lite",
+      "python_overall": 0.0,
+      "rubric_overall": 0.3717,
+      "overall": 0.1858,
+      "latency_ms": 2520,
+      "cost_usd": 0.002628,
+      "value_score_per_dollar": 70.7,
+      "dimension_scores": {
+        "audio": 0.0,
+        "camera": 0.0,
+        "color": 0.0,
+        "continuity": 0.0,
+        "emotion": 0.0,
+        "evidence": 0.0,
+        "hard_constraints": 0.0,
+        "motion": 0.0,
+        "summary": 0.0,
+        "tone": 0.0
+      },
+      "calls": 6,
+      "observed_cases": [
+        "alarm_chase_whip_pan",
+        "dialogue_confession_push_in",
+        "prop_swap_continuity_break",
+        "quiet_bedside_vigil",
+        "rooftop_escape_crash_zoom",
+        "storm_tunnel_lateral_run"
+      ],
+      "missing_cases": [],
+      "extra_cases": [],
+      "duplicate_cases": [],
+      "incomplete_cases": [],
+      "failed_cases": [
+        "alarm_chase_whip_pan",
+        "dialogue_confession_push_in",
+        "prop_swap_continuity_break",
+        "quiet_bedside_vigil",
+        "rooftop_escape_crash_zoom",
+        "storm_tunnel_lateral_run"
+      ],
+      "contract_errors": [],
+      "regrade_errors": [],
+      "data_complete": true,
+      "previous_overall": null
+    }
+  ],
+  "recommendation": {
+    "decision": "hold",
+    "rationale": "Every complete candidate failed one or more dual quality gates."
+  }
+}

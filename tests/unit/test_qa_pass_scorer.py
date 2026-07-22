@@ -178,6 +178,116 @@ def test_maintained_qa_positive_case_rejects_negated_required_summary() -> None:
 
 
 @pytest.mark.unit
+def test_maintained_qa_bad_case_accepts_six_material_error_findings() -> None:
+    output = {
+        "passed": False,
+        "confidence": 1.0,
+        "issues": [
+            {
+                "severity": "error",
+                "description": (
+                    "The location heading says OFFICE BUILDING instead of "
+                    "RUDDY & GREEN BUILDING - ELEVATOR."
+                ),
+                "location": "heading",
+            },
+            {
+                "severity": "error",
+                "description": (
+                    "The source supplies no time of day, so DAY is unsupported."
+                ),
+                "location": "time_of_day",
+            },
+            {
+                "severity": "error",
+                "description": "BILLY is invented and substituted for MARINER.",
+                "location": "characters_present",
+            },
+            {
+                "severity": "error",
+                "description": (
+                    "The summary fabricates evening plans and groceries instead of "
+                    "the violent attack by armed thugs."
+                ),
+                "location": "summary",
+            },
+            {
+                "severity": "error",
+                "description": (
+                    "The beats omit the AirTag reveal and armed conflict and invent "
+                    "a discussion of daily plans."
+                ),
+                "location": "narrative_beats",
+            },
+            {
+                "severity": "error",
+                "description": (
+                    "Casual is the wrong tone for a bloody, tense, violent scene."
+                ),
+                "location": "tone_mood",
+            },
+        ],
+        "summary": (
+            "Rejected because it invents the cast and plot, misstates the setting, "
+            "and omits the source's AirTag reveal and armed attack."
+        ),
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("bad_scene"))
+
+    assert result["pass"] is True
+    assert result["score"] >= 0.90
+
+
+@pytest.mark.unit
+def test_maintained_qa_bad_case_rejects_fewer_than_six_error_findings() -> None:
+    output = {
+        "passed": False,
+        "confidence": 1.0,
+        "issues": [
+            {
+                "severity": "error",
+                "location": "characters_present",
+                "description": "BILLY replaces MARINER and all three thugs are omitted.",
+            },
+            {
+                "severity": "error",
+                "location": "summary",
+                "description": (
+                    "The summary invents groceries and omits the AirTag and armed thugs."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "narrative_beats",
+                "description": (
+                    "The beats invent daily plans and omit the AirTag reveal and conflict."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "tone_mood",
+                "description": "Casual contradicts the bloody, tense, violent action.",
+            },
+            {
+                "severity": "warning",
+                "location": "location",
+                "description": "The location uses OFFICE BUILDING instead of RUDDY & GREEN.",
+            },
+        ],
+        "summary": (
+            "Rejected because the extraction invents the cast and plot and omits "
+            "the source's action."
+        ),
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("bad_scene"))
+
+    assert result["pass"] is False
+    assert "need 6" in result["reason"]
+
+
+@pytest.mark.unit
 def test_qa_scorer_hard_gates_wrong_pass_boolean(tmp_path: Path) -> None:
     output = {
         "passed": False,
@@ -311,6 +421,21 @@ def test_qa_reason_matching_accepts_two_distinct_factual_anchors() -> None:
         "location": "narrative_beats",
         "severity": "error",
         "description": "The beat wrongly says phone tracking and that Rose was grabbed.",
+    }
+
+    assert scorer._required_issue_matches(requirement, issue) is True
+
+
+@pytest.mark.unit
+def test_qa_reason_matching_normalizes_revelation_to_reveal() -> None:
+    requirement = {
+        "field": "narrative_beats",
+        "reason": "Omits the actual AirTag revelation and armed conflict",
+    }
+    issue = {
+        "location": "narrative_beats",
+        "severity": "error",
+        "description": "The beats fail to capture the AirTag reveal and armed conflict.",
     }
 
     assert scorer._required_issue_matches(requirement, issue) is True

@@ -114,6 +114,9 @@ def test_qa_contract_is_blind_to_candidate_labels_and_matches_verified_truth() -
     golden = json.loads(
         (ROOT / "benchmarks" / "golden" / "qa-pass-golden.json").read_text()
     )
+    positive = json.loads(
+        (ROOT / "benchmarks" / "input" / "qa-good-scene.json").read_text()
+    )
 
     assert golden["good_scene"]["expected_passed"] is True
     assert golden["bad_scene"]["expected_passed"] is False
@@ -130,6 +133,12 @@ def test_qa_contract_is_blind_to_candidate_labels_and_matches_verified_truth() -
     assert "one issue for each distinct material defect" in prompt
     assert "do not hide a factual defect as a note" in prompt
     assert "do not copy the candidate's confidence" in prompt
+    positive_text = json.dumps(positive).lower()
+    assert "bloody scrap of scalp" not in positive_text
+    assert "skull fragment" not in positive_text
+    assert "unidentified bloody scrap" in positive_text
+    assert "full-screen title card" in positive_text
+    assert "dad tattoo" in positive_text
 
 
 @pytest.mark.unit
