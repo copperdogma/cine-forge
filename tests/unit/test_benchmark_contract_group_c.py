@@ -139,7 +139,7 @@ def test_qa_contract_is_blind_to_candidate_labels_and_matches_verified_truth() -
     positive_text = json.dumps(positive).lower()
     assert "bloody scrap of scalp" not in positive_text
     assert "skull fragment" not in positive_text
-    assert "unidentified bloody scrap" in positive_text
+    assert "scrap is skull" in positive_text
     assert "full-screen title card" in positive_text
     assert "dad tattoo" in positive_text
 

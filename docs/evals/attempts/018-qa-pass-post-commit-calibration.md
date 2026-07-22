@@ -1,6 +1,6 @@
 # Eval Attempt 018 - QA Pass Post-Commit Calibration
 
-**Status:** In progress after judge output-budget failure
+**Status:** In progress after independently adjudicated fixture defect
 **Eval:** qa-pass
 **Date:** 2026-07-22
 **Worker Model:** GPT-5.6 with two independent source/scorer reviewers
@@ -70,6 +70,24 @@ this final gate, roll the contract manifest forward, and rerun without cache.
   sets `defaultTest.options.provider.config.max_tokens: 4096`, rolls the
   immutable contract manifest to v3, commits, and repeats only these four rows.
 
+## Full-Budget Diagnostic
+
+- Contract commit: `8851717131ee57e42feaba2be25c5d51defb3069`
+- Result: `benchmarks/results/qa-pass-story-208-post-repair-v3-2026-07-22.json`
+- Result SHA-256:
+  `8014a03146f05d1e2dc8bbd76d27804ef312e4233be94231cea621da45271e85`
+- All four rubric responses parsed; the positive rows used `1,128` and `1,076`
+  completion tokens, directly proving the former `1,024` ceiling was removed.
+- Opus then found that the positive fixture called the bloody scrap unidentified
+  and unresolved even though Rose asks whether it is skull and Mariner answers
+  yes. A fresh context-isolated third adjudicator independently classified the
+  fixture GOLDEN-WRONG: it is skull, while only whose skull remains unknown.
+- The narrow final retry corrects those two statements, obtains a later
+  independent CLEAN pass, rolls immutable manifest v4, commits, and repeats only
+  the same four rows. The first post-fix verifier caught and repaired a residual
+  chronology mismatch around Mariner's introduction, title card, and confirmation.
+  All remaining subject misses stay classified model-wrong.
+
 ## Definition of Done
 
 - [x] Diagnostic result retained with exact contract and file identity
@@ -78,6 +96,9 @@ this final gate, roll the contract manifest forward, and rerun without cache.
 - [x] Independent source-first positive-fixture CLEAN pass
 - [x] Corrected source/scorer contract committed before the replacement run
 - [x] Second four-row diagnostic inspected and judge truncation classified
-- [ ] Explicit judge output budget and manifest v3 committed before final retry
+- [x] Explicit judge output budget and manifest v3 committed before retry
+- [x] Full-budget diagnostic inspected and fixture dispute independently adjudicated
+- [x] Corrected fixture receives a later independent CLEAN pass
+- [ ] Manifest v4 committed before the final retry
 - [ ] Final four-row no-cache subject-plus-Opus result inspected and recorded
 - [ ] Registry and Story 208 updated with the final decision
