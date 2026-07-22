@@ -351,6 +351,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 050 | Provider Resilience: Retries, Fallbacks, and Stage Resume | High | Done | — | spec:1, spec:8 | — | [story-050](stories/story-050-provider-resilience-retry-fallback.md) |
 | 107 | Value-Optimized Model Selection Across All Modules | High | Done | — | spec:8 | — | [story-107](stories/story-107-value-optimized-model-selection.md) |
 | 136 | ADR-021 Execution-Ideal and Phase-Governance Migration | High | Done | — | spec:8, spec:11 | 134 | [story-136](stories/story-136-adr-021-execution-planning-migration.md) |
+| 209 | Evidence-First Evaluate-Model Workflow | High | Done | — | spec:8, spec:11 | 035, 208 | [story-209](stories/story-209-evaluate-model-evidence-first-workflow.md) |
 | 039 | Apply Model Selections to Production | Medium | Done | — | spec:8 | — | [story-039](stories/story-039-apply-model-selections.md) |
 | 122 | Golden Fixture Helpers | Medium | Done | — | spec:8 | — | [story-122](stories/story-122-golden-fixture-helpers.md) |
 | 123 | Anthropic Prompt Caching | Medium | Done | — | spec:8 | — | [story-123](stories/story-123-anthropic-prompt-caching.md) |

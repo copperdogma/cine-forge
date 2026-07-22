@@ -1075,7 +1075,8 @@
           "205",
           "206",
           "207",
-          "208"
+          "208",
+          "209"
         ],
         "adrIds": [
           "ADR-001",
@@ -1309,7 +1310,8 @@
           "154",
           "156",
           "172",
-          "203"
+          "203",
+          "209"
         ],
         "adrIds": [],
         "evalIds": []
@@ -13699,6 +13701,66 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "209",
+      "title": "Evidence-First Evaluate-Model Workflow",
+      "path": "docs/stories/story-209-evaluate-model-evidence-first-workflow.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "Execution Ideal (AI owns technical workflow)",
+        "R12 (transparency & control)"
+      ],
+      "specRefs": [
+        "spec:11.3",
+        "spec:11.4",
+        "spec:8"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "035",
+        "208"
+      ],
+      "categoryRefs": [
+        "spec:8",
+        "spec:11"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "agent-tools",
+        "evals",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260722-1730",
+        "date": "2026-07-22",
+        "summary": "independent-hardening-and-validation: findings-first review"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "209",
+        "sourcePath": "docs/stories/story-209-evaluate-model-evidence-first-workflow.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "independent-hardening-and-validation: findings-first review",
+        "lastRelevantAction": {
+          "date": "2026-07-22",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-209-evaluate-model-evidence-first-workflow.md",
+          "summary": "independent-hardening-and-validation: findings-first review"
+        }
+      }
     }
   ],
   "adrs": [
@@ -15985,9 +16047,10 @@
             "146",
             "147",
             "154",
-            "172"
+            "172",
+            "209"
           ],
-          "stories_since_audit": 0,
+          "stories_since_audit": 1,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
