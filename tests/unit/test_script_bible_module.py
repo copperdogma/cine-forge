@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 import pytest
+import yaml
 
 import cine_forge.modules.ingest.script_bible_v1.main as script_bible_main
 from cine_forge.modules.ingest.script_bible_v1.main import run_module
 from cine_forge.schemas import ScriptBible
+
+MODULE_MANIFEST = Path(script_bible_main.__file__).with_name("module.yaml")
 
 
 def _canonical_script(text: str) -> dict[str, Any]:
@@ -238,6 +242,58 @@ def test_runtime_work_model_overrides_module_default(monkeypatch: pytest.MonkeyP
 
     assert captured["model"] == "claude-sonnet-4-6"
     assert result["cost"]["model"] == "claude-sonnet-4-6"
+
+
+@pytest.mark.unit
+def test_default_work_model_matches_module_manifest(monkeypatch: pytest.MonkeyPatch) -> None:
+    captured: dict[str, Any] = {}
+
+    def _fake_call_llm(**kwargs: Any):
+        captured["model"] = kwargs["model"]
+        return ScriptBible(
+            title="Default Model",
+            logline="A default model alignment test.",
+            synopsis="The runtime fallback and module manifest stay aligned.",
+            act_structure=[
+                {
+                    "act_number": 1,
+                    "title": "Setup",
+                    "start_scene": "INT. LAB - NIGHT",
+                    "end_scene": "INT. LAB - NIGHT",
+                    "summary": "The default is exercised.",
+                    "turning_points": ["The selected model is captured."],
+                }
+            ],
+            themes=[
+                {
+                    "theme": "Alignment",
+                    "description": "Declared and runtime defaults agree.",
+                    "evidence": ["Test fixture."],
+                }
+            ],
+            narrative_arc="Short.",
+            genre="Drama",
+            tone="Neutral",
+            protagonist_journey="Learns the default path.",
+            central_conflict="Manifest versus runtime drift.",
+            setting_overview="A test harness.",
+            confidence=0.9,
+        ), {"model": kwargs["model"], "estimated_cost_usd": 0.0}
+
+    monkeypatch.setattr(script_bible_main, "call_llm", _fake_call_llm)
+
+    result = run_module(
+        inputs={"normalize": _canonical_script(SAMPLE_SCRIPT)},
+        params={},
+        context={"runtime_params": {}},
+    )
+    manifest = yaml.safe_load(MODULE_MANIFEST.read_text())
+    declared_default = manifest["parameters"]["work_model"]["default"]
+
+    assert script_bible_main.DEFAULT_WORK_MODEL == "gemini-3.5-flash-lite"
+    assert declared_default == script_bible_main.DEFAULT_WORK_MODEL
+    assert captured["model"] == script_bible_main.DEFAULT_WORK_MODEL
+    assert result["cost"]["model"] == script_bible_main.DEFAULT_WORK_MODEL
 
 
 @pytest.mark.unit

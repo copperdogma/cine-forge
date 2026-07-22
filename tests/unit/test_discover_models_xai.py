@@ -87,6 +87,27 @@ def test_grok_registry_matching_does_not_cross_model_families() -> None:
 
 
 @pytest.mark.unit
+def test_registry_matching_distinguishes_sibling_model_variants() -> None:
+    module = _load_discover_models_module()
+
+    assert not module._matches_registry(
+        "gemini-3.5-flash-lite",
+        "Gemini 3.5 Flash-Lite",
+        {"Gemini 3.5 Flash"},
+    )
+    assert not module._matches_registry(
+        "gpt-5.5-pro",
+        "GPT-5.5 Pro",
+        {"GPT-5.5"},
+    )
+    assert module._matches_registry(
+        "gemini-3.5-flash-lite",
+        "Gemini 3.5 Flash-Lite",
+        {"Gemini 3.5 Flash Lite"},
+    )
+
+
+@pytest.mark.unit
 def test_moonshot_provider_is_discoverable() -> None:
     module = _load_discover_models_module()
 

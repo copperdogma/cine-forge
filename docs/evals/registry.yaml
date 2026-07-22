@@ -580,6 +580,26 @@ evals:
       cost_usd_max: 0.02
 
     scores:
+      - model: "Gemini 3.6 Flash"
+        metrics:
+          overall: 0.67985
+        latency_ms: 14429
+        cost_usd: 0.0149
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/config-detection-gemini36flash-2026-07-21.json
+        note: "Story 208 misses the 0.92 quality target and the current Gemini 3 Flash value winner. Classification: model-wrong/runtime-significant metadata error for a five-minute duration estimate; scorer-wrong tone-synonym denominator also depresses the raw score but does not rescue the candidate. No default change."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.8195
+        latency_ms: 2832
+        cost_usd: 0.0036
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/config-detection-gemini35flashlite-2026-07-21.json
+        note: "Story 208 is fast and cheap but remains well below the 0.92 quality target and current Gemini 3 Flash default. Classification: model-wrong/non-runtime-blocking for challenger selection; no default change."
       - model: "GPT-5.5"
         metrics:
           overall: 0.9428
@@ -735,6 +755,26 @@ evals:
       cost_usd_max: 0.10
 
     scores:
+      - model: "Gemini 3.6 Flash"
+        metrics:
+          overall: 0.7675
+        latency_ms: 35470
+        cost_usd: 0.0217
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/scene-extraction-gemini36flash-2026-07-21.json
+        note: "Story 208 recovered all 15 scenes but attached the wrong content to scene 13 and scene 15 headings. Classification: model-wrong/runtime-blocking for a scene-extraction default; below the 0.90 target and GPT-5.2 leader. No default change."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.81415
+        latency_ms: 5477
+        cost_usd: 0.0070
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/scene-extraction-gemini35flashlite-2026-07-21.json
+        note: "Story 208 passed the harness and is fast, but misses the 0.90 quality target. Classification: model-wrong/non-runtime-blocking for challenger selection; no scene-extraction default change."
       - model: "Grok 4.5"
         metrics:
           overall: 0.9066
@@ -1042,6 +1082,26 @@ evals:
       cost_usd_max: 0.05
 
     scores:
+      - model: "Gemini 3.6 Flash"
+        metrics:
+          overall: 0.879175
+        latency_ms: 7868
+        cost_usd: 0.0043
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/scene-enrichment-gemini36flash-2026-07-21.json
+        note: "Story 208 passed both cases but remains below the 0.93 target and Sonnet 4.6 default. Classification: model-wrong on an invented DAY value; scorer-wrong or ambiguous on exact tone synonyms. Non-runtime-blocking for the current default; no change."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.871675
+        latency_ms: 1374
+        cost_usd: 0.0011
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/scene-enrichment-gemini35flashlite-2026-07-21.json
+        note: "Story 208 passed both cases with excellent latency and cost, but remains below the 0.93 quality target and current default. Classification: model-wrong/non-runtime-blocking for challenger selection; no default change."
       - model: "Grok 4.5"
         metrics:
           overall: 0.9442
@@ -1256,6 +1316,26 @@ evals:
       note: "QA should be near-perfect — false positives waste pipeline budget"
 
     scores:
+      - model: "Gemini 3.6 Flash"
+        metrics:
+          overall: 0.58125
+        latency_ms: 5729
+        cost_usd: 0.0038
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/qa-pass-gemini36flash-2026-07-21.json
+        note: "Story 208 raw score is not decision-grade. Classification: golden-wrong/non-runtime-blocking—the fixture labeled good actually changes the AirTag location and discovery timing and omits the thugs and gunfight, which Gemini correctly flagged. Repair the QA golden and rerun before any default comparison."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.5950
+        latency_ms: 1642
+        cost_usd: 0.0014
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/qa-pass-gemini35flashlite-2026-07-21.json
+        note: "Story 208 raw score is not decision-grade. Classification: golden-wrong/non-runtime-blocking—the fixture labeled good contains real extraction errors that the model correctly rejected. Repair the QA golden and rerun before any default comparison."
       - model: "Grok 4.5"
         metrics:
           overall: 0.5982
@@ -1564,6 +1644,26 @@ evals:
       note: "Do not switch defaults until the full 20-clip matrix clears the pilot floor."
 
     scores:
+      - model: "Gemini 3.6 Flash"
+        metrics:
+          overall: 0.588392
+        latency_ms: 8362
+        cost_usd: 0.01154
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/video-understanding-gemini36flash-2026-07-21.json
+        note: "Story 208 six-anchor raw result passed 2/6 and is not decision-grade. Classification: mixed model-wrong/ambiguous plus material golden- and rubric-wrong contamination: neon and muzak targets describe motion/objects absent from byte-identical symbolic frames, while dialogue penalties conflict with visible content and the 13-key contract. Non-runtime-blocking; repair fixtures before comparison."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.5095
+        latency_ms: 2168
+        cost_usd: 0.0027
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/video-understanding-gemini35flashlite-2026-07-21.json
+        note: "Story 208 six-anchor raw result passed 0/6 and is materially harness-contaminated. Classification: model-wrong on several camera/motion cues, golden-wrong on byte-identical neon frames, and ambiguous/golden-wrong on byte-identical muzak frames. Non-runtime-blocking; repair fixtures before comparison."
       - model: "Grok 4.5"
         metrics:
           overall: 0.7017
@@ -2895,6 +2995,26 @@ evals:
       cost_usd_max: 0.02
 
     scores:
+      - model: "Gemini 3.6 Flash"
+        metrics:
+          overall: 0.9200
+        latency_ms: 11385
+        cost_usd: 0.0098
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/entity-discovery-gemini36flash-2026-07-21.json
+        note: "Story 208 found every required entity; remaining differences are ambiguous inclusion bias plus a minor fenced-JSON formatting miss. It remains below the 0.93 target and ties much cheaper, faster lanes. Non-runtime-blocking; no default change."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.9200
+        latency_ms: 1292
+        cost_usd: 0.0023
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/entity-discovery-gemini35flashlite-2026-07-21.json
+        note: "Story 208 found every required entity and is fast, but remains below the 0.93 target and offers no quality/value win over the current Gemini 2.5 Flash-Lite lane. Non-runtime-blocking; no default change."
       - model: "Kimi K2.6"
         metrics:
           overall: 0.9250
@@ -3118,6 +3238,26 @@ evals:
       cost_usd_max: 0.01
 
     scores:
+      - model: "Gemini 3.6 Flash"
+        metrics:
+          overall: 0.8850
+        latency_ms: 21212
+        cost_usd: 0.0195
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/script-bible-gemini36flash-2026-07-21.json
+        note: "Story 208 produced a strong, specific bible, with dark-comedy and setting penalties classified golden/rubric-wrong or scorer-wrong. It still misses the 0.90 quality and $0.01 cost targets and offers no value win over equal-scoring Gemini 2.5 Flash-Lite. No default change."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.9100
+        latency_ms: 6074
+        cost_usd: 0.0049
+        cost_estimated: true
+        measured: 2026-07-21
+        git_sha: "f5a3ffb"
+        result_file: benchmarks/results/script-bible-gemini35flashlite-confirmation-2026-07-21.json
+        note: "Story 208 cleared all targets in two no-cache runs: 0.95165/5650ms/$0.0054 first and 0.9100/6074ms/$0.0049 confirmation (mean 0.930825/5862ms/$0.00515). This is a meaningful quality and latency improvement over the current Gemini 2.5 Flash-Lite default at modest once-per-project cost. Classification: model-correct; recommend adopting for script_bible_v1 after explicit approval."
       - model: "Grok 4.5"
         metrics:
           overall: 0.9750

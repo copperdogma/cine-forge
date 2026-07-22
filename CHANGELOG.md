@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-07-21-01] — Evaluate Gemini 3.6 Flash and 3.5 Flash-Lite (Story 208)
+
+### Added
+- Added maintained model-slot evidence for Gemini 3.6 Flash and Gemini 3.5 Flash-Lite, including raw benchmark results, pricing, live discovery, and mismatch classifications.
+- Added regression coverage that distinguishes sibling model variants during discovery and keeps the script-bible manifest default aligned with its runtime fallback.
+
+### Changed
+- Adopted Gemini 3.5 Flash-Lite as the `script_bible_v1` default after two no-cache runs cleared the maintained quality, latency, and cost targets.
+- Refreshed the eval registry, model catalog, task configurations, and methodology surfaces with the new model evidence.
+
+### Fixed
+- Fixed discovery matching that previously confused Gemini Flash-Lite with the same-version Gemini Flash sibling.
+- Recorded that the maintained QA good fixture and two symbolic-video targets require correction before their raw scores can support model selection.
+
 ## [2026-05-29-01] — Evaluate Opus 4.8 model slots (Story 206)
 
 ### Added

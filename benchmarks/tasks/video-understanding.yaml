@@ -132,6 +132,30 @@ providers:
       pythonExecutable: python
       timeout: 300000
 
+  - id: file://../providers/video_understanding_provider.py
+    label: "Gemini 3.5 Flash-Lite"
+    config:
+      provider: google
+      model: gemini-3.5-flash-lite
+      max_tokens: 65536
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: video-understanding-v1
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
+    label: "Gemini 3.6 Flash"
+    config:
+      provider: google
+      model: gemini-3.6-flash
+      max_tokens: 65536
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: video-understanding-v1
+      pythonExecutable: python
+      timeout: 300000
+
 tests:
   - vars:
       clip_id: dialogue_confession_push_in

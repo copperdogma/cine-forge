@@ -15,6 +15,8 @@ from cine_forge.schemas import ArtifactHealth, ScriptBible
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_WORK_MODEL = "gemini-3.5-flash-lite"
+
 EXTRACTION_PROMPT = """\
 You are a professional script reader and story analyst. Read the following \
 screenplay and produce a comprehensive script bible.
@@ -72,7 +74,7 @@ def run_module(
         or runtime_params.get("work_model")
         or runtime_params.get("default_model")
         or runtime_params.get("model")
-        or "gemini-2.5-flash-lite"
+        or DEFAULT_WORK_MODEL
     )
     max_tokens = int(params.get("max_tokens", 4096))
 

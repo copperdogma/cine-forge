@@ -117,6 +117,7 @@ TIER_PATTERNS: list[tuple[str, str]] = [
     # These are checked AFTER flash-lite/flash-8b so bare flash = mid is safe.
     (r"gemini-3-flash\b",       "mid"),
     (r"gemini-3\.1-flash\b",    "mid"),
+    (r"gemini-3\.6-flash\b",    "mid"),
     (r"gemini-2\.5-flash\b",    "mid"),
     (r"gemini-2-5-flash\b",     "mid"),
     (r"gemini-flash",           "mid"),   # catch-all for remaining flash variants
@@ -505,6 +506,24 @@ def _model_family(normalized_name: str) -> str | None:
     return None
 
 
+def _model_variant(normalized_name: str) -> str | None:
+    """Return a sibling-model qualifier that must not be fuzzy-matched away."""
+    for variant in (
+        "flash-lite",
+        "flash",
+        "mini",
+        "nano",
+        "pro",
+        "instant",
+        "sol",
+        "terra",
+        "luna",
+    ):
+        if re.search(rf"(?:^|-){re.escape(variant)}(?:-|$)", normalized_name):
+            return variant
+    return None
+
+
 def _matches_registry(model_id: str, display_name: str, registry_models: set[str]) -> bool:
     """Check if a discovered model matches any model in the registry.
 
@@ -516,6 +535,12 @@ def _matches_registry(model_id: str, display_name: str, registry_models: set[str
 
     for rm in registry_models:
         norm_rm = _normalize_model_name(rm)
+        family_id = _model_family(norm_id)
+        family_rm = _model_family(norm_rm)
+        variant_id = _model_variant(norm_id)
+        variant_rm = _model_variant(norm_rm)
+        if family_id == family_rm and variant_id != variant_rm and (variant_id or variant_rm):
+            continue
         # Direct containment either direction
         if norm_rm in norm_id or norm_id in norm_rm:
             return True
@@ -523,8 +548,6 @@ def _matches_registry(model_id: str, display_name: str, registry_models: set[str
             return True
         # Handle "Sonnet 4.6" matching "claude-sonnet-4-6"
         # Strip provider prefix and compare
-        family_id = _model_family(norm_id)
-        family_rm = _model_family(norm_rm)
         stripped_id = re.sub(r"^(claude|gpt|gemini|grok|o\d)-?", "", norm_id)
         stripped_rm = re.sub(
             r"^(claude-|opus-|sonnet-|haiku-|gpt-|gemini-|grok-|o\d-?)",

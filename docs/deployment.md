@@ -49,7 +49,7 @@ Canonical reference for CineForge's production infrastructure. For deploying, us
 | `PYTHONPATH` | `/app/src` | Python module resolution |
 | `CINEFORGE_STATIC_DIR` | `/app/static` | Frontend build directory |
 | `ANTHROPIC_API_KEY` | (Fly secret) | AI chat feature |
-| `CINE_FORGE_GEMINI_API_KEY` | (Fly secret) | `mvp_ingest` `script_bible_v1` default Google transport |
+| `CINE_FORGE_GEMINI_API_KEY` | (Fly secret) | `mvp_ingest` `script_bible_v1` default Gemini 3.5 Flash-Lite transport |
 | `CINE_FORGE_OPENAI_API_KEY` | (Fly secret) | `mvp_ingest` `project_config_v1` QA/default OpenAI transport |
 | `CINE_FORGE_XAI_API_KEY` | (Fly secret) | `ai_previz_generation` shipped `xai_grok_imagine_video` transport; legacy `XAI_API_KEY` is accepted by the app but should not be the preferred Fly secret name |
 

@@ -1,0 +1,470 @@
+{
+  "evalId": "eval-oaT-2026-07-21T23:16:50",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-07-21T23:16:50.222Z",
+    "prompts": [
+      {
+        "raw": "You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (short label like \"Setup\", \"Confrontation\", \"Resolution\")\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement.\n7. **genre** — Primary genre (e.g. \"Action-Thriller\", \"Drama\", \"Sci-Fi Horror\").\n8. **tone** — Dominant tone (e.g. \"Gritty and intense\", \"Darkly comedic\").\n9. **protagonist_journey** — The protagonist's transformation arc.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Do not write generic analysis that could apply to any film.",
+        "label": "prompts/script-bible.txt: You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (short label like \"Setup\", \"Confrontation\", \"Resolution\")\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement.\n7. **genre** — Primary genre (e.g. \"Action-Thriller\", \"Drama\", \"Sci-Fi Horror\").\n8. **tone** — Dominant tone (e.g. \"Gritty and intense\", \"Darkly comedic\").\n9. **protagonist_journey** — The protagonist's transformation arc.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Do not write generic analysis that could apply to any film.",
+        "id": "92a15e576577c0129889b746c950c7dad1be7274afab7170cfde1bd04632c5fd",
+        "provider": "Gemini 3.6 Flash",
+        "metrics": {
+          "score": 0.885,
+          "testPassCount": 1,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 0,
+          "totalLatencyMs": 21212,
+          "tokenUsage": {
+            "prompt": 4965,
+            "completion": 1605,
+            "cached": 0,
+            "total": 8924,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 2354,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 3028,
+              "prompt": 2311,
+              "completion": 717,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.885,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 3028,
+            "prompt": 2311,
+            "completion": 717,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.95,
+              "reason": "act_structure=1.00 | field_completeness=1.00 | json_valid=0.90 | logline_grounding=0.80 | protagonist_journey=1.00 | setting_grounding=0.50 | synopsis_length=1.00 | theme_grounding=1.00 | themes=1.00 | title_correct=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/script_bible_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this script bible for the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Is the logline specific to THIS screenplay — does it name The Mariner as protagonist, identify the gang/Salvatori as antagonist, and mention the building/floor stakes?\n2. Does the synopsis cover the full arc: Mariner's vigilante crusade, Rose's revelation about stolen crypto, the father's dark truth, and the climactic confrontation?\n3. Are the themes specific and grounded? Expect: father/legacy/disillusionment, identity/hero myth, loyalty/family, truth vs. comfortable lies.\n4. Is the act structure accurate? The script has 3 acts roughly: setup of vigilante world → escalating gang conflict + Rose twist → climax on 15th floor + father revelation.\n5. Is the protagonist journey correct? Mariner begins believing his father was a hero, discovers the man was abusive and alive, ends redefining heroism on his own terms.\n6. Is the setting grounded in specifics? Expect: a contemporary post-collapse urban setting, the Ruddy & Greene Building (15th floor final confrontation), and Mariner's fishing-themed vigilante aesthetic.\n7. Is the genre identified correctly? This is an Action-Thriller or Superhero-Noir — not drama or comedy.\n8. Does the analysis avoid generic statements that could apply to any film?\n\nScore strictly: 0.8+ only if the bible could serve as a production reference document for THIS specific screenplay.\n"
+              },
+              "pass": true,
+              "score": 0.82,
+              "reason": "Evaluating against each criterion:\n\n1. **Logline**: Names 'The Mariner' as protagonist, identifies mob-controlled skyscraper, mentions estranged sister, and references the lie behind his origin story. It doesn't explicitly name Salvatori but references the mob. Specific to this screenplay. Strong.\n\n2. **Synopsis**: Covers the full arc comprehensively — vigilante rescue, Rose's crypto theft revelation, the father's dark truth (abusive drunk, still alive, abandoned Billy), and the climactic confrontation with Salvatori on the 15th floor. Excellent coverage.\n\n3. **Themes**: Three themes identified — Deconstruction of Heroic Mythologies, Self-Actualization vs. Inherited Legacy, and Economic Desperation. These are specific and grounded with textual evidence (direct quotes like 'bag a sad' and Rose's line about turning a deadbeat into a superhero). Covers father/legacy/disillusionment, identity/hero myth, truth vs. comfortable lies. Could have included loyalty/family more explicitly as a separate theme, but it's woven into the analysis.\n\n4. **Act structure**: Three acts accurately mapped — Act 1 (setup, breach, rescue), Act 2 (ascent with escalating conflict + Rose's revelations about crypto and father), Act 3 (confrontation with Salvatori + emotional collapse + rebirth). Turning points are specific and accurate. Strong.\n\n5. **Protagonist journey**: Correctly traces Billy from believing his father was a heroic seafarer → discovering the father was abusive and alive → existential collapse → redefining heroism as self-made. Accurate.\n\n6. **Setting**: Specifically names the Ruddy & Greene Building, 15-story sandstone skyscraper, post-2025 collapse, mentions the oar and flare gun (nautical/fishing-themed aesthetic), Chimney Bay reference. Very grounded in specifics.\n\n7. **Genre**: Identified as 'Action-Thriller / Dark Comedy.' The rubric says expect Action-Thriller or Superhero-Noir, and explicitly states 'not drama or comedy.' The inclusion of 'Dark Comedy' is somewhat problematic — the tone description says 'satirical' which may be justified by the script's content, but the rubric specifically flags comedy as incorrect. This is a notable deviation.\n\n8. **Avoiding generic statements**: The analysis is highly specific throughout — references specific character names (Rosco, Vinnie, Mikey, Carlos, Salvatori), specific plot devices ($20M crypto, AirTag), specific locations, and direct quotes. Not generic at all.\n\nThe main weakness is the genre classification including 'Dark Comedy' when the rubric explicitly says it should not be comedy. The tone description of 'satirical' also leans this way. Otherwise, this is an excellent, production-quality reference document with high specificity and accuracy.\n\nOverall: Very strong bible that could serve as a production reference document, with one notable genre classification issue.",
+              "tokensUsed": {
+                "total": 3028,
+                "prompt": 2311,
+                "completion": 717,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n```json\\n{\\n  \\\"title\\\": \\\"The Mariner\\\",\\n  \\\"logline\\\": \\\"When a oversized nautical-themed vigilante rescues his estranged sister from a mob-controlled skyscraper, he must fight his way through heavily armed thugs while confronting the crushing reality that his heroic origin story was built on a lie.\\\",\\n  \\\"synopsis\\\": \\\"In a post-collapse urban dystopia, imposing vigilante Billy—known as \\\\\\\"The Mariner\\\\\\\"—storms the ruined 15-story Ruddy & Greene Building to rescue his sister Rose from gang captivity. Believing she was targeted because of his vigilantism, Billy uses an oar and a flare gun to fight through mobsters, only to learn Rose voluntarily involved herself by stealing $20 million in gang cryptocurrency hidden on a drive in her purse.\\\\n\\\\nAs the siblings climb the skyscraper to retrieve the stolen cash, Billy frequently references the heroic values, strength, and seafarer's code imparted by his beloved late father. Disturbed by his delusions, Rose shatters his core mythology: their father is not dead, nor was he a hero, but an abusive drunk who abandoned Billy at a deadbeat friend's house as a child.\\\\n\\\\nReaching the opulent 15th-floor penthouse, they are cornered by mob boss Salvatori and his enforcers. Stripped of his origin story, a heartbroken Billy surrenders to despair and submits to his captors. However, Rose reframes his life, pointing out that despite growing up with an abusive monster, Billy forged himself into a genuine hero. Re-energized by her words, Billy clenches his fists, ready to fight back.\\\",\\n  \\\"act_structure\\\": [\\n    {\\n      \\\"act_number\\\": 1,\\n      \\\"title\\\": \\\"Setup & Breach\\\",\\n      \\\"start_scene\\\": \\\"EXT. CITY CENTRE - NIGHT\\\",\\n      \\\"end_scene\\\": \\\"INT. 11TH FLOOR - CONTINUOUS\\\",\\n      \\\"summary\\\": \\\"Billy (The Mariner) rescues his sister Rose from mobsters in a ruined skyscraper elevator, believing she is an innocent hostage.\\\",\\n      \\\"turning_points\\\": [\\n        \\\"Opening title establishes the post-2025 urban economic collapse and rise of vigilantes.\\\",\\n        \\\"Mariner breaches the building and extracts Rose from an elevator using an AirTag he planted on her.\\\",\\n        \\\"Rose reveals she must go back up to retrieve her purse, confusing Billy.\\\"\\n      ]\\n    },\\n    {\\n      \\\"act_number\\\": 2,\\n      \\\"title\\\": \\\"The Ascent & Origin Unraveling\\\",\\n      \\\"start_scene\\\": \\\"INT. STAIRWELL - CONTINUOUS\\\",\\n      \\\"end_scene\\\": \\\"INT. 15TH FLOOR\\\",\\n      \\\"summary\\\": \\\"Billy and Rose battle through thugs to reach the penthouse while Rose dismantles Billy's romanticized origin story about their father.\\\",\\n      \\\"turning_points\\\": [\\n        \\\"Captive mobster Rosco reveals Rose stole $20 million in gang cryptocurrency.\\\",\\n        \\\"Billy brutalizes gang members Vinnie, Mikey, and Carlos using his oar and a flare gun.\\\",\\n        \\\"Rose shatters Billy's narrative, revealing their father was an abusive drunk who is still alive in Chimney Bay.\\\"\\n      ]\\n    },\\n    {\\n      \\\"act_number\\\": 3,\\n      \\\"title\\\": \\\"Confrontation & Rebirth\\\",\\n      \\\"start_scene\\\": \\\"INT. 15TH FLOOR - SALVATORI'S OFFICE\\\",\\n      \\\"end_scene\\\": \\\"CUT TO BLACK\\\",\\n      \\\"summary\\\": \\\"Cornered by gang leader Salvatori, Billy falls into emotional despair until Rose convinces him that his heroism is self-made.\\\",\\n      \\\"turning_points\\\": [\\n        \\\"Mob boss Salvatori corners Billy and Rose in the penthouse office.\\\",\\n        \\\"A series of grim flashbacks reveals the true abusive nature of Billy's childhood training.\\\",\\n        \\\"Rose gives a rousing speech declaring that Billy became a hero in spite of his father, prompting Billy to prepare for a fight.\\\"\\n      ]\\n    }\\n  ],\\n  \\\"themes\\\": [\\n    {\\n      \\\"theme\\\": \\\"Deconstruction of Heroic Mythologies\\\",\\n      \\\"description\\\": \\\"Examines how individuals craft comforting myths around trauma and toxic father figures to cope, and how real heroism requires shedding those illusions.\\\",\\n      \\\"evidence\\\": [\\n        \\\"Mariner's strict adherence to the 'Mariner's Code' taught by his father.\\\",\\n        \\\"Contrast between initial warm flashbacks and later reality where the father punches young Billy and calls him a 'bag a sad'.\\\",\\n        \\\"Rose's line: 'He somehow turned a deadbeat father into a superhero. Then became a real one.'\\\"\\n      ]\\n    },\\n    {\\n      \\\"theme\\\": \\\"Self-Actualization vs. Inherited Legacy\\\",\\n      \\\"description\\\": \\\"True moral character and heroism stem from personal choices and inner grit rather than lineage or inherited authority.\\\",\\n      \\\"evidence\\\": [\\n        \\\"Billy's realization that his father did not make him strong; he made himself strong.\\\",\\n        \\\"The shift in Billy's demeanor when Rose redefines his origin from tragic victim/follower to self-made hero.\\\"\\n      ]\\n    },\\n    {\\n      \\\"theme\\\": \\\"Economic Desperation and Urban Decay\\\",\\n      \\\"description\\\": \\\"In a collapsed socio-economic landscape, survival forces ordinary people into crime and extreme self-reliance.\\\",\\n      \\\"evidence\\\": [\\n        \\\"Title card detailing the 2025 commercial real estate and banking collapse.\\\",\\n        \\\"Rose stealing $20 million in crypto to secure her future.\\\",\\n        \\\"Vigilantes taking over duties in lawless no-go zones.\\\"\\n      ]\\n    }\\n  ],\\n  \\\"narrative_arc\\\": \\\"The story begins as a hyper-stylized action rescue narrative, establishing 'The Mariner' as a classic comic-book-style vigilante driven by a dead father's honor. As physical battles escalate up the skyscraper, an internal narrative arc unravels Billy's foundational worldview. The narrative reaches its nadir when the hero's origin myth is destroyed, causing him to submit mentally to his enemies. It resolves with a thematic climax where the protagonist reclaims his identity, transforming from a deluded follower of an abusive ghost into an empowered, self-actualized hero.\\\",\\n  \\\"genre\\\": \\\"Action-Thriller / Dark Comedy\\\",\\n  \\\"tone\\\": \\\"Gritty and satirical yet emotionally grounded\\\",\\n  \\\"protagonist_journey\\\": \\\"Billy begins as a stoic, heavily armed vigilante bound by a fictionalized nautical myth of his late father. When forced to confront the truth that his father was an abusive deadbeat who abandoned him, Billy suffers an existential collapse. Through his sister's perspective, he realizes that his nobility and strength are entirely his own achievements, allowing him to embrace his true identity as a genuine hero.\\\",\\n  \\\"central_conflict\\\": \\\"External: Billy and Rose fighting through a gang-infested skyscraper to retrieve $20 million in stolen cryptocurrency and escape mob boss Salvatori. Internal: Billy struggling between his idolized false memory of his abusive father and the painful truth of his past.\\\",\\n  \\\"setting_overview\\\": \\\"A near-future, post-2025 ruined city centre following a global pandemic and commercial real estate collapse. The primary setting is the Ruddy & Greene Building, a bullet-riddled 15-story sandstone skyscraper converted into a crime syndicate fortress featuring ruined office floors and a pristine, luxury penthouse.\\\",\\n  \\\"confidence\\\": 1.0\\n}\\n```\\n</Output>\\n<Rubric>\\nEvaluate this script bible for the screenplay \\\"The Mariner.\\\"\\n\\nKey quality criteria:\\n1. Is the logline specific to THIS screenplay — does it name The Mariner as protagonist, identify the gang/Salvatori as antagonist, and mention the building/floor stakes?\\n2. Does the synopsis cover the full arc: Mariner's vigilante crusade, Rose's revelation about stolen crypto, the father's dark truth, and the climactic confrontation?\\n3. Are the themes specific and grounded? Expect: father/legacy/disillusionment, identity/hero myth, loyalty/family, truth vs. comfortable lies.\\n4. Is the act structure accurate? The script has 3 acts roughly: setup of vigilante world → escalating gang conflict + Rose twist → climax on 15th floor + father revelation.\\n5. Is the protagonist journey correct? Mariner begins believing his father was a hero, discovers the man was abusive and alive, ends redefining heroism on his own terms.\\n6. Is the setting grounded in specifics? Expect: a contemporary post-collapse urban setting, the Ruddy & Greene Building (15th floor final confrontation), and Mariner's fishing-themed vigilante aesthetic.\\n7. Is the genre identified correctly? This is an Action-Thriller or Superhero-Noir — not drama or comedy.\\n8. Does the analysis avoid generic statements that could apply to any film?\\n\\nScore strictly: 0.8+ only if the bible could serve as a production reference document for THIS specific screenplay.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "4291ca56-ec24-474f-bd2d-60293d4af3cf",
+        "latencyMs": 21212,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (short label like \"Setup\", \"Confrontation\", \"Resolution\")\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement.\n7. **genre** — Primary genre (e.g. \"Action-Thriller\", \"Drama\", \"Sci-Fi Horror\").\n8. **tone** — Dominant tone (e.g. \"Gritty and intense\", \"Darkly comedic\").\n9. **protagonist_journey** — The protagonist's transformation arc.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Do not write generic analysis that could apply to any film.",
+          "label": "prompts/script-bible.txt: You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (short label like \"Setup\", \"Confrontation\", \"Resolution\")\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement.\n7. **genre** — Primary genre (e.g. \"Action-Thriller\", \"Drama\", \"Sci-Fi Horror\").\n8. **tone** — Dominant tone (e.g. \"Gritty and intense\", \"Darkly comedic\").\n9. **protagonist_journey** — The protagonist's transformation arc.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Do not write generic analysis that could apply to any film.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "92a15e576577c0129889b746c950c7dad1be7274afab7170cfde1bd04632c5fd",
+        "promptIdx": 0,
+        "provider": {
+          "id": "google:gemini-3.6-flash",
+          "label": "Gemini 3.6 Flash"
+        },
+        "response": {
+          "output": "```json\n{\n  \"title\": \"The Mariner\",\n  \"logline\": \"When a oversized nautical-themed vigilante rescues his estranged sister from a mob-controlled skyscraper, he must fight his way through heavily armed thugs while confronting the crushing reality that his heroic origin story was built on a lie.\",\n  \"synopsis\": \"In a post-collapse urban dystopia, imposing vigilante Billy—known as \\\"The Mariner\\\"—storms the ruined 15-story Ruddy & Greene Building to rescue his sister Rose from gang captivity. Believing she was targeted because of his vigilantism, Billy uses an oar and a flare gun to fight through mobsters, only to learn Rose voluntarily involved herself by stealing $20 million in gang cryptocurrency hidden on a drive in her purse.\\n\\nAs the siblings climb the skyscraper to retrieve the stolen cash, Billy frequently references the heroic values, strength, and seafarer's code imparted by his beloved late father. Disturbed by his delusions, Rose shatters his core mythology: their father is not dead, nor was he a hero, but an abusive drunk who abandoned Billy at a deadbeat friend's house as a child.\\n\\nReaching the opulent 15th-floor penthouse, they are cornered by mob boss Salvatori and his enforcers. Stripped of his origin story, a heartbroken Billy surrenders to despair and submits to his captors. However, Rose reframes his life, pointing out that despite growing up with an abusive monster, Billy forged himself into a genuine hero. Re-energized by her words, Billy clenches his fists, ready to fight back.\",\n  \"act_structure\": [\n    {\n      \"act_number\": 1,\n      \"title\": \"Setup & Breach\",\n      \"start_scene\": \"EXT. CITY CENTRE - NIGHT\",\n      \"end_scene\": \"INT. 11TH FLOOR - CONTINUOUS\",\n      \"summary\": \"Billy (The Mariner) rescues his sister Rose from mobsters in a ruined skyscraper elevator, believing she is an innocent hostage.\",\n      \"turning_points\": [\n        \"Opening title establishes the post-2025 urban economic collapse and rise of vigilantes.\",\n        \"Mariner breaches the building and extracts Rose from an elevator using an AirTag he planted on her.\",\n        \"Rose reveals she must go back up to retrieve her purse, confusing Billy.\"\n      ]\n    },\n    {\n      \"act_number\": 2,\n      \"title\": \"The Ascent & Origin Unraveling\",\n      \"start_scene\": \"INT. STAIRWELL - CONTINUOUS\",\n      \"end_scene\": \"INT. 15TH FLOOR\",\n      \"summary\": \"Billy and Rose battle through thugs to reach the penthouse while Rose dismantles Billy's romanticized origin story about their father.\",\n      \"turning_points\": [\n        \"Captive mobster Rosco reveals Rose stole $20 million in gang cryptocurrency.\",\n        \"Billy brutalizes gang members Vinnie, Mikey, and Carlos using his oar and a flare gun.\",\n        \"Rose shatters Billy's narrative, revealing their father was an abusive drunk who is still alive in Chimney Bay.\"\n      ]\n    },\n    {\n      \"act_number\": 3,\n      \"title\": \"Confrontation & Rebirth\",\n      \"start_scene\": \"INT. 15TH FLOOR - SALVATORI'S OFFICE\",\n      \"end_scene\": \"CUT TO BLACK\",\n      \"summary\": \"Cornered by gang leader Salvatori, Billy falls into emotional despair until Rose convinces him that his heroism is self-made.\",\n      \"turning_points\": [\n        \"Mob boss Salvatori corners Billy and Rose in the penthouse office.\",\n        \"A series of grim flashbacks reveals the true abusive nature of Billy's childhood training.\",\n        \"Rose gives a rousing speech declaring that Billy became a hero in spite of his father, prompting Billy to prepare for a fight.\"\n      ]\n    }\n  ],\n  \"themes\": [\n    {\n      \"theme\": \"Deconstruction of Heroic Mythologies\",\n      \"description\": \"Examines how individuals craft comforting myths around trauma and toxic father figures to cope, and how real heroism requires shedding those illusions.\",\n      \"evidence\": [\n        \"Mariner's strict adherence to the 'Mariner's Code' taught by his father.\",\n        \"Contrast between initial warm flashbacks and later reality where the father punches young Billy and calls him a 'bag a sad'.\",\n        \"Rose's line: 'He somehow turned a deadbeat father into a superhero. Then became a real one.'\"\n      ]\n    },\n    {\n      \"theme\": \"Self-Actualization vs. Inherited Legacy\",\n      \"description\": \"True moral character and heroism stem from personal choices and inner grit rather than lineage or inherited authority.\",\n      \"evidence\": [\n        \"Billy's realization that his father did not make him strong; he made himself strong.\",\n        \"The shift in Billy's demeanor when Rose redefines his origin from tragic victim/follower to self-made hero.\"\n      ]\n    },\n    {\n      \"theme\": \"Economic Desperation and Urban Decay\",\n      \"description\": \"In a collapsed socio-economic landscape, survival forces ordinary people into crime and extreme self-reliance.\",\n      \"evidence\": [\n        \"Title card detailing the 2025 commercial real estate and banking collapse.\",\n        \"Rose stealing $20 million in crypto to secure her future.\",\n        \"Vigilantes taking over duties in lawless no-go zones.\"\n      ]\n    }\n  ],\n  \"narrative_arc\": \"The story begins as a hyper-stylized action rescue narrative, establishing 'The Mariner' as a classic comic-book-style vigilante driven by a dead father's honor. As physical battles escalate up the skyscraper, an internal narrative arc unravels Billy's foundational worldview. The narrative reaches its nadir when the hero's origin myth is destroyed, causing him to submit mentally to his enemies. It resolves with a thematic climax where the protagonist reclaims his identity, transforming from a deluded follower of an abusive ghost into an empowered, self-actualized hero.\",\n  \"genre\": \"Action-Thriller / Dark Comedy\",\n  \"tone\": \"Gritty and satirical yet emotionally grounded\",\n  \"protagonist_journey\": \"Billy begins as a stoic, heavily armed vigilante bound by a fictionalized nautical myth of his late father. When forced to confront the truth that his father was an abusive deadbeat who abandoned him, Billy suffers an existential collapse. Through his sister's perspective, he realizes that his nobility and strength are entirely his own achievements, allowing him to embrace his true identity as a genuine hero.\",\n  \"central_conflict\": \"External: Billy and Rose fighting through a gang-infested skyscraper to retrieve $20 million in stolen cryptocurrency and escape mob boss Salvatori. Internal: Billy struggling between his idolized false memory of his abusive father and the painful truth of his past.\",\n  \"setting_overview\": \"A near-future, post-2025 ruined city centre following a global pandemic and commercial real estate collapse. The primary setting is the Ruddy & Greene Building, a bullet-riddled 15-story sandstone skyscraper converted into a crime syndicate fortress featuring ruined office floors and a pristine, luxury penthouse.\",\n  \"confidence\": 1.0\n}\n```",
+          "tokenUsage": {
+            "prompt": 4965,
+            "completion": 1605,
+            "total": 8924,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 2354,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "raw": {
+            "candidates": [
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "```json\n{\n  \"title\": \"The Mariner\",\n  \"logline\": \"When a oversized nautical-themed vigilante rescues his estranged sister from a mob-controlled skyscraper, he must fight his way through heavily armed thugs while confronting the crushing reality that his heroic origin story was built on a lie.\",\n  \"synopsis\": \"In a post-collapse urban dystopia, imposing vigilante Billy—known as \\\"The Mariner\\\"—storms the ruined 15-story Ruddy & Greene Building to rescue his sister Rose from gang captivity. Believing she was targeted because of his vigilantism, Billy uses an oar and a flare gun to fight through mobsters, only to learn Rose voluntarily involved herself by stealing $20 million in gang cryptocurrency hidden on a drive in her purse.\\n\\nAs the siblings climb the skyscraper to retrieve the stolen cash, Billy frequently references the heroic values, strength, and seafarer's code imparted by his beloved late father. Disturbed by his delusions, Rose shatters his core mythology: their father is not dead, nor was he a hero, but an abusive drunk who abandoned Billy at a deadbeat friend's house as a child.\\n\\nReaching the opulent 15th-floor penthouse, they are cornered by mob boss Salvatori and his enforcers. Stripped of his origin story, a heartbroken Billy surrenders to despair and submits to his captors. However, Rose reframes his life, pointing out that despite growing up with an abusive monster, Billy forged himself into a genuine hero. Re-energized by her words, Billy clenches his fists, ready to fight back.\",\n  \"act_structure\": [\n    {\n      \"act_number\": 1,\n      \"title\": \"Setup & Breach\",\n      \"start_scene\": \"EXT. CITY CENTRE - NIGHT\",\n      \"end_scene\": \"INT. 11TH FLOOR - CONTINUOUS\",\n      \"summary\": \"Billy (The Mariner) rescues his sister Rose from mobsters in a ruined skyscraper elevator, believing she is an innocent hostage.\",\n      \"turning_points\": [\n        \"Opening title establishes the post-2025 urban economic collapse and rise of vigilantes.\",\n        \"Mariner breaches the building and extracts Rose from an elevator using an AirTag he planted on her.\",\n        \"Rose reveals she must go back up to retrieve her purse, confusing Billy.\"\n      ]\n    },\n    {\n      \"act_number\": 2,\n      \"title\": \"The Ascent & Origin Unraveling\",\n      \"start_scene\": \"INT. STAIRWELL - CONTINUOUS\",\n      \"end_scene\": \"INT. 15TH FLOOR\",\n      \"summary\": \"Billy and Rose battle through thugs to reach the penthouse while Rose dismantles Billy's romanticized origin story about their father.\",\n      \"turning_points\": [\n        \"Captive mobster Rosco reveals Rose stole $20 million in gang cryptocurrency.\",\n        \"Billy brutalizes gang members Vinnie, Mikey, and Carlos using his oar and a flare gun.\",\n        \"Rose shatters Billy's narrative, revealing their father was an abusive drunk who is still alive in Chimney Bay.\"\n      ]\n    },\n    {\n      \"act_number\": 3,\n      \"title\": \"Confrontation & Rebirth\",\n      \"start_scene\": \"INT. 15TH FLOOR - SALVATORI'S OFFICE\",\n      \"end_scene\": \"CUT TO BLACK\",\n      \"summary\": \"Cornered by gang leader Salvatori, Billy falls into emotional despair until Rose convinces him that his heroism is self-made.\",\n      \"turning_points\": [\n        \"Mob boss Salvatori corners Billy and Rose in the penthouse office.\",\n        \"A series of grim flashbacks reveals the true abusive nature of Billy's childhood training.\",\n        \"Rose gives a rousing speech declaring that Billy became a hero in spite of his father, prompting Billy to prepare for a fight.\"\n      ]\n    }\n  ],\n  \"themes\": [\n    {\n      \"theme\": \"Deconstruction of Heroic Mythologies\",\n      \"description\": \"Examines how individuals craft comforting myths around trauma and toxic father figures to cope, and how real heroism requires shedding those illusions.\",\n      \"evidence\": [\n        \"Mariner's strict adherence to the 'Mariner's Code' taught by his father.\",\n        \"Contrast between initial warm flashbacks and later reality where the father punches young Billy and calls him a 'bag a sad'.\",\n        \"Rose's line: 'He somehow turned a deadbeat father into a superhero. Then became a real one.'\"\n      ]\n    },\n    {\n      \"theme\": \"Self-Actualization vs. Inherited Legacy\",\n      \"description\": \"True moral character and heroism stem from personal choices and inner grit rather than lineage or inherited authority.\",\n      \"evidence\": [\n        \"Billy's realization that his father did not make him strong; he made himself strong.\",\n        \"The shift in Billy's demeanor when Rose redefines his origin from tragic victim/follower to self-made hero.\"\n      ]\n    },\n    {\n      \"theme\": \"Economic Desperation and Urban Decay\",\n      \"description\": \"In a collapsed socio-economic landscape, survival forces ordinary people into crime and extreme self-reliance.\",\n      \"evidence\": [\n        \"Title card detailing the 2025 commercial real estate and banking collapse.\",\n        \"Rose stealing $20 million in crypto to secure her future.\",\n        \"Vigilantes taking over duties in lawless no-go zones.\"\n      ]\n    }\n  ],\n  \"narrative_arc\": \"The story begins as a hyper-stylized action rescue narrative, establishing 'The Mariner' as a classic comic-book-style vigilante driven by a dead father's honor. As physical battles escalate up the skyscraper, an internal narrative arc unravels Billy's foundational worldview. The narrative reaches its nadir when the hero's origin myth is destroyed, causing him to submit mentally to his enemies. It resolves with a thematic climax where the protagonist reclaims his identity, transforming from a deluded follower of an abusive ghost into an empowered, self-actualized hero.\",\n  \"genre\": \"Action-Thriller / Dark Comedy\",\n  \"tone\": \"Gritty and satirical yet emotionally grounded\",\n  \"protagonist_journey\": \"Billy begins as a stoic, heavily armed vigilante bound by a fictionalized nautical myth of his late father. When forced to confront the truth that his father was an abusive deadbeat who abandoned him, Billy suffers an existential collapse. Through his sister's perspective, he realizes that his nobility and strength are entirely his own achievements, allowing him to embrace his true identity as a genuine hero.\",\n  \"central_conflict\": \"External: Billy and Rose fighting through a gang-infested skyscraper to retrieve $20 million in stolen cryptocurrency and escape mob boss Salvatori. Internal: Billy struggling between his idolized false memory of his abusive father and the painful truth of his past.\",\n  \"setting_overview\": \"A near-future, post-2025 ruined city centre following a global pandemic and commercial real estate collapse. The primary setting is the Ruddy & Greene Building, a bullet-riddled 15-story sandstone skyscraper converted into a crime syndicate fortress featuring ruined office floors and a pristine, luxury penthouse.\",\n  \"confidence\": 1.0\n}\n```",
+                      "thoughtSignature": "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"
+                    }
+                  ],
+                  "role": "model"
+                },
+                "finishReason": "STOP",
+                "index": 0
+              }
+            ],
+            "usageMetadata": {
+              "promptTokenCount": 4965,
+              "candidatesTokenCount": 1605,
+              "totalTokenCount": 8924,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 4965
+                }
+              ],
+              "thoughtsTokenCount": 2354,
+              "serviceTier": "standard"
+            },
+            "modelVersion": "gemini-3.6-flash",
+            "responseId": "4v1faoupJPmb1MkPkObauAg"
+          },
+          "cached": false,
+          "metadata": {}
+        },
+        "score": 0.885,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-script-bible.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/script_bible_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this script bible for the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Is the logline specific to THIS screenplay — does it name The Mariner as protagonist, identify the gang/Salvatori as antagonist, and mention the building/floor stakes?\n2. Does the synopsis cover the full arc: Mariner's vigilante crusade, Rose's revelation about stolen crypto, the father's dark truth, and the climactic confrontation?\n3. Are the themes specific and grounded? Expect: father/legacy/disillusionment, identity/hero myth, loyalty/family, truth vs. comfortable lies.\n4. Is the act structure accurate? The script has 3 acts roughly: setup of vigilante world → escalating gang conflict + Rose twist → climax on 15th floor + father revelation.\n5. Is the protagonist journey correct? Mariner begins believing his father was a hero, discovers the man was abusive and alive, ends redefining heroism on his own terms.\n6. Is the setting grounded in specifics? Expect: a contemporary post-collapse urban setting, the Ruddy & Greene Building (15th floor final confrontation), and Mariner's fishing-themed vigilante aesthetic.\n7. Is the genre identified correctly? This is an Action-Thriller or Superhero-Noir — not drama or comedy.\n8. Does the analysis avoid generic statements that could apply to any film?\n\nScore strictly: 0.8+ only if the bible could serve as a production reference document for THIS specific screenplay.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-script-bible.json"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 1,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 4965,
+        "completion": 1605,
+        "cached": 0,
+        "total": 8924,
+        "numRequests": 1,
+        "completionDetails": {
+          "reasoning": 2354,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 3028,
+          "prompt": 2311,
+          "completion": 717,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 41966,
+      "evaluationDurationMs": 41966
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Script bible extraction from screenplay — The Mariner",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/gemini-36-35-eval-20260721/cine-forge/benchmarks/prompts/script-bible.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.1-flash-lite",
+        "label": "Gemini 3.1 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.5-flash-lite",
+        "label": "Gemini 3.5 Flash-Lite",
+        "config": {
+          "maxOutputTokens": 65536,
+          "inputCost": 3e-7,
+          "outputCost": 0.0000025
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.5-flash",
+        "label": "Gemini 3.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.6-flash",
+        "label": "Gemini 3.6 Flash",
+        "config": {
+          "maxOutputTokens": 65536,
+          "inputCost": 0.0000015,
+          "outputCost": 0.0000075
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "file://../providers/anthropic_messages_provider.py",
+        "label": "Claude Opus 4.8",
+        "config": {
+          "model": "claude-opus-4-8",
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "openai:gpt-5.4",
+        "label": "GPT-5.4",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-5.5",
+        "label": "GPT-5.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "file://../providers/openai_responses_provider.py",
+        "label": "GPT-5.5 Pro",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "xai:grok-4.3",
+        "label": "Grok 4.3",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "xai:grok-4.5",
+        "label": "Grok 4.5",
+        "config": {
+          "max_tokens": 4096,
+          "reasoning_effort": "high",
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:kimi-k2.6",
+        "label": "Kimi K2.6",
+        "config": {
+          "apiBaseUrl": "https://api.moonshot.ai/v1",
+          "apiKeyEnvar": "[REDACTED]",
+          "temperature": 1,
+          "top_p": 0.95,
+          "max_tokens": 32768,
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.1-pro-preview",
+        "label": "Gemini 3.1 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-script-bible.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/script_bible_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this script bible for the screenplay \"The Mariner.\"\n\nKey quality criteria:\n1. Is the logline specific to THIS screenplay — does it name The Mariner as protagonist, identify the gang/Salvatori as antagonist, and mention the building/floor stakes?\n2. Does the synopsis cover the full arc: Mariner's vigilante crusade, Rose's revelation about stolen crypto, the father's dark truth, and the climactic confrontation?\n3. Are the themes specific and grounded? Expect: father/legacy/disillusionment, identity/hero myth, loyalty/family, truth vs. comfortable lies.\n4. Is the act structure accurate? The script has 3 acts roughly: setup of vigilante world → escalating gang conflict + Rose twist → climax on 15th floor + father revelation.\n5. Is the protagonist journey correct? Mariner begins believing his father was a hero, discovers the man was abusive and alive, ends redefining heroism on his own terms.\n6. Is the setting grounded in specifics? Expect: a contemporary post-collapse urban setting, the Ruddy & Greene Building (15th floor final confrontation), and Mariner's fishing-themed vigilante aesthetic.\n7. Is the genre identified correctly? This is an Action-Thriller or Superhero-Noir — not drama or comedy.\n8. Does the analysis avoid generic statements that could apply to any film?\n\nScore strictly: 0.8+ only if the bible could serve as a production reference document for THIS specific screenplay.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/script-bible-gemini36flash-2026-07-21.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-07-21T23:17:32.233Z",
+    "evaluationCreatedAt": "2026-07-21T23:16:50.222Z"
+  }
+}

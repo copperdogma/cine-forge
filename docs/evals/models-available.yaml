@@ -1,4 +1,4 @@
-discovered: '2026-07-20T18:31:27Z'
+discovered: '2026-07-21T23:29:17Z'
 providers:
   openai:
     api_key_set: true
@@ -301,7 +301,7 @@ providers:
     env_key: CINE_FORGE_GEMINI_API_KEY
     legacy_env_key: GEMINI_API_KEY
     status: ok
-    model_count: 17
+    model_count: 19
     models:
     - id: antigravity-preview-05-2026
       provider: google
@@ -366,6 +366,18 @@ providers:
     - id: gemini-3.5-flash
       provider: google
       display_name: Gemini 3.5 Flash
+      input_token_limit: 1048576
+      output_token_limit: 65536
+      tier: mid
+    - id: gemini-3.5-flash-lite
+      provider: google
+      display_name: Gemini 3.5 Flash Lite
+      input_token_limit: 1048576
+      output_token_limit: 65536
+      tier: cheap
+    - id: gemini-3.6-flash
+      provider: google
+      display_name: Gemini 3.6 Flash
       input_token_limit: 1048576
       output_token_limit: 65536
       tier: mid
@@ -494,7 +506,7 @@ providers:
     - id: moonshot-v1-auto
       provider: moonshot
       display_name: moonshot-v1-auto
-      created: '2026-07-20'
+      created: '2026-07-21'
       input_token_limit: 131072
       supports_image_in: null
       supports_video_in: null
@@ -503,7 +515,7 @@ providers:
     - id: moonshot-v1-8k-vision-preview
       provider: moonshot
       display_name: moonshot-v1-8k-vision-preview
-      created: '2026-07-20'
+      created: '2026-07-21'
       input_token_limit: 8192
       supports_image_in: true
       supports_video_in: null
@@ -512,7 +524,7 @@ providers:
     - id: moonshot-v1-8k
       provider: moonshot
       display_name: moonshot-v1-8k
-      created: '2026-07-20'
+      created: '2026-07-21'
       input_token_limit: 8192
       supports_image_in: null
       supports_video_in: null
@@ -521,7 +533,7 @@ providers:
     - id: moonshot-v1-32k-vision-preview
       provider: moonshot
       display_name: moonshot-v1-32k-vision-preview
-      created: '2026-07-20'
+      created: '2026-07-21'
       input_token_limit: 32768
       supports_image_in: true
       supports_video_in: null
@@ -530,7 +542,7 @@ providers:
     - id: moonshot-v1-32k
       provider: moonshot
       display_name: moonshot-v1-32k
-      created: '2026-07-20'
+      created: '2026-07-21'
       input_token_limit: 32768
       supports_image_in: null
       supports_video_in: null
@@ -539,7 +551,7 @@ providers:
     - id: moonshot-v1-128k-vision-preview
       provider: moonshot
       display_name: moonshot-v1-128k-vision-preview
-      created: '2026-07-20'
+      created: '2026-07-21'
       input_token_limit: 131072
       supports_image_in: true
       supports_video_in: null
@@ -548,7 +560,7 @@ providers:
     - id: moonshot-v1-128k
       provider: moonshot
       display_name: moonshot-v1-128k
-      created: '2026-07-20'
+      created: '2026-07-21'
       input_token_limit: 131072
       supports_image_in: null
       supports_video_in: null
@@ -557,7 +569,7 @@ providers:
     - id: kimi-k3
       provider: moonshot
       display_name: kimi-k3
-      created: '2026-07-20'
+      created: '2026-07-21'
       input_token_limit: 1048576
       supports_image_in: true
       supports_video_in: true
@@ -566,7 +578,7 @@ providers:
     - id: kimi-k2.7-code-highspeed
       provider: moonshot
       display_name: kimi-k2.7-code-highspeed
-      created: '2026-07-20'
+      created: '2026-07-21'
       input_token_limit: 262144
       supports_image_in: true
       supports_video_in: true
@@ -575,7 +587,7 @@ providers:
     - id: kimi-k2.7-code
       provider: moonshot
       display_name: kimi-k2.7-code
-      created: '2026-07-20'
+      created: '2026-07-21'
       input_token_limit: 262144
       supports_image_in: true
       supports_video_in: true
@@ -584,7 +596,7 @@ providers:
     - id: kimi-k2.6
       provider: moonshot
       display_name: kimi-k2.6
-      created: '2026-07-20'
+      created: '2026-07-21'
       input_token_limit: 262144
       supports_image_in: true
       supports_video_in: true
@@ -593,7 +605,7 @@ providers:
     - id: kimi-k2.5
       provider: moonshot
       display_name: kimi-k2.5
-      created: '2026-07-20'
+      created: '2026-07-21'
       input_token_limit: 262144
       supports_image_in: true
       supports_video_in: true

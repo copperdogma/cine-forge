@@ -104,7 +104,7 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:6`, `spec:7`
-- UI scout freshness: attention needed — last run 2026-04-12 is 99 days old against a 14-day cadence
+- UI scout freshness: attention needed — last run 2026-04-12 is 101 days old against a 14-day cadence
 - Sequencing bias: `scene-generation-completion` — Keep `spec:6` / `spec:7` as the active product lane even after Story 164 closed the first surfaced real-scene render route. The next slice should deepen scene-generation completeness from that honest operator path instead of retreating to throughput-only or eval-polish work.
 - Sequencing bias: `pipeline-throughput-efficiency` — Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
@@ -132,6 +132,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
+| 208 | Gemini 3.6 Flash and 3.5 Flash-Lite Model-Slot Eval Refresh | High | In Progress | — | spec:2, spec:3, spec:7, spec:8 | 035, 204 | [story-208](stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md) |
 | 185 | Project Home Script Hierarchy and Supporting Surface Placement | High | Draft | — | spec:2, spec:5, spec:10 | 093, 142, 166, 167 | [story-185](stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md) |
 | 048 | PDF Input Preview Uses Binary Decode Instead of Text Extraction | High | Done | — | spec:2, spec:5 | — | [story-048](stories/story-048-pdf-input-preview-decode.md) |
 | 049 | Import Normalization Format Suite | High | Done | — | spec:2, spec:8 | — | [story-049](stories/story-049-import-normalization-format-suite.md) |

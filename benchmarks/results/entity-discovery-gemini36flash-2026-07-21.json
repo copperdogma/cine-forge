@@ -1,0 +1,483 @@
+{
+  "evalId": "eval-ssq-2026-07-21T23:16:19",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-07-21T23:16:19.362Z",
+    "prompts": [
+      {
+        "raw": "You are a script breakdown artist. Read the following screenplay and discover all named entities.\n\nYour job is DISCOVERY — find everything. Err on the side of inclusion. You will NOT be penalized for finding extra entities.\n\nDiscover:\n- **characters**: Narratively specific people who appear or are mentioned. Exclude unnamed background extras, crowd labels, and generic role labels such as WAITER, GUARD, SECURITY, or THUG unless the screenplay gives them a specific narrative identity, recurring relationship, or clear story consequence.\n- **locations**: Every named place where scenes occur (interiors, exteriors, neighborhoods, cities), including specific sublocations such as floors, stairwells, or elevators when the screenplay stages action there separately.\n- **props**: Story-relevant objects that characters handle, use, exchange, seek, or that materially change events. Exclude ordinary wardrobe/costumes, set dressing, furniture, decor, and generic environmental objects unless the screenplay treats that exact item as distinctive or plot-significant. Exclude generic weapons/tools like GUN unless the specific object clearly matters.\n\nDecision filter:\n- Only include characters that would deserve their own character bible entry.\n- Keep specific story identities such as named family members, villains, or recurring henchmen with individual names. Drop bare labels like CROWD or THUG 2 unless the screenplay individualizes them.\n- Keep specific sublocations inside a larger place when the screenplay stages them as separate action spaces, such as a 15TH FLOOR, STAIRWELL, or ELEVATOR.\n- Only include props that would deserve their own prop bible entry.\n- Only include a prop if changing or removing it would alter story comprehension, blocking, or continuity.\n- For props, include worn gear only when the screenplay treats that exact item as a distinctive signature object or plot-significant equipment.\n- For props, exclude ordinary wardrobe, furniture, decor, scenery, injuries, sounds, materials, inscriptions, and parts/descriptors of another prop.\n- Good prop examples: OAR, AIRTAG, PURSE, FLARE GUN, MEMORY STICK.\n- Reject examples: SWEATER, BOOTS, DESK, RUG, PAINTINGS, MINTS, generic GUN.\n- If an item is borderline set dressing or a generic extra, leave it out.\n\nImportant:\n- Character noise hurts downstream bibles. A shorter list of specific people is better than inventing bibles for extras.\n- Prop noise hurts downstream prop bibles. A short, clean list is better than a bloated list of wardrobe and set dressing.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nReturn ONLY valid JSON in this exact format:\n{\n  \"characters\": [\"NAME 1\", \"NAME 2\", ...],\n  \"locations\": [\"LOCATION 1\", \"LOCATION 2\", ...],\n  \"props\": [\"PROP 1\", \"PROP 2\", ...]\n}\n\nUse the names as they appear in the screenplay (ALL CAPS for characters and scene headings is fine).\nDo NOT include generic items like \"gun\", \"door\", \"desk\", or \"rug\" unless the screenplay singles out that exact object as important.\nDo NOT include unnamed \"GUARD #1\", \"THUG 2\", or crowd-type extras unless they are narratively specific.",
+        "label": "prompts/entity-discovery.txt: You are a script breakdown artist. Read the following screenplay and discover all named entities.\n\nYour job is DISCOVERY — find everything. Err on the side of inclusion. You will NOT be penalized for finding extra entities.\n\nDiscover:\n- **characters**: Narratively specific people who appear or are mentioned. Exclude unnamed background extras, crowd labels, and generic role labels such as WAITER, GUARD, SECURITY, or THUG unless the screenplay gives them a specific narrative identity, recurring relationship, or clear story consequence.\n- **locations**: Every named place where scenes occur (interiors, exteriors, neighborhoods, cities), including specific sublocations such as floors, stairwells, or elevators when the screenplay stages action there separately.\n- **props**: Story-relevant objects that characters handle, use, exchange, seek, or that materially change events. Exclude ordinary wardrobe/costumes, set dressing, furniture, decor, and generic environmental objects unless the screenplay treats that exact item as distinctive or plot-significant. Exclude generic weapons/tools like GUN unless the specific object clearly matters.\n\nDecision filter:\n- Only include characters that would deserve their own character bible entry.\n- Keep specific story identities such as named family members, villains, or recurring henchmen with individual names. Drop bare labels like CROWD or THUG 2 unless the screenplay individualizes them.\n- Keep specific sublocations inside a larger place when the screenplay stages them as separate action spaces, such as a 15TH FLOOR, STAIRWELL, or ELEVATOR.\n- Only include props that would deserve their own prop bible entry.\n- Only include a prop if changing or removing it would alter story comprehension, blocking, or continuity.\n- For props, include worn gear only when the screenplay treats that exact item as a distinctive signature object or plot-significant equipment.\n- For props, exclude ordinary wardrobe, furniture, decor, scenery, injuries, sounds, materials, inscriptions, and parts/descriptors of another prop.\n- Good prop examples: OAR, AIRTAG, PURSE, FLARE GUN, MEMORY STICK.\n- Reject examples: SWEATER, BOOTS, DESK, RUG, PAINTINGS, MINTS, generic GUN.\n- If an item is borderline set dressing or a generic extra, leave it out.\n\nImportant:\n- Character noise hurts downstream bibles. A shorter list of specific people is better than inventing bibles for extras.\n- Prop noise hurts downstream prop bibles. A short, clean list is better than a bloated list of wardrobe and set dressing.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nReturn ONLY valid JSON in this exact format:\n{\n  \"characters\": [\"NAME 1\", \"NAME 2\", ...],\n  \"locations\": [\"LOCATION 1\", \"LOCATION 2\", ...],\n  \"props\": [\"PROP 1\", \"PROP 2\", ...]\n}\n\nUse the names as they appear in the screenplay (ALL CAPS for characters and scene headings is fine).\nDo NOT include generic items like \"gun\", \"door\", \"desk\", or \"rug\" unless the screenplay singles out that exact object as important.\nDo NOT include unnamed \"GUARD #1\", \"THUG 2\", or crowd-type extras unless they are narratively specific.",
+        "id": "3024b33f0362b7a33c807767866b4ebeb91f41a18b7d275906e0dd19f66a0b9f",
+        "provider": "Gemini 3.6 Flash",
+        "metrics": {
+          "score": 0.9199999999999999,
+          "testPassCount": 1,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 0,
+          "totalLatencyMs": 11385,
+          "tokenUsage": {
+            "prompt": 5193,
+            "completion": 273,
+            "cached": 0,
+            "total": 7600,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 2134,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 1335,
+              "prompt": 854,
+              "completion": 481,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.9199999999999999,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1335,
+            "prompt": 854,
+            "completion": 481,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.99,
+              "reason": "character_recall=1.00 | json_valid=0.90 | location_recall=1.00 | optional_coverage=1.00 | prop_recall=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/entity_discovery_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this entity discovery output for the screenplay \"The Mariner.\"\n\nThis is a RECALL task — finding everything matters more than precision.\nFalse positives (extra entities) are acceptable. False negatives (missed entities) are failures.\n\nKey quality criteria:\n1. Characters — must find: THE MARINER (protagonist, also called Billy/Will), ROSE (his sister), SALVATORI (the mob boss), VINNIE (Rose's ex, gang enforcer), DAD (appears in flashbacks). Bonus: MIKEY, CARLOS.\n2. Locations — must find: the Ruddy & Greene Building and the 15th floor (the climactic confrontation site). Bonus: 11th/13th floors, stairwell, elevator, coastline.\n3. Props — must find: the OAR (Mariner's signature weapon). Bonus: FLARE GUN, PURSE (Rose's), AIRTAG, NET CAPE, BRACERS.\n4. Are entity names captured as they appear in the screenplay (character names in ALL CAPS, location headings, etc.)?\n5. Does the model err on the side of inclusion rather than omission?\n6. Are there significant hallucinations — entities that clearly don't appear in the screenplay?\n\nScore 0.8+ only if all required entities are found. Score 0.6-0.8 if missing 1-2 required entities but found most. Score below 0.6 if multiple required entities are missed.\n"
+              },
+              "pass": true,
+              "score": 0.85,
+              "reason": "Checking required entities:\n\n**Characters:**\n- THE MARINER: ✅ Found\n- ROSE: ✅ Found\n- SALVATORI: ✅ Found\n- VINNIE: ✅ Found\n- DAD: ✅ Found\n- Bonus MIKEY: ✅ Found\n- Bonus CARLOS: ✅ Found\n- Extra: ROSCO, MA (not clearly required but acceptable as false positives)\n\n**Locations:**\n- Ruddy & Greene Building: ✅ Found (multiple entries)\n- 15th floor: ✅ Found (INT. 15TH FLOOR)\n- Bonus: 11th floor ✅, 13th floor ✅, stairwell ✅, elevator ✅, coastline ✅\n- CHIMNEY BAY listed as location - acceptable\n\n**Props:**\n- OAR: ✅ Found (STOUT WOODEN OAR)\n- Bonus: FLARE GUN ✅, PURSE ✅, AIRTAG ✅\n- MEMORY STICK listed - not clearly in the screenplay, possible minor hallucination\n- Missing: NET CAPE, BRACERS (bonus items)\n\n**Format:** Character names in ALL CAPS ✅, location headings match screenplay format ✅\n\n**Inclusion bias:** The output errs on the side of inclusion with extras like ROSCO, MA, MEMORY STICK. Some of these may be minor hallucinations but the approach is appropriately inclusive.\n\nAll required entities are found. The output has good recall across all three categories. Minor note: there's a typo in one location (\"RUDDY & GREEN\" vs \"RUDDY & GREENE\") but this is trivial. MEMORY STICK may be a hallucination but it's a minor issue. All critical entities are captured.",
+              "tokensUsed": {
+                "total": 1335,
+                "prompt": 854,
+                "completion": 481,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n```json\\n{\\n  \\\"characters\\\": [\\n    \\\"THE MARINER\\\",\\n    \\\"ROSE\\\",\\n    \\\"DAD\\\",\\n    \\\"ROSCO\\\",\\n    \\\"VINNIE\\\",\\n    \\\"MIKEY\\\",\\n    \\\"CARLOS\\\",\\n    \\\"SALVATORI\\\",\\n    \\\"MA\\\"\\n  ],\\n  \\\"locations\\\": [\\n    \\\"EXT. CITY CENTRE - NIGHT\\\",\\n    \\\"EXT. RUDDY & GREENE BUILDING - FRONT - NIGHT\\\",\\n    \\\"EXT. RUDDY & GREENE BUILDING - REAR - NIGHT\\\",\\n    \\\"INT. RUDDY & GREEN BUILDING - ELEVATOR\\\",\\n    \\\"INT. 11TH FLOOR\\\",\\n    \\\"INT. STAIRWELL\\\",\\n    \\\"INT. 12TH FLOOR STAIRWELL\\\",\\n    \\\"INT. 13TH FLOOR\\\",\\n    \\\"INT. 15TH FLOOR\\\",\\n    \\\"EXT. COASTLINE - DAY - PAST\\\",\\n    \\\"EXT. BACKYARD - DAY - PAST\\\",\\n    \\\"CHIMNEY BAY\\\"\\n  ],\\n  \\\"props\\\": [\\n    \\\"AIRTAG\\\",\\n    \\\"PURSE\\\",\\n    \\\"STOUT WOODEN OAR\\\",\\n    \\\"FLARE GUN\\\",\\n    \\\"MEMORY STICK\\\"\\n  ]\\n}\\n```\\n</Output>\\n<Rubric>\\nEvaluate this entity discovery output for the screenplay \\\"The Mariner.\\\"\\n\\nThis is a RECALL task — finding everything matters more than precision.\\nFalse positives (extra entities) are acceptable. False negatives (missed entities) are failures.\\n\\nKey quality criteria:\\n1. Characters — must find: THE MARINER (protagonist, also called Billy/Will), ROSE (his sister), SALVATORI (the mob boss), VINNIE (Rose's ex, gang enforcer), DAD (appears in flashbacks). Bonus: MIKEY, CARLOS.\\n2. Locations — must find: the Ruddy & Greene Building and the 15th floor (the climactic confrontation site). Bonus: 11th/13th floors, stairwell, elevator, coastline.\\n3. Props — must find: the OAR (Mariner's signature weapon). Bonus: FLARE GUN, PURSE (Rose's), AIRTAG, NET CAPE, BRACERS.\\n4. Are entity names captured as they appear in the screenplay (character names in ALL CAPS, location headings, etc.)?\\n5. Does the model err on the side of inclusion rather than omission?\\n6. Are there significant hallucinations — entities that clearly don't appear in the screenplay?\\n\\nScore 0.8+ only if all required entities are found. Score 0.6-0.8 if missing 1-2 required entities but found most. Score below 0.6 if multiple required entities are missed.\\n\\n</Rubric>\"}]"
+              }
+            }
+          ]
+        },
+        "id": "92d7cff8-f061-4d01-814a-5e043b1828d1",
+        "latencyMs": 11385,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a script breakdown artist. Read the following screenplay and discover all named entities.\n\nYour job is DISCOVERY — find everything. Err on the side of inclusion. You will NOT be penalized for finding extra entities.\n\nDiscover:\n- **characters**: Narratively specific people who appear or are mentioned. Exclude unnamed background extras, crowd labels, and generic role labels such as WAITER, GUARD, SECURITY, or THUG unless the screenplay gives them a specific narrative identity, recurring relationship, or clear story consequence.\n- **locations**: Every named place where scenes occur (interiors, exteriors, neighborhoods, cities), including specific sublocations such as floors, stairwells, or elevators when the screenplay stages action there separately.\n- **props**: Story-relevant objects that characters handle, use, exchange, seek, or that materially change events. Exclude ordinary wardrobe/costumes, set dressing, furniture, decor, and generic environmental objects unless the screenplay treats that exact item as distinctive or plot-significant. Exclude generic weapons/tools like GUN unless the specific object clearly matters.\n\nDecision filter:\n- Only include characters that would deserve their own character bible entry.\n- Keep specific story identities such as named family members, villains, or recurring henchmen with individual names. Drop bare labels like CROWD or THUG 2 unless the screenplay individualizes them.\n- Keep specific sublocations inside a larger place when the screenplay stages them as separate action spaces, such as a 15TH FLOOR, STAIRWELL, or ELEVATOR.\n- Only include props that would deserve their own prop bible entry.\n- Only include a prop if changing or removing it would alter story comprehension, blocking, or continuity.\n- For props, include worn gear only when the screenplay treats that exact item as a distinctive signature object or plot-significant equipment.\n- For props, exclude ordinary wardrobe, furniture, decor, scenery, injuries, sounds, materials, inscriptions, and parts/descriptors of another prop.\n- Good prop examples: OAR, AIRTAG, PURSE, FLARE GUN, MEMORY STICK.\n- Reject examples: SWEATER, BOOTS, DESK, RUG, PAINTINGS, MINTS, generic GUN.\n- If an item is borderline set dressing or a generic extra, leave it out.\n\nImportant:\n- Character noise hurts downstream bibles. A shorter list of specific people is better than inventing bibles for extras.\n- Prop noise hurts downstream prop bibles. A short, clean list is better than a bloated list of wardrobe and set dressing.\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========\n\nReturn ONLY valid JSON in this exact format:\n{\n  \"characters\": [\"NAME 1\", \"NAME 2\", ...],\n  \"locations\": [\"LOCATION 1\", \"LOCATION 2\", ...],\n  \"props\": [\"PROP 1\", \"PROP 2\", ...]\n}\n\nUse the names as they appear in the screenplay (ALL CAPS for characters and scene headings is fine).\nDo NOT include generic items like \"gun\", \"door\", \"desk\", or \"rug\" unless the screenplay singles out that exact object as important.\nDo NOT include unnamed \"GUARD #1\", \"THUG 2\", or crowd-type extras unless they are narratively specific.",
+          "label": "prompts/entity-discovery.txt: You are a script breakdown artist. Read the following screenplay and discover all named entities.\n\nYour job is DISCOVERY — find everything. Err on the side of inclusion. You will NOT be penalized for finding extra entities.\n\nDiscover:\n- **characters**: Narratively specific people who appear or are mentioned. Exclude unnamed background extras, crowd labels, and generic role labels such as WAITER, GUARD, SECURITY, or THUG unless the screenplay gives them a specific narrative identity, recurring relationship, or clear story consequence.\n- **locations**: Every named place where scenes occur (interiors, exteriors, neighborhoods, cities), including specific sublocations such as floors, stairwells, or elevators when the screenplay stages action there separately.\n- **props**: Story-relevant objects that characters handle, use, exchange, seek, or that materially change events. Exclude ordinary wardrobe/costumes, set dressing, furniture, decor, and generic environmental objects unless the screenplay treats that exact item as distinctive or plot-significant. Exclude generic weapons/tools like GUN unless the specific object clearly matters.\n\nDecision filter:\n- Only include characters that would deserve their own character bible entry.\n- Keep specific story identities such as named family members, villains, or recurring henchmen with individual names. Drop bare labels like CROWD or THUG 2 unless the screenplay individualizes them.\n- Keep specific sublocations inside a larger place when the screenplay stages them as separate action spaces, such as a 15TH FLOOR, STAIRWELL, or ELEVATOR.\n- Only include props that would deserve their own prop bible entry.\n- Only include a prop if changing or removing it would alter story comprehension, blocking, or continuity.\n- For props, include worn gear only when the screenplay treats that exact item as a distinctive signature object or plot-significant equipment.\n- For props, exclude ordinary wardrobe, furniture, decor, scenery, injuries, sounds, materials, inscriptions, and parts/descriptors of another prop.\n- Good prop examples: OAR, AIRTAG, PURSE, FLARE GUN, MEMORY STICK.\n- Reject examples: SWEATER, BOOTS, DESK, RUG, PAINTINGS, MINTS, generic GUN.\n- If an item is borderline set dressing or a generic extra, leave it out.\n\nImportant:\n- Character noise hurts downstream bibles. A shorter list of specific people is better than inventing bibles for extras.\n- Prop noise hurts downstream prop bibles. A short, clean list is better than a bloated list of wardrobe and set dressing.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nReturn ONLY valid JSON in this exact format:\n{\n  \"characters\": [\"NAME 1\", \"NAME 2\", ...],\n  \"locations\": [\"LOCATION 1\", \"LOCATION 2\", ...],\n  \"props\": [\"PROP 1\", \"PROP 2\", ...]\n}\n\nUse the names as they appear in the screenplay (ALL CAPS for characters and scene headings is fine).\nDo NOT include generic items like \"gun\", \"door\", \"desk\", or \"rug\" unless the screenplay singles out that exact object as important.\nDo NOT include unnamed \"GUARD #1\", \"THUG 2\", or crowd-type extras unless they are narratively specific.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "3024b33f0362b7a33c807767866b4ebeb91f41a18b7d275906e0dd19f66a0b9f",
+        "promptIdx": 0,
+        "provider": {
+          "id": "google:gemini-3.6-flash",
+          "label": "Gemini 3.6 Flash"
+        },
+        "response": {
+          "output": "```json\n{\n  \"characters\": [\n    \"THE MARINER\",\n    \"ROSE\",\n    \"DAD\",\n    \"ROSCO\",\n    \"VINNIE\",\n    \"MIKEY\",\n    \"CARLOS\",\n    \"SALVATORI\",\n    \"MA\"\n  ],\n  \"locations\": [\n    \"EXT. CITY CENTRE - NIGHT\",\n    \"EXT. RUDDY & GREENE BUILDING - FRONT - NIGHT\",\n    \"EXT. RUDDY & GREENE BUILDING - REAR - NIGHT\",\n    \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n    \"INT. 11TH FLOOR\",\n    \"INT. STAIRWELL\",\n    \"INT. 12TH FLOOR STAIRWELL\",\n    \"INT. 13TH FLOOR\",\n    \"INT. 15TH FLOOR\",\n    \"EXT. COASTLINE - DAY - PAST\",\n    \"EXT. BACKYARD - DAY - PAST\",\n    \"CHIMNEY BAY\"\n  ],\n  \"props\": [\n    \"AIRTAG\",\n    \"PURSE\",\n    \"STOUT WOODEN OAR\",\n    \"FLARE GUN\",\n    \"MEMORY STICK\"\n  ]\n}\n```",
+          "tokenUsage": {
+            "prompt": 5193,
+            "completion": 273,
+            "total": 7600,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 2134,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "raw": {
+            "candidates": [
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "```json\n{\n  \"characters\": [\n    \"THE MARINER\",\n    \"ROSE\",\n    \"DAD\",\n    \"ROSCO\",\n    \"VINNIE\",\n    \"MIKEY\",\n    \"CARLOS\",\n    \"SALVATORI\",\n    \"MA\"\n  ],\n  \"locations\": [\n    \"EXT. CITY CENTRE - NIGHT\",\n    \"EXT. RUDDY & GREENE BUILDING - FRONT - NIGHT\",\n    \"EXT. RUDDY & GREENE BUILDING - REAR - NIGHT\",\n    \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n    \"INT. 11TH FLOOR\",\n    \"INT. STAIRWELL\",\n    \"INT. 12TH FLOOR STAIRWELL\",\n    \"INT. 13TH FLOOR\",\n    \"INT. 15TH FLOOR\",\n    \"EXT. COASTLINE - DAY - PAST\",\n    \"EXT. BACKYARD - DAY - PAST\",\n    \"CHIMNEY BAY\"\n  ],\n  \"props\": [\n    \"AIRTAG\",\n    \"PURSE\",\n    \"STOUT WOODEN OAR\",\n    \"FLARE GUN\",\n    \"MEMORY STICK\"\n  ]\n}\n```",
+                      "thoughtSignature": "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"
+                    }
+                  ],
+                  "role": "model"
+                },
+                "finishReason": "STOP",
+                "index": 0
+              }
+            ],
+            "usageMetadata": {
+              "promptTokenCount": 5193,
+              "candidatesTokenCount": 273,
+              "totalTokenCount": 7600,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 5193
+                }
+              ],
+              "thoughtsTokenCount": 2134,
+              "serviceTier": "standard"
+            },
+            "modelVersion": "gemini-3.6-flash",
+            "responseId": "w_1farTeK8ul1MkPtIyD8Ag"
+          },
+          "cached": false,
+          "metadata": {}
+        },
+        "score": 0.9199999999999999,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-entity-discovery.json"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/entity_discovery_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this entity discovery output for the screenplay \"The Mariner.\"\n\nThis is a RECALL task — finding everything matters more than precision.\nFalse positives (extra entities) are acceptable. False negatives (missed entities) are failures.\n\nKey quality criteria:\n1. Characters — must find: THE MARINER (protagonist, also called Billy/Will), ROSE (his sister), SALVATORI (the mob boss), VINNIE (Rose's ex, gang enforcer), DAD (appears in flashbacks). Bonus: MIKEY, CARLOS.\n2. Locations — must find: the Ruddy & Greene Building and the 15th floor (the climactic confrontation site). Bonus: 11th/13th floors, stairwell, elevator, coastline.\n3. Props — must find: the OAR (Mariner's signature weapon). Bonus: FLARE GUN, PURSE (Rose's), AIRTAG, NET CAPE, BRACERS.\n4. Are entity names captured as they appear in the screenplay (character names in ALL CAPS, location headings, etc.)?\n5. Does the model err on the side of inclusion rather than omission?\n6. Are there significant hallucinations — entities that clearly don't appear in the screenplay?\n\nScore 0.8+ only if all required entities are found. Score 0.6-0.8 if missing 1-2 required entities but found most. Score below 0.6 if multiple required entities are missed.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-entity-discovery.json"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 1,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 5193,
+        "completion": 273,
+        "cached": 0,
+        "total": 7600,
+        "numRequests": 1,
+        "completionDetails": {
+          "reasoning": 2134,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 1335,
+          "prompt": 854,
+          "completion": 481,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 22217,
+      "evaluationDurationMs": 22217
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Entity discovery from screenplay — The Mariner",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/gemini-36-35-eval-20260721/cine-forge/benchmarks/prompts/entity-discovery.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:chat:gpt-5.4-nano",
+        "label": "GPT-5.4 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:chat:gpt-5.4-mini",
+        "label": "GPT-5.4 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.1-flash-lite",
+        "label": "Gemini 3.1 Flash Lite",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.5-flash-lite",
+        "label": "Gemini 3.5 Flash-Lite",
+        "config": {
+          "maxOutputTokens": 65536,
+          "inputCost": 3e-7,
+          "outputCost": 0.0000025
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.5-flash",
+        "label": "Gemini 3.5 Flash",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.6-flash",
+        "label": "Gemini 3.6 Flash",
+        "config": {
+          "maxOutputTokens": 65536,
+          "inputCost": 0.0000015,
+          "outputCost": 0.0000075
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "openai:gpt-5.4",
+        "label": "GPT-5.4",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-5.5",
+        "label": "GPT-5.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "file://../providers/openai_responses_provider.py",
+        "label": "GPT-5.5 Pro",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:kimi-k2.6",
+        "label": "Kimi K2.6",
+        "config": {
+          "apiBaseUrl": "https://api.moonshot.ai/v1",
+          "apiKeyEnvar": "[REDACTED]",
+          "temperature": 1,
+          "top_p": 0.95,
+          "max_tokens": 32768,
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.1-pro-preview",
+        "label": "Gemini 3.1 Pro",
+        "config": {
+          "temperature": 0,
+          "maxOutputTokens": 16384
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-entity-discovery.json"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/entity_discovery_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this entity discovery output for the screenplay \"The Mariner.\"\n\nThis is a RECALL task — finding everything matters more than precision.\nFalse positives (extra entities) are acceptable. False negatives (missed entities) are failures.\n\nKey quality criteria:\n1. Characters — must find: THE MARINER (protagonist, also called Billy/Will), ROSE (his sister), SALVATORI (the mob boss), VINNIE (Rose's ex, gang enforcer), DAD (appears in flashbacks). Bonus: MIKEY, CARLOS.\n2. Locations — must find: the Ruddy & Greene Building and the 15th floor (the climactic confrontation site). Bonus: 11th/13th floors, stairwell, elevator, coastline.\n3. Props — must find: the OAR (Mariner's signature weapon). Bonus: FLARE GUN, PURSE (Rose's), AIRTAG, NET CAPE, BRACERS.\n4. Are entity names captured as they appear in the screenplay (character names in ALL CAPS, location headings, etc.)?\n5. Does the model err on the side of inclusion rather than omission?\n6. Are there significant hallucinations — entities that clearly don't appear in the screenplay?\n\nScore 0.8+ only if all required entities are found. Score 0.6-0.8 if missing 1-2 required entities but found most. Score below 0.6 if multiple required entities are missed.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/entity-discovery-gemini36flash-2026-07-21.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-07-21T23:16:41.644Z",
+    "evaluationCreatedAt": "2026-07-21T23:16:19.362Z"
+  }
+}
