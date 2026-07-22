@@ -704,58 +704,6 @@ evals:
     scores:
       - model: "Gemini 3.6 Flash"
         metrics:
-          overall: 0.66245
-          deterministic: 0.5999
-          rubric: 0.725
-        latency_ms: 7286
-        cost_usd: 0.013596
-        cost_estimated: true
-        measured: 2026-07-22
-        git_sha: "8851717"
-        result_file: benchmarks/results/qa-pass-story-208-post-repair-v3-2026-07-22.json
-        evidence_status: contaminated-non-decision-grade
-        note: "Attempt 018 full-budget diagnostic. All four Opus grades parsed, proving the 4,096-token judge repair. The model remained wrong on both cases: its positive summary omitted all three required grounding facts and its negative response supplied only four of six required error-level findings. Opus also correctly found the positive fixture's claim that the skull scrap remained unresolved contradicted Mariner's immediate confirmation. The fixture defect makes this run non-decision-grade; rerun only after committed source correction."
-      - model: "Gemini 3.5 Flash-Lite"
-        metrics:
-          overall: 0.579125
-          deterministic: 0.64825
-          rubric: 0.51
-        latency_ms: 1455
-        cost_usd: 0.001359
-        cost_estimated: true
-        measured: 2026-07-22
-        git_sha: "8851717"
-        result_file: benchmarks/results/qa-pass-story-208-post-repair-v3-2026-07-22.json
-        evidence_status: contaminated-non-decision-grade
-        note: "Attempt 018 full-budget diagnostic. All four Opus grades parsed, proving the 4,096-token judge repair. Flash-Lite cleanly passed the negative control but falsely rejected the positive case by inventing a requirement that whole-scene characters be present throughout. An independently adjudicated source defect in the positive fixture nevertheless contaminates the shared matrix, so it is not decision-grade; rerun only after committed source correction."
-      - model: "Gemini 3.6 Flash"
-        metrics:
-          overall: 0.52995
-          deterministic: 0.5999
-          rubric: 0.46
-        latency_ms: 6562
-        cost_usd: 0.012535
-        cost_estimated: true
-        measured: 2026-07-22
-        git_sha: "f89271b"
-        result_file: benchmarks/results/qa-pass-story-208-post-repair-v2-2026-07-22.json
-        evidence_status: contaminated-non-decision-grade
-        note: "Attempt 018 second diagnostic on the committed source/scorer repair. The positive judgment remained model-wrong because its generic summary omitted the three required source anchors; the negative judgment remained model-wrong with only four required error-level findings against the six-error minimum. The positive Opus grade exhausted Promptfoo's implicit 1,024-token Anthropic ceiling and could not be parsed, so this matrix is judge-contract-contaminated and cannot support a QA decision. Non-runtime-blocking for this challenger; rerun only after an explicit judge output budget is committed."
-      - model: "Gemini 3.5 Flash-Lite"
-        metrics:
-          overall: 0.554675
-          deterministic: 0.63435
-          rubric: 0.475
-        latency_ms: 1421
-        cost_usd: 0.001233
-        cost_estimated: true
-        measured: 2026-07-22
-        git_sha: "f89271b"
-        result_file: benchmarks/results/qa-pass-story-208-post-repair-v2-2026-07-22.json
-        evidence_status: contaminated-non-decision-grade
-        note: "Attempt 018 second diagnostic on the committed source/scorer repair. The negative control is clean at deterministic 0.9437 and Opus 0.95; the positive judgment is model-wrong because it incorrectly treats whole-scene character presence as an extraction defect. Its Opus grade exhausted Promptfoo's implicit 1,024-token Anthropic ceiling and could not be parsed, so this matrix is judge-contract-contaminated and cannot support a QA decision. Non-runtime-blocking for this challenger; rerun only after an explicit judge output budget is committed."
-      - model: "Gemini 3.6 Flash"
-        metrics:
           overall: 0.67985
         latency_ms: 14429
         cost_usd: 0.0149
@@ -1527,6 +1475,58 @@ evals:
       note: "QA should be near-perfect — false positives waste pipeline budget"
 
     scores:
+      - model: "Gemini 3.6 Flash"
+        metrics:
+          overall: 0.66245
+          deterministic: 0.5999
+          rubric: 0.725
+        latency_ms: 7286
+        cost_usd: 0.013596
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "8851717"
+        result_file: benchmarks/results/qa-pass-story-208-post-repair-v3-2026-07-22.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Attempt 018 full-budget diagnostic. All four Opus grades parsed, proving the 4,096-token judge repair. The model remained wrong on both cases: its positive summary omitted all three required grounding facts and its negative response supplied only four of six required error-level findings. Opus also correctly found the positive fixture's claim that the skull scrap remained unresolved contradicted Mariner's immediate confirmation. The fixture defect makes this run non-decision-grade; rerun only after committed source correction."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.579125
+          deterministic: 0.64825
+          rubric: 0.51
+        latency_ms: 1455
+        cost_usd: 0.001359
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "8851717"
+        result_file: benchmarks/results/qa-pass-story-208-post-repair-v3-2026-07-22.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Attempt 018 full-budget diagnostic. All four Opus grades parsed, proving the 4,096-token judge repair. Flash-Lite cleanly passed the negative control but falsely rejected the positive case by inventing a requirement that whole-scene characters be present throughout. An independently adjudicated source defect in the positive fixture nevertheless contaminates the shared matrix, so it is not decision-grade; rerun only after committed source correction."
+      - model: "Gemini 3.6 Flash"
+        metrics:
+          overall: 0.52995
+          deterministic: 0.5999
+          rubric: 0.46
+        latency_ms: 6562
+        cost_usd: 0.012535
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "f89271b"
+        result_file: benchmarks/results/qa-pass-story-208-post-repair-v2-2026-07-22.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Attempt 018 second diagnostic on the committed source/scorer repair. The positive judgment remained model-wrong because its generic summary omitted the three required source anchors; the negative judgment remained model-wrong with only four required error-level findings against the six-error minimum. The positive Opus grade exhausted Promptfoo's implicit 1,024-token Anthropic ceiling and could not be parsed, so this matrix is judge-contract-contaminated and cannot support a QA decision. Non-runtime-blocking for this challenger; rerun only after an explicit judge output budget is committed."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.554675
+          deterministic: 0.63435
+          rubric: 0.475
+        latency_ms: 1421
+        cost_usd: 0.001233
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "f89271b"
+        result_file: benchmarks/results/qa-pass-story-208-post-repair-v2-2026-07-22.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Attempt 018 second diagnostic on the committed source/scorer repair. The negative control is clean at deterministic 0.9437 and Opus 0.95; the positive judgment is model-wrong because it incorrectly treats whole-scene character presence as an extraction defect. Its Opus grade exhausted Promptfoo's implicit 1,024-token Anthropic ceiling and could not be parsed, so this matrix is judge-contract-contaminated and cannot support a QA decision. Non-runtime-blocking for this challenger; rerun only after an explicit judge output budget is committed."
       - model: "Gemini 3.6 Flash"
         metrics:
           overall: 0.58745
