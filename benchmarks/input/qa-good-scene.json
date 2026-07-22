@@ -4,14 +4,17 @@
   "int_ext": "INT",
   "location": "RUDDY & GREEN BUILDING - ELEVATOR",
   "time_of_day": null,
-  "characters_present": ["ROSE", "MARINER"],
-  "summary": "Rose and Mariner ride the elevator after a violent rescue. Rose discovers a skull fragment on the floor while muzak plays. Mariner is introduced in full — a hulking vigilante in fishing-themed costume with an oar, net cape, and shell bandolier. Rose confronts him about being late to pick her up, and he reveals he tracked her via an AirTag on her phone, sparking a trust conflict between them.",
+  "characters_present": ["ROSE", "MARINER", "THUG 1", "THUG 2", "THUG 3"],
+  "summary": "Blood-spattered Rose and Mariner catch their breath in an elevator while romantic muzak plays; Rose drops a bloody scrap of scalp and Mariner's fishing-themed vigilante costume is revealed. Mariner admits that he hid an AirTag in Rose's purse at Thanksgiving, and they argue about returning for it and about why the thugs targeted her. When the doors open on twelve, three armed thugs attack: Mariner deflects a gun with his oar, kicks one thug into the others, and Rose works the close-door button as gunfire follows them into the elevator. After Mariner strikes through the closing doors, Rose chooses eleven so they can take the stairs back up, then mocks his outfit before he calls it functional and an homage.",
   "narrative_beats": [
     {"beat_type": "character_introduction", "description": "Full description of Mariner's fishing-themed vigilante costume — oar, net cape, bracers, shell bandolier, fish hooks.", "confidence": 0.95},
     {"beat_type": "comic_relief", "description": "Rose discovers a skull fragment while muzak plays, establishing the dark comedy tone.", "confidence": 0.90},
-    {"beat_type": "revelation", "description": "Mariner admits he tracked Rose via AirTag on her phone, creating a trust conflict.", "confidence": 0.88},
-    {"beat_type": "conflict", "description": "Rose's anger escalates from being grabbed to learning she was being surveilled by Mariner.", "confidence": 0.85}
+    {"beat_type": "revelation", "description": "Mariner admits he stashed an AirTag in Rose's purse at Thanksgiving, and Rose realizes the purse was left behind.", "confidence": 0.98},
+    {"beat_type": "conflict", "description": "Rose and Mariner argue about returning for the purse and whether the armed men targeted her because of him.", "confidence": 0.96},
+    {"beat_type": "conflict", "description": "Three armed thugs confront them on twelve; Mariner uses his oar and a kick to break the attack while Rose closes the elevator doors under gunfire.", "confidence": 0.99},
+    {"beat_type": "character_development", "description": "Rose sends the elevator to eleven so they can take the stairs up, showing improvisational resolve despite Mariner's objection.", "confidence": 0.96},
+    {"beat_type": "comic_relief", "description": "Rose silently challenges Mariner's strange costume, and he insists that it is functional and an homage.", "confidence": 0.97}
   ],
-  "tone_mood": "dark comedy with bursts of tension",
-  "confidence": 0.91
+  "tone_mood": "darkly comic, tense, intimate, and violently kinetic",
+  "confidence": 0.98
 }

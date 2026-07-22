@@ -1,11 +1,10 @@
-# Neon crosswalk reveal
+# Ordered JPEG frame-packet reference
 
-- Summary: A wet crosswalk glows in magenta and cyan as the camera cranes up to reveal the street geometry.
-- Tone: surreal, tense
+- Summary: A cyan triangle stands between dark blocks over a static magenta and blue grid-like field.
+- Tone: surreal
 - Emotion: wonder
 - Color / grade: magenta, neon, teal
-- Camera language: overhead_reveal
-- Motion: slow_drift
-- Continuity: intact — Light reflections stay consistent across the reveal.
-- Audio intent: drone
-- Transcript: [none]
+- Camera language inferable from the ordered samples: static, wide_master
+- Motion inferable from the ordered samples: stillness
+- Continuity: intact - The triangle, blocks, and grid keep the same positions in every frame.
+- Audio: unavailable to the subject and excluded from scoring

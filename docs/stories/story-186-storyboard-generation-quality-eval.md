@@ -264,6 +264,20 @@ target those dimensions instead of reopening the grid-vs-frame decision.
 
 ## Work Log
 
+**Story 208 supersession (2026-07-22):** The April scores and default decision
+below are historical, contaminated, non-decision-grade evidence. The fixture
+JSON is checked-in source/target truth, but the exact generated candidate pixels
+were nondeterministic inputs to the score and were left under ignored runtime
+paths. The dataset generator copied those pixels; it could not recreate them.
+One scored panel and its full-grid parent were later overwritten, then restored
+from Backblaze to their recorded original hashes. That local recovery does not
+make the ignored packet durable or repair the independent v2 leakage, sampling,
+scorer, and modality defects, so the whole historical packet remains
+quarantined. A future decision-grade run must use the repaired v3 contract and
+check in its exact panels, grids, references, storyboard artifacts, raw results,
+and hash manifest. The configured template-grid runtime default remains
+provisional; these rows no longer justify a model/default decision.
+
 20260422-2315 — story bootstrap: created Story 186 after reviewing the active methodology state, the existing previz/render eval registry, and ADR-002 / ADR-003. Result: this is a genuine new eval story, not Story 181 scope creep, because no existing eval measures storyboard reference flow plus sequence quality. Next step: scaffold typed contracts and the benchmark surface.
 20260422-2358 — scaffold + validation: added schema-first storyboard-analysis contracts, a real runtime harness (`storyboard_generation_quality_eval.py`), packet materializer, promptfoo task/provider/scorer/report, representative Open Frequency cases, and the registry entry for `storyboard-generation-quality`. Focused unit coverage passed (`tests/unit/test_storyboard_understanding_benchmark.py`, `tests/unit/test_storyboard_generation_quality_support.py`), targeted Ruff passed on all new files, full unit tests passed (`790 passed, 179 deselected`), and methodology compile/check is current after refreshing the generation-and-visualization audit bookkeeping in `docs/methodology/state.yaml`. Honest gap: I did not run the expensive live storyboard eval yet, so the registry still has no measured score rows and the story stays open for the first real run plus mismatch classification.
 20260422-2359 — live runtime + first promptfoo pass: ran the full expensive command on two real Open Frequency cases. Both runtime cases succeeded end to end (`prompt_only` total `$0.84497`, `reference_conditioned` total `$0.75364`), which proves the eval is exercising the real storyboard lane rather than failing in setup. The first scoring pass also surfaced a local-code eval bug: the deterministic scorer resolved `target.json` from the repo root and zeroed both python assertions with `No such file or directory`. Next step: fix the scorer path resolution, rerun only the dataset/judge/report path, and then classify the actual storyboard failure.

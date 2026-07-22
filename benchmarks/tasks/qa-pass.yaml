@@ -5,7 +5,7 @@
 # Usage: cd benchmarks && promptfoo eval -c tasks/qa-pass.yaml
 # View:  promptfoo view
 
-description: "QA pass — judge scene extraction quality (good vs bad outputs)"
+description: "QA pass — independently judge scene-extraction fidelity"
 
 # Use Opus as judge
 defaultTest:
@@ -48,7 +48,6 @@ providers:
   - id: google:gemini-2.5-flash-lite
     label: "Gemini 2.5 Flash Lite"
     config:
-      temperature: 0
       maxOutputTokens: 16384
 
   # --- Mid tier ---
@@ -80,20 +79,17 @@ providers:
   - id: google:gemini-2.5-flash
     label: "Gemini 2.5 Flash"
     config:
-      temperature: 0
       maxOutputTokens: 16384
 
   - id: google:gemini-3-flash-preview
     label: "Gemini 3 Flash"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
   - id: google:gemini-3.5-flash
     label: "Gemini 3.5 Flash"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
   - id: google:gemini-3.5-flash-lite
     label: "Gemini 3.5 Flash-Lite"
@@ -127,6 +123,7 @@ providers:
   - id: file://../providers/openai_responses_provider.py
     label: "GPT-5.5 Pro"
     config:
+      model: gpt-5.5-pro
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
@@ -166,17 +163,15 @@ providers:
   - id: google:gemini-2.5-pro
     label: "Gemini 2.5 Pro"
     config:
-      temperature: 0
       maxOutputTokens: 16384
 
   - id: google:gemini-3-pro-preview
     label: "Gemini 3 Pro"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
 tests:
-  # Test 1: Good extraction — should PASS QA
+  # Candidate A — independently derive the QA judgment from source
   - vars:
       scene_text: file://../fixtures/enrich-scene-elevator.txt
       extracted_data: file://../input/qa-good-scene.json
@@ -185,20 +180,45 @@ tests:
     assert:
       - type: python
         value: file://../scorers/qa_pass_scorer.py
-      - type: llm-rubric
+      - &qa_pass_rubric
+        type: llm-rubric
         value: |
-          This QA evaluation was given a GOOD scene extraction that accurately
-          reflects the source text. The QA model should have:
+          Evaluate the candidate QA judgment by independently comparing the scene
+          extraction with the source. Do not assume whether the extraction or QA
+          judgment should pass from a filename, test label, or rubric wording.
 
-          1. Marked it as passed (true)
-          2. Found zero or very few errors
-          3. Had high confidence in the assessment
-          4. Written a summary confirming accuracy
+          SOURCE SCENE
+          ============
+          {{scene_text}}
+          ============
 
-          If the model incorrectly flagged the good extraction as failing,
-          that's a false negative and should score poorly.
+          EXTRACTION BEING REVIEWED
+          =========================
+          {{extracted_data}}
+          =========================
 
-  # Test 2: Bad extraction — should FAIL QA
+          Grade all of these dimensions:
+          1. Verdict: independently decide passed from source fidelity. Any factual
+             contradiction, fabrication, wrong identity/heading, or material omission
+             requires passed=false; only genuinely minor warnings may coexist with true.
+          2. Issue recall and precision: every distinct material defect is identified
+             in its correct field, while accurate content is not attacked. A generic
+             complaint or copied candidate wording is not a grounded issue.
+          3. Severity: factual errors and meaning-changing omissions are errors;
+             lesser imprecision may be a warning; notes cannot hide actual defects.
+          4. Summary and confidence: the summary substantiates the verdict with source
+             facts, and confidence represents certainty in this QA judgment rather
+             than copying the extraction's confidence.
+          5. Exact schema: the QA result uses the requested top-level and issue keys,
+             valid types, and substantive descriptions. A schema-only result is not a pass.
+
+          A generic, copied, contradictory, invented, or schema-only QA judgment must
+          fail. Do not reward a fluent pass/fail claim that disagrees with its own issue
+          list or the source. Score 0.80 or higher, and pass, only when the verdict,
+          issues, severities, summary, and confidence are source-faithful and remaining
+          defects are genuinely minor.
+
+  # Candidate B — independently derive the QA judgment from source
   - vars:
       scene_text: file://../fixtures/enrich-scene-elevator.txt
       extracted_data: file://../input/qa-bad-scene.json
@@ -207,18 +227,4 @@ tests:
     assert:
       - type: python
         value: file://../scorers/qa_pass_scorer.py
-      - type: llm-rubric
-        value: |
-          This QA evaluation was given a BAD scene extraction with multiple errors:
-          - Wrong building name (Office Building vs Ruddy & Green)
-          - Time of day fabricated (claims DAY, but scene heading has none)
-          - Wrong character name (Billy instead of Mariner)
-          - Fabricated content (grocery discussion never happens)
-
-          The QA model should have:
-          1. Marked it as failed (false)
-          2. Identified at least 2-3 specific errors
-          3. Flagged the fabricated summary content
-          4. Used "error" severity for factual mistakes
-
-          If the model let this pass, that's a dangerous false positive.
+      - *qa_pass_rubric

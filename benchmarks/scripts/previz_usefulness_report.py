@@ -1,29 +1,28 @@
 #!/usr/bin/env python3
-"""Summarize Story 143 previz-usefulness promptfoo results into a report."""
+"""Summarize repaired-contract previz-usefulness promptfoo results."""
 
 from __future__ import annotations
 
 import argparse
 import importlib
 import json
+import math
 import sys
 from collections import defaultdict
 from pathlib import Path
 from statistics import mean
 from typing import Any
 
-import yaml
-
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCORERS_ROOT = REPO_ROOT / "benchmarks" / "scorers"
 DATASET_ROOT = REPO_ROOT / "benchmarks" / "previz_usefulness"
-FAST_PREVIZ_BUDGET_MS = 6_000
 if str(SCORERS_ROOT) not in sys.path:
     sys.path.insert(0, str(SCORERS_ROOT))
 
-score_output_against_target = importlib.import_module(
-    "video_understanding_scorer"
-).score_output_against_target
+_scorer = importlib.import_module("video_understanding_scorer")
+_contract = importlib.import_module("previz_usefulness_report_contract")
+_rows = importlib.import_module("previz_usefulness_report_rows")
+_report_support = importlib.import_module("previz_usefulness_report_support")
 
 REGISTRY_PATH = REPO_ROOT / "docs" / "evals" / "registry.yaml"
 _DIMENSION_NAMES = (
@@ -38,14 +37,7 @@ _DIMENSION_NAMES = (
     "evidence",
     "hard_constraints",
 )
-_AI_VARIANTS = {
-    "openai_sora2_previz",
-    "google_veo31_previz",
-    "google_veo31_fast_previz",
-    "google_veo31_lite_previz",
-    "google_veo31_lite_compact_previz",
-    "xai_grok_imagine_video_previz",
-}
+_RUBRIC_PASS_THRESHOLD = 0.8
 
 
 def main() -> None:
@@ -57,450 +49,311 @@ def main() -> None:
 
     result_files = [path.resolve() for path in args.result_file]
     output_prefix = (
-        args.output_prefix.resolve()
-        if args.output_prefix
-        else result_files[0].with_suffix("")
+        args.output_prefix.resolve() if args.output_prefix else result_files[0].with_suffix("")
     )
-
-    results = []
+    results: list[dict[str, Any]] = []
     for result_file in result_files:
-        data = json.loads(result_file.read_text())
-        results.extend(data.get("results", {}).get("results", []))
+        payload = json.loads(result_file.read_text(encoding="utf-8"))
+        results.extend(payload.get("results", {}).get("results", []))
     summary = build_summary(results, dataset_root=args.dataset_root.resolve())
 
     json_path = output_prefix.with_name(output_prefix.name + "-report.json")
     md_path = output_prefix.with_name(output_prefix.name + "-report.md")
-    json_path.write_text(json.dumps(summary, indent=2) + "\n")
-    md_path.write_text(render_markdown(summary))
+    json_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    md_path.write_text(render_markdown(summary), encoding="utf-8")
     print(json_path)
     print(md_path)
 
 
-def build_summary(results: list[dict], dataset_root: Path | None = None) -> dict:
+def build_summary(
+    results: list[dict[str, Any]],
+    dataset_root: Path | None = None,
+) -> dict[str, Any]:
+    """Regrade raw outputs and require the exact candidate x case matrix."""
     dataset_root = dataset_root or DATASET_ROOT
-    providers: dict[str, dict[str, Any]] = defaultdict(
-        lambda: {
-            "python_scores": [],
-            "rubric_scores": [],
-            "combined_scores": [],
-            "analysis_latencies": [],
-            "analysis_costs": [],
-            "generation_latencies": [],
-            "generation_costs": [],
-            "dimension_scores": defaultdict(list),
-            "calls": 0,
-            "variants": set(),
-            "operator_lanes": set(),
-            "latency_budgets": set(),
-            "engine_pack_ids": set(),
-            "target_models": set(),
-            "resolutions": set(),
-            "durations": set(),
-            "consistency_strategies": set(),
-            "prompt_profiles": set(),
-            "style_profile_ids": set(),
-            "style_profile_titles": set(),
-        }
-    )
-    previous_scores = _load_previous_scores()
+    case_contract = _contract.load_case_contract(dataset_root)
+    expected_cases = case_contract["expected_cases"]
+    expected_variants = set(case_contract["expected_variants"])
+    previous_scores = _contract.load_previous_scores(REGISTRY_PATH)
+    providers: dict[str, dict[str, Any]] = defaultdict(_rows.new_bucket)
+    observations: list[tuple[str, str]] = []
 
     for entry in results:
-        provider = entry.get("provider", {})
-        label = provider.get("label", provider.get("id", "unknown"))
-        response_metadata = entry.get("response", {}).get("metadata", {})
-        clip_id = str(
-            response_metadata.get("clip_id") or entry.get("vars", {}).get("clip_id") or ""
-        )
-        candidate_variant = str(response_metadata.get("candidate_variant") or "")
-        candidate_meta = _load_candidate_meta(
-            candidate_variant=candidate_variant,
-            clip_id=clip_id,
-            dataset_root=dataset_root,
-        )
-        target_path = _resolve_target_path(entry.get("vars", {}).get("target_path", ""))
-
-        python_score = _component_score(entry, "python")
-        dimension_scores = dict.fromkeys(_DIMENSION_NAMES, 0.0)
-        try:
-            score = score_output_against_target(
-                output=entry.get("response", {}).get("output", ""),
-                target_path=target_path,
-                model_label=label,
-                prompt_version=response_metadata.get("prompt_version"),
+        observations.append(
+            _process_entry(
+                entry,
+                dataset_root=dataset_root,
+                case_contract=case_contract,
+                providers=providers,
             )
-            if python_score is None:
-                python_score = score.overall_score
-            dimension_scores = {
-                dimension.dimension: dimension.score for dimension in score.dimensions
-            }
-        except Exception:
-            if python_score is None:
-                python_score = 0.0
-
-        rubric_score = _component_score(entry, "llm-rubric")
-        combined_score = mean(
-            [value for value in [python_score, rubric_score] if value is not None]
         )
 
-        bucket = providers[label]
-        bucket["python_scores"].append(python_score)
-        if rubric_score is not None:
-            bucket["rubric_scores"].append(rubric_score)
-        bucket["combined_scores"].append(combined_score)
-        if entry.get("latencyMs") is not None:
-            bucket["analysis_latencies"].append(entry["latencyMs"])
-        if entry.get("cost") is not None:
-            bucket["analysis_costs"].append(entry["cost"])
-        if candidate_meta.get("generation_latency_ms") is not None:
-            bucket["generation_latencies"].append(candidate_meta["generation_latency_ms"])
-        if candidate_meta.get("estimated_generation_cost_usd") is not None:
-            bucket["generation_costs"].append(candidate_meta["estimated_generation_cost_usd"])
-        if candidate_variant:
-            bucket["variants"].add(candidate_variant)
-        _maybe_add(bucket["operator_lanes"], candidate_meta.get("operator_lane"))
-        _maybe_add(bucket["latency_budgets"], candidate_meta.get("latency_budget_ms"))
-        _maybe_add(bucket["engine_pack_ids"], candidate_meta.get("engine_pack_id"))
-        _maybe_add(bucket["target_models"], candidate_meta.get("target_model"))
-        _maybe_add(bucket["resolutions"], candidate_meta.get("resolution"))
-        _maybe_add(bucket["durations"], candidate_meta.get("duration_seconds"))
-        _maybe_add(bucket["consistency_strategies"], candidate_meta.get("consistency_strategy"))
-        _maybe_add(bucket["prompt_profiles"], candidate_meta.get("prompt_profile"))
-        _maybe_add(bucket["style_profile_ids"], candidate_meta.get("style_profile_id"))
-        _maybe_add(bucket["style_profile_titles"], candidate_meta.get("style_profile_title"))
-        bucket["calls"] += 1
-        for name, value in dimension_scores.items():
-            bucket["dimension_scores"][name].append(value)
-
-    rows = []
-    for label, bucket in providers.items():
-        overall = round(mean(bucket["combined_scores"]), 4)
-        candidate_variant = _single_or_none(bucket["variants"])
-        operator_lane = _single_or_none(bucket["operator_lanes"])
-        latency_budget_ms = _single_or_none(bucket["latency_budgets"])
-        generation_latency_ms = (
-            round(mean(bucket["generation_latencies"])) if bucket["generation_latencies"] else None
+    rows = [
+        _rows.build_row(
+            variant=variant,
+            bucket=bucket,
+            expected_cases=set(expected_cases),
+            expected_variants=expected_variants,
+            previous_scores=previous_scores,
         )
-        rows.append(
-            {
-                "candidate": label,
-                "candidate_variant": candidate_variant,
-                "candidate_class": _candidate_class(candidate_variant, operator_lane),
-                "operator_lane": operator_lane,
-                "python_overall": round(mean(bucket["python_scores"]), 4),
-                "rubric_overall": round(mean(bucket["rubric_scores"]), 4)
-                if bucket["rubric_scores"]
-                else None,
-                "overall": overall,
-                "analysis_latency_ms": round(mean(bucket["analysis_latencies"]))
-                if bucket["analysis_latencies"]
-                else None,
-                "analysis_cost_usd": round(mean(bucket["analysis_costs"]), 6)
-                if bucket["analysis_costs"]
-                else None,
-                "generation_latency_ms": generation_latency_ms,
-                "generation_cost_usd": round(mean(bucket["generation_costs"]), 4)
-                if bucket["generation_costs"]
-                else None,
-                "latency_budget_ms": latency_budget_ms,
-                "latency_budget_pass": (
-                    generation_latency_ms <= latency_budget_ms
-                    if generation_latency_ms is not None and latency_budget_ms is not None
-                    else None
-                ),
-                "resolution": _single_or_join(bucket["resolutions"]),
-                "duration_seconds": _single_or_join(bucket["durations"]),
-                "engine_pack_id": _single_or_join(bucket["engine_pack_ids"]),
-                "target_model": _single_or_join(bucket["target_models"]),
-                "consistency_strategy": _single_or_join(bucket["consistency_strategies"]),
-                "prompt_profile": _single_or_join(bucket["prompt_profiles"]),
-                "style_profile_id": _single_or_join(bucket["style_profile_ids"]),
-                "style_profile_title": _single_or_join(bucket["style_profile_titles"]),
-                "dimension_scores": {
-                    name: round(mean(values), 4)
-                    for name, values in sorted(bucket["dimension_scores"].items())
-                },
-                "calls": bucket["calls"],
-                "previous_overall": previous_scores.get(label),
-            }
-        )
-
-    rows.sort(key=lambda item: item["overall"], reverse=True)
+        for variant, bucket in providers.items()
+    ]
+    rows.sort(
+        key=lambda row: (
+            not row["failed_cases"],
+            row["overall"] if row["overall"] is not None else -1.0,
+        ),
+        reverse=True,
+    )
+    complete_variants = {row["candidate_variant"] for row in rows if row["data_complete"]}
+    evidence_contract = _contract.matrix_status(
+        observations=observations,
+        contract=case_contract,
+        complete_variants=complete_variants,
+    )
     return {
         "eval_id": "previz-usefulness",
+        "expected_prompt_version": case_contract["expected_prompt_version"],
+        "expected_variants": case_contract["expected_variants"],
+        "expected_cases": sorted(expected_cases),
+        "evidence_contract": evidence_contract,
         "candidates": rows,
-        "recommendation": _recommend(rows),
+        "recommendation": _report_support.recommend(rows, evidence_contract),
     }
 
 
-def render_markdown(summary: dict) -> str:
-    lines = [
-        "# Previz Usefulness Report v2",
-        "",
-        f"Recommendation: **{summary['recommendation']['decision']}**",
-        "",
-        summary["recommendation"]["rationale"],
-        "",
-        (
-            "| Candidate | Lane | Overall | Gen Latency | Budget | Gen Cost | "
-            "Resolution | Consistency | Prompt | "
-            "Analysis Latency | Analysis Cost |"
-        ),
-        "|---|---|---:|---:|---:|---:|---|---|---|---:|---:|",
-    ]
-    for row in summary["candidates"]:
-        generation_latency = (
-            f"{row['generation_latency_ms']} ms"
-            if row["generation_latency_ms"] is not None
-            else "n/a"
-        )
-        latency_budget = (
-            f"{row['latency_budget_ms']} ms"
-            if row["latency_budget_ms"] is not None
-            else "n/a"
-        )
-        generation_cost = (
-            f"${row['generation_cost_usd']:.4f}"
-            if row["generation_cost_usd"] is not None
-            else "n/a"
-        )
-        analysis_latency = (
-            f"{row['analysis_latency_ms']} ms" if row["analysis_latency_ms"] is not None else "n/a"
-        )
-        analysis_cost = (
-            f"${row['analysis_cost_usd']:.5f}" if row["analysis_cost_usd"] is not None else "n/a"
-        )
-        lines.append(
-            f"| {row['candidate']} | {row['operator_lane'] or row['candidate_class']} | "
-            f"{row['overall']:.3f} | {generation_latency} | {latency_budget} | "
-            f"{generation_cost} | {row['resolution'] or 'n/a'} | "
-            f"{row['consistency_strategy'] or 'n/a'} | {row['prompt_profile'] or 'n/a'} | "
-            f"{analysis_latency} | {analysis_cost} |"
-        )
+def _process_entry(
+    entry: dict[str, Any],
+    *,
+    dataset_root: Path,
+    case_contract: dict[str, Any],
+    providers: dict[str, dict[str, Any]],
+) -> tuple[str, str]:
+    vars_data = _mapping(entry.get("vars"))
+    response = _mapping(entry.get("response"))
+    response_metadata = _mapping(response.get("metadata"))
+    provider = _mapping(entry.get("provider"))
+    label = str(provider.get("label") or provider.get("id") or "unknown")
+    variant = str(response_metadata.get("candidate_variant") or "<missing-variant>")
+    case_id = str(vars_data.get("evaluation_id") or "<missing-case-id>")
+    bucket = providers[variant]
+    bucket["calls"] += 1
+    bucket["labels"].add(label)
+    if case_id in bucket["case_ids"]:
+        bucket["duplicate_case_ids"].add(case_id)
+    bucket["case_ids"].add(case_id)
 
-    lines.extend(["", "## Candidate Notes", ""])
-    for row in summary["candidates"]:
-        lines.append(f"### {row['candidate']}")
-        lines.append(f"- lane: {row['operator_lane'] or row['candidate_class']}")
-        lines.append(f"- variant: {row['candidate_variant'] or 'n/a'}")
-        lines.append(f"- latency budget: {row['latency_budget_ms'] or 'n/a'}")
-        lines.append(f"- engine pack: {row['engine_pack_id'] or 'n/a'}")
-        lines.append(f"- target model: {row['target_model'] or 'n/a'}")
-        lines.append(f"- prompt profile: {row['prompt_profile'] or 'n/a'}")
-        lines.append(
-            f"- style profile: {row['style_profile_title'] or row['style_profile_id'] or 'n/a'}"
+    target_path = _resolve_target_path(str(vars_data.get("target_path") or ""))
+    candidate_meta = _load_candidate_meta(
+        candidate_variant=variant,
+        clip_id=str(response_metadata.get("clip_id") or ""),
+        dataset_root=dataset_root,
+    )
+    bucket["contract_errors"].extend(
+        _entry_contract_errors(
+            variant=variant,
+            case_id=case_id,
+            vars_data=vars_data,
+            response=response,
+            response_metadata=response_metadata,
+            candidate_meta=candidate_meta,
+            expected_case=case_contract["expected_cases"].get(case_id),
+            expected_variants=set(case_contract["expected_variants"]),
+            expected_prompt_version=case_contract["expected_prompt_version"],
+            target_path=target_path,
         )
-        for name, value in row["dimension_scores"].items():
-            lines.append(f"- {name}: {value:.3f}")
-        lines.append("")
-    return "\n".join(lines).rstrip() + "\n"
+    )
+    _rows.collect_candidate_metadata(bucket, candidate_meta, response_metadata)
+
+    python_component = _single_component_result(_components(entry, "python"))
+    if python_component is None:
+        bucket["contract_errors"].append(
+            f"{case_id}: expected one numeric Python assertion with boolean pass"
+        )
+    recorded_python_passed = python_component[1] if python_component else False
+    rubric_component = _single_component_result(_components(entry, "llm-rubric"))
+    if rubric_component is None:
+        bucket["contract_errors"].append(
+            f"{case_id}: expected one numeric LLM-rubric assertion with boolean pass"
+        )
+    rubric_score, recorded_rubric_passed = rubric_component or (None, False)
+    rubric_passed = (
+        recorded_rubric_passed
+        and rubric_score is not None
+        and rubric_score >= _RUBRIC_PASS_THRESHOLD
+    )
+
+    python_score, python_passed, dimensions, regrade_error = _current_python_score(
+        output=response.get("output", ""),
+        target_path=target_path,
+        model_label=label,
+        prompt_version=response_metadata.get("prompt_version"),
+        expected_clip_id=case_id,
+    )
+    if regrade_error:
+        bucket["regrade_errors"].append(f"{case_id}: {regrade_error}")
+    combined = (
+        mean([python_score, rubric_score])
+        if python_score is not None and rubric_score is not None
+        else None
+    )
+    _rows.collect_scores(bucket, python_score, rubric_score, combined, dimensions)
+    if combined is None:
+        bucket["incomplete_case_ids"].add(case_id)
+    elif not recorded_python_passed or not python_passed or not rubric_passed:
+        bucket["failed_case_ids"].add(case_id)
+    _rows.collect_number(bucket["analysis_latencies"], entry.get("latencyMs"))
+    _rows.collect_number(bucket["analysis_costs"], entry.get("cost"))
+    return variant, case_id
 
 
-def _recommend(rows: list[dict[str, Any]]) -> dict[str, str | None]:
-    if not rows:
-        return {
-            "decision": "retest",
-            "primary_lane": None,
-            "fallback_lane": None,
-            "rationale": "No results were available.",
-        }
+def _entry_contract_errors(
+    *,
+    variant: str,
+    case_id: str,
+    vars_data: dict[str, Any],
+    response: dict[str, Any],
+    response_metadata: dict[str, Any],
+    candidate_meta: dict[str, Any],
+    expected_case: dict[str, str] | None,
+    expected_variants: set[str],
+    expected_prompt_version: str,
+    target_path: Path,
+) -> list[str]:
+    errors: list[str] = []
+    if variant not in expected_variants:
+        errors.append(f"{case_id}: unexpected candidate variant {variant}")
+    if expected_case is None:
+        errors.append(f"{case_id}: unexpected evaluation case")
+        return errors
+    expected_clip = expected_case["clip_id"]
+    if vars_data.get("clip_id") != expected_clip:
+        errors.append(f"{case_id}: vars clip_id does not match case contract")
+    if response_metadata.get("clip_id") != expected_clip:
+        errors.append(f"{case_id}: response clip_id does not match case contract")
+    if response_metadata.get("evaluation_id") != case_id:
+        errors.append(f"{case_id}: response evaluation_id is missing or inconsistent")
+    if response_metadata.get("prompt_version") != expected_prompt_version:
+        errors.append(f"{case_id}: prompt version is not {expected_prompt_version}")
+    if response.get("error"):
+        errors.append(f"{case_id}: provider response contains an error")
+    expected_target = _resolve_contract_target(expected_case["target_path"])
+    if target_path != expected_target:
+        errors.append(f"{case_id}: target_path does not match case contract")
+    required_meta = {
+        "clip_id": expected_clip,
+        "candidate_variant": variant,
+        "decision_role": "decision_candidate",
+        "decision_eligible": True,
+        "artifact_status": "retained_candidate_regrade_ready",
+    }
+    for field, expected in required_meta.items():
+        if candidate_meta.get(field) != expected:
+            errors.append(f"{case_id}: candidate meta {field} is not {expected!r}")
+    return errors
 
-    annotated = next(
-        (
-            row
-            for row in rows
-            if row.get("candidate_variant") == "annotated_symbolic"
-            or row.get("candidate_class") == "deterministic_baseline"
-        ),
+
+def _current_python_score(
+    *,
+    output: object,
+    target_path: Path,
+    model_label: str,
+    prompt_version: object,
+    expected_clip_id: str,
+) -> tuple[float | None, bool, dict[str, float], str | None]:
+    dimensions = dict.fromkeys(_DIMENSION_NAMES, 0.0)
+    try:
+        target_payload = json.loads(target_path.read_text(encoding="utf-8"))
+        target = _scorer.VideoAnalysisTarget.model_validate(target_payload)
+    except Exception as exc:
+        return None, False, dimensions, f"target {type(exc).__name__}: {exc}"
+    try:
+        prediction = _scorer.parse_prediction(output)
+    except ValueError:
+        return 0.0, False, dimensions, None
+    except Exception as exc:
+        return None, False, dimensions, f"prediction {type(exc).__name__}: {exc}"
+    try:
+        score = _scorer.score_prediction_against_target(
+            prediction=prediction,
+            target=target,
+            model_label=model_label,
+            prompt_version=str(prompt_version) if prompt_version is not None else None,
+            expected_clip_id=expected_clip_id,
+        )
+    except Exception as exc:
+        return None, False, dimensions, f"scoring {type(exc).__name__}: {exc}"
+    finalized = _scorer.finalize_score(
+        score.overall_score,
+        pass_threshold=_scorer.PASS_THRESHOLD,
+        hard_gates=score.hard_constraints_passed,
+        reason=_scorer.format_score_reason(score),
+    )
+    return (
+        float(finalized["score"]),
+        bool(finalized["pass"]),
+        {dimension.dimension: dimension.score for dimension in score.dimensions},
         None,
     )
-    ai_rows = [row for row in rows if row.get("candidate_class") == "ai_previz"]
-    if annotated is None:
-        return {
-            "decision": "retest",
-            "primary_lane": None,
-            "fallback_lane": None,
-            "rationale": (
-                "The deterministic baseline is missing from the dataset, so the fallback/control "
-                "policy cannot "
-                "be verified."
-            ),
-        }
-    if annotated["generation_latency_ms"] is None:
-        return {
-            "decision": "retest",
-            "primary_lane": None,
-            "fallback_lane": annotated["candidate"],
-            "rationale": (
-                "The deterministic baseline is missing a measured generation latency. Re-run the "
-                "deterministic dataset first."
-            ),
-        }
-    if annotated["generation_latency_ms"] > FAST_PREVIZ_BUDGET_MS:
-        return {
-            "decision": "block",
-            "primary_lane": None,
-            "fallback_lane": annotated["candidate"],
-            "rationale": (
-                f"Deterministic baseline measured {annotated['generation_latency_ms']} ms, above "
-                f"the {FAST_PREVIZ_BUDGET_MS} ms control-arm budget. Fix the fallback path before "
-                "using it as the non-AI comparator."
-            ),
-        }
-    if not ai_rows:
-        return {
-            "decision": "missing_ai_primary",
-            "primary_lane": None,
-            "fallback_lane": annotated["candidate"],
-            "rationale": (
-                f"Deterministic baseline measured {annotated['generation_latency_ms']} ms and "
-                f"stays inside the {FAST_PREVIZ_BUDGET_MS} ms control bar, but no AI previz "
-                "candidate was present. The product previz requirement remains unmet."
-            ),
-        }
 
-    best_ai = max(ai_rows, key=lambda item: item["overall"])
-    if best_ai["calls"] < 3:
-        return {
-            "decision": "retest",
-            "primary_lane": best_ai["candidate"],
-            "fallback_lane": annotated["candidate"],
-            "rationale": (
-                "AI candidate coverage is incomplete. Run all selected scene packets "
-                "before making a primary-lane recommendation."
-            ),
-        }
-    if best_ai["overall"] < 0.75:
-        return {
-            "decision": "hold_ai_primary_blocked",
-            "primary_lane": None,
-            "fallback_lane": annotated["candidate"],
-            "rationale": (
-                f"Deterministic baseline measured {annotated['generation_latency_ms']} ms and "
-                f"stays inside the {FAST_PREVIZ_BUDGET_MS} ms control bar. {best_ai['candidate']} "
-                f"is the best AI lane at {best_ai['overall']:.3f}, but it still misses the first "
-                "usefulness floor for camera/blocking readability, so the product previz lane "
-                "remains blocked."
-            ),
-        }
-    if (
-        best_ai["generation_cost_usd"] is not None
-        and best_ai["generation_latency_ms"] is not None
-        and best_ai["generation_latency_ms"] <= FAST_PREVIZ_BUDGET_MS
-    ):
-        return {
-            "decision": "promote_ai_primary",
-            "primary_lane": best_ai["candidate"],
-            "fallback_lane": annotated["candidate"],
-            "rationale": (
-                f"{best_ai['candidate']} measured {best_ai['generation_latency_ms']} ms, inside "
-                f"the {FAST_PREVIZ_BUDGET_MS} ms fast-previz target, while clearing the quality "
-                "bar. It can serve as the honest AI-primary previz lane, with deterministic "
-                "baseline retained only as fallback/control."
-            ),
-        }
-    if best_ai["generation_latency_ms"] is not None and best_ai["generation_latency_ms"] > 180000:
-        return {
-            "decision": "hold_ai_primary_blocked",
-            "primary_lane": best_ai["candidate"],
-            "fallback_lane": annotated["candidate"],
-            "rationale": (
-                f"Deterministic baseline measured {annotated['generation_latency_ms']} ms and "
-                f"stays inside the {FAST_PREVIZ_BUDGET_MS} ms control bar. {best_ai['candidate']} "
-                f"clears the quality bar but averages {best_ai['generation_latency_ms']} ms "
-                "generation latency, which is outside even the optional AI-previz envelope."
-            ),
-        }
-    return {
-        "decision": "hold_ai_primary_blocked",
-        "primary_lane": best_ai["candidate"],
-        "fallback_lane": annotated["candidate"],
-        "rationale": (
-            f"Deterministic baseline measured {annotated['generation_latency_ms']} ms and stays "
-            f"inside the {FAST_PREVIZ_BUDGET_MS} ms control bar, but it does not satisfy the "
-            "product previz requirement. "
-            f"{best_ai['candidate']} is the strongest current AI lane at {best_ai['overall']:.3f} "
-            f"overall and {best_ai['generation_latency_ms']} ms generation latency, so AI previz "
-            "remains the intended primary lane while runtime work stays blocked."
-        ),
-    }
+
+def _components(entry: dict[str, Any], assertion_type: str) -> list[dict[str, Any]]:
+    grading = _mapping(entry.get("gradingResult"))
+    components = grading.get("componentResults")
+    if not isinstance(components, list):
+        return []
+    return [
+        component
+        for component in components
+        if isinstance(component, dict)
+        and _mapping(component.get("assertion")).get("type") == assertion_type
+    ]
+
+
+def _single_component_result(
+    components: list[dict[str, Any]],
+) -> tuple[float, bool] | None:
+    if len(components) != 1:
+        return None
+    score = components[0].get("score")
+    if isinstance(score, bool) or not isinstance(score, (int, float)):
+        return None
+    value = float(score)
+    passed = components[0].get("pass")
+    if not math.isfinite(value) or not 0.0 <= value <= 1.0 or not isinstance(passed, bool):
+        return None
+    return value, passed
+
+
+def render_markdown(summary: dict[str, Any]) -> str:
+    return _report_support.render_markdown(summary)
 
 
 def _load_candidate_meta(
-    *,
-    candidate_variant: str,
-    clip_id: str,
-    dataset_root: Path,
+    *, candidate_variant: str, clip_id: str, dataset_root: Path
 ) -> dict[str, Any]:
     if not candidate_variant or not clip_id:
         return {}
-    meta_path = dataset_root / candidate_variant / clip_id / "meta.json"
-    if not meta_path.exists():
-        return {}
+    path = dataset_root / candidate_variant / clip_id / "meta.json"
     try:
-        payload = json.loads(meta_path.read_text())
-    except json.JSONDecodeError:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
         return {}
     return payload if isinstance(payload, dict) else {}
 
 
-def _candidate_class(candidate_variant: str | None, operator_lane: str | None) -> str:
-    if operator_lane in {"fast_previz", "deterministic_baseline"}:
-        return "deterministic_baseline"
-    if candidate_variant in _AI_VARIANTS:
-        return "ai_previz"
-    return "baseline"
-
-
-def _component_score(entry: dict[str, Any], assertion_type: str) -> float | None:
-    component_results = entry.get("gradingResult", {}).get("componentResults", [])
-    scores = []
-    for component in component_results:
-        assertion = component.get("assertion", {})
-        if assertion.get("type") == assertion_type and component.get("score") is not None:
-            scores.append(component["score"])
-    return round(mean(scores), 4) if scores else None
-
-
-def _load_previous_scores() -> dict[str, float]:
-    if not REGISTRY_PATH.exists():
-        return {}
-    data = yaml.safe_load(REGISTRY_PATH.read_text())
-    for entry in data.get("evals", []):
-        if entry.get("id") != "previz-usefulness":
-            continue
-        return {
-            score["model"]: score.get("metrics", {}).get("overall")
-            for score in entry.get("scores", [])
-            if score.get("metrics", {}).get("overall") is not None
-        }
-    return {}
-
-
 def _resolve_target_path(value: str) -> Path:
     path = Path(value)
-    if path.is_absolute():
-        return path
-    return (REPO_ROOT / "benchmarks" / value).resolve()
+    return path.resolve() if path.is_absolute() else (REPO_ROOT / "benchmarks" / path).resolve()
 
 
-def _maybe_add(values: set[Any], value: Any) -> None:
-    if value not in (None, "", []):
-        values.add(value)
+def _resolve_contract_target(value: str) -> Path:
+    path = Path(value)
+    return path.resolve() if path.is_absolute() else (REPO_ROOT / path).resolve()
 
 
-def _single_or_none(values: set[Any]) -> Any | None:
-    if not values:
-        return None
-    if len(values) == 1:
-        return next(iter(values))
-    return ", ".join(str(item) for item in sorted(values, key=str))
-
-
-def _single_or_join(values: set[Any]) -> str | None:
-    value = _single_or_none(values)
-    if value is None:
-        return None
-    return str(value)
+def _mapping(value: object) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
 
 
 if __name__ == "__main__":

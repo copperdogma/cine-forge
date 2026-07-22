@@ -20,9 +20,13 @@ See `AGENTS.md > Model Benchmarking (promptfoo)` for full setup and pitfalls.
 
 ---
 
-## Complete AI Task Map
+## Historical AI Task Map (February 2026; Non-Authoritative)
 
-Every AI call point in the CineForge pipeline, classified by module and try-validate-escalate role.
+This preserved snapshot classifies the call points that existed when the first
+benchmark workspace was written. Its model names, parameters, counts, and
+runtime shapes are not current contracts. Inspect the owning module manifests
+and runtime code for request truth, and `docs/evals/registry.yaml` for current
+evidence status. Do not choose a default from this section.
 
 ### Legend
 
@@ -54,7 +58,7 @@ Every AI call point in the CineForge pipeline, classified by module and try-vali
 | 17 | prop_bible | Prop extraction | Try | Full script + prop name | PropBible | gpt-4o-mini | HIGH |
 | 18 | prop_bible | Prop QA | Verify | Script (5000 chars) + output | QAResult | gpt-4o-mini | LOW |
 | 19 | prop_bible | Prop re-extract | Escalate | Full script + QA feedback | PropBible | gpt-4o | LOW |
-| 20 | entity_graph | Relationship discovery | Try | Entity name lists | EdgeList | gpt-4o-mini | MEDIUM |
+| 20 | entity_graph | Relationship discovery | Try | Entity name lists | RuntimeEntityEdgeList | gpt-4o-mini | MEDIUM |
 | 21 | continuity_tracking | State snapshots | Try | **STUBBED** | ContinuityState | — | SKIP |
 
 **21 total AI call points. 20 active, 1 stubbed.**
@@ -220,10 +224,16 @@ Identifies significant props from script excerpt. Unlike other bible tasks, this
 Finds narrative relationships missed by individual bible extractions. Explicitly limited to 3-5 high-impact relationships.
 
 - **Input**: Comma-separated lists of character, location, and prop names.
-- **Output**: `EdgeList` (list of `EntityEdge` with source/target, relationship type, evidence, confidence).
+- **Output**: `RuntimeEntityEdgeList` (a bare list of `EntityEdge` objects with string evidence).
 - **Prompt**: Focuses on familial links, secret rivalries, prop ownership, character-location associations.
 
-**Eval approach**: Score on relationship validity (evidence-grounded), novelty (not already in bible stubs), and graph coherence.
+**Current eval boundary**: `tasks/relationship-discovery.yaml` is a separate
+full-screenplay, source-grounded **capability detector**. It returns
+`{"edges": [...]}` with structured quote/scene evidence so claims can be checked
+against the screenplay. That is intentionally not the runtime transport above,
+and its scores do not select the runtime model. Unit coverage proves the two
+payload shapes cannot be silently interchanged. A runtime-shaped semantic
+quality eval remains required before changing the module default.
 
 ### 21. Continuity State Snapshots (SKIP)
 
@@ -233,9 +243,17 @@ Not implemented — returns empty data in production mode. Skip until module is 
 
 ---
 
-## Shared Scorer Opportunities
+## Historical Planning Snapshot (February 2026; Non-Authoritative)
 
-### 1. Bible Extraction Scorer (character, location, prop)
+The scorer opportunities, golden inventory, priority ordering, model matrix,
+and workspace listing below are retained to explain the original benchmark
+design. They are not current inventory or model-selection guidance. Use the
+files on disk for maintained contracts and `docs/evals/registry.yaml` for
+evidence status.
+
+### Shared Scorer Opportunities
+
+#### 1. Bible Extraction Scorer (character, location, prop)
 
 All three bible modules produce structurally similar output. A parameterized scorer can handle all three:
 
@@ -251,7 +269,7 @@ All three bible modules produce structurally similar output. A parameterized sco
 
 The existing `character_extraction_scorer.py` can be generalized.
 
-### 2. QA Task Scorer (all verify passes)
+#### 2. QA Task Scorer (all verify passes)
 
 All QA tasks use the same `qa_check()` function and produce `QAResult`. A shared QA scorer would:
 
@@ -259,7 +277,7 @@ All QA tasks use the same `qa_check()` function and produce `QAResult`. A shared
 - Seed known-bad outputs → verify QA catches them (true positive rate)
 - Score on: detection accuracy, issue severity calibration, false positive rate, repair quality (for normalization QA)
 
-### 3. Normalization Scorer (unique)
+#### 3. Normalization Scorer (unique)
 
 Script normalization produces text output, not JSON. Needs custom scorer:
 
@@ -268,19 +286,19 @@ Script normalization produces text output, not JSON. Needs custom scorer:
 - **Completeness**: All source content represented in output
 - **Fountain compliance**: Parseable by fountain-tools
 
-### 4. Classification Scorer (boundary validation, config detection)
+#### 4. Classification Scorer (boundary validation, config detection)
 
 Simple classification/detection tasks. Score on accuracy, precision, recall, confidence calibration.
 
 ---
 
-## Golden Reference Strategy
+### Golden Reference Strategy
 
-### Available Test Input
+#### Available Test Input
 
 Currently: `input/the-mariner.md` (full screenplay, The Mariner)
 
-### Golden References Needed
+#### Golden References Needed
 
 | Task Group | Golden File | Source | Status |
 |------------|-------------|--------|--------|
@@ -294,7 +312,7 @@ Currently: `input/the-mariner.md` (full screenplay, The Mariner)
 | Prop discovery | `golden/the-mariner-prop-list.json` | Hand-craft list | TODO |
 | QA tasks | `golden/qa-seeds/` directory | Known-good + known-bad pairs | TODO |
 
-### Golden Reference Quality Standard
+#### Golden Reference Quality Standard
 
 - Hand-crafted or expert-validated (never AI-generated without human review)
 - Include both "must have" items (recall targets) and "must not have" items (precision targets)
@@ -303,9 +321,9 @@ Currently: `input/the-mariner.md` (full screenplay, The Mariner)
 
 ---
 
-## Eval Priority and Ordering
+### Eval Priority and Ordering
 
-### Phase 2A — High Priority (build first)
+#### Phase 2A — High Priority (build first)
 
 These tasks have the most model variance and highest production impact:
 
@@ -314,7 +332,7 @@ These tasks have the most model variance and highest production impact:
 3. **Prop extraction** — reuse bible scorer pattern
 4. **Script normalization** — unique scorer, highest complexity
 
-### Phase 2B — Medium Priority
+#### Phase 2B — Medium Priority
 
 5. **Scene enrichment** — conditional task, needs varied test scenes
 6. **Project config detection** — multi-field scoring
@@ -322,7 +340,7 @@ These tasks have the most model variance and highest production impact:
 8. **Entity relationship discovery** — graph quality scoring
 9. **Normalization QA** — seeded good/bad pairs
 
-### Phase 2C — Low Priority / Deferred
+#### Phase 2C — Low Priority / Deferred
 
 10. **Character/location/prop QA** — shared QA scorer
 11. **Scene boundary validation** — binary classification
@@ -333,7 +351,7 @@ These tasks have the most model variance and highest production impact:
 
 ---
 
-## Model Matrix
+### Model Matrix
 
 All evals run across these models (as of Feb 2026):
 
@@ -365,7 +383,7 @@ All evals run across these models (as of Feb 2026):
 
 ---
 
-## Workspace Structure
+### Workspace Structure
 
 ```
 benchmarks/
@@ -425,15 +443,35 @@ When a new AI-powered module lands or you're building a new eval:
 4. Write Python scorer in `scorers/` (implement `get_assert(output, context)`)
 5. Create promptfoo config in `tasks/` (all providers x test cases x dual assertions)
 6. Run: `promptfoo eval -c tasks/<name>.yaml --no-cache -j 3`
-7. Analyze results, pick models, update defaults in `src/cine_forge/schemas/models.py`
+7. Classify every mismatch and record the exact result in
+   `docs/evals/registry.yaml`. Change an owning module manifest/runtime default
+   only when current quality, latency, cost, and runtime-shape evidence supports
+   the decision.
+
+For visual/media evals, keep source-authored expected truth under fixtures or
+targets and keep generated candidates conceptually separate from goldens. If
+candidate bytes influence a decision-grade score, check in the exact panels,
+grids, references, clips/frames, artifact lineage, raw results, and complete
+hash manifest. An ignored generated directory plus hashes is not replayable
+evidence because the manifest cannot restore missing stochastic outputs.
 
 **Always use dual evaluation**: Python scorer (structural) + LLM rubric (semantic). Both must pass.
 
+**Fail-closed score semantics**: a Python scorer whose hard contract fails must
+return `pass: false` and a numeric score strictly below its declared pass
+threshold. Preserve the uncapped raw score in diagnostics if useful. Reports,
+rankings, and default recommendations must also require every assertion pass
+flag and hard constraint; never promote an averaged score assembled from failed
+components.
+
 ---
 
-## Results Summary (Feb 2026)
+## Historical Results Summary (Feb 2026; Non-Decision-Grade)
 
-5 eval types × 12 models = 60 evaluations. All results in `results/` directory.
+5 eval types × 12 models = 60 evaluations. All results remain in `results/` as
+historical context. Story 208 later repaired goldens, scorers, corpora, runtime
+alignment, and score/pass semantics, so none of the rankings or selections in
+this section is current default evidence.
 
 ### Model Rankings by Task
 
@@ -480,11 +518,16 @@ When a new AI-powered module lands or you're building a new eval:
 | 2 | GPT-4.1 Nano | 0.882 | 0.68 | |
 | 3 | Claude Haiku 4.5 | 0.873 | 0.90 | Best LLM rubric score |
 
-⚠ **Config detection golden reference needs calibration**: The 436-line screenplay is ~10-15 formatted pages, not a full-length feature. SOTA models correctly identify it as "short film" but score lower because our golden expects "feature film". Cheap models naively match the golden and score higher. This inverted ranking reflects a golden reference issue, not model quality.
+Historical diagnosis was correct: the old config golden inverted the format
+ranking. Story 208 repaired that source truth, added a second config corpus, and
+closed confidence, rationale, padding, null-audience, and synonym-counting
+false greens. A fresh two-corpus run is required before ranking models again.
 
-### Task-Specific Model Selections
+### Historical Task-Specific Model Selections
 
-Each task gets its own try-validate-escalate triad based on actual benchmark data:
+These were the point-in-time try-validate-escalate triads. They do not override
+the current provisional-default table in `AGENTS.md` or the evidence statuses
+in `docs/evals/registry.yaml`.
 
 | Task | Try (work_model) | Verify (QA) | Escalate |
 |------|-------------------|-------------|----------|
@@ -498,9 +541,7 @@ See `docs/stories/story-036-model-selection.md` for full task-specific rationale
 
 ### Key Findings
 
-1. **Anthropic dominates the CineForge workload**: Top spots across 4/5 eval types.
-2. **Gemini 2.5 Pro is a strong alternative**: #1 on locations, #3 on props.
-3. **Extended thinking is a reliability risk**: Gemini Flash models truncate JSON output even with `maxOutputTokens: 16384`.
-4. **GPT-4.1 Nano is insufficient for all tasks**: Last or near-last on every eval.
-5. **Dual evaluation is essential**: GPT-4.1 Mini passes Python scorers but fails LLM rubric — structural quality without semantic depth.
-6. **Gemini 3 preview models are NOT better than 2.5 Pro**: Preview quality may improve at GA.
+These were historical hypotheses, not current findings. Story 208 invalidated
+the underlying rankings after repairing source goldens, scorers, rubrics,
+corpora, runtime alignment, and result provenance. Retest rather than reusing
+any provider ranking or insufficiency claim from this snapshot.

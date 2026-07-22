@@ -1,26 +1,230 @@
 {
+  "contract_version": "final-render-provider-floor-frame-contract-v2",
+  "case_policy": {
+    "mode": "all_declared_cases_x_all_wired_candidates",
+    "case_count": 2,
+    "candidate_count": 3,
+    "candidate_case_rows": 6,
+    "frames_per_candidate_case": 5,
+    "target_semantics": "intended_source_brief_not_candidate_frame_truth"
+  },
+  "generator_provenance": {
+    "frame_policy": "five_interior_sixths_jpegs_v2",
+    "files_sha256": {
+      "benchmarks/scripts/generate_final_render_provider_floor_dataset.py": "5faf6bb3416395745683b3785c2b86de57436196e86449eaa1f4f49eceff4742",
+      "benchmarks/scripts/final_render_provider_floor_dataset_support.py": "4b3313134886beb1f1a2d8fc0edd9e5b0365f4af8caa71ef1c43168bb3b7fcd5",
+      "benchmarks/scripts/final_render_provider_floor_dataset_packets.py": "6437f124528bd3f650bf1b8dca1a759a93964abaee7416b2d41dcefb10e5072f",
+      "benchmarks/scripts/final_render_provider_floor_generator_provenance.py": "64fba68e43f6f85409d062c31fe999d43fbf7566a0872bc51f915a8bcd3f0b44",
+      "benchmarks/scripts/final_render_provider_floor_retained_evidence.py": "d8177ca92b103ecbbcfaf93313d9da5b2cdce91bb0df55289f8d56bfcb0e36a8",
+      "benchmarks/scripts/final_render_provider_floor_runtime_snapshots.py": "65febb2cf5be9c7b01d10639bad17ec2bc973041488e87c5e9c9a08a2a0a2358",
+      "benchmarks/scripts/real_render_provider_floor_support.py": "5d325a9eb977e383ce9a220777de52d8d01e4427ea2550f92990777b71ca6496"
+    },
+    "fixture_manifest_path": "benchmarks/fixtures/final_render_provider_floor_cases.json",
+    "fixture_manifest_sha256": "427078fc9886232b12913bd48301596675ed2db6d1af973577c1905d0c73d529",
+    "runtime_result_scope": "repository",
+    "runtime_result_path": "benchmarks/results/final-render-provider-floor-story-169-runtime-fixed-2026-04-16.json",
+    "runtime_result_sha256": "6814ecf024d9a4423e2746c39aafde477be7cf0212332d62dbd8eb8f0a57a12c",
+    "runtime_payload_sha256": "df30f46b91f2fc12b2e759d6da6cec30618d4c70e1a22b81b81506d5445e3284"
+  },
+  "historical_quality_evidence_status": "contaminated-non-decision-grade",
   "cases": [
     {
       "case_id": "open_frequency_scene_001_studio_night",
       "title": "Open Frequency scene 001 \u2014 radio studio night",
+      "case_status": "active_intended_source_brief",
       "variants": [
         "google_veo31",
         "google_veo31_fast",
         "openai_sora2"
       ],
+      "candidate_packets": [
+        {
+          "candidate_variant": "google_veo31",
+          "candidate_label": "Google Veo 3.1 Render",
+          "clip_path": "google_veo31/open_frequency_scene_001_studio_night/clip.mp4",
+          "clip_sha256": "b64361a9739f363c2ff13b2f6c85664ded5f9f986410e983d3e259e05f7166a5",
+          "frame_count": 5,
+          "sample_times_seconds": [
+            1.333,
+            2.667,
+            4.0,
+            5.333,
+            6.667
+          ],
+          "sampled_frame_sha256": [
+            "3e8ad8377f6094cb53449ca33515053a1ee711e759bb1e5ae7db79d6dea0e5c6",
+            "5f3ada7ea3eac3c53c090be72bb83bcfa8e3478457dd5d338408713b30a96d5b",
+            "b5e94f62c3ea8307f40f74082719c4594af99b3e2cd212cb38c0c12c257a0dcc",
+            "d888533b71dc2d541f706828a1fa08f518f33eaf1bfcb5c075fc35667f695d27",
+            "8ad719967a4e9449e2300687b4666d7e61c8d57c419272fcfda9b4c2f03b96e5"
+          ],
+          "meta_path": "google_veo31/open_frequency_scene_001_studio_night/meta.json",
+          "meta_sha256": "402f05f9b293333a98034fc8dc2a2d8bedd88577c7a143200b4e00ef8c68e28e",
+          "runtime_evidence": {
+            "status": "unavailable-retained-media-only",
+            "reason": "The original render prompt, generated-video artifact, and direct input bytes were not retained; clip-only evidence cannot support a model decision."
+          }
+        },
+        {
+          "candidate_variant": "google_veo31_fast",
+          "candidate_label": "Google Veo 3.1 Fast Render",
+          "clip_path": "google_veo31_fast/open_frequency_scene_001_studio_night/clip.mp4",
+          "clip_sha256": "ea5ba643cf8f78eba7fc8b2a08b29e616498b80f4e04fc81b33629518e594d9c",
+          "frame_count": 5,
+          "sample_times_seconds": [
+            1.333,
+            2.667,
+            4.0,
+            5.333,
+            6.667
+          ],
+          "sampled_frame_sha256": [
+            "61cd5ac6b7c9ef5dc42d76395fcd772cbc094e4a16bfdac79d2dbe93d7e803ed",
+            "c3ad6d6f10bccea5fdee8b8feb53af78bffb808c95fec90febf4e2217d6d0043",
+            "a1e22b66a39060516787d03161e655314c9f3efe54c0eefa24f285b4b2dfce3c",
+            "fecf953b15e2c8c609d81a4d123112aab6c823049257c696ae4fed66bc395dbc",
+            "e8f6facbc78a03aa60d930cd9839886c8260477d1958db28009afe5b3930553c"
+          ],
+          "meta_path": "google_veo31_fast/open_frequency_scene_001_studio_night/meta.json",
+          "meta_sha256": "7f60deefd9b65558dc455e559a595e0f1aa576de3f8549986912b864f8210508",
+          "runtime_evidence": {
+            "status": "unavailable-retained-media-only",
+            "reason": "The original render prompt, generated-video artifact, and direct input bytes were not retained; clip-only evidence cannot support a model decision."
+          }
+        },
+        {
+          "candidate_variant": "openai_sora2",
+          "candidate_label": "OpenAI Sora 2 Render",
+          "clip_path": "openai_sora2/open_frequency_scene_001_studio_night/clip.mp4",
+          "clip_sha256": "075777cf45d449a3a7d8c46a7fb044cdcac2986b5b127babed586f6774cfc3c3",
+          "frame_count": 5,
+          "sample_times_seconds": [
+            1.333,
+            2.667,
+            4.0,
+            5.333,
+            6.667
+          ],
+          "sampled_frame_sha256": [
+            "708b9dc76e10803342d1b7207fc2469a38f150d25c924e29a82e451467523e7d",
+            "726783c7af847cbc3830ca36657650bc83d648bdb2d62c0400fb436a4055b25a",
+            "80fea6605d96ae1c4d96f74bd135a1b71cf8f6c84ca5e3faea97cdda9580a4ad",
+            "d56f089e8fad040a1f6cff8825e71d85db21457c05d42617a381b6d733ed8d07",
+            "b322c79d9ddaa783281af9b16c0266ab289b5ab18dd2e68b8643faf65d5ed421"
+          ],
+          "meta_path": "openai_sora2/open_frequency_scene_001_studio_night/meta.json",
+          "meta_sha256": "96ada01906d7be27e2409001e90f003fe4d1d5e005efc899fe4471ad3799ecf4",
+          "runtime_evidence": {
+            "status": "unavailable-retained-media-only",
+            "reason": "The original render prompt, generated-video artifact, and direct input bytes were not retained; clip-only evidence cannot support a model decision."
+          }
+        }
+      ],
       "target_path": "targets/open_frequency_scene_001_studio_night/target.json",
-      "target_markdown": "targets/open_frequency_scene_001_studio_night/target.md"
+      "target_sha256": "b4bdab18cc4bd88d093d33b0ec6c612201fb99dabcf1cecf01bb442cbcf4e6c9",
+      "target_markdown": "targets/open_frequency_scene_001_studio_night/target.md",
+      "target_markdown_sha256": "f6c599bb41d0dee92f2d9a26fa3d9aafe75f05e39a9c60d5f68b6c1f72f6266e",
+      "target_provenance_path": "targets/open_frequency_scene_001_studio_night/provenance.json",
+      "target_provenance_sha256": "b0fae0a754bbb9a48b22ee2ed20fb4ee442b8a8cb1129a6bd57f152d4c2bd5b5"
     },
     {
       "case_id": "open_frequency_scene_002_water_tower_night",
       "title": "Open Frequency scene 002 \u2014 water tower catwalk night",
+      "case_status": "active_intended_source_brief",
       "variants": [
         "google_veo31",
         "google_veo31_fast",
         "openai_sora2"
       ],
+      "candidate_packets": [
+        {
+          "candidate_variant": "google_veo31",
+          "candidate_label": "Google Veo 3.1 Render",
+          "clip_path": "google_veo31/open_frequency_scene_002_water_tower_night/clip.mp4",
+          "clip_sha256": "8623a3ac83cedb832b9590de379c11af6169e0eded5506e8bf600a74936223a1",
+          "frame_count": 5,
+          "sample_times_seconds": [
+            1.333,
+            2.667,
+            4.0,
+            5.333,
+            6.667
+          ],
+          "sampled_frame_sha256": [
+            "430ba4302ee8347e51ec8bc4d6a756c88b8386a5456949af07a56b3f44a3c0d1",
+            "fff89680cc2dce180c351644f449ad658b1263df90af29f0c7b069d660d26adf",
+            "0e5fbbe1b0c264c50e761a869fb77febe4391fa6cb1f27333631af3f3f142df3",
+            "261ffab9ec61d751f4540ea18f434d76fbed833fc6d239199cceb052ebce8c2e",
+            "9e257a56fcf899358421d4c489d10785ffb416eff54fe6729b2012f3c0135a49"
+          ],
+          "meta_path": "google_veo31/open_frequency_scene_002_water_tower_night/meta.json",
+          "meta_sha256": "d5797c6109c95a4a45c860d69da2d06e3eafbb81069544bd0aea69c82e9c0dd7",
+          "runtime_evidence": {
+            "status": "unavailable-retained-media-only",
+            "reason": "The original render prompt, generated-video artifact, and direct input bytes were not retained; clip-only evidence cannot support a model decision."
+          }
+        },
+        {
+          "candidate_variant": "google_veo31_fast",
+          "candidate_label": "Google Veo 3.1 Fast Render",
+          "clip_path": "google_veo31_fast/open_frequency_scene_002_water_tower_night/clip.mp4",
+          "clip_sha256": "fa0b7aa61e350a4069cbe8281dda12392097f4c66fc266371e6ffcbfaf3b2df6",
+          "frame_count": 5,
+          "sample_times_seconds": [
+            1.333,
+            2.667,
+            4.0,
+            5.333,
+            6.667
+          ],
+          "sampled_frame_sha256": [
+            "abbdf220baddb1332f2980965b7cbe26ef68669f2f5738a131f7ca31c3f64699",
+            "5b4cdf15070c5f5c1f7f46de0c3b4ce893e97fe08784bb679e2531e68d47eb61",
+            "a55aa8c2047180bc8358ea7d98f6e26013c18fadcb424c5496b9aca3c781a8f7",
+            "2558b518fbc703b043818baf3a680b62c86741ca094872bf21b79f1c312bd6d3",
+            "9d1d24dd737b66f1013072483ac5fcb5918ff5784158bb1355aa5666439e420e"
+          ],
+          "meta_path": "google_veo31_fast/open_frequency_scene_002_water_tower_night/meta.json",
+          "meta_sha256": "bc3a2de886e18d88fcff5ee7732bf0da1bb8ec7cae87f0d2ac850e37c78bf46e",
+          "runtime_evidence": {
+            "status": "unavailable-retained-media-only",
+            "reason": "The original render prompt, generated-video artifact, and direct input bytes were not retained; clip-only evidence cannot support a model decision."
+          }
+        },
+        {
+          "candidate_variant": "openai_sora2",
+          "candidate_label": "OpenAI Sora 2 Render",
+          "clip_path": "openai_sora2/open_frequency_scene_002_water_tower_night/clip.mp4",
+          "clip_sha256": "f96ae2fe6fab66f15068299beef7ef20353854e5d5d1ffac06186a352a7b0553",
+          "frame_count": 5,
+          "sample_times_seconds": [
+            1.333,
+            2.667,
+            4.0,
+            5.333,
+            6.667
+          ],
+          "sampled_frame_sha256": [
+            "d1814f315d69b204f8c3f346ce8e7df2304318f090bfe6c2f84cb96fafe1abe3",
+            "3feb51bf411cdbdc43315f47b302a6be898a8d9e864201285df592e1ac3b4660",
+            "0d6e15f0b59d7f76fe07b62a06552f3b506aa6694a673bbdc18ff8c412784514",
+            "610b54fd9457b4e10189dc649ed59a9d9599ff957bb899bf256d39c9bb389f14",
+            "cdbe093c65dac86d61f4dc3a5fbf785354339007cc407cfe2c8ea277a0db2204"
+          ],
+          "meta_path": "openai_sora2/open_frequency_scene_002_water_tower_night/meta.json",
+          "meta_sha256": "bb70a6fdaf5eedee4a10eb7b120fd7ddd7fee1feccf5ad9e2ae3815b48c7d70e",
+          "runtime_evidence": {
+            "status": "unavailable-retained-media-only",
+            "reason": "The original render prompt, generated-video artifact, and direct input bytes were not retained; clip-only evidence cannot support a model decision."
+          }
+        }
+      ],
       "target_path": "targets/open_frequency_scene_002_water_tower_night/target.json",
-      "target_markdown": "targets/open_frequency_scene_002_water_tower_night/target.md"
+      "target_sha256": "0cca98f887c7b841f1fd006c77d477f7ec65bfbdc1240d93006abdd3fc376921",
+      "target_markdown": "targets/open_frequency_scene_002_water_tower_night/target.md",
+      "target_markdown_sha256": "b76d78bb9472c5aa85175d30ac80e8742b2266b5c7a695e7000997f772b5e53f",
+      "target_provenance_path": "targets/open_frequency_scene_002_water_tower_night/provenance.json",
+      "target_provenance_sha256": "029f061b6d425a8c0bfd8b65c813fedfcb5dcc491bf0a11d7213ec66ce9e5b2d"
     }
   ]
 }

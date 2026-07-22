@@ -11,6 +11,8 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT_PATH = REPO_ROOT / "scripts" / "methodology-graph.js"
 
+pytestmark = pytest.mark.unit
+
 
 def _write(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -409,6 +411,92 @@ def test_methodology_graph_prefers_strongest_latest_eval_score_on_same_day(
     )
 
 
+def test_methodology_graph_excludes_contaminated_and_inherited_historical_scores(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _write(
+        tmp_path / "docs" / "evals" / "registry.yaml",
+        """
+        evals:
+          - id: repaired-eval
+            name: Repaired Eval
+            type: quality
+            historical_evidence_status: contaminated-non-decision-grade
+            spec_refs:
+              - spec:11
+            story_refs:
+              - "001"
+            category_refs:
+              - spec:11
+            compromise_refs: []
+            scores:
+              - model: "Fresh decision-grade model"
+                evidence_status: decision-grade
+                metrics:
+                  overall: 0.81
+                measured: 2026-04-10
+                note: "Only the repaired-contract score may drive planning."
+              - model: "Inherited unmarked model"
+                metrics:
+                  overall: 1.0
+                measured: 2026-04-12
+                note: "This row inherits the contaminated historical status."
+              - model: "Explicitly contaminated model"
+                evidence_status: contaminated-non-decision-grade
+                metrics:
+                  overall: 0.99
+                measured: 2026-04-13
+                note: "This row is not current evidence."
+              - model: "Regrade required model"
+                evidence_status: regrade-required
+                metrics:
+                  overall: 1.0
+                measured: 2026-04-14
+                note: "A regrade marker must not resurrect historical evidence."
+              - model: "Current contract only model"
+                evidence_status: current-contract-complete
+                metrics:
+                  overall: 1.0
+                measured: 2026-04-15
+                note: "Contract completion is not decision-grade model evidence."
+              - model: "Provisional model"
+                evidence_status: provisional
+                metrics:
+                  overall: 1.0
+                measured: 2026-04-16
+                note: "Provisional evidence must not drive planning."
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "build")
+
+    assert result.returncode == 0, result.stderr
+    graph = json.loads(
+        (tmp_path / "docs" / "methodology" / "graph.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    eval_record = graph["evals"][0]
+    assert eval_record["latestScore"]["model"] == "Fresh decision-grade model"
+    assert eval_record["latestScore"]["metrics"]["overall"] == 0.81
+    assert eval_record["excludedScoreCount"] == 5
+    assert (
+        eval_record["historicalEvidenceStatus"]
+        == "contaminated-non-decision-grade"
+    )
+    assert (
+        eval_record["actionability"]["whyNow"]
+        == "Only the repaired-contract score may drive planning."
+    )
+
+
 def test_methodology_graph_renders_structured_current_execution_map(
     tmp_path: Path,
 ) -> None:
@@ -799,6 +887,228 @@ def test_methodology_graph_exports_explicit_eval_lineage(tmp_path: Path) -> None
     assert eval_record["categoryRefs"] == ["spec:11"]
     assert eval_record["declaredCategoryRefs"] == ["spec:11"]
     assert eval_record["derivedCategoryRefs"] == ["spec:11"]
+
+
+def _configure_cross_cutting_eval_lineage_fixture(tmp_path: Path) -> None:
+    _write(
+        tmp_path / "docs" / "spec.md",
+        """
+        # Spec
+
+        ## spec:7 — Generation
+
+        ## spec:8 — AI Evaluation
+
+        ## spec:11 — Execution Tooling
+
+        ### spec:11.1 — Story Lifecycle and Handoff Chain
+        """,
+    )
+    state_path = tmp_path / "docs" / "methodology" / "state.yaml"
+    state = json.loads(state_path.read_text(encoding="utf-8"))
+    for category_id, product_need, tech_need in (
+        ("spec:7", "Generation requests", "Render-adapter substrate"),
+        ("spec:8", "Trustworthy model evaluation", "Eval registry discipline"),
+    ):
+        state["categories"][category_id] = {
+            "product_need": product_need,
+            "tech_need": tech_need,
+            "substrate": "exists",
+            "phase": "hold",
+            "story_coverage": "partial",
+            "notes": [],
+        }
+    state_path.write_text(f"{json.dumps(state, indent=2)}\n", encoding="utf-8")
+
+    story_path = (
+        tmp_path / "docs" / "stories" / "story-001-honest-blocked-story.md"
+    )
+    story = story_path.read_text(encoding="utf-8")
+    original = 'category_refs:\n  - "spec:11"'
+    assert original in story
+    story_path.write_text(
+        story.replace(
+            original,
+            'category_refs:\n  - "spec:8"\n  - "spec:11"',
+            1,
+        ),
+        encoding="utf-8",
+    )
+
+
+def test_eval_story_provenance_does_not_widen_eval_category_ownership(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _configure_cross_cutting_eval_lineage_fixture(tmp_path)
+    _write(
+        tmp_path / "docs" / "evals" / "registry.yaml",
+        """
+        evals:
+          - id: execution-eval
+            name: Execution Eval
+            type: quality
+            spec_refs:
+              - spec:11
+            story_refs:
+              - "001"
+            category_refs:
+              - spec:11
+            compromise_refs: []
+            description: >
+              A narrow eval repaired by a cross-cutting audit story.
+            runner: promptfoo
+            command: "echo sample"
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "build")
+
+    assert result.returncode == 0, result.stderr
+    graph = json.loads(
+        (tmp_path / "docs" / "methodology" / "graph.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    eval_record = graph["evals"][0]
+    assert eval_record["storyIds"] == ["001"]
+    assert eval_record["categoryRefs"] == ["spec:11"]
+    assert eval_record["derivedCategoryRefs"] == ["spec:11"]
+
+
+def test_eval_may_explicitly_select_category_supported_by_story_provenance(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _configure_cross_cutting_eval_lineage_fixture(tmp_path)
+    _write(
+        tmp_path / "docs" / "evals" / "registry.yaml",
+        """
+        evals:
+          - id: cross-cutting-eval
+            name: Cross-Cutting Eval
+            type: quality
+            spec_refs:
+              - spec:11
+            story_refs:
+              - "001"
+            category_refs:
+              - spec:8
+              - spec:11
+            compromise_refs: []
+            description: >
+              An eval that explicitly advances one category from its story.
+            runner: promptfoo
+            command: "echo sample"
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "build")
+
+    assert result.returncode == 0, result.stderr
+    graph = json.loads(
+        (tmp_path / "docs" / "methodology" / "graph.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    eval_record = graph["evals"][0]
+    assert eval_record["categoryRefs"] == ["spec:8", "spec:11"]
+    assert eval_record["derivedCategoryRefs"] == ["spec:8", "spec:11"]
+
+
+def test_eval_rejects_declared_category_without_direct_or_story_lineage(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _configure_cross_cutting_eval_lineage_fixture(tmp_path)
+    _write(
+        tmp_path / "docs" / "evals" / "registry.yaml",
+        """
+        evals:
+          - id: unsupported-category-eval
+            name: Unsupported Category Eval
+            type: quality
+            spec_refs:
+              - spec:11
+            story_refs:
+              - "001"
+            category_refs:
+              - spec:7
+              - spec:11
+            compromise_refs: []
+            description: >
+              An eval with an unsupported extra category declaration.
+            runner: promptfoo
+            command: "echo sample"
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "print")
+
+    assert result.returncode == 1
+    assert (
+        "eval unsupported-category-eval category_refs mismatch derived lineage: "
+        "declared spec:7, spec:11 vs derived spec:11" in result.stderr
+    )
+
+
+def test_eval_rejects_category_refs_missing_direct_spec_ownership(
+    tmp_path: Path,
+) -> None:
+    _seed_methodology_repo(
+        tmp_path,
+        story_status="Done",
+        blocker_summary="N/A",
+        blocker_evidence="N/A",
+        unblock_condition="N/A",
+    )
+    _configure_cross_cutting_eval_lineage_fixture(tmp_path)
+    _write(
+        tmp_path / "docs" / "evals" / "registry.yaml",
+        """
+        evals:
+          - id: missing-direct-category-eval
+            name: Missing Direct Category Eval
+            type: quality
+            spec_refs:
+              - spec:11
+            story_refs:
+              - "001"
+            category_refs:
+              - spec:8
+            compromise_refs: []
+            description: >
+              An eval omitting the category required by its direct spec ref.
+            runner: promptfoo
+            command: "echo sample"
+        """,
+    )
+
+    result = _run_methodology_graph(tmp_path, "print")
+
+    assert result.returncode == 1
+    assert (
+        "eval missing-direct-category-eval category_refs mismatch derived lineage: "
+        "declared spec:8 vs derived spec:8, spec:11" in result.stderr
+    )
 
 
 def test_methodology_graph_rejects_eval_category_refs_that_do_not_match_lineage(

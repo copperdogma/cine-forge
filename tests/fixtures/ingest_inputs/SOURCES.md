@@ -1,6 +1,8 @@
 # Ingest Input Fixture Sources
 
-These fixtures were downloaded from publicly accessible free sources for ingestion tests.
+This directory mixes public-source samples with repo-authored regression fixtures.
+Every direct fixture file must have an entry here; provenance and intended scope
+are part of the test contract.
 
 - `owl_creek_bridge.txt`
   - URL: `https://www.gutenberg.org/cache/epub/375/pg375.txt`
@@ -39,3 +41,25 @@ These fixtures were downloaded from publicly accessible free sources for ingesti
   - Source text: `run_like_hell_teaser.fountain` (Slugline public sample)
   - Generation method: rendered into 5 grayscale image pages with ImageMagick, then packaged into an image-based PDF using `img2pdf`.
   - Notes: Deterministic screenplay-like scanned fixture used to validate OCR fallback and extractor diagnostics (`pdf_extractor_selected=ocrmypdf`).
+
+- `sample_script.fdx`
+  - Source: Repo-authored synthetic fixture (Story 004).
+  - Work: Minimal safehouse screenplay fragment.
+  - Notes: Mechanical Final Draft XML ingestion fixture; not a semantic quality golden.
+
+- `sample_script.docx`
+  - Source: Repo-authored synthetic fixture added with DOCX ingestion support.
+  - Work: Minimal lab screenplay fragment.
+  - Notes: Mechanical DOCX extraction/classification fixture; not a semantic quality golden.
+
+- `the_signal.docx`
+  - Source: Repo-authored synthetic fixture (Story 003b).
+  - Work: *Signal in the Rain*.
+  - Notes: Multi-scene DOCX screenplay used to exercise realistic DOCX ingestion.
+
+- `the_mariner_degraded.txt`
+  - Source: Repo-authored degraded-text fixture (Story 007c), derived from local
+    *The Mariner* sample material.
+  - Notes: Upstream publication/licensing provenance was not recorded. Keep this
+    fixture confined to local remediation regression tests; it is not a public
+    benchmark corpus or decision-grade semantic golden.

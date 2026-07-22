@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import io
 import json
 import shutil
 import sys
@@ -12,8 +11,6 @@ import uuid
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
-
-from PIL import Image, ImageDraw
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_ROOT = REPO_ROOT / "src"
@@ -26,25 +23,24 @@ from cine_forge.env import load_cine_forge_dotenv  # noqa: E402
 
 load_cine_forge_dotenv(REPO_ROOT)
 
+import real_render_provider_floor_runner_support as _runner_support  # noqa: E402
+from real_render_provider_floor_fixture_support import (  # noqa: E402
+    seed_references as _seed_references,
+)
 from real_render_provider_floor_support import (  # noqa: E402
     CANDIDATE_SPECS,
     DEFAULT_CANDIDATE_PACKS,
+    RUNTIME_COMPARISON_SETTINGS,
     CandidateRunSummary,
     RecipeRunSummary,
     RenderProviderFloorManifest,
+    build_runtime_payload,
     display_repo_relative_path,
     render_runtime_markdown,
     summarize_runtime_runs,
 )
 
-from cine_forge.artifacts import ArtifactStore  # noqa: E402
 from cine_forge.modules.generation.render_adapter_v1.support import load_engine_pack  # noqa: E402
-from cine_forge.schemas import (  # noqa: E402
-    ArtifactMetadata,
-    GeneratedVideoArtifact,
-    Scene,
-)
-from cine_forge.services.injected_assets import InjectedAssetService  # noqa: E402
 
 DEFAULT_MANIFEST = (
     REPO_ROOT / "benchmarks" / "fixtures" / "final_render_provider_floor_cases.json"
@@ -58,9 +54,9 @@ PROJECT_DEFAULT_MODEL = "claude-sonnet-4-6"
 PROJECT_WORK_MODEL = "claude-haiku-4-5-20251001"
 PROJECT_VERIFY_MODEL = "gpt-4.1-mini"
 PROJECT_ESCALATE_MODEL = "claude-opus-4-6"
-RENDER_DURATION_SECONDS = 8
-RENDER_ASPECT_RATIO = "16:9"
-NORMALIZED_RESOLUTION = "720p"
+RENDER_DURATION_SECONDS = RUNTIME_COMPARISON_SETTINGS["duration_seconds"]
+RENDER_ASPECT_RATIO = RUNTIME_COMPARISON_SETTINGS["aspect_ratio"]
+NORMALIZED_RESOLUTION = RUNTIME_COMPARISON_SETTINGS["normalized_resolution"]
 COMPILER_MODEL = "gpt-5.4-mini"
 
 
@@ -125,21 +121,15 @@ def main() -> None:
             )
 
     summary_rows = summarize_runtime_runs(runs)
-    payload = {
-        "eval_id": "final-render-provider-floor-runtime",
-        "measured_at": datetime.now(UTC).isoformat(),
-        "fixture_manifest": display_repo_relative_path(manifest_path, REPO_ROOT),
-        "candidate_packs": list(selected_packs),
-        "comparison_settings": {
-            "duration_seconds": RENDER_DURATION_SECONDS,
-            "aspect_ratio": RENDER_ASPECT_RATIO,
-            "normalized_resolution": NORMALIZED_RESOLUTION,
-        },
-        "summary": {
-            "candidates": [row.model_dump(mode="json") for row in summary_rows],
-        },
-        "runs": [run.model_dump(mode="json") for run in runs],
-    }
+    payload = build_runtime_payload(
+        measured_at=datetime.now(UTC).isoformat(),
+        manifest_path=manifest_path,
+        repo_root=REPO_ROOT,
+        selected_packs=selected_packs,
+        comparison_settings=dict(RUNTIME_COMPARISON_SETTINGS),
+        summary_rows=summary_rows,
+        runs=runs,
+    )
 
     output_prefix = args.output_prefix.resolve()
     json_path = output_prefix.with_suffix(".json")
@@ -161,23 +151,29 @@ def _prepare_shared_substrate(*, case: Any) -> dict[str, Any]:
     if project_dir.exists():
         shutil.rmtree(project_dir)
     project_dir.mkdir(parents=True, exist_ok=True)
-    _write_project_json(
+    _runner_support.write_project_json(
         project_dir=project_dir,
         slug=project_slug,
         display_name=f"{case.label} shared substrate",
+        default_model=PROJECT_DEFAULT_MODEL,
+        work_model=PROJECT_WORK_MODEL,
+        verify_model=PROJECT_VERIFY_MODEL,
+        escalate_model=PROJECT_ESCALATE_MODEL,
     )
-    input_file = _seed_input(project_dir=project_dir, source=fixture_path)
+    input_file = _runner_support.seed_input(project_dir=project_dir, source=fixture_path)
     runtime_params = _build_runtime_params(input_file=input_file, scene_id=case.scene_id)
 
     started = time.perf_counter()
     prerequisite_runs = [
-        _run_recipe(
+        _runner_support.run_recipe(
+            repo_root=REPO_ROOT,
             recipe_path=MVP_INGEST_RECIPE,
             project_dir=project_dir,
             run_id=f"{case.case_id}-mvp-{uuid.uuid4().hex[:4]}",
             runtime_params=runtime_params,
         ),
-        _run_recipe(
+        _runner_support.run_recipe(
+            repo_root=REPO_ROOT,
             recipe_path=WORLD_BUILDING_RECIPE,
             project_dir=project_dir,
             run_id=f"{case.case_id}-world-{uuid.uuid4().hex[:4]}",
@@ -187,7 +183,8 @@ def _prepare_shared_substrate(*, case: Any) -> dict[str, Any]:
     if all(run.success for run in prerequisite_runs):
         _seed_references(project_dir=project_dir, scene_id=case.scene_id)
         prerequisite_runs.append(
-            _run_recipe(
+            _runner_support.run_recipe(
+                repo_root=REPO_ROOT,
                 recipe_path=RENDER_GENERATION_RECIPE,
                 project_dir=project_dir,
                 run_id=f"{case.case_id}-planning-{uuid.uuid4().hex[:4]}",
@@ -214,6 +211,12 @@ def _run_candidate(
 ) -> CandidateRunSummary:
     candidate = CANDIDATE_SPECS[candidate_pack_id]
     engine_pack = load_engine_pack(candidate.pack_id)
+    if (
+        engine_pack.pack_id != candidate.pack_id
+        or engine_pack.provider != candidate.provider
+        or engine_pack.target_model != candidate.target_model
+    ):
+        raise RuntimeError(f"Candidate contract drift for {candidate.variant}")
     project_slug = f"story-169-{candidate.variant}-{case.case_id}-{uuid.uuid4().hex[:6]}"
     project_dir = REPO_ROOT / "output" / project_slug
     if project_dir.exists():
@@ -221,27 +224,12 @@ def _run_candidate(
 
     if not bool(shared["success"]):
         project_dir.mkdir(parents=True, exist_ok=True)
-        return CandidateRunSummary(
-            case_id=case.case_id,
-            case_label=case.label,
-            scene_id=case.scene_id,
-            input_fixture=case.input_fixture,
-            notes=case.notes,
-            candidate_variant=candidate.variant,
-            candidate_label=candidate.label,
-            engine_pack_id=engine_pack.pack_id,
-            target_model=engine_pack.target_model,
-            project_dir=display_repo_relative_path(project_dir, REPO_ROOT),
-            success=False,
-            error=str(shared["error"] or "shared substrate failed"),
-            preparation_elapsed_ms=int(shared["preparation_elapsed_ms"]),
-            render_elapsed_ms=0,
-            total_elapsed_ms=int(shared["preparation_elapsed_ms"]),
-            total_cost_usd=0.0,
-            duration_seconds=RENDER_DURATION_SECONDS,
-            resolution=_pack_resolution(engine_pack),
-            normalized_resolution=NORMALIZED_RESOLUTION,
-            aspect_ratio=RENDER_ASPECT_RATIO,
+        return _failed_candidate_summary(
+            case=case,
+            candidate=candidate,
+            engine_pack=engine_pack,
+            project_dir=project_dir,
+            shared=shared,
         )
 
     shutil.copytree(shared["project_dir"], project_dir)
@@ -252,60 +240,23 @@ def _run_candidate(
             "compiler_model": COMPILER_MODEL,
             "duration_seconds": RENDER_DURATION_SECONDS,
             "aspect_ratio": RENDER_ASPECT_RATIO,
-            "resolution": _pack_resolution(engine_pack),
+            "resolution": _runner_support.pack_resolution(engine_pack),
         }
     )
-    started = time.perf_counter()
-    render_run = _run_recipe(
+    render_run = _runner_support.run_recipe(
+        repo_root=REPO_ROOT,
         recipe_path=RENDER_GENERATION_RECIPE,
         project_dir=project_dir,
         run_id=f"{case.case_id}-{candidate.variant}-{uuid.uuid4().hex[:4]}",
         runtime_params=runtime_params,
         start_from="render",
     )
-    render_elapsed_ms = round((time.perf_counter() - started) * 1000)
+    render_elapsed_ms = render_run.elapsed_ms
 
-    prompt_artifact_path = render_run.artifact_paths.get("render_prompt")
-    video_artifact_path = render_run.artifact_paths.get("generated_video")
-    validation_path = render_run.artifact_paths.get("media_validation")
-
-    generated_media_path = None
-    request_id = None
-    provider_job_id = None
-    usage_counts: dict[str, int] = {}
-    active_input_count = 0
-    prompt_context_count = 0
-    unsupported_count = 0
-    request_notes: list[str] = []
-    resolved_inputs: list[dict[str, Any]] = []
-    active_project_references: list[dict[str, Any]] = []
-    if prompt_artifact_path and video_artifact_path:
-        prompt_payload = _load_artifact_json(
-            project_dir=project_dir,
-            relative_path=prompt_artifact_path,
-        )
-        video_payload = _load_artifact_json(
-            project_dir=project_dir,
-            relative_path=video_artifact_path,
-        )
-        generated_video = GeneratedVideoArtifact.model_validate(video_payload)
-        generated_media_path = generated_video.video.relative_path
-        request_id = generated_video.request_id
-        provider_job_id = request_id or generated_video.cost.request_id
-        resolved_inputs = list(prompt_payload.get("resolved_inputs") or [])
-        request_notes = list(prompt_payload.get("operator_notes") or [])
-        usage_counts = _reference_usage_counts(resolved_inputs)
-        active_input_count = usage_counts.get("input_reference", 0) + usage_counts.get(
-            "reference_image", 0
-        )
-        prompt_context_count = usage_counts.get("prompt_context", 0)
-        unsupported_count = usage_counts.get("unsupported", 0)
-        active_project_references = list(
-            (prompt_payload.get("creative_brief_preview") or {}).get(
-                "active_project_references"
-            )
-            or []
-        )
+    evidence = _candidate_artifact_evidence(
+        project_dir=project_dir,
+        render_run=render_run,
+    )
 
     return CandidateRunSummary(
         case_id=case.case_id,
@@ -327,130 +278,92 @@ def _run_candidate(
         render_stage_elapsed_ms=render_run.stage_durations_ms.get("render"),
         validate_media_stage_elapsed_ms=render_run.stage_durations_ms.get("validate_media"),
         duration_seconds=RENDER_DURATION_SECONDS,
-        resolution=_pack_resolution(engine_pack),
+        resolution=_runner_support.pack_resolution(engine_pack),
         normalized_resolution=NORMALIZED_RESOLUTION,
         aspect_ratio=RENDER_ASPECT_RATIO,
         render_run=render_run,
-        render_prompt_path=prompt_artifact_path,
-        generated_video_artifact_path=video_artifact_path,
-        generated_media_path=generated_media_path,
-        media_validation_path=validation_path,
-        request_id=request_id,
-        provider_job_id=provider_job_id,
-        reference_usage_counts=usage_counts,
-        active_input_count=active_input_count,
-        prompt_context_count=prompt_context_count,
-        unsupported_count=unsupported_count,
-        request_notes=request_notes,
-        resolved_inputs=resolved_inputs,
-        active_project_references=active_project_references,
+        **evidence,
     )
 
 
-def _seed_references(*, project_dir: Path, scene_id: str) -> None:
-    store = ArtifactStore(project_dir=project_dir)
-    scene_ref = store.latest_ref("scene", scene_id)
-    if scene_ref is None:
-        raise RuntimeError(f"Missing scene artifact for {scene_id}")
-    scene = Scene.model_validate(store.load_artifact(scene_ref).data)
-    assets = InjectedAssetService(project_dir)
-
-    assets.inject_asset(
-        target_kind="project",
-        target_id="project",
-        purpose="mood_board",
-        filename="mood_board.png",
-        content=_reference_image_bytes("Mood Board", accent=(61, 90, 254)),
-        lock_status="soft_locked",
-        content_type="image/png",
-    )
-    assets.inject_asset(
-        target_kind="project",
-        target_id="project",
-        purpose="style_reference",
-        filename="style_reference.png",
-        content=_reference_image_bytes("Style Reference", accent=(244, 114, 182)),
-        lock_status="soft_locked",
-        content_type="image/png",
-    )
-    assets.inject_asset(
-        target_kind="scene",
-        target_id=scene.scene_id,
-        purpose="reference_image",
-        filename="scene_reference.png",
-        content=_reference_image_bytes(scene.heading, accent=(251, 191, 36)),
-        lock_status="hard_locked",
-        content_type="image/png",
+def _failed_candidate_summary(
+    *, case: Any, candidate: Any, engine_pack: Any, project_dir: Path, shared: dict[str, Any]
+) -> CandidateRunSummary:
+    preparation_ms = int(shared["preparation_elapsed_ms"])
+    return CandidateRunSummary(
+        case_id=case.case_id,
+        case_label=case.label,
+        scene_id=case.scene_id,
+        input_fixture=case.input_fixture,
+        notes=case.notes,
+        candidate_variant=candidate.variant,
+        candidate_label=candidate.label,
+        engine_pack_id=engine_pack.pack_id,
+        target_model=engine_pack.target_model,
+        project_dir=display_repo_relative_path(project_dir, REPO_ROOT),
+        success=False,
+        error=str(shared["error"] or "shared substrate failed"),
+        preparation_elapsed_ms=preparation_ms,
+        render_elapsed_ms=0,
+        total_elapsed_ms=preparation_ms,
+        total_cost_usd=0.0,
+        duration_seconds=RENDER_DURATION_SECONDS,
+        resolution=_runner_support.pack_resolution(engine_pack),
+        normalized_resolution=NORMALIZED_RESOLUTION,
+        aspect_ratio=RENDER_ASPECT_RATIO,
     )
 
-    if scene.characters_present_ids:
-        character_id = sorted(scene.characters_present_ids)[0]
-        _write_visual_reference(
-            store=store,
-            entity_type="character",
-            entity_id=character_id,
-            label=f"Character {character_id}",
-            filename=f"{character_id}_visual_ref.png",
-            accent=(125, 211, 252),
-        )
 
-    location_id = _slugify(scene.location)
-    if location_id:
-        _write_visual_reference(
-            store=store,
-            entity_type="location",
-            entity_id=location_id,
-            label=scene.location,
-            filename=f"{location_id}_visual_ref.png",
-            accent=(196, 181, 253),
-        )
-
-
-def _write_visual_reference(
-    *,
-    store: ArtifactStore,
-    entity_type: str,
-    entity_id: str,
-    label: str,
-    filename: str,
-    accent: tuple[int, int, int],
-) -> None:
-    latest_ref = store.latest_ref("bible_manifest", f"{entity_type}_{entity_id}")
-    if latest_ref is None:
-        return
-    manifest, _ = store.load_bible_entry(latest_ref)
-    metadata = ArtifactMetadata(
-        lineage=[latest_ref],
-        intent="Seed benchmark visual reference image.",
-        rationale=(
-            "Story 169 benchmark needs a canonical visual reference so the final-render "
-            "provider floor can compare multi-reference conditioning on the same route."
+def _candidate_artifact_evidence(
+    *, project_dir: Path, render_run: RecipeRunSummary
+) -> dict[str, Any]:
+    prompt_path = render_run.artifact_paths.get("render_prompt")
+    video_path = render_run.artifact_paths.get("generated_video")
+    evidence: dict[str, Any] = {
+        "render_prompt_path": prompt_path,
+        "generated_video_artifact_path": video_path,
+        "generated_media_path": None,
+        "media_validation_path": render_run.artifact_paths.get("media_validation"),
+        "request_id": None,
+        "provider_job_id": None,
+        "reference_usage_counts": {},
+        "active_input_count": 0,
+        "prompt_context_count": 0,
+        "unsupported_count": 0,
+        "request_notes": [],
+        "resolved_inputs": [],
+        "active_project_references": [],
+    }
+    if not prompt_path or not video_path:
+        return evidence
+    prompt = _runner_support.load_compiled_render_prompt(
+        project_dir=project_dir,
+        relative_path=prompt_path,
+    )
+    video_envelope, generated = _runner_support.load_generated_video_artifact(
+        project_dir=project_dir,
+        relative_path=video_path,
+    )
+    resolved = [item.model_dump(mode="json") for item in prompt.resolved_inputs]
+    usage = _runner_support.reference_usage_counts(resolved)
+    creative_brief = prompt.creative_brief_preview
+    evidence.update(
+        generated_media_path=generated.video.relative_path,
+        request_id=generated.request_id,
+        provider_job_id=generated.request_id or generated.cost.request_id,
+        reference_usage_counts=usage,
+        active_input_count=usage.get("input_reference", 0) + usage.get("reference_image", 0),
+        prompt_context_count=usage.get("prompt_context", 0),
+        unsupported_count=usage.get("unsupported", 0),
+        request_notes=_runner_support.generated_video_request_notes(video_envelope),
+        resolved_inputs=resolved,
+        active_project_references=(
+            [item.model_dump(mode="json") for item in creative_brief.active_project_references]
+            if creative_brief is not None
+            else []
         ),
-        confidence=1.0,
-        source="code",
-        producing_module="benchmarks.real_render_provider_floor_eval",
     )
-    store.save_bible_entry(
-        entity_type=manifest.entity_type,
-        entity_id=manifest.entity_id,
-        display_name=manifest.display_name,
-        files=[entry.model_dump(mode="json") for entry in manifest.files],
-        data_files={filename: _reference_image_bytes(label, accent=accent)},
-        metadata=metadata,
-        visual_reference_image=filename,
-    )
-
-
-def _reference_image_bytes(label: str, *, accent: tuple[int, int, int]) -> bytes:
-    image = Image.new("RGB", (1280, 720), color=(15, 23, 42))
-    draw = ImageDraw.Draw(image)
-    draw.rectangle((80, 80, 1200, 640), outline=accent, width=6)
-    draw.rectangle((120, 470, 1160, 610), fill=(10, 16, 30))
-    draw.text((140, 130), label[:72], fill=(255, 255, 255))
-    draw.text((140, 185), "Story 169 reference-conditioned benchmark", fill=accent)
-    buffer = io.BytesIO()
-    image.save(buffer, format="PNG")
-    return buffer.getvalue()
+    return evidence
 
 
 def _build_runtime_params(*, input_file: Path, scene_id: str) -> dict[str, object]:
@@ -464,133 +377,6 @@ def _build_runtime_params(*, input_file: Path, scene_id: str) -> dict[str, objec
         "accept_config": True,
         "scene_scope": {"mode": "current_scene", "scene_ids": [scene_id]},
     }
-
-
-def _run_recipe(
-    *,
-    recipe_path: Path,
-    project_dir: Path,
-    run_id: str,
-    runtime_params: dict[str, object],
-    start_from: str | None = None,
-    end_at: str | None = None,
-) -> RecipeRunSummary:
-    from cine_forge.driver.engine import DriverEngine
-
-    started = time.perf_counter()
-    engine = DriverEngine(workspace_root=REPO_ROOT, project_dir=project_dir)
-    state: dict[str, Any] | None = None
-    error: str | None = None
-    success = False
-
-    try:
-        state = engine.run(
-            recipe_path=recipe_path,
-            run_id=run_id,
-            force=True,
-            runtime_params=runtime_params,
-            start_from=start_from,
-            end_at=end_at,
-        )
-        success = _state_succeeded(state)
-    except Exception as exc:  # noqa: BLE001
-        error = str(exc)
-        state_path = REPO_ROOT / "output" / "runs" / run_id / "run_state.json"
-        if state_path.exists():
-            state = json.loads(state_path.read_text(encoding="utf-8"))
-            success = _state_succeeded(state)
-
-    elapsed_ms = round((time.perf_counter() - started) * 1000)
-    stages = state.get("stages", {}) if state else {}
-    artifact_counts: dict[str, int] = {}
-    artifact_paths: dict[str, str] = {}
-    for stage_data in stages.values():
-        for ref in stage_data.get("artifact_refs", []):
-            artifact_type = str(ref.get("artifact_type", "unknown"))
-            artifact_counts[artifact_type] = artifact_counts.get(artifact_type, 0) + 1
-            artifact_paths.setdefault(artifact_type, str(ref.get("path", "")))
-
-    return RecipeRunSummary(
-        run_id=run_id,
-        recipe_id=str(state.get("recipe_id", recipe_path.stem) if state else recipe_path.stem),
-        elapsed_ms=elapsed_ms,
-        success=success and error is None,
-        error=None if success and error is None else error,
-        total_cost_usd=float(state.get("total_cost_usd", 0.0) if state else 0.0),
-        stage_statuses={
-            stage_id: str(stage_data.get("status", "unknown"))
-            for stage_id, stage_data in stages.items()
-        },
-        stage_durations_ms={
-            stage_id: round(float(stage_data.get("duration_seconds", 0.0) or 0.0) * 1000)
-            for stage_id, stage_data in stages.items()
-        },
-        artifact_counts=artifact_counts,
-        artifact_paths=artifact_paths,
-    )
-
-
-def _write_project_json(*, project_dir: Path, slug: str, display_name: str) -> None:
-    payload = {
-        "slug": slug,
-        "display_name": display_name,
-        "default_model": PROJECT_DEFAULT_MODEL,
-        "work_model": PROJECT_WORK_MODEL,
-        "verify_model": PROJECT_VERIFY_MODEL,
-        "escalate_model": PROJECT_ESCALATE_MODEL,
-    }
-    (project_dir / "project.json").write_text(
-        json.dumps(payload, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-
-
-def _seed_input(*, project_dir: Path, source: Path) -> Path:
-    inputs_dir = project_dir / "inputs"
-    inputs_dir.mkdir(parents=True, exist_ok=True)
-    target = inputs_dir / f"{uuid.uuid4().hex[:8]}_{source.name}"
-    target.write_bytes(source.read_bytes())
-    return target
-
-
-def _state_succeeded(state: dict[str, Any] | None) -> bool:
-    if not state:
-        return False
-    stage_ids = list(state.get("stage_order") or state.get("stages", {}).keys())
-    stage_statuses = {
-        str(state.get("stages", {}).get(stage_id, {}).get("status", "unknown"))
-        for stage_id in stage_ids
-    }
-    if not stage_statuses or "failed" in stage_statuses:
-        return False
-    return all(status in {"done", "skipped_reused"} for status in stage_statuses)
-
-
-def _pack_resolution(engine_pack: Any) -> str:
-    defaults = engine_pack.request_defaults
-    if engine_pack.provider == "openai":
-        return str(defaults.get("landscape_size") or "1280x720")
-    return str(defaults.get("default_resolution") or "720p")
-
-
-def _load_artifact_json(*, project_dir: Path, relative_path: str) -> dict[str, Any]:
-    payload = json.loads((project_dir / relative_path).read_text(encoding="utf-8"))
-    return payload.get("data", payload)
-
-
-def _reference_usage_counts(resolved_inputs: list[dict[str, Any]]) -> dict[str, int]:
-    counts: dict[str, int] = {}
-    for item in resolved_inputs:
-        key = str(item.get("used_as") or "unclassified")
-        counts[key] = counts.get(key, 0) + 1
-    return counts
-
-
-def _slugify(value: str) -> str:
-    return "".join(
-        character if character.isalnum() else "_"
-        for character in value.strip().lower()
-    ).strip("_")
 
 
 if __name__ == "__main__":

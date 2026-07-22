@@ -19,6 +19,10 @@ def _assert_fixture_bundle_valid(fixture_root: Path) -> None:
         "normalization_screenplay_cleanup.txt",
         "normalization_qa.json",
         "project_config_autodetect.json",
+        "scene_action_entities.json",
+        "scene_action_entities.provenance.json",
+        "script_bible.json",
+        "script_bible.provenance.json",
     ]
     for filename in required:
         if not (fixture_root / filename).exists():
@@ -81,6 +85,7 @@ def test_mvp_recipe_smoke_mocked_end_to_end(monkeypatch: pytest.MonkeyPatch) -> 
     assert state["stages"]["ingest"]["status"] == "done"
     assert state["stages"]["normalize"]["status"] == "done"
     assert state["stages"]["breakdown_scenes"]["status"] == "done"
+    assert state["stages"]["script_bible"]["status"] == "done"
     assert state["stages"]["project_config"]["status"] == "done"
 
     ingest_ref = ArtifactRef.model_validate(state["stages"]["ingest"]["artifact_refs"][0])
@@ -94,11 +99,21 @@ def test_mvp_recipe_smoke_mocked_end_to_end(monkeypatch: pytest.MonkeyPatch) -> 
     project_config_ref = ArtifactRef.model_validate(
         state["stages"]["project_config"]["artifact_refs"][0]
     )
+    script_bible_ref = ArtifactRef.model_validate(
+        state["stages"]["script_bible"]["artifact_refs"][0]
+    )
 
     assert scene_refs
     assert len(scene_refs) >= 5
 
-    produced_refs = [ingest_ref, canonical_ref, *scene_refs, scene_index_ref, project_config_ref]
+    produced_refs = [
+        ingest_ref,
+        canonical_ref,
+        *scene_refs,
+        scene_index_ref,
+        script_bible_ref,
+        project_config_ref,
+    ]
     for artifact_ref in produced_refs:
         artifact = engine.store.load_artifact(artifact_ref)
         assert (project_dir / artifact_ref.path).exists()
@@ -133,7 +148,31 @@ def test_mvp_recipe_smoke_mocked_end_to_end(monkeypatch: pytest.MonkeyPatch) -> 
                 assert scene_artifact.metadata.health == ArtifactHealth.NEEDS_REVIEW.value
             else:
                 assert scene_artifact.metadata.health == ArtifactHealth.VALID.value
-        assert scene_artifact.metadata.cost_data is not None
+
+    scenes_by_heading = {
+        engine.store.load_artifact(ref).data["heading"]: engine.store.load_artifact(ref)
+        for ref in scene_refs
+    }
+    tower_props = {
+        prop.casefold()
+        for prop in scenes_by_heading["EXT. HILLTOP WATER TOWER - NIGHT"].data[
+            "props_mentioned"
+        ]
+    }
+    assert "portable antenna" in tower_props
+    assert "PARAMEDIC" in scenes_by_heading[
+        "INT. STUDIO HALLWAY - NIGHT"
+    ].data["characters_present"]
+
+    # Scene-breakdown cost is aggregated at the stage boundary because one
+    # model call can contribute to multiple scene/index artifacts.
+    breakdown_stage = state["stages"]["breakdown_scenes"]
+    assert breakdown_stage["call_count"] == len(scene_refs)
+    assert breakdown_stage["cost_usd"] == 0.0
+    assert breakdown_stage["input_tokens"] == 0
+    assert breakdown_stage["output_tokens"] == 0
+    assert breakdown_stage["model_used"] == "fixture"
+    assert state["total_cost_usd"] == 0.0
 
     scene_index = engine.store.load_artifact(scene_index_ref)
     scene_index_lineage = {ref.artifact_type for ref in scene_index.metadata.lineage}
@@ -143,6 +182,20 @@ def test_mvp_recipe_smoke_mocked_end_to_end(monkeypatch: pytest.MonkeyPatch) -> 
     project_config = engine.store.load_artifact(project_config_ref)
     config_lineage = {ref.artifact_type for ref in project_config.metadata.lineage}
     assert "canonical_script" in config_lineage
+
+    script_bible = engine.store.load_artifact(script_bible_ref)
+    bible_lineage = {ref.artifact_type for ref in script_bible.metadata.lineage}
+    assert "canonical_script" in bible_lineage
+    assert script_bible.data["title"] == "Signal in the Rain"
+    assert "Red Creek" in script_bible.data["logline"]
+    assert any(
+        "Then we stop talking and start listening." in theme["evidence"]
+        for theme in script_bible.data["themes"]
+    )
+    bible_stage = state["stages"]["script_bible"]
+    assert bible_stage["call_count"] == 1
+    assert bible_stage["cost_usd"] == 0.0
+    assert bible_stage["model_used"] == "fixture"
 
 
 @pytest.mark.integration
@@ -180,7 +233,13 @@ def test_mvp_recipe_smoke_reused_caching(monkeypatch: pytest.MonkeyPatch) -> Non
             "accept_config": True,
         },
     )
-    for stage_id in ["ingest", "normalize", "breakdown_scenes", "project_config"]:
+    for stage_id in [
+        "ingest",
+        "normalize",
+        "breakdown_scenes",
+        "script_bible",
+        "project_config",
+    ]:
         assert state_second["stages"][stage_id]["status"] == "skipped_reused"
 
 
@@ -216,6 +275,7 @@ def test_mvp_recipe_with_params_file(tmp_path: Path, monkeypatch: pytest.MonkeyP
     input_file = workspace_root / "tests" / "fixtures" / "sample_screenplay.fountain"
     project_dir = tmp_path / "project_params_test"
     fixture_root = workspace_root / "tests" / "fixtures" / "mvp_mock_responses"
+    _assert_fixture_bundle_valid(fixture_root)
     monkeypatch.setenv("CINE_FORGE_MOCK_FIXTURE_DIR", str(fixture_root))
 
     params_file = tmp_path / "params.yaml"
@@ -242,6 +302,7 @@ def test_mvp_recipe_with_params_file(tmp_path: Path, monkeypatch: pytest.MonkeyP
     )
 
     assert state["stages"]["ingest"]["status"] == "done"
+    assert state["stages"]["script_bible"]["status"] == "done"
     assert state["runtime_params"]["default_model"] == "fixture"
 
 
@@ -253,6 +314,7 @@ def test_mvp_recipe_stale_propagation(monkeypatch: pytest.MonkeyPatch) -> None:
     input_file = workspace_root / "tests" / "fixtures" / "sample_screenplay.fountain"
     project_dir = workspace_root / "output" / "project_smoke_mvp_stale_propagation"
     fixture_root = workspace_root / "tests" / "fixtures" / "mvp_mock_responses"
+    _assert_fixture_bundle_valid(fixture_root)
     monkeypatch.setenv("CINE_FORGE_MOCK_FIXTURE_DIR", str(fixture_root))
 
     # 1. First run to baseline everything
@@ -297,5 +359,7 @@ def test_mvp_recipe_stale_propagation(monkeypatch: pytest.MonkeyPatch) -> None:
     assert state_second["stages"]["normalize"]["status"] == "done"
     # breakdown_scenes should re-run because its input (canonical_script) was marked stale
     assert state_second["stages"]["breakdown_scenes"]["status"] == "done"
+    # script_bible should re-run from the newly produced canonical script.
+    assert state_second["stages"]["script_bible"]["status"] == "done"
     # project_config should re-run because its inputs were re-produced
     assert state_second["stages"]["project_config"]["status"] == "done"

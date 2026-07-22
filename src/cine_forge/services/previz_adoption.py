@@ -274,9 +274,7 @@ class PrevizAdoptionService:
             scores = entry.get("scores")
             if not isinstance(scores, list):
                 return None
-            for score in scores:
-                if isinstance(score, dict):
-                    return score
+            return self._latest_decision_grade_score(scores)
         return None
 
     def _score_by_label(self, label: str) -> dict[str, Any] | None:
@@ -285,10 +283,39 @@ class PrevizAdoptionService:
         for entry in evals:
             if not isinstance(entry, dict) or entry.get("id") != "previz-usefulness":
                 continue
-            for score in entry.get("scores", []):
-                if isinstance(score, dict) and score.get("model") == label:
-                    return score
+            matches = [
+                score
+                for score in entry.get("scores", [])
+                if isinstance(score, dict) and score.get("model") == label
+            ]
+            return self._latest_decision_grade_score(matches)
         return None
+
+    def _latest_decision_grade_score(
+        self,
+        scores: list[object],
+    ) -> dict[str, Any] | None:
+        eligible = [
+            score
+            for score in scores
+            if isinstance(score, dict)
+            and self._is_decision_grade(score.get("evidence_status"))
+        ]
+        if not eligible:
+            return None
+        return max(eligible, key=lambda score: str(score.get("measured") or ""))
+
+    def _is_decision_grade(self, value: object) -> bool:
+        status = str(value or "").strip().lower()
+        invalid_markers = (
+            "contaminated",
+            "non-decision-grade",
+            "regrade-required",
+            "superseded",
+        )
+        return status == "decision-grade" and not any(
+            marker in status for marker in invalid_markers
+        )
 
     def _overall_score(self, entry: dict[str, Any] | None) -> float | None:
         if not isinstance(entry, dict):

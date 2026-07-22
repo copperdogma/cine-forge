@@ -19,6 +19,7 @@ from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.artifact_persister import ArtifactPersister
 from cine_forge.driver.budget_guard import BudgetDecision, BudgetGuard
 from cine_forge.driver.canon_gate_runner import StageCanonGate
+from cine_forge.driver.cost_records import _coerce_cost, _cost_call_count
 from cine_forge.driver.discovery import ModuleManifest, discover_modules
 from cine_forge.driver.event_emitter import EventEmitter
 from cine_forge.driver.recipe import (
@@ -476,11 +477,7 @@ class DriverEngine:
                 outputs = module_result.get("artifacts", [])
                 cost_record = _coerce_cost(module_result.get("cost"))
                 raw_cost = module_result.get("cost")
-                call_count = 0
-                if isinstance(raw_cost, list):
-                    call_count = len(raw_cost)
-                elif isinstance(raw_cost, dict):
-                    call_count = 1
+                call_count = _cost_call_count(raw_cost)
                 model_used = module_result.get("model")
                 if not model_used and cost_record:
                     model_used = cost_record.model
@@ -1290,32 +1287,6 @@ class DriverEngine:
             file.flush()
             os.fsync(file.fileno())
         temp_path.replace(path)
-
-
-def _coerce_cost(cost_payload: dict[str, Any] | list[dict[str, Any]] | None) -> CostRecord | None:
-    if not cost_payload:
-        return None
-    if isinstance(cost_payload, list):
-        records = [
-            CostRecord.model_validate(item)
-            for item in cost_payload
-            if isinstance(item, dict)
-        ]
-        if not records:
-            return None
-        model = records[0].model if len({record.model for record in records}) == 1 else "multiple"
-        return CostRecord(
-            model=model,
-            input_tokens=sum(record.input_tokens for record in records),
-            output_tokens=sum(record.output_tokens for record in records),
-            estimated_cost_usd=round(
-                sum(record.estimated_cost_usd for record in records),
-                8,
-            ),
-            latency_seconds=None,
-            request_id=None,
-        )
-    return CostRecord.model_validate(cost_payload)
 
 
 def _load_module_runner(module_manifest: ModuleManifest):

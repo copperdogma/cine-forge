@@ -1,358 +1,396 @@
-"""
-Continuity extraction scorer for promptfoo.
+"""Strict, source-grounded continuity extraction scorer."""
 
-Evaluates whether a model correctly extracts entity state from scene text
-and detects continuity changes between scenes.
-
-Scoring dimensions:
-- json_valid:              Valid JSON output (0.10)
-- entity_coverage:         All expected entities present (0.15)
-- property_extraction:     Properties match golden (0.25)
-- change_detection:        Change events detected correctly (0.25)
-- evidence_quality:        Evidence quotes from actual scene text (0.15)
-- confidence_calibration:  Confidence scores in reasonable range (0.10)
-
-Pass threshold: 0.60
-"""
+from __future__ import annotations
 
 import json
 import os
 import re
+import sys
+from pathlib import Path
+
+SCORER_ROOT = Path(__file__).resolve().parent
+if str(SCORER_ROOT) not in sys.path:
+    sys.path.insert(0, str(SCORER_ROOT))
+
+from score_semantics import finalize_score  # noqa: E402
+
+RESULT_FIELDS = {"scene_id", "entity_states"}
+ENTITY_FIELDS = {"entity_key", "properties", "change_events", "confidence"}
+PROPERTY_FIELDS = {"key", "value", "confidence"}
+CHANGE_FIELDS = {
+    "property_key",
+    "previous_value",
+    "new_value",
+    "reason",
+    "evidence",
+    "is_explicit",
+    "confidence",
+}
+VALUE_GLUE = {
+    "a", "an", "and", "are", "as", "at", "by", "he",
+    "her", "his", "in", "is", "it", "its", "of", "on",
+    "or", "she", "the", "their", "to", "was", "were", "with",
+}
+REASON_GLUE = VALUE_GLUE | {
+    "became",
+    "becomes",
+    "change",
+    "changed",
+    "changes",
+    "current",
+    "established",
+    "from",
+    "materially",
+    "new",
+    "newly",
+    "now",
+    "previous",
+    "previously",
+    "prior",
+    "shift",
+    "shifted",
+    "state",
+    "then",
+}
+PASS_THRESHOLD = 0.75
+
+
+def _resolve_golden_path(context: dict) -> str:
+    path = context.get("vars", {}).get("golden_path", "")
+    if path and not os.path.isabs(path):
+        base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        for candidate in (os.path.join(base, path), os.path.join(os.getcwd(), path)):
+            if os.path.exists(candidate):
+                return candidate
+    return path
+
+
+def _parse_output(output: str) -> tuple[dict | None, float]:
+    try:
+        parsed = json.loads(output)
+        return (parsed if isinstance(parsed, dict) else None), 1.0
+    except json.JSONDecodeError:
+        match = re.search(r"```(?:json)?\s*([\s\S]*?)```", output)
+        if not match:
+            return None, 0.0
+        try:
+            parsed = json.loads(match.group(1))
+        except json.JSONDecodeError:
+            return None, 0.0
+        return (parsed if isinstance(parsed, dict) else None), 0.9
+
+
+def _words(value: object) -> list[str]:
+    return re.findall(r"[a-z0-9]+", str(value or "").lower())
+
+
+def _normalize(value: object) -> str:
+    return " ".join(_words(value))
+
+
+def _content_words(value: object, *, reason: bool = False) -> set[str]:
+    ignored = REASON_GLUE if reason else VALUE_GLUE
+    return {word for word in _words(value) if word not in ignored}
+
+
+def _number(value: object, low: float = 0.0, high: float = 1.0) -> bool:
+    return (
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and low <= value <= high
+    )
+
+
+def _phrase_in(value: object, pattern: object) -> bool:
+    normalized_value = f" {_normalize(value)} "
+    normalized_pattern = _normalize(pattern)
+    return bool(normalized_pattern) and f" {normalized_pattern} " in normalized_value
+
+
+def _exact_any(value: object, patterns: list[str]) -> bool:
+    normalized = _normalize(value)
+    return bool(normalized) and any(normalized == _normalize(pattern) for pattern in patterns)
+
+
+def _select_component(value: object, patterns: list[str]) -> str | None:
+    matches = [pattern for pattern in patterns if _phrase_in(value, pattern)]
+    return max(matches, key=lambda pattern: len(_words(pattern)), default=None)
+
+
+def _property_value_valid(value: object, specs: list[dict]) -> bool:
+    selected: list[str] = []
+    for spec in specs:
+        component = _select_component(value, spec.get("value_patterns", []))
+        if component is None:
+            return False
+        selected.append(component)
+    allowed = set().union(*(_content_words(component) for component in selected))
+    return bool(allowed) and _content_words(value) <= allowed
+
+
+def _evidence_in_text(evidence: object, scene_text: str) -> bool:
+    evidence_words = _words(evidence)
+    if len(evidence_words) < 3:
+        return False
+    return f" {' '.join(evidence_words)} " in f" {_normalize(scene_text)} "
+
+
+def _entity_schema_valid(entity: object) -> bool:
+    if not isinstance(entity, dict) or set(entity) != ENTITY_FIELDS:
+        return False
+    if not isinstance(entity.get("entity_key"), str) or not entity["entity_key"].strip():
+        return False
+    if not _number(entity.get("confidence")):
+        return False
+    properties = entity.get("properties")
+    changes = entity.get("change_events")
+    if not isinstance(properties, list) or not isinstance(changes, list):
+        return False
+    return _properties_schema_valid(properties) and _changes_schema_valid(changes)
+
+
+def _properties_schema_valid(properties: list) -> bool:
+    return all(
+        isinstance(prop, dict)
+        and set(prop) == PROPERTY_FIELDS
+        and bool(str(prop.get("key", "")).strip())
+        and bool(str(prop.get("value", "")).strip())
+        and _number(prop.get("confidence"))
+        for prop in properties
+    )
+
+
+def _changes_schema_valid(changes: list) -> bool:
+    return all(
+        isinstance(change, dict)
+        and set(change) == CHANGE_FIELDS
+        and bool(str(change.get("property_key", "")).strip())
+        and _previous_value_schema_valid(change.get("previous_value"))
+        and bool(str(change.get("new_value", "")).strip())
+        and bool(str(change.get("reason", "")).strip())
+        and bool(str(change.get("evidence", "")).strip())
+        and isinstance(change.get("is_explicit"), bool)
+        and _number(change.get("confidence"))
+        for change in changes
+    )
+
+
+def _previous_value_schema_valid(value: object) -> bool:
+    return value is None or (isinstance(value, str) and bool(value.strip()))
+
+
+def _property_score(entity: dict, specs: list[dict]) -> tuple[float, bool]:
+    required = [spec for spec in specs if spec.get("required", False)]
+    grouped_specs: dict[str, list[dict]] = {}
+    for spec in required:
+        grouped_specs.setdefault(spec.get("key"), []).append(spec)
+    keyed: dict[str, list[dict]] = {}
+    for prop in entity.get("properties", []):
+        keyed.setdefault(prop.get("key"), []).append(prop)
+    results = [
+        len(keyed.get(key, [])) == 1
+        and _property_value_valid(keyed[key][0].get("value"), key_specs)
+        for key, key_specs in grouped_specs.items()
+    ]
+    exact_keys = set(keyed) == set(grouped_specs) and all(
+        len(values) == 1 for values in keyed.values()
+    )
+    score = sum(results) / len(results) if results else float(not keyed)
+    return score, exact_keys and all(results)
+
+
+def _reason_is_grounded(change: dict) -> bool:
+    reason = change.get("reason")
+    previous = change.get("previous_value")
+    new = change.get("new_value")
+    new_at = _normalize(reason).find(_normalize(new))
+    if new_at < 0:
+        return False
+    if previous is None:
+        direction_valid = bool({"new", "newly", "now", "established"} & set(_words(reason)))
+    else:
+        old_at = _normalize(reason).find(_normalize(previous))
+        direction_valid = 0 <= old_at < new_at
+    supported = _content_words(reason, reason=True) <= (
+        _content_words(previous) | _content_words(new)
+    )
+    return direction_valid and supported
+
+
+def _change_matches(change: dict, spec: dict, scene_text: str) -> bool:
+    previous_patterns = spec.get("previous_patterns", [])
+    previous_matches = (
+        change.get("previous_value") is None
+        if not previous_patterns
+        else _exact_any(change.get("previous_value"), previous_patterns)
+    )
+    evidence = change.get("evidence")
+    return all(
+        (
+            change.get("property_key") == spec.get("property_key"),
+            previous_matches,
+            _exact_any(change.get("new_value"), spec.get("new_patterns", [])),
+            _evidence_in_text(evidence, scene_text),
+            any(_phrase_in(evidence, pattern) for pattern in spec.get("evidence_patterns", [])),
+            change.get("is_explicit") is spec.get("is_explicit"),
+            _reason_is_grounded(change),
+        )
+    )
+
+
+def _maximum_change_matches(changes: list[dict], specs: list[dict], scene_text: str) -> int:
+    edges = [
+        [index for index, spec in enumerate(specs) if _change_matches(change, spec, scene_text)]
+        for change in changes
+    ]
+    assigned: dict[int, int] = {}
+
+    def assign(change_index: int, seen: set[int]) -> bool:
+        for spec_index in edges[change_index]:
+            if spec_index in seen:
+                continue
+            seen.add(spec_index)
+            previous_change = assigned.get(spec_index)
+            if previous_change is None or assign(previous_change, seen):
+                assigned[spec_index] = change_index
+                return True
+        return False
+
+    return sum(assign(index, set()) for index in range(len(changes)))
+
+
+def _change_score(entity: dict, specs: list[dict], scene_text: str) -> tuple[float, bool]:
+    changes = entity.get("change_events", [])
+    if not specs and not changes:
+        return 1.0, True
+    matched = _maximum_change_matches(changes, specs, scene_text)
+    denominator = max(len(changes), len(specs), 1)
+    return matched / denominator, matched == len(specs) == len(changes)
+
+
+def _score_entities(
+    states: list[dict],
+    golden: dict,
+    scene_text: str,
+) -> tuple[list[float], list[float], bool, bool]:
+    state_by_key = {state["entity_key"]: state for state in states}
+    property_scores: list[float] = []
+    change_scores: list[float] = []
+    properties_valid = True
+    changes_valid = True
+    for entity_key in golden.get("expected_entities", []):
+        state = state_by_key.get(entity_key)
+        if state is None:
+            property_scores.append(0.0)
+            change_scores.append(0.0)
+            properties_valid = changes_valid = False
+            continue
+        property_score, property_valid = _property_score(
+            state, golden.get("expected_properties", {}).get(entity_key, [])
+        )
+        change_score, change_valid = _change_score(
+            state, golden.get("expected_changes", {}).get(entity_key, []), scene_text
+        )
+        property_scores.append(property_score)
+        change_scores.append(change_score)
+        properties_valid &= property_valid
+        changes_valid &= change_valid
+    return property_scores, change_scores, properties_valid, changes_valid
+
+
+def _confidence_valid(states: list[dict], confidence_range: list[float]) -> bool:
+    low, high = confidence_range
+    return all(
+        _number(state.get("confidence"), low, high)
+        and all(_number(prop.get("confidence"), low, high) for prop in state["properties"])
+        and all(_number(change.get("confidence"), low, high) for change in state["change_events"])
+        for state in states
+    )
+
+
+def _load_case(context: dict) -> tuple[dict | None, dict]:
+    variables = context.get("vars", {})
+    golden_path = _resolve_golden_path(context)
+    scene_key = variables.get("scene_key", "")
+    if not golden_path or not os.path.exists(golden_path) or not scene_key:
+        return None, variables
+    with open(golden_path) as handle:
+        return json.load(handle).get(scene_key), variables
 
 
 def get_assert(output: str, context: dict) -> dict:
     """Promptfoo assertion entry point."""
+    golden, variables = _load_case(context)
+    if not isinstance(golden, dict):
+        return {"pass": False, "score": 0.0, "reason": "Missing golden or scene key"}
+    result, json_score = _parse_output(output)
+    if result is None:
+        return {"pass": False, "score": 0.0, "reason": "Invalid JSON object"}
+    if set(result) != RESULT_FIELDS:
+        return {"pass": False, "score": 0.0, "reason": "Invalid result schema"}
+    states = result.get("entity_states")
+    if not isinstance(states, list) or not all(_entity_schema_valid(state) for state in states):
+        return {"pass": False, "score": 0.0, "reason": "Invalid entity-state schema"}
 
-    golden_path = context.get("vars", {}).get("golden_path", "")
-    scene_key = context.get("vars", {}).get("scene_key", "")
-
-    # Resolve relative path from the benchmarks directory
-    if golden_path and not os.path.isabs(golden_path):
-        base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        candidate = os.path.join(base, golden_path)
-        if os.path.exists(candidate):
-            golden_path = candidate
-        else:
-            candidate = os.path.join(os.getcwd(), golden_path)
-            if os.path.exists(candidate):
-                golden_path = candidate
-
-    if not golden_path or not os.path.exists(golden_path):
-        return {"pass": False, "score": 0, "reason": f"Golden file not found: {golden_path}"}
-
-    with open(golden_path) as f:
-        all_golden = json.load(f)
-
-    if scene_key not in all_golden:
-        return {"pass": False, "score": 0, "reason": f"Scene key '{scene_key}' not in golden"}
-
-    golden = all_golden[scene_key]
-    scores = {}
-    reasons = []
-
-    # --- 1. JSON validity ---
-    text = output.strip()
-    try:
-        result = json.loads(text)
-        scores["json_valid"] = 1.0
-    except json.JSONDecodeError:
-        match = re.search(r"```(?:json)?\s*([\s\S]*?)```", text)
-        if match:
-            try:
-                result = json.loads(match.group(1))
-                scores["json_valid"] = 0.9
-                reasons.append("JSON extracted from code block")
-            except json.JSONDecodeError:
-                return {"pass": False, "score": 0.0, "reason": "Invalid JSON output"}
-        else:
-            return {"pass": False, "score": 0.0, "reason": "Invalid JSON output"}
-
-    # --- 2. Entity coverage ---
     expected_entities = set(golden.get("expected_entities", []))
-    entity_states = result.get("entity_states", [])
-    model_entities = {es.get("entity_key", "") for es in entity_states}
-
-    if expected_entities:
-        # Fuzzy match: allow minor key format differences
-        matched = 0
-        for expected in expected_entities:
-            if expected in model_entities:
-                matched += 1
-            else:
-                # Try partial match (e.g. "billy" in "character:billy")
-                for model_ek in model_entities:
-                    if expected.split(":")[-1] in model_ek or model_ek.split(":")[-1] in expected:
-                        matched += 1
-                        break
-        scores["entity_coverage"] = matched / len(expected_entities)
-        if matched < len(expected_entities):
-            missing = expected_entities - model_entities
-            reasons.append(f"Missing entities: {missing}")
-    else:
-        scores["entity_coverage"] = 1.0
-
-    # --- 3. Property extraction ---
-    expected_props = golden.get("expected_properties", {})
-    prop_scores = []
-
-    for entity_key, props_list in expected_props.items():
-        # Find this entity in model output
-        entity_state = _find_entity(entity_states, entity_key)
-        if not entity_state:
-            # Count all required props as missed
-            required_count = sum(1 for p in props_list if p.get("required", False))
-            if required_count > 0:
-                prop_scores.extend([0.0] * required_count)
-            continue
-
-        model_props = {p.get("key", "").lower(): p for p in entity_state.get("properties", [])}
-
-        for prop_spec in props_list:
-            prop_key = prop_spec["key"].lower()
-            value_patterns = [p.lower() for p in prop_spec.get("value_patterns", [])]
-            required = prop_spec.get("required", False)
-
-            # Find matching property (fuzzy key match)
-            matched_prop = _find_property(model_props, prop_key)
-
-            if matched_prop:
-                model_value = str(matched_prop.get("value", "")).lower()
-                # Check if any value pattern matches
-                pattern_matches = sum(
-                    1 for pat in value_patterns if pat in model_value
-                )
-                if value_patterns:
-                    prop_score = min(pattern_matches / max(len(value_patterns) * 0.5, 1), 1.0)
-                else:
-                    prop_score = 0.5  # Property exists but no patterns to check
-                prop_scores.append(prop_score)
-            elif required:
-                prop_scores.append(0.0)
-                reasons.append(f"Missing required prop: {entity_key}.{prop_key}")
-
-    scores["property_extraction"] = (
-        sum(prop_scores) / len(prop_scores) if prop_scores else 0.5
+    keys = [state["entity_key"] for state in states]
+    entity_valid = set(keys) == expected_entities and len(keys) == len(set(keys))
+    scene_text = str(variables.get("scene_text", ""))
+    property_scores, change_scores, properties_valid, changes_valid = _score_entities(
+        states, golden, scene_text
     )
-
-    # --- 4. Change detection ---
-    expected_changes = golden.get("expected_changes", {})
-    change_scores = []
-
-    for entity_key, changes_list in expected_changes.items():
-        entity_state = _find_entity(entity_states, entity_key)
-        if not entity_state:
-            change_scores.extend([0.0] * len(changes_list))
-            continue
-
-        model_changes = entity_state.get("change_events", [])
-
-        for change_spec in changes_list:
-            expected_prop_key = change_spec["property_key"].lower()
-            new_patterns = [p.lower() for p in change_spec.get("new_patterns", [])]
-            prev_patterns = [p.lower() for p in change_spec.get("previous_patterns", [])]
-
-            # Find matching change event
-            best_score = 0.0
-            for mc in model_changes:
-                mc_key = str(mc.get("property_key", "")).lower()
-                # Fuzzy key match
-                if not _keys_match(mc_key, expected_prop_key):
-                    continue
-
-                score = 0.3  # Base score for detecting the right property changed
-
-                # Check new_value matches
-                mc_new = str(mc.get("new_value", "")).lower()
-                if new_patterns:
-                    new_matches = sum(1 for p in new_patterns if p in mc_new)
-                    score += 0.35 * min(new_matches / max(len(new_patterns) * 0.5, 1), 1.0)
-
-                # Check previous_value matches
-                mc_prev = str(mc.get("previous_value", "") or "").lower()
-                if prev_patterns:
-                    prev_matches = sum(1 for p in prev_patterns if p in mc_prev)
-                    score += 0.15 * min(prev_matches / max(len(prev_patterns) * 0.5, 1), 1.0)
-
-                # Has evidence
-                if mc.get("evidence"):
-                    score += 0.1
-
-                # Has reason
-                if mc.get("reason"):
-                    score += 0.1
-
-                best_score = max(best_score, score)
-
-            change_scores.append(best_score)
-            if best_score < 0.3:
-                reasons.append(f"Missed change: {entity_key}.{expected_prop_key}")
-
-    scores["change_detection"] = (
-        sum(change_scores) / len(change_scores) if change_scores else 0.5
+    evidence = [change["evidence"] for state in states for change in state["change_events"]]
+    key_evidence = golden.get("key_evidence", [])
+    has_expected_changes = any(golden.get("expected_changes", {}).values())
+    evidence_coverage = (
+        sum(any(_phrase_in(quote, key) for quote in evidence) for key in key_evidence)
+        / len(key_evidence)
+        if key_evidence and has_expected_changes
+        else 1.0
     )
-
-    # --- 5. Evidence quality ---
-    key_evidence = [e.lower() for e in golden.get("key_evidence", [])]
-    scene_text = context.get("vars", {}).get("scene_text", "").lower()
-
-    # Collect all evidence quotes from model output
-    all_evidence = []
-    for es in entity_states:
-        for ce in es.get("change_events", []):
-            ev = ce.get("evidence", "")
-            if ev:
-                all_evidence.append(ev.lower())
-
-    if key_evidence and all_evidence:
-        # Check that evidence quotes actually appear in the scene text
-        valid_evidence = sum(
-            1 for ev in all_evidence
-            if _evidence_in_text(ev, scene_text)
-        )
-        evidence_validity = valid_evidence / len(all_evidence) if all_evidence else 0
-
-        # Check that key evidence pieces are referenced
-        key_found = sum(
-            1 for ke in key_evidence
-            if any(ke in ev or ev in ke for ev in all_evidence)
-        )
-        key_coverage = key_found / len(key_evidence) if key_evidence else 0
-
-        scores["evidence_quality"] = evidence_validity * 0.6 + key_coverage * 0.4
-    elif all_evidence:
-        # Has evidence but no key_evidence to compare against
-        valid_evidence = sum(
-            1 for ev in all_evidence
-            if _evidence_in_text(ev, scene_text)
-        )
-        scores["evidence_quality"] = valid_evidence / len(all_evidence) if all_evidence else 0
-    else:
-        scores["evidence_quality"] = 0.0
-        reasons.append("No evidence quotes in change events")
-
-    # --- 6. Confidence calibration ---
-    conf_range = golden.get("expected_confidence_range", [0.5, 1.0])
-    entity_confidences = [
-        es.get("confidence", 0) for es in entity_states
-        if isinstance(es.get("confidence"), (int, float))
-    ]
-
-    if entity_confidences:
-        avg_conf = sum(entity_confidences) / len(entity_confidences)
-        if conf_range[0] <= avg_conf <= conf_range[1]:
-            scores["confidence_calibration"] = 1.0
-        elif avg_conf < conf_range[0]:
-            # Under-confident: still okay, just conservative
-            scores["confidence_calibration"] = 0.6
-        else:
-            # Over-confident: penalize slightly
-            scores["confidence_calibration"] = 0.4
-    else:
-        scores["confidence_calibration"] = 0.0
-        reasons.append("No confidence scores found")
-
-    # --- Weighted total ---
+    evidence_valid = all(_evidence_in_text(quote, scene_text) for quote in evidence)
+    confidence_valid = _confidence_valid(
+        states, golden.get("expected_confidence_range", [0.5, 1.0])
+    )
+    scene_valid = result.get("scene_id") == variables.get("scene_id")
+    scores = {
+        "json_valid": json_score,
+        "scene_identity": float(scene_valid),
+        "entity_accuracy": (
+            len(set(keys) & expected_entities) / len(set(keys) | expected_entities)
+            if set(keys) | expected_entities
+            else 1.0
+        ),
+        "property_accuracy": sum(property_scores) / len(property_scores),
+        "change_accuracy": sum(change_scores) / len(change_scores),
+        "evidence_coverage": evidence_coverage,
+        "confidence_calibration": float(confidence_valid),
+    }
     weights = {
-        "json_valid": 0.10,
-        "entity_coverage": 0.15,
-        "property_extraction": 0.25,
-        "change_detection": 0.25,
-        "evidence_quality": 0.15,
+        "json_valid": 0.05,
+        "scene_identity": 0.05,
+        "entity_accuracy": 0.15,
+        "property_accuracy": 0.25,
+        "change_accuracy": 0.25,
+        "evidence_coverage": 0.15,
         "confidence_calibration": 0.10,
     }
-
-    total = sum(scores.get(k, 0) * w for k, w in weights.items())
-
-    reason_parts = [f"{k}={v:.2f}" for k, v in sorted(scores.items())]
-    if reasons:
-        reason_parts.append(" | ".join(reasons))
-
-    return {
-        "pass": total >= 0.60,
-        "score": round(total, 4),
-        "reason": " | ".join(reason_parts),
-    }
-
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-
-def _find_entity(entity_states: list, entity_key: str) -> dict | None:
-    """Find an entity state by key, with fuzzy matching."""
-    for es in entity_states:
-        model_key = es.get("entity_key", "")
-        if model_key == entity_key:
-            return es
-        # Fuzzy: match on the ID part
-        if entity_key.split(":")[-1] in model_key or model_key.split(":")[-1] in entity_key:
-            return es
-    return None
-
-
-def _find_property(model_props: dict, prop_key: str) -> dict | None:
-    """Find a property by key with fuzzy matching."""
-    if prop_key in model_props:
-        return model_props[prop_key]
-    # Try partial matches
-    for mk, mv in model_props.items():
-        if prop_key in mk or mk in prop_key:
-            return mv
-        # Handle common synonyms
-        synonyms = {
-            "costume": ["wardrobe", "clothing", "outfit", "attire"],
-            "physical_condition": ["injuries", "injury", "physical_state", "body"],
-            "emotional_state": ["emotion", "mood", "demeanor", "expression"],
-            "props_carried": ["items", "carrying", "possessions"],
-            "time_of_day": ["time", "period"],
-            "weather": ["conditions", "atmosphere"],
-            "condition": ["state", "status", "integrity"],
-            "position": ["location", "placement", "where"],
-            "ownership": ["holder", "possessor", "carried_by"],
-        }
-        for canon, alts in synonyms.items():
-            if (prop_key == canon and mk in alts) or (mk == canon and prop_key in alts):
-                return mv
-    return None
-
-
-def _keys_match(model_key: str, expected_key: str) -> bool:
-    """Check if two property keys match, accounting for naming variation."""
-    if model_key == expected_key:
-        return True
-    if expected_key in model_key or model_key in expected_key:
-        return True
-    # Check synonyms
-    synonyms = {
-        "costume": ["wardrobe", "clothing", "outfit", "attire"],
-        "physical_condition": ["injuries", "injury", "physical_state"],
-        "emotional_state": ["emotion", "mood", "demeanor"],
-        "time_of_day": ["time", "period"],
-        "condition": ["state", "status", "integrity"],
-    }
-    for canon, alts in synonyms.items():
-        all_names = {canon} | set(alts)
-        if model_key in all_names and expected_key in all_names:
-            return True
-    return False
-
-
-def _evidence_in_text(evidence: str, scene_text: str) -> bool:
-    """Check if an evidence quote appears in the scene text (fuzzy)."""
-    # Exact match
-    if evidence in scene_text:
-        return True
-    # Try with normalized whitespace
-    norm_ev = " ".join(evidence.split())
-    norm_text = " ".join(scene_text.split())
-    if norm_ev in norm_text:
-        return True
-    # Try significant words (at least 3 consecutive words match)
-    words = norm_ev.split()
-    if len(words) >= 3:
-        for i in range(len(words) - 2):
-            trigram = " ".join(words[i:i + 3])
-            if trigram in norm_text:
-                return True
-    return False
+    total = sum(scores[key] * weight for key, weight in weights.items())
+    hard_gates = all(
+        (
+            scene_valid,
+            entity_valid,
+            properties_valid,
+            changes_valid,
+            evidence_coverage == 1.0,
+            evidence_valid,
+            confidence_valid,
+        )
+    )
+    details = " | ".join(f"{key}={value:.2f}" for key, value in sorted(scores.items()))
+    return finalize_score(
+        total,
+        pass_threshold=PASS_THRESHOLD,
+        hard_gates=hard_gates,
+        reason=details,
+    )

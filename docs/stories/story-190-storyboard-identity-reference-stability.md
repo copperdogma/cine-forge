@@ -56,9 +56,17 @@ Improve the shipped `gpt_image_2_template_grid_storyboards` lane on the measured
 
 - **Root / parent need**: R7 and R8 require fast visual drafts that are coherent enough for users to react to instead of apologizing for obvious character drift. R17 makes real-world and generated references first-class inputs, so storyboards must preserve those references in the actual generation lane.
 - **Parent eval**: `storyboard-generation-quality` measures the real storyboard runtime path plus multimodal quality scoring, including `identity_consistency`, `reference_fidelity`, `prop_discipline`, `text_cleanliness`, and `story_specificity`.
-- **Latest result**: Story 188 validation kept the shipped template-grid default because it was runtime-green and stronger than beat-grid on identity/prop discipline, but it still scored only `overall=0.6613`, `identity_consistency=0.625`, and `reference_fidelity=0.75` against the `0.75` usefulness floor.
+- **Historical result (superseded by Story 208)**: Story 188 validation kept the configured template-grid default and reported `overall=0.6613`, `identity_consistency=0.625`, and `reference_fidelity=0.75`. Story 208 later classified the underlying packet and every derived score contaminated/non-decision-grade; those values are diagnostic history, not the latest maintained evidence.
 - **Measured failure mode**: Beat-grid did not fix the product issue. It slightly improved aggregate judge score on one pass but regressed the critical dimensions (`identity_consistency=0.375`, `prop_discipline=0.5`). The next attempt should target identity/reference conditioning directly, not add another beat-planning layer.
 - **Child eval / baseline**: A bounded `storyboard-generation-quality` subset should first prove a new identity/reference strategy is structurally healthy and qualitatively promising. Only then rerun the maintained comparison and update `docs/evals/registry.yaml`.
+
+**Story 208 supersession (2026-07-22):** Story 190's bounded comparison remains
+useful as an historical rejection narrative, but it cannot support a current
+model/default claim. Its exact generated candidates were not durably retained,
+and the v2 visual-eval contract was contaminated. A future comparison must use
+the repaired v3 contract, retain and check in every scored candidate byte plus
+its source grid and artifact lineage, verify hashes from a clean checkout, and
+receive manual visual review before registry promotion.
 
 ## Acceptance Criteria
 

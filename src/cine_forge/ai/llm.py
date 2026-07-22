@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 import random
 import re
 import time
@@ -12,11 +11,21 @@ import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from functools import partial
-from pathlib import Path
 from typing import Any
 
 from pydantic import BaseModel
 
+from cine_forge.ai.errors import LLMCallError
+from cine_forge.ai.fixture_responses import fixture_response
+from cine_forge.ai.gemini_response import (
+    normalize_gemini_response as _normalize_gemini_response,
+)
+from cine_forge.ai.model_identity import validate_provider_response_identity
+from cine_forge.ai.token_usage import (
+    aliased_token_count,
+    validate_standard_token_usage,
+    validate_token_count,
+)
 from cine_forge.env import require_env
 
 logger = logging.getLogger(__name__)
@@ -71,6 +80,17 @@ PROVIDER_XAI = "xai"
 PROVIDER_ANTHROPIC = "anthropic"
 PROVIDER_GOOGLE = "google"
 
+_GEMINI_MODELS_WITHOUT_SAMPLING = {
+    "gemini-3.5-flash-lite",
+    "gemini-3.6-flash",
+}
+_GEMINI_MODELS_WITH_THINKING_LEVEL = {
+    "gemini-3.5-flash-lite",
+    "gemini-3.6-flash",
+}
+_GEMINI_THINKING_LEVELS = {"minimal", "low", "medium", "high"}
+_GEMINI_MAX_OUTPUT_TOKENS = 65_536
+
 _CIRCUIT_BREAKER_FAILURE_THRESHOLD = 3
 _CIRCUIT_BREAKER_COOLDOWN_SECONDS = 30.0
 
@@ -83,10 +103,6 @@ class _CircuitBreakerState:
 
 
 _CIRCUIT_BREAKERS: dict[str, _CircuitBreakerState] = {}
-
-
-class LLMCallError(RuntimeError):
-    """Terminal error for model invocation failures."""
 
 
 def call_llm(
@@ -102,13 +118,14 @@ def call_llm(
     retry_jitter_ratio: float = 0.25,
     enable_caching: bool = False,
     request_timeout_seconds: float | None = None,
+    thinking_level: str | None = None,
 ) -> tuple[str | BaseModel, dict[str, Any]]:
     """Call an LLM and return text (or parsed schema) with call metadata."""
     if max_retries < 0:
         raise ValueError("max_retries must be >= 0")
     if model == "fixture":
         started = time.perf_counter()
-        parsed = _fixture_response(prompt=prompt, response_schema=response_schema)
+        parsed = fixture_response(prompt=prompt, response_schema=response_schema)
         latency = time.perf_counter() - started
         metadata = {
             "model": model,
@@ -137,7 +154,7 @@ def call_llm(
             _gemini_transport,
             request_timeout_seconds=request_timeout_seconds,
         )
-        normalizer = _normalize_gemini_response
+        normalizer = partial(_normalize_gemini_response, expected_model=bare_model)
     elif provider == PROVIDER_XAI:
         sender = partial(
             _xai_transport,
@@ -177,6 +194,7 @@ def call_llm(
                     temperature=active_temp,
                     max_tokens=active_max_tokens,
                     response_schema=response_schema,
+                    thinking_level=thinking_level,
                 )
             else:
                 payload = {
@@ -195,6 +213,8 @@ def call_llm(
                 model=bare_model,
                 response_schema=response_schema,
                 latency_seconds=latency,
+                provider=provider,
+                require_provider_identity=transport is None,
             )
             if fail_on_truncation and metadata.get("finish_reason") == "length":
                 raise LLMCallError("LLM output truncated due to max token limit")
@@ -289,6 +309,8 @@ def _parse_response(
     model: str,
     response_schema: type[BaseModel] | None,
     latency_seconds: float,
+    provider: str | None = None,
+    require_provider_identity: bool = False,
 ) -> tuple[str | BaseModel, dict[str, Any]]:
     choices = raw_response.get("choices", [])
     if not choices:
@@ -301,59 +323,21 @@ def _parse_response(
     if not isinstance(text, str):
         raise LLMCallError("LLM message content is not text")
 
-    usage = raw_response.get("usage", {})
-    input_tokens = int(usage.get("prompt_tokens", 0) or 0)
-    output_tokens = int(usage.get("completion_tokens", 0) or 0)
-    completion_details = (
-        usage.get("completion_tokens_details")
-        or usage.get("completionDetails")
-        or {}
+    metadata, finish_reason = _response_metadata(
+        raw_response=raw_response,
+        first_choice=choices[0],
+        model=model,
+        latency_seconds=latency_seconds,
+        provider=provider or _parse_provider(model)[0],
+        require_provider_identity=require_provider_identity,
     )
-    reasoning_output_tokens = 0
-    if model.startswith("grok-") and isinstance(completion_details, dict):
-        reasoning_output_tokens = int(
-            completion_details.get("reasoning_tokens")
-            or completion_details.get("reasoning")
-            or 0
-        )
-    request_id = raw_response.get("id")
-    finish_reason = choices[0].get("finish_reason")
-    metadata: dict[str, Any] = {
-        "model": model,
-        "input_tokens": input_tokens,
-        "output_tokens": output_tokens,
-        "estimated_cost_usd": estimate_cost_usd(model, input_tokens, output_tokens),
-        "latency_seconds": round(latency_seconds, 6),
-        "request_id": request_id,
-        "finish_reason": finish_reason,
-    }
-    if reasoning_output_tokens > 0:
-        metadata["reasoning_output_tokens"] = reasoning_output_tokens
-        metadata["estimated_cost_usd"] = estimate_cost_usd(
-            model,
-            input_tokens,
-            output_tokens + reasoning_output_tokens,
-        )
-    cache_read = usage.get("cache_read_input_tokens")
-    cache_write = usage.get("cache_creation_input_tokens")
-    if cache_read is not None or cache_write is not None:
-        metadata["cache_read_input_tokens"] = cache_read or 0
-        metadata["cache_creation_input_tokens"] = cache_write or 0
-        logger.debug(
-            "Anthropic cache: read=%d write=%d model=%s",
-            cache_read or 0,
-            cache_write or 0,
-            model,
-        )
 
     if not response_schema:
         return text, metadata
 
     # Fail early on truncated structured output — retries can bump max_tokens.
     if finish_reason == "length":
-        raise LLMCallError(
-            "LLM output truncated due to max token limit"
-        )
+        raise LLMCallError("LLM output truncated due to max token limit")
 
     # 1. Try to find a JSON code block with regex
     # This handles cases where the model puts the JSON inside ```json ... ```
@@ -380,6 +364,111 @@ def _parse_response(
         print(f"[DEBUG] Raw response was (first 500 chars):\n{text[:500]}...")
         raise LLMCallError(f"Structured response was not valid JSON: {exc}") from exc
     return response_schema.model_validate(payload), metadata
+
+
+def _response_metadata(
+    *,
+    raw_response: dict[str, Any],
+    first_choice: dict[str, Any],
+    model: str,
+    latency_seconds: float,
+    provider: str,
+    require_provider_identity: bool,
+) -> tuple[dict[str, Any], object]:
+    """Build auditable usage metadata without inflating response parsing."""
+    usage = raw_response.get("usage", {})
+    if not isinstance(usage, dict):
+        raise LLMCallError("LLM response usage must be a mapping")
+    usage_contract: dict[str, object] = {}
+    if "total_tokens" in usage:
+        usage_contract["total_tokens"] = usage["total_tokens"]
+    completion_details = (
+        usage.get("completion_tokens_details")
+        or usage.get("completionDetails")
+        or {}
+    )
+    visible_output_tokens: int | None = None
+    if isinstance(completion_details, dict):
+        visible_tokens = completion_details.get("visible_tokens")
+        if visible_tokens is not None:
+            visible_output_tokens = validate_token_count(
+                visible_tokens,
+                "visible_output_tokens",
+            )
+    if provider == PROVIDER_XAI and isinstance(completion_details, dict):
+        reasoning_evidence = aliased_token_count(
+            completion_details,
+            ("reasoning_tokens", "reasoning"),
+            name="completion token details",
+        )
+        if reasoning_evidence is not None:
+            usage_contract["reasoning_completion_tokens"] = reasoning_evidence
+    token_usage = validate_standard_token_usage(
+        prompt_tokens=usage.get("prompt_tokens"),
+        completion_tokens=usage.get("completion_tokens"),
+        allow_total_derived_hidden=provider == PROVIDER_XAI,
+        **usage_contract,
+    )
+    input_tokens = token_usage.prompt
+    output_tokens = token_usage.visible_completion
+    reasoning_output_tokens = token_usage.hidden_completion
+    identity = validate_provider_response_identity(
+        provider=provider,
+        requested_model=model,
+        returned_model=raw_response.get("model"),
+        request_id=raw_response.get("id"),
+        require_returned=require_provider_identity,
+    )
+    finish_reason = first_choice.get("finish_reason")
+    metadata: dict[str, Any] = {
+        "model": model,
+        "requested_model": identity.requested_model,
+        "returned_model": identity.returned_model,
+        "provider": identity.provider,
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "estimated_cost_usd": estimate_cost_usd(
+            identity.billing_model,
+            input_tokens,
+            output_tokens,
+        ),
+        "latency_seconds": round(latency_seconds, 6),
+        "request_id": identity.request_id,
+        "finish_reason": finish_reason,
+    }
+    if reasoning_output_tokens > 0:
+        metadata["reasoning_output_tokens"] = reasoning_output_tokens
+        metadata["estimated_cost_usd"] = estimate_cost_usd(
+            identity.billing_model,
+            input_tokens,
+            token_usage.billed_completion,
+        )
+    if visible_output_tokens is not None:
+        metadata["visible_output_tokens"] = visible_output_tokens
+    if model.startswith("gemini-") and isinstance(completion_details, dict):
+        metadata["reasoning_output_tokens"] = int(
+            completion_details.get("reasoning_tokens") or 0
+        )
+    cache_read = usage.get("cache_read_input_tokens")
+    cache_write = usage.get("cache_creation_input_tokens")
+    if cache_read is not None or cache_write is not None:
+        metadata["cache_read_input_tokens"] = (
+            validate_token_count(cache_read, "cache_read_input_tokens")
+            if cache_read is not None
+            else 0
+        )
+        metadata["cache_creation_input_tokens"] = (
+            validate_token_count(cache_write, "cache_creation_input_tokens")
+            if cache_write is not None
+            else 0
+        )
+        logger.debug(
+            "Anthropic cache: read=%d write=%d model=%s",
+            metadata["cache_read_input_tokens"],
+            metadata["cache_creation_input_tokens"],
+            model,
+        )
+    return metadata, finish_reason
 
 
 def _openai_transport(
@@ -531,8 +620,8 @@ def _normalize_anthropic_response(raw: dict[str, Any]) -> dict[str, Any]:
         "stop_sequence": "stop",
     }
     normalized_usage: dict[str, Any] = {
-        "prompt_tokens": usage.get("input_tokens", 0),
-        "completion_tokens": usage.get("output_tokens", 0),
+        "prompt_tokens": usage.get("input_tokens"),
+        "completion_tokens": usage.get("output_tokens"),
     }
     # Preserve cache token counts if present
     if "cache_read_input_tokens" in usage:
@@ -541,6 +630,7 @@ def _normalize_anthropic_response(raw: dict[str, Any]) -> dict[str, Any]:
         normalized_usage["cache_creation_input_tokens"] = usage["cache_creation_input_tokens"]
     return {
         "id": raw.get("id", ""),
+        "model": raw.get("model"),
         "choices": [{
             "message": {"content": text},
             "finish_reason": finish_reason_map.get(stop_reason, stop_reason),
@@ -592,20 +682,35 @@ def _build_gemini_payload(
     temperature: float,
     max_tokens: int | None,
     response_schema: type[BaseModel] | None,
+    thinking_level: str | None = None,
 ) -> dict[str, Any]:
     """Build a Gemini generateContent request payload."""
+    output_tokens = max_tokens or 16384
+    if model in _GEMINI_MODELS_WITH_THINKING_LEVEL:
+        output_tokens = min(output_tokens, _GEMINI_MAX_OUTPUT_TOKENS)
     generation_config: dict[str, Any] = {
-        "temperature": temperature,
-        "max_output_tokens": max_tokens or 16384,
+        "maxOutputTokens": output_tokens,
     }
+    if model not in _GEMINI_MODELS_WITHOUT_SAMPLING:
+        generation_config["temperature"] = temperature
+    if thinking_level is not None:
+        if model not in _GEMINI_MODELS_WITH_THINKING_LEVEL:
+            raise ValueError(f"thinking_level is not supported for Gemini model {model}")
+        normalized_thinking_level = thinking_level.strip().lower()
+        if normalized_thinking_level not in _GEMINI_THINKING_LEVELS:
+            allowed = ", ".join(sorted(_GEMINI_THINKING_LEVELS))
+            raise ValueError(f"thinking_level must be one of: {allowed}")
+        generation_config["thinkingConfig"] = {
+            "thinkingLevel": normalized_thinking_level,
+        }
     if response_schema:
-        generation_config["response_mime_type"] = "application/json"
-        generation_config["response_schema"] = _to_gemini_schema(
+        generation_config["responseMimeType"] = "application/json"
+        generation_config["responseSchema"] = _to_gemini_schema(
             response_schema.model_json_schema()
         )
     payload: dict[str, Any] = {
         "contents": [{"parts": [{"text": prompt}]}],
-        "generation_config": generation_config,
+        "generationConfig": generation_config,
     }
     # Stash model name for _gemini_transport to build the URL.
     payload["_model"] = model
@@ -677,39 +782,6 @@ def _to_gemini_schema(schema: dict[str, Any]) -> dict[str, Any]:
         return node
 
     return resolve(schema)
-
-
-def _normalize_gemini_response(raw: dict[str, Any]) -> dict[str, Any]:
-    """Convert Gemini generateContent response to OpenAI-compatible format."""
-    candidates = raw.get("candidates", [])
-    if not candidates:
-        raise LLMCallError("Gemini response missing candidates")
-
-    candidate = candidates[0]
-    parts = candidate.get("content", {}).get("parts", [])
-    text = "".join(part.get("text", "") for part in parts)
-
-    finish_reason_raw = candidate.get("finishReason", "STOP")
-    finish_reason_map = {
-        "STOP": "stop",
-        "MAX_TOKENS": "length",
-        "SAFETY": "content_filter",
-        "RECITATION": "content_filter",
-        "OTHER": "stop",
-    }
-
-    usage = raw.get("usageMetadata", {})
-    return {
-        "id": "",
-        "choices": [{
-            "message": {"content": text},
-            "finish_reason": finish_reason_map.get(finish_reason_raw, "stop"),
-        }],
-        "usage": {
-            "prompt_tokens": usage.get("promptTokenCount", 0),
-            "completion_tokens": usage.get("candidatesTokenCount", 0),
-        },
-    }
 
 
 def _gemini_transport(
@@ -841,149 +913,3 @@ def _is_transient_error(error: Exception) -> bool:
         "529",
     )
     return any(token in message for token in transient_tokens)
-
-
-def _fixture_response(
-    prompt: str,
-    response_schema: type[BaseModel] | None,
-) -> str | BaseModel:
-    root_path = os.getenv("CINE_FORGE_MOCK_FIXTURE_DIR")
-    if not root_path:
-        raise LLMCallError("CINE_FORGE_MOCK_FIXTURE_DIR is required for model='fixture'")
-    fixture_root = Path(root_path)
-    lowered_prompt = prompt.lower()
-
-    if response_schema is None:
-        if "search/replace blocks" in lowered_prompt:
-            return ""
-        screenplay_fixture = fixture_root / "normalization_screenplay_cleanup.txt"
-        prose_fixture = fixture_root / "normalization_prose_conversion.txt"
-        source_path = (
-            screenplay_fixture
-            if "source format: screenplay" in lowered_prompt
-            else prose_fixture
-        )
-        return source_path.read_text(encoding="utf-8")
-
-    schema_name = response_schema.__name__
-    if schema_name == "_MetadataEnvelope":
-        source_format = "screenplay" if "source format: screenplay" in lowered_prompt else "prose"
-        payload = {
-            "source_format": source_format,
-            "strategy": (
-                "passthrough_cleanup"
-                if "strategy: passthrough_cleanup" in lowered_prompt
-                else "full_conversion"
-            ),
-            "inventions": [],
-            "assumptions": [],
-            "overall_confidence": 0.92,
-            "rationale": "Fixture-backed metadata response.",
-        }
-        return response_schema.model_validate(payload)
-
-    if schema_name in {"QAResult", "QARepairPlan"}:
-        scene_match = re.search(r"scene_[0-9]{3}", lowered_prompt)
-        scene_id = scene_match.group(0) if scene_match else None
-        if scene_id:
-            qa_source = fixture_root / "qa" / f"{scene_id}_qa.json"
-            scene_source = fixture_root / "scenes" / f"{scene_id}.json"
-        else:
-            qa_source = fixture_root / "normalization_qa.json"
-            scene_source = None
-
-        if not qa_source.exists():
-            qa_source = fixture_root / "normalization_qa.json"
-        qa_payload = json.loads(qa_source.read_text(encoding="utf-8"))
-        scene_payload = (
-            json.loads(scene_source.read_text(encoding="utf-8"))
-            if scene_source and scene_source.exists()
-            else {}
-        )
-        issues = [
-            {
-                "severity": issue.get("severity", "note"),
-                "description": issue.get("description", "fixture note"),
-                "location": issue.get("location", "unknown"),
-            }
-            for issue in qa_payload.get("issues", [])
-        ]
-        result_payload = {
-            "passed": bool(qa_payload.get("passed", True)),
-            "confidence": float(qa_payload.get("confidence", 0.95)),
-            "issues": issues,
-            "summary": str(
-                scene_payload.get("note")
-                or qa_payload.get("summary")
-                or "Fixture QA result"
-            ),
-        }
-        if schema_name == "QAResult":
-            return response_schema.model_validate(result_payload)
-        return response_schema.model_validate({"qa_result": result_payload, "edits": []})
-
-    if schema_name == "_BoundaryValidation":
-        return response_schema.model_validate(
-            {
-                "is_sensible": True,
-                "confidence": 0.8,
-                "rationale": "Fixture boundary validation accepted chunk boundary.",
-            }
-        )
-
-    if schema_name == "_EnrichmentEnvelope":
-        return response_schema.model_validate(
-            {
-                "narrative_beats": [],
-                "tone_mood": "neutral",
-                "tone_shifts": [],
-                "heading": None,
-                "location": None,
-                "time_of_day": None,
-                "int_ext": None,
-                "characters_present": None,
-            }
-        )
-
-    if schema_name == "_DetectedConfigEnvelope":
-        config_fixture = fixture_root / "project_config_autodetect.json"
-        raw = json.loads(config_fixture.read_text(encoding="utf-8"))
-        payload = {
-            "title": {"value": raw["title"], "confidence": 0.9, "rationale": "Fixture title"},
-            "format": {"value": raw["format"], "confidence": 0.9, "rationale": "Fixture format"},
-            "genre": {"value": raw["genre"], "confidence": 0.86, "rationale": "Fixture genre"},
-            "tone": {"value": raw["tone"], "confidence": 0.84, "rationale": "Fixture tone"},
-            "estimated_duration_minutes": {
-                "value": raw["estimated_duration_minutes"],
-                "confidence": 0.85,
-                "rationale": "Fixture runtime estimate",
-            },
-            "primary_characters": {
-                "value": raw["primary_characters"],
-                "confidence": 0.85,
-                "rationale": "Fixture primary characters",
-            },
-            "supporting_characters": {
-                "value": raw["supporting_characters"],
-                "confidence": 0.8,
-                "rationale": "Fixture supporting characters",
-            },
-            "location_count": {
-                "value": raw["location_count"],
-                "confidence": 0.9,
-                "rationale": "Fixture location count",
-            },
-            "locations_summary": {
-                "value": raw["locations_summary"],
-                "confidence": 0.9,
-                "rationale": "Fixture locations summary",
-            },
-            "target_audience": {
-                "value": raw["target_audience"],
-                "confidence": 0.7,
-                "rationale": "Fixture audience",
-            },
-        }
-        return response_schema.model_validate(payload)
-
-    raise LLMCallError(f"Unsupported fixture response schema: {schema_name}")

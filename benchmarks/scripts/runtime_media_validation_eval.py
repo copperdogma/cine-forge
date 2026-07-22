@@ -10,10 +10,7 @@ import sys
 import time
 from datetime import UTC, datetime
 from pathlib import Path
-from statistics import mean
 from typing import Literal
-
-from pydantic import BaseModel, Field, model_validator
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_ROOT = REPO_ROOT / "src"
@@ -23,53 +20,15 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 DEFAULT_MANIFEST = REPO_ROOT / "benchmarks" / "fixtures" / "runtime_media_validation_cases.json"
-
-
-class RuntimeValidationCase(BaseModel):
-    case_id: str = Field(min_length=1)
-    label: str = Field(min_length=1)
-    target_kind: Literal["generated_video", "final_output"] = "generated_video"
-    clip_slug: str | None = None
-    scene_heading: str | None = None
-    rendered_scene_ids: list[str] | None = None
-    prompt_text: str = Field(min_length=1)
-    mutation: Literal["none", "missing_file", "truncate_media"] = "none"
-    truncate_bytes: int | None = Field(default=None, ge=1)
-    expected_health: Literal["valid", "needs_review", "needs_revision"]
-    category: Literal["semantic", "structural"]
-    expectation_note: str | None = None
-
-    @model_validator(mode="after")
-    def _validate_target_shape(self) -> RuntimeValidationCase:
-        if self.target_kind == "generated_video":
-            if not self.clip_slug or not self.scene_heading:
-                raise ValueError(
-                    "generated_video cases require clip_slug and scene_heading"
-                )
-            return self
-        if not self.rendered_scene_ids:
-            raise ValueError("final_output cases require rendered_scene_ids")
-        return self
-
-
-class RuntimeValidationManifest(BaseModel):
-    cases: list[RuntimeValidationCase] = Field(min_length=1)
-
-
-class CaseResult(BaseModel):
-    case_id: str
-    label: str
-    category: Literal["semantic", "structural"]
-    expected_health: str
-    observed_health: str
-    matched: bool
-    semantic_status: str
-    deterministic_finding_codes: list[str]
-    semantic_finding_codes: list[str]
-    summary: str | None = None
-    latency_ms: int
-    cost_usd: float
-    expectation_note: str | None = None
+from runtime_media_validation_support import (  # noqa: E402
+    CaseResult,
+    RuntimeValidationCase,
+    RuntimeValidationManifest,
+    file_sha256,
+    render_markdown,
+    summarize_approach,
+    verify_case_provenance,
+)
 
 
 def main() -> None:
@@ -125,12 +84,24 @@ def main() -> None:
             )
             for case in manifest.cases
         ]
-        approach_rows.append(_summarize_approach(approach_id, label, cases))
+        approach_rows.append(summarize_approach(approach_id, label, cases))
 
     result = {
         "eval_id": args.eval_id,
         "measured_at": datetime.now(UTC).isoformat(),
         "fixture_manifest": str(args.fixture_manifest.resolve().relative_to(REPO_ROOT)),
+        "fixture_contract_version": manifest.contract_version,
+        "evidence_scope": (
+            "Sampled-media validation behavior on hash-locked synthetic fixtures; "
+            "not a final-render quality or native-video model benchmark."
+        ),
+        "contract_fingerprints": {
+            "fixture_manifest_sha256": file_sha256(args.fixture_manifest.resolve()),
+            "runner_sha256": file_sha256(Path(__file__).resolve()),
+            "support_sha256": file_sha256(
+                REPO_ROOT / "benchmarks" / "scripts" / "runtime_media_validation_support.py"
+            ),
+        },
         "model": args.model,
         "sample_count": args.sample_count,
         "approaches": approach_rows,
@@ -141,7 +112,7 @@ def main() -> None:
     md_path = output_prefix.with_suffix(".md")
     json_path.parent.mkdir(parents=True, exist_ok=True)
     json_path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-    md_path.write_text(_render_markdown(result), encoding="utf-8")
+    md_path.write_text(render_markdown(result), encoding="utf-8")
     print(json_path)
     print(md_path)
 
@@ -154,6 +125,7 @@ def _run_case(
     model: str,
     sample_count: int,
 ) -> dict:
+    verify_case_provenance(case, REPO_ROOT)
     imports = _runtime_imports()
     seeded = _seed_case(case, approach, eval_id=eval_id)
     project_dir = seeded["project_dir"]
@@ -229,6 +201,9 @@ def _run_case(
         case_id=case.case_id,
         label=case.label,
         category=case.category,
+        intent_contract=case.intent_contract,
+        source_asset_sha256=case.source_asset_sha256,
+        source_target_sha256=case.source_target_sha256,
         expected_health=case.expected_health,
         observed_health=observed_health,
         matched=observed_health == case.expected_health,
@@ -286,7 +261,7 @@ def _seed_case(
         seeded = imports["seed_final_output_project"](
             tmp_root,
             rendered_scene_ids=case.rendered_scene_ids,
-            clip_slug=case.clip_slug or imports["default_clip_slug"],
+            clip_slug=case.clip_slug,
         )
         engine = imports["DriverEngine"](
             workspace_root=REPO_ROOT,
@@ -344,65 +319,8 @@ def _semantic_only_health(review) -> str:
     return artifact_health.NEEDS_REVIEW
 
 
-def _summarize_approach(approach_id: str, label: str, cases: list[dict]) -> dict:
-    case_models = [CaseResult.model_validate(case) for case in cases]
-    overall = mean(1.0 if case.matched else 0.0 for case in case_models)
-    semantic_cases = [case for case in case_models if case.category == "semantic"]
-    structural_cases = [case for case in case_models if case.category == "structural"]
-
-    def _bucket_score(bucket: list[CaseResult]) -> float:
-        return mean(1.0 if case.matched else 0.0 for case in bucket) if bucket else 0.0
-
-    return {
-        "approach": approach_id,
-        "label": label,
-        "metrics": {
-            "overall": round(overall, 4),
-            "semantic_cases": round(_bucket_score(semantic_cases), 4),
-            "structural_cases": round(_bucket_score(structural_cases), 4),
-        },
-        "latency_ms": round(mean(case.latency_ms for case in case_models)),
-        "cost_usd": round(mean(case.cost_usd for case in case_models), 6),
-        "cases": [case.model_dump(mode="json") for case in case_models],
-    }
-
-
-def _render_markdown(result: dict) -> str:
-    lines = [
-        "# Runtime Media Validation Eval",
-        "",
-        f"Measured at: `{result['measured_at']}`",
-        f"Fixture manifest: `{result['fixture_manifest']}`",
-        f"Frontier model: `{result['model']}`",
-        "",
-        "| Approach | Overall | Semantic | Structural | Avg latency | Avg cost |",
-        "|---|---:|---:|---:|---:|---:|",
-    ]
-    for row in result["approaches"]:
-        metrics = row["metrics"]
-        lines.append(
-            f"| {row['label']} | {metrics['overall']:.3f} | {metrics['semantic_cases']:.3f} "
-            f"| {metrics['structural_cases']:.3f} | {row['latency_ms']} ms | "
-            f"${row['cost_usd']:.6f} |"
-        )
-
-    lines.extend(["", "## Case Results", ""])
-    for row in result["approaches"]:
-        lines.append(f"### {row['label']}")
-        for case in row["cases"]:
-            verdict = "match" if case["matched"] else "mismatch"
-            lines.append(
-                f"- `{case['case_id']}`: expected `{case['expected_health']}`, got "
-                f"`{case['observed_health']}` ({verdict}); semantic=`{case['semantic_status']}`; "
-                f"latency=`{case['latency_ms']} ms`; cost=`${case['cost_usd']:.6f}`"
-            )
-        lines.append("")
-    return "\n".join(lines).rstrip() + "\n"
-
-
 def _runtime_imports() -> dict[str, object]:
     from tests.render_fixtures import (
-        _BENCHMARK_CLIP_SLUG,
         seed_final_output_project,
         seed_generated_video_project,
     )
@@ -439,7 +357,6 @@ def _runtime_imports() -> dict[str, object]:
         "MediaValidationArtifact": MediaValidationArtifact,
         "MediaValidationTarget": MediaValidationTarget,
         "anticipated_entity_ref": anticipated_entity_ref,
-        "default_clip_slug": _BENCHMARK_CLIP_SLUG,
         "final_output_context_notes": final_output_context_notes,
         "latest_entity_ref": latest_entity_ref,
         "review_sampled_frames": review_sampled_frames,

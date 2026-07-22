@@ -8,7 +8,7 @@
       "int_ext": "EXT",
       "location": "CITY CENTRE",
       "time_of_day": "NIGHT",
-      "summary": "Opening establishing shot of a ruined city with fires, homeless, rubble from collapsed skyscrapers. Title card explains the pandemic and economic collapse backstory.",
+      "summary": "Opening establishing shot of a ruined city with fires, homeless, and rubble from a fallen skyscraper. Title card explains the pandemic and economic collapse backstory.",
       "characters": []
     },
     {
@@ -35,7 +35,7 @@
       "int_ext": "INT",
       "location": "RUDDY & GREEN BUILDING - ELEVATOR",
       "time_of_day": "NIGHT",
-      "summary": "Mariner and Rose ride the elevator down. She discovers skull fragments. He reveals he tracked her via AirTag. Thugs ambush them on floor 12; Mariner fights them off. Rose decides to go up to floor 11 instead of escaping.",
+      "summary": "Mariner and Rose ride the elevator down. She finds a bloody scrap with hair and wonders if it is skull. He reveals he tracked her via AirTag. Thugs ambush them on floor 12; Mariner fights them off. Rose gets off on floor 11 so they can take the stairs back up instead of escaping.",
       "characters": ["THE MARINER", "ROSE", "THUG 1", "THUG 2", "THUG 3"]
     },
     {
@@ -44,7 +44,7 @@
       "int_ext": "INT",
       "location": "11TH FLOOR",
       "time_of_day": "NIGHT",
-      "summary": "Rose and Mariner search for a stairwell through dim corridors. They hide from a passing thug. Mariner has a flashback to his father teaching him to fish.",
+      "summary": "Rose and Mariner search for a stairwell through dim corridors. They hide as someone slowly walks past. Mariner has a flashback to his father teaching him to fish.",
       "characters": ["THE MARINER", "ROSE"]
     },
     {
@@ -89,8 +89,8 @@
       "int_ext": "INT",
       "location": "15TH FLOOR",
       "time_of_day": "NIGHT",
-      "summary": "Clean, luxurious floor (Salvatori's office). Mariner forces open a locked door. Rose retrieves her purse. She questions Mariner about their father. Rose reveals their dad didn't die — he abandoned the family and lives in Chimney Bay. Mariner is devastated. Salvatori arrives with thugs and a submachine gun.",
-      "characters": ["THE MARINER", "ROSE", "SALVATORI"]
+      "summary": "On the clean, luxurious 15th floor, Mariner forces open a locked door. Rose retrieves her purse. She questions Mariner about their father. Rose reveals their dad didn't die — he abandoned the family and lives in Chimney Bay. Mariner is devastated. Salvatori arrives with thugs and a submachine gun.",
+      "characters": ["THE MARINER", "ROSE", "SALVATORI", "THUGS"]
     },
     {
       "scene_number": 11,
@@ -135,7 +135,7 @@
       "location": "BACKYARD",
       "time_of_day": "DAY",
       "summary": "Intercut flashback/present. Thugs force Mariner to his knees. Salvatori demands the password at gunpoint. Rose delivers a speech redefining Mariner as a true hero — not because of his father's teachings, but despite them. Mariner clenches his fists, renewed. Cut to black.",
-      "characters": ["THE MARINER", "ROSE", "SALVATORI"]
+      "characters": ["THE MARINER", "ROSE", "SALVATORI", "THUGS"]
     }
   ]
 }

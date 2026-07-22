@@ -1,0 +1,60 @@
+{
+  "clip_id": "quiet_bedside_vigil",
+  "title": "Quiet bedside vigil generation-intent target",
+  "source_type": "synthetic_previz",
+  "source_description": "Frame-observable scoring projection of the retained Story 143 generation brief in benchmarks/previz_usefulness/cases.json; not derived from any candidate output.",
+  "rights": "Project-owned synthetic benchmark contract",
+  "duration_seconds": 4.0,
+  "resolution": "candidate-native 480p or 720p",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": null,
+  "summary_reference": "A warm static wide bedside composition holds on one seated figure, a lamp, and a folded blanket at frame right while the room remains still.",
+  "required_keywords": [
+    "bedside",
+    "seated",
+    "lamp",
+    "blanket",
+    "still"
+  ],
+  "tone_tags": [
+    "intimate",
+    "mournful"
+  ],
+  "emotion_tags": [
+    "tenderness",
+    "grief"
+  ],
+  "color_tags": [
+    "amber",
+    "desaturated"
+  ],
+  "camera_tags": [
+    "static",
+    "wide_master"
+  ],
+  "motion_tags": [
+    "stillness"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The folded blanket remains untouched at frame right across the ordered frames."
+  ],
+  "audio_tags": [],
+  "clip_tags": [
+    "quiet_emotion",
+    "interior"
+  ],
+  "anchor_subset": true,
+  "weights": {
+    "summary": 0.2,
+    "tone": 0.12,
+    "emotion": 0.08,
+    "color": 0.12,
+    "camera": 0.14,
+    "motion": 0.12,
+    "continuity": 0.14,
+    "audio": 0.0,
+    "evidence": 0.08
+  }
+}

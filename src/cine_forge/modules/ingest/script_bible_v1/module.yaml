@@ -18,5 +18,10 @@ parameters:
   max_tokens:
     type: integer
     required: false
-    default: 4096
+    default: 65536
     description: "Max output tokens for the extraction call."
+  thinking_level:
+    type: string
+    required: false
+    default: "minimal"
+    description: "Gemini thinking level; used by the default work model."

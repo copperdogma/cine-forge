@@ -1,11 +1,15 @@
 # Entity Discovery Benchmark
 # Evaluates models on precision/recall of character, location, and prop discovery.
-# Entity discovery is a RECALL task — finding everything matters more than precision.
+# Entity discovery is recall-led but precision-sensitive because every result
+# creates downstream bible work.
+# This full-script, three-taxonomy call is a capability detector. Production
+# discovery is incremental and chunked, with seeded existing entities and an
+# optional verification pass, so this task must not select its runtime model.
 #
 # Usage: cd benchmarks && promptfoo eval -c tasks/entity-discovery.yaml --no-cache -j 3
 # View:  promptfoo view
 
-description: "Entity discovery from screenplay — The Mariner"
+description: "Entity discovery from two repo-owned screenplays — The Mariner and Open Frequency"
 
 # Use Opus as judge — strongest reasoning, cross-provider for OpenAI/Gemini models
 defaultTest:
@@ -54,14 +58,12 @@ providers:
   - id: google:gemini-2.5-flash-lite
     label: "Gemini 2.5 Flash Lite"
     config:
-      temperature: 0
       maxOutputTokens: 16384
 
   - id: google:gemini-3.1-flash-lite
     label: "Gemini 3.1 Flash Lite"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
   - id: google:gemini-3.5-flash-lite
     label: "Gemini 3.5 Flash-Lite"
@@ -87,20 +89,17 @@ providers:
   - id: google:gemini-2.5-flash
     label: "Gemini 2.5 Flash"
     config:
-      temperature: 0
       maxOutputTokens: 16384
 
   - id: google:gemini-3-flash-preview
     label: "Gemini 3 Flash"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
   - id: google:gemini-3.5-flash
     label: "Gemini 3.5 Flash"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
   - id: google:gemini-3.6-flash
     label: "Gemini 3.6 Flash"
@@ -133,6 +132,7 @@ providers:
   - id: file://../providers/openai_responses_provider.py
     label: "GPT-5.5 Pro"
     config:
+      model: gpt-5.5-pro
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
@@ -151,35 +151,55 @@ providers:
   - id: google:gemini-3-pro-preview
     label: "Gemini 3 Pro"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
   - id: google:gemini-3.1-pro-preview
     label: "Gemini 3.1 Pro"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
 tests:
   - vars:
       screenplay: file://../input/the-mariner.md
       golden_path: golden/the-mariner-entity-discovery.json
-    assert:
+    assert: &entity_discovery_assertions
       - type: python
         value: file://../scorers/entity_discovery_scorer.py
       - type: llm-rubric
         value: |
-          Evaluate this entity discovery output for the screenplay "The Mariner."
+          Evaluate the candidate entity inventory only against the supplied screenplay.
+          Do not rely on outside knowledge or treat this rubric as an answer key.
 
-          This is a RECALL task — finding everything matters more than precision.
-          False positives (extra entities) are acceptable. False negatives (missed entities) are failures.
+          SOURCE SCREENPLAY
+          =================
+          {{screenplay}}
+          =================
 
-          Key quality criteria:
-          1. Characters — must find: THE MARINER (protagonist, also called Billy/Will), ROSE (his sister), SALVATORI (the mob boss), VINNIE (Rose's ex, gang enforcer), DAD (appears in flashbacks). Bonus: MIKEY, CARLOS.
-          2. Locations — must find: the Ruddy & Greene Building and the 15th floor (the climactic confrontation site). Bonus: 11th/13th floors, stairwell, elevator, coastline.
-          3. Props — must find: the OAR (Mariner's signature weapon). Bonus: FLARE GUN, PURSE (Rose's), AIRTAG, NET CAPE, BRACERS.
-          4. Are entity names captured as they appear in the screenplay (character names in ALL CAPS, location headings, etc.)?
-          5. Does the model err on the side of inclusion rather than omission?
-          6. Are there significant hallucinations — entities that clearly don't appear in the screenplay?
+          Grade all of these dimensions:
+          1. Category validity: characters are narratively specific people,
+             locations are separately staged named places, and props are
+             distinctive story-relevant objects rather than arbitrary nouns.
+          2. Recall: the inventory covers the screenplay's major and meaningful
+             entities in all three categories, including mentioned entities when
+             they have real story consequence.
+          3. Precision: generic extras, ordinary wardrobe, set dressing,
+             furniture, scenery, generic weapons/tools, sounds, materials,
+             inscriptions, and duplicate aliases are excluded unless the source
+             clearly individualizes them as story-significant entities.
+          4. Grounding: every returned entity appears in or is unambiguously
+             supported by the source, and no category contains invented names.
+          5. Canonical naming and JSON contract: names are deduplicated and the
+             candidate contains exactly the three requested arrays.
 
-          Score 0.8+ only if all required entities are found. Score 0.6-0.8 if missing 1-2 required entities but found most. Score below 0.6 if multiple required entities are missed.
+          A schema-only or generic answer must fail. A noun dump must not pass
+          merely because it happens to include the major entities. Score 0.80 or
+          higher, and pass, only when recall is strong and any precision defects
+          are genuinely minor. Material omissions, category errors, hallucinated
+          entities, or systematic over-inclusion must fail.
+
+  # Second-corpus case: distinguishes people from a named animal, a consequential
+  # generic radio voice, story props, and ordinary storm-shelter set dressing.
+  - vars:
+      screenplay: file://../../tests/fixtures/ingest_inputs/open_frequency_short.fountain
+      golden_path: golden/open-frequency-entity-discovery.json
+    assert: *entity_discovery_assertions

@@ -4,17 +4,16 @@ import argparse
 import json
 import shutil
 import sys
-import time
 from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError, sync_playwright
+from playwright.sync_api import Page, sync_playwright
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
 DEFAULT_API_BASE = "http://127.0.0.1:8000/api"
 DEFAULT_UI_BASE = "http://127.0.0.1:5174"
 DEFAULT_SCENE_ID = "scene_001"
-DEFAULT_SOURCE_PROJECT = Path("/Users/cam/Documents/Projects/cine-forge/output/the-mariner-13")
 DEFAULT_PROJECT_COPY_ROOT = Path("/tmp/cineforge-story180-smoke")
 DEFAULT_PROJECT_COPY_NAME = "the-mariner-13-entry"
 DEFAULT_HOME_SHOT = Path("/tmp/story180-home-desktop.png")
@@ -103,7 +102,12 @@ def ensure_chat_visible(page: Page, *, mobile: bool) -> None:
         show_panel.first.click()
 
 
-def assert_focus_banner(page: Page, expected_label: str, *, require_jump_button: bool = True) -> None:
+def assert_focus_banner(
+    page: Page,
+    expected_label: str,
+    *,
+    require_jump_button: bool = True,
+) -> None:
     banner = page.locator("div").filter(has_text="Focused workspace").filter(
         has_text=expected_label
     ).first
@@ -231,13 +235,14 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Focused browser smoke for Story 180 scene workspace entry clarity. "
-            "Requires the local API and UI servers to already be running."
+            "Requires the local API/UI servers and an explicit source project produced "
+            "through the normal pipeline."
         )
     )
     parser.add_argument("--api-base", default=DEFAULT_API_BASE)
     parser.add_argument("--ui-base", default=DEFAULT_UI_BASE)
     parser.add_argument("--scene-id", default=DEFAULT_SCENE_ID)
-    parser.add_argument("--source-project", type=Path, default=DEFAULT_SOURCE_PROJECT)
+    parser.add_argument("--source-project", type=Path, required=True)
     parser.add_argument("--project-copy-root", type=Path, default=DEFAULT_PROJECT_COPY_ROOT)
     parser.add_argument("--project-copy-name", default=DEFAULT_PROJECT_COPY_NAME)
     parser.add_argument("--mode", choices=("desktop", "mobile", "both"), default="both")

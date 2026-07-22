@@ -15,7 +15,7 @@
     "procedural"
   ],
   "anchor_subset": false,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "analysis_frame_policy": "five_ordered_jpegs_v1",
   "candidate_variant": "xai_grok_imagine_video_previz",
   "candidate_label": "Grok Imagine Previz",
   "operator_lane": "ai_previz",
@@ -38,5 +38,26 @@
     "bokeh glamour shots",
     "final-render finish"
   ],
-  "prompt_contract_path": "prompt_contract.json"
+  "prompt_contract_path": "prompt_contract.json",
+  "decision_role": "decision_candidate",
+  "decision_eligible": true,
+  "artifact_status": "retained_candidate_regrade_ready",
+  "retained_clip_bytes": true,
+  "retained_frame_bytes": true,
+  "retained_prompt_bytes": true,
+  "case_contract_path": "benchmarks/previz_usefulness/cases.json",
+  "case_contract_sha256": "3ad9ed4eeedeaf82174f53096a619346d21be00292f0e5edc386b4704689b60c",
+  "target_path": "benchmarks/previz_usefulness/targets/radio_hold_tracking.json",
+  "target_sha256": "9d5674792fb3d3995b32a432ec4e5d5317d0b2d40ad133e47fbe4f4f4671ae25",
+  "prompt_path": "prompt.txt",
+  "clip_sha256": "0e9021eb2f799e47cab85346d76e80d8c798558fb577f6eecb11c9b28c0531f8",
+  "frame_sha256": {
+    "frame_00.jpg": "a195454bdffbfd0778253478bd77557b2c5aab263af524f2d05b19f1873eeae6",
+    "frame_01.jpg": "c9dea562b73d866f5053a1f864715c7c52197c5e452a1d1334d0c8b32cb61668",
+    "frame_02.jpg": "af4e9a317a4ef7bc920e08f7d74b80d2fcf68ea99d7abb9519cfaf66ba7699e8",
+    "frame_03.jpg": "cc22e0c11f90c26fe455fe9223b5e38bcf4eb2dd5020d030b625ccd4d5e4d196",
+    "frame_04.jpg": "c375cde4354f0f6956ffa728b0a8fa0b9edc58caafbef75c152c51d1cd875d53"
+  },
+  "prompt_txt_sha256": "84bf5eb016d7fbfa4de98a0880fd5728a1b215b75ca80da027f6ad2c4a96f3ab",
+  "prompt_contract_json_sha256": "ae576bda924e8d4db626de553b61a18eb9af41b4b8f06936974f4bbe9b694122"
 }

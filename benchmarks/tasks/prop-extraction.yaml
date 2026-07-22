@@ -1,185 +1,235 @@
 # Prop Extraction Benchmark
-# Evaluates models on extracting structured prop data from a screenplay.
-# Mirrors CineForge's prop_bible_v1 module.
-#
-# Usage: cd benchmarks && promptfoo eval -c tasks/prop-extraction.yaml --no-cache -j 3
-# View:  promptfoo view
+# All maintained prop goldens are independent cases. Historical three-case
+# scores are not comparable to this strict runtime-schema contract.
 
-description: "Prop extraction from screenplay — The Mariner"
+description: "Prop extraction from screenplay — The Mariner (all props)"
 
 defaultTest:
   options:
     provider: anthropic:messages:claude-opus-4-6
+  assert:
+    - type: python
+      value: file://../scorers/bible_extraction_scorer.py
+    - type: llm-rubric
+      value: |
+        Evaluate only the candidate JSON for the single requested prop
+        {{prop_name}} against the verified contract and source below.
+
+        Exact identity contract:
+        - prop_id: {{expected_id}}
+        - name: {{expected_name}}
+        - scene_presence (complete exact source-heading set): {{expected_scenes}}
+        - associated_characters (complete exact persistent-owner/wielder set):
+          {{expected_associated_characters}}
+
+        Verified minimum source concepts:
+        - physical details: {{verified_physical}}
+        - use and story facts: {{verified_facts}}
+        - narrative significance: {{verified_narrative}}
+
+        Hard gates:
+        - Require exactly one unfenced JSON object with exactly prop_id, name,
+          description, scene_presence, associated_characters,
+          narrative_significance, and overall_confidence. Require the documented
+          types and a finite numeric confidence from 0 through 1.
+        - The identity and scene set must match the exact contract. Facts repeated
+          in prose cannot substitute for an omitted or partial typed value, and
+          no second entity may be returned.
+        - associated_characters may include only lowercase underscore IDs for
+          persistent, continuity-critical owners or wielders established by the
+          source. Brief contact is not enough; an empty array is valid.
+        - Verify every material claim against the screenplay. Fabricated or
+          negated evidence, a wrong scene, invented appearance/origin/ownership,
+          or a confident contradiction is a hard failure.
+        - Require grounded coverage of every verified minimum concept. The list
+          is a minimum, not permission to invent other details.
+        - Allow conservative paraphrase in description and narrative analysis
+          when it preserves who used the prop, how, and where. Do not demand
+          unsupported symbolism or treat plausible genre padding as evidence.
+        Set pass=false if any hard gate fails.
+
+        SOURCE SCREENPLAY:
+        ==========
+        {{screenplay}}
+        ==========
 
 prompts:
   - file://../prompts/prop-extraction.txt
 
 providers:
-  # --- Cheap tier ---
   - id: openai:gpt-4.1-nano
     label: "GPT-4.1 Nano"
     config:
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
-
   - id: openai:gpt-4.1-mini
     label: "GPT-4.1 Mini"
     config:
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
-
   - id: google:gemini-2.5-flash-lite
     label: "Gemini 2.5 Flash Lite"
     config:
-      temperature: 0
       maxOutputTokens: 16384
-
-  # --- Mid tier ---
   - id: openai:gpt-4.1
     label: "GPT-4.1"
     config:
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
-
   - id: anthropic:messages:claude-haiku-4-5-20251001
     label: "Claude Haiku 4.5"
     config:
       temperature: 0
       max_tokens: 4096
-
   - id: anthropic:messages:claude-sonnet-4-5-20250929
     label: "Claude Sonnet 4.5"
     config:
       temperature: 0
       max_tokens: 4096
-
   - id: anthropic:messages:claude-sonnet-4-6
     label: "Claude Sonnet 4.6"
     config:
       temperature: 0
       max_tokens: 4096
-
   - id: google:gemini-2.5-flash
     label: "Gemini 2.5 Flash"
     config:
-      temperature: 0
       maxOutputTokens: 16384
-
   - id: google:gemini-3-flash-preview
     label: "Gemini 3 Flash"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
-
-  # --- SOTA tier ---
+      maxOutputTokens: 65536
   - id: openai:gpt-5.2
     label: "GPT-5.2"
     config:
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
-
   - id: openai:gpt-5.5
     label: "GPT-5.5"
     config:
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
-
   - id: file://../providers/openai_responses_provider.py
     label: "GPT-5.5 Pro"
     config:
+      model: gpt-5.5-pro
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
-
   - id: anthropic:messages:claude-opus-4-6
     label: "Claude Opus 4.6"
     config:
       temperature: 0
       max_tokens: 4096
-
   - id: google:gemini-2.5-pro
     label: "Gemini 2.5 Pro"
     config:
-      temperature: 0
       maxOutputTokens: 16384
-
   - id: google:gemini-3-pro-preview
     label: "Gemini 3 Pro"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
 tests:
-  # Test 1: OAR — primary weapon, identity symbol, BOSUN carving
   - vars:
       prop_name: "OAR"
       screenplay: file://../input/the-mariner.md
       golden_path: golden/the-mariner-props.json
-    assert:
-      - type: python
-        value: file://../scorers/bible_extraction_scorer.py
-      - type: llm-rubric
-        value: |
-          Evaluate the prop extraction for the OAR (BOSUN) from "The Mariner."
-
-          Key quality criteria:
-          1. Does it describe the oar as stout, wooden, edged with metal?
-          2. Does it mention the word "BOSUN" carved into the wood?
-          3. Does it identify this as Mariner's primary melee weapon?
-          4. Does it note the oar is dripping with blood throughout the story?
-          5. Does it capture the maritime/fisherman symbolism connecting to his father?
-          6. Does it mention the oar being taken from Mariner before the final confrontation?
-          7. Does it connect the prop to Mariner's constructed identity?
-
-          Score strictly: the oar is the most important prop and a symbol of Mariner's entire identity.
-
-  # Test 2: PURSE — MacGuffin, blockchain password, plot driver
+      golden_entry_sha256: "08dc3a798986c74d14a6db2ad790184e66cc27735db8703cd579ad30d622a31d"
+      expected_id: "oar-bosun"
+      expected_name: "Wooden Oar"
+      expected_scenes: >-
+        ["INT. RUDDY & GREEN BUILDING - ELEVATOR", "INT. 13TH FLOOR", "INT. 15TH FLOOR", "EXT. BACKYARD - DAY - (FLASHBACK)"]
+      expected_associated_characters: '["the_mariner"]'
+      verified_physical: "stout wooden oar; metal edge; BOSUN carving; dripping blood"
+      verified_facts: >-
+        Mariner's primary melee weapon; BOSUN is carved into it; edged with metal; blood from fights; taken before the final confrontation
+      verified_narrative: "weapon; maritime identity; father connection"
   - vars:
       prop_name: "PURSE"
       screenplay: file://../input/the-mariner.md
       golden_path: golden/the-mariner-props.json
-    assert:
-      - type: python
-        value: file://../scorers/bible_extraction_scorer.py
-      - type: llm-rubric
-        value: |
-          Evaluate the prop extraction for ROSE'S PURSE from "The Mariner."
-
-          Key quality criteria:
-          1. Does it identify the purse as belonging to Rose?
-          2. Does it mention the hidden chip in the purse lining?
-          3. Does it explain the blockchain password accessing $20 million in cryptocurrency?
-          4. Does it note that Rose stole this money from Salvatori's gang?
-          5. Does it identify the purse as the primary MacGuffin driving the second half?
-          6. Does it mention Rose going back into danger to retrieve it from the 15th floor?
-          7. Does it capture how the purse reveals Rose's true mission vs. Mariner's rescue?
-
-          Score strictly: the purse is the central plot device and must be understood as more than a simple object.
-
-  # Test 3: FLARE GUN — maritime weapon, absurd/effective contrast
+      golden_entry_sha256: "d0e6a251ceae03917cb2b6105456c8049b58f69d271a85fd917390eefcf8ced6"
+      expected_id: "roses-purse"
+      expected_name: "Rose's Purse"
+      expected_scenes: >-
+        ["INT. RUDDY & GREEN BUILDING - ELEVATOR", "INT. STAIRWELL - CONTINUOUS", "INT. 15TH FLOOR"]
+      expected_associated_characters: '["rose"]'
+      verified_physical: "no physical appearance is established"
+      verified_facts: >-
+        chip in the lining carries a blockchain password; roughly $20 million in stolen gang money; Rose stole it; she returns into danger; purse is on the 15th-floor desk; second-half MacGuffin
+      verified_narrative: "MacGuffin; blockchain; stolen money; plot driver"
+  - vars:
+      prop_name: "AIRTAG"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-props.json
+      golden_entry_sha256: "9bdc97e48d41c452632b16a23bc20c9b0dd4f8e9f726b09e7c7c5fe2f917f84a"
+      expected_id: "airtag"
+      expected_name: "AirTag"
+      expected_scenes: >-
+        ["INT. RUDDY & GREEN BUILDING - ELEVATOR", "INT. 12TH FLOOR STAIRWELL - CONTINUOUS"]
+      expected_associated_characters: '["the_mariner"]'
+      verified_physical: "no physical appearance is established"
+      verified_facts: >-
+        Mariner hid it in Rose's purse the previous Thanksgiving; it let him track Rose; Rose then insists on retrieving the purse; she calls him Mr. AirTag; it reveals secret tracking of his sister
+      verified_narrative: "tracking; sister; rescue"
+  - vars:
+      prop_name: "MEMORY STICK"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-props.json
+      golden_entry_sha256: "dd322a72bf35364c6107ea1098d06fbc7fe56ee34099e54b0c7cd8f40a79c93a"
+      expected_id: "memory-stick"
+      expected_name: "Memory Stick"
+      expected_scenes: >-
+        ["INT. STAIRWELL - CONTINUOUS", "EXT. BACKYARD - DAY - (FLASHBACK)"]
+      expected_associated_characters: '["rose"]'
+      verified_physical: "no physical appearance is established"
+      verified_facts: >-
+        carries the blockchain password Rose calls her life savings; chip hidden in the purse lining; tied to roughly $20 million stolen from the gang; Salvatori demands it
+      verified_narrative: "password; stolen money; MacGuffin"
   - vars:
       prop_name: "FLARE GUN"
       screenplay: file://../input/the-mariner.md
       golden_path: golden/the-mariner-props.json
-    assert:
-      - type: python
-        value: file://../scorers/bible_extraction_scorer.py
-      - type: llm-rubric
-        value: |
-          Evaluate the prop extraction for the FLARE GUN from "The Mariner."
-
-          Key quality criteria:
-          1. Does it describe the flare gun as a fat, bright-orange pistol?
-          2. Does it mention the thugs mocking it before it is fired?
-          3. Does it describe the scene where Mariner shoots Vinnie on the 13th floor?
-          4. Does it note the blinding red flare and horror-movie lighting effect?
-          5. Does it connect the flare gun to Mariner's maritime-themed arsenal?
-          6. Does it capture the absurd/effective contrast — looks ridiculous but is lethal?
-          7. Is evidence grounded in actual screenplay text?
-
-          Score strictly: a good extraction captures both the physical description and the thematic contrast.
+      golden_entry_sha256: "8581823bfb516e104f850d73c96d8c133cb8de242987c677461d921c776a599c"
+      expected_id: "flare-gun"
+      expected_name: "Flare Gun"
+      expected_scenes: '["INT. 13TH FLOOR"]'
+      expected_associated_characters: '["the_mariner"]'
+      verified_physical: "fat bright-orange pistol; blinding red flare"
+      verified_facts: >-
+        maritime-themed weapon; thugs identify and laugh at it; Mariner shoots Vinnie in the chest; burning flare casts red light during the fight
+      verified_narrative: "maritime; weapon; apparent absurdity"
+  - vars:
+      prop_name: "BEER BOTTLES"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-props.json
+      golden_entry_sha256: "be58a267f86a285290f2afe86189e3ca9552f81ca61b66adc42b22670098f4ed"
+      expected_id: "beer-bottles"
+      expected_name: "Beer Bottles"
+      expected_scenes: >-
+        ["BEGIN FLASHBACK: EXT. COASTLINE - DAY - PAST", "EXT. BACKYARD - DAY - (FLASHBACK)", "EXT. COASTLINE - DAY - (FLASHBACK)"]
+      expected_associated_characters: '["dad"]'
+      verified_physical: "discarded bottles; empty bottles litter the boat bottom"
+      verified_facts: >-
+        young Mariner fetches Dad a beer in the idealized memory; Dad kicks and smashes a discarded bottle in the revealed backyard; empty bottles fill the revealed boat while Dad demands another
+      verified_narrative: "father; drinking; neglect; memory"
+  - vars:
+      prop_name: "BENCH PRESS"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-props.json
+      golden_entry_sha256: "112051716b422b4b7ae82b9f768c785550c1fe1c919ac6265ea70080d98f62cb"
+      expected_id: "bench-press"
+      expected_name: "Bench Press"
+      expected_scenes: >-
+        ["BEGIN FLASHBACK: EXT. BACKYARD - DAY - PAST", "EXT. BACKYARD - DAY - (FLASHBACK)"]
+      expected_associated_characters: '["the_mariner"]'
+      verified_physical: "repaired with peeling duct-tape"
+      verified_facts: >-
+        Dad patiently teaches and helps Mariner in the idealized memory; Dad sends him to lift after punching him in the revealed version; later bench press is repaired with tape among rusty weights
+      verified_narrative: "father; strength; abuse; memory"

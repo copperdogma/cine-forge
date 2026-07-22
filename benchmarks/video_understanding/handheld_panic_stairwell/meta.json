@@ -1,19 +1,34 @@
 {
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "asset_audio_tags": [
+    "heartbeat"
+  ],
+  "audio_description": "Synthetic tone exists in the MP4 but is excluded from frame scoring.",
+  "case_status": "quarantined",
   "clip_id": "handheld_panic_stairwell",
-  "title": "Handheld panic stairwell",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
   "duration_seconds": 4.0,
-  "resolution": "640x360",
   "fps": 8,
+  "generator_version": "frame-truth-v2",
   "has_audio": true,
-  "transcript": null,
-  "audio_description": "Heavy breaths, heartbeat, and clipped percussion.",
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "sampled_frame_sha256": [
+    "0ebfeb91985145ea8385802a629bdf658a77464854d14fe4a23d512665d717b1",
+    "75ecff2f3a4a9f2a6ce7529512c0b1c61adc37ee639911fa7cd81aff983bc7d6",
+    "2e11605e957b3200c7012e3dac5201208c214c922200bc18dda8daa17e31d18d",
+    "6250d38ff93668f960cdf2b18bc90cb90089f462d1ec59b84c4cce801bda1d48",
+    "b6d99626d4c7e1aaa796124a1a4ebc608fc9c2013a884b0ffbe50c13091fac90"
+  ],
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "spec_sha256": "2aa9ee5515b43fe677eea3e658a045e942b160f26050dafccdc263bb55269945",
+  "status_reason": "Dynamic but redundant with stronger active run controls; ordered stills cannot cleanly separate camera jitter from subject displacement.",
   "tags": [
     "action",
     "panic"
   ],
-  "anchor_subset": false,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+  "temporal_control": "dynamic",
+  "title": "Orange jittering run",
+  "transcript": null,
+  "unique_sampled_frames": 5
 }

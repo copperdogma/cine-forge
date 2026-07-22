@@ -1,59 +1,53 @@
 {
+  "anchor_subset": false,
+  "audio_description": null,
+  "audio_tags": [],
+  "camera_tags": [
+    "slow_push_in"
+  ],
   "clip_id": "flashback_sepia_drift",
-  "title": "Flashback sepia drift",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "has_audio": true,
-  "transcript": "We thought the tide would keep carrying us forward.",
-  "audio_description": "A gentle voiceover rides over soft strings.",
-  "summary_reference": "A sepia memory drifts past two figures near the water with a soft, nostalgic voiceover.",
-  "required_keywords": [
-    "sepia",
-    "memory",
-    "voiceover"
-  ],
-  "tone_tags": [
-    "nostalgic"
-  ],
-  "emotion_tags": [
-    "nostalgia",
-    "wonder"
+  "clip_tags": [
+    "flashback",
+    "memory"
   ],
   "color_tags": [
     "sepia",
     "gold"
   ],
-  "camera_tags": [
-    "slow_push_in"
+  "continuity_notes": [
+    "The brown rectangle stays beside the right figure throughout the push-in."
   ],
+  "continuity_status": "intact",
+  "duration_seconds": 4.0,
+  "emotion_tags": [],
+  "has_audio": true,
   "motion_tags": [
     "slow_drift"
   ],
-  "continuity_status": "intact",
-  "continuity_notes": [
-    "The oar remains with the parent figure during the drift."
+  "required_keywords": [
+    "figures",
+    "sepia",
+    "closer"
   ],
-  "audio_tags": [
-    "voiceover",
-    "soft_music"
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "Two abstract figures grow closer across sepia frames beside a brown rectangle and a circular outline.",
+  "title": "Sepia two-shot push-in",
+  "tone_tags": [
+    "nostalgic"
   ],
-  "clip_tags": [
-    "flashback",
-    "memory"
-  ],
-  "anchor_subset": false,
+  "transcript": null,
   "weights": {
-    "summary": 0.18,
-    "tone": 0.14,
-    "emotion": 0.12,
-    "color": 0.1,
-    "camera": 0.12,
-    "motion": 0.1,
-    "continuity": 0.12,
-    "audio": 0.08,
-    "evidence": 0.04
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
   }
 }

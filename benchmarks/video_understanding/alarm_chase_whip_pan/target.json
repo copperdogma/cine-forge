@@ -1,60 +1,55 @@
 {
-  "clip_id": "alarm_chase_whip_pan",
-  "title": "Alarm chase whip pan",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "has_audio": true,
-  "transcript": null,
-  "audio_description": "A pulsing alarm and clipped percussion hits.",
-  "summary_reference": "Red alarm light pulses through a corridor as the camera whip-pans after a sprinting figure clutching a bag.",
-  "required_keywords": [
-    "alarm",
-    "red",
-    "chase"
-  ],
-  "tone_tags": [
-    "urgent",
-    "tense"
-  ],
-  "emotion_tags": [
-    "panic"
-  ],
-  "color_tags": [
-    "red"
-  ],
+  "anchor_subset": true,
+  "audio_description": null,
+  "audio_tags": [],
   "camera_tags": [
-    "whip_pan"
+    "static",
+    "wide_master"
   ],
-  "motion_tags": [
-    "escalating",
-    "fast_lateral",
-    "pulsing_light"
-  ],
-  "continuity_status": "intact",
-  "continuity_notes": [
-    "The red bag remains with the runner."
-  ],
-  "audio_tags": [
-    "alarm",
-    "percussion"
-  ],
+  "clip_id": "alarm_chase_whip_pan",
   "clip_tags": [
     "action",
     "motion"
   ],
-  "anchor_subset": true,
+  "color_tags": [
+    "red"
+  ],
+  "continuity_notes": [
+    "The small red rectangle stays beside the runner throughout the packet."
+  ],
+  "continuity_status": "intact",
+  "duration_seconds": 4.0,
+  "emotion_tags": [],
+  "has_audio": true,
+  "motion_tags": [
+    "fast_lateral",
+    "pulsing_light"
+  ],
+  "required_keywords": [
+    "runner",
+    "red",
+    "pulses"
+  ],
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "A red abstract runner crosses a corridor from left to right while diagonal lines shift and red illumination pulses.",
+  "title": "Red corridor run",
+  "tone_tags": [
+    "urgent",
+    "tense"
+  ],
+  "transcript": null,
   "weights": {
-    "summary": 0.18,
-    "tone": 0.14,
-    "emotion": 0.12,
-    "color": 0.1,
-    "camera": 0.12,
-    "motion": 0.1,
-    "continuity": 0.12,
-    "audio": 0.08,
-    "evidence": 0.04
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
   }
 }

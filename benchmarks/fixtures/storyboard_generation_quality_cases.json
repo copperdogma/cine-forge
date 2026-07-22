@@ -1,67 +1,86 @@
 {
   "cases": [
     {
-      "case_id": "open_frequency_sequence_prompt_only",
+      "case_id": "sbq_case_001",
       "label": "Open Frequency scenes 001-002 — prompt-only storyboard identity",
       "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "input_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
       "scene_ids": [
         "scene_001",
         "scene_002"
       ],
-      "notes": "Baseline storyboard case with recurring ARIA and NOAH but no attached character/location reference images.",
+      "notes": "Prompt-only control for source-specific story coverage, medium consistency, and two recurring visual subjects.",
       "attach_visual_references": false,
       "reference_assets": [],
       "analysis_target": {
-        "storyboard_id": "open_frequency_sequence_prompt_only",
+        "storyboard_id": "sbq_case_001",
         "title": "Open Frequency scenes 001-002 — prompt-only storyboard identity",
         "source_type": "project_owned_internal",
-        "source_description": "Representative storyboard-sequence benchmark for prompt-only character consistency across the first two Open Frequency scenes.",
+        "source_description": "Source-authored visual intent for the first two scenes of the project-owned Open Frequency fixture.",
+        "source_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+        "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
         "rights": "Project-owned internal benchmark fixture",
         "scene_ids": [
           "scene_001",
           "scene_002"
         ],
-        "summary_reference": "A storm-night emergency-radio sequence that begins in a tense community studio and continues on a wind-lashed water tower catwalk, with Aria and Noah remaining recognizable across both scenes.",
-        "required_keywords": [
-          "radio",
-          "storm",
-          "antenna",
-          "lantern"
-        ],
-        "recurring_characters": [
+        "summary_reference": "A storm-night emergency-radio sequence moves from an old community studio on emergency power to a wind-lashed water-tower catwalk where two recurring technicians secure a portable antenna and react to a handheld receiver.",
+        "forbidden_output_terms": ["Open Frequency", "ARIA", "NOAH", "JUNE", "KELL", "scene_001", "scene_002"],
+        "required_visual_cues": [
           {
-            "name": "ARIA",
-            "descriptor_keywords": [
-              "determined",
-              "storm gear"
-            ]
+            "cue_id": "radio_studio",
+            "keywords": ["radio studio", "control room"]
           },
           {
-            "name": "NOAH",
-            "descriptor_keywords": [
-              "radio technician",
-              "catwalk"
-            ]
+            "cue_id": "radio_equipment",
+            "keywords": ["radio", "mixer", "console", "tape reel"]
+          },
+          {
+            "cue_id": "storm_night",
+            "keywords": ["storm", "rain", "wind", "night"]
+          },
+          {
+            "cue_id": "water_tower_catwalk",
+            "keywords": ["water tower", "catwalk", "tower platform"]
+          },
+          {
+            "cue_id": "antenna_receiver",
+            "keywords": ["antenna", "receiver"]
+          },
+          {
+            "cue_id": "lantern",
+            "keywords": ["lantern"]
           }
         ],
+        "expected_style_keyword_groups": [
+          ["monochrome", "grayscale", "black and white"],
+          ["storyboard", "sketch", "pencil", "charcoal", "line drawing"]
+        ],
+        "recurring_characters": [
+          {"name": "subject_001", "descriptor_keywords": []},
+          {"name": "subject_002", "descriptor_keywords": []}
+        ],
         "reference_expectations": [],
+        "expected_frame_min": 8,
+        "expected_frame_max": 32,
         "expected_available_reference_min": 0,
         "expected_prompt_reference_min": 0,
         "expected_direct_reference_min": 0,
         "should_avoid_readable_text": true,
-        "should_avoid_prop_only_non_insert": true,
-        "non_insert_shot_ids": []
+        "reference_quality_evaluable": false,
+        "prop_discipline_evaluable": false
       }
     },
     {
-      "case_id": "open_frequency_sequence_reference_conditioned",
-      "label": "Open Frequency scenes 001-002 — reference-conditioned storyboard sequence",
+      "case_id": "sbq_case_002",
+      "label": "Open Frequency scenes 001-002 — reference-transport control",
       "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "input_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
       "scene_ids": [
         "scene_001",
         "scene_002"
       ],
-      "notes": "Same two-scene sequence, but with canonical character and location reference images attached before storyboard generation.",
+      "notes": "Same source sequence with four abstract transport-only reference cards. The cards prove transport mechanics, not realistic identity or location fidelity.",
       "attach_visual_references": true,
       "reference_assets": [
         {
@@ -69,115 +88,104 @@
           "entity_name": "ARIA",
           "display_name": "ARIA",
           "filename": "aria_reference.jpg",
-          "label": "Aria character reference",
-          "descriptor": "A practical storm-battered radio lead in dark weather gear, focused and composed.",
-          "accent_rgb": [84, 154, 255]
+          "label": "Aria character transport card",
+          "descriptor": "Abstract blue human glyph used only to prove reference transport.",
+          "accent_rgb": [84, 154, 255],
+          "quality_use": "transport_only"
         },
         {
           "entity_type": "character",
           "entity_name": "NOAH",
           "display_name": "NOAH",
           "filename": "noah_reference.jpg",
-          "label": "Noah character reference",
-          "descriptor": "A weary field technician with grounded workwear and lantern-lit storm pressure.",
-          "accent_rgb": [255, 179, 71]
+          "label": "Noah character transport card",
+          "descriptor": "Abstract orange human glyph used only to prove reference transport.",
+          "accent_rgb": [255, 179, 71],
+          "quality_use": "transport_only"
         },
         {
           "entity_type": "location",
           "entity_name": "COMMUNITY RADIO STUDIO",
           "display_name": "COMMUNITY RADIO STUDIO",
           "filename": "radio_studio_reference.jpg",
-          "label": "Radio studio location reference",
-          "descriptor": "An analog community radio studio under storm-night practical light, crowded with consoles and a whiteboard.",
-          "accent_rgb": [100, 225, 201]
+          "label": "Radio studio transport card",
+          "descriptor": "Abstract teal location glyph used only to prove reference transport.",
+          "accent_rgb": [100, 225, 201],
+          "quality_use": "transport_only"
         },
         {
           "entity_type": "location",
           "entity_name": "WATER TOWER CATWALK",
           "display_name": "WATER TOWER CATWALK",
           "filename": "catwalk_reference.jpg",
-          "label": "Water tower catwalk location reference",
-          "descriptor": "A wind-lashed metal catwalk high above a dark town with a lantern and antenna rig.",
-          "accent_rgb": [196, 181, 253]
+          "label": "Water tower transport card",
+          "descriptor": "Abstract violet location glyph used only to prove reference transport.",
+          "accent_rgb": [196, 181, 253],
+          "quality_use": "transport_only"
         }
       ],
       "analysis_target": {
-        "storyboard_id": "open_frequency_sequence_reference_conditioned",
-        "title": "Open Frequency scenes 001-002 — reference-conditioned storyboard sequence",
+        "storyboard_id": "sbq_case_002",
+        "title": "Open Frequency scenes 001-002 — reference-transport control",
         "source_type": "project_owned_internal",
-        "source_description": "Representative storyboard-sequence benchmark for reference-conditioned identity and location continuity across the first two Open Frequency scenes.",
+        "source_description": "Source-authored visual intent for the first two scenes of the project-owned Open Frequency fixture; supplied cards are transport-only controls.",
+        "source_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+        "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
         "rights": "Project-owned internal benchmark fixture",
         "scene_ids": [
           "scene_001",
           "scene_002"
         ],
-        "summary_reference": "A storm-night emergency-radio sequence that begins in a tense community studio and continues on a wind-lashed water tower catwalk, with Aria and Noah remaining recognizable across both scenes and the settings staying specific rather than generic.",
-        "required_keywords": [
-          "radio",
-          "storm",
-          "antenna",
-          "lantern"
+        "summary_reference": "A storm-night emergency-radio sequence moves from an old community studio on emergency power to a wind-lashed water-tower catwalk where two recurring technicians secure a portable antenna and react to a handheld receiver.",
+        "forbidden_output_terms": ["Open Frequency", "ARIA", "NOAH", "JUNE", "KELL", "scene_001", "scene_002"],
+        "required_visual_cues": [
+          {
+            "cue_id": "radio_studio",
+            "keywords": ["radio studio", "control room"]
+          },
+          {
+            "cue_id": "radio_equipment",
+            "keywords": ["radio", "mixer", "console", "tape reel"]
+          },
+          {
+            "cue_id": "storm_night",
+            "keywords": ["storm", "rain", "wind", "night"]
+          },
+          {
+            "cue_id": "water_tower_catwalk",
+            "keywords": ["water tower", "catwalk", "tower platform"]
+          },
+          {
+            "cue_id": "antenna_receiver",
+            "keywords": ["antenna", "receiver"]
+          },
+          {
+            "cue_id": "lantern",
+            "keywords": ["lantern"]
+          }
+        ],
+        "expected_style_keyword_groups": [
+          ["monochrome", "grayscale", "black and white"],
+          ["storyboard", "sketch", "pencil", "charcoal", "line drawing"]
         ],
         "recurring_characters": [
-          {
-            "name": "ARIA",
-            "descriptor_keywords": [
-              "dark weather gear",
-              "composed lead"
-            ]
-          },
-          {
-            "name": "NOAH",
-            "descriptor_keywords": [
-              "workwear",
-              "field technician"
-            ]
-          }
+          {"name": "subject_001", "descriptor_keywords": []},
+          {"name": "subject_002", "descriptor_keywords": []}
         ],
         "reference_expectations": [
-          {
-            "label": "Aria character reference",
-            "entity_name": "ARIA",
-            "descriptor_keywords": [
-              "storm gear",
-              "focused"
-            ],
-            "direct_reference_required": true
-          },
-          {
-            "label": "Noah character reference",
-            "entity_name": "NOAH",
-            "descriptor_keywords": [
-              "workwear",
-              "lantern-lit"
-            ],
-            "direct_reference_required": true
-          },
-          {
-            "label": "Radio studio location reference",
-            "entity_name": "COMMUNITY RADIO STUDIO",
-            "descriptor_keywords": [
-              "analog studio",
-              "whiteboard"
-            ],
-            "direct_reference_required": true
-          },
-          {
-            "label": "Water tower catwalk location reference",
-            "entity_name": "WATER TOWER CATWALK",
-            "descriptor_keywords": [
-              "catwalk",
-              "dark town"
-            ],
-            "direct_reference_required": true
-          }
+          {"label": "reference_001", "descriptor_keywords": [], "direct_reference_required": true},
+          {"label": "reference_002", "descriptor_keywords": [], "direct_reference_required": true},
+          {"label": "reference_003", "descriptor_keywords": [], "direct_reference_required": true},
+          {"label": "reference_004", "descriptor_keywords": [], "direct_reference_required": true}
         ],
+        "expected_frame_min": 8,
+        "expected_frame_max": 32,
         "expected_available_reference_min": 4,
         "expected_prompt_reference_min": 4,
         "expected_direct_reference_min": 4,
         "should_avoid_readable_text": true,
-        "should_avoid_prop_only_non_insert": true,
-        "non_insert_shot_ids": []
+        "reference_quality_evaluable": false,
+        "prop_discipline_evaluable": false
       }
     }
   ]

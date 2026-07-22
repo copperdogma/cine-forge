@@ -42,8 +42,8 @@ already fits.
 - Eval docs / protocol: `docs/evals/README.md`
 - Attempt template: `docs/evals/attempt-template.md`
 - Promptfoo operations: `docs/runbooks/promptfoo.md`
-- Benchmark workspace: the sidequest promptfoo worktree described in `AGENTS.md`
-- Benchmark layout inside that workspace:
+- Benchmark workspace: the active CineForge checkout containing the registry
+- Benchmark layout in that same checkout:
   - `benchmarks/tasks/`
   - `benchmarks/prompts/`
   - `benchmarks/scorers/`
@@ -72,11 +72,10 @@ already fits.
    - Reuse the existing benchmark layout before inventing a second one
 
 4. **Resolve the benchmark workspace**
-   - If the current checkout already contains the `benchmarks/` tree, use it
-   - Otherwise use the documented sidequest benchmark worktree contract from
-     `AGENTS.md`
-   - If the workspace cannot be found confidently, stop and ask for the path
-     instead of hardcoding a guess
+   - Require both `benchmarks/` and `docs/evals/registry.yaml` in the current
+     checkout
+   - If either surface is missing, stop and restore the methodology package or
+     ask for the intended checkout instead of mixing worktrees
 
 5. **Scaffold the registry entry**
    - Add a full entry in `docs/evals/registry.yaml`
@@ -104,7 +103,7 @@ already fits.
 
 - Do not run the `/improve-eval` optimization loop here.
 - Do not create an eval with no story / spec / methodology-category anchor.
-- Do not invent a second eval layout when the sidequest benchmark workspace
-  already fits the task.
+- Do not invent a second eval layout or split a task from its registry across
+  worktrees.
 - Do not leave the registry entry partial; a new eval is not created until the
   registry has a real entry.

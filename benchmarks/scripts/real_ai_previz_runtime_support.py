@@ -3,117 +3,31 @@ from __future__ import annotations
 from collections import defaultdict
 from pathlib import Path
 from statistics import median
-from typing import Literal
 
-from pydantic import BaseModel, Field
+from real_ai_previz_runtime_contract import (
+    AiPrevizStageOverride,
+    RecipeRunSummary,
+    RuntimeCaseAggregate,
+    RuntimeCaseResult,
+    RuntimeEvalCase,
+    RuntimeEvalManifest,
+    ShotPlanningStageOverride,
+)
+from real_ai_previz_runtime_report import render_runtime_markdown
 
-
-class AiPrevizStageOverride(BaseModel):
-    engine_pack_id: str = Field(min_length=1)
-    duration_seconds: int = Field(ge=1)
-    resolution: str = Field(min_length=1)
-    consistency_strategy: str = Field(default="prompt_only", min_length=1)
-    prompt_profile: str = Field(default="standard", min_length=1)
-
-
-class ShotPlanningStageOverride(BaseModel):
-    skip_qa: bool | None = None
-
-
-class RuntimeEvalCase(BaseModel):
-    case_id: str = Field(min_length=1)
-    label: str = Field(min_length=1)
-    input_fixture: str = Field(min_length=1)
-    scene_id: str = Field(default="scene_001", min_length=1)
-    prerequisite_mode: Literal["mvp_ingest_only", "scene_ready"] = "scene_ready"
-    prerequisite_strategy: str | None = None
-    recipe_mode: Literal["shipped", "patched"] = "shipped"
-    existing_project_state: bool = False
-    existing_clip_state: bool = False
-    requested_start_from: str | None = None
-    shot_planning: ShotPlanningStageOverride | None = None
-    ai_previz: AiPrevizStageOverride | None = None
-    notes: str | None = None
-
-
-class RuntimeEvalManifest(BaseModel):
-    cases: list[RuntimeEvalCase] = Field(min_length=1)
-
-
-class RecipeRunSummary(BaseModel):
-    run_id: str
-    recipe_id: str
-    elapsed_ms: int = Field(ge=0)
-    success: bool
-    error: str | None = None
-    total_cost_usd: float = Field(ge=0.0)
-    stage_statuses: dict[str, str] = Field(default_factory=dict)
-    stage_durations_ms: dict[str, int] = Field(default_factory=dict)
-    artifact_counts: dict[str, int] = Field(default_factory=dict)
-    artifact_paths: dict[str, str] = Field(default_factory=dict)
-
-
-class RuntimeCaseResult(BaseModel):
-    case_id: str
-    label: str
-    prerequisite_mode: str
-    prerequisite_strategy: str | None = None
-    recipe_mode: str
-    engine_pack_id: str
-    prompt_profile: str = Field(default="standard", min_length=1)
-    duration_seconds: int
-    resolution: str
-    scene_id: str
-    input_fixture: str
-    existing_project_state: bool = False
-    existing_clip_state: bool = False
-    requested_start_from: str | None = None
-    attempt_index: int = Field(ge=1, default=1)
-    notes: str | None = None
-    project_dir: str
-    success: bool
-    error: str | None = None
-    prerequisite_elapsed_ms: int = Field(ge=0)
-    ai_previz_elapsed_ms: int = Field(ge=0)
-    time_to_first_playable_ms: int = Field(ge=0)
-    post_playable_overhead_ms: int = Field(ge=0)
-    total_elapsed_ms: int = Field(ge=0)
-    prerequisite_runs: list[RecipeRunSummary] = Field(default_factory=list)
-    ai_previz_run: RecipeRunSummary | None = None
-    ai_previz_artifact_path: str | None = None
-    media_validation_path: str | None = None
-
-
-class RuntimeCaseAggregate(BaseModel):
-    case_id: str
-    label: str
-    prerequisite_mode: str
-    prerequisite_strategy: str | None = None
-    recipe_mode: str
-    engine_pack_id: str
-    prompt_profile: str = Field(default="standard", min_length=1)
-    duration_seconds: int
-    resolution: str
-    scene_id: str
-    input_fixture: str
-    existing_project_state: bool = False
-    existing_clip_state: bool = False
-    requested_start_from: str | None = None
-    notes: str | None = None
-    repeat_count: int = Field(ge=1)
-    successful_attempts: int = Field(ge=0)
-    success: bool
-    prerequisite_elapsed_ms: int = Field(ge=0)
-    ai_previz_elapsed_ms: int = Field(ge=0)
-    time_to_first_playable_ms: int = Field(ge=0)
-    post_playable_overhead_ms: int = Field(ge=0)
-    total_elapsed_ms: int = Field(ge=0)
-    min_time_to_first_playable_ms: int = Field(ge=0)
-    max_time_to_first_playable_ms: int = Field(ge=0)
-    min_total_elapsed_ms: int = Field(ge=0)
-    max_total_elapsed_ms: int = Field(ge=0)
-    min_ai_previz_elapsed_ms: int = Field(ge=0)
-    max_ai_previz_elapsed_ms: int = Field(ge=0)
+__all__ = [
+    "AiPrevizStageOverride",
+    "RecipeRunSummary",
+    "RuntimeCaseAggregate",
+    "RuntimeCaseResult",
+    "RuntimeEvalCase",
+    "RuntimeEvalManifest",
+    "ShotPlanningStageOverride",
+    "aggregate_attempts",
+    "display_repo_relative_path",
+    "render_runtime_markdown",
+    "summarize_results",
+]
 
 
 def display_repo_relative_path(path: Path, repo_root: Path) -> str:
@@ -190,9 +104,17 @@ def summarize_results(
     *,
     fast_previz_target_ms: int,
 ) -> dict[str, object]:
-    successful = [result for result in results if result.success]
-    if not successful:
-        successful = [result for result in results if result.successful_attempts > 0]
+    fully_successful = [result for result in results if result.success]
+    partial_success = [
+        result
+        for result in results
+        if not result.success and result.successful_attempts > 0
+    ]
+    successful = fully_successful or partial_success
+    timing_evidence_basis = (
+        "fully_successful_cases" if fully_successful else "partial_success_diagnostic"
+    )
+    decision_grade = bool(results) and len(fully_successful) == len(results)
     focus_mode = _focus_prerequisite_mode(successful)
     focus_results = [
         result for result in successful if result.prerequisite_mode == focus_mode
@@ -276,7 +198,7 @@ def summarize_results(
         default=None,
     )
     overall = 0.0
-    if fastest_focus is not None:
+    if fastest_focus is not None and decision_grade:
         overall = (
             1.0
             if fastest_focus.time_to_first_playable_ms <= fast_previz_target_ms
@@ -285,10 +207,14 @@ def summarize_results(
 
     return {
         "overall": overall,
-        "successful_cases": len(successful),
+        "successful_cases": len(fully_successful),
         "total_cases": len(results),
-        "successful_case_ratio": round(len(successful) / len(results), 4),
-        "fully_successful_cases": len([result for result in results if result.success]),
+        "successful_case_ratio": round(len(fully_successful) / len(results), 4),
+        "fully_successful_cases": len(fully_successful),
+        "partial_success_cases": len(partial_success),
+        "timing_case_count": len(successful),
+        "timing_evidence_basis": timing_evidence_basis,
+        "decision_grade": decision_grade,
         "focus_prerequisite_mode": focus_mode,
         "focus_route_kind": _focus_route_kind(fastest_focus),
         "fastest_focus_case_id": fastest_focus.case_id if fastest_focus else None,
@@ -446,151 +372,3 @@ def _focus_route_kind(result: RuntimeCaseAggregate | None) -> str | None:
     if result.existing_project_state:
         return "imported_project_first_pass"
     return "raw_input_first_pass"
-
-
-def render_runtime_markdown(payload: dict[str, object]) -> str:
-    summary = payload["summary"]
-    cases = payload["cases"]
-    focus_mode = summary.get("focus_prerequisite_mode") or "selected"
-    focus_label = str(focus_mode).replace("_", " ")
-    focus_route_kind = summary.get("focus_route_kind") or "selected"
-    lines = [
-        "# Real AI Previz Runtime Eval",
-        "",
-        f"- Measured at: {payload['measured_at']}",
-        f"- Fixture manifest: `{payload['fixture_manifest']}`",
-        f"- Comparison method: `{payload['comparison_method']}`",
-        f"- Repeat count: {payload['repeat_count']}",
-        f"- Successful cases: {summary['successful_cases']} / {summary['total_cases']}",
-        f"- Fully successful cases: {summary['fully_successful_cases']} / {summary['total_cases']}",
-        f"- Focus prerequisite mode: `{focus_mode}`",
-        f"- Focus route kind: `{focus_route_kind}`",
-        f"- Fastest {focus_label} case: `{summary['fastest_focus_case_id']}`",
-        f"- Fastest {focus_label} time to first playable: {summary['fastest_focus_ms']} ms",
-        f"- Fastest {focus_label} prerequisites: {summary['fastest_focus_prerequisite_ms']} ms",
-        f"- Fastest {focus_label} AI-previz recipe: {summary['fastest_focus_ai_previz_ms']} ms",
-        (
-            f"- Fastest {focus_label} full completion: "
-            f"{summary['fastest_focus_full_completion_ms']} ms"
-        ),
-        (
-            f"- Fastest {focus_label} post-playable overhead: "
-            f"{summary['fastest_focus_post_playable_overhead_ms']} ms"
-        ),
-        (
-            f"- Fastest isolated {focus_label} AI-previz case: "
-            f"`{summary['fastest_focus_ai_previz_case_id']}`"
-        ),
-        (
-            f"- Fastest isolated {focus_label} AI-previz median: "
-            f"{summary['fastest_focus_isolated_ai_previz_ms']} ms"
-        ),
-    ]
-    if summary.get("fastest_imported_project_first_pass_case_id"):
-        lines.extend([
-            (
-                "- Fastest imported-project first-pass case: "
-                f"`{summary['fastest_imported_project_first_pass_case_id']}`"
-            ),
-            (
-                "- Fastest imported-project first-pass time to first playable: "
-                f"{summary['fastest_imported_project_first_pass_ms']} ms"
-            ),
-            (
-                "- Fastest imported-project first-pass prerequisites: "
-                f"{summary['fastest_imported_project_first_pass_prerequisite_ms']} ms"
-            ),
-        ])
-    if summary.get("fastest_raw_input_first_pass_case_id"):
-        lines.extend([
-            (
-                "- Fastest raw-input first-pass case: "
-                f"`{summary['fastest_raw_input_first_pass_case_id']}`"
-            ),
-            (
-                "- Fastest raw-input first-pass time to first playable: "
-                f"{summary['fastest_raw_input_first_pass_ms']} ms"
-            ),
-            (
-                "- Fastest raw-input first-pass prerequisites: "
-                f"{summary['fastest_raw_input_first_pass_prerequisite_ms']} ms"
-            ),
-        ])
-    if summary.get("fastest_regenerate_reuse_case_id"):
-        lines.extend([
-            (
-                f"- Fastest regenerate reuse case: "
-                f"`{summary['fastest_regenerate_reuse_case_id']}`"
-            ),
-            (
-                f"- Fastest regenerate reuse time to first playable: "
-                f"{summary['fastest_regenerate_reuse_ms']} ms"
-            ),
-            (
-                f"- Fastest regenerate reuse AI-previz recipe: "
-                f"{summary['fastest_regenerate_reuse_ai_previz_ms']} ms"
-            ),
-            (
-                f"- Fastest regenerate reuse full completion: "
-                f"{summary['fastest_regenerate_reuse_full_completion_ms']} ms"
-            ),
-        ])
-    if summary.get("fastest_regenerate_full_case_id"):
-        lines.extend([
-            (
-                f"- Fastest regenerate full-control case: "
-                f"`{summary['fastest_regenerate_full_case_id']}`"
-            ),
-            (
-                f"- Fastest regenerate full-control time to first playable: "
-                f"{summary['fastest_regenerate_full_ms']} ms"
-            ),
-        ])
-    lines.extend([
-        f"- Fastest total case: `{summary['fastest_total_case_id']}`",
-        f"- Fastest total elapsed: {summary['fastest_total_ms']} ms",
-        (
-            f"- Fast target: <= {summary['target_fast_previz_ms']} ms "
-            f"to first real {focus_label} `ai_previz_video`"
-        ),
-        "",
-        "## Cases",
-        "",
-        (
-            "| Case | Attempts | Substrate | Mode | Strategy | Start | "
-            "Engine Pack | Prompt | Prereqs | "
-            "AI Previz ms | First playable ms | Full completion ms | "
-            "Post-playable overhead | Success | Notes |"
-        ),
-        (
-            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | "
-            "---: | ---: | ---: | ---: | --- | --- |"
-        ),
-    ])
-    for case in cases:
-        substrate = (
-            "existing clip"
-            if case.get("existing_clip_state")
-            else "imported project"
-            if case.get("existing_project_state")
-            else "raw input"
-        )
-        lines.append(
-            "| "
-            f"{case['case_id']} | "
-            f"{case['successful_attempts']}/{case['repeat_count']} | "
-            f"{substrate} | "
-            f"{case['recipe_mode']} | "
-            f"{case.get('prerequisite_strategy') or case['prerequisite_mode']} | "
-            f"{case.get('requested_start_from') or 'recipe_start'} | "
-            f"{case['engine_pack_id']} / {case['duration_seconds']}s {case['resolution']} | "
-            f"{case['prompt_profile']} | "
-            f"{case['prerequisite_mode']} ({case['prerequisite_elapsed_ms']} ms) | "
-            f"{case['ai_previz_elapsed_ms']} | "
-            f"{case['time_to_first_playable_ms']} | "
-            f"{case['total_elapsed_ms']} | "
-            f"{case['post_playable_overhead_ms']} | "
-            f"{'yes' if case['success'] else 'no'} | "
-            f"{case.get('notes') or ''} |"
-        )
-    return "\n".join(lines) + "\n"

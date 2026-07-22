@@ -1,58 +1,53 @@
 {
-  "clip_id": "hallway_standoff_crosscut",
-  "title": "Hallway standoff cross-cut",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "has_audio": true,
-  "transcript": "Take one more step and this hallway closes on both of us.",
-  "audio_description": "Dry, unscored dialogue in a dead corridor.",
-  "summary_reference": "A tense hallway standoff cross-cuts between two profiles as each side waits for the other to move.",
-  "required_keywords": [
-    "standoff",
-    "cross-cut",
-    "hallway"
-  ],
-  "tone_tags": [
-    "tense"
-  ],
-  "emotion_tags": [
-    "anger",
-    "suspicion"
-  ],
-  "color_tags": [
-    "desaturated"
-  ],
+  "anchor_subset": false,
+  "audio_description": null,
+  "audio_tags": [],
   "camera_tags": [
     "cross_cut",
     "profile_closeup"
   ],
-  "motion_tags": [
-    "abrupt_cut"
-  ],
-  "continuity_status": "intact",
-  "continuity_notes": [
-    "The silver knife stays at the same side of frame when the aggressor returns."
-  ],
-  "audio_tags": [
-    "speech"
-  ],
+  "clip_id": "hallway_standoff_crosscut",
   "clip_tags": [
     "dialogue",
     "conflict"
   ],
-  "anchor_subset": false,
+  "color_tags": [
+    "desaturated"
+  ],
+  "continuity_notes": [
+    "The pale rectangle remains at frame right on both sides of the position change."
+  ],
+  "continuity_status": "intact",
+  "duration_seconds": 4.0,
+  "emotion_tags": [],
+  "has_audio": true,
+  "motion_tags": [
+    "abrupt_cut"
+  ],
+  "required_keywords": [
+    "profiles",
+    "positions",
+    "rectangle"
+  ],
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "Two abstract profiles jump to slightly different positions after the midpoint while a pale rectangle stays at frame right.",
+  "title": "Two-position profile cut",
+  "tone_tags": [
+    "tense"
+  ],
+  "transcript": null,
   "weights": {
-    "summary": 0.18,
-    "tone": 0.14,
-    "emotion": 0.12,
-    "color": 0.1,
-    "camera": 0.12,
-    "motion": 0.1,
-    "continuity": 0.12,
-    "audio": 0.08,
-    "evidence": 0.04
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
   }
 }

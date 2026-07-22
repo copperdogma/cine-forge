@@ -1,664 +1,180 @@
 #!/usr/bin/env python3
-"""Generate the maintained previz-usefulness dataset."""
+"""Refresh local controls and provenance for the maintained previz-usefulness dataset."""
 
 from __future__ import annotations
 
 import argparse
 import json
 import shutil
-import subprocess
 import sys
-import time
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-
-from PIL import Image
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
+from previz_usefulness_candidates import generate_candidate, preserve_candidate  # noqa: E402
+from previz_usefulness_contracts import (  # noqa: E402
+    BASELINE_VARIANTS,
+    CASE_CATALOG_PATH,
+    DATASET_ROOT,
+    DEFAULT_CANDIDATE_PACKS,
+    CandidateSpec,
+    PrevizCase,
+    asset_hashes,
+    candidate_specs,
+    load_case_catalog,
+    relative_to_repo,
+    sha256_file,
+)
+from previz_usefulness_media import build_control_candidate  # noqa: E402
+
 from cine_forge.env import load_cine_forge_dotenv  # noqa: E402
-
-load_cine_forge_dotenv(REPO_ROOT)
-
-from legacy_previz_support import (  # noqa: E402
-    annotate_previz_frame,
-    compose_annotated_segment_video,
-    compose_segment_video,
-    render_motion_frame,
-)
-
-from cine_forge.ai.video import VideoGenerationRequest, generate_video  # noqa: E402
-from cine_forge.modules.generation.render_adapter_v1.previz_prompting import (  # noqa: E402
-    compile_low_fidelity_previz_prompt,
-    shot_brief_from_target,
-)
-from cine_forge.modules.generation.render_adapter_v1.support import (  # noqa: E402
-    load_engine_pack,
-    normalize_duration_seconds,
-)
-
-SOURCE_ROOT = REPO_ROOT / "benchmarks" / "video_understanding"
-DATASET_ROOT = REPO_ROOT / "benchmarks" / "previz_usefulness"
-FAST_PREVIZ_BUDGET_MS = 6_000
-BASELINE_VARIANTS = ("symbolic", "annotated_symbolic")
-DEFAULT_CANDIDATE_PACKS = (
-    "google_veo31_lite",
-    "google_veo31_fast",
-    "xai_grok_imagine_video",
-)
-SELECTED_CLIPS = (
-    "dialogue_confession_push_in",
-    "quiet_bedside_vigil",
-    "radio_hold_tracking",
-)
-_AI_VARIANTS_BY_PACK = {
-    "openai_sora2": ("openai_sora2", "openai_sora2_previz", "Sora 2 Previz", "standard"),
-    "google_veo31_fast": (
-        "google_veo31_fast",
-        "google_veo31_fast_previz",
-        "Veo 3.1 Fast Previz",
-        "standard",
-    ),
-    "google_veo31_lite": (
-        "google_veo31_lite",
-        "google_veo31_lite_previz",
-        "Veo 3.1 Lite Previz",
-        "standard",
-    ),
-    "google_veo31_lite_compact": (
-        "google_veo31_lite",
-        "google_veo31_lite_compact_previz",
-        "Veo 3.1 Lite Compact Previz",
-        "compact",
-    ),
-    "google_veo31": ("google_veo31", "google_veo31_previz", "Veo 3.1 Previz", "standard"),
-    "xai_grok_imagine_video": (
-        "xai_grok_imagine_video",
-        "xai_grok_imagine_video_previz",
-        "Grok Imagine Previz",
-        "standard",
-    ),
-}
-
-
-@dataclass(frozen=True)
-class CandidateSpec:
-    pack_id: str
-    variant: str
-    label: str
-    prompt_profile: str = "standard"
 
 
 def main() -> None:
+    args = _parse_args()
+    ffmpeg = shutil.which("ffmpeg")
+    if ffmpeg is None:
+        raise SystemExit("ffmpeg is required to refresh the previz usefulness dataset")
+    if args.generate_ai:
+        load_cine_forge_dotenv(REPO_ROOT)
+
+    dataset_root = args.output_dir.resolve()
+    dataset_root.mkdir(parents=True, exist_ok=True)
+    catalog, cases = load_case_catalog()
+    specs = candidate_specs(
+        pack_ids=tuple(args.candidate_packs) if args.candidate_packs else DEFAULT_CANDIDATE_PACKS,
+        include_ai=not args.controls_only,
+    )
+    if dataset_root != DATASET_ROOT and specs and not args.generate_ai:
+        raise SystemExit(
+            "A non-canonical output directory has no retained AI candidates. "
+            "Use --controls-only or explicitly opt into --generate-ai."
+        )
+
+    manifest_cases = [
+        _refresh_case(
+            ffmpeg=ffmpeg,
+            ffprobe=shutil.which("ffprobe"),
+            dataset_root=dataset_root,
+            case=case,
+            specs=specs,
+            generate_ai=args.generate_ai,
+        )
+        for case in cases
+    ]
+    manifest = {
+        "schema_version": "previz-usefulness-manifest-v2",
+        "generator": relative_to_repo(Path(__file__)),
+        "case_contract_path": relative_to_repo(CASE_CATALOG_PATH),
+        "case_contract_sha256": sha256_file(CASE_CATALOG_PATH),
+        "subject_modality": catalog["subject_modality"],
+        "decision_candidate_variants": [spec.variant for spec in specs],
+        "control_variants": catalog["control_variants"],
+        "cases": manifest_cases,
+    }
+    (dataset_root / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    _write_readme(dataset_root=dataset_root, specs=specs)
+
+
+def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--candidate-pack",
         action="append",
         dest="candidate_packs",
         default=[],
-        help="Engine-pack id to generate as an AI previz candidate. Can be repeated.",
+        help="Engine-pack id to validate or explicitly regenerate. Can be repeated.",
     )
     parser.add_argument(
-        "--skip-ai",
+        "--generate-ai",
         action="store_true",
-        help="Generate only the deterministic symbolic and annotated baseline variants.",
+        help="Explicitly opt into paid provider generation. Omitted by default.",
     )
     parser.add_argument(
-        "--output-dir",
-        type=Path,
-        default=DATASET_ROOT,
-        help="Destination directory for the generated dataset.",
+        "--controls-only",
+        action="store_true",
+        help="Build only deterministic non-decision controls (safe for temporary directories).",
     )
-    args = parser.parse_args()
-
-    ffmpeg = shutil.which("ffmpeg")
-    if ffmpeg is None:
-        raise SystemExit("ffmpeg is required to generate the previz usefulness dataset")
-
-    candidate_specs = _candidate_specs(
-        pack_ids=tuple(args.candidate_packs) if args.candidate_packs else DEFAULT_CANDIDATE_PACKS,
-        include_ai=not args.skip_ai,
-    )
-
-    dataset_root = args.output_dir.resolve()
-    if dataset_root.exists():
-        shutil.rmtree(dataset_root)
-    dataset_root.mkdir(parents=True, exist_ok=True)
-
-    manifest: list[dict[str, object]] = []
-    variant_names = [*BASELINE_VARIANTS, *[spec.variant for spec in candidate_specs]]
-    for clip_id in SELECTED_CLIPS:
-        source_dir = SOURCE_ROOT / clip_id
-        meta = json.loads((source_dir / "meta.json").read_text(encoding="utf-8"))
-        target = json.loads((source_dir / "target.json").read_text(encoding="utf-8"))
-        shot_spec = _shot_spec(target)
-
-        _build_symbolic_candidate(
-            ffmpeg,
-            dataset_root,
-            source_dir,
-            meta,
-            shot_spec,
-            annotated=False,
-        )
-        _build_symbolic_candidate(
-            ffmpeg,
-            dataset_root,
-            source_dir,
-            meta,
-            shot_spec,
-            annotated=True,
-        )
-        for spec in candidate_specs:
-            _build_ai_candidate(
-                ffmpeg=ffmpeg,
-                dataset_root=dataset_root,
-                source_dir=source_dir,
-                meta=meta,
-                target=target,
-                candidate=spec,
-            )
-
-        manifest.append(
-            {
-                "clip_id": clip_id,
-                "title": meta["title"],
-                "variants": variant_names,
-            }
-        )
-
-    (dataset_root / "manifest.json").write_text(json.dumps({"clips": manifest}, indent=2) + "\n")
-    ai_labels = ", ".join(spec.label for spec in candidate_specs) or "none"
-    (dataset_root / "README.md").write_text(
-        "# Story 143 Previz Usefulness Dataset\n\n"
-        "Generated by `benchmarks/scripts/generate_previz_usefulness_dataset.py`.\n"
-        "Each selected clip includes deterministic baseline variants plus the active AI-previz "
-        f"candidate lanes: {ai_labels}.\n",
-        encoding="utf-8",
-    )
+    parser.add_argument("--output-dir", type=Path, default=DATASET_ROOT)
+    return parser.parse_args()
 
 
-def _candidate_specs(*, pack_ids: tuple[str, ...], include_ai: bool) -> list[CandidateSpec]:
-    if not include_ai:
-        return []
-    specs: list[CandidateSpec] = []
-    for pack_id in pack_ids:
-        candidate_info = _AI_VARIANTS_BY_PACK.get(pack_id)
-        if candidate_info is None:
-            raise SystemExit(f"Unsupported previz candidate pack id: {pack_id}")
-        engine_pack_id, variant, label, prompt_profile = candidate_info
-        specs.append(
-            CandidateSpec(
-                pack_id=engine_pack_id,
-                variant=variant,
-                label=label,
-                prompt_profile=prompt_profile,
-            )
-        )
-    return specs
-
-
-def _build_ai_candidate(
+def _refresh_case(
     *,
     ffmpeg: str,
+    ffprobe: str | None,
     dataset_root: Path,
-    source_dir: Path,
-    meta: dict[str, object],
-    target: dict[str, object],
-    candidate: CandidateSpec,
-) -> None:
-    destination = dataset_root / candidate.variant / str(meta["clip_id"])
-    destination.mkdir(parents=True, exist_ok=True)
-
-    engine_pack = load_engine_pack(candidate.pack_id)
-    duration_seconds = _benchmark_duration_seconds(
-        engine_pack=engine_pack,
-        source_duration_seconds=float(target["duration_seconds"]),
-    )
-    resolution = _benchmark_resolution(engine_pack)
-    aspect_ratio = _benchmark_aspect_ratio(engine_pack)
-    brief = shot_brief_from_target(
-        target=target,
-        meta=meta,
-        character_labels=_characters_for_clip(
-            str(target["clip_id"]),
-            target.get("clip_tags", []),
-        ),
-    )
-    prompt_contract = compile_low_fidelity_previz_prompt(
-        brief=brief,
-        engine_pack=engine_pack,
-        prompt_profile=candidate.prompt_profile,
-    )
-    prompt_path = destination / "prompt_contract.json"
-    prompt_path.write_text(
-        prompt_contract.model_dump_json(indent=2) + "\n",
-        encoding="utf-8",
-    )
-    (destination / "prompt.txt").write_text(prompt_contract.prompt_text + "\n", encoding="utf-8")
-
-    request = VideoGenerationRequest(
-        prompt=prompt_contract.prompt_text,
-        duration_seconds=duration_seconds,
-        resolution=resolution,
-        aspect_ratio=aspect_ratio,
-        provider_params={},
-    )
-
-    started = time.perf_counter()
-    result = generate_video(request=request, engine_pack=engine_pack)
-    generation_latency_ms = round((time.perf_counter() - started) * 1000)
-    clip_path = destination / "clip.mp4"
-    clip_path.write_bytes(result.video_bytes)
-
-    _extract_sample_frames(
-        ffmpeg=ffmpeg,
-        clip_path=clip_path,
-        output_dir=destination / "frames",
-        duration_seconds=float(duration_seconds),
-        sample_count=5,
-    )
-    has_audio = _clip_has_audio(ffprobe=shutil.which("ffprobe"), clip_path=clip_path)
-
-    candidate_meta = dict(meta)
-    candidate_meta.update(
-        {
-            "candidate_variant": candidate.variant,
-            "candidate_label": candidate.label,
-            "source_description": (
-                f"Story 143 AI-previz candidate generated with {engine_pack.pack_id} "
-                f"({engine_pack.target_model})."
-            ),
-            "duration_seconds": float(duration_seconds),
-            "resolution": resolution,
-            "has_audio": has_audio,
-            "transcript": target.get("transcript") if has_audio else None,
-            "audio_description": target.get("audio_description") if has_audio else None,
-            "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
-            "operator_lane": "ai_previz",
-            "latency_budget_ms": 180000,
-            "engine_pack_id": engine_pack.pack_id,
-            "target_model": result.model_used,
-            "generation_latency_ms": generation_latency_ms,
-            "estimated_generation_cost_usd": _estimated_generation_cost_usd(
-                engine_pack=engine_pack,
-                duration_seconds=float(duration_seconds),
-            ),
-            "consistency_strategy": prompt_contract.consistency_strategy,
-            "prompt_profile": prompt_contract.prompt_profile,
-            "style_profile_id": prompt_contract.style_profile.profile_id,
-            "style_profile_title": prompt_contract.style_profile.title,
-            "style_profile_summary": prompt_contract.style_profile.summary,
-            "negative_prompt_terms": prompt_contract.negative_prompt_terms,
-            "prompt_contract_path": str(prompt_path.relative_to(destination)),
-        }
-    )
-    (destination / "meta.json").write_text(
-        json.dumps(candidate_meta, indent=2) + "\n",
-        encoding="utf-8",
-    )
-
-
-def _build_symbolic_candidate(
-    ffmpeg: str,
-    dataset_root: Path,
-    source_dir: Path,
-    meta: dict[str, object],
-    shot_spec: dict[str, object],
-    *,
-    annotated: bool,
-) -> None:
-    variant = "annotated_symbolic" if annotated else "symbolic"
-    destination = dataset_root / variant / str(meta["clip_id"])
-    destination.mkdir(parents=True, exist_ok=True)
-    width, height = _resolution(str(meta["resolution"]))
-    fps = int(meta.get("fps", 8) or 8)
-    duration_seconds = float(meta["duration_seconds"])
-    source_frame_path = sorted((source_dir / "frames").glob("*.jpg"))[0]
-    video_only_path = destination / "clip_video_only.mp4"
-    started = time.perf_counter()
-
-    if annotated:
-        compose_annotated_segment_video(
+    case: PrevizCase,
+    specs: list[CandidateSpec],
+    generate_ai: bool,
+) -> dict[str, Any]:
+    variants: list[dict[str, Any]] = []
+    for variant in BASELINE_VARIANTS:
+        meta = build_control_candidate(
             ffmpeg=ffmpeg,
-            image_path=source_frame_path,
-            output_path=video_only_path,
-            duration_seconds=duration_seconds,
-            camera_movement=str(shot_spec["camera_movement"]),
-            width=width,
-            height=height,
-            fps=fps,
-            scene_heading=str(shot_spec["scene_heading"]),
-            shot_id=str(shot_spec["shot_id"]),
-            shot_size=str(shot_spec["shot_size"]),
-            camera_angle=str(shot_spec["camera_angle"]),
-            characters=list(shot_spec["characters"]),
-            edit_intent=str(shot_spec["edit_intent"]),
+            dataset_root=dataset_root,
+            case=case,
+            annotated=variant == "annotated_symbolic",
         )
-    else:
-        compose_segment_video(
+        variants.append(_variant_manifest(dataset_root, case, variant, meta))
+    for spec in specs:
+        operation = generate_candidate if generate_ai else preserve_candidate
+        meta = operation(
             ffmpeg=ffmpeg,
-            image_path=source_frame_path,
-            output_path=video_only_path,
-            duration_seconds=duration_seconds,
-            camera_movement=str(shot_spec["camera_movement"]),
-            width=width,
-            height=height,
-            fps=fps,
+            ffprobe=ffprobe,
+            dataset_root=dataset_root,
+            case=case,
+            candidate=spec,
         )
-
-    final_clip_path = destination / "clip.mp4"
-    _mux_source_audio(
-        ffmpeg=ffmpeg,
-        source_clip=source_dir / "clip.mp4",
-        video_only_path=video_only_path,
-        output_path=final_clip_path,
-    )
-    generation_latency_ms = round((time.perf_counter() - started) * 1000)
-    video_only_path.unlink()
-    for temp_frame in destination.glob("clip_video_only_*.jpg"):
-        temp_frame.unlink()
-
-    _write_analysis_frames(
-        source_frame_path=source_frame_path,
-        output_dir=destination / "frames",
-        width=width,
-        height=height,
-        camera_movement=str(shot_spec["camera_movement"]),
-        scene_heading=str(shot_spec["scene_heading"]),
-        shot_id=str(shot_spec["shot_id"]),
-        shot_size=str(shot_spec["shot_size"]),
-        camera_angle=str(shot_spec["camera_angle"]),
-        characters=list(shot_spec["characters"]),
-        edit_intent=str(shot_spec["edit_intent"]),
-        duration_seconds=duration_seconds,
-        annotated=annotated,
-    )
-
-    candidate_meta = dict(meta)
-    candidate_meta.update(
-        {
-            "candidate_variant": variant,
-            "candidate_label": "Annotated Animatic" if annotated else "Symbolic Animatic",
-            "source_description": (
-                f"Story 143 {variant} baseline candidate derived from {meta['clip_id']}."
-            ),
-            "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
-            "operator_lane": "deterministic_baseline",
-            "consistency_strategy": "deterministic",
-            "style_profile_id": "cineforge_low_fidelity_previz_v1",
-            "style_profile_title": "CineForge Low-Fidelity Previz",
-            "style_profile_summary": (
-                "Production-readable schematic previz with explicit camera, blocking, and pacing."
-            ),
-            "estimated_generation_cost_usd": 0.0,
-            "generation_latency_ms": generation_latency_ms,
-            "latency_budget_ms": FAST_PREVIZ_BUDGET_MS if annotated else None,
-        }
-    )
-    (destination / "meta.json").write_text(
-        json.dumps(candidate_meta, indent=2) + "\n",
-        encoding="utf-8",
-    )
-
-
-def _shot_spec(target: dict[str, object]) -> dict[str, object]:
-    camera_tags = set(target.get("camera_tags", []))
-    clip_id = str(target["clip_id"])
+        variants.append(_variant_manifest(dataset_root, case, spec.variant, meta))
     return {
-        "scene_heading": str(target["title"]).upper(),
-        "shot_id": clip_id.upper(),
-        "shot_size": _shot_size(camera_tags),
-        "camera_angle": _camera_angle(camera_tags),
-        "camera_movement": _camera_movement(camera_tags),
-        "characters": _characters_for_clip(clip_id, target.get("clip_tags", [])),
-        "edit_intent": str(target["summary_reference"]),
+        "evaluation_id": case.evaluation_id,
+        "clip_id": case.clip_id,
+        "title": case.title,
+        "target_path": relative_to_repo(case.target_path),
+        "target_sha256": sha256_file(case.target_path),
+        "target_markdown_path": relative_to_repo(case.target_markdown_path),
+        "target_markdown_sha256": sha256_file(case.target_markdown_path),
+        "variants": variants,
     }
 
 
-def _benchmark_duration_seconds(*, engine_pack: Any, source_duration_seconds: float) -> int:
-    requested = float(
-        engine_pack.request_defaults.get("benchmark_default_duration_seconds")
-        or source_duration_seconds
+def _variant_manifest(
+    dataset_root: Path,
+    case: PrevizCase,
+    variant: str,
+    meta: dict[str, Any],
+) -> dict[str, Any]:
+    directory = dataset_root / variant / case.clip_id
+    return {
+        "variant": variant,
+        "candidate_label": meta["candidate_label"],
+        "decision_role": meta["decision_role"],
+        "decision_eligible": meta["decision_eligible"],
+        "artifact_status": meta["artifact_status"],
+        "meta_path": str((directory / "meta.json").relative_to(dataset_root)),
+        "meta_sha256": sha256_file(directory / "meta.json"),
+        **asset_hashes(directory),
+    }
+
+
+def _write_readme(*, dataset_root: Path, specs: list[CandidateSpec]) -> None:
+    labels = ", ".join(spec.label for spec in specs) or "none"
+    (dataset_root / "README.md").write_text(
+        "# Previz Usefulness Dataset\n\n"
+        "Generated by `benchmarks/scripts/generate_previz_usefulness_dataset.py`. "
+        "The default command performs no provider calls: it rebuilds deterministic controls, "
+        "validates retained AI clips/prompts/frames, and refreshes exact provenance hashes.\n\n"
+        "Only provider-generated AI candidates without evaluator-authored overlays are "
+        "decision-eligible. Symbolic and annotated variants are control-only because they are "
+        "deterministic and the annotated frames visibly embed answer-bearing labels and intent.\n\n"
+        f"Maintained decision candidates: {labels}.\n",
+        encoding="utf-8",
     )
-    duration, _ = normalize_duration_seconds(
-        requested,
-        engine_pack.limits.supported_durations_seconds,
-    )
-    return int(duration)
-
-
-def _benchmark_resolution(engine_pack: Any) -> str:
-    defaults = engine_pack.request_defaults
-    if defaults.get("default_resolution"):
-        return str(defaults["default_resolution"])
-    if defaults.get("landscape_size"):
-        return str(defaults["landscape_size"])
-    supported = list(engine_pack.limits.supported_resolutions)
-    if not supported:
-        raise ValueError(f"{engine_pack.pack_id} has no supported resolutions")
-    return str(supported[0])
-
-
-def _benchmark_aspect_ratio(engine_pack: Any) -> str:
-    defaults = engine_pack.request_defaults
-    if defaults.get("landscape_aspect_ratio"):
-        return str(defaults["landscape_aspect_ratio"])
-    supported = list(engine_pack.limits.supported_aspect_ratios)
-    if "16:9" in supported:
-        return "16:9"
-    if not supported:
-        raise ValueError(f"{engine_pack.pack_id} has no supported aspect ratios")
-    return str(supported[0])
-
-
-def _estimated_generation_cost_usd(*, engine_pack: Any, duration_seconds: float) -> float | None:
-    raw = engine_pack.request_defaults.get("benchmark_cost_per_second_usd")
-    if raw in (None, ""):
-        return None
-    return round(float(raw) * duration_seconds, 4)
-
-
-def _clip_has_audio(*, ffprobe: str | None, clip_path: Path) -> bool:
-    if ffprobe is None:
-        return False
-    result = subprocess.run(
-        [
-            ffprobe,
-            "-v",
-            "error",
-            "-show_entries",
-            "stream=codec_type",
-            "-of",
-            "default=noprint_wrappers=1:nokey=1",
-            str(clip_path),
-        ],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    if result.returncode != 0:
-        return False
-    return any(line.strip() == "audio" for line in result.stdout.splitlines())
-
-
-def _extract_sample_frames(
-    *,
-    ffmpeg: str,
-    clip_path: Path,
-    output_dir: Path,
-    duration_seconds: float,
-    sample_count: int,
-) -> None:
-    output_dir.mkdir(parents=True, exist_ok=True)
-    for index, timestamp in enumerate(_sample_timestamps(duration_seconds, sample_count)):
-        output_path = output_dir / f"frame_{index:02d}.jpg"
-        result = subprocess.run(
-            [
-                ffmpeg,
-                "-y",
-                "-ss",
-                f"{timestamp:.3f}",
-                "-i",
-                str(clip_path),
-                "-frames:v",
-                "1",
-                "-q:v",
-                "2",
-                str(output_path),
-            ],
-            check=False,
-            capture_output=True,
-            text=True,
-        )
-        if result.returncode != 0 or not output_path.exists():
-            detail = result.stderr.strip() or "unknown extraction failure"
-            raise RuntimeError(
-                "Could not extract benchmark frame "
-                f"{index} at {timestamp:.2f}s from {clip_path}: {detail}"
-            )
-
-
-def _sample_timestamps(duration_seconds: float, sample_count: int) -> list[float]:
-    if sample_count <= 0:
-        return []
-    if duration_seconds <= 0:
-        return [0.0 for _ in range(sample_count)]
-    if sample_count == 1:
-        return [round(duration_seconds / 2.0, 3)]
-    return [
-        round((duration_seconds * (index + 1)) / (sample_count + 1), 3)
-        for index in range(sample_count)
-    ]
-
-
-def _shot_size(camera_tags: set[str]) -> str:
-    if "locked_two_shot" in camera_tags:
-        return "Two Shot"
-    if "wide_master" in camera_tags:
-        return "Wide Master"
-    if "profile_closeup" in camera_tags:
-        return "Profile Close-Up"
-    return "Medium Single"
-
-
-def _camera_angle(camera_tags: set[str]) -> str:
-    if "overhead_reveal" in camera_tags:
-        return "Overhead"
-    if "profile_closeup" in camera_tags:
-        return "Profile"
-    return "Eye level"
-
-
-def _camera_movement(camera_tags: set[str]) -> str:
-    if "slow_push_in" in camera_tags:
-        return "Slow push in"
-    if "slow_pull_back" in camera_tags:
-        return "Slow pull back"
-    if "lateral_track" in camera_tags:
-        return "Lateral track"
-    if "whip_pan" in camera_tags:
-        return "Whip pan"
-    if "crash_zoom" in camera_tags:
-        return "Crash zoom"
-    return "Static hold"
-
-
-def _characters_for_clip(clip_id: str, clip_tags: object) -> list[str]:
-    tags = (
-        {str(item) for item in clip_tags if isinstance(item, str)}
-        if isinstance(clip_tags, list)
-        else set()
-    )
-    if clip_id == "quiet_bedside_vigil":
-        return ["Caretaker"]
-    if "dialogue" in tags or "procedural" in tags:
-        return ["Subject A", "Subject B"]
-    return ["Subject"]
-
-
-def _resolution(value: str) -> tuple[int, int]:
-    width_raw, height_raw = value.lower().split("x", maxsplit=1)
-    return int(width_raw), int(height_raw)
-
-
-def _mux_source_audio(
-    *,
-    ffmpeg: str,
-    source_clip: Path,
-    video_only_path: Path,
-    output_path: Path,
-) -> None:
-    subprocess.run(
-        [
-            ffmpeg,
-            "-v",
-            "error",
-            "-y",
-            "-i",
-            str(video_only_path),
-            "-i",
-            str(source_clip),
-            "-map",
-            "0:v:0",
-            "-map",
-            "1:a:0",
-            "-shortest",
-            "-c:v",
-            "copy",
-            "-c:a",
-            "aac",
-            str(output_path),
-        ],
-        check=True,
-    )
-
-
-def _write_analysis_frames(
-    *,
-    source_frame_path: Path,
-    output_dir: Path,
-    width: int,
-    height: int,
-    camera_movement: str,
-    scene_heading: str,
-    shot_id: str,
-    shot_size: str,
-    camera_angle: str,
-    characters: list[str],
-    edit_intent: str,
-    duration_seconds: float,
-    annotated: bool,
-) -> None:
-    output_dir.mkdir(parents=True, exist_ok=True)
-    with Image.open(source_frame_path) as opened_image:
-        source_image = opened_image.convert("RGB")
-
-    for index, progress in enumerate((0.0, 0.25, 0.5, 0.75, 0.99)):
-        frame = render_motion_frame(
-            source_image,
-            progress=progress,
-            movement=camera_movement,
-            width=width,
-            height=height,
-        )
-        if annotated:
-            frame = annotate_previz_frame(
-                frame,
-                scene_heading=scene_heading,
-                shot_id=shot_id,
-                shot_size=shot_size,
-                camera_angle=camera_angle,
-                camera_movement=camera_movement,
-                characters=characters,
-                edit_intent=edit_intent,
-                duration_seconds=duration_seconds,
-            )
-        frame.save(output_dir / f"frame_{index:02d}.jpg", format="JPEG", quality=90)
 
 
 if __name__ == "__main__":

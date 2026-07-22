@@ -1,0 +1,37 @@
+{
+  "corpus_id": "open-frequency-short",
+  "source_title": "Open Frequency",
+  "source_author": "CineForge",
+  "source_path": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+  "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+  "source_origin": "Repo-authored screenplay for CineForge UI manual acceptance",
+  "created_on": "2026-07-22",
+  "creation_method": "Manual source-first golden-create pass after reading the entire screenplay",
+  "verification_status": "CLEAN",
+  "verification_date": "2026-07-22",
+  "verification_method": "Independent source-first golden-verify: the verifier read the canonical screenplay before inspecting each derived golden and normalization target, then checked every material claim against the source.",
+  "verification_result": "All six Open Frequency fixtures were independently verified source-accurate. The config pass additionally repaired audience-null, cast-category, confidence, rationale-polarity, location-precision, allowed-tone, and synonym-group contracts before a final zero-issue replay.",
+  "pending_independent_verification": [],
+  "derived_goldens": [
+    "benchmarks/golden/open-frequency-scenes.json",
+    "benchmarks/golden/open-frequency-entity-discovery.json",
+    "benchmarks/golden/open-frequency-script-bible.json",
+    "benchmarks/golden/open-frequency-maya-character.json",
+    "benchmarks/golden/open-frequency-config.json"
+  ],
+  "normalization_fixture": {
+    "input_path": "benchmarks/input/normalize-open-frequency-corrupted.fountain",
+    "input_sha256": "258cd9299e89c82bc7caa5afb8ddc07be2669fc067898b225840c62830fd2457",
+    "golden_path": "benchmarks/golden/normalize-open-frequency-corrupted-golden.json",
+    "derivation": "A source-faithful excerpt from the first two scenes was deliberately damaged by lowercasing headings and cues, adding Markdown headings/emphasis/list syntax, escaping structural punctuation, and moving the source's radio cue extension into a blockquoted parenthetical. A fixture-identification Notes field was added; no story fact, dialogue wording, speaker, or event order was intentionally changed.",
+    "intentional_failure_classes": [
+      "lowercase scene headings",
+      "lowercase character cues",
+      "Markdown headings",
+      "Markdown emphasis",
+      "Markdown list syntax",
+      "blockquoted parenthetical",
+      "escaped heading and transition punctuation"
+    ]
+  }
+}

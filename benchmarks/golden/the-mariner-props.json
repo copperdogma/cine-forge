@@ -13,8 +13,9 @@
       "INT. RUDDY & GREEN BUILDING - ELEVATOR",
       "INT. 13TH FLOOR",
       "INT. 15TH FLOOR",
-      "INT. STAIRWELL"
+      "EXT. BACKYARD - DAY - (FLASHBACK)"
     ],
+    "associated_characters": ["the_mariner"],
     "key_facts": [
       "Primary melee weapon used by the Mariner",
       "Has the word BOSUN carved into it",
@@ -36,20 +37,21 @@
     "physical_traits": [],
     "must_mention_scenes": [
       "INT. RUDDY & GREEN BUILDING - ELEVATOR",
-      "INT. STAIRWELL",
+      "INT. STAIRWELL - CONTINUOUS",
       "INT. 15TH FLOOR"
     ],
+    "associated_characters": ["rose"],
     "key_facts": [
       "Contains a hidden chip with the blockchain password",
-      "Password accesses $20 million in stolen cryptocurrency",
+      "Password is tied to roughly $20 million in stolen gang money on a blockchain",
       "Rose stole the money from Salvatori's gang",
       "Rose goes back into danger to retrieve it",
-      "Found on Salvatori's desk on the 15th floor",
+      "Found on the desk on the 15th floor",
       "Primary MacGuffin driving the second half of the plot"
     ],
     "narrative_significance_must_mention": [
       "MacGuffin",
-      "cryptocurrency",
+      "blockchain",
       "stolen money",
       "plot driver"
     ]
@@ -57,23 +59,46 @@
   "AIRTAG": {
     "prop_id": "airtag",
     "name": "AirTag",
-    "aliases": ["the AirTag", "tracking device"],
+    "aliases": [],
     "physical_traits": [],
     "must_mention_scenes": [
       "INT. RUDDY & GREEN BUILDING - ELEVATOR",
-      "INT. 12TH FLOOR STAIRWELL"
+      "INT. 12TH FLOOR STAIRWELL - CONTINUOUS"
     ],
+    "associated_characters": ["the_mariner"],
     "key_facts": [
       "Secretly stashed by Mariner in Rose's purse the previous Thanksgiving",
       "How Mariner tracked Rose to the Ruddy & Greene Building",
-      "Rose is furious when she learns about it",
+      "Rose immediately insists they return for the purse after learning about it",
       "Rose turns it back on Mariner: 'Who got you involved, Mr. Fucking AirTag?'",
-      "Reveals Mariner's habit of surveilling his sister without consent"
+      "Reveals that Mariner tracked his sister without her knowledge"
     ],
     "narrative_significance_must_mention": [
       "tracking",
       "sister",
-      "surveillance"
+      "rescue"
+    ]
+  },
+  "MEMORY STICK": {
+    "prop_id": "memory-stick",
+    "name": "Memory Stick",
+    "aliases": ["chip"],
+    "physical_traits": [],
+    "must_mention_scenes": [
+      "INT. STAIRWELL - CONTINUOUS",
+      "EXT. BACKYARD - DAY - (FLASHBACK)"
+    ],
+    "associated_characters": ["rose"],
+    "key_facts": [
+      "Carries the blockchain password Rose says is tied to her life savings",
+      "Hidden on a chip in the lining of Rose's purse",
+      "Tied to roughly $20 million that Rose stole from the gang",
+      "Salvatori demands the memory stick from Rose"
+    ],
+    "narrative_significance_must_mention": [
+      "password",
+      "stolen money",
+      "MacGuffin"
     ]
   },
   "FLARE GUN": {
@@ -82,22 +107,72 @@
     "aliases": ["bright-orange pistol", "fat bright-orange pistol"],
     "physical_traits": [
       "fat bright-orange pistol",
-      "fires blinding red flares"
+      "fires a blinding red flare"
     ],
     "must_mention_scenes": [
       "INT. 13TH FLOOR"
     ],
+    "associated_characters": ["the_mariner"],
     "key_facts": [
-      "Part of Mariner's collection of maritime weapons",
-      "Bright orange color makes it look absurd to the thugs",
+      "Mariner carries it as a maritime-themed weapon",
+      "The thugs identify it as a flare gun and laugh before Mariner fires it",
       "Used to shoot Vinnie in the chest on the 13th floor",
-      "Thugs laugh at or mock the weapon before Mariner fires it",
-      "Red flare creates blinding light during the fight"
+      "The fired flare continues burning on Vinnie's chest and casts stark red light during the fight"
     ],
     "narrative_significance_must_mention": [
       "maritime",
       "weapon",
       "absurd"
+    ]
+  },
+  "BEER BOTTLES": {
+    "prop_id": "beer-bottles",
+    "name": "Beer Bottles",
+    "aliases": ["beer", "bottle", "discarded bottles", "empty beer bottles"],
+    "physical_traits": [
+      "discarded bottles",
+      "empty beer bottles littering the bottom of the boat"
+    ],
+    "must_mention_scenes": [
+      "BEGIN FLASHBACK: EXT. COASTLINE - DAY - PAST",
+      "EXT. BACKYARD - DAY - (FLASHBACK)",
+      "EXT. COASTLINE - DAY - (FLASHBACK)"
+    ],
+    "associated_characters": ["dad"],
+    "key_facts": [
+      "Young Mariner fetches a beer for Dad in the idealized coastline memory",
+      "The revealed backyard is strewn with discarded bottles, and Dad kicks one hard enough to smash it against the stucco",
+      "The revealed coastline memory shows the boat bottom littered with empty beer bottles while Dad tells Mariner to fetch another"
+    ],
+    "narrative_significance_must_mention": [
+      "father",
+      "drinking",
+      "neglect",
+      "memory"
+    ]
+  },
+  "BENCH PRESS": {
+    "prop_id": "bench-press",
+    "name": "Bench Press",
+    "aliases": [],
+    "physical_traits": [
+      "repaired with peeling duct-tape"
+    ],
+    "must_mention_scenes": [
+      "BEGIN FLASHBACK: EXT. BACKYARD - DAY - PAST",
+      "EXT. BACKYARD - DAY - (FLASHBACK)"
+    ],
+    "associated_characters": ["the_mariner"],
+    "key_facts": [
+      "In Mariner's idealized memory, Dad patiently teaches him to bench press and helps him succeed",
+      "In the revealed flashback, Dad sends Mariner to lift weights after punching him",
+      "The later backyard shows the bench press repaired with peeling duct-tape among rusty weights"
+    ],
+    "narrative_significance_must_mention": [
+      "father",
+      "strength",
+      "abuse",
+      "memory"
     ]
   }
 }

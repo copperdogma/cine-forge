@@ -24,30 +24,28 @@ def test_generated_clip_packet_and_scoring_fixture_align() -> None:
 
     assert packet["meta"]["clip_id"] == "dialogue_confession_push_in"
     assert len(packet["frames"]) == 5
+    assert packet["sample_times_seconds"] == [0.0, 1.0, 2.0, 3.0, 3.875]
     assert packet["meta"]["has_audio"] is True
 
     fixture_output = {
         "clip_id": "dialogue_confession_push_in",
-        "summary": (
-            "A blue confession scene slowly pushes toward the hesitant speaker "
-            "with the envelope."
-        ),
-        "tone_tags": ["intimate", "regretful"],
-        "emotion_tags": ["hesitation", "vulnerability"],
+        "summary": "Two blue figures appear closer across the ordered frame packet.",
+        "tone_tags": ["intimate"],
+        "emotion_tags": [],
         "color_tags": ["navy", "teal"],
         "camera_tags": ["locked_two_shot", "slow_push_in"],
         "motion_tags": ["measured"],
         "continuity_status": "intact",
         "continuity_notes": [
-            "The white envelope stays in the same speaker's hand through the push-in."
+            "The pale rectangle stays beside the right figure across all five frames."
         ],
-        "audio_tags": ["soft_music", "speech"],
-        "audio_notes": ["Soft piano sits under a single confession line."],
+        "audio_tags": [],
+        "audio_notes": [],
         "evidence": [
-            {"timestamp_seconds": 0.9, "cue": "Two-shot starts in cool blue light."},
+            {"frame_index": 1, "cue": "Two blue figures hold the two-shot."},
             {
-                "timestamp_seconds": 2.7,
-                "cue": "The camera has pushed closer to the speaker holding the envelope.",
+                "frame_index": 2,
+                "cue": "The pale rectangle stays beside the closer right figure.",
             },
         ],
         "overall_confidence": 0.88,

@@ -67,12 +67,43 @@ def test_is_screenplay_path_uses_parser_signal(monkeypatch: pytest.MonkeyPatch) 
         coverage = 0.8
         parser_backend = "test"
         issues: list[str] = []
+        scene_heading_count = 1
+        character_count = 1
+        dialogue_count = 1
 
     monkeypatch.setattr(
         "cine_forge.modules.ingest.script_normalize_v1.main.validate_fountain_structure",
         lambda _: FakeResult(),
     )
     assert _is_screenplay_path(raw) is True
+
+
+@pytest.mark.unit
+def test_is_screenplay_path_does_not_treat_action_only_prose_as_screenplay(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    raw = _raw_input_payload(
+        "She crossed the market and reread the unsigned letter.",
+        detected_format="prose",
+        confidence=0.9,
+        file_format="txt",
+    )
+
+    class FakeResult:
+        parseable = True
+        coverage = 1.0
+        parser_backend = "test"
+        issues: list[str] = []
+        scene_heading_count = 0
+        character_count = 0
+        dialogue_count = 0
+
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.script_normalize_v1.main.validate_fountain_structure",
+        lambda _: FakeResult(),
+    )
+
+    assert _is_screenplay_path(raw) is False
 
 
 @pytest.mark.unit

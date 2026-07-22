@@ -12,9 +12,9 @@ Pick an eval from the registry, study past attempts, classify any failures, and 
 
 If the eval does not exist yet, use `/create-eval` first.
 
-For promptfoo-backed evals, treat `benchmarks/` references below as the
-benchmark workspace documented in `AGENTS.md`. That workspace may live in a
-separate sidequest worktree rather than this checkout.
+For promptfoo-backed evals, require `benchmarks/` and
+`docs/evals/registry.yaml` in the same active CineForge checkout. Do not combine
+task contracts from a sidequest with another checkout's registry or commit.
 
 **Improvement types:** Quality (better scores), speed (lower latency), cost (cheaper per call),
 or any combination. "Same quality at 10x faster" is a valid and valuable improvement.
@@ -214,7 +214,7 @@ For each significant mismatch between model behavior and expected behavior:
 2. **Run the eval with `--no-cache`** to get clean measurements:
 
 ```bash
-cd benchmarks && source ~/.nvm/nvm.sh && nvm use 24 > /dev/null 2>&1 && promptfoo eval -c tasks/{eval}.yaml --no-cache -j 3
+(cd benchmarks && source ~/.nvm/nvm.sh && nvm use 24 > /dev/null 2>&1 && promptfoo eval -c tasks/{eval}.yaml --no-cache -j 3)
 ```
 
 3. **Extract metrics** from the result file:
@@ -243,22 +243,53 @@ Regardless of success or failure:
    - If failed: set retry_when conditions and "What NOT to retry"
    - Complete the Definition of Done checklist
 
-2. **Update the registry.** Edit `docs/evals/registry.yaml`:
+2. **Update the registry or its attempt history.** A current score update is
+   allowed only when one exact retained result passes the current task and
+   provider/call provenance contract. Dirty-contract or diagnostic runs stay
+   explicit non-decision-grade history and do not replace current score evidence.
 
-   a. **Update scores** — Add or update score entries with new measurements.
-   Run `python scripts/extract-eval-metrics.py --result-file <path>` to get latency/cost:
+   a. **Inspect the exact result** — Read score, latency, cost, identity, and
+   classification evidence without writing:
+   ```bash
+   PYTHONPATH=src .venv/bin/python scripts/extract-eval-metrics.py \
+     --result-file benchmarks/results/{result-file}.json
+   ```
+
+   b. **Stage one complete registry row** — Add exactly one score row for that
+   result before using the update mode. This is the explicit evidence
+   classification and promotion decision; the extraction tool does not create
+   the row or decide whether it is decision-grade.
+
    ```yaml
    scores:
      - model: "Sonnet 4.6"
+       evidence_status: decision-grade  # or an explicit non-decision-grade status
        metrics:
-         overall: 0.XXX  # new score
-       latency_ms: NNNNN       # avg per-call latency (from extract script)
-       cost_usd: 0.XXXX        # avg per-call cost (from extract script)
-       cost_estimated: true     # only if cost was computed from tokens
+         overall: 0.XXX
+       latency_ms: NNNNN
+       cost_usd: 0.XXXX
+       cost_estimated: true             # only if computed from tokens
        measured: YYYY-MM-DD
-       git_sha: "{current HEAD}"
+       git_sha: "{commit containing the exact contracts and evidence}"
        result_file: benchmarks/results/{result-file}.json
+       # Decision-grade visual rows also require retained_media_manifest and
+       # retained_media_manifest_sha256 for checked-in, hash-valid candidate bytes.
    ```
+
+   c. **Validate and refresh extracted metrics** — Dry-run the exact staged row,
+   then apply the same result. The tool validates task/provider/call identity and
+   refreshes latency/cost only; it fails when the row is absent or ambiguous.
+
+   ```bash
+   PYTHONPATH=src .venv/bin/python scripts/extract-eval-metrics.py \
+     --update-registry --dry-run \
+     --result-file benchmarks/results/{result-file}.json
+   PYTHONPATH=src .venv/bin/python scripts/extract-eval-metrics.py \
+     --update-registry \
+     --result-file benchmarks/results/{result-file}.json
+   ```
+
+   Never bulk-update a directory of retained history.
 
    b. **Add attempt summary** — Append to the eval's `attempts` list:
    ```yaml
@@ -307,7 +338,8 @@ Do not leave the user to infer adoption from scores alone.
 - Extract and record latency_ms and cost_usd alongside quality scores
   (run: `python scripts/extract-eval-metrics.py --result-file <path>`)
 - Record the attempt even if it fails
-- Update registry.yaml even if nothing improved (scores might have changed)
+- Record every run in registry/attempt history even if nothing improved; update
+  current scores only from an exact replayable result
 - Note both the worker model AND subject model in the attempt record
 
 ### Ask first
@@ -320,5 +352,7 @@ Do not leave the user to infer adoption from scores alone.
 - Silently accept score regressions
 - Skip the recording phase
 - Modify the registry without actually running the eval
+- Promote dirty-contract, stale-task, duplicate-key, or non-replayable provider
+  evidence into current scores
 - Claim success without verification
 - Retry an approach that a previous attempt explicitly marked as "do NOT retry"

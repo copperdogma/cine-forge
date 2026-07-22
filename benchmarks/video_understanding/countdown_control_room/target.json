@@ -1,60 +1,55 @@
 {
+  "anchor_subset": false,
+  "audio_description": null,
+  "audio_tags": [],
+  "camera_tags": [
+    "static",
+    "wide_master"
+  ],
   "clip_id": "countdown_control_room",
-  "title": "Countdown control room",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "has_audio": true,
-  "transcript": "Thirty seconds. If the relay drops, the whole block goes dark.",
-  "audio_description": "Operator dialogue rides above warning bleeps.",
-  "summary_reference": "A control room cuts between screens and a central operator as a countdown and red warning lights intensify.",
-  "required_keywords": [
-    "countdown",
-    "control room",
-    "warning"
-  ],
-  "tone_tags": [
-    "urgent",
-    "tense"
-  ],
-  "emotion_tags": [
-    "panic"
+  "clip_tags": [
+    "dialogue",
+    "procedural"
   ],
   "color_tags": [
     "navy",
     "red"
   ],
-  "camera_tags": [
-    "cross_cut",
-    "locked_two_shot"
+  "continuity_notes": [
+    "The screen outlines and central figure stay in the same positions."
   ],
+  "continuity_status": "intact",
+  "duration_seconds": 4.0,
+  "emotion_tags": [],
+  "has_audio": true,
   "motion_tags": [
     "pulsing_light"
   ],
-  "continuity_status": "intact",
-  "continuity_notes": [
-    "The countdown clock stays synchronized across the screen wall."
+  "required_keywords": [
+    "rectangles",
+    "figure",
+    "red"
   ],
-  "audio_tags": [
-    "alarm",
-    "speech"
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "Three outlined blue screen-like rectangles sit above a central abstract figure while red illumination pulses.",
+  "title": "Blue screen wall under red pulses",
+  "tone_tags": [
+    "urgent",
+    "tense"
   ],
-  "clip_tags": [
-    "dialogue",
-    "procedural"
-  ],
-  "anchor_subset": false,
+  "transcript": null,
   "weights": {
-    "summary": 0.18,
-    "tone": 0.14,
-    "emotion": 0.12,
-    "color": 0.1,
-    "camera": 0.12,
-    "motion": 0.1,
-    "continuity": 0.12,
-    "audio": 0.08,
-    "evidence": 0.04
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
   }
 }

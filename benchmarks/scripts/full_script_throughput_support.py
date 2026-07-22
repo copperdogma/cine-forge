@@ -6,7 +6,7 @@ from pathlib import Path
 from statistics import median
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 TEXT_EXTENSIONS = {
     ".csv",
@@ -40,6 +40,13 @@ class ThroughputEvalManifest(BaseModel):
     honest_scope: str = Field(min_length=1)
     recipes: list[ThroughputRecipeSpec] = Field(min_length=1)
     cases: list[ThroughputEvalCase] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def _require_unique_ids(self) -> ThroughputEvalManifest:
+        _require_unique([case.case_id for case in self.cases], "case_id")
+        _require_unique([recipe.recipe_id for recipe in self.recipes], "recipe_id")
+        _require_unique([recipe.recipe_path for recipe in self.recipes], "recipe_path")
+        return self
 
 
 class OutputVolumeEvidence(BaseModel):
@@ -121,6 +128,11 @@ class BudgetRow(BaseModel):
     median_duration_share: float | None = Field(default=None, ge=0.0, le=1.0)
     median_output_share: float | None = Field(default=None, ge=0.0, le=1.0)
     note: str | None = None
+
+
+def _require_unique(values: list[str], label: str) -> None:
+    if len(values) != len(set(values)):
+        raise ValueError(f"throughput manifest {label} values must be unique")
 
 
 def display_repo_relative_path(path: Path, repo_root: Path) -> str:

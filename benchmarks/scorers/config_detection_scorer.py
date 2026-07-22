@@ -1,209 +1,515 @@
-"""
-Project config detection scorer.
-Evaluates accuracy of auto-detected project metadata against golden reference.
+"""Deterministic project-config detection scorer for promptfoo."""
 
-Scoring dimensions:
-- json_valid (0.08): Valid JSON output with all 10 fields
-- title_accuracy (0.12): Correct title identification
-- format_accuracy (0.10): Correct format detection (short film, not feature)
-- genre_accuracy (0.13): Genre keyword overlap
-- tone_accuracy (0.10): Tone keyword overlap (expanded vocabulary)
-- duration_accuracy (0.10): Duration within expected range (8-35 min)
-- character_accuracy (0.13): Primary/supporting character identification
-- location_accuracy (0.09): Location count and summary
-- audience_accuracy (0.10): Target audience identification
-- confidence_quality (0.05): Confidence scores are calibrated
-"""
+from __future__ import annotations
 
 import json
+import math
 import os
 import re
+import sys
+from pathlib import Path
+
+SCORER_ROOT = Path(__file__).resolve().parent
+if str(SCORER_ROOT) not in sys.path:
+    sys.path.insert(0, str(SCORER_ROOT))
+
+from score_semantics import finalize_score  # noqa: E402
+
+PASS_THRESHOLD = 0.60
 
 
-def get_assert(output: str, context: dict) -> dict:
-    scores = {}
-    reasons = []
+NEGATIONS = {"no", "not", "never", "without"}
+GENERIC_RATIONALES = {
+    "based on source",
+    "screenplay evidence",
+    "source evidence",
+    "source support",
+    "supported by source",
+}
+SOURCE_BOUND_STOPWORDS = {
+    "a",
+    "an",
+    "and",
+    "are",
+    "as",
+    "at",
+    "by",
+    "for",
+    "from",
+    "in",
+    "into",
+    "is",
+    "of",
+    "on",
+    "the",
+    "to",
+    "with",
+}
 
-    # Load golden reference
+
+def _resolve_golden_path(context: dict) -> str:
     golden_path = context.get("vars", {}).get("golden_path", "")
     if golden_path and not os.path.isabs(golden_path):
         golden_path = os.path.join(os.path.dirname(__file__), "..", golden_path)
-    try:
-        with open(golden_path) as f:
-            golden = json.load(f)
-    except Exception as e:
-        return {"pass": False, "score": 0.0, "reason": f"Cannot load golden reference: {e}"}
+    return golden_path
 
-    fields = golden.get("fields", {})
 
-    # Parse JSON output
+def _parse_output(output: str) -> tuple[dict | None, float]:
     text = output.strip()
-    if text.startswith("```"):
+    fenced = text.startswith("```")
+    if fenced:
         text = re.sub(r"^```(?:json|javascript)?\s*", "", text)
         text = re.sub(r"\s*```\s*$", "", text)
-
     try:
         parsed = json.loads(text)
-        scores["json_valid"] = 0.9 if output.strip().startswith("```") else 1.0
     except json.JSONDecodeError:
-        return {"pass": False, "score": 0.0, "reason": "Invalid JSON output"}
+        return None, 0.0
+    return (parsed if isinstance(parsed, dict) else None), 0.9 if fenced else 1.0
 
-    def get_field_value(field_name):
-        """Extract value from {value, confidence, rationale} wrapper or plain value."""
-        raw = parsed.get(field_name)
-        if isinstance(raw, dict) and "value" in raw:
-            return raw["value"], raw.get("confidence", 0.5)
-        return raw, 0.5
 
-    # Title accuracy
-    title_golden = fields.get("title", {})
-    title_val, title_conf = get_field_value("title")
-    if title_val and title_golden.get("expected_value", "").lower() in str(title_val).lower():
-        scores["title_accuracy"] = 1.0
-    elif title_val:
-        scores["title_accuracy"] = 0.3
-        reasons.append(f"Title mismatch: got '{title_val}'")
-    else:
-        scores["title_accuracy"] = 0.0
-        reasons.append("Title missing")
+def _tokens(value: object) -> list[str]:
+    return [_canonical_token(token) for token in re.findall(r"[a-z0-9]+", str(value or "").lower())]
 
-    # Format accuracy
-    format_golden = fields.get("format", {})
-    format_val, _ = get_field_value("format")
-    format_expected = format_golden.get("expected_values", [])
-    if format_val and any(kw.lower() in str(format_val).lower() for kw in format_expected):
-        scores["format_accuracy"] = 1.0
-    elif format_val:
-        scores["format_accuracy"] = 0.3
-    else:
-        scores["format_accuracy"] = 0.0
 
-    # Genre accuracy — keyword overlap
-    genre_golden = fields.get("genre", {})
-    genre_val, _ = get_field_value("genre")
-    genre_keywords = genre_golden.get("expected_keywords", [])
-    genre_min = genre_golden.get("must_include_at_least", 1)
-    if isinstance(genre_val, list):
-        genre_text = " ".join(str(g).lower() for g in genre_val)
-    else:
-        genre_text = str(genre_val or "").lower()
-    genre_matches = sum(1 for kw in genre_keywords if kw.lower() in genre_text)
-    if genre_matches >= genre_min:
-        scores["genre_accuracy"] = min(1.0, genre_matches / len(genre_keywords))
-    else:
-        scores["genre_accuracy"] = genre_matches / max(1, genre_min) * 0.5
-        reasons.append(f"Genre: found {genre_matches}/{genre_min} required keywords")
+def _canonical_token(token: str) -> str:
+    if (
+        len(token) > 3
+        and token.endswith("s")
+        and token not in {"series"}
+        and not token.endswith(("ss", "us", "is"))
+    ):
+        return token[:-1]
+    return token
 
-    # Tone accuracy — keyword overlap
-    tone_golden = fields.get("tone", {})
-    tone_val, _ = get_field_value("tone")
-    tone_keywords = tone_golden.get("expected_keywords", [])
-    tone_min = tone_golden.get("must_include_at_least", 1)
-    if isinstance(tone_val, list):
-        tone_text = " ".join(str(t).lower() for t in tone_val)
-    else:
-        tone_text = str(tone_val or "").lower()
-    tone_matches = sum(1 for kw in tone_keywords if kw.lower() in tone_text)
-    if tone_matches >= tone_min:
-        scores["tone_accuracy"] = min(1.0, tone_matches / len(tone_keywords))
-    else:
-        scores["tone_accuracy"] = 0.3
 
-    # Duration accuracy — within range
-    dur_golden = fields.get("estimated_duration_minutes", {})
-    dur_val, _ = get_field_value("estimated_duration_minutes")
-    dur_range = dur_golden.get("expected_range", [0, 999])
-    try:
-        dur_num = int(dur_val) if dur_val else 0
-        if dur_range[0] <= dur_num <= dur_range[1]:
-            scores["duration_accuracy"] = 1.0
-        elif dur_num > 0:
-            # Partial credit for close estimates
-            mid = (dur_range[0] + dur_range[1]) / 2
-            distance = abs(dur_num - mid) / mid
-            scores["duration_accuracy"] = max(0.0, 1.0 - distance)
-        else:
-            scores["duration_accuracy"] = 0.0
-    except (ValueError, TypeError):
-        scores["duration_accuracy"] = 0.0
+def _contains_phrase(value: object, phrase: object) -> bool:
+    haystack = _tokens(value)
+    needle = _tokens(phrase)
+    if not needle:
+        return False
+    for index in range(len(haystack) - len(needle) + 1):
+        if haystack[index : index + len(needle)] != needle:
+            continue
+        if NEGATIONS & set(haystack[max(0, index - 3) : index]):
+            continue
+        return True
+    return False
 
-    # Character accuracy — must include primary characters
-    primary_golden = fields.get("primary_characters", {})
-    primary_val, _ = get_field_value("primary_characters")
-    must_include = primary_golden.get("must_include", [])
-    if isinstance(primary_val, list):
-        primary_text = " ".join(str(c).upper() for c in primary_val)
-    else:
-        primary_text = str(primary_val or "").upper()
-    primary_found = sum(1 for c in must_include if c.upper() in primary_text)
 
-    supporting_golden = fields.get("supporting_characters", {})
-    supporting_val, _ = get_field_value("supporting_characters")
-    should_include = supporting_golden.get("should_include_any", [])
-    if isinstance(supporting_val, list):
-        supp_text = " ".join(str(c).upper() for c in supporting_val)
-    else:
-        supp_text = str(supporting_val or "").upper()
-    supp_found = sum(1 for c in should_include if c.upper() in supp_text)
+def _field_value(parsed: dict, field_name: str) -> tuple[object, object]:
+    raw = parsed.get(field_name)
+    if isinstance(raw, dict) and "value" in raw:
+        return raw["value"], raw.get("confidence")
+    return raw, None
 
-    primary_score = primary_found / max(1, len(must_include))
-    supp_score = min(1.0, supp_found / max(1, supporting_golden.get("min_count", 2)))
-    scores["character_accuracy"] = 0.6 * primary_score + 0.4 * supp_score
 
-    # Location accuracy
-    loc_count_golden = fields.get("location_count", {})
-    loc_val, _ = get_field_value("location_count")
-    loc_range = loc_count_golden.get("expected_range", [0, 999])
-    try:
-        loc_num = int(loc_val) if loc_val else 0
-        loc_count_score = 1.0 if loc_range[0] <= loc_num <= loc_range[1] else 0.5
-    except (ValueError, TypeError):
-        loc_count_score = 0.0
+def _value_text(value: object) -> str:
+    if isinstance(value, list):
+        return " ".join(str(item) for item in value)
+    return str(value or "")
 
-    loc_summ_golden = fields.get("locations_summary", {})
-    loc_summ_val, _ = get_field_value("locations_summary")
-    must_mention = loc_summ_golden.get("must_mention", [])
-    summ_text = str(loc_summ_val or "").lower()
-    summ_found = sum(1 for kw in must_mention if kw.lower() in summ_text)
-    summ_score = summ_found / max(1, len(must_mention))
 
-    scores["location_accuracy"] = 0.4 * loc_count_score + 0.6 * summ_score
+def _normalized_value(value: object) -> str:
+    return " ".join(_tokens(value))
 
-    # Target audience accuracy
-    audience_golden = fields.get("target_audience", {})
-    audience_val, _ = get_field_value("target_audience")
-    audience_keywords = audience_golden.get("expected_keywords", [])
-    if audience_val is None or str(audience_val).lower() in ("null", "none", ""):
-        if audience_golden.get("allow_null", False):
-            scores["audience_accuracy"] = 0.5  # Partial credit for null when allowed
-        else:
-            scores["audience_accuracy"] = 0.0
-    elif audience_keywords:
-        audience_text = str(audience_val).lower()
-        if any(kw.lower() in audience_text for kw in audience_keywords):
-            scores["audience_accuracy"] = 1.0
-        else:
-            scores["audience_accuracy"] = 0.3
-    else:
-        scores["audience_accuracy"] = 1.0  # No keywords to check
 
-    # Confidence quality — check that confidence scores exist and are reasonable
-    conf_scores = []
-    for field_name in ["title", "format", "genre", "tone", "estimated_duration_minutes",
-                       "primary_characters", "supporting_characters", "location_count",
-                       "locations_summary", "target_audience"]:
-        raw = parsed.get(field_name)
-        if isinstance(raw, dict) and "confidence" in raw:
-            c = raw["confidence"]
-            if isinstance(c, (int, float)) and 0.0 <= c <= 1.0:
-                conf_scores.append(1.0)
+def _rationale_contains_anchor(
+    rationale: str,
+    anchor: str,
+    field_name: str,
+) -> bool:
+    """Match an anchor only when the local clause does not negate its field claim."""
+    haystack = _tokens(rationale)
+    needle = _tokens(anchor)
+    field_tokens = set(_tokens(field_name.replace("_", " ")))
+    for index in range(len(haystack) - len(needle) + 1):
+        if haystack[index : index + len(needle)] != needle:
+            continue
+        before = haystack[max(0, index - 3) : index]
+        after = haystack[index + len(needle) : index + len(needle) + 6]
+        if NEGATIONS & set(before):
+            continue
+        copula_negated = (
+            len(after) >= 2
+            and after[0] in {"is", "are", "was", "were"}
+            and after[1] in NEGATIONS
+        )
+        field_negated = bool(NEGATIONS & set(after) and field_tokens & set(after))
+        if copula_negated or field_negated:
+            continue
+        return True
+    return False
+
+
+def _precision_quality(
+    parsed: dict,
+    fields: dict,
+    source_text: str,
+) -> tuple[float, list[str]]:
+    """Reject unsupported categorical padding declared by the source-first golden."""
+    checked = 0
+    passed = 0
+    errors: list[str] = []
+    for field_name, config in fields.items():
+        value, _ = _field_value(parsed, field_name)
+        field_valid = True
+        allowed = config.get("allowed_values", [])
+        forbidden = config.get("forbidden_keywords", [])
+        require_null = config.get("require_null") is True
+        source_bounded = config.get("source_bounded_value") is True
+        has_contract = bool(allowed or forbidden or require_null or source_bounded)
+        if has_contract:
+            checked += 1
+        if allowed:
+            allowed_normalized = {_normalized_value(item) for item in allowed}
+            values = value if isinstance(value, list) else [value]
+            unsupported = [
+                str(item)
+                for item in values
+                if _normalized_value(item) not in allowed_normalized
+            ]
+            if unsupported:
+                field_valid = False
+                errors.append(
+                    f"{field_name}: unsupported values: {', '.join(unsupported)}"
+                )
+        if forbidden:
+            matches = [
+                phrase
+                for phrase in forbidden
+                if _contains_phrase(_value_text(value), phrase)
+            ]
+            if matches:
+                field_valid = False
+                errors.append(
+                    f"{field_name}: forbidden unsupported claims: {', '.join(matches)}"
+                )
+        if require_null and value is not None:
+            field_valid = False
+            errors.append(f"{field_name}: value must be null for this source")
+        if source_bounded:
+            if not source_text:
+                field_valid = False
+                errors.append(
+                    f"{field_name}: source text unavailable for value grounding"
+                )
             else:
-                conf_scores.append(0.0)
-        else:
-            conf_scores.append(0.0)
-    scores["confidence_quality"] = sum(conf_scores) / len(conf_scores) if conf_scores else 0.0
+                allowed_novel = set(
+                    _tokens(" ".join(config.get("allowed_novel_tokens", [])))
+                )
+                source_tokens = set(_tokens(source_text))
+                declared_source_tokens = set(
+                    _tokens(" ".join(config.get("allowed_source_tokens", [])))
+                )
+                absent_declared_tokens = declared_source_tokens - source_tokens
+                if absent_declared_tokens:
+                    field_valid = False
+                    errors.append(
+                        f"{field_name}: golden source allowances absent from source: "
+                        f"{', '.join(sorted(absent_declared_tokens))}"
+                    )
+                source_allowance = declared_source_tokens or source_tokens
+                unsupported_tokens = sorted(
+                    set(_tokens(value))
+                    - source_allowance
+                    - allowed_novel
+                    - SOURCE_BOUND_STOPWORDS
+                )
+                if unsupported_tokens:
+                    field_valid = False
+                    errors.append(
+                        f"{field_name}: unsupported source-bounded terms: "
+                        f"{', '.join(unsupported_tokens)}"
+                    )
+        if has_contract and field_valid:
+            passed += 1
+    return (passed / checked if checked else 1.0), errors
 
-    # Weighted composite
+
+def _rationale_quality(
+    parsed: dict,
+    fields: dict,
+    source_text: str,
+) -> tuple[float, list[str]]:
+    """Require each rationale to bind to a field-specific source anchor."""
+    passed = 0
+    errors: list[str] = []
+    for field_name, config in fields.items():
+        raw = parsed.get(field_name)
+        rationale = raw.get("rationale", "") if isinstance(raw, dict) else ""
+        normalized = _normalized_value(rationale)
+        anchors = config.get("rationale_must_mention_any", [])
+        field_errors: list[str] = []
+        if normalized in GENERIC_RATIONALES:
+            field_errors.append("generic rationale")
+        if anchors:
+            if not source_text:
+                field_errors.append("source text unavailable for rationale verification")
+            else:
+                source_anchors = [
+                    anchor for anchor in anchors if _contains_phrase(source_text, anchor)
+                ]
+                if not source_anchors:
+                    field_errors.append("golden rationale anchors absent from source")
+                elif not any(
+                    _rationale_contains_anchor(rationale, anchor, field_name)
+                    for anchor in source_anchors
+                ):
+                    field_errors.append("rationale lacks concrete source evidence")
+        if field_errors:
+            errors.append(f"{field_name}: {', '.join(field_errors)}")
+        else:
+            passed += 1
+    return (passed / len(fields) if fields else 1.0), errors
+
+
+def _keyword_group_score(value: object, keywords: list[str], minimum: int) -> float:
+    if not keywords:
+        return 1.0
+    matches = sum(_contains_phrase(_value_text(value), keyword) for keyword in keywords)
+    if matches >= minimum:
+        return 1.0
+    return 0.5 * matches / max(1, minimum)
+
+
+def _categorical_group_score(value: object, config: dict) -> float:
+    """Credit distinct accepted qualities without double-counting synonyms."""
+    accepted = {
+        _normalized_value(item)
+        for item in [
+            *config.get("expected_keywords", []),
+            *config.get("allowed_values", []),
+        ]
+        if _normalized_value(item)
+    }
+    group_by_value: dict[str, str] = {}
+    for index, group in enumerate(config.get("equivalent_value_groups", [])):
+        for item in group:
+            group_by_value[_normalized_value(item)] = f"group:{index}"
+    values = value if isinstance(value, list) else [value]
+    matched_groups = {
+        group_by_value.get(normalized, f"value:{normalized}")
+        for item in values
+        if (normalized := _normalized_value(item)) in accepted
+    }
+    minimum = int(config.get("must_include_at_least", 1))
+    if len(matched_groups) >= minimum:
+        return 1.0
+    return 0.5 * len(matched_groups) / max(1, minimum)
+
+
+def _numeric_value(value: object) -> float | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    match = re.fullmatch(r"\s*(\d+(?:\.\d+)?)\s*(?:minutes?|mins?)?\s*", str(value or ""), re.I)
+    return float(match.group(1)) if match else None
+
+
+def _range_score(value: object, expected: list[float]) -> float:
+    number = _numeric_value(value)
+    if number is None or len(expected) != 2:
+        return 0.0
+    if expected[0] <= number <= expected[1]:
+        return 1.0
+    midpoint = (expected[0] + expected[1]) / 2
+    return max(0.0, 1.0 - abs(number - midpoint) / max(1.0, midpoint))
+
+
+def _title_and_format_scores(parsed: dict, fields: dict, reasons: list[str]) -> dict[str, float]:
+    title, _ = _field_value(parsed, "title")
+    expected_title = fields.get("title", {}).get("expected_value", "")
+    title_score = 1.0 if _contains_phrase(title, expected_title) else 0.0
+    if not title_score:
+        reasons.append(f"Title mismatch: got {title!r}")
+    format_value, _ = _field_value(parsed, "format")
+    expected_formats = fields.get("format", {}).get("expected_values", [])
+    format_score = 1.0 if any(
+        _contains_phrase(format_value, expected) for expected in expected_formats
+    ) else 0.0
+    if not format_score:
+        reasons.append(f"Format mismatch: got {format_value!r}")
+    return {"title_accuracy": title_score, "format_accuracy": format_score}
+
+
+def _genre_and_tone_scores(parsed: dict, fields: dict) -> dict[str, float]:
+    scores = {}
+    for field_name in ("genre", "tone"):
+        value, _ = _field_value(parsed, field_name)
+        config = fields.get(field_name, {})
+        scores[f"{field_name}_accuracy"] = _categorical_group_score(value, config)
+    return scores
+
+
+def _character_score(parsed: dict, fields: dict) -> float:
+    primary, _ = _field_value(parsed, "primary_characters")
+    supporting, _ = _field_value(parsed, "supporting_characters")
+    required = fields.get("primary_characters", {}).get("must_include", [])
+    alternatives = fields.get("supporting_characters", {}).get("should_include_any", [])
+    minimum = fields.get("supporting_characters", {}).get("min_count", 1)
+    primary_found = sum(_contains_phrase(_value_text(primary), name) for name in required)
+    supporting_found = sum(
+        _contains_phrase(_value_text(supporting), name) for name in alternatives
+    )
+    primary_score = primary_found / max(1, len(required))
+    supporting_score = min(1.0, supporting_found / max(1, minimum))
+    return 0.6 * primary_score + 0.4 * supporting_score
+
+
+def _location_score(parsed: dict, fields: dict) -> float:
+    count, _ = _field_value(parsed, "location_count")
+    summary, _ = _field_value(parsed, "locations_summary")
+    count_score = _range_score(
+        count,
+        fields.get("location_count", {}).get("expected_range", [0, 999]),
+    )
+    required = fields.get("locations_summary", {}).get("must_mention", [])
+    summary_found = sum(_contains_phrase(summary, phrase) for phrase in required)
+    summary_score = summary_found / max(1, len(required))
+    return 0.4 * count_score + 0.6 * summary_score
+
+
+def _audience_score(parsed: dict, fields: dict) -> float:
+    value, _ = _field_value(parsed, "target_audience")
+    config = fields.get("target_audience", {})
+    if config.get("require_null") is True:
+        return 1.0 if value is None else 0.0
+    if value is None or str(value).strip().lower() in {"", "null", "none"}:
+        return 0.5 if config.get("allow_null", False) else 0.0
+    keywords = config.get("expected_keywords", [])
+    return 1.0 if not keywords or any(_contains_phrase(value, item) for item in keywords) else 0.0
+
+
+def _confidence_score(parsed: dict, fields: dict) -> float:
+    values = []
+    for field_name, config in fields.items():
+        _, confidence = _field_value(parsed, field_name)
+        minimum = config.get("min_confidence", 0.0)
+        if (
+            isinstance(confidence, (int, float))
+            and not isinstance(confidence, bool)
+            and 0.0 <= confidence <= 1.0
+        ):
+            values.append(min(1.0, confidence / max(minimum, 0.01)))
+        else:
+            values.append(0.0)
+    return sum(values) / len(values) if values else 0.0
+
+
+def _schema_errors(parsed: dict, fields: dict) -> list[str]:
+    errors: list[str] = []
+    expected_names = set(fields)
+    extra_names = sorted(set(parsed) - expected_names)
+    if extra_names:
+        errors.append(f"Unexpected fields: {', '.join(extra_names)}")
+
+    list_fields = {"genre", "tone", "primary_characters", "supporting_characters"}
+    integer_fields = {"estimated_duration_minutes", "location_count"}
+    string_fields = {"title", "format", "locations_summary"}
+    for name in fields:
+        raw = parsed.get(name)
+        if not isinstance(raw, dict) or set(raw) != {"value", "confidence", "rationale"}:
+            errors.append(f"{name}: expected exactly value/confidence/rationale")
+            continue
+        confidence = raw["confidence"]
+        if (
+            not isinstance(confidence, (int, float))
+            or isinstance(confidence, bool)
+            or not math.isfinite(float(confidence))
+            or not 0.0 <= float(confidence) <= 1.0
+        ):
+            errors.append(f"{name}: confidence must be a finite number from 0 to 1")
+        elif float(confidence) < float(fields[name].get("min_confidence", 0.0)):
+            errors.append(
+                f"{name}: confidence {float(confidence):.2f} is below minimum "
+                f"{float(fields[name].get('min_confidence', 0.0)):.2f}"
+            )
+        rationale = raw["rationale"]
+        if not isinstance(rationale, str) or len(_tokens(rationale)) < 2:
+            errors.append(f"{name}: rationale must be substantive")
+        value = raw["value"]
+        if name in list_fields and (
+            not isinstance(value, list)
+            or not value
+            or any(not isinstance(item, str) or not item.strip() for item in value)
+        ):
+            errors.append(f"{name}: value must be a non-empty string array")
+        elif name in integer_fields and (
+            not isinstance(value, int) or isinstance(value, bool)
+        ):
+            errors.append(f"{name}: value must be an integer")
+        elif name in string_fields and (not isinstance(value, str) or not value.strip()):
+            errors.append(f"{name}: value must be a non-empty string")
+        elif name == "target_audience" and value is not None and (
+            not isinstance(value, str) or not value.strip()
+        ):
+            errors.append("target_audience: value must be a string or null")
+    return errors
+
+
+def _critical_gate(fields: dict, field_scores: dict[str, float]) -> bool:
+    score_keys = {
+        "title": "title_accuracy",
+        "format": "format_accuracy",
+        "genre": "genre_accuracy",
+        "tone": "tone_accuracy",
+        "estimated_duration_minutes": "duration_accuracy",
+        "primary_characters": "character_accuracy",
+        "supporting_characters": "character_accuracy",
+        "location_count": "location_accuracy",
+        "locations_summary": "location_accuracy",
+        "target_audience": "audience_accuracy",
+    }
+    thresholds = {"critical": 0.8, "important": 0.5}
+    return all(
+        field_scores.get(score_keys[name], 0.0)
+        >= thresholds.get(str(fields[name].get("importance", "")).lower(), 0.0)
+        for name in fields
+    )
+
+
+def get_assert(output: str, context: dict) -> dict:
+    golden_path = _resolve_golden_path(context)
+    try:
+        with open(golden_path) as handle:
+            golden = json.load(handle)
+    except Exception as exc:
+        return {"pass": False, "score": 0.0, "reason": f"Cannot load golden reference: {exc}"}
+    parsed, json_score = _parse_output(output)
+    if parsed is None:
+        return {"pass": False, "score": 0.0, "reason": "Invalid JSON object"}
+    fields = golden.get("fields", {})
+    reasons: list[str] = []
+    scores = {"json_valid": json_score}
+    scores.update(_title_and_format_scores(parsed, fields, reasons))
+    scores.update(_genre_and_tone_scores(parsed, fields))
+    duration, _ = _field_value(parsed, "estimated_duration_minutes")
+    scores["duration_accuracy"] = _range_score(
+        duration,
+        fields.get("estimated_duration_minutes", {}).get("expected_range", [0, 999]),
+    )
+    scores["character_accuracy"] = _character_score(parsed, fields)
+    scores["location_accuracy"] = _location_score(parsed, fields)
+    scores["audience_accuracy"] = _audience_score(parsed, fields)
+    scores["confidence_quality"] = _confidence_score(parsed, fields)
+    source_text = str(
+        context.get("vars", {}).get("screenplay")
+        or context.get("vars", {}).get("source_text")
+        or ""
+    )
+    precision_quality, precision_errors = _precision_quality(
+        parsed,
+        fields,
+        source_text,
+    )
+    rationale_quality, rationale_errors = _rationale_quality(
+        parsed,
+        fields,
+        source_text,
+    )
+    scores["precision_quality"] = precision_quality
+    scores["rationale_grounding"] = rationale_quality
     weights = {
         "json_valid": 0.08,
         "title_accuracy": 0.12,
@@ -216,16 +522,30 @@ def get_assert(output: str, context: dict) -> dict:
         "audience_accuracy": 0.10,
         "confidence_quality": 0.05,
     }
-
-    total = sum(scores.get(k, 0) * w for k, w in weights.items())
-
-    detail_parts = [f"{k}={v:.2f}" for k, v in sorted(scores.items())]
-    detail = ", ".join(detail_parts)
+    base_total = sum(scores[key] * weight for key, weight in weights.items())
+    total = base_total * (
+        0.90 + 0.05 * precision_quality + 0.05 * rationale_quality
+    )
+    missing_fields = [name for name in fields if name not in parsed or parsed[name] is None]
+    if missing_fields:
+        reasons.append(f"Missing fields: {', '.join(missing_fields)}")
+    details = ", ".join(f"{key}={value:.2f}" for key, value in sorted(scores.items()))
     if reasons:
-        detail += " | " + "; ".join(reasons)
-
-    return {
-        "pass": total >= 0.60,
-        "score": round(total, 4),
-        "reason": detail,
-    }
+        details += " | " + "; ".join(reasons)
+    schema_errors = _schema_errors(parsed, fields)
+    contract_errors = schema_errors + precision_errors + rationale_errors
+    if contract_errors:
+        reasons.extend(contract_errors)
+        details = ", ".join(f"{key}={value:.2f}" for key, value in sorted(scores.items()))
+        details += " | " + "; ".join(reasons)
+    hard_gates = (
+        not missing_fields
+        and not contract_errors
+        and _critical_gate(fields, scores)
+    )
+    return finalize_score(
+        total,
+        pass_threshold=PASS_THRESHOLD,
+        hard_gates=hard_gates,
+        reason=details,
+    )

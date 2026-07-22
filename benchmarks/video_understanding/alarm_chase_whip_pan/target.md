@@ -1,11 +1,10 @@
-# Alarm chase whip pan
+# Ordered JPEG frame-packet reference
 
-- Summary: Red alarm light pulses through a corridor as the camera whip-pans after a sprinting figure clutching a bag.
+- Summary: A red abstract runner crosses a corridor from left to right while diagonal lines shift and red illumination pulses.
 - Tone: urgent, tense
-- Emotion: panic
+- Emotion: [none]
 - Color / grade: red
-- Camera language: whip_pan
-- Motion: escalating, fast_lateral, pulsing_light
-- Continuity: intact — The red bag remains with the runner.
-- Audio intent: alarm, percussion
-- Transcript: [none]
+- Camera language inferable from the ordered samples: static, wide_master
+- Motion inferable from the ordered samples: fast_lateral, pulsing_light
+- Continuity: intact - The small red rectangle stays beside the runner throughout the packet.
+- Audio: unavailable to the subject and excluded from scoring

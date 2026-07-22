@@ -1,59 +1,57 @@
 {
+  "anchor_subset": false,
+  "audio_description": null,
+  "audio_tags": [],
+  "camera_tags": [
+    "static",
+    "wide_master"
+  ],
   "clip_id": "neon_crosswalk_reveal",
-  "title": "Neon crosswalk reveal",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "has_audio": true,
-  "transcript": null,
-  "audio_description": "A low synth drone hangs under the reveal.",
-  "summary_reference": "A wet crosswalk glows in magenta and cyan as the camera cranes up to reveal the street geometry.",
-  "required_keywords": [
-    "neon",
-    "crosswalk",
-    "reveal"
-  ],
-  "tone_tags": [
-    "surreal",
-    "tense"
-  ],
-  "emotion_tags": [
-    "wonder"
+  "clip_tags": [
+    "stylized_color",
+    "city"
   ],
   "color_tags": [
     "magenta",
     "neon",
     "teal"
   ],
-  "camera_tags": [
-    "overhead_reveal"
-  ],
-  "motion_tags": [
-    "slow_drift"
+  "continuity_notes": [
+    "The triangle, blocks, and grid keep the same positions in every frame."
   ],
   "continuity_status": "intact",
-  "continuity_notes": [
-    "Light reflections stay consistent across the reveal."
+  "duration_seconds": 4.0,
+  "emotion_tags": [
+    "wonder"
   ],
-  "audio_tags": [
-    "drone"
+  "has_audio": true,
+  "motion_tags": [
+    "stillness"
   ],
-  "clip_tags": [
-    "stylized_color",
-    "city"
+  "required_keywords": [
+    "cyan",
+    "triangle",
+    "static"
   ],
-  "anchor_subset": true,
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "A cyan triangle stands between dark blocks over a static magenta and blue grid-like field.",
+  "title": "Magenta cyan geometric tableau",
+  "tone_tags": [
+    "surreal"
+  ],
+  "transcript": null,
   "weights": {
-    "summary": 0.18,
-    "tone": 0.14,
-    "emotion": 0.12,
-    "color": 0.1,
-    "camera": 0.12,
-    "motion": 0.1,
-    "continuity": 0.12,
-    "audio": 0.08,
-    "evidence": 0.04
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
   }
 }

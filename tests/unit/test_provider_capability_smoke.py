@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 
 from cine_forge.ai.image import ImageGenerationError
 from cine_forge.ai.video import VideoGenerationError
+from cine_forge.services import provider_capability_probes
 from cine_forge.services.provider_capability_smoke import ProviderCapabilitySmokeService
 
 
@@ -92,7 +95,14 @@ def test_refresh_classifies_live_probe_results(monkeypatch: pytest.MonkeyPatch) 
     assert snapshot.status == "degraded"
     assert checks["anthropic_text_default"].status == "ok"
     assert checks["anthropic_text_default"].request_id == "req-anthropic"
-    assert checks["google_text_default"].status == "rate_limited"
+    assert checks["google_script_bible_text_default"].status == "rate_limited"
+    assert checks["google_script_bible_text_default"].model_tested == "gemini-3.5-flash-lite"
+    assert checks["google_script_bible_text_default"].label == (
+        "Google Script Bible model callability"
+    )
+    assert checks["google_script_bible_text_default"].surface_tested == (
+        "Script Bible model ID callability only; structured-output quality is not tested"
+    )
     assert checks["openai_text_default"].status == "ok"
     assert checks["openai_storyboard_image_default"].status == "ok"
     assert checks["google_design_study_image_default"].status == "auth_failed"
@@ -141,3 +151,67 @@ def test_get_snapshot_reuses_cached_results_until_refresh_requested(
 
     assert len(calls) == len(first.checks)
     assert first.model_dump(mode="json") == second.model_dump(mode="json")
+
+
+@pytest.mark.unit
+def test_google_live_smoke_omits_sampling_controls(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("GEMINI_API_KEY", "not-a-real-key")
+    captured: dict[str, object] = {}
+
+    def fake_request(**kwargs):
+        captured.update(kwargs)
+        return provider_capability_probes.HttpJsonResponse(
+            headers={"x-request-id": "req-google"},
+            payload={"candidates": [{"content": {"parts": [{"text": "OK"}]}}]},
+        )
+
+    monkeypatch.setattr(provider_capability_probes, "http_request_json", fake_request)
+    spec = SimpleNamespace(
+        probe_id="google_script_bible_text_default",
+        provider="google",
+        env_name="GEMINI_API_KEY",
+        model="gemini-3.5-flash-lite",
+        engine_pack_id=None,
+    )
+
+    result = provider_capability_probes.run_live_text_probe(spec, 3.0)
+
+    assert result == {
+        "model_used": "gemini-3.5-flash-lite",
+        "request_id": "req-google",
+    }
+    body = captured["body"]
+    assert body["generationConfig"] == {
+        "maxOutputTokens": 256,
+        "thinkingConfig": {"thinkingLevel": "minimal"},
+    }
+    assert "temperature" not in body["generationConfig"]
+    assert "topP" not in body["generationConfig"]
+    assert "topK" not in body["generationConfig"]
+
+
+@pytest.mark.unit
+def test_google_live_smoke_rejects_wrong_nonempty_output(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("GEMINI_API_KEY", "not-a-real-key")
+
+    def fake_request(**_kwargs):
+        return provider_capability_probes.HttpJsonResponse(
+            headers={},
+            payload={"candidates": [{"content": {"parts": [{"text": "READY"}]}}]},
+        )
+
+    monkeypatch.setattr(provider_capability_probes, "http_request_json", fake_request)
+    spec = SimpleNamespace(
+        probe_id="google_script_bible_text_default",
+        provider="google",
+        env_name="GEMINI_API_KEY",
+        model="gemini-3.5-flash-lite",
+        engine_pack_id=None,
+    )
+
+    with pytest.raises(RuntimeError, match="expected exactly 'OK'"):
+        provider_capability_probes.run_live_text_probe(spec, 3.0)

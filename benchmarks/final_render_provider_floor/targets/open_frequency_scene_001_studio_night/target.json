@@ -1,41 +1,36 @@
 {
   "clip_id": "open_frequency_scene_001_studio_night",
-  "title": "Open Frequency scene 001 — radio studio night",
+  "title": "Open Frequency scene 001 \u2014 radio studio night",
   "source_type": "licensed_internal",
-  "source_description": "Representative Story 169 final-render benchmark target for the storm-hit radio studio scene in Open Frequency.",
+  "source_description": "Intended Story 169 source brief for the radio-studio scene; candidate frames are measured against it and never define it.",
   "rights": "Project-owned internal benchmark fixture",
   "duration_seconds": 8.0,
   "resolution": "720p",
   "has_audio": true,
   "transcript": null,
   "audio_description": null,
-  "summary_reference": "A storm-battered community radio studio at night, with the team clustered around old consoles and a whiteboard under cool practical light while they fight to get the station live.",
+  "summary_reference": "At night in a rain-hit community radio studio, four distinct team members work around old consoles, a tape reel, a battered mixer, and a whiteboard; a portable antenna and dented lantern arrive as they struggle to get the station live.",
   "required_keywords": [
     "radio",
     "studio",
-    "storm"
+    "whiteboard",
+    "antenna"
   ],
   "tone_tags": [
     "tense",
     "hopeful"
   ],
   "emotion_tags": [
-    "resolve",
-    "suspicion"
+    "resolve"
   ],
-  "color_tags": [
-    "navy",
-    "teal",
-    "amber"
+  "color_tags": [],
+  "camera_tags": [],
+  "motion_tags": [],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The four-person ensemble and the studio equipment remain visually coherent across the submitted frames.",
+    "The portable antenna and dented lantern remain associated with the radio-studio work rather than changing identity or location without explanation."
   ],
-  "camera_tags": [
-    "wide_master"
-  ],
-  "motion_tags": [
-    "measured"
-  ],
-  "continuity_status": "ambiguous",
-  "continuity_notes": [],
   "audio_tags": [],
   "clip_tags": [
     "dialogue",
@@ -45,14 +40,14 @@
   ],
   "anchor_subset": false,
   "weights": {
-    "summary": 0.22,
+    "summary": 0.42,
     "tone": 0.16,
     "emotion": 0.14,
-    "color": 0.12,
-    "camera": 0.1,
-    "motion": 0.08,
-    "continuity": 0.08,
-    "audio": 0.06,
-    "evidence": 0.04
+    "color": 0.0,
+    "camera": 0.0,
+    "motion": 0.0,
+    "continuity": 0.18,
+    "audio": 0.0,
+    "evidence": 0.1
   }
 }

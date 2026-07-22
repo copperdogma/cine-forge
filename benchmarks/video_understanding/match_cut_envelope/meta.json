@@ -1,19 +1,34 @@
 {
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "asset_audio_tags": [
+    "speech"
+  ],
+  "audio_description": "Synthetic speech exists in the MP4 but is excluded from frame scoring.",
+  "case_status": "quarantined",
   "clip_id": "match_cut_envelope",
-  "title": "Match-cut envelope",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
   "duration_seconds": 4.0,
-  "resolution": "640x360",
   "fps": 8,
+  "generator_version": "frame-truth-v2",
   "has_audio": true,
-  "transcript": "Read it now, before the room changes its mind.",
-  "audio_description": "Low dialogue with no underscore.",
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "sampled_frame_sha256": [
+    "1d72434ca5f062601e5a07d01e5b3a9b3f738c91336a4716a55f7c7f9c31d4bc",
+    "1d72434ca5f062601e5a07d01e5b3a9b3f738c91336a4716a55f7c7f9c31d4bc",
+    "1d72434ca5f062601e5a07d01e5b3a9b3f738c91336a4716a55f7c7f9c31d4bc",
+    "1d72434ca5f062601e5a07d01e5b3a9b3f738c91336a4716a55f7c7f9c31d4bc",
+    "1d72434ca5f062601e5a07d01e5b3a9b3f738c91336a4716a55f7c7f9c31d4bc"
+  ],
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "spec_sha256": "224c79ca7d9ef5902dbb9faf66a6adf3865caa110c6ae7815af5cbd00eb8a00c",
+  "status_reason": "The byte-identical packet contains no cut or framing change, so it cannot test a match cut.",
   "tags": [
     "continuity",
     "match_cut"
   ],
-  "anchor_subset": false,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+  "temporal_control": "static",
+  "title": "Static table and pale rectangle",
+  "transcript": "Read it now, before the room changes its mind.",
+  "unique_sampled_frames": 1
 }

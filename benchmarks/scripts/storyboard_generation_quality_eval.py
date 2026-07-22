@@ -37,6 +37,7 @@ from storyboard_generation_quality_support import (  # noqa: E402
     StoryboardQualityRunSummary,
     StoryboardReferenceFixture,
     StoryboardReferencePacket,
+    StoryboardSourceGridPacket,
     display_repo_relative_path,
     render_runtime_markdown,
     summarize_runtime_runs,
@@ -274,6 +275,7 @@ def _run_case(*, case: Any, candidate: CandidateSpec) -> StoryboardQualityRunSum
         storyboard_artifact_paths=storyboard_data["storyboard_artifact_paths"],
         frames=storyboard_data["frames"],
         reference_images=reference_packets,
+        source_grids=storyboard_data["source_grids"],
         total_frames=len(storyboard_data["frames"]),
         available_reference_image_count=storyboard_data["available_reference_image_count"],
         prompt_reference_frame_count=storyboard_data["prompt_reference_frame_count"],
@@ -440,6 +442,7 @@ def _collect_storyboard_outputs(*, project_dir: Path, scene_ids: list[str]) -> d
     store = ArtifactStore(project_dir=project_dir)
     storyboard_artifact_paths: list[str] = []
     frames: list[StoryboardFramePacket] = []
+    source_grid_paths: set[tuple[str, str]] = set()
     available_refs: set[str] = set()
     prompt_reference_frame_count = 0
     direct_reference_input_count = 0
@@ -453,6 +456,13 @@ def _collect_storyboard_outputs(*, project_dir: Path, scene_ids: list[str]) -> d
         artifact = store.load_artifact(storyboard_ref)
         storyboard = Storyboard.model_validate(artifact.data)
         for frame in storyboard.frames:
+            frame_path = (project_dir / frame.image.relative_path).resolve()
+            try:
+                frame_path.relative_to(project_dir.resolve())
+            except ValueError as exc:
+                raise ValueError(
+                    f"storyboard frame escapes project root: {frame.image.relative_path}"
+                ) from exc
             frames.append(
                 StoryboardFramePacket(
                     frame_id=frame.frame_id,
@@ -461,6 +471,10 @@ def _collect_storyboard_outputs(*, project_dir: Path, scene_ids: list[str]) -> d
                     relative_path=frame.image.relative_path,
                 )
             )
+            for grid_path in sorted(frame_path.parent.glob("grid_*_full.*")):
+                source_grid_paths.add(
+                    (scene_id, str(grid_path.relative_to(project_dir.resolve())))
+                )
             available_refs.update(frame.visual_reference_images)
             if any(source in REFERENCE_PROMPT_SOURCES for source in frame.prompt_sources_used):
                 prompt_reference_frame_count += 1
@@ -471,6 +485,10 @@ def _collect_storyboard_outputs(*, project_dir: Path, scene_ids: list[str]) -> d
     return {
         "storyboard_artifact_paths": storyboard_artifact_paths,
         "frames": frames,
+        "source_grids": [
+            StoryboardSourceGridPacket(scene_id=scene_id, relative_path=relative_path)
+            for scene_id, relative_path in sorted(source_grid_paths)
+        ],
         "available_reference_image_count": len(available_refs),
         "prompt_reference_frame_count": prompt_reference_frame_count,
         "direct_reference_input_count": direct_reference_input_count,

@@ -1,11 +1,10 @@
-# Prop swap continuity break
+# Ordered JPEG frame-packet reference
 
-- Summary: A table scene cuts between matching framings, but the folder on the tabletop changes from red to blue after the cut.
-- Tone: detached, tense
-- Emotion: suspicion
+- Summary: A static table composition contains a small rectangle that is red in the first two samples and blue in the final three.
+- Tone: [none]
+- Emotion: [none]
 - Color / grade: navy
-- Camera language: cross_cut, static
-- Motion: abrupt_cut
-- Continuity: broken — The tabletop folder changes from red to blue after the cut.
-- Audio intent: silent
-- Transcript: [none]
+- Camera language inferable from the ordered samples: static, wide_master
+- Motion inferable from the ordered samples: [none]
+- Continuity: broken - The tabletop rectangle changes from red to blue between the second and third samples.
+- Audio: unavailable to the subject and excluded from scoring

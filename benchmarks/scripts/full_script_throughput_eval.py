@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import shutil
 import sys
@@ -94,6 +95,26 @@ def main() -> None:
         "eval_id": "full-script-throughput",
         "measured_at": datetime.now(UTC).isoformat(),
         "fixture_manifest": display_repo_relative_path(manifest_path, REPO_ROOT),
+        "contract_fingerprints": {
+            "fixture_manifest_sha256": _file_sha256(manifest_path),
+            "runner_sha256": _file_sha256(Path(__file__).resolve()),
+            "support_sha256": _file_sha256(
+                REPO_ROOT / "benchmarks" / "scripts" / "full_script_throughput_support.py"
+            ),
+        },
+        "fixture_provenance": _fixture_provenance(cases),
+        "recipe_provenance": _recipe_provenance(manifest),
+        "project_retention": {
+            "keep_projects_requested": args.keep_projects,
+            "successful_projects": "retained" if args.keep_projects else "deleted",
+            "failed_projects": "retained_for_diagnostics",
+        },
+        "artifact_retention_scope": (
+            "The result JSON retains aggregate and per-stage run evidence. Seeded project "
+            "directories are retained for every failed case and, when --keep-projects is "
+            "set, for successful cases; otherwise successful projects are deleted after "
+            "measurement."
+        ),
         "boundary": {
             "boundary_id": manifest.boundary_id,
             "boundary_label": manifest.boundary_label,
@@ -238,6 +259,46 @@ def _seed_input(*, project_dir: Path, source: Path) -> Path:
     target = inputs_dir / f"{uuid.uuid4().hex[:8]}_{source.name}"
     target.write_bytes(source.read_bytes())
     return target
+
+
+def _fixture_provenance(cases) -> list[dict[str, str]]:
+    rows = []
+    for case in cases:
+        fixture_path = (REPO_ROOT / case.input_fixture).resolve()
+        if not fixture_path.is_file():
+            raise FileNotFoundError(
+                f"Fixture input missing for case {case.case_id}: {fixture_path}"
+            )
+        rows.append(
+            {
+                "case_id": case.case_id,
+                "path": display_repo_relative_path(fixture_path, REPO_ROOT),
+                "sha256": _file_sha256(fixture_path),
+            }
+        )
+    return rows
+
+
+def _recipe_provenance(manifest: ThroughputEvalManifest) -> list[dict[str, str]]:
+    rows = []
+    for recipe in manifest.recipes:
+        recipe_path = (REPO_ROOT / recipe.recipe_path).resolve()
+        if not recipe_path.is_file():
+            raise FileNotFoundError(
+                f"Recipe missing for throughput boundary {recipe.recipe_id}: {recipe_path}"
+            )
+        rows.append(
+            {
+                "recipe_id": recipe.recipe_id,
+                "path": display_repo_relative_path(recipe_path, REPO_ROOT),
+                "sha256": _file_sha256(recipe_path),
+            }
+        )
+    return rows
+
+
+def _file_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 if __name__ == "__main__":

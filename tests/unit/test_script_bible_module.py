@@ -9,6 +9,7 @@ import pytest
 import yaml
 
 import cine_forge.modules.ingest.script_bible_v1.main as script_bible_main
+from cine_forge.ai.llm import _build_gemini_payload
 from cine_forge.modules.ingest.script_bible_v1.main import run_module
 from cine_forge.schemas import ScriptBible
 
@@ -294,6 +295,50 @@ def test_default_work_model_matches_module_manifest(monkeypatch: pytest.MonkeyPa
     assert declared_default == script_bible_main.DEFAULT_WORK_MODEL
     assert captured["model"] == script_bible_main.DEFAULT_WORK_MODEL
     assert result["cost"]["model"] == script_bible_main.DEFAULT_WORK_MODEL
+
+
+@pytest.mark.unit
+def test_default_runtime_matches_evaluated_gemini_structured_transport(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, Any] = {}
+
+    def _fake_call_llm(**kwargs: Any):
+        captured["kwargs"] = kwargs
+        captured["payload"] = _build_gemini_payload(
+            model=kwargs["model"],
+            prompt=kwargs["prompt"],
+            temperature=kwargs.get("temperature", 0.0),
+            max_tokens=kwargs["max_tokens"],
+            response_schema=kwargs["response_schema"],
+            thinking_level=kwargs.get("thinking_level"),
+        )
+        return ScriptBible.model_validate(script_bible_main._mock_script_bible()), {
+            "model": kwargs["model"],
+            "estimated_cost_usd": 0.0,
+        }
+
+    monkeypatch.setattr(script_bible_main, "call_llm", _fake_call_llm)
+
+    run_module(
+        inputs={"normalize": _canonical_script(SAMPLE_SCRIPT)},
+        params={},
+        context={"runtime_params": {}},
+    )
+    manifest = yaml.safe_load(MODULE_MANIFEST.read_text())
+    config = captured["payload"]["generationConfig"]
+
+    assert captured["kwargs"]["model"] == "gemini-3.5-flash-lite"
+    assert captured["kwargs"]["response_schema"] is ScriptBible
+    assert captured["kwargs"]["fail_on_truncation"] is True
+    assert "temperature" not in captured["kwargs"]
+    assert manifest["parameters"]["max_tokens"]["default"] == 65_536
+    assert manifest["parameters"]["thinking_level"]["default"] == "minimal"
+    assert config["maxOutputTokens"] == 65_536
+    assert config["thinkingConfig"] == {"thinkingLevel": "minimal"}
+    assert config["responseMimeType"] == "application/json"
+    assert "responseSchema" in config
+    assert {"temperature", "topP", "topK", "thinkingBudget"}.isdisjoint(config)
 
 
 @pytest.mark.unit

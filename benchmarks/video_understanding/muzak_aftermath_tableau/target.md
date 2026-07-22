@@ -1,11 +1,10 @@
-# Muzak aftermath tableau
+# Ordered JPEG frame-packet reference
 
-- Summary: A static aftermath tableau holds on a trashed table while cheerful elevator-style muzak creates tonal dissonance.
-- Tone: playful, detached
-- Emotion: suspicion
+- Summary: A static desaturated composition holds on two layered rectangular table-like forms.
+- Tone: detached
+- Emotion: [none]
 - Color / grade: desaturated
-- Camera language: static, wide_master
-- Motion: stillness
-- Continuity: intact — The tipped chair and broken glass stay fixed in place.
-- Audio intent: muzak
-- Transcript: [none]
+- Camera language inferable from the ordered samples: static, wide_master
+- Motion inferable from the ordered samples: stillness
+- Continuity: intact - The layered rectangular forms remain fixed in all five frames.
+- Audio: unavailable to the subject and excluded from scoring

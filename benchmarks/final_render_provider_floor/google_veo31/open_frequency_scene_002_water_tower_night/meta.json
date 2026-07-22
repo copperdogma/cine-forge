@@ -2,18 +2,26 @@
   "clip_id": "open_frequency_scene_002_water_tower_night",
   "title": "Open Frequency scene 002 \u2014 water tower catwalk night",
   "source_type": "licensed_internal",
-  "source_description": "Story 169 candidate generated with google_veo31 (veo-3.1-generate-preview) on the representative reference-conditioned render harness.",
+  "source_description": "Story 169 candidate generated with google_veo31 (veo-3.1-generate-preview) on the representative reference-conditioned harness.",
   "rights": "Project-owned internal benchmark fixture",
   "duration_seconds": 8.0,
   "resolution": "720p",
   "has_audio": true,
-  "transcript": null,
-  "audio_description": null,
-  "tags": [
-    "exterior",
-    "weather",
-    "night",
-    "reference_conditioned"
+  "analysis_frame_policy": "five_interior_sixths_jpegs_v2",
+  "sample_times_seconds": [
+    1.333,
+    2.667,
+    4.0,
+    5.333,
+    6.667
+  ],
+  "clip_sha256": "8623a3ac83cedb832b9590de379c11af6169e0eded5506e8bf600a74936223a1",
+  "sampled_frame_sha256": [
+    "430ba4302ee8347e51ec8bc4d6a756c88b8386a5456949af07a56b3f44a3c0d1",
+    "fff89680cc2dce180c351644f449ad658b1263df90af29f0c7b069d660d26adf",
+    "0e5fbbe1b0c264c50e761a869fb77febe4391fa6cb1f27333631af3f3f142df3",
+    "261ffab9ec61d751f4540ea18f434d76fbed833fc6d239199cceb052ebce8c2e",
+    "9e257a56fcf899358421d4c489d10785ffb416eff54fe6729b2012f3c0135a49"
   ],
   "candidate_variant": "google_veo31",
   "candidate_label": "Google Veo 3.1 Render",
@@ -22,7 +30,9 @@
   "target_model": "veo-3.1-generate-preview",
   "generation_latency_ms": 40571,
   "end_to_end_latency_ms": 240537,
-  "estimated_generation_cost_usd": 0.00752025,
+  "total_run_cost_usd": 0.01086865,
+  "generation_cost_usd": null,
+  "generation_cost_status": "unavailable_in_retained_runtime_result",
   "request_id": "models/veo-3.1-generate-preview/operations/fsi7rv1z4bc1",
   "provider_job_id": "models/veo-3.1-generate-preview/operations/fsi7rv1z4bc1",
   "reference_usage_counts": {
@@ -45,5 +55,13 @@
       "purpose": "style_reference",
       "transparency_note": "style_reference.png (style_reference, soft_locked): style cue from filename/purpose only; do not claim unseen image content."
     }
-  ]
+  ],
+  "runtime_provenance": {
+    "runtime_result_sha256": "6814ecf024d9a4423e2746c39aafde477be7cf0212332d62dbd8eb8f0a57a12c",
+    "project_dir": "output/story-169-google_veo31-open_frequency_scene_002_water_tower_night-34fd02",
+    "render_prompt_path": "artifacts/render_prompt/scene_002/v1.json",
+    "generated_video_artifact_path": "artifacts/generated_video/scene_002/v1.json",
+    "generated_media_path": "artifacts/generated_video_media/scene_002/v1/scene_render.mp4",
+    "retained_clip_fallback_used": true
+  }
 }

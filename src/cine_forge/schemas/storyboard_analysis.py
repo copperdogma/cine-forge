@@ -4,15 +4,13 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 StoryboardSourceType = Literal[
     "licensed_internal",
     "project_owned_internal",
     "synthetic_internal",
 ]
-StoryboardConsistencyStatus = Literal["consistent", "minor_drift", "drifted", "absent"]
-StoryboardReferenceStatus = Literal["matched", "unclear", "ignored", "not_supplied"]
 StoryboardAnalysisDimension = Literal[
     "story_specificity",
     "style_consistency",
@@ -24,120 +22,151 @@ StoryboardAnalysisDimension = Literal[
 ]
 
 
-class StoryboardCharacterExpectation(BaseModel):
-    """Expected recurring character identity across a storyboard sequence."""
+class _StrictStoryboardModel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+
+class StoryboardVisualCueExpectation(_StrictStoryboardModel):
+    """One source-authored visual cue that should survive into the storyboard."""
+
+    cue_id: str = Field(min_length=1)
+    keywords: list[str] = Field(min_length=1)
+
+
+class StoryboardCharacterExpectation(_StrictStoryboardModel):
+    """Opaque recurring-subject slot expected across both halves of a packet."""
 
     name: str = Field(min_length=1)
     descriptor_keywords: list[str] = Field(default_factory=list)
 
 
-class StoryboardReferenceExpectation(BaseModel):
-    """Expected reference-image usage for the benchmark case."""
+class StoryboardReferenceExpectation(_StrictStoryboardModel):
+    """Opaque reference-image slot transported with the benchmark packet."""
 
     label: str = Field(min_length=1)
-    entity_name: str | None = None
     descriptor_keywords: list[str] = Field(default_factory=list)
     direct_reference_required: bool = True
 
 
-class StoryboardAnalysisWeights(BaseModel):
-    """Weighting for storyboard-quality scoring."""
+class StoryboardAnalysisWeights(_StrictStoryboardModel):
+    """Weighting for observable storyboard-quality dimensions."""
 
-    story_specificity: float = 0.20
-    style_consistency: float = 0.16
-    identity_consistency: float = 0.22
-    reference_fidelity: float = 0.18
-    text_cleanliness: float = 0.12
-    prop_discipline: float = 0.07
-    evidence: float = 0.05
+    story_specificity: float = 0.30
+    style_consistency: float = 0.20
+    identity_consistency: float = 0.25
+    reference_fidelity: float = 0.0
+    text_cleanliness: float = 0.15
+    prop_discipline: float = 0.0
+    evidence: float = 0.10
 
     @model_validator(mode="after")
     def _validate_sum(self) -> StoryboardAnalysisWeights:
-        total = (
-            self.story_specificity
-            + self.style_consistency
-            + self.identity_consistency
-            + self.reference_fidelity
-            + self.text_cleanliness
-            + self.prop_discipline
-            + self.evidence
+        total = sum(
+            (
+                self.story_specificity,
+                self.style_consistency,
+                self.identity_consistency,
+                self.reference_fidelity,
+                self.text_cleanliness,
+                self.prop_discipline,
+                self.evidence,
+            )
         )
         if abs(total - 1.0) > 1e-6:
             raise ValueError("StoryboardAnalysisWeights must sum to 1.0")
         return self
 
 
-class StoryboardAnalysisTarget(BaseModel):
-    """Golden target for one storyboard-generation quality case."""
+class StoryboardAnalysisTarget(_StrictStoryboardModel):
+    """Source-authored target for one storyboard-generation quality case."""
 
     storyboard_id: str = Field(min_length=1)
     title: str = Field(min_length=1)
     source_type: StoryboardSourceType
     source_description: str = Field(min_length=1)
+    source_fixture: str = Field(min_length=1)
+    source_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     rights: str = Field(min_length=1)
-    scene_ids: list[str] = Field(default_factory=list, min_length=1)
+    scene_ids: list[str] = Field(min_length=1)
     summary_reference: str = Field(min_length=1)
-    required_keywords: list[str] = Field(default_factory=list)
+    forbidden_output_terms: list[str] = Field(default_factory=list)
+    required_visual_cues: list[StoryboardVisualCueExpectation] = Field(min_length=1)
+    expected_style_keyword_groups: list[list[str]] = Field(min_length=1)
     recurring_characters: list[StoryboardCharacterExpectation] = Field(default_factory=list)
     reference_expectations: list[StoryboardReferenceExpectation] = Field(default_factory=list)
+    expected_frame_min: int = Field(default=1, ge=1)
+    expected_frame_max: int = Field(default=32, ge=1)
     expected_available_reference_min: int = Field(default=0, ge=0)
     expected_prompt_reference_min: int = Field(default=0, ge=0)
     expected_direct_reference_min: int = Field(default=0, ge=0)
     should_avoid_readable_text: bool = True
-    should_avoid_prop_only_non_insert: bool = True
-    non_insert_shot_ids: list[str] = Field(default_factory=list)
+    reference_quality_evaluable: bool = False
+    prop_discipline_evaluable: bool = False
     weights: StoryboardAnalysisWeights = Field(default_factory=StoryboardAnalysisWeights)
 
+    @model_validator(mode="after")
+    def _validate_frame_range(self) -> StoryboardAnalysisTarget:
+        if self.expected_frame_min > self.expected_frame_max:
+            raise ValueError("expected_frame_min cannot exceed expected_frame_max")
+        if not self.reference_quality_evaluable and self.weights.reference_fidelity != 0:
+            raise ValueError("non-evaluable reference fidelity must have zero weight")
+        if not self.prop_discipline_evaluable and self.weights.prop_discipline != 0:
+            raise ValueError("non-evaluable prop discipline must have zero weight")
+        return self
 
-class StoryboardCharacterAssessment(BaseModel):
-    """Model judgment about one recurring character across the sequence."""
+
+class StoryboardCharacterAssessment(_StrictStoryboardModel):
+    """Observed traits for one opaque recurring subject in both packet halves."""
 
     name: str = Field(min_length=1)
-    consistency_status: StoryboardConsistencyStatus
-    observed_traits: list[str] = Field(default_factory=list)
-    evidence: str | None = None
+    first_half_traits: list[str] = Field(min_length=2)
+    second_half_traits: list[str] = Field(min_length=2)
+    first_half_frame_ids: list[str] = Field(min_length=1)
+    second_half_frame_ids: list[str] = Field(min_length=1)
 
 
-class StoryboardReferenceAssessment(BaseModel):
-    """Model judgment about one supplied reference lane."""
+class StoryboardReferenceAssessment(_StrictStoryboardModel):
+    """Observed similarities between one opaque reference and generated frames."""
 
     label: str = Field(min_length=1)
-    entity_name: str | None = None
-    status: StoryboardReferenceStatus
-    evidence: str | None = None
+    observed_similarities: list[str] = Field(default_factory=list)
+    generated_frame_ids: list[str] = Field(default_factory=list)
 
 
-class StoryboardStyleAssessment(BaseModel):
-    """Model judgment about visual medium/style consistency across frames."""
+class StoryboardStyleAssessment(_StrictStoryboardModel):
+    """Observed visual-medium traits in the first and second packet halves."""
 
-    consistency_status: StoryboardConsistencyStatus
-    observed_mediums: list[str] = Field(default_factory=list)
-    evidence: str | None = None
+    first_half_mediums: list[str] = Field(min_length=1)
+    second_half_mediums: list[str] = Field(min_length=1)
+    first_half_frame_ids: list[str] = Field(min_length=1)
+    second_half_frame_ids: list[str] = Field(min_length=1)
 
 
-class StoryboardEvidence(BaseModel):
-    """One grounded evidence note from the analyzed image packet."""
+class StoryboardEvidence(_StrictStoryboardModel):
+    """One grounded visual observation tied to an opaque frame identifier."""
 
-    frame_id: str | None = None
+    frame_id: str = Field(min_length=1)
     cue: str = Field(min_length=1)
 
 
-class StoryboardAnalysisPrediction(BaseModel):
-    """Structured multimodal judge output for a storyboard sequence."""
+class StoryboardAnalysisPrediction(_StrictStoryboardModel):
+    """Structured multimodal judge observations for one storyboard sequence."""
 
     storyboard_id: str = Field(min_length=1)
+    packet_frame_count: int = Field(ge=1)
+    packet_reference_count: int = Field(ge=0)
     summary: str = Field(min_length=1)
     keywords: list[str] = Field(default_factory=list)
-    style_assessment: StoryboardStyleAssessment | None = None
+    style_assessment: StoryboardStyleAssessment
     character_assessments: list[StoryboardCharacterAssessment] = Field(default_factory=list)
     reference_assessments: list[StoryboardReferenceAssessment] = Field(default_factory=list)
-    readable_text_present: bool
-    prop_only_non_insert_present: bool
-    evidence: list[StoryboardEvidence] = Field(default_factory=list)
+    readable_text_frame_ids: list[str] = Field(default_factory=list)
+    prop_only_frame_ids: list[str] = Field(default_factory=list)
+    evidence: list[StoryboardEvidence] = Field(min_length=4, max_length=8)
     overall_confidence: float = Field(ge=0.0, le=1.0)
 
 
-class StoryboardAnalysisDimensionScore(BaseModel):
+class StoryboardAnalysisDimensionScore(_StrictStoryboardModel):
     """Score for one storyboard-quality dimension."""
 
     dimension: StoryboardAnalysisDimension
@@ -146,10 +175,10 @@ class StoryboardAnalysisDimensionScore(BaseModel):
     rationale: str
 
 
-class StoryboardAnalysisScore(BaseModel):
+class StoryboardAnalysisScore(_StrictStoryboardModel):
     """Full deterministic storyboard-quality score."""
 
     storyboard_id: str
     overall_score: float = Field(ge=0.0, le=1.0)
     hard_constraints_passed: bool
-    dimensions: list[StoryboardAnalysisDimensionScore] = Field(default_factory=list, min_length=1)
+    dimensions: list[StoryboardAnalysisDimensionScore] = Field(min_length=1)

@@ -8,7 +8,6 @@ from typing import Any
 from playwright.sync_api import Page, sync_playwright
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
-
 REPORT_DIR = Path(__file__).resolve().parent
 BROWSER_DIR = REPORT_DIR / "browser"
 BASE_URL = os.environ.get("CINE_FORGE_UI_BASE_URL", "http://127.0.0.1:5174").rstrip("/")
@@ -59,7 +58,12 @@ ROUTES: list[dict[str, Any]] = [
         "id": "render-prompt-detail-desktop",
         "path": "/brick-steel-full-retired/artifacts/render_prompt/scene_001_clip_001/1",
         "viewport": {"width": 1440, "height": 1100},
-        "expect_text": ["render_prompt", "Exact Dialogue Timing", "STEEL: Screw retirement", "BRICK: Screw retirement"],
+        "expect_text": [
+            "render_prompt",
+            "Exact Dialogue Timing",
+            "STEEL: Screw retirement",
+            "BRICK: Screw retirement",
+        ],
     },
     {
         "id": "generated-video-detail-desktop",
@@ -150,7 +154,8 @@ def inspect_route(page: Page, route: dict[str, Any]) -> dict[str, Any]:
     page.screenshot(path=str(BROWSER_DIR / screenshot_name), full_page=True)
 
     links = page.locator("a").evaluate_all(
-        "(nodes) => nodes.map((node) => ({text: node.innerText, href: node.href})).filter((item) => item.href.includes('/artifacts/')).slice(0, 20)"
+        "(nodes) => nodes.map((node) => ({text: node.innerText, href: node.href}))"
+        ".filter((item) => item.href.includes('/artifacts/')).slice(0, 20)"
     )
     facts = {
         "id": route_id,
@@ -165,7 +170,9 @@ def inspect_route(page: Page, route: dict[str, Any]) -> dict[str, Any]:
         "artifact_links": links,
         "jump_clicked": jump_clicked,
         "jump_scroll_y": {"before": before_jump_y, "after": after_jump_y},
-        "missing_expected_text": [item for item in route.get("expect_text", []) if item not in text],
+        "missing_expected_text": [
+            item for item in route.get("expect_text", []) if item not in text
+        ],
         "min_video_expected": route.get("min_videos"),
     }
     min_videos = route.get("min_videos")
@@ -189,11 +196,11 @@ def main() -> int:
 
         page.on(
             "console",
-            lambda message: console_errors.append(
-                {"type": message.type, "text": normalize_error(message.text)}
-            )
-            if message.type == "error"
-            else None,
+            lambda message: (
+                console_errors.append({"type": message.type, "text": normalize_error(message.text)})
+                if message.type == "error"
+                else None
+            ),
         )
         page.on(
             "pageerror",
@@ -201,11 +208,11 @@ def main() -> int:
         )
         page.on(
             "response",
-            lambda response: response_errors.append(
-                {"status": response.status, "url": response.url}
-            )
-            if response.status >= 400
-            else None,
+            lambda response: (
+                response_errors.append({"status": response.status, "url": response.url})
+                if response.status >= 400
+                else None
+            ),
         )
 
         for route in ROUTES:

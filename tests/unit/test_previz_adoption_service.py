@@ -2,10 +2,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
 import yaml
 
 from cine_forge.schemas import EnginePack
 from cine_forge.services.previz_adoption import PrevizAdoptionService
+
+pytestmark = pytest.mark.unit
 
 
 def _write_recipe(
@@ -61,43 +64,49 @@ def _write_registry(
     latency_ms: int,
     runtime_latency_ms: int | None = None,
     runtime_metrics: dict[str, int] | None = None,
+    candidate_evidence_status: str | None = "decision-grade",
+    baseline_evidence_status: str | None = "decision-grade",
+    runtime_evidence_status: str | None = "decision-grade",
+    historical_evidence_status: str | None = None,
 ) -> None:
+    candidate_score = {
+        "model": candidate_label,
+        "metrics": {"overall": candidate_overall},
+        "latency_ms": latency_ms,
+        "measured": "2026-04-03",
+    }
+    baseline_score = {
+        "model": "Annotated Animatic",
+        "metrics": {"overall": baseline_overall},
+        "latency_ms": 0,
+        "measured": "2026-04-03",
+    }
+    if candidate_evidence_status is not None:
+        candidate_score["evidence_status"] = candidate_evidence_status
+    if baseline_evidence_status is not None:
+        baseline_score["evidence_status"] = baseline_evidence_status
+    previz_eval: dict[str, object] = {
+        "id": "previz-usefulness",
+        "scores": [candidate_score, baseline_score],
+    }
+    if historical_evidence_status is not None:
+        previz_eval["historical_evidence_status"] = historical_evidence_status
     evals: list[dict[str, object]] = [
-        {
-            "id": "previz-usefulness",
-            "scores": [
-                {
-                    "model": candidate_label,
-                    "metrics": {"overall": candidate_overall},
-                    "latency_ms": latency_ms,
-                    "measured": "2026-04-03",
-                },
-                {
-                    "model": "Annotated Animatic",
-                    "metrics": {"overall": baseline_overall},
-                    "latency_ms": 0,
-                    "measured": "2026-04-03",
-                },
-            ],
-        }
+        previz_eval
     ]
     if runtime_latency_ms is not None:
         metrics: dict[str, object] = {"overall": 0.5}
         if runtime_metrics:
             metrics.update(runtime_metrics)
-        evals.append(
-            {
-                "id": "real-ai-previz-runtime",
-                "scores": [
-                    {
-                        "model": "Current shipped runtime",
-                        "metrics": metrics,
-                        "latency_ms": runtime_latency_ms,
-                        "measured": "2026-04-19",
-                    }
-                ],
-            }
-        )
+        runtime_score = {
+            "model": "Current shipped runtime",
+            "metrics": metrics,
+            "latency_ms": runtime_latency_ms,
+            "measured": "2026-04-19",
+        }
+        if runtime_evidence_status is not None:
+            runtime_score["evidence_status"] = runtime_evidence_status
+        evals.append({"id": "real-ai-previz-runtime", "scores": [runtime_score]})
     path.write_text(
         yaml.safe_dump(
             {"evals": evals},
@@ -334,3 +343,81 @@ def test_previz_adoption_service_supports_shipped_xai_lane_when_it_clears_qualit
         "61387 ms" in blocker for blocker in status.ai_previz.blocker_reasons
     )
     assert any("pricing" in blocker.lower() for blocker in status.ai_previz.blocker_reasons)
+
+
+@pytest.mark.parametrize(
+    ("candidate_status", "baseline_status"),
+    [
+        ("contaminated-non-decision-grade", "contaminated-non-decision-grade"),
+        (None, None),
+    ],
+)
+def test_previz_adoption_service_rejects_non_decision_grade_registry_evidence(
+    tmp_path: Path,
+    candidate_status: str | None,
+    baseline_status: str | None,
+) -> None:
+    recipe_path = tmp_path / "recipe-ai-previz-generation.yaml"
+    registry_path = tmp_path / "registry.yaml"
+    _write_recipe(recipe_path, engine_pack_id="google_veo31_fast")
+    _write_registry(
+        registry_path,
+        candidate_label="Veo 3.1 Fast Previz",
+        candidate_overall=0.99,
+        baseline_overall=0.98,
+        latency_ms=100,
+        runtime_latency_ms=100,
+        candidate_evidence_status=candidate_status,
+        baseline_evidence_status=baseline_status,
+        runtime_evidence_status="superseded-non-decision-grade",
+        historical_evidence_status="contaminated-non-decision-grade",
+    )
+    service = PrevizAdoptionService(
+        recipe_path=recipe_path,
+        registry_path=registry_path,
+        engine_pack_loader=lambda _pack_id: _engine_pack(
+            pack_id="google_veo31_fast",
+            target_model="veo-3.1-fast-generate-preview",
+            cost_per_second=0.05,
+            pricing_note="Prompt-only fixture limitation.",
+        ),
+    )
+
+    status = service.build_status()
+
+    assert status.ai_previz.adoption_state == "experimental_manual"
+    assert status.ai_previz.overall_score is None
+    assert status.ai_previz.baseline_score is None
+    assert status.ai_previz.latency_ms is None
+    assert any("No previz-usefulness score" in item for item in status.ai_previz.blocker_reasons)
+
+
+def test_explicit_repaired_score_can_override_contaminated_history(
+    tmp_path: Path,
+) -> None:
+    recipe_path = tmp_path / "recipe-ai-previz-generation.yaml"
+    registry_path = tmp_path / "registry.yaml"
+    _write_recipe(recipe_path, engine_pack_id="google_veo31_fast")
+    _write_registry(
+        registry_path,
+        candidate_label="Veo 3.1 Fast Previz",
+        candidate_overall=0.86,
+        baseline_overall=0.80,
+        latency_ms=3200,
+        historical_evidence_status="contaminated-non-decision-grade",
+    )
+    service = PrevizAdoptionService(
+        recipe_path=recipe_path,
+        registry_path=registry_path,
+        engine_pack_loader=lambda _pack_id: _engine_pack(
+            pack_id="google_veo31_fast",
+            target_model="veo-3.1-fast-generate-preview",
+            cost_per_second=0.05,
+            pricing_note="Prompt-only fixture limitation.",
+        ),
+    )
+
+    status = service.build_status()
+
+    assert status.ai_previz.adoption_state == "default"
+    assert status.ai_previz.overall_score == 0.86

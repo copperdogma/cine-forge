@@ -1,0 +1,117 @@
+{
+  "title": "Open Frequency",
+  "genre_keywords": ["drama", "disaster", "survival", "community"],
+  "tone_keywords": ["hopeful", "warm", "tense", "resilient", "wry", "humorous"],
+  "must_include_title": "Open Frequency",
+  "act_count_min": 2,
+  "act_count_max": 4,
+  "required_fields": [
+    "title",
+    "logline",
+    "synopsis",
+    "act_structure",
+    "themes",
+    "narrative_arc",
+    "genre",
+    "tone",
+    "protagonist_journey",
+    "central_conflict",
+    "setting_overview",
+    "confidence"
+  ],
+  "logline_keywords": [
+    "radio",
+    "station",
+    "storm",
+    "signal",
+    "broadcast",
+    "community",
+    "shelter"
+  ],
+  "protagonist_keywords": ["Aria", "June", "Noah", "Kell", "radio team", "broadcasters"],
+  "must_include_themes": [
+    {
+      "keywords": ["community", "mutual aid", "help", "service", "shelter"],
+      "description": "community service and mutual aid"
+    },
+    {
+      "keywords": ["communication", "connection", "signal", "voice", "heard", "radio"],
+      "description": "communication as connection"
+    },
+    {
+      "keywords": ["resilience", "hope", "storm", "emergency", "work"],
+      "description": "resilience and hope during crisis"
+    }
+  ],
+  "must_include_conflict_keywords": [
+    "storm",
+    "power",
+    "signal",
+    "antenna",
+    "broadcast",
+    "shelter",
+    "insulin"
+  ],
+  "setting_keywords": [
+    "Red Creek",
+    "community radio studio",
+    "water tower",
+    "high school gym shelter",
+    "storm",
+    "night",
+    "pre-dawn",
+    "morning"
+  ],
+  "protagonist_journey_keywords": [
+    "signal",
+    "broadcast",
+    "community",
+    "useful",
+    "hope",
+    "work",
+    "connect"
+  ],
+  "source_headings": [
+    "INT. COMMUNITY RADIO STUDIO - NIGHT",
+    "EXT. WATER TOWER CATWALK - NIGHT",
+    "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+    "INT. COMMUNITY RADIO STUDIO - MORNING"
+  ],
+  "required_story_events": [
+    {
+      "description": "the tower signal carries the north shelter plea",
+      "keywords": ["north shelter", "insulin", "dry blankets", "signal"],
+      "minimum_matches": 3
+    },
+    {
+      "description": "Maya recruits the broadcast to help find Comet",
+      "keywords": ["Maya", "Comet", "missing dog", "broadcast"],
+      "minimum_matches": 3
+    },
+    {
+      "description": "the morning ending recovers Comet and returns the station to work",
+      "keywords": [
+        "morning",
+        "Comet",
+        "ON AIR",
+        "returns to work",
+        "settles back to work"
+      ],
+      "minimum_matches": 3
+    }
+  ],
+  "forbidden_claim_patterns": [
+    "(?i)\\b(?:aria|noah|june|kell|maya)\\b.{0,50}\\b(?:dies|died|dead|killed|death)\\b|\\b(?:dies|died|dead|killed|death)\\b.{0,50}\\b(?:aria|noah|june|kell|maya)\\b",
+    "(?i)\\b(?:aria|noah|june|kell|maya)\\b.{0,70}\\b(?:romance|romantic|lover|girlfriend|boyfriend|husband|wife|falls? in love|in love|kiss(?:es|ed|ing)?)\\b",
+    "(?i)\\b(?:hurricane|tornado|earthquake|tsunami|wildfire|flood(?:ing)?|alien invasion|meteor strike)\\b",
+    "(?i)\\b(?:red creek|the town|power grid|cell towers?|all roads?)\\b.{0,70}\\b(?:fully|completely|entirely)\\s+(?:recovers?|recovered|restored|reopens?|operational)\\b|\\b(?:crisis|emergency)\\s+(?:is|was)\\s+(?:completely\\s+)?over\\b"
+  ],
+  "synopsis_min_length": 200,
+  "logline_max_length": 300,
+  "_notes": [
+    "The screenplay is a short ensemble piece; Aria, June, Noah, and Kell can all anchor a source-supported account of the team's journey.",
+    "A natural three-part structure is studio setup, tower breakthrough plus shelter service, and the morning return, but any source-grounded 2-4 act division is valid.",
+    "The ending is hopeful and operational: Comet is recovered, the ON AIR sign is steady, and the team resumes work.",
+    "Do not invent deaths, romantic relationships, a wider disaster cause, or a complete recovery beyond the four written scenes."
+  ]
+}

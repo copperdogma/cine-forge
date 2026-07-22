@@ -2,17 +2,25 @@
   "good_scene": {
     "expected_passed": true,
     "max_errors": 0,
-    "max_warnings": 2,
-    "required_in_summary": ["accurate", "faithful", "correct"]
+    "max_warnings": 0,
+    "required_in_summary": [
+      "AirTag in Rose's purse",
+      "three armed thugs",
+      "Mariner's oar and gunfire"
+    ]
   },
   "bad_scene": {
     "expected_passed": false,
-    "min_errors": 2,
+    "min_errors": 6,
     "required_issues": [
-      {"field": "heading", "reason": "Wrong building name — should be Ruddy & Green, not Office Building"},
+      {"field": "heading", "reason": "Wrong building name in the heading: should be Ruddy & Green Building, not Office Building"},
+      {"field": "location", "reason": "Wrong location: should be Ruddy & Green Building - Elevator, not Office Building - Elevator"},
       {"field": "time_of_day", "reason": "Scene heading has no time of day, but extraction claims DAY"},
-      {"field": "characters_present", "reason": "Uses 'Billy' instead of 'Mariner'"},
-      {"field": "summary", "reason": "Fabricated content — no grocery discussion in scene"}
+      {"field": "characters_present", "reason": "Fabricates Billy, omits Mariner, and omits the three thugs who appear in the scene"},
+      {"field": "summary", "reason": "Fabricates evening plans and a grocery discussion while omitting the actual AirTag exchange and armed thug confrontation"},
+      {"field": "narrative_beats", "reason": "Fabricates exposition about daily plans and omits the actual character introduction, AirTag revelation, comedy, and armed conflict"},
+      {"field": "tone_mood", "reason": "Casual is the wrong tone; the scene is darkly comic, tense, and violent"},
+      {"field": "confidence", "reason": "A confidence of 0.88 is overconfident for an extraction with pervasive factual errors and omissions"}
     ]
   }
 }

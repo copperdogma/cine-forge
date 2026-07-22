@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import sys
 import time
 from pathlib import Path
@@ -22,8 +21,19 @@ try:
 except ImportError as exc:  # pragma: no cover - operator-facing dependency error
     raise SystemExit("httpx is required; run with the repo virtualenv.") from exc
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.post_rollout_breakdown_contract import (  # noqa: E402
+    EvalFailure,
+    build_fixture_contract,
+    build_project_identity,
+    evaluate_semantic_payloads,
+    fetch_latest_artifact_payloads,
+    request_json,
+)
+
 DEFAULT_BASE_URL = "https://cineforge.copper-dog.com"
 DEFAULT_FIXTURE = (
     REPO_ROOT / "tests" / "fixtures" / "ingest_inputs" / "open_frequency_short.fountain"
@@ -42,81 +52,13 @@ REQUIRED_ARTIFACT_TYPES = ("canonical_script", "scene", "script_bible", "project
 MISSING_STAGE_DETAIL = "no stage error message recorded"
 
 
-class EvalFailure(RuntimeError):
-    """Raised when the rollout eval finds a product failure."""
-
-    def __init__(
-        self,
-        message: str,
-        *,
-        project_id: str | None = None,
-        run_id: str | None = None,
-        failing_stage_id: str | None = None,
-        stage_statuses: dict[str, str] | None = None,
-    ) -> None:
-        super().__init__(message)
-        self.message = message
-        self.project_id = project_id
-        self.run_id = run_id
-        self.failing_stage_id = failing_stage_id
-        self.stage_statuses = stage_statuses or {}
-
-    def render(self) -> str:
-        lines = ["POST-ROLLOUT-EVAL FAILED", self.message]
-        if self.project_id:
-            lines.append(f"project_id: {self.project_id}")
-        if self.run_id:
-            lines.append(f"run_id: {self.run_id}")
-        if self.failing_stage_id:
-            lines.append(f"failing_stage: {self.failing_stage_id}")
-        if self.stage_statuses:
-            lines.append(
-                "stage_statuses: "
-                + ", ".join(f"{stage}={status}" for stage, status in self.stage_statuses.items())
-            )
-        return "\n".join(lines)
-
-
-def _slugify(text: str) -> str:
-    slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
-    return slug or "post-rollout-eval"
-
-
-def _build_project_identity(prefix: str) -> tuple[str, str]:
-    timestamp = time.strftime("%Y%m%d-%H%M%S", time.gmtime())
-    return f"{_slugify(prefix)}-{timestamp}", f"Post-rollout Eval {timestamp}"
-
-
-def _format_response_error(response: httpx.Response) -> str:
-    try:
-        payload = response.json()
-    except json.JSONDecodeError:
-        return response.text.strip() or f"HTTP {response.status_code}"
-    detail = payload.get("detail")
-    if isinstance(detail, dict):
-        message = detail.get("message") or detail.get("code") or json.dumps(detail, sort_keys=True)
-        hint = detail.get("hint")
-        return f"{message} ({hint})" if hint else message
-    if isinstance(detail, str):
-        return detail
-    if "message" in payload:
-        return str(payload["message"])
-    return json.dumps(payload, sort_keys=True)
-
-
 def _request_json(
     client: httpx.Client,
     method: str,
     path: str,
     **kwargs: Any,
 ) -> dict[str, Any] | list[Any]:
-    response = client.request(method, path, **kwargs)
-    if response.status_code >= 400:
-        raise EvalFailure(f"{method} {path} failed: {_format_response_error(response)}")
-    try:
-        return response.json()
-    except json.JSONDecodeError as exc:
-        raise EvalFailure(f"{method} {path} returned non-JSON response") from exc
+    return request_json(client, method, path, **kwargs)
 
 
 def _required_stage_statuses(run_state: dict[str, Any]) -> dict[str, str]:
@@ -242,7 +184,9 @@ def _wait_for_run_success(
     )
 
 
-def _verify_required_artifacts(client: httpx.Client, project_id: str, run_id: str) -> list[str]:
+def _verify_required_artifacts(
+    client: httpx.Client, project_id: str, run_id: str
+) -> list[dict[str, Any]]:
     payload = _request_json(client, "GET", f"/api/projects/{project_id}/artifacts")
     if not isinstance(payload, list):
         raise EvalFailure(
@@ -266,7 +210,7 @@ def _verify_required_artifacts(client: httpx.Client, project_id: str, run_id: st
             project_id=project_id,
             run_id=run_id,
         )
-    return sorted(artifact_types)
+    return [item for item in payload if isinstance(item, dict)]
 
 
 def run_eval(
@@ -283,8 +227,12 @@ def run_eval(
     fixture_bytes = fixture_path.read_bytes()
     if not fixture_bytes:
         raise EvalFailure(f"Fixture is empty: {fixture_path}")
+    try:
+        fixture_contract = build_fixture_contract(fixture_path)
+    except (UnicodeDecodeError, ValueError) as exc:
+        raise EvalFailure(f"Fixture semantic contract is invalid: {exc}") from exc
 
-    slug, display_name = _build_project_identity(project_prefix)
+    slug, display_name = build_project_identity(project_prefix)
     timeout = httpx.Timeout(30.0, connect=30.0, read=30.0, write=30.0)
     with httpx.Client(
         base_url=base_url.rstrip("/"),
@@ -340,7 +288,31 @@ def run_eval(
             timeout_seconds=timeout_seconds,
             poll_interval_seconds=poll_interval_seconds,
         )
-        artifact_types = _verify_required_artifacts(client, project_id, run_id)
+        artifact_groups = _verify_required_artifacts(client, project_id, run_id)
+        try:
+            artifact_payloads = fetch_latest_artifact_payloads(
+                client=client,
+                project_id=project_id,
+                groups=artifact_groups,
+                request_json=_request_json,
+            )
+            semantic_evidence = evaluate_semantic_payloads(
+                fixture_contract,
+                artifact_payloads,
+            )
+        except ValueError as exc:
+            raise EvalFailure(
+                f"Script Breakdown semantic contract failed: {exc}",
+                project_id=project_id,
+                run_id=run_id,
+            ) from exc
+        artifact_types = sorted(
+            {
+                str(group.get("artifact_type"))
+                for group in artifact_groups
+                if group.get("artifact_type")
+            }
+        )
 
     return {
         "base_url": base_url.rstrip("/"),
@@ -350,6 +322,7 @@ def run_eval(
         "fixture": str(fixture_path),
         "stage_statuses": _required_stage_statuses(run_state),
         "artifact_types": artifact_types,
+        "semantic_evidence": semantic_evidence,
     }
 
 

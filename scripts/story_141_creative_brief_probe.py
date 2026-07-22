@@ -14,21 +14,22 @@ project-level taste while staying honest about metadata-only references.
 from __future__ import annotations
 
 import argparse
-import io
 import json
 import tempfile
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 
-from PIL import Image
-from pydantic import BaseModel, Field
+from scripts.story_141_creative_brief_probe_support import (
+    JudgeVerdict,
+    deterministic_lane_verdict,
+    file_sha256,
+    jpeg_bytes,
+    legacy_intent_mood_context,
+    legacy_project_config_context,
+    project_fixture,
+)
 from tests.render_fixtures import seed_render_project
 
-from cine_forge.ai.image import (
-    _look_and_feel_context,
-    build_image_prompt,
-    synthesize_image_prompt,
-)
 from cine_forge.ai.llm import call_llm
 from cine_forge.modules.generation.render_adapter_v1.main import (
     _build_source_maps,
@@ -41,58 +42,11 @@ from cine_forge.modules.generation.render_adapter_v1.support import load_engine_
 from cine_forge.schemas import Scene, ShotPlan
 from cine_forge.services import InjectedAssetService
 from cine_forge.services.creative_brief import build_visual_creative_brief
-
-
-class LaneJudgment(BaseModel):
-    winner: Literal["new", "legacy", "tie"]
-    rationale: str
-    preserved_signals: list[str] = Field(default_factory=list)
-    regressions: list[str] = Field(default_factory=list)
-
-
-class JudgeVerdict(BaseModel):
-    design_study: LaneJudgment
-    render_adapter: LaneJudgment
-    overall_summary: str
-
-
-SIGNAL_PATTERNS: dict[str, tuple[str, ...]] = {
-    "visual_medium": ("animation 3d", "animation_3d"),
-    "reference_film": ("the lighthouse",),
-    "filmmaker_anchor": ("robert eggers",),
-    "look_notes": ("salt-crusted wardrobe", "cold cyan palette"),
-    "project_reference_filename": ("storm_palette_board.jpg",),
-    "reference_transparency": ("filename/purpose only", "named cue only"),
-    "look_and_feel": ("hard monitor highlights", "steel blue"),
-}
-
-_LEGACY_FORMAT_STYLE_MODIFIERS: dict[str, str] = {
-    "live_action": (
-        "Render as live-action film imagery: photorealistic materials, real actors,"
-        " cinematic lighting, and natural lens behavior."
-    ),
-    "animation_2d": (
-        "Override the visual medium to 2D animated feature art with hand-drawn linework,"
-        " stylized shapes, and flat color fills. Do not render as live-action."
-    ),
-    "animation_3d": (
-        "Override the visual medium to 3D animated feature-film imagery with stylized"
-        " physically based rendering, expressive proportions, and polished surface lighting."
-        " Do not render as live-action."
-    ),
-    "anime": (
-        "Override the visual medium to anime cel art with crisp linework, stylized facial"
-        " language, and vibrant flat colors. Do not render as live-action."
-    ),
-    "graphic_novel": (
-        "Override the visual medium to graphic novel illustration with inked contours,"
-        " bold contrast, and printed-page texture. Do not render as photorealistic live-action."
-    ),
-    "concept_art": (
-        "Emphasize exploratory production concept art with painterly ideation, key-art energy,"
-        " and art-department visualization rather than final photorealism."
-    ),
-}
+from cine_forge.services.still_image_prompt_compiler import (
+    _look_and_feel_context,
+    build_image_prompt,
+    synthesize_image_prompt,
+)
 
 
 def _parse_args() -> argparse.Namespace:
@@ -103,9 +57,9 @@ def _parse_args() -> argparse.Namespace:
         help="Model to use for the optional pairwise judge step.",
     )
     parser.add_argument(
-        "--skip-judge",
+        "--run-judge",
         action="store_true",
-        help="Skip the LLM judge and emit deterministic results only.",
+        help="Opt in to the paid live LLM judge; default is deterministic-only.",
     )
     parser.add_argument(
         "--output",
@@ -115,122 +69,6 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _jpeg_bytes(color: tuple[int, int, int] = (34, 56, 82)) -> bytes:
-    buffer = io.BytesIO()
-    image = Image.new("RGB", (1280, 720), color=color)
-    image.save(buffer, format="JPEG", quality=90)
-    return buffer.getvalue()
-
-
-def _contains_any(text: str, patterns: tuple[str, ...]) -> bool:
-    lowered = text.lower()
-    return any(pattern in lowered for pattern in patterns)
-
-
-def _signal_presence(text: str) -> dict[str, bool]:
-    return {
-        signal: _contains_any(text, patterns)
-        for signal, patterns in SIGNAL_PATTERNS.items()
-    }
-
-
-def _ensure_sentence(value: str) -> str:
-    value = value.strip()
-    if not value:
-        return ""
-    if value.endswith((".", "!", "?")):
-        return value
-    return f"{value}."
-
-
-def _string_list(values: Any) -> list[str]:
-    if not isinstance(values, list):
-        return []
-    return [item.strip() for item in values if isinstance(item, str) and item.strip()]
-
-
-def _legacy_project_config_context(project_config_data: dict[str, Any] | None) -> list[str]:
-    if not isinstance(project_config_data, dict):
-        return []
-
-    lines: list[str] = []
-    genres = _string_list(project_config_data.get("genre"))
-    tones = _string_list(project_config_data.get("tone"))
-    if genres:
-        lines.append(f"Genre direction: {', '.join(genres)}.")
-    if tones:
-        lines.append(f"Tone targets: {', '.join(tones)}.")
-
-    raw_format = project_config_data.get("production_format")
-    if isinstance(raw_format, str) and raw_format.strip():
-        style_modifier = _LEGACY_FORMAT_STYLE_MODIFIERS.get(raw_format)
-        if style_modifier:
-            lines.append(f"Visual medium: {raw_format}. {style_modifier}")
-        else:
-            lines.append(f"Visual medium: {raw_format}.")
-
-    return lines
-
-
-def _legacy_intent_mood_context(intent_mood_data: dict[str, Any] | None) -> list[str]:
-    if not isinstance(intent_mood_data, dict):
-        return []
-
-    lines: list[str] = []
-    mood_descriptors = _string_list(intent_mood_data.get("mood_descriptors"))
-    if mood_descriptors:
-        lines.append(f"Mood descriptors: {', '.join(mood_descriptors)}.")
-
-    reference_films = _string_list(intent_mood_data.get("reference_films"))
-    if reference_films:
-        lines.append(f"Reference films: {', '.join(reference_films)}.")
-
-    natural_language_intent = intent_mood_data.get("natural_language_intent")
-    if isinstance(natural_language_intent, str) and natural_language_intent.strip():
-        lines.append(f"Intent brief: {_ensure_sentence(natural_language_intent)}")
-
-    style_preset_id = intent_mood_data.get("style_preset_id")
-    if isinstance(style_preset_id, str) and style_preset_id.strip():
-        lines.append(f"Style preset: {style_preset_id.strip()}.")
-
-    return lines
-
-
-def _project_fixture() -> tuple[dict[str, Any], dict[str, Any]]:
-    project_config = {
-        "title": "The Mariner",
-        "format": "screenplay",
-        "genre": ["nautical drama"],
-        "tone": ["bleak", "windswept"],
-        "estimated_duration_minutes": 2.0,
-        "primary_characters": ["mara"],
-        "supporting_characters": ["owen"],
-        "location_count": 2,
-        "locations_summary": ["harbour", "lighthouse"],
-        "target_audience": "adults",
-        "aspect_ratio": "2.39:1",
-        "production_mode": "ai_generated",
-        "production_format": "animation_3d",
-        "human_control_mode": "advisory",
-        "style_packs": {},
-        "budget_cap_usd": 250.0,
-        "default_model": "claude-sonnet-4-6",
-        "confirmed": True,
-    }
-    intent_mood = {
-        "scope": "project",
-        "scene_id": None,
-        "mood_descriptors": ["lonely", "ominous"],
-        "reference_films": ["The Lighthouse"],
-        "filmmaker_anchors": ["Robert Eggers"],
-        "style_preset_id": None,
-        "natural_language_intent": "Make the world feel ancient and judging.",
-        "look_notes": "Salt-crusted wardrobe and cold cyan palette.",
-        "user_approved": False,
-    }
-    return project_config, intent_mood
-
-
 def _inject_taste_assets(project_dir: Path) -> list[dict[str, Any]]:
     service = InjectedAssetService(project_dir)
     service.inject_asset(
@@ -238,7 +76,7 @@ def _inject_taste_assets(project_dir: Path) -> list[dict[str, Any]]:
         target_id="project",
         purpose="mood_board",
         filename="storm_palette_board.jpg",
-        content=_jpeg_bytes(),
+        content=jpeg_bytes(),
         lock_status="soft_locked",
         content_type="image/jpeg",
     )
@@ -283,8 +121,8 @@ def _design_study_prompts(
 
     legacy_parts = [synthesize_image_prompt("location", entity_bible)]
     legacy_parts.extend(_look_and_feel_context(look_and_feel))
-    legacy_parts.extend(_legacy_project_config_context(project_config))
-    legacy_parts.extend(_legacy_intent_mood_context(intent_mood))
+    legacy_parts.extend(legacy_project_config_context(project_config))
+    legacy_parts.extend(legacy_intent_mood_context(intent_mood))
     legacy_prompt = " ".join(part.strip() for part in legacy_parts if part and part.strip())
 
     new_prompt, new_sources = build_image_prompt(
@@ -433,7 +271,7 @@ NEW:
 
 def main() -> None:
     args = _parse_args()
-    project_config, intent_mood = _project_fixture()
+    project_config, intent_mood = project_fixture()
     look_and_feel = {
         "scene_id": "scene_001",
         "lighting_concept": "Single-source lantern light with hard monitor highlights.",
@@ -471,20 +309,44 @@ def main() -> None:
             injected_manifest_payloads=injected_manifest_payloads,
         )
 
+    design_verdict = deterministic_lane_verdict(
+        design_study["legacy_prompt"],
+        design_study["new_prompt"],
+    )
+    render_verdict = deterministic_lane_verdict(
+        render_adapter["legacy_prompt"],
+        render_adapter["new_prompt"],
+    )
+    repo_root = Path(__file__).resolve().parents[1]
     report: dict[str, Any] = {
         "story": 141,
+        "contract_version": "story-141-creative-brief-probe-v2",
+        "evidence_scope": (
+            "One repo-authored synthetic prompt fixture. Deterministic signal preservation "
+            "is regression evidence only; it is not conversational creative-quality or "
+            "production-render evidence."
+        ),
+        "contract_fingerprints": {
+            "runner_sha256": file_sha256(Path(__file__).resolve()),
+            "support_sha256": file_sha256(
+                repo_root / "scripts" / "story_141_creative_brief_probe_support.py"
+            ),
+        },
+        "judge_execution": {
+            "requested": args.run_judge,
+            "paid_live_call": args.run_judge,
+        },
         "deterministic_checks": {
             "design_study": {
-                "legacy": _signal_presence(design_study["legacy_prompt"]),
-                "new": _signal_presence(design_study["new_prompt"]),
+                **design_verdict,
                 "new_sources_used": design_study["new_sources_used"],
             },
             "render_adapter": {
-                "legacy": _signal_presence(render_adapter["legacy_prompt"]),
-                "new": _signal_presence(render_adapter["new_prompt"]),
+                **render_verdict,
                 "new_sources_used": render_adapter["new_sources_used"],
             },
         },
+        "deterministic_pass": bool(design_verdict["pass"] and render_verdict["pass"]),
         "artifacts": {
             "design_study_brief": design_study["brief"],
             "render_adapter_brief": render_adapter["brief"],
@@ -492,7 +354,7 @@ def main() -> None:
         "judge": None,
     }
 
-    if not args.skip_judge:
+    if args.run_judge:
         report["judge"] = _judge_prompts(
             judge_model=args.judge_model,
             design_study=design_study,
@@ -501,6 +363,7 @@ def main() -> None:
 
     output = json.dumps(report, indent=2)
     if args.output is not None:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(output + "\n", encoding="utf-8")
     print(output)
 

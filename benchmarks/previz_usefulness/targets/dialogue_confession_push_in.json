@@ -1,0 +1,59 @@
+{
+  "clip_id": "dialogue_confession_push_in",
+  "title": "Dialogue confession push-in generation-intent target",
+  "source_type": "synthetic_previz",
+  "source_description": "Frame-observable scoring projection of the retained Story 143 generation brief in benchmarks/previz_usefulness/cases.json; not derived from any candidate output.",
+  "rights": "Project-owned synthetic benchmark contract",
+  "duration_seconds": 4.0,
+  "resolution": "candidate-native 480p or 720p",
+  "has_audio": true,
+  "transcript": null,
+  "audio_description": null,
+  "summary_reference": "A cool blue locked two-shot moves closer to two distinct subjects; the hesitant right-hand speaker keeps a white envelope visible.",
+  "required_keywords": [
+    "blue",
+    "subjects",
+    "envelope",
+    "closer"
+  ],
+  "tone_tags": [
+    "intimate",
+    "regretful"
+  ],
+  "emotion_tags": [
+    "hesitation",
+    "vulnerability"
+  ],
+  "color_tags": [
+    "navy",
+    "teal"
+  ],
+  "camera_tags": [
+    "locked_two_shot",
+    "slow_push_in"
+  ],
+  "motion_tags": [
+    "measured"
+  ],
+  "continuity_status": "intact",
+  "continuity_notes": [
+    "The white envelope remains with the right-hand speaker across the ordered frames."
+  ],
+  "audio_tags": [],
+  "clip_tags": [
+    "dialogue",
+    "quiet_emotion"
+  ],
+  "anchor_subset": true,
+  "weights": {
+    "summary": 0.2,
+    "tone": 0.12,
+    "emotion": 0.08,
+    "color": 0.12,
+    "camera": 0.14,
+    "motion": 0.12,
+    "continuity": 0.14,
+    "audio": 0.0,
+    "evidence": 0.08
+  }
+}

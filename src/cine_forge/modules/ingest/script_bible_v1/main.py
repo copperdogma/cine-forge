@@ -16,6 +16,8 @@ from cine_forge.schemas import ArtifactHealth, ScriptBible
 logger = logging.getLogger(__name__)
 
 DEFAULT_WORK_MODEL = "gemini-3.5-flash-lite"
+DEFAULT_MAX_TOKENS = 65_536
+DEFAULT_THINKING_LEVEL = "minimal"
 
 EXTRACTION_PROMPT = """\
 You are a professional script reader and story analyst. Read the following \
@@ -76,7 +78,7 @@ def run_module(
         or runtime_params.get("model")
         or DEFAULT_WORK_MODEL
     )
-    max_tokens = int(params.get("max_tokens", 4096))
+    max_tokens = int(params.get("max_tokens", DEFAULT_MAX_TOKENS))
 
     logger.info("Extracting script bible via %s...", work_model)
 
@@ -86,13 +88,19 @@ def run_module(
         bible_data = _mock_script_bible()
         cost = _empty_cost(work_model)
     else:
+        call_options: dict[str, Any] = {
+            "prompt": prompt,
+            "model": work_model,
+            "response_schema": ScriptBible,
+            "max_tokens": max_tokens,
+            "fail_on_truncation": True,
+        }
+        if _bare_model_name(work_model) == DEFAULT_WORK_MODEL:
+            call_options["thinking_level"] = str(
+                params.get("thinking_level", DEFAULT_THINKING_LEVEL)
+            )
         bible, cost = call_llm(
-            prompt=prompt,
-            model=work_model,
-            response_schema=ScriptBible,
-            max_tokens=max_tokens,
-            temperature=0.0,
-            fail_on_truncation=True,
+            **call_options,
         )
         assert isinstance(bible, ScriptBible)
         bible_data = bible.model_dump(mode="json")
@@ -139,6 +147,11 @@ def _extract_canonical_script(inputs: dict[str, Any]) -> dict[str, Any]:
             "Upstream normalize output is blank."
         )
     return payload
+
+
+def _bare_model_name(model: str) -> str:
+    """Return a provider-prefix-free model name for model-specific transport options."""
+    return model.rsplit(":", 1)[-1]
 
 
 def _mock_script_bible() -> dict[str, Any]:

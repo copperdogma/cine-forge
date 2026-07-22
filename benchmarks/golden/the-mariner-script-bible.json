@@ -1,7 +1,7 @@
 {
   "title": "The Mariner",
-  "genre_keywords": ["action", "thriller", "superhero", "vigilante", "crime"],
-  "tone_keywords": ["gritty", "emotional", "dark", "intense"],
+  "genre_keywords": ["action", "thriller", "superhero", "vigilante", "crime", "comedy"],
+  "tone_keywords": ["gritty", "emotional", "dark", "intense", "darkly comedic", "irreverent", "black comedy", "satirical"],
   "must_include_title": "The Mariner",
   "act_count_min": 2,
   "act_count_max": 4,
@@ -10,22 +10,202 @@
     "narrative_arc", "genre", "tone", "protagonist_journey",
     "central_conflict", "setting_overview", "confidence"
   ],
-  "logline_keywords": ["mariner", "father", "sister", "vigilante", "truth"],
-  "protagonist_keywords": ["mariner", "billy", "will", "vigilante", "fisherman"],
+  "logline_keywords": ["mariner", "vigilante", "gang", "salvatori", "building", "floor"],
+  "protagonist_keywords": ["mariner", "billy", "vigilante"],
   "must_include_themes": [
-    {"keywords": ["father", "dad", "family", "legacy"], "description": "father/legacy theme"},
-    {"keywords": ["identity", "hero", "truth", "illusion", "deception"], "description": "identity/truth theme"}
+    {"keywords": ["father", "dad", "legacy", "abuse", "abandon"], "description": "father/legacy theme"},
+    {"keywords": ["identity", "hero", "truth", "illusion", "deception"], "description": "identity/truth theme"},
+    {"keywords": ["family", "sibling", "sister", "loyalty"], "description": "sibling/family loyalty theme"}
   ],
-  "must_include_conflict_keywords": ["father", "salvatori", "sister", "gang", "truth", "rose"],
-  "setting_keywords": ["building", "dock", "coastline", "newfoundland", "gang"],
+  "must_include_conflict_keywords": ["father", "salvatori", "sister", "gang", "truth", "rose", "crypto", "password"],
+  "setting_keywords": ["post-collapse", "ruined city", "urban", "ruddy", "greene", "building", "15th floor"],
   "protagonist_journey_keywords": ["father", "hero", "truth", "redefin", "identity", "sister"],
+  "source_headings": [
+    "EXT. CITY CENTRE - NIGHT",
+    "EXT. RUDDY & GREENE BUILDING - FRONT - NIGHT",
+    "EXT. RUDDY & GREENE BUILDING - REAR - NIGHT",
+    "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+    "INT. 11TH FLOOR - CONTINUOUS",
+    "BEGIN FLASHBACK: EXT. COASTLINE - DAY - PAST",
+    "INT. STAIRWELL - CONTINUOUS",
+    "INT. 12TH FLOOR STAIRWELL - CONTINUOUS",
+    "INT. 13TH FLOOR",
+    "INT. 15TH FLOOR",
+    "BEGIN FLASHBACK: EXT. BACKYARD - DAY - PAST",
+    "EXT. BACKYARD - DAY - (FLASHBACK)",
+    "INT. STAIRWELL - (BACK TO PRESENT)",
+    "EXT. COASTLINE - DAY - (FLASHBACK)",
+    "EXT. BACKYARD - DAY - (FLASHBACK)"
+  ],
+  "required_story_events": [
+    {
+      "description": "Mariner gets Rose out of the gang-held building",
+      "keywords": ["rescues Rose", "saves Rose", "gets Rose out", "frees Rose"],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Mariner hid the AirTag in Rose's purse",
+      "keywords": ["AirTag", "purse"],
+      "minimum_matches": 2
+    },
+    {
+      "description": "The AirTag let Mariner find or track Rose",
+      "keywords": [
+        "AirTag let him track her",
+        "AirTag let Mariner track Rose",
+        "tracked Rose with the AirTag",
+        "found Rose with the AirTag",
+        "AirTag led Mariner to Rose"
+      ],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Rose makes them return for her purse",
+      "keywords": [
+        "return for the purse",
+        "go back for the purse",
+        "retrieve the purse",
+        "returns for her purse"
+      ],
+      "minimum_matches": 1
+    },
+    {
+      "description": "The purse lining contains the memory-stick chip carrying the blockchain password",
+      "keywords": ["purse", "memory stick", "password"],
+      "minimum_matches": 3
+    },
+    {
+      "description": "The password is tied to roughly twenty million",
+      "keywords": ["20 million", "20 mil", "twenty million"],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Rose stole the password-controlled money from the gang",
+      "keywords": ["gang money", "money stolen from the gang", "stolen gang funds"],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Mariner uses the oar against thugs at the elevator",
+      "keywords": ["elevator", "oar"],
+      "minimum_matches": 2
+    },
+    {
+      "description": "Mariner uses the flare gun against Vinnie on the thirteenth floor",
+      "keywords": [
+        "flare gun against Vinnie on the 13th floor",
+        "flare gun against Vinnie on the thirteenth floor",
+        "shoots Vinnie with a flare gun",
+        "fires a flare gun at Vinnie"
+      ],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Rose reveals that Dad is alive in Chimney Bay",
+      "keywords": ["Dad", "alive", "Chimney Bay"],
+      "minimum_matches": 3
+    },
+    {
+      "description": "The corrected memories expose Dad's abuse",
+      "keywords": ["abuse", "abusive", "punches him", "kicked the crap out of him"],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Rose reveals that Dad abandoned Mariner",
+      "keywords": ["abandoned", "abandonment", "deadbeat father"],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Salvatori holds Rose at gunpoint",
+      "keywords": [
+        "Salvatori holds Rose at gunpoint",
+        "Salvatori points his gun at Rose",
+        "Salvatori points a gun at Rose",
+        "Salvatori threatens Rose with a gun"
+      ],
+      "minimum_matches": 1
+    },
+    {
+      "description": "The thugs take Mariner's oar and force him to his knees",
+      "keywords": [
+        "thugs take Mariner's oar and force him to his knees",
+        "thugs disarm and kneel Mariner",
+        "Mariner is disarmed and forced to kneel",
+        "thugs take the oar and kick Mariner to his knees"
+      ],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Salvatori demands the memory stick from Rose",
+      "keywords": ["Salvatori demands the memory stick", "memory stick, Rosey"],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Salvatori demands the password from Rose",
+      "keywords": ["Salvatori demands the password", "password, Rose", "password from Rose"],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Rose affirms that Mariner became a real hero",
+      "keywords": [
+        "Rose calls Mariner a real hero",
+        "Rose says Mariner is a real hero",
+        "Rose affirms Mariner is a real hero",
+        "Rose says he became a real hero",
+        "Rose says he became a real one"
+      ],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Rose says Mariner never backs down from a fight",
+      "keywords": ["never backs down from a fight", "does not back down from a fight"],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Mariner smiles at Rose's affirmation",
+      "keywords": ["Mariner smiles", "Mariner's smile", "smile crosses Mariner's face"],
+      "minimum_matches": 1
+    },
+    {
+      "description": "Mariner clenches his hands into fists",
+      "keywords": ["clenches his hands into fists", "clenches his fists", "clenched fists"],
+      "minimum_matches": 1
+    },
+    {
+      "description": "The screenplay cuts to black",
+      "keywords": ["cuts to black", "cut to black"],
+      "minimum_matches": 1
+    },
+    {
+      "description": "The final confrontation remains unresolved",
+      "keywords": [
+        "before the fight resolves",
+        "fight remains unresolved",
+        "outcome remains unresolved",
+        "outcome is unknown",
+        "without resolving the fight",
+        "confrontation remains unresolved"
+      ],
+      "minimum_matches": 1
+    }
+  ],
+  "forbidden_claim_patterns": [
+    "(?i)\\b(?:dock|docks|dockside)\\b",
+    "(?i)\\bnewfoundland\\b",
+    "(?i)\\b(?:mariner|billy|will|rose)\\b.{0,80}\\b(?:defeat(?:s|ed)?|kill(?:s|ed)?|overpower(?:s|ed)?|subdu(?:e|es|ed)|captur(?:e|es|ed)|triumph(?:s|ed)?|beat(?:s)?|wins?)\\s+(?:(?:against|over)\\s+)?(?:the\\s+)?salvatori\\b|\\bsalvatori\\b.{0,80}\\b(?:is defeated|is killed|dies|loses the fight|is subdued|is overpowered|is captured)\\b",
+    "(?i)\\bsalvatori\\b.{0,80}\\b(?:defeat(?:s|ed)?|kill(?:s|ed)?|shoots?|shot|murder(?:s|ed)?|subdu(?:e|es|ed)|overpower(?:s|ed)?)\\s+(?:the\\s+)?(?:mariner|billy|will|rose)\\b",
+    "(?i)\\b(?:mariner|billy|will|salvatori)\\b.{0,60}\\b(?:wins?|won|prevails?|prevailed|emerges? victorious)\\b.{0,80}\\b(?:final (?:fight|confrontation)|fight with salvatori)\\b|\\b(?:final (?:fight|confrontation)|fight with salvatori)\\b.{0,80}\\b(?:is won by|victory for)\\s+(?:the\\s+)?(?:mariner|billy|will|salvatori)\\b",
+    "(?i)\\b(?:final (?:fight|confrontation)|fight with salvatori)\\b.{0,100}\\b(?:ends?|ended|resolves?|resolved|concludes?|concluded)\\b.{0,80}\\b(?:victory|defeat|death|escape|capture)\\b",
+    "(?i)\\bsalvatori\\b.{0,80}\\b(?:escapes?|escaped|flees?|fled|gets away|got away)\\b|\\b(?:escapes?|escaped|flees?|fled)\\b.{0,80}\\bsalvatori\\b"
+  ],
   "synopsis_min_length": 200,
   "logline_max_length": 300,
   "_notes": [
     "Title MUST be 'The Mariner'",
-    "At least 2 themes required — father/legacy and identity/truth are the core ones",
-    "Central conflict must reference the father revelation or Rose's predicament",
-    "Genre is action-thriller/superhero, not pure drama",
-    "Act structure must be 2-4 acts (3-act is most natural)"
+    "At least 3 themes required — father/legacy, identity/truth, and sibling/family loyalty are core",
+    "Central conflict should cover both the external gang threat over Rose's stolen crypto password and the internal rupture caused by the truth about Mariner's father",
+    "Supported genre labels include action-thriller, superhero/vigilante, crime, and action-comedy; not pure drama or pure comedy",
+    "Act structure must be 2-4 acts (3-act is most natural)",
+    "Do not infer a dock or Newfoundland setting; neither is identified in the screenplay",
+    "The screenplay cuts to black before the final fight resolves; do not invent the confrontation's outcome"
   ]
 }

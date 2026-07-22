@@ -13,6 +13,8 @@ from cine_forge.modules.world_building.entity_discovery_v1.main import (
     run_module,
 )
 
+pytestmark = pytest.mark.unit
+
 _SCRIPT = {
     "script_text": "INT. OFFICE - DAY\n\nAbe enters. He carries a RARE COIN.",
     "title": "Test",

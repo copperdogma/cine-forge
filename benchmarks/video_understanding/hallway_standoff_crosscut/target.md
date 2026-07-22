@@ -1,11 +1,10 @@
-# Hallway standoff cross-cut
+# Ordered JPEG frame-packet reference
 
-- Summary: A tense hallway standoff cross-cuts between two profiles as each side waits for the other to move.
+- Summary: Two abstract profiles jump to slightly different positions after the midpoint while a pale rectangle stays at frame right.
 - Tone: tense
-- Emotion: anger, suspicion
+- Emotion: [none]
 - Color / grade: desaturated
-- Camera language: cross_cut, profile_closeup
-- Motion: abrupt_cut
-- Continuity: intact — The silver knife stays at the same side of frame when the aggressor returns.
-- Audio intent: speech
-- Transcript: Take one more step and this hallway closes on both of us.
+- Camera language inferable from the ordered samples: cross_cut, profile_closeup
+- Motion inferable from the ordered samples: abrupt_cut
+- Continuity: intact - The pale rectangle remains at frame right on both sides of the position change.
+- Audio: unavailable to the subject and excluded from scoring

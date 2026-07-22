@@ -1,0 +1,61 @@
+{
+  "characters": {
+    "required": ["ARIA", "NOAH", "JUNE", "KELL", "MAYA"],
+    "acceptable_aliases": {
+      "UNKNOWN VOICE": ["UNKNOWN VOICE (RADIO)"]
+    },
+    "optional": ["UNKNOWN VOICE"],
+    "excluded": ["COMET"]
+  },
+  "locations": {
+    "required": [
+      "COMMUNITY RADIO STUDIO",
+      "WATER TOWER CATWALK",
+      "HIGH SCHOOL GYM SHELTER"
+    ],
+    "acceptable_aliases": {
+      "COMMUNITY RADIO STUDIO": ["RADIO STUDIO"],
+      "WATER TOWER CATWALK": ["WATER TOWER", "CATWALK"],
+      "HIGH SCHOOL GYM SHELTER": ["HIGH SCHOOL GYM", "GYM SHELTER"]
+    },
+    "optional": ["RED CREEK", "NORTH SHELTER"],
+    "excluded": []
+  },
+  "props": {
+    "required": [
+      "PORTABLE ANTENNA",
+      "ON AIR SIGN",
+      "MISSING DOG FLYER",
+      "HANDHELD RECEIVER"
+    ],
+    "acceptable_aliases": {
+      "PORTABLE ANTENNA": ["ANTENNA"],
+      "ON AIR SIGN": ["ON AIR"],
+      "MISSING DOG FLYER": ["FLYER", "MAYA'S FLYER"],
+      "HANDHELD RECEIVER": ["RECEIVER"],
+      "DENTED LANTERN": ["LANTERN"],
+      "TABLETOP RADIO": ["RADIO"]
+    },
+    "optional": [
+      "WHITEBOARD",
+      "DENTED LANTERN",
+      "TABLETOP RADIO",
+      "OPEN FREQUENCY SIGN"
+    ],
+    "excluded": [
+      "CANVAS TOOL BAG",
+      "BRASS-HEAVY CASSETTE CUE",
+      "DAY TWO NOTEBOOK",
+      "HAND-DRAWN MAP",
+      "LOAF OF WARM BREAD"
+    ]
+  },
+  "_notes": [
+    "Required entities are named or clearly individualized by the source and are production-significant.",
+    "UNKNOWN VOICE is optional because the radio plea changes the plot, but the generic one-line cue does not clearly warrant a full character bible.",
+    "COMET is a named animal and belongs in scene presence, not the people-only entity-discovery character category.",
+    "NORTH SHELTER is optional because it is plot-consequential and named in dialogue and on the whiteboard, but it is not a staged scene location.",
+    "OPEN FREQUENCY SIGN is optional because the new door sign carries the title motif, but it remains secondary to the operational ON AIR sign.",
+    "The five machine-readable excluded props are explicit but minor set dressing; ordinary batteries, other signs, furniture, and clothing remain out of the required truth."
+  ]
+}

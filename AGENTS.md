@@ -151,8 +151,9 @@ These rules prevent the accumulation of god objects and untyped interfaces. They
 - **Resume from stage**: `PYTHONPATH=src python -m cine_forge.driver --recipe configs/recipes/recipe-test-echo.yaml --start-from echo --run-id test-002`
 
 ### Test Commands
-- **Unit tests**: `.venv/bin/python -m pytest -m unit` (not system pytest — version mismatch)
-- **Lint**: `.venv/bin/python -m ruff check src/ tests/`
+- **Unit tests**: `PYTHONPATH=src .venv/bin/python -m pytest tests/unit -m unit` (not system pytest — version mismatch)
+- **Lint**: `PYTHONPATH=src .venv/bin/python -m ruff check src/ tests/`
+- **Worktree import safety**: always keep `PYTHONPATH=src` (or use a Make target, which sets it). A shared editable virtualenv may otherwise import `cine_forge` from a sibling checkout and produce a false-green or false-red result for the current worktree.
 - **Backend smoke fallback**: if `uvicorn` is unavailable in the active Python env but FastAPI CLI is installed, use `fastapi run src/cine_forge/api/app.py --host 127.0.0.1 --port 8000 --app app` for local browser/API smoke checks.
 
 ### Deep Research
@@ -183,7 +184,7 @@ For multi-model research tasks, use the `deep-research` CLI tool (v0.3.3+).
 
 ### Model Benchmarking (promptfoo)
 
-We use [promptfoo](https://www.promptfoo.dev/) for evaluating AI model quality across pipeline tasks. Benchmark workspace lives in a separate git worktree (`cine-forge-sidequests`), currently on the existing user-managed branch `sidequests/model-benchmarking`. New agent-created branches elsewhere should use `codex/*`.
+We use [promptfoo](https://www.promptfoo.dev/) for evaluating AI model quality across pipeline tasks. The maintained task, prompt, scorer, golden, result, and registry contracts live together in the active CineForge checkout. Run and record evidence from the same exact checkout; do not combine a sidequest task with a different checkout's registry. New agent-created branches should use `codex/*`.
 
 Runbook: `docs/runbooks/promptfoo.md`
 
@@ -208,7 +209,7 @@ benchmarks/
 
 #### Running Benchmarks
 ```bash
-# From the benchmarks/ directory in the sidequests worktree:
+# From the benchmarks/ directory in the active evidence checkout:
 source ~/.nvm/nvm.sh && nvm use 24 > /dev/null 2>&1
 
 # Run a benchmark (no cache for reproducibility)
@@ -228,10 +229,13 @@ promptfoo eval -c tasks/character-extraction.yaml --grader anthropic:messages:cl
 
 **Default**: promptfoo uses `gpt-5` (OpenAI) for `llm-rubric` assertions when `OPENAI_API_KEY` is set.
 
-**Our standard**: Use **`claude-opus-4-6`** as the judge for all evals. Rationale:
-- The judge must be at least as capable as the models being tested (we test GPT-5.2, Opus 4.6, and Gemini 2.5 Pro).
-- Cross-provider judging reduces same-provider bias (Claude judging OpenAI/Google outputs and vice versa).
-- Opus 4.6 has the strongest reasoning capabilities available.
+**Our standard**: Use **`claude-opus-4-6`** as the pinned judge for maintained
+eval comparability. This is a reproducibility choice, not a claim that it is the
+current strongest model. Run `/discover-models` before creating or materially
+refreshing an eval. Cross-provider judging applies only when the subject is not
+Anthropic; an Anthropic subject judged by Opus is same-provider evidence and
+needs independent corroboration or an alternate-provider judge before an
+adoption decision.
 
 **Provider prefixes**: `openai:`, `anthropic:messages:`, `google:` (uses `GEMINI_API_KEY`). Always evaluate models from all three providers.
 
@@ -278,6 +282,13 @@ Every eval should use both:
 
 A test case passes only if *both* assertions pass. This is intentional — Mini scored 0.915 on a Python scorer but 0.62 on the LLM judge for the same output, meaning the judge caught shallow reasoning the structural check missed.
 
+**Score/pass consistency is mandatory.** If a deterministic scorer fails a
+hard semantic contract, its returned numeric score must be strictly below that
+scorer's declared pass threshold after rounding; preserve any higher raw score
+in diagnostics only. Reports, model rankings, and adoption/default logic must
+also require every assertion pass flag and hard constraint. Never promote an
+arithmetic mean assembled from failed components.
+
 #### Expected-Fail Semantics
 
 Compromise and detection evals are capability detectors, not runtime-default gates.
@@ -290,10 +301,22 @@ Compromise and detection evals are capability detectors, not runtime-default gat
 
 - **`max_tokens` is NOT set by default for OpenAI models.** Always set `max_tokens` in provider config or outputs will truncate silently (producing invalid JSON). Anthropic requires it; OpenAI doesn't enforce it but needs it for long outputs.
 - **Gemini thinking models can silently exhaust low output caps.** For Gemini 3.x and similar thinking-capable models, a low `max_tokens` / `maxOutputTokens` budget can be consumed by hidden reasoning before the visible JSON finishes. On strict-JSON evals, inspect `usageMetadata.totalTokenCount - promptTokenCount`, not just visible completion tokens, and use a generous output cap.
+- **Provider identity and cost evidence must remain replayable.** Retain the
+  provider-owned response ID, returned model, and raw usage. Identity is exact
+  except that an undated OpenAI alias may resolve to its same-base
+  `YYYY-MM-DD` snapshot and the one enumerated legacy Anthropic alias may
+  resolve to its known snapshot; Anthropic 4.6+, Gemini, and xAI are exact.
+  Never use prefix or label similarity. Require real nonnegative integer
+  counters and reconcile prompt, visible, hidden/reasoning, and total tokens
+  before pricing or recording a result. For Gemini this means raw `responseId`,
+  `modelVersion`, and `usageMetadata`.
 - **`---` in prompt files is a prompt separator.** Promptfoo treats `---` as a delimiter between multiple prompts. Use `==========` or another delimiter if you need a visual separator in your prompt text.
 - **`file://` paths resolve relative to the config file**, not CWD. A config at `tasks/foo.yaml` referencing `file://../prompts/bar.txt` resolves to `prompts/bar.txt` from the `benchmarks/` root.
 - **`file://` in test vars loads content, not path.** If a scorer needs a file *path* (to load itself), use a plain string without `file://` prefix.
-- **Anthropic models wrap output in ```json blocks.** Scorers must handle this (strip markdown fences before JSON.parse). The scorer should still work but may penalize slightly (0.9 vs 1.0 for JSON validity).
+- **Strict-JSON lanes require bare JSON.** Markdown fences or prose wrappers are
+  contract failures unless that task explicitly declares a wrapper-tolerant
+  format. Do not silently strip them in strict scorers; fix the provider or
+  prompt contract instead.
 - **Exit code 100 = test failures**, not system errors. This is normal when models fail assertions.
 - **`--dry-run` doesn't exist.** Use `--filter-first-n 1` to validate config with a single test case.
 - **Concurrency**: Use `-j N` to control parallelism. `-j 3` is a good default (avoids rate limits while keeping runs under 10 min).
@@ -317,33 +340,52 @@ All eval scores, targets, and improvement attempts are tracked in **`docs/evals/
 - **Discover available models**: `.venv/bin/python scripts/discover-models.py --summary`
 - **Triage what to work on next**: `/triage` for cross-system prioritization, `/triage-evals` for eval-only triage
 - **Improve an eval**: `/improve-eval`
-- **Re-run for a new model**: Add provider block to `benchmarks/tasks/*.yaml` → `promptfoo eval -c tasks/<name>.yaml --no-cache --filter-providers "ModelName" -j 3` → update `docs/evals/registry.yaml` with new scores
+- **Re-run for a new model**: Add a provider block to `benchmarks/tasks/*.yaml`
+  → `(cd benchmarks && promptfoo eval -c tasks/<name>.yaml --no-cache
+  --filter-providers "ModelName" -j 3)` → update
+  `docs/evals/registry.yaml` from the repository root with that exact result
+- **Registry updates require current task provenance**: a retained result may update scores only when its selected provider config and exact requested/returned model identity, provider response ID/raw usage, prompt bytes, test vars/assertions/rubrics, grader/default options, and exact case matrix match the current task. Retained JSON must have no duplicate keys. Stale or non-replayable results remain available to print-only diagnostics but cannot be promoted into current registry evidence.
 - **Close out with an adoption recommendation**: After any eval or model-slot refresh, report whether to adopt, where to adopt it, and the reasoning behind that decision.
 
-All evals use dual scoring (Python structural scorer + LLM rubric), judge = Opus 4.6. Benchmark configs live in `benchmarks/tasks/`.
+Maintained Promptfoo semantic-quality lanes use deterministic scoring plus an
+LLM rubric where applicable, with Opus 4.6 as the judge. Custom runtime and
+compromise detectors use the runner and evidence contracts declared in the
+registry. Benchmark configs live in `benchmarks/tasks/`.
 
 #### Value-Optimized Module Defaults
 
-Every module default is backed by eval evidence. Selections use **value analysis** (quality per dollar), not just peak quality. Scored in Story 107 (2026-03-02). Full data in `docs/evals/registry.yaml`.
+Module defaults should be backed by eval evidence and use **value analysis**
+(quality per dollar), not just peak quality. Story 208 found that every legacy
+score used by this table predates at least one material truth-contract repair;
+`entity_graph_v1` also relied on a full-screenplay capability benchmark that
+does not exercise its runtime boundary. The configured defaults are retained to
+avoid replacing one unproven choice with another, but all are provisional until
+fresh repaired-contract evidence is recorded. Full historical data and evidence
+status live in `docs/evals/registry.yaml`.
 
 | Module | Param | Default | Quality | Cost/call | Rationale |
 |--------|-------|---------|---------|-----------|-----------|
-| `character_bible_v1` | `model` | `claude-sonnet-4-6` | 0.952 | $0.054 | Quality leader; cheaper tiers fall below 5% quality floor |
-| `location_bible_v1` | `model` | `claude-sonnet-4-6` | 0.922 | $0.025 | Strong mid-tier, much cheaper than Opus (old default) |
-| `prop_bible_v1` | `model` | `claude-sonnet-4-6` | 0.916 | $0.022 | Quality leader on structured prop extraction |
-| `entity_graph_v1` | `model` | `gemini-2.5-flash` | 0.995 | $0.002 | Tied top quality at 31x cheaper than Sonnet 4.6 |
-| `project_config_v1` | `model` | `gemini-3-flash-preview` | 0.953 | $0.001 | Triple winner: quality + cost + latency (13s) |
-| `project_config_v1` | `qa_model` | `gpt-4.1-mini` | 1.000 | $0.001 | Perfect QA score, cheapest model |
-| `script_normalize_v1` | `model` | `claude-haiku-4-5-20251001` | 0.954 | $0.002 | 1% gap vs GPT-4.1, $0.002, 2.3s — best holistic for high-stakes norm |
-| `script_normalize_v1` | `qa_model` | `gpt-4.1-mini` | 1.000 | $0.001 | Perfect QA score |
-| `scene_analysis_v1` | `work_model` | `claude-sonnet-4-6` | 0.890 | $0.011 | Only model above 5% quality floor for scene enrichment |
-| `scene_analysis_v1` | `qa_model` | `gpt-4.1-mini` | 1.000 | $0.001 | Perfect QA score, replaces Haiku 4.5 |
-| `script_bible_v1` | `work_model` | `gemini-2.5-flash-lite` | 0.885 | $0.001 | 7.8s, value=1000; Sonnet 4.6 is *worse* (0.863, 73s, $0.066) |
-| `entity_discovery_v1` | `discovery_model` | `gemini-2.5-flash-lite` | 0.905 | $0.001 | 2.0s, value=1698, 13x cheaper than Haiku 4.5 |
-| `continuity_tracking_v1` | `work_model` | `claude-haiku-4-5-20251001` | 0.948 | $0.010 | Updated Story 092 — 5% gap vs Sonnet at 5x lower cost |
-| `scene_breakdown_v1` | `work_model` | `claude-haiku-4-5-20251001` | — | — | Boundary validation only; no cheap model gap identified |
+| `character_bible_v1` | `model` | `claude-sonnet-4-6` | — | — | Provisional; expanded 13-case, two-corpus contract awaits a fresh run |
+| `location_bible_v1` | `model` | `claude-sonnet-4-6` | — | — | Provisional; strict nine-location runtime-schema proxy awaits a fresh run |
+| `prop_bible_v1` | `model` | `claude-sonnet-4-6` | — | — | Provisional; strict seven-prop runtime-schema proxy awaits a fresh run |
+| `entity_graph_v1` | `model` | `gemini-2.5-flash` | — | — | Provisional legacy default; the 0.995 result is capability-only and must not drive runtime selection |
+| `project_config_v1` | `model` | `gemini-3-flash-preview` | — | — | Provisional; strict metadata schema and semantic gates await a fresh run |
+| `project_config_v1` | `qa_model` | `gpt-4.1-mini` | — | — | Provisional; the repaired source-faithful QA pair awaits a fresh run |
+| `script_normalize_v1` | `model` | `claude-haiku-4-5-20251001` | — | — | Provisional; expanded source-fidelity and corrupted-Fountain contract awaits a fresh run |
+| `script_normalize_v1` | `qa_model` | `gpt-4.1-mini` | — | — | Provisional; the repaired source-faithful QA pair awaits a fresh run |
+| `scene_analysis_v1` | `work_model` | `claude-sonnet-4-6` | — | — | Provisional; strict source-grounded enrichment contract awaits a fresh run |
+| `scene_analysis_v1` | `qa_model` | `gpt-4.1-mini` | — | — | Provisional; the repaired source-faithful QA pair awaits a fresh run |
+| `script_bible_v1` | `work_model` | `gemini-3.5-flash-lite` | — | — | Provisional; adopted runtime default is retained while the two-screenplay full-source contract awaits a fresh run |
+| `entity_discovery_v1` | `discovery_model` | `gemini-2.5-flash-lite` | — | — | Provisional; two-screenplay exact inclusion/exclusion contract awaits a fresh run |
+| `continuity_tracking_v1` | `work_model` | `claude-haiku-4-5-20251001` | — | — | Provisional; strict one-to-one event and evidence contract awaits a fresh run |
+| `scene_breakdown_v1` | `work_model` | `claude-haiku-4-5-20251001` | — | — | Provisional; two-screenplay boundary/cast/evidence contract awaits a fresh run |
 
-**Key insight from Story 107**: Gemini models dramatically outperform Claude on full-screenplay tasks (script bible, entity discovery). Claude Sonnet 4.6 was the *worst* performing model on script bible (0.863 combined, 73.5s, $0.066). Gemini 2.5 Flash Lite achieved 0.885 at $0.00089 in 7.8s. Always re-eval when adding a new full-text module — model rankings invert at large context scales.
+**Historical hypothesis from Story 107**: the then-maintained single-corpus
+evidence suggested that Gemini could outperform Claude on full-screenplay tasks.
+Story 208 invalidated those exact numbers as current decision evidence after
+repairing the scorer/golden contracts and adding a second corpus. Retest the
+hypothesis on the repaired runtime-shaped lane whenever a full-text module is
+added; do not quote the old ranking as current fact.
 
 **Creative direction modules** (`editorial_direction_v1`, `intent_mood_v1`, `look_and_feel_v1`, `sound_and_music_v1`): Evaluated as smoke tests only — structural field-presence scorer + LLM rubric. Golden-reference comparison is not feasible because persona-driven outputs (Kubrick vs Tarantino director) are intentionally different. Detection mechanism for feasibility: when Opus can score its own creative outputs 0.95+ consistently across 3 different screenplays, revisit.
 
@@ -404,7 +446,7 @@ Current runbooks:
 - `create-eval.md` — Scaffold a new eval in the registry and benchmark workspace (skill: `/create-eval`)
 - `finish-and-push.md` — Bundled story closure plus validated landing flow (skill: `/finish-and-push`)
 - `golden-build.md` — Building hand-curated golden references and auditing eval mismatches (canonical bootstrap: `/setup-methodology`; day-to-day: `/golden-create`, `/golden-verify`)
-- `promptfoo.md` — Run, inspect, and record promptfoo benchmark passes in the sidequest eval workspace
+- `promptfoo.md` — Run, inspect, and record promptfoo benchmark passes from one exact evidence checkout
 - `setup-methodology.md` — Install or refresh the methodology package and canonical setup surface (skill: `/setup-methodology`)
 - `triage.md` — Cross-system routing to the highest-value next action (skill: `/triage`)
 - `triage-evals.md` — Cheap diagnosis of which eval, compromise gate, or stale benchmark needs attention next (skill: `/triage-evals`)
@@ -663,7 +705,10 @@ Treat this section as a living memory. Entry format: `YYYY-MM-DD — short title
 
 - 2026-02-22 — Config-driven parameterized pages with mandatory reuse directives: Replacing 4 near-identical list pages with a single `EntityListPage` parameterized by config map eliminated ~650 duplicated lines. Prevention requires explicit file-path directives in AGENTS.md (agents don't know where abstractions live unless told) plus `jscpd` automated detection. See `AGENTS.md > UI Development Workflow > Mandatory Reuse Directives`.
 - 2026-02-15 — Dual evaluation catches what code can't: Python scorers measure structural quality (JSON validity, field coverage, trait matching) but miss semantic issues. LLM rubric judges catch shallow reasoning, over-segmentation, and missed subtext. Always use both. Example: GPT-4.1 Mini scored 0.915 on Python scorer but 0.62 on LLM judge for the same character extraction — the judge caught that it found all the right fields but missed the character's emotional arc entirely.
-- 2026-02-15 — Cross-provider judging reduces bias: When evaluating model outputs, use a judge from a different provider than the model being tested. Claude Opus 4.6 as default judge works well for evaluating both OpenAI and Anthropic models.
+- 2026-07-22 — Judge independence must be literal: a pinned Opus 4.6 judge gives
+  comparable maintained results, but it is cross-provider only for non-Anthropic
+  subjects. Anthropic-on-Anthropic adoption evidence needs independent
+  corroboration or an alternate-provider judge.
 
 ### Known Pitfalls
 - 2026-02-11 — Hidden schema drift: adding output fields without schema updates can silently drop data.

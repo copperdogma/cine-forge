@@ -9,6 +9,7 @@ run in CI — invoke with:
 
 from __future__ import annotations
 
+import os
 from typing import Any
 
 import pytest
@@ -114,9 +115,12 @@ def _build_inputs() -> dict[str, Any]:
 @pytest.mark.integration
 def test_continuity_ai_produces_meaningful_output() -> None:
     """Run continuity extraction with a real model and verify output quality."""
-    # Skip if no API key is available
+    if os.getenv("CINE_FORGE_LIVE_TESTS") != "1":
+        pytest.skip("Set CINE_FORGE_LIVE_TESTS=1 to run live continuity integration")
     if not resolve_env("ANTHROPIC_API_KEY"):
-        pytest.skip("CINE_FORGE_ANTHROPIC_API_KEY or ANTHROPIC_API_KEY not set")
+        pytest.skip(
+            "CINE_FORGE_ANTHROPIC_API_KEY or ANTHROPIC_API_KEY is required"
+        )
 
     inputs = _build_inputs()
     result = run_module(

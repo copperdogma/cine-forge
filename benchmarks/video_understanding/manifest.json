@@ -1,184 +1,444 @@
 {
+  "active_case_ids": [
+    "dialogue_confession_push_in",
+    "alarm_chase_whip_pan",
+    "quiet_bedside_vigil",
+    "prop_swap_continuity_break",
+    "rooftop_escape_crash_zoom",
+    "storm_tunnel_lateral_run"
+  ],
   "clips": [
     {
+      "case_status": "active_frame_eval",
       "clip_id": "dialogue_confession_push_in",
-      "title": "Dialogue confession push-in",
-      "anchor_subset": true,
+      "expected_unique_sampled_frames": 5,
+      "sampled_frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "spec_sha256": "a83a76d4ac36367d74ec070938c349baf274650ca98c72b71449b50dc2de9127",
+      "status_reason": "Positive scale-change control: all five frames visibly tighten on the same two figures.",
       "tags": [
         "dialogue",
         "quiet_emotion"
-      ]
+      ],
+      "temporal_control": "dynamic",
+      "title": "Cool two-shot push-in"
     },
     {
+      "case_status": "active_frame_eval",
       "clip_id": "alarm_chase_whip_pan",
-      "title": "Alarm chase whip pan",
-      "anchor_subset": true,
+      "expected_unique_sampled_frames": 5,
+      "sampled_frame_sha256": [
+        "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a",
+        "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039",
+        "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655",
+        "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b",
+        "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+      ],
+      "spec_sha256": "eec5bfd5d83b19d0e08b2ba2051afd7818f3c109f620b049a95c1fcbd0538fce",
+      "status_reason": "Positive lateral-motion and pulsing-light control with five visibly different frames.",
       "tags": [
         "action",
         "motion"
-      ]
+      ],
+      "temporal_control": "dynamic",
+      "title": "Red corridor run"
     },
     {
+      "case_status": "active_frame_eval",
       "clip_id": "quiet_bedside_vigil",
-      "title": "Quiet bedside vigil",
-      "anchor_subset": true,
+      "expected_unique_sampled_frames": 1,
+      "sampled_frame_sha256": [
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+      ],
+      "spec_sha256": "51ed1d7653286ffc9f9233aea692e486e21016f133f2c03a100bb17c6ccdc5b9",
+      "status_reason": "Negative temporal control: five byte-identical frames make stillness directly testable.",
       "tags": [
         "quiet_emotion",
         "interior"
-      ]
+      ],
+      "temporal_control": "static",
+      "title": "Warm bedside hold"
     },
     {
+      "case_status": "active_frame_eval",
       "clip_id": "prop_swap_continuity_break",
-      "title": "Prop swap continuity break",
-      "anchor_subset": true,
+      "expected_unique_sampled_frames": 2,
+      "sampled_frame_sha256": [
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+      ],
+      "spec_sha256": "8a82b68cda6c17358dedbc04e41127b4e39b3aae846acc9af213e3a07386480f",
+      "status_reason": "Positive discontinuity control: a visible two-state color change occurs at a submitted sample boundary.",
       "tags": [
         "continuity",
         "prop"
-      ]
+      ],
+      "temporal_control": "change_point",
+      "title": "Tabletop color discontinuity"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "neon_crosswalk_reveal",
-      "title": "Neon crosswalk reveal",
-      "anchor_subset": true,
+      "expected_unique_sampled_frames": 1,
+      "sampled_frame_sha256": [
+        "482e169770bbf436874e714bcb7822d406a86a98bf7f7bf4cf24c9c607fdccbc",
+        "482e169770bbf436874e714bcb7822d406a86a98bf7f7bf4cf24c9c607fdccbc",
+        "482e169770bbf436874e714bcb7822d406a86a98bf7f7bf4cf24c9c607fdccbc",
+        "482e169770bbf436874e714bcb7822d406a86a98bf7f7bf4cf24c9c607fdccbc",
+        "482e169770bbf436874e714bcb7822d406a86a98bf7f7bf4cf24c9c607fdccbc"
+      ],
+      "spec_sha256": "78124fb85f2ebd4473166e637b2119cd5b1af07f2f48e249e87088cd19f49c8d",
+      "status_reason": "The generated packet is static and cannot substantiate the former crosswalk or overhead-reveal claims.",
       "tags": [
         "stylized_color",
         "city"
-      ]
+      ],
+      "temporal_control": "static",
+      "title": "Magenta cyan geometric tableau"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "muzak_aftermath_tableau",
-      "title": "Muzak aftermath tableau",
-      "anchor_subset": true,
+      "expected_unique_sampled_frames": 1,
+      "sampled_frame_sha256": [
+        "5c22d0b94828f7f5912e9283d1d9c1397e32d93b89bf739061ee645532d5802e",
+        "5c22d0b94828f7f5912e9283d1d9c1397e32d93b89bf739061ee645532d5802e",
+        "5c22d0b94828f7f5912e9283d1d9c1397e32d93b89bf739061ee645532d5802e",
+        "5c22d0b94828f7f5912e9283d1d9c1397e32d93b89bf739061ee645532d5802e",
+        "5c22d0b94828f7f5912e9283d1d9c1397e32d93b89bf739061ee645532d5802e"
+      ],
+      "spec_sha256": "299b058643f6d9aa20f8e3edba12f71882649d5f3601b63c09b520fd5813d6c0",
+      "status_reason": "Its defining muzak-versus-aftermath contrast is audio-only and no audio reaches the subject.",
       "tags": [
         "audio_intent",
         "contrast"
-      ]
+      ],
+      "temporal_control": "static",
+      "title": "Gray table tableau"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "radio_hold_tracking",
-      "title": "Radio hold tracking",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 1,
+      "sampled_frame_sha256": [
+        "6aabff943bde053f84f6230c3a876f488a41e52d22afb6a31de3548490d3c040",
+        "6aabff943bde053f84f6230c3a876f488a41e52d22afb6a31de3548490d3c040",
+        "6aabff943bde053f84f6230c3a876f488a41e52d22afb6a31de3548490d3c040",
+        "6aabff943bde053f84f6230c3a876f488a41e52d22afb6a31de3548490d3c040",
+        "6aabff943bde053f84f6230c3a876f488a41e52d22afb6a31de3548490d3c040"
+      ],
+      "spec_sha256": "14189d078e187c0c1db847ea696aba58b00fdad6ce8c553570db7436167efa58",
+      "status_reason": "The static shapes do not visually establish radio speech, a hold command, officers, or tracking movement.",
       "tags": [
         "dialogue",
         "procedural"
-      ]
+      ],
+      "temporal_control": "static",
+      "title": "Blue corridor two-shot"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "hallway_standoff_crosscut",
-      "title": "Hallway standoff cross-cut",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 2,
+      "sampled_frame_sha256": [
+        "c1989391d863da48b42c521bceb3e1ed0ccef6e275ea4b40eda34f78fe22e2d5",
+        "c1989391d863da48b42c521bceb3e1ed0ccef6e275ea4b40eda34f78fe22e2d5",
+        "7227b5dec78193a0289efd53e36cb87b40895e2b9a66414a4fa2c7d7f29102dc",
+        "7227b5dec78193a0289efd53e36cb87b40895e2b9a66414a4fa2c7d7f29102dc",
+        "7227b5dec78193a0289efd53e36cb87b40895e2b9a66414a4fa2c7d7f29102dc"
+      ],
+      "spec_sha256": "14102b2dcef9e9712dc5abefbe0f6e514b15f3f34078e2eec8651cdc65b4cd6d",
+      "status_reason": "The packet shows a position jump but its abstract shapes do not establish a hallway standoff or knife interaction.",
       "tags": [
         "dialogue",
         "conflict"
-      ]
+      ],
+      "temporal_control": "change_point",
+      "title": "Two-position profile cut"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "sunset_reunion_pullback",
-      "title": "Sunset reunion pull-back",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 5,
+      "sampled_frame_sha256": [
+        "dd29402778f631c82a51a9e8fed748fa1c7ff8ba24705a4792d482bd7551ae71",
+        "e686707d8d42423fa19033004cc2d76a68c28454db016123a66f3c596e3a0c28",
+        "0b35b0f75fdd2188c8f73c9a1ff04b2abc1cdea716d2398a3e5e039b29c27cfe",
+        "8ad5298ffde3aff2d6743cecd4ffc37bb239973aa5ebedd4111d74e81719cdfc",
+        "2727f543e57d85f36291dcf9c506ed60191a53cd21abacd65143a87d30e11f38"
+      ],
+      "spec_sha256": "6b6a58976e0071e37c0668988ce15f631a3c16c9e51b164069d161dd8ebf15f7",
+      "status_reason": "Valid scale-change imagery, but redundant with the active push-in control and unable to establish a reunion from frames alone.",
       "tags": [
         "quiet_emotion",
         "exterior"
-      ]
+      ],
+      "temporal_control": "dynamic",
+      "title": "Warm two-shot pull-back"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "surveillance_green_monitor",
-      "title": "Surveillance green monitor",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 1,
+      "sampled_frame_sha256": [
+        "aac9cd69494b042c42bec1182e87567938e2edd95e32c232b1ce388c7c1a8306",
+        "aac9cd69494b042c42bec1182e87567938e2edd95e32c232b1ce388c7c1a8306",
+        "aac9cd69494b042c42bec1182e87567938e2edd95e32c232b1ce388c7c1a8306",
+        "aac9cd69494b042c42bec1182e87567938e2edd95e32c232b1ce388c7c1a8306",
+        "aac9cd69494b042c42bec1182e87567938e2edd95e32c232b1ce388c7c1a8306"
+      ],
+      "spec_sha256": "b4fdd212ad0bf60567ec2cef8a065a307fbb44fd732334caed45d6fa451a43f1",
+      "status_reason": "A valid static palette fixture, but redundant with the active bedside stillness control and lacking temporal behavior.",
       "tags": [
         "stylized_color",
         "monitor"
-      ]
+      ],
+      "temporal_control": "static",
+      "title": "Green doorway monitor"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "flashback_sepia_drift",
-      "title": "Flashback sepia drift",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 5,
+      "sampled_frame_sha256": [
+        "417da05c036d70b62a98ac7bd5f4b04d0bd194be34a855d466945394226e4f4d",
+        "c1238e4cb160b9aa05f5b62467a796c66c7b7b73bc9a06cc36f9c47621d887ab",
+        "fe7a0484fac3db90f0e065c2b55086688d6bc5ee8446d152c641605cbc228f66",
+        "7492c6f1a9a76e4519d3242001fb189a1cbeff18db77a92545b504b79ceaf2fd",
+        "628dabd4741908b541cc0ef16d69925d165d438ec7e03fdc64c79ce05bebb498"
+      ],
+      "spec_sha256": "6eca872f4643d94038a4c5ce3841db4f47292cb816df7b53a11ddc7a633a2e7f",
+      "status_reason": "The frames show a scale change but cannot establish flashback, memory, parenthood, water, or voiceover.",
       "tags": [
         "flashback",
         "memory"
-      ]
+      ],
+      "temporal_control": "dynamic",
+      "title": "Sepia two-shot push-in"
     },
     {
+      "case_status": "active_frame_eval",
       "clip_id": "rooftop_escape_crash_zoom",
-      "title": "Rooftop escape crash zoom",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 5,
+      "sampled_frame_sha256": [
+        "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d",
+        "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8",
+        "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd",
+        "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236",
+        "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+      ],
+      "spec_sha256": "dd8a0e792f392c72decd87869e6ec988a7c85f58d31e33bdd698481997c0ec35",
+      "status_reason": "Positive compound-motion control: submitted frames show lateral travel, an arc over a visible gap, and increasing scale.",
       "tags": [
         "action",
         "vertical_space"
-      ]
+      ],
+      "temporal_control": "dynamic",
+      "title": "Rooftop gap lateral run"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "mirror_isolation_profile",
-      "title": "Mirror isolation profile",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 1,
+      "sampled_frame_sha256": [
+        "aa4f54ef40b2fb0a3d5579a007f658239b5323cb51b44b02aeb6a550ed2841eb",
+        "aa4f54ef40b2fb0a3d5579a007f658239b5323cb51b44b02aeb6a550ed2841eb",
+        "aa4f54ef40b2fb0a3d5579a007f658239b5323cb51b44b02aeb6a550ed2841eb",
+        "aa4f54ef40b2fb0a3d5579a007f658239b5323cb51b44b02aeb6a550ed2841eb",
+        "aa4f54ef40b2fb0a3d5579a007f658239b5323cb51b44b02aeb6a550ed2841eb"
+      ],
+      "spec_sha256": "2f73d17b46335830723bc46fb3ef2fcb2d0bf768ff6a9c7b5aa3e033305563bd",
+      "status_reason": "A valid static portrait fixture, but redundant with the active stillness control and without distinct temporal evidence.",
       "tags": [
         "quiet_emotion",
         "portrait"
-      ]
+      ],
+      "temporal_control": "static",
+      "title": "Violet mirror profile"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "warehouse_drone_wide",
-      "title": "Warehouse drone wide",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 1,
+      "sampled_frame_sha256": [
+        "e21f586c4d3f6f8539ba6cec1534e911ec1ce035870cfd9b65fdfc1c83d255f3",
+        "e21f586c4d3f6f8539ba6cec1534e911ec1ce035870cfd9b65fdfc1c83d255f3",
+        "e21f586c4d3f6f8539ba6cec1534e911ec1ce035870cfd9b65fdfc1c83d255f3",
+        "e21f586c4d3f6f8539ba6cec1534e911ec1ce035870cfd9b65fdfc1c83d255f3",
+        "e21f586c4d3f6f8539ba6cec1534e911ec1ce035870cfd9b65fdfc1c83d255f3"
+      ],
+      "spec_sha256": "ff24aeee06206cd1560b12359b90c7e6f261fbf5785a0e00e55d382305f44225",
+      "status_reason": "Its defining drone is audio-only, while the static visual is redundant with the active negative control.",
       "tags": [
         "wide_space",
         "ominous"
-      ]
+      ],
+      "temporal_control": "static",
+      "title": "Empty gray aisle"
     },
     {
+      "case_status": "active_frame_eval",
       "clip_id": "storm_tunnel_lateral_run",
-      "title": "Storm tunnel lateral run",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 5,
+      "sampled_frame_sha256": [
+        "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+        "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+        "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+        "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+        "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+      ],
+      "spec_sha256": "d95f5054c48ec5ffcaf668bdfbaa3bf32e6cdb1b904738b43f1c9314b5bcebda",
+      "status_reason": "Positive lateral-motion control with visible tunnel geometry and shifting rain-like streaks, distinct from the red pulse case.",
       "tags": [
         "action",
         "weather"
-      ]
+      ],
+      "temporal_control": "dynamic",
+      "title": "Blue tunnel lateral run"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "countdown_control_room",
-      "title": "Countdown control room",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 4,
+      "sampled_frame_sha256": [
+        "69c5e49e439c273c27625c247379ec2fcd29c6618751e5f76ad0e756c986dfd7",
+        "4c871fdda09f5f36c85fc62f3a3803d92cfbbfc6b3c9f0c2e648649ef52e2f7a",
+        "d583bb292f24b25663a4b87789748e1cb47d0fca3c1c520e733d300606c04e8b",
+        "a31ce0fe4353f339c626b50db9b41a0dbc32e0e8a44347dfb7c8d0bb7732d85e",
+        "69c5e49e439c273c27625c247379ec2fcd29c6618751e5f76ad0e756c986dfd7"
+      ],
+      "spec_sha256": "aa07b353db42e8dd9873f8708c38a565106e7c1541ec5ced0529978182bcded5",
+      "status_reason": "Frames show pulsing light but no visible countdown, relay, operator action, or screen content.",
       "tags": [
         "dialogue",
         "procedural"
-      ]
+      ],
+      "temporal_control": "dynamic",
+      "title": "Blue screen wall under red pulses"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "golden_memory_orbit",
-      "title": "Golden memory orbit",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 5,
+      "sampled_frame_sha256": [
+        "b21c1ea83c9b63becdf28281a09bcf4b1066ae297ae8497bb5ecb7fad4ed6a6f",
+        "71b2d06b876f9d189ccee45dfe1b2d3a639f313bb3e9d49000c496277bf50917",
+        "25d50f1c54b32feaccd45bddb46f966cb91f6094bbcb503e50eaccdbb63c350d",
+        "526dc86b5cca6ef4f1e544741e1c283c04aba2573f720239d86c07f868c553da",
+        "eaec5fd51803659eb2f38703b61762218084529e6d99e99b4a2ba827ee9d8688"
+      ],
+      "spec_sha256": "73737e1aef54289c0098ab5819702c6559676a14e56c28234b50fa52cb57e4bf",
+      "status_reason": "The frames support a push-in but not the former orbit, memory, lantern, or tender-recollection claims.",
       "tags": [
         "flashback",
         "stylized_color"
-      ]
+      ],
+      "temporal_control": "dynamic",
+      "title": "Golden circle two-shot"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "handheld_panic_stairwell",
-      "title": "Handheld panic stairwell",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 5,
+      "sampled_frame_sha256": [
+        "0ebfeb91985145ea8385802a629bdf658a77464854d14fe4a23d512665d717b1",
+        "75ecff2f3a4a9f2a6ce7529512c0b1c61adc37ee639911fa7cd81aff983bc7d6",
+        "2e11605e957b3200c7012e3dac5201208c214c922200bc18dda8daa17e31d18d",
+        "6250d38ff93668f960cdf2b18bc90cb90089f462d1ec59b84c4cce801bda1d48",
+        "b6d99626d4c7e1aaa796124a1a4ebc608fc9c2013a884b0ffbe50c13091fac90"
+      ],
+      "spec_sha256": "2aa9ee5515b43fe677eea3e658a045e942b160f26050dafccdc263bb55269945",
+      "status_reason": "Dynamic but redundant with stronger active run controls; ordered stills cannot cleanly separate camera jitter from subject displacement.",
       "tags": [
         "action",
         "panic"
-      ]
+      ],
+      "temporal_control": "dynamic",
+      "title": "Orange jittering run"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "match_cut_envelope",
-      "title": "Match-cut envelope",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 1,
+      "sampled_frame_sha256": [
+        "1d72434ca5f062601e5a07d01e5b3a9b3f738c91336a4716a55f7c7f9c31d4bc",
+        "1d72434ca5f062601e5a07d01e5b3a9b3f738c91336a4716a55f7c7f9c31d4bc",
+        "1d72434ca5f062601e5a07d01e5b3a9b3f738c91336a4716a55f7c7f9c31d4bc",
+        "1d72434ca5f062601e5a07d01e5b3a9b3f738c91336a4716a55f7c7f9c31d4bc",
+        "1d72434ca5f062601e5a07d01e5b3a9b3f738c91336a4716a55f7c7f9c31d4bc"
+      ],
+      "spec_sha256": "224c79ca7d9ef5902dbb9faf66a6adf3865caa110c6ae7815af5cbd00eb8a00c",
+      "status_reason": "The byte-identical packet contains no cut or framing change, so it cannot test a match cut.",
       "tags": [
         "continuity",
         "match_cut"
-      ]
+      ],
+      "temporal_control": "static",
+      "title": "Static table and pale rectangle"
     },
     {
+      "case_status": "quarantined",
       "clip_id": "violet_dream_percussion",
-      "title": "Violet dream percussion",
-      "anchor_subset": false,
+      "expected_unique_sampled_frames": 1,
+      "sampled_frame_sha256": [
+        "ce5606dbeb9af7137903884c5cf5a88cc4fa0ed0feab6ad08454beb753b75563",
+        "ce5606dbeb9af7137903884c5cf5a88cc4fa0ed0feab6ad08454beb753b75563",
+        "ce5606dbeb9af7137903884c5cf5a88cc4fa0ed0feab6ad08454beb753b75563",
+        "ce5606dbeb9af7137903884c5cf5a88cc4fa0ed0feab6ad08454beb753b75563",
+        "ce5606dbeb9af7137903884c5cf5a88cc4fa0ed0feab6ad08454beb753b75563"
+      ],
+      "spec_sha256": "6e71059d28cababd3d2dd71c7cbed3e7bb2d30d3347ff553670d5b84c780fbf5",
+      "status_reason": "The packet is static and its defining percussion is audio-only, so former orbit and threat claims were unobservable.",
       "tags": [
         "stylized_color",
         "dream"
-      ]
+      ],
+      "temporal_control": "static",
+      "title": "Violet concentric circles"
     }
-  ]
+  ],
+  "frame_policy": "five_evenly_spaced_jpegs_v1",
+  "generator_provenance": {
+    "files_sha256": {
+      "benchmarks/scripts/generate_video_understanding_dataset.py": "a09a8b03380c133da010e42a4c689998eed4997c8026166ff75aaa11b97e100d",
+      "benchmarks/scripts/video_understanding_dataset_artifacts.py": "21f0598e02fcbc0140ad2f0879a925872fc960f1a8895cd3208839c29e196363",
+      "benchmarks/scripts/video_understanding_dataset_model.py": "e7ca4066f6a41a5dbee9e14c25a3032a201413f9b57e0bad3d0a6a1b6eec4c13",
+      "benchmarks/scripts/video_understanding_dataset_specs.py": "c10fa04f816a47fc1a96a47056831daaa886b582f5faf996274e308e20b0c6e0",
+      "benchmarks/scripts/video_understanding_dataset_specs_a.py": "dc8125a0cbf3feb5486c56cb565d905bc2b610018555f844f403452673840def",
+      "benchmarks/scripts/video_understanding_dataset_specs_b.py": "3f979f0e0accfbd1685f6bae6e783c3bd16e55be1e4f1fde0a72009c24f456cb",
+      "benchmarks/scripts/video_understanding_frame_renderer.py": "5abd5666bfa88be3ad9079f547f89bafa0a58de6b42e6b39fce14621ed301ce6",
+      "benchmarks/scripts/video_understanding_media.py": "863184a23c94a5e2d372bae291dbcf5a071f4bfa3c16a9a9bcfa480f6e4cd941"
+    },
+    "generator_version": "frame-truth-v2"
+  },
+  "generator_version": "frame-truth-v2",
+  "quarantined_case_ids": [
+    "neon_crosswalk_reveal",
+    "muzak_aftermath_tableau",
+    "radio_hold_tracking",
+    "hallway_standoff_crosscut",
+    "sunset_reunion_pullback",
+    "surveillance_green_monitor",
+    "flashback_sepia_drift",
+    "mirror_isolation_profile",
+    "warehouse_drone_wide",
+    "countdown_control_room",
+    "golden_memory_orbit",
+    "handheld_panic_stairwell",
+    "match_cut_envelope",
+    "violet_dream_percussion"
+  ],
+  "schema_version": 2
 }

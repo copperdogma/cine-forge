@@ -4,7 +4,7 @@
 # Usage: cd benchmarks && promptfoo eval -c tasks/scene-extraction.yaml
 # View:  promptfoo view
 
-description: "Scene extraction from screenplay — The Mariner"
+description: "Scene extraction from two repo-owned screenplays — The Mariner and Open Frequency"
 
 # Use Opus as judge — strongest reasoning, cross-provider for OpenAI models
 defaultTest:
@@ -88,6 +88,7 @@ providers:
   - id: file://../providers/openai_responses_provider.py
     label: "GPT-5.5 Pro"
     config:
+      model: gpt-5.5-pro
       temperature: 0
       max_tokens: 8192
       pro_min_output_tokens: 24000
@@ -112,7 +113,6 @@ providers:
   - id: google:gemini-3.5-flash
     label: "Gemini 3.5 Flash"
     config:
-      temperature: 0
       maxOutputTokens: 65536
 
   - id: google:gemini-3.5-flash-lite
@@ -139,23 +139,51 @@ tests:
   - vars:
       screenplay: file://../input/the-mariner.md
       golden_path: golden/the-mariner-scenes.json
-    assert:
+    assert: &scene_extraction_assertions
       # Code-based scorer: structural quality
       - type: python
         value: file://../scorers/scene_extraction_scorer.py
       # AI judge: semantic quality of summaries and character identification
       - type: llm-rubric
         value: |
-          Evaluate the scene extraction output for the screenplay "The Mariner."
+          Evaluate the candidate scene extraction only against the supplied
+          screenplay. Derive boundaries and facts from the source itself; do not
+          use a memorized scene count or conventionalize unusual source formatting.
 
-          The screenplay has approximately 13-15 scenes including embedded flashbacks.
-          Key quality criteria:
-          1. Are all scenes identified, including embedded flashbacks (BEGIN FLASHBACK / END FLASHBACK)?
-          2. Are scene headings accurate and complete?
-          3. Are INT/EXT designations correct?
-          4. Are character names correctly identified for each scene (including O.S. characters)?
-          5. Are summaries meaningful — capturing the key action, not just restating the heading?
-          6. Is the time_of_day correct (NIGHT for present-day scenes, DAY for flashbacks)?
-          7. Are the flashback scenes properly distinguished from present-day scenes?
+          SOURCE SCREENPLAY
+          =================
+          {{screenplay}}
+          =================
 
-          Score strictly: partial credit for close but imperfect extraction.
+          Grade all of these dimensions:
+          1. Boundary fidelity: emit exactly one scene for each explicit heading,
+             including a BEGIN FLASHBACK heading. END FLASHBACK resumes the
+             containing present scene and is not itself a scene. Do not reward
+             invented headings for implied or intercut changes.
+          2. Heading fidelity: headings preserve the literal source wording after
+             removing Markdown escape backslashes. Do not penalize a faithful
+             heading merely because the action beneath it creates an unconventional
+             location or time juxtaposition.
+          3. Per-scene facts: scene number, INT/EXT, location, time, character list,
+             and summary are bound to the correct heading. Time may be inherited
+             only from direct continuous context when the heading omits it.
+          4. Character fidelity: include everyone who appears, speaks, or is heard
+             off-screen in that scene, without importing characters from another
+             scene or inventing individuals.
+          5. Summary quality: summaries capture the material action, revelations,
+             and temporal framing under the heading and remain source-grounded;
+             generic restatements of headings are insufficient.
+          6. Internal contract: scene_count equals the array length and numbering
+             is consecutive in source order.
+
+          A schema-only or generic extraction must fail. Missing or invented scene
+          boundaries, materially wrong per-scene assignments, or source-invented
+          summaries must fail. Score 0.80 or higher, and pass, only for a complete,
+          trustworthy extraction; give lower scores to close but imperfect work.
+
+  # Second-corpus case: a short ensemble script with PRE-DAWN/MORNING headings,
+  # radio-only speakers, a named animal, and a repeated location.
+  - vars:
+      screenplay: file://../../tests/fixtures/ingest_inputs/open_frequency_short.fountain
+      golden_path: golden/open-frequency-scenes.json
+    assert: *scene_extraction_assertions

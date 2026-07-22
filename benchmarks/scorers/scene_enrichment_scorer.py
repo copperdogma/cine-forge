@@ -1,221 +1,337 @@
-"""
-Scene enrichment scorer for promptfoo.
+"""Deterministic source-grounded scorer for scene enrichment."""
 
-Evaluates whether a model correctly infers scene metadata (location,
-time, characters, narrative beats, tone) from a raw scene excerpt.
-
-Scoring dimensions:
-- json_valid:          Valid JSON output (0.10)
-- location_accuracy:   Correct location and int/ext (0.15)
-- time_accuracy:       Correct time of day (0.10)
-- character_recall:    All expected characters found (0.20)
-- beat_quality:        Narrative beats present and relevant (0.20)
-- tone_accuracy:       Tone matches expected mood (0.15)
-- field_completeness:  All required fields present (0.10)
-
-Pass threshold: 0.60
-"""
+from __future__ import annotations
 
 import json
+import math
 import os
 import re
+import sys
+from difflib import SequenceMatcher
+from pathlib import Path
+
+SCORER_ROOT = Path(__file__).resolve().parent
+if str(SCORER_ROOT) not in sys.path:
+    sys.path.insert(0, str(SCORER_ROOT))
+
+from score_semantics import finalize_score  # noqa: E402
+
+PASS_THRESHOLD = 0.80
 
 
-def heading_has_explicit_time(scene_text: str) -> bool:
-    """Only grade time-of-day when the excerpt actually provides it."""
-    for line in scene_text.splitlines():
-        stripped = line.strip().upper()
-        if not stripped:
-            continue
-        return bool(
-            re.search(
-                r"\b(DAY|NIGHT|MORNING|EVENING|AFTERNOON|SUNSET|SUNRISE|DAWN|DUSK|CONTINUOUS|LATER)\b",
-                stripped,
-            )
-        )
-    return False
+STOP_WORDS = {
+    "a",
+    "an",
+    "and",
+    "as",
+    "at",
+    "by",
+    "for",
+    "from",
+    "in",
+    "is",
+    "of",
+    "on",
+    "the",
+    "to",
+    "with",
+}
+TOP_LEVEL_FIELDS = {
+    "heading",
+    "location",
+    "time_of_day",
+    "int_ext",
+    "characters_present",
+    "narrative_beats",
+    "tone_mood",
+    "tone_shifts",
+}
+BEAT_FIELDS = {"beat_type", "description", "confidence"}
+
+
+def _resolve_golden_path(context: dict) -> str:
+    golden_path = context.get("vars", {}).get("golden_path", "")
+    if golden_path and not os.path.isabs(golden_path):
+        base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        for candidate in (os.path.join(base, golden_path), os.path.join(os.getcwd(), golden_path)):
+            if os.path.exists(candidate):
+                return candidate
+    return golden_path
+
+
+def _parse_output(output: str) -> tuple[dict | None, float]:
+    try:
+        parsed = json.loads(output.strip())
+        return (parsed if isinstance(parsed, dict) else None), 1.0
+    except json.JSONDecodeError:
+        match = re.search(r"```(?:json)?\s*([\s\S]*?)```", output)
+        if not match:
+            return None, 0.0
+        try:
+            parsed = json.loads(match.group(1))
+        except json.JSONDecodeError:
+            return None, 0.0
+        return (parsed if isinstance(parsed, dict) else None), 0.9
+
+
+def _normalize(value: object) -> str:
+    return " ".join(re.findall(r"[A-Z0-9]+", str(value or "").upper()))
+
+
+def _heading_score(result: dict, golden: dict) -> float:
+    expected = _normalize(golden.get("heading"))
+    actual = _normalize(result.get("heading"))
+    return 1.0 if expected and actual == expected else 0.0
+
+
+def _location_score(result: dict, golden: dict) -> float:
+    expected_location = _normalize(golden.get("location"))
+    actual_location = _normalize(result.get("location"))
+    location_similarity = (
+        SequenceMatcher(None, actual_location, expected_location).ratio()
+        if actual_location and expected_location
+        else 0.0
+    )
+    int_ext = 1.0 if _normalize(result.get("int_ext")) == _normalize(golden.get("int_ext")) else 0.0
+    return 0.6 * location_similarity + 0.4 * int_ext
+
+
+def _time_score(result: dict, golden: dict) -> float:
+    expected = _normalize(golden.get("time_of_day"))
+    actual = _normalize(result.get("time_of_day"))
+    unspecified = {"UNSPECIFIED", "UNKNOWN", "NOT SPECIFIED"}
+    if expected in unspecified:
+        return 1.0 if actual in unspecified else 0.0
+    return 1.0 if expected and actual == expected else 0.0
+
+
+def _character_name(value: object) -> str:
+    normalized = _normalize(value)
+    return normalized[4:] if normalized.startswith("THE ") else normalized
+
+
+def _character_score(result: dict, golden: dict) -> tuple[float, float]:
+    expected = {_character_name(value) for value in golden.get("characters_present", [])}
+    actual_values = result.get("characters_present", [])
+    actual = (
+        {_character_name(value) for value in actual_values if _character_name(value)}
+        if isinstance(actual_values, list)
+        else set()
+    )
+    if not expected:
+        return (1.0 if not actual else 0.0), 1.0
+    overlap = len(expected & actual)
+    recall = overlap / len(expected)
+    precision = overlap / len(actual) if actual else 0.0
+    f1 = 2 * recall * precision / (recall + precision) if recall + precision else 0.0
+    return f1, recall
+
+
+def _schema_errors(result: dict) -> list[str]:
+    errors = [f"missing:{field}" for field in sorted(TOP_LEVEL_FIELDS - set(result))]
+    errors.extend(f"extra:{field}" for field in sorted(set(result) - TOP_LEVEL_FIELDS))
+    for field in ("heading", "location", "time_of_day", "int_ext", "tone_mood"):
+        if not isinstance(result.get(field), str) or not result.get(field, "").strip():
+            errors.append(f"{field}:not-nonempty-string")
+    if result.get("int_ext") not in {"INT", "EXT", "INT/EXT"}:
+        errors.append("int_ext:not-supported")
+
+    characters = result.get("characters_present")
+    if not isinstance(characters, list) or any(
+        not isinstance(value, str) or not _character_name(value) for value in characters
+    ):
+        errors.append("characters_present:not-nonempty-string-array")
+    elif len({_character_name(value) for value in characters}) != len(characters):
+        errors.append("characters_present:duplicate")
+
+    beats = result.get("narrative_beats")
+    if not isinstance(beats, list) or not beats:
+        errors.append("narrative_beats:not-nonempty-array")
+    else:
+        for index, beat in enumerate(beats):
+            if not isinstance(beat, dict) or set(beat) != BEAT_FIELDS:
+                errors.append(f"narrative_beats[{index}]:wrong-fields")
+                continue
+            if not isinstance(beat.get("beat_type"), str) or not beat["beat_type"].strip():
+                errors.append(f"narrative_beats[{index}].beat_type:not-nonempty-string")
+            if not isinstance(beat.get("description"), str) or not beat["description"].strip():
+                errors.append(f"narrative_beats[{index}].description:not-nonempty-string")
+            confidence = beat.get("confidence")
+            if (
+                not isinstance(confidence, (int, float))
+                or isinstance(confidence, bool)
+                or not math.isfinite(confidence)
+                or not 0.0 <= confidence <= 1.0
+            ):
+                errors.append(f"narrative_beats[{index}].confidence:not-finite-0-to-1")
+
+    tone_shifts = result.get("tone_shifts")
+    if not isinstance(tone_shifts, list) or any(
+        not isinstance(value, str) or not value.strip() for value in tone_shifts
+    ):
+        errors.append("tone_shifts:not-string-array")
+    return errors
+
+
+def _tokens(value: object) -> set[str]:
+    return {
+        token
+        for token in re.findall(r"[a-z0-9]+", str(value or "").lower())
+        if len(token) > 2 and token not in STOP_WORDS
+    }
+
+
+def _detail_match(description: str, expected: str) -> bool:
+    expected_tokens = _tokens(expected)
+    if not expected_tokens:
+        return False
+    return len(expected_tokens & _tokens(description)) / len(expected_tokens) >= 0.5
+
+
+def _beat_metrics(
+    result: dict,
+    golden: dict,
+    scene_text: str,
+) -> tuple[float, float, float, float]:
+    beats = result.get("narrative_beats", [])
+    if not isinstance(beats, list) or any(not isinstance(beat, dict) for beat in beats):
+        return 0.0, 0.0, 0.0, 0.0
+    expected_types = {str(value).lower() for value in golden.get("expected_beat_types", [])}
+    actual_types = {str(beat.get("beat_type", "")).lower() for beat in beats}
+    type_recall = (
+        len(expected_types & actual_types) / len(expected_types)
+        if expected_types
+        else 1.0
+    )
+    descriptions = " ".join(str(beat.get("description", "")) for beat in beats)
+    details = golden.get("key_details", [])
+    detail_recall = (
+        sum(_detail_match(descriptions, detail) for detail in details) / len(details)
+        if details
+        else 1.0
+    )
+    description_tokens = _tokens(descriptions)
+    support_tokens = _tokens(scene_text)
+    for detail in details:
+        support_tokens.update(_tokens(detail))
+    semantic_grounding = (
+        len(description_tokens & support_tokens) / len(description_tokens)
+        if description_tokens
+        else 0.0
+    )
+    substantive = (
+        1.0
+        if beats and all(len(str(beat.get("description", ""))) >= 10 for beat in beats)
+        else 0.0
+    )
+    score = (
+        0.3 * type_recall
+        + 0.4 * detail_recall
+        + 0.2 * semantic_grounding
+        + 0.1 * substantive
+    )
+    return score, type_recall, detail_recall, semantic_grounding
+
+
+def _tone_score(result: dict, golden: dict) -> float:
+    actual = _normalize(
+        f"{result.get('tone_mood', '')} {' '.join(map(str, result.get('tone_shifts', [])))}"
+    )
+    expected = golden.get("expected_tone", [])
+    return 1.0 if not expected or any(_normalize(value) in actual for value in expected) else 0.0
+
+
+def _field_score(result: dict) -> float:
+    required = (
+        "heading",
+        "location",
+        "time_of_day",
+        "int_ext",
+        "characters_present",
+        "narrative_beats",
+        "tone_mood",
+        "tone_shifts",
+    )
+    present = sum(
+        field in result and result[field] is not None and result[field] != ""
+        for field in required
+    )
+    return present / len(required)
 
 
 def get_assert(output: str, context: dict) -> dict:
-    """Promptfoo assertion entry point."""
-
-    golden_path = context.get("vars", {}).get("golden_path", "")
+    golden_path = _resolve_golden_path(context)
     scene_key = context.get("vars", {}).get("scene_key", "")
-    scene_text = context.get("vars", {}).get("scene_text", "")
-
-    # Resolve relative path from the benchmarks directory
-    if golden_path and not os.path.isabs(golden_path):
-        base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        candidate = os.path.join(base, golden_path)
-        if os.path.exists(candidate):
-            golden_path = candidate
-        else:
-            candidate = os.path.join(os.getcwd(), golden_path)
-            if os.path.exists(candidate):
-                golden_path = candidate
-
     if not golden_path or not os.path.exists(golden_path):
-        return {"pass": False, "score": 0, "reason": f"Golden file not found: {golden_path}"}
-
-    with open(golden_path) as f:
-        all_golden = json.load(f)
-
-    if scene_key not in all_golden:
-        return {"pass": False, "score": 0, "reason": f"Scene key '{scene_key}' not in golden"}
-
-    golden = all_golden[scene_key]
-    scores = {}
-    reasons = []
-
-    # --- 1. JSON validity ---
-    text = output.strip()
-    try:
-        result = json.loads(text)
-        scores["json_valid"] = 1.0
-    except json.JSONDecodeError:
-        match = re.search(r"```(?:json)?\s*([\s\S]*?)```", text)
-        if match:
-            try:
-                result = json.loads(match.group(1))
-                scores["json_valid"] = 0.9
-                reasons.append("JSON extracted from code block")
-            except json.JSONDecodeError:
-                return {"pass": False, "score": 0.0, "reason": "Invalid JSON output"}
-        else:
-            return {"pass": False, "score": 0.0, "reason": "Invalid JSON output"}
-
-    # --- 2. Location accuracy ---
-    expected_location = golden.get("location", "").upper()
-    expected_int_ext = golden.get("int_ext", "").upper()
-
-    model_location = str(result.get("location", "")).upper()
-    model_int_ext = str(result.get("int_ext", "")).upper()
-
-    loc_score = 0.0
-    # Fuzzy match: check if key words from expected location appear
-    if expected_location:
-        expected_words = set(expected_location.split())
-        model_words = set(model_location.split())
-        # Remove common filler words
-        filler = {"THE", "A", "AN", "-", ""}
-        expected_words -= filler
-        model_words -= filler
-        if expected_words and expected_words & model_words:
-            overlap = len(expected_words & model_words) / len(expected_words)
-            loc_score += overlap * 0.6
-        elif expected_location in model_location or model_location in expected_location:
-            loc_score += 0.6
-    if model_int_ext == expected_int_ext:
-        loc_score += 0.4
-    scores["location_accuracy"] = min(loc_score, 1.0)
-
-    if loc_score < 0.8:
-        reasons.append(f"Location: got '{model_location}' / '{model_int_ext}', "
-                       f"expected '{expected_location}' / '{expected_int_ext}'")
-
-    # --- 3. Time of day ---
-    expected_time = golden.get("time_of_day", "").upper()
-    model_time = str(result.get("time_of_day", "")).upper()
-    if not heading_has_explicit_time(scene_text):
-        scores["time_accuracy"] = 0.5
-    elif expected_time and model_time:
-        if expected_time in model_time or model_time in expected_time:
-            scores["time_accuracy"] = 1.0
-        else:
-            scores["time_accuracy"] = 0.0
-            reasons.append(f"Time: got '{model_time}', expected '{expected_time}'")
-    else:
-        scores["time_accuracy"] = 0.5
-
-    # --- 4. Character recall ---
-    expected_chars = {c.upper() for c in golden.get("characters_present", [])}
-    model_chars = {str(c).upper() for c in result.get("characters_present", [])}
-
-    if expected_chars:
-        # Allow partial name matches (e.g., "THE MARINER" matches "MARINER")
-        matched = 0
-        for ec in expected_chars:
-            ec_words = set(ec.split())
-            for mc in model_chars:
-                mc_words = set(mc.split())
-                if ec_words & mc_words:
-                    matched += 1
-                    break
-        scores["character_recall"] = matched / len(expected_chars)
-        if matched < len(expected_chars):
-            reasons.append(f"Characters: {matched}/{len(expected_chars)} found")
-    else:
-        scores["character_recall"] = 1.0
-
-    # --- 5. Narrative beat quality ---
-    beats = result.get("narrative_beats", [])
-    expected_beat_types = {bt.lower() for bt in golden.get("expected_beat_types", [])}
-    key_details = [d.lower() for d in golden.get("key_details", [])]
-
-    if expected_beat_types:
-        # Check beat type coverage
-        model_beat_types = {str(b.get("beat_type", "")).lower() for b in beats}
-        type_overlap = len(expected_beat_types & model_beat_types) / len(expected_beat_types)
-
-        # Check if descriptions mention key details
-        all_descriptions = " ".join(
-            str(b.get("description", "")).lower() for b in beats
-        )
-        detail_matches = sum(
-            1 for d in key_details
-            if any(word in all_descriptions for word in d.split()[:3])
-        ) / len(key_details) if key_details else 0.5
-
-        scores["beat_quality"] = (
-            type_overlap * 0.5
-            + detail_matches * 0.3
-            + (0.2 if len(beats) >= 2 else 0.0)
-        )
-    else:
-        scores["beat_quality"] = 0.5 if beats else 0.0
-
-    if len(beats) == 0:
-        reasons.append("No narrative beats found")
-
-    # --- 6. Tone accuracy ---
-    expected_tones = {t.lower() for t in golden.get("expected_tone", [])}
-    model_tone = str(result.get("tone_mood", "")).lower()
-    tone_shifts = [str(s).lower() for s in result.get("tone_shifts", [])]
-    all_tone_text = model_tone + " " + " ".join(tone_shifts)
-
-    if expected_tones:
-        tone_matches = sum(1 for t in expected_tones if t in all_tone_text)
-        scores["tone_accuracy"] = min(tone_matches / max(len(expected_tones) * 0.5, 1), 1.0)
-        if tone_matches == 0:
-            reasons.append(f"Tone: got '{model_tone}', expected one of {expected_tones}")
-    else:
-        scores["tone_accuracy"] = 0.5
-
-    # --- 7. Field completeness ---
-    required = ["heading", "location", "time_of_day", "int_ext",
-                 "characters_present", "narrative_beats", "tone_mood"]
-    present = sum(1 for f in required if f in result and result[f] is not None)
-    scores["field_completeness"] = present / len(required)
-
-    # --- Weighted total ---
+        return {"pass": False, "score": 0.0, "reason": f"Golden file not found: {golden_path}"}
+    with open(golden_path) as handle:
+        all_golden = json.load(handle)
+    golden = all_golden.get(scene_key)
+    if not isinstance(golden, dict):
+        return {"pass": False, "score": 0.0, "reason": f"Scene key {scene_key!r} not in golden"}
+    result, json_score = _parse_output(output)
+    if result is None:
+        return {"pass": False, "score": 0.0, "reason": "Invalid JSON object"}
+    schema_errors = _schema_errors(result)
+    character_score, character_recall = _character_score(result, golden)
+    expected_characters = {
+        _character_name(value) for value in golden.get("characters_present", [])
+    }
+    actual_characters = {
+        _character_name(value)
+        for value in result.get("characters_present", [])
+        if isinstance(value, str) and _character_name(value)
+    }
+    character_exact = actual_characters == expected_characters
+    beat_quality, beat_type_recall, beat_detail_recall, beat_grounding = _beat_metrics(
+        result,
+        golden,
+        str(context.get("vars", {}).get("scene_text", "")),
+    )
+    scores = {
+        "json_valid": json_score,
+        "heading_accuracy": _heading_score(result, golden),
+        "location_accuracy": _location_score(result, golden),
+        "time_accuracy": _time_score(result, golden),
+        "character_accuracy": character_score,
+        "beat_quality": beat_quality,
+        "tone_accuracy": _tone_score(result, golden),
+        "field_completeness": _field_score(result),
+    }
     weights = {
         "json_valid": 0.10,
+        "heading_accuracy": 0.10,
         "location_accuracy": 0.15,
         "time_accuracy": 0.10,
-        "character_recall": 0.20,
+        "character_accuracy": 0.20,
         "beat_quality": 0.20,
-        "tone_accuracy": 0.15,
-        "field_completeness": 0.10,
+        "tone_accuracy": 0.10,
+        "field_completeness": 0.05,
     }
-
-    total = sum(scores.get(k, 0) * w for k, w in weights.items())
-
-    reason_parts = [f"{k}={v:.2f}" for k, v in sorted(scores.items())]
-    if reasons:
-        reason_parts.append(" | ".join(reasons))
-
-    return {
-        "pass": total >= 0.60,
-        "score": round(total, 4),
-        "reason": " | ".join(reason_parts),
-    }
+    total = sum(scores[key] * weight for key, weight in weights.items())
+    details = " | ".join(f"{key}={value:.2f}" for key, value in sorted(scores.items()))
+    if schema_errors:
+        details += " | schema_errors=" + ",".join(schema_errors)
+    details += (
+        f" | beat_type_recall={beat_type_recall:.2f}"
+        f" | beat_detail_grounding={beat_detail_recall:.2f}"
+        f" | beat_source_grounding={beat_grounding:.2f}"
+    )
+    hard_gates = (
+        not schema_errors
+        and scores["heading_accuracy"] == 1.0
+        and scores["location_accuracy"] == 1.0
+        and scores["time_accuracy"] == 1.0
+        and character_recall == 1.0
+        and character_exact
+        and beat_type_recall == 1.0
+        and beat_detail_recall >= 0.5
+        and beat_grounding >= 0.5
+        and scores["tone_accuracy"] == 1.0
+    )
+    return finalize_score(
+        total,
+        pass_threshold=PASS_THRESHOLD,
+        hard_gates=hard_gates,
+        reason=details,
+    )

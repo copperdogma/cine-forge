@@ -1,11 +1,10 @@
-# Sunset reunion pull-back
+# Ordered JPEG frame-packet reference
 
-- Summary: A golden reunion begins in medium framing, then slowly pulls back to hold both figures against the horizon.
+- Summary: Two abstract figures become smaller across ordered warm gold frames with a circular form at upper right.
 - Tone: hopeful, nostalgic
-- Emotion: relief, tenderness
+- Emotion: tenderness
 - Color / grade: gold, amber
-- Camera language: slow_pull_back
-- Motion: slow_drift
-- Continuity: intact — The shared coat stays around both figures through the pull-back.
-- Audio intent: soft_music
-- Transcript: [none]
+- Camera language inferable from the ordered samples: slow_pull_back
+- Motion inferable from the ordered samples: slow_drift
+- Continuity: intact - Both figures and the circular form remain present through the pull-back.
+- Audio: unavailable to the subject and excluded from scoring

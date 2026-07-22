@@ -2,18 +2,26 @@
   "clip_id": "open_frequency_scene_001_studio_night",
   "title": "Open Frequency scene 001 \u2014 radio studio night",
   "source_type": "licensed_internal",
-  "source_description": "Story 169 candidate generated with google_veo31_fast (veo-3.1-fast-generate-preview) on the representative reference-conditioned render harness.",
+  "source_description": "Story 169 candidate generated with google_veo31_fast (veo-3.1-fast-generate-preview) on the representative reference-conditioned harness.",
   "rights": "Project-owned internal benchmark fixture",
   "duration_seconds": 8.0,
   "resolution": "720p",
   "has_audio": true,
-  "transcript": null,
-  "audio_description": null,
-  "tags": [
-    "dialogue",
-    "ensemble",
-    "interior",
-    "reference_conditioned"
+  "analysis_frame_policy": "five_interior_sixths_jpegs_v2",
+  "sample_times_seconds": [
+    1.333,
+    2.667,
+    4.0,
+    5.333,
+    6.667
+  ],
+  "clip_sha256": "ea5ba643cf8f78eba7fc8b2a08b29e616498b80f4e04fc81b33629518e594d9c",
+  "sampled_frame_sha256": [
+    "61cd5ac6b7c9ef5dc42d76395fcd772cbc094e4a16bfdac79d2dbe93d7e803ed",
+    "c3ad6d6f10bccea5fdee8b8feb53af78bffb808c95fec90febf4e2217d6d0043",
+    "a1e22b66a39060516787d03161e655314c9f3efe54c0eefa24f285b4b2dfce3c",
+    "fecf953b15e2c8c609d81a4d123112aab6c823049257c696ae4fed66bc395dbc",
+    "e8f6facbc78a03aa60d930cd9839886c8260477d1958db28009afe5b3930553c"
   ],
   "candidate_variant": "google_veo31_fast",
   "candidate_label": "Google Veo 3.1 Fast Render",
@@ -22,7 +30,9 @@
   "target_model": "veo-3.1-fast-generate-preview",
   "generation_latency_ms": 42399,
   "end_to_end_latency_ms": 240283,
-  "estimated_generation_cost_usd": 0.0096675,
+  "total_run_cost_usd": 0.0133571,
+  "generation_cost_usd": null,
+  "generation_cost_status": "unavailable_in_retained_runtime_result",
   "request_id": "models/veo-3.1-fast-generate-preview/operations/sp849p31vx4x",
   "provider_job_id": "models/veo-3.1-fast-generate-preview/operations/sp849p31vx4x",
   "reference_usage_counts": {
@@ -45,5 +55,13 @@
       "purpose": "style_reference",
       "transparency_note": "style_reference.png (style_reference, soft_locked): style cue from filename/purpose only; do not claim unseen image content."
     }
-  ]
+  ],
+  "runtime_provenance": {
+    "runtime_result_sha256": "6814ecf024d9a4423e2746c39aafde477be7cf0212332d62dbd8eb8f0a57a12c",
+    "project_dir": "output/story-169-google_veo31_fast-open_frequency_scene_001_studio_night-1dd9e9",
+    "render_prompt_path": "artifacts/render_prompt/scene_001/v1.json",
+    "generated_video_artifact_path": "artifacts/generated_video/scene_001/v1.json",
+    "generated_media_path": "artifacts/generated_video_media/scene_001/v1/scene_render.mp4",
+    "retained_clip_fallback_used": true
+  }
 }

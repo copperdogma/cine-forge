@@ -15,6 +15,9 @@
 #   latency_ms      — avg per-call latency from promptfoo result file (REQUIRED)
 #   cost_usd        — avg per-call cost in USD (REQUIRED if model has pricing)
 #   cost_estimated  — present+true when cost was computed from tokens, not promptfoo
+# Historical score-row notes describe their point-in-time decision. An eval's
+# historical_evidence_status or a row's evidence_status overrides that older
+# wording whenever current decision authority is determined.
 #
 # retry_when conditions:
 #   new-worker-model     — A smarter orchestrating AI might succeed where the previous one couldn't
@@ -41,22 +44,30 @@ evals:
     spec_refs:
       - spec:3
       - spec:8
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:3
       - spec:8
     compromise_refs: []
     description: >
       Structured character bible from screenplay — traits, arc,
-      relationships, evidence grounding. Tests depth of character
-      understanding beyond surface-level extraction.
+      relationships, evidence grounding. All twelve maintained The Mariner
+      characters plus Open Frequency's Maya are independently tested. Historical
+      rows remain provenance only until the expanded two-corpus contract is rerun.
     pipeline_stage: extract
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/character-extraction.yaml --no-cache -j 3"
     config: benchmarks/tasks/character-extraction.yaml
     scorer: benchmarks/scorers/character_extraction_scorer.py
     golden: benchmarks/golden/the-mariner-characters.json
-    test_cases: 3  # THE MARINER, ROSE, DAD
+    additional_goldens:
+      - benchmarks/golden/open-frequency-maya-character.json
+    corpus_sources:
+      - benchmarks/input/the-mariner.md
+      - tests/fixtures/ingest_inputs/open_frequency_short.fountain
+    test_cases: 13
+    historical_evidence_status: pre-open-frequency-corpus-non-decision-grade
 
     target:
       metric: overall
@@ -215,21 +226,36 @@ evals:
     spec_refs:
       - spec:3
       - spec:8
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:3
       - spec:8
     compromise_refs: []
     description: >
       Structured location bible — physical detail, narrative function,
-      scene references. Tests spatial reasoning and thematic interpretation.
+      scene references. Tests spatial reasoning and thematic interpretation
+      across all nine maintained location goldens. Historical three-case rows
+      predate the strict schema, exact-set, and contradiction gates.
+    decision_role: runtime_default_proxy
+    default_driving: true
+    historical_evidence_status: superseded-three-case-permissive-contract-non-decision-grade
+    runtime_alignment:
+      status: proxy-requires-fresh-evidence
+      runtime_schema: src/cine_forge/schemas/bible.py#LocationBible
+      limitation: >
+        The benchmark sends the full screenplay with an eval prompt, while the
+        runtime sends selected scenes through structured output and then
+        canonicalizes location_id. Retain the current runtime default
+        provisionally; require a fresh repaired benchmark before any model
+        change and runtime-boundary evidence before calling that choice proven.
     pipeline_stage: extract
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/location-extraction.yaml --no-cache -j 3"
     config: benchmarks/tasks/location-extraction.yaml
     scorer: benchmarks/scorers/bible_extraction_scorer.py
     golden: benchmarks/golden/the-mariner-locations.json
-    test_cases: 3  # RUDDY & GREENE BUILDING, 15TH FLOOR, COASTLINE
+    test_cases: 9
 
     target:
       metric: overall
@@ -247,7 +273,8 @@ evals:
         measured: 2026-04-24
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-location-extraction-2026-04-24.json
-        note: "Meets quality and latency targets and becomes the quality leader, but narrowly misses the cost target."
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical three-case score predates the strict nine-case contract and cannot establish a quality leader or runtime default."
       - model: "GPT-5.5 Pro"
         metrics:
           overall: 0.8838
@@ -257,7 +284,8 @@ evals:
         measured: 2026-04-24
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-location-extraction-2026-04-24.json
-        note: "Passed structurally, but quality regressed versus the cheaper frontier candidates and misses all target budgets."
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical three-case score predates the strict nine-case contract; retained only as provenance."
       - model: "Opus 4.6"
         metrics:
           overall: 0.942
@@ -266,7 +294,8 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/location-extraction-verify-eval.json
-        note: "Verified: scorer stem-match fix + golden fact/alias/narrative rephrasing"
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical permissive-scorer score covered only three of nine locations and is not default evidence."
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.922
@@ -276,6 +305,8 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/location-extraction-verify-eval.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical permissive-scorer score covered only three of nine locations and is not default evidence."
       - model: "GPT-5.2"
         metrics:
           overall: 0.911
@@ -284,6 +315,8 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/location-extraction-verify-eval.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical permissive-scorer score covered only three of nine locations and is not default evidence."
       - model: "Sonnet 4.5"
         metrics:
           overall: 0.908
@@ -292,6 +325,8 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/location-extraction-verify-eval.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical permissive-scorer score covered only three of nine locations and is not default evidence."
       - model: "Gemini 2.5 Pro"
         metrics:
           overall: 0.895
@@ -300,6 +335,8 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/location-extraction-verify-eval.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical permissive-scorer score covered only three of nine locations and is not default evidence."
       - model: "Gemini 2.5 Flash"
         metrics:
           overall: 0.873
@@ -308,7 +345,8 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/location-extraction-verify-eval.json
-        note: "Fast + cheap, competitive quality"
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical three-case value signal predates the strict scorer and cannot support a default change."
       - model: "Grok 4.1 Fast Reasoning"
         metrics:
           overall: 0.899
@@ -317,6 +355,8 @@ evals:
         measured: 2026-03-14
         git_sha: "e704243"
         result_file: benchmarks/results/model-scout-location-extraction-grok-4-1-fast-reasoning-full.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical scout score covered only three locations under the superseded permissive contract."
 
     attempts: []
 
@@ -326,21 +366,36 @@ evals:
     spec_refs:
       - spec:3
       - spec:8
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:3
       - spec:8
     compromise_refs: []
     description: >
       Structured prop bible — physical description, symbolism, plot function,
-      scene appearances. Tests object-level narrative understanding.
+      scene appearances. Tests object-level narrative understanding across all
+      seven maintained prop goldens using the complete runtime PropBible schema.
+      Historical rows omitted associated_characters and covered only three props.
+    decision_role: runtime_default_proxy
+    default_driving: true
+    historical_evidence_status: superseded-three-case-runtime-schema-misaligned-non-decision-grade
+    runtime_alignment:
+      status: proxy-requires-fresh-evidence
+      runtime_schema: src/cine_forge/schemas/bible.py#PropBible
+      limitation: >
+        The benchmark sends the full screenplay with an eval prompt, while the
+        runtime sends selected scenes through structured output and computes
+        scene_presence at the service boundary. Retain the current runtime
+        default provisionally; require a fresh repaired benchmark before any
+        model change and runtime-boundary evidence before calling it proven.
     pipeline_stage: extract
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/prop-extraction.yaml --no-cache -j 3"
     config: benchmarks/tasks/prop-extraction.yaml
     scorer: benchmarks/scorers/bible_extraction_scorer.py
     golden: benchmarks/golden/the-mariner-props.json
-    test_cases: 3  # OAR, PURSE, FLARE GUN
+    test_cases: 7
 
     target:
       metric: overall
@@ -358,7 +413,8 @@ evals:
         measured: 2026-04-24
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-prop-extraction-2026-04-24.json
-        note: "Passes harness cases but remains below the current Claude prop-extraction leaders."
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical three-case score omitted a runtime schema field and cannot rank prop-bible defaults."
       - model: "GPT-5.5 Pro"
         metrics:
           overall: 0.8621
@@ -368,7 +424,8 @@ evals:
         measured: 2026-04-24
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-prop-extraction-2026-04-24.json
-        note: "Improves over GPT-5.5 but is still below the existing leaders and far outside latency/cost budgets."
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical three-case score omitted a runtime schema field; retained only as provenance."
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.916
@@ -378,7 +435,8 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/prop-extraction-verify-eval.json
-        note: "Verified: scorer entity-type fix + alias normalization + golden fact rephrasing"
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical permissive-scorer score covered only three of seven props and omitted associated_characters."
       - model: "Opus 4.6"
         metrics:
           overall: 0.912
@@ -387,6 +445,8 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/prop-extraction-verify-eval.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical permissive-scorer score covered only three of seven props and omitted associated_characters."
       - model: "Sonnet 4.5"
         metrics:
           overall: 0.889
@@ -395,6 +455,8 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/prop-extraction-verify-eval.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical permissive-scorer score covered only three of seven props and omitted associated_characters."
       - model: "Haiku 4.5"
         metrics:
           overall: 0.830
@@ -403,6 +465,8 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/prop-extraction-verify-eval.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical permissive-scorer score covered only three of seven props and omitted associated_characters."
       - model: "Gemini 3 Pro"
         metrics:
           overall: 0.827
@@ -411,6 +475,8 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/prop-extraction-verify-eval.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical permissive-scorer score covered only three of seven props and omitted associated_characters."
       - model: "Gemini 3 Flash"
         metrics:
           overall: 0.827
@@ -419,6 +485,8 @@ evals:
         measured: 2026-03-02
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/prop-extraction-verify-eval.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical permissive-scorer score covered only three of seven props and omitted associated_characters."
       - model: "Grok 4.1 Fast Reasoning"
         metrics:
           overall: 0.874
@@ -427,6 +495,8 @@ evals:
         measured: 2026-03-14
         git_sha: "e704243"
         result_file: benchmarks/results/model-scout-prop-extraction-grok-4-1-fast-reasoning-full.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical scout score covered only three props under the schema-misaligned permissive contract."
 
     attempts: []
 
@@ -436,14 +506,28 @@ evals:
     spec_refs:
       - spec:3
       - spec:8
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:3
       - spec:8
     compromise_refs: []
     description: >
-      Narrative relationships between all entity types — family, adversary,
-      ownership edges. Tests cross-entity reasoning over full screenplay.
+      Source-grounded relationship capability across all entity types — family,
+      adversary, and ownership edges — from a full screenplay and canonical
+      catalog. This richer benchmark contract is intentionally separate from
+      entity_graph_v1's name-list input and bare runtime edge-list transport.
+    decision_role: capability_detector
+    default_driving: false
+    historical_evidence_status: superseded-scorer-and-runtime-misalignment-non-decision-grade
+    runtime_alignment:
+      status: separate-contract-unmeasured
+      runtime_schema: src/cine_forge/modules/world_building/entity_graph_v1/contracts.py
+      transport_gate: tests/unit/test_relationship_contract_boundaries.py
+      limitation: >
+        Runtime model quality is not measured because the module supplies entity
+        name lists rather than screenplay evidence. Retain the configured model
+        provisionally; do not select or replace it from this capability score.
     pipeline_stage: extract
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/relationship-discovery.yaml --no-cache -j 3"
@@ -457,6 +541,7 @@ evals:
       value: 0.99
       latency_ms_max: 60000
       cost_usd_max: 0.10
+      note: "Capability threshold only; clearing it does not validate entity_graph_v1 runtime quality or select its model."
 
     scores:
       - model: "GPT-5.5"
@@ -468,7 +553,8 @@ evals:
         measured: 2026-04-24
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-relationship-discovery-2026-04-24.json
-        note: "High quality, but below the current leaders and above the cost target."
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical score predates the strict scorer repair and cannot drive the runtime default because this task does not exercise the runtime boundary."
       - model: "GPT-5.5 Pro"
         metrics:
           overall: 0.9864
@@ -478,7 +564,8 @@ evals:
         measured: 2026-04-24
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-relationship-discovery-2026-04-24.json
-        note: "Better than GPT-5.5, but still below current leaders and far outside latency/cost budgets."
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical score predates the strict scorer repair and cannot drive the runtime default because this task does not exercise the runtime boundary."
       - model: "Sonnet 4.6"
         metrics:
           overall: 0.995
@@ -488,6 +575,8 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical score predates the strict scorer repair and is capability-only, not runtime-default evidence."
       - model: "Gemini 2.5 Flash"
         metrics:
           overall: 0.995
@@ -496,7 +585,8 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
-        note: "Tied for best at 6x cheaper than Opus"
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical tie predates the strict scorer repair and cannot support the runtime-default decision because the benchmark contract is different."
       - model: "GPT-4.1"
         metrics:
           overall: 0.990
@@ -505,6 +595,8 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical score predates the strict scorer repair and is capability-only, not runtime-default evidence."
       - model: "Sonnet 4.5"
         metrics:
           overall: 0.989
@@ -513,6 +605,8 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical score predates the strict scorer repair and is capability-only, not runtime-default evidence."
       - model: "Opus 4.6"
         metrics:
           overall: 0.989
@@ -521,6 +615,8 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical score predates the strict scorer repair and is capability-only, not runtime-default evidence."
       - model: "Gemini 2.5 Pro"
         metrics:
           overall: 0.989
@@ -529,6 +625,8 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical score predates the strict scorer repair and is capability-only, not runtime-default evidence."
       - model: "GPT-5.2"
         metrics:
           overall: 0.979
@@ -537,6 +635,8 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/relationship-discovery-post-golden-verify.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical score predates the strict scorer repair and is capability-only, not runtime-default evidence."
       - model: "Grok 4.1 Fast Reasoning"
         metrics:
           overall: 0.986
@@ -545,6 +645,8 @@ evals:
         measured: 2026-03-14
         git_sha: "e704243"
         result_file: benchmarks/results/model-scout-relationship-discovery-grok-4-1-fast-reasoning-full.json
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical score predates the strict scorer repair and is capability-only, not runtime-default evidence."
 
     attempts: []
 
@@ -554,24 +656,44 @@ evals:
     spec_refs:
       - spec:2
       - spec:8
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:2
       - spec:8
     compromise_refs: []
     description: >
-      Auto-detect project metadata from screenplay: title, genre, tone,
-      format, duration, cast size. Gemini 3 Flash is the production winner
-      after golden fix + prompt improvement — all targets met at 13s, $0.009.
-      Note: golden was corrected during attempt 001 (format=short film, not
-      feature film; duration=[8,35]; supporting chars fixed).
+      Auto-detect project metadata from two source-verified screenplays: title,
+      genre, tone, format, duration, cast size, locations, audience, and
+      calibrated rationale. Story 208 replaced substring and partial-credit
+      false greens with an exact ten-field schema, negation-aware phrase
+      matching, finite confidence checks, source-anchored rationales, and hard
+      gates against unsupported categorical padding. Historical rows predate
+      that strict two-corpus semantic contract and cannot prove the configured
+      default.
+    decision_role: runtime_default_proxy
+    default_driving: true
+    historical_evidence_status: superseded-strict-semantic-contract-non-decision-grade
+    runtime_alignment:
+      status: proxy-requires-fresh-evidence
+      runtime_schema: src/cine_forge/modules/ingest/project_config_v1/main.py#_DetectedConfigEnvelope
+      limitation: >
+        The benchmark exercises the expected metadata contract but not the
+        complete runtime service boundary. Retain the configured Gemini 3 Flash
+        default provisionally; require a fresh repaired-contract run before any
+        model change and runtime-boundary evidence before calling it proven.
     pipeline_stage: extract
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/config-detection.yaml --no-cache -j 3"
     config: benchmarks/tasks/config-detection.yaml
     scorer: benchmarks/scorers/config_detection_scorer.py
     golden: benchmarks/golden/the-mariner-config.json
-    test_cases: 1
+    additional_goldens:
+      - benchmarks/golden/open-frequency-config.json
+    corpus_sources:
+      - benchmarks/input/the-mariner.md
+      - tests/fixtures/ingest_inputs/open_frequency_short.fountain
+    test_cases: 2
 
     target:
       metric: overall
@@ -729,14 +851,16 @@ evals:
     spec_refs:
       - spec:2
       - spec:8
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:2
       - spec:8
     compromise_refs: []
     description: >
-      Scene boundaries, headings, characters, summaries from full screenplay.
-      Tests structural parsing combined with narrative understanding.
+      Scene boundaries, headings, characters, and summaries across two
+      repo-owned screenplays. Tests structural parsing combined with narrative
+      understanding, including unusual explicit time labels and radio-only voices.
       Earlier Gemini providers were excluded after parse issues at time of
       testing; newer Gemini lanes should use generous output caps and record
       whether failures are parser/runtime issues or model-quality misses.
@@ -746,7 +870,13 @@ evals:
     config: benchmarks/tasks/scene-extraction.yaml
     scorer: benchmarks/scorers/scene_extraction_scorer.py
     golden: benchmarks/golden/the-mariner-scenes.json
-    test_cases: 1
+    additional_goldens:
+      - benchmarks/golden/open-frequency-scenes.json
+    corpus_sources:
+      - benchmarks/input/the-mariner.md
+      - tests/fixtures/ingest_inputs/open_frequency_short.fountain
+    test_cases: 2
+    historical_evidence_status: pre-open-frequency-corpus-non-decision-grade
 
     target:
       metric: overall
@@ -916,22 +1046,32 @@ evals:
     spec_refs:
       - spec:2
       - spec:8
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:2
       - spec:8
     compromise_refs: []
     description: >
       Convert prose narrative or broken Fountain to valid Fountain screenplay
-      format. Tests format understanding and faithful content preservation.
-      Gemini providers had parse errors during initial run.
+      format. Tests format understanding and faithful content preservation across
+      two Signal in the Rain inputs plus a separately derived, deliberately
+      corrupted Open Frequency excerpt. Historical two-case rows are not
+      decision-grade for the expanded contract.
     pipeline_stage: normalize
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/normalization.yaml --no-cache -j 3"
     config: benchmarks/tasks/normalization.yaml
     scorer: benchmarks/scorers/normalization_scorer.py
     golden: benchmarks/golden/normalize-signal-golden.json
-    test_cases: 2  # prose, broken fountain
+    additional_goldens:
+      - benchmarks/golden/normalize-open-frequency-corrupted-golden.json
+    corpus_sources:
+      - benchmarks/input/normalize-prose.txt
+      - benchmarks/input/normalize-broken-fountain.txt
+      - benchmarks/input/normalize-open-frequency-corrupted.fountain
+    test_cases: 3
+    historical_evidence_status: pre-open-frequency-corrupted-case-non-decision-grade
 
     target:
       metric: overall
@@ -1059,14 +1199,29 @@ evals:
     spec_refs:
       - spec:2
       - spec:8
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:2
       - spec:8
     compromise_refs: []
     description: >
       Scene-level metadata enrichment — dramatic beats, tone shifts,
-      character presence, location mapping. Tests nuanced scene analysis.
+      character presence, location mapping, and source-grounded evidence.
+      Story 208 made exact schema, scene identity, source-supported beats,
+      heading-derived time, character set, and contradiction handling hard
+      gates. Historical rows predate this source-grounding contract.
+    decision_role: runtime_default_proxy
+    default_driving: true
+    historical_evidence_status: superseded-source-grounding-contract-non-decision-grade
+    runtime_alignment:
+      status: proxy-requires-fresh-evidence
+      runtime_schema: src/cine_forge/modules/ingest/scene_analysis_v1/execution.py#_SceneEnrichment
+      limitation: >
+        The two benchmark excerpts exercise the semantic output contract but
+        do not prove the long-running runtime boundary. Retain the configured
+        scene-analysis default provisionally until the repaired scorer is
+        regraded and runtime-shaped evidence exists.
     pipeline_stage: enrich
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/scene-enrichment.yaml --no-cache -j 3"
@@ -1292,14 +1447,18 @@ evals:
     type: quality
     spec_refs:
       - spec:8
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:8
     compromise_refs: []
     description: >
-      QA gate — model judges whether an extraction is good or bad.
-      Tests calibrated judgment (accept good work, reject bad work).
-      Most models perform well; near-ceiling for mid-tier+.
+      QA gate — model judges whether an extraction is good or bad. The repaired
+      two-case contract uses a source-faithful accepted extraction and a
+      deliberately defective rejection control. Historical rows predate the
+      source-truth and strict issue-accounting repair and cannot drive a QA
+      default or compromise detector until they are regraded.
+    historical_evidence_status: contaminated-non-decision-grade
     pipeline_stage: qa
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/qa-pass.yaml --no-cache -j 3"
@@ -1495,14 +1654,29 @@ evals:
       - spec:8
     story_refs:
       - "092"
+      - "208"
     category_refs:
       - spec:3
       - spec:8
     compromise_refs: []
     description: >
       Entity state tracking and continuity change detection between scenes.
-      Tests temporal reasoning — what changed, what persisted, what's new.
-      Newest eval (Story 092). Best-performing overall.
+      Tests temporal reasoning — what changed, what persisted, and what is new.
+      Story 208 replaced fuzzy property/event credit with exact entity and
+      schema gates, one-to-one change matching, source-quoted evidence,
+      directional reasons, and calibrated finite confidence. Historical rows
+      predate this event contract and cannot rank runtime defaults.
+    decision_role: runtime_default_proxy
+    default_driving: true
+    historical_evidence_status: superseded-event-contract-non-decision-grade
+    runtime_alignment:
+      status: proxy-requires-fresh-evidence
+      runtime_schema: src/cine_forge/modules/world_building/continuity_tracking_v1/prompting.py#SceneContinuityExtraction
+      limitation: >
+        The benchmark uses two maintained scene transitions and does not prove
+        full-project service behavior. Retain the configured continuity model
+        provisionally until fresh repaired-contract and runtime-boundary
+        evidence are available.
     pipeline_stage: extract
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/continuity-extraction.yaml --no-cache -j 3"
@@ -1618,30 +1792,46 @@ evals:
       - spec:9
     story_refs:
       - "030"
+      - "208"
     category_refs:
       - spec:7
       - spec:8
       - spec:9
     compromise_refs: []
     description: >
-      Director-facing QA of generated scene clips using a clip packet
-      (mp4 + sampled frames + transcript/audio metadata). Measures tone,
-      emotion, shot language, motion, continuity, and audio intent on
-      Story 030's anchor subset before the full 20-clip matrix rerun.
+      Frame-only QA of generated scene imagery using five ordered JPEGs plus
+      neutral timing facts and an opaque subject identifier. Measures only
+      visual tone, emotion, color, inferable shot language, inferable motion,
+      continuity, and frame-grounded evidence across six source-backed controls.
+      Audio, transcript, MP4 content, semantic titles, and quarantined synthetic
+      cases are not submitted or scored.
     pipeline_stage: qa
     runner: promptfoo
-    command: "cd benchmarks && PROMPTFOO_PYTHON=python promptfoo eval -c tasks/video-understanding.yaml --no-cache --filter-first-n 6 -j 1"
+    command: "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && set +e && PROMPTFOO_PYTHON=../.venv/bin/python promptfoo eval -c tasks/video-understanding.yaml --no-cache -j 1 --output results/video-understanding-repaired.json; status=$?; set -e; if [ $status -ne 0 ] && [ $status -ne 100 ]; then exit $status; fi; ../.venv/bin/python scripts/video_understanding_report.py --result-file results/video-understanding-repaired.json --output-prefix results/video-understanding-repaired; exit $status"
+    script: benchmarks/scripts/video_understanding_report.py
     config: benchmarks/tasks/video-understanding.yaml
     scorer: benchmarks/scorers/video_understanding_scorer.py
     golden: benchmarks/video_understanding/manifest.json
-    test_cases: 6  # anchor-subset pilot; full task currently defines 20 clips
+    generator: benchmarks/scripts/generate_video_understanding_dataset.py
+    test_cases: 6
+    test_case_policy:
+      mode: explicit_manifest_active_cases
+      count: 6
+      case_ids:
+        - dialogue_confession_push_in
+        - alarm_chase_whip_pan
+        - quiet_bedside_vigil
+        - prop_swap_continuity_break
+        - rooftop_escape_crash_zoom
+        - storm_tunnel_lateral_run
+      reason: "Only manifest cases classified active_frame_eval enter the maintained frame-only task; fourteen source-insufficient or redundant cases remain quarantined."
 
     target:
       metric: overall
       value: 0.80
       latency_ms_max: 15000
       cost_usd_max: 0.02
-      note: "Do not switch defaults until the full 20-clip matrix clears the pilot floor."
+      note: "Fresh results on the repaired six-case frame-only task are required before any default decision; every historical row below is harness-contaminated and non-decision-grade."
 
     scores:
       - model: "Gemini 3.6 Flash"
@@ -1653,7 +1843,8 @@ evals:
         measured: 2026-07-21
         git_sha: "f5a3ffb"
         result_file: benchmarks/results/video-understanding-gemini36flash-2026-07-21.json
-        note: "Story 208 six-anchor raw result passed 2/6 and is not decision-grade. Classification: mixed model-wrong/ambiguous plus material golden- and rubric-wrong contamination: neon and muzak targets describe motion/objects absent from byte-identical symbolic frames, while dialogue penalties conflict with visible content and the 13-key contract. Non-runtime-blocking; repair fixtures before comparison."
+        evidence_status: contaminated-non-decision-grade
+        note: "Story 208 six-anchor raw result passed 2/6 and is not decision-grade. Classification: mixed model-wrong/ambiguous plus material golden- and rubric-wrong contamination: neon and muzak targets describe motion/objects absent from byte-identical symbolic frames, while dialogue penalties conflict with visible content and the 13-key contract. The retained rows also omit response.raw/modelVersion/usage, so the reported Gemini identity and hidden-thinking cost cannot be replayed under the repaired transport contract. Non-runtime-blocking; repair fixtures and rerun before comparison."
       - model: "Gemini 3.5 Flash-Lite"
         metrics:
           overall: 0.5095
@@ -1663,7 +1854,8 @@ evals:
         measured: 2026-07-21
         git_sha: "f5a3ffb"
         result_file: benchmarks/results/video-understanding-gemini35flashlite-2026-07-21.json
-        note: "Story 208 six-anchor raw result passed 0/6 and is materially harness-contaminated. Classification: model-wrong on several camera/motion cues, golden-wrong on byte-identical neon frames, and ambiguous/golden-wrong on byte-identical muzak frames. Non-runtime-blocking; repair fixtures before comparison."
+        evidence_status: contaminated-non-decision-grade
+        note: "Story 208 six-anchor raw result passed 0/6 and is materially harness-contaminated. Classification: model-wrong on several camera/motion cues, golden-wrong on byte-identical neon frames, and ambiguous/golden-wrong on byte-identical muzak frames. The retained rows omit response.raw/modelVersion/usage, so model identity and cost cannot be replayed under the repaired transport contract even though normalized totals happen to reconcile. Non-runtime-blocking; repair fixtures and rerun before comparison."
       - model: "Grok 4.5"
         metrics:
           overall: 0.7017
@@ -1673,6 +1865,7 @@ evals:
         measured: 2026-07-20
         git_sha: "dea7024"
         result_file: benchmarks/results/video-understanding-grok45-2026-07-20.json
+        evidence_status: contaminated-non-decision-grade
         note: "Story 207 passed 3/6 anchor clips and cleared latency/cost budgets, improving substantially over Grok 4.3 but missing the 0.80 pilot floor and GPT-5.4 leader. Classification: model-wrong/non-runtime-blocking for the current default; misses were prop-swap camera/motion nuance, a hallucinated static geometric neon scene that missed the crane reveal, and incorrect central-subject/emotion reads in the muzak tableau."
       - model: "GPT-5.4"
         metrics:
@@ -1683,6 +1876,7 @@ evals:
         measured: 2026-03-19
         git_sha: "7a58387"
         result_file: benchmarks/results/video-understanding-rerun-gpt54-2026-03-19.json
+        evidence_status: contaminated-non-decision-grade
         note: "Discovery-spike rerun leader. Improved the OpenAI slot from the earlier GPT-4.1 pilot and passed 5/6 anchor clips. Remaining miss is model-wrong on neon_crosswalk_reveal: still misses the intended reveal/motion read."
       - model: "Sonnet 4.6"
         metrics:
@@ -1693,6 +1887,7 @@ evals:
         measured: 2026-03-19
         git_sha: "7a58387"
         result_file: benchmarks/results/video-understanding-rerun-sonnet46-2026-03-19.json
+        evidence_status: contaminated-non-decision-grade
         note: "Refreshed rerun trails GPT-5.4 and still misses director-facing detail on dialogue_confession_push_in, neon_crosswalk_reveal, and muzak_aftermath_tableau. Classified model-wrong, not golden-wrong."
       - model: "GPT-4.1"
         metrics:
@@ -1703,6 +1898,7 @@ evals:
         measured: 2026-03-19
         git_sha: "7a58387"
         result_file: benchmarks/results/video-understanding-pilot-gpt41-2026-03-19.json
+        evidence_status: contaminated-non-decision-grade
         note: "Initial anchor pilot baseline. Superseded as the OpenAI slot after the discover-models spike promoted GPT-5.4 for the rerun."
       - model: "Gemini 3 Flash Preview"
         metrics:
@@ -1713,6 +1909,7 @@ evals:
         measured: 2026-03-19
         git_sha: "7a58387"
         result_file: benchmarks/results/video-understanding-rerun-gemini3flash-maxout-2026-03-19.json
+        evidence_status: contaminated-non-decision-grade
         note: "Corrected rerun after raising Gemini 3.x maxOutputTokens from 1400 to 65536. All 6 outputs now parse as JSON and the score improves materially, but the model still trails GPT-5.4 and misses key action/reveal and emotion reads on alarm_chase_whip_pan, quiet_bedside_vigil, prop_swap_continuity_break, neon_crosswalk_reveal, and muzak_aftermath_tableau. Remaining misses are model-wrong, not golden drift."
       - model: "Gemini 3.1 Pro Preview"
         metrics:
@@ -1723,6 +1920,7 @@ evals:
         measured: 2026-03-19
         git_sha: "7a58387"
         result_file: benchmarks/results/video-understanding-rerun-gemini31pro-maxout-2026-03-19.json
+        evidence_status: contaminated-non-decision-grade
         note: "Corrected rerun after raising Gemini 3.x maxOutputTokens from 1400 to 65536. All 6 outputs now parse as JSON and the score improves from 0.2813 to 0.6342, confirming the earlier truncation was a harness-budget issue. Remaining misses on prop_swap_continuity_break, neon_crosswalk_reveal, and muzak_aftermath_tableau are model-wrong on this task."
       - model: "Gemini 2.5 Flash"
         metrics:
@@ -1733,6 +1931,7 @@ evals:
         measured: 2026-03-19
         git_sha: "7a58387"
         result_file: benchmarks/results/video-understanding-rerun-gemini25flash-maxout-2026-03-19.json
+        evidence_status: contaminated-non-decision-grade
         note: "Corrected rerun after raising Gemini maxOutputTokens from 1400 to 65536. All 6 outputs now parse as JSON and the score improves from 0.1561 to 0.6523, making this the best Google subject on the current frame-packet harness. Remaining misses on prop_swap_continuity_break, neon_crosswalk_reveal, and muzak_aftermath_tableau are model-wrong."
       - model: "Gemini 2.5 Pro"
         metrics:
@@ -1743,6 +1942,7 @@ evals:
         measured: 2026-03-19
         git_sha: "7a58387"
         result_file: benchmarks/results/video-understanding-rerun-gemini25pro-maxout-2026-03-19.json
+        evidence_status: contaminated-non-decision-grade
         note: "Corrected rerun after raising Gemini maxOutputTokens from 1400 to 65536. All 6 outputs now parse as JSON and the score improves from 0.1492 to 0.5662, but latency now exceeds the 15s pilot target and the model still misses dialogue/emotion and reveal quality on four clips. Remaining misses are model-wrong."
       - model: "Grok 4.3"
         metrics:
@@ -1753,6 +1953,7 @@ evals:
         measured: 2026-05-04
         git_sha: "f2d0f13"
         result_file: benchmarks/results/video-understanding-grok43-2026-05-04.json
+        evidence_status: contaminated-non-decision-grade
         note: "Story 200 Grok 4.3 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON, but five misses were model-wrong director/shot-read failures, mainly weak camera/motion/reveal reads and shallow summaries. Latency also misses the 15s pilot target. No role-modality or generated-output-QA default change."
       - model: "Gemini 3.5 Flash"
         metrics:
@@ -1763,6 +1964,7 @@ evals:
         measured: 2026-05-20
         git_sha: "0b5ae05"
         result_file: benchmarks/results/video-understanding-gemini35flash-2026-05-20.json
+        evidence_status: contaminated-non-decision-grade
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
@@ -1799,7 +2001,12 @@ evals:
       - "149"
       - "174"
       - "176"
+      - "178"
+      - "208"
     category_refs:
+      - spec:2
+      - spec:3
+      - spec:4
       - spec:5
       - spec:6
       - spec:7
@@ -1807,32 +2014,53 @@ evals:
       - spec:10
     compromise_refs: []
     description: >
-      Compares fixed scene-level previz candidates on the same fixture pack:
-      Story 027's symbolic baseline, Story 137's richer deterministic annotated
-      animatic, and the current maintained low-fidelity AI-previz provider-floor
-      lanes (`veo-3.1-fast`, `veo-3.1-lite`, and `xai_grok_imagine_video`).
-      Historical Sora 2 and compact Lite results remain comparative evidence
-      only. Uses Story 030's frame-packet
-      video-understanding substrate with GPT-5.4 as the fixed analysis model and a
-      rubric centered on camera readability, blocking clarity, motion, pacing,
-      staging legibility, and low-detail previz usefulness for human review.
+      Regrades retained provider-generated `veo-3.1-fast`, `veo-3.1-lite`, and
+      `xai_grok_imagine_video` candidate clips against a dedicated source-authored
+      generation-brief contract using five ordered JPEGs and GPT-5.4 as the fixed
+      analysis model. The symbolic and annotated variants remain reproducibility
+      controls only: they are excluded from provider decisions because their
+      deterministic frames, especially the annotated lane, expose answer-bearing
+      titles, labels, and shot intent. Historical scores predate this repaired
+      target, opaque transport, frame-index evidence, and control policy.
+    historical_evidence_status: contaminated-non-decision-grade
+    decision_role: provider_quality_detector
+    default_driving: false
     pipeline_stage: visualization
     runner: promptfoo
-    command: "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python ../.venv/bin/python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19.json --output-prefix results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19"
+    command: "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && set +e && PROMPTFOO_PYTHON=../.venv/bin/python ../.venv/bin/python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-repaired.json; status=$?; set -e; if [ $status -ne 0 ] && [ $status -ne 100 ]; then exit $status; fi; ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-repaired.json --output-prefix results/previz-usefulness-repaired; exit $status"
+    script: benchmarks/scripts/previz_usefulness_report.py
     config: benchmarks/tasks/previz-usefulness.yaml
     scorer: benchmarks/scorers/video_understanding_scorer.py
     golden: benchmarks/previz_usefulness/manifest.json
+    generator: benchmarks/scripts/generate_previz_usefulness_dataset.py
+    case_contract: benchmarks/previz_usefulness/cases.json
     test_cases: 3
+    test_case_policy:
+      subject_modality: five_ordered_jpeg_frames_without_audio_or_semantic_metadata
+      decision_candidate_variants:
+        - google_veo31_lite_previz
+        - google_veo31_fast_previz
+        - xai_grok_imagine_video_previz
+      control_variants:
+        - symbolic
+        - annotated_symbolic
+      control_status:
+        symbolic: control-only-non-comparable
+        annotated_symbolic: control-only-answer-leaking
+      paid_generation:
+        status: explicit-opt-in-only
+        cli_flag: "--generate-ai"
 
     target:
       metric: overall
       value: 0.75
       latency_ms_max: 6000
       cost_usd_max: 0.80
-      note: "Operator-facing previz should eventually mean AI-generated motion within <=6000 ms on the fixed pack. Deterministic animatics remain fallback/control baselines and must stay clearly labeled as such until a real AI lane clears the target."
+      note: "Fresh repaired-contract regrading is required before any provider/default decision. Operator-facing previz should eventually mean AI-generated motion within <=6000 ms; deterministic controls are not comparable decision evidence."
 
     scores:
       - model: "Veo 3.1 Fast Previz"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.863
           python: 0.896
@@ -1845,6 +2073,7 @@ evals:
         result_file: benchmarks/results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19-report.json
         note: "Fresh `/validate` rerun regenerated the Story 176 clip pack and reran promptfoo. Veo 3.1 Fast lands at `0.8630` overall and `52765 ms` generation latency, but the paired one-pass runtime harness still lands at `100653 ms` to first playable / `52788 ms` isolated `ai_previz`, so it remains well outside the story's `15%` ship bar. Classification: no Fast-specific model-wrong or golden-wrong mismatches remained; the only failing assertions in the rerun are three ambiguous deterministic-control mismatches plus one ambiguous xAI scorer miss."
       - model: "Veo 3.1 Lite Previz"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.898
           python: 0.8893
@@ -1857,6 +2086,7 @@ evals:
         result_file: benchmarks/results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19-report.json
         note: "Fresh `/validate` rerun now puts Veo 3.1 Lite on top of the AI quality rows at `0.8980` overall and `39361 ms` generation latency, comfortably above the `0.803` usefulness floor. It still loses the paired one-pass runtime race badly, though: the refreshed Lite control lands at `100929 ms` to first playable versus shipped xAI at `65514 ms`, so quality leadership alone is not enough to retake the shipped lane."
       - model: "Veo 3.1 Lite Compact Previz"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.8753
           python: 0.8773
@@ -1869,6 +2099,7 @@ evals:
         result_file: benchmarks/results/previz-usefulness-story-174-compact-candidate-2026-04-18-report.json
         note: "Historical bounded compact-prompt candidate from Story 174. It was not rerun in Story 176 because the live one-pass provider-floor question narrowed to shipped Lite, Veo Fast, and xAI. Keep it as historical fixed-pack evidence only."
       - model: "Grok Imagine Previz"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.8997
           python: 0.8993
@@ -1881,6 +2112,8 @@ evals:
         result_file: benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20-report.json
         note: "Fresh `/validate` reran the narrowed Story 178 fixed-pack usefulness slice into `benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. Grok Imagine improves to `0.8997` overall at `17935 ms` generation latency while the paired validation runtime compare holds the shipped imported-project first pass at `32130 ms` / `14103 ms` prerequisites. Classification: no xAI-specific model-wrong, golden-wrong, or ambiguous mismatches remained in this validation rerun. Remaining failures are deterministic-control only and non-runtime-blocking."
       - model: "Annotated Animatic"
+        evidence_status: contaminated-non-decision-grade
+        decision_role: control-only-answer-leaking
         metrics:
           overall: 0.838
           python: 0.8727
@@ -1893,6 +2126,8 @@ evals:
         result_file: benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20-report.json
         note: "Fresh `/validate` reran the deterministic annotated control into the same validation report. It remains control-only but clean at `618 ms` and `0.8380` overall, and it passed all assertions in this validation rerun. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained for this row."
       - model: "Symbolic Animatic"
+        evidence_status: contaminated-non-decision-grade
+        decision_role: control-only-non-comparable
         metrics:
           overall: 0.6847
           python: 0.756
@@ -1905,6 +2140,7 @@ evals:
         result_file: benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20-report.json
         note: "Fresh `/validate` reran the symbolic deterministic control into the same validation report. It remains control-only at `445 ms` and `0.6647` overall. Two failures remain ambiguous and non-runtime-blocking: `quiet_bedside_vigil` misses blocking clarity on a seated-vs-standing vigil read, and `radio_hold_tracking` still flattens the lateral track into static framing while drifting on tone/emotion and flashlight continuity. No model-wrong or golden-wrong mismatches remained."
       - model: "Sora 2 Previz"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.659
           python: 0.4513
@@ -1918,6 +2154,9 @@ evals:
         note: "Historical comparator only; not part of Story 176's narrowed one-pass provider-floor pack. The three hard_constraints failures remain ambiguous evidence_timestamp_range mismatches while the rubric stays strong, but the lane still loses badly on latency and cost."
 
     attempts:
+      - date: 2026-07-22
+        git_sha: "working-tree"
+        note: "Story 208 truth repair separated this lane from the mutable base video-understanding targets and recovered a dedicated three-case generation-intent contract from the retained prompt artifacts. Manual five-frame contact-sheet inspection confirmed that the three targets match the authored dialogue/envelope push-in, warm bedside hold, and corridor/flashlight lateral-track briefs; it also reconfirmed the annotated control's visible answer overlays. The generator now preserves all nine paid AI clip/frame/prompt byte sets by default, records exact hashes, and requires an explicit --generate-ai opt-in for provider generation. Symbolic and annotated controls are control-only. Every historical score is contaminated and non-decision-grade until a fresh repaired-contract regrade; no provider call was made during this repair."
       - date: 2026-04-20
         git_sha: "e3c1d39"
         note: "Fresh `/validate` reran the narrowed Story 178 xAI-plus-controls usefulness slice into `benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. Verified ranking: Grok Imagine `0.8997`, Annotated `0.8380`, Symbolic `0.6647`. Classification: no model-wrong or golden-wrong mismatches remained; Grok Imagine and Annotated passed clean, while Symbolic keeps two deterministic-control ambiguities (`quiet_bedside_vigil`, `radio_hold_tracking`) that stay non-runtime-blocking. Product decision is unchanged: the shipped xAI lane remains above the `0.803` usefulness floor."
@@ -1962,6 +2201,7 @@ evals:
       - spec:8
     story_refs:
       - "169"
+      - "208"
     category_refs:
       - spec:5
       - spec:6
@@ -1974,15 +2214,36 @@ evals:
       two-scene Story 168-style substrate across the wired candidate packs
       (`openai_sora2`, `google_veo31`, `google_veo31_fast`). Combines a live
       runtime harness that records success, latency, cost, and reference-slot
-      usage with Story 030's video-understanding scorer for semantic quality.
+      usage with a five-frame semantic-adherence comparison against versioned
+      screenplay-derived intended briefs. Candidate frames never define their
+      own targets; dimensions the source or five samples cannot establish are
+      explicitly excluded.
     pipeline_stage: generation
     runner: custom
-    command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_render_provider_floor_eval.py --fixture-manifest benchmarks/fixtures/final_render_provider_floor_cases.json --output-prefix benchmarks/results/final-render-provider-floor-runtime && PYTHONPATH=src .venv/bin/python benchmarks/scripts/generate_final_render_provider_floor_dataset.py --runtime-result benchmarks/results/final-render-provider-floor-runtime.json && source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && PROMPTFOO_PYTHON=.venv/bin/python promptfoo eval -c benchmarks/tasks/final-render-provider-floor.yaml --no-cache -j 3 --output benchmarks/results/final-render-provider-floor-quality.json && PYTHONPATH=src .venv/bin/python benchmarks/scripts/final_render_provider_floor_report.py --runtime-result benchmarks/results/final-render-provider-floor-runtime.json --promptfoo-result benchmarks/results/final-render-provider-floor-quality.json --output-prefix benchmarks/results/final-render-provider-floor-decision"
+    command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_render_provider_floor_eval.py --fixture-manifest benchmarks/fixtures/final_render_provider_floor_cases.json --output-prefix benchmarks/results/final-render-provider-floor-runtime && PYTHONPATH=src .venv/bin/python benchmarks/scripts/generate_final_render_provider_floor_dataset.py --runtime-result benchmarks/results/final-render-provider-floor-runtime.json && source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && set +e && PROMPTFOO_PYTHON=.venv/bin/python promptfoo eval -c benchmarks/tasks/final-render-provider-floor.yaml --no-cache -j 3 --output benchmarks/results/final-render-provider-floor-quality.json; status=$?; set -e; if [ $status -ne 0 ] && [ $status -ne 100 ]; then exit $status; fi; PYTHONPATH=src .venv/bin/python benchmarks/scripts/final_render_provider_floor_report.py --runtime-result benchmarks/results/final-render-provider-floor-runtime.json --promptfoo-result benchmarks/results/final-render-provider-floor-quality.json --output-prefix benchmarks/results/final-render-provider-floor-decision; exit $status"
     script: benchmarks/scripts/final_render_provider_floor_report.py
+    generator: benchmarks/scripts/generate_final_render_provider_floor_dataset.py
+    generated_paths:
+      - benchmarks/final_render_provider_floor
     config: benchmarks/tasks/final-render-provider-floor.yaml
     scorer: benchmarks/scorers/video_understanding_scorer.py
     golden: benchmarks/final_render_provider_floor/manifest.json
     test_cases: 2
+    test_case_policy:
+      mode: all_declared_cases_x_all_wired_candidates
+      case_count: 2
+      candidate_count: 3
+      candidate_case_rows: 6
+      frames_per_candidate_case: 5
+      target_semantics: intended_source_brief_not_candidate_frame_truth
+    historical_evidence_status: contaminated-non-decision-grade
+    historical_evidence_reason: >
+      Every 2026-04-16 quality row used semantic clip titles, timestamp-based
+      evidence, unsupported target dimensions, and the superseded permissive
+      scorer. The retained runtime summary also lacks the original prompt/video
+      artifact envelopes and direct-input snapshots, so model, request, cost,
+      and reference-slot claims cannot be replayed under the repaired contract.
+      All historical quality and runtime numbers are context only.
     default_model: "google_veo31"
 
     target:
@@ -1990,7 +2251,19 @@ evals:
       value: 0.74
       latency_ms_max: 300000
       cost_usd_max: 0.02
-      note: "The shipped default should pass both representative scenes, stay within the current cost floor, preserve multiple direct reference-image slots, and clear the old default by a meaningful quality margin instead of winning on anecdote."
+      note: "A fresh repaired-v2 run is required before any default change. The shipped default is retained provisionally to avoid replacing one unproven choice with another; manual inspection is directional context only, and neither the old quality nor runtime summary is decision-grade."
+
+    manual_frame_inspection:
+      inspected: 2026-07-22
+      coverage: "30/30 retained frames across 3 candidates x 2 cases"
+      conclusion: >
+        Standard Veo appears directionally the strongest overall: both packets
+        clearly establish the ensemble/studio or two-person tower staging and
+        the main source props. Sora is more atmospheric and technically specific
+        in places, while Veo Fast is also competitive; their old second/third
+        ordering is ambiguous. This visual inspection is descriptive context,
+        not a default decision: it cannot reproduce the old 0.138 quality margin
+        or replace the missing replayable runtime evidence.
 
     scores:
       - model: "Google Veo 3.1 Render"
@@ -2006,7 +2279,8 @@ evals:
         measured: 2026-04-16
         git_sha: "62a02d6"
         result_file: benchmarks/results/final-render-provider-floor-story-169-decision-2026-04-16.json
-        note: "Story 169 winner and new shipped default. Passed both scenes, preserved three direct reference-image inputs per scene, and beat the old `openai_sora2` default by 0.138 overall quality at 0.63x the total runtime."
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical v1 quality is invalid under the repaired contract. The retained runtime summary says six live runs succeeded, but absent artifact envelopes and direct-input snapshots make its request, cost, and reference-use claims non-replayable. Manual inspection directionally favors standard Veo, but a fresh complete v2 run is required."
       - model: "OpenAI Sora 2 Render"
         metrics:
           overall: 0.6113
@@ -2020,7 +2294,8 @@ evals:
         measured: 2026-04-16
         git_sha: "62a02d6"
         result_file: benchmarks/results/final-render-provider-floor-story-169-quality-2026-04-16.json
-        note: "Comparator only, non-runtime-blocking. Scene `open_frequency_scene_002_water_tower_night` stayed model-wrong: the clip flattened the wind-lashed hopeful antenna rigging scene into generic intimate close coverage and lost the wide-master storm beat."
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical v1 quality is invalid, and the retained runtime summary is non-replayable without its artifact/direct-input snapshots. Manual frame inspection found stronger tower technical detail and atmosphere than the old scorer recognized, although the packet uses tighter coverage and underplays visible wind; comparator ordering remains ambiguous and non-runtime-blocking."
       - model: "Google Veo 3.1 Fast Render"
         metrics:
           overall: 0.6063
@@ -2034,7 +2309,8 @@ evals:
         measured: 2026-04-16
         git_sha: "62a02d6"
         result_file: benchmarks/results/final-render-provider-floor-story-169-quality-2026-04-16.json
-        note: "Comparator only, non-runtime-blocking. It kept the same three direct reference images and Sora-beating runtime, but scene `open_frequency_scene_002_water_tower_night` remained model-wrong and read more generic than the standard Veo render on tone, camera language, and storm-night specificity."
+        evidence_status: contaminated-non-decision-grade
+        note: "Historical v1 quality is invalid, and absent artifact/direct-input snapshots make the runtime/reference-slot summary non-replayable. Manual inspection found both packets source-recognizable; the old last-place quality rank is not defensible without a fresh repaired run."
 
     attempts:
       - date: 2026-04-16
@@ -2043,6 +2319,9 @@ evals:
       - date: 2026-04-16
         git_sha: "62a02d6"
         note: "Post-fix full rerun cleared all six live renders and reclassified the earlier Google blocker as resolved. Mismatch investigation on the two remaining quality failures found both non-default misses model-wrong and non-runtime-blocking: `openai_sora2` on `open_frequency_scene_002_water_tower_night` flattened the scene into generic close coverage, and `google_veo31_fast` kept the props but still lost the storm-wide hopeful staging. `google_veo31` passed both cases, won the quality/runtime/reference trade-off, and became the new default."
+      - date: 2026-07-22
+        git_sha: "working-tree"
+        note: "Repository truth audit classified all old v1 quality and runtime rows contaminated-non-decision-grade: semantic titles leaked through task vars, timestamps did not match the extracted packet, the target required unsupported color/camera/motion/emotion claims, the permissive scorer rewarded target-shaped text, and the original runtime artifact/direct-input snapshots were not retained. The repaired lane uses strict frame_index evidence, opaque ids, screenplay-quoted intended briefs, exact source/generator/packet/request/runtime hashes, and an explicit 2-case x 3-candidate x 5-frame policy. Offline rebuild preserved all 36 retained clip/frame files byte-for-byte but marks all six packets unavailable-retained-media-only. No model/provider call was made; a fresh complete v2 run remains required."
 
   - id: storyboard-generation-quality
     name: Storyboard Generation Quality
@@ -2056,7 +2335,10 @@ evals:
       - "186"
       - "188"
       - "190"
+      - "208"
     category_refs:
+      - spec:2
+      - spec:3
       - spec:5
       - spec:6
       - spec:7
@@ -2065,15 +2347,25 @@ evals:
       - C3
     description: >
       Measures the real storyboard-generation lane on representative multi-scene
-      Open Frequency cases. Combines a live runtime harness that records
-      reference availability, prompt-level reference usage, and direct
-      provider-input counts with a multimodal promptfoo judge for recurring
-      character consistency, obvious reference adherence, readable-text
-      failures, and prop-only non-insert collapses.
+      Open Frequency cases. The runtime harness records frame completeness and
+      reference availability, prompt use, and direct provider-input counts. The
+      quality side sends every generated frame under opaque ordinal labels and
+      derives source coverage, medium continuity, recurring-subject continuity,
+      readable-text failures, and frame-bound evidence from visual observations.
+      The current abstract reference cards prove transport only, not realistic
+      identity/location fidelity, and the fixture has no source-authored shot-role
+      truth with which to score prop-only discipline. Generated candidates are
+      not goldens, but any future decision-grade row must retain the exact scored
+      media and lineage in a checked-in, hash-valid packet.
+    historical_evidence_status: contaminated-non-decision-grade
+    retained_media_required_for_decision_grade: true
     pipeline_stage: visualization
     runner: custom
-    command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/storyboard_generation_quality_eval.py --fixture-manifest benchmarks/fixtures/storyboard_generation_quality_cases.json --candidate gpt_image_2_template_grid_storyboards --output-prefix benchmarks/results/storyboard-generation-quality-runtime && PYTHONPATH=src .venv/bin/python benchmarks/scripts/generate_storyboard_generation_quality_dataset.py --runtime-result benchmarks/results/storyboard-generation-quality-runtime.json && source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && set +e && PROMPTFOO_PYTHON=.venv/bin/python promptfoo eval -c benchmarks/tasks/storyboard-generation-quality.yaml --no-cache -j 1 --filter-providers 'GPT Image 2 Template Grid Storyboards' --output benchmarks/results/storyboard-generation-quality-quality.json; status=$?; set -e; if [ $status -ne 0 ] && [ $status -ne 100 ]; then exit $status; fi; PYTHONPATH=src .venv/bin/python benchmarks/scripts/storyboard_generation_quality_report.py --runtime-result benchmarks/results/storyboard-generation-quality-runtime.json --promptfoo-result benchmarks/results/storyboard-generation-quality-quality.json --output-prefix benchmarks/results/storyboard-generation-quality-decision; exit $status"
+    command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/storyboard_generation_quality_eval.py --fixture-manifest benchmarks/fixtures/storyboard_generation_quality_cases.json --candidate gpt_image_2_template_grid_storyboards --candidate gpt_image_2_storyboards --output-prefix benchmarks/results/storyboard-generation-quality-runtime && PYTHONPATH=src .venv/bin/python benchmarks/scripts/generate_storyboard_generation_quality_dataset.py --runtime-result benchmarks/results/storyboard-generation-quality-runtime.json && source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && set +e && PROMPTFOO_PYTHON=.venv/bin/python promptfoo eval -c benchmarks/tasks/storyboard-generation-quality.yaml --no-cache -j 1 --filter-providers '^(GPT Image 2 Storyboards|GPT Image 2 Template Grid Storyboards)$' --output benchmarks/results/storyboard-generation-quality-quality.json; status=$?; set -e; if [ $status -ne 0 ] && [ $status -ne 100 ]; then exit $status; fi; PYTHONPATH=src .venv/bin/python benchmarks/scripts/storyboard_generation_quality_report.py --runtime-result benchmarks/results/storyboard-generation-quality-runtime.json --promptfoo-result benchmarks/results/storyboard-generation-quality-quality.json --output-prefix benchmarks/results/storyboard-generation-quality-decision; exit $status"
     script: benchmarks/scripts/storyboard_generation_quality_report.py
+    generator: benchmarks/scripts/generate_storyboard_generation_quality_dataset.py
+    generated_paths:
+      - benchmarks/storyboard_generation_quality
     config: benchmarks/tasks/storyboard-generation-quality.yaml
     scorer: benchmarks/scorers/storyboard_understanding_scorer.py
     golden: benchmarks/fixtures/storyboard_generation_quality_cases.json
@@ -2085,10 +2377,11 @@ evals:
       value: 0.75
       latency_ms_max: 180000
       cost_usd_max: 0.40
-      note: "The shipped storyboard lane should keep recurring characters legible across the sequence, avoid readable text and prop-collapse failures, and prove that available reference images actually survive into prompt and provider conditioning instead of disappearing upstream."
+      note: "The shipped storyboard lane should preserve source-specific visual cues, a coherent storyboard medium, and recognizable recurring subjects across a complete frame packet; avoid readable text; and prove that supplied references survive prompt and provider transport. Realistic reference fidelity and prop-only discipline remain unscored until the fixtures can support them."
 
     scores:
       - model: "GPT Image 2 Storyboards"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.735
           python: 0.785
@@ -2109,6 +2402,7 @@ evals:
         result_file: benchmarks/results/storyboard-generation-quality-gpt-image-2-default-square-grid-split-final-2026-04-23-decision.json
         note: "Split-dimension rerun on the existing full-size `gpt-image-2` storyboard images. The default is strongest on story specificity and style consistency is perfect across the measured packet, but the stricter split report now lands just below the 0.75 floor because identity consistency and text cleanliness are not reliably perfect. Cost/latency remain above target because this lane still generates one image per frame."
       - model: "GPT Image 2 Square Storyboards"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.7288
           python: 0.8225
@@ -2129,6 +2423,7 @@ evals:
         result_file: benchmarks/results/storyboard-generation-quality-gpt-image-2-default-square-grid-split-final-2026-04-23-decision.json
         note: "Split-dimension rerun on the existing `1024x1024` storyboard images. Square keeps style and text clean and reduces cost versus full-size, but storyboard-stage latency remains close to the per-frame default and story specificity still trails the full-size lane."
       - model: "GPT Image 2 Template Grid Storyboards"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.6613
           python: 0.7975
@@ -2151,6 +2446,7 @@ evals:
         result_file: benchmarks/results/storyboard-generation-quality-story-188-template-vs-beat-validation-decision.json
         note: "Story 188 validation reran the promptfoo quality pass against the generated current-template-vs-beat-grid runtime dataset. Template-grid remains below the `0.75` usefulness floor at `overall=0.6613`; runtime truth from the already-generated dataset stays structurally green (`2/2`, `14.5` mean frames, `7.0` prompt-reference frames, `15.5` direct refs). It keeps better identity and prop discipline than beat-grid, so the shipped default stays `gpt_image_2_template_grid_storyboards`."
       - model: "GPT Image 2 Beat Grid Storyboards"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.6838
           python: 0.7325
@@ -2173,6 +2469,7 @@ evals:
         result_file: benchmarks/results/storyboard-generation-quality-story-188-template-vs-beat-validation-decision.json
         note: "Story 188 validation reran the promptfoo quality pass against the generated current-template-vs-beat-grid runtime dataset. Beat-grid scored higher than the previous judge pass at `overall=0.6838`, but it still does not clear the `0.75` usefulness floor and still regresses the critical identity/prop dimensions (`identity_consistency=0.375`, `prop_discipline=0.5`). Runtime truth from the already-generated dataset stays green (`2/2`, `15.0` mean frames, `7.5` prompt-reference frames, `16.5` direct refs). Classification: remaining misses are model-wrong/product-quality failures, non-runtime-blocking for Story 188; no golden-wrong mismatch was found."
       - model: "GPT Image 2 Storyboards"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.5706
           python: 0.7412
@@ -2188,6 +2485,7 @@ evals:
         result_file: benchmarks/results/storyboard-generation-quality-gpt-image-2-2026-04-23-decision.json
         note: "First maintained Story 186 rerun after promoting the storyboard default to `gpt-image-2`. Runtime is structurally healthy: both cases completed, and the reference-conditioned case carried 4 available references into 14 prompt-reference frames and 30 direct provider reference inputs. Quality improves over the prior Imagen default (`0.5706` vs `0.4738`) but remains below the 0.75 floor; mean total latency (`672297ms`) and mean cost (`$0.447`) also exceed the current targets. Manual contact-sheet inspection shows scene 002 is visibly present, so part of the scored miss is model-wrong in the multimodal analysis/judge path, while readable whiteboard/text leakage and some character/reference drift remain real product failures."
       - model: "Imagen 4 Storyboards"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.4738
           python: 0.5975
@@ -2203,6 +2501,7 @@ evals:
         result_file: benchmarks/results/storyboard-generation-quality-story-186-2026-04-23-decision.json
         note: "Post-fix Story 186 rerun after wiring storyboard reference transport. The structural blocker is cleared: the conditioned case now records 4 available refs, 15 prompt-reference frames, and 31 direct reference inputs, so the decision moved off `lane_drops_references_before_generation` to `quality_below_initial_floor`. Remaining red is no longer transport-wrong; it is storyboard usefulness, with readable text artifacts still triggering hard-constraint failure while the evaluation judge still under-reads the clearly present scene-002 catwalk beat."
       - model: "Imagen 4 Storyboards"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.5381
           python: 0.5413
@@ -2304,6 +2603,29 @@ evals:
         retry_when:
           - condition: realistic-reference-fixture
             note: "Retry after replacing abstract reference cards with realistic user-like character/location reference images or after the image model's reference-adherence behavior changes."
+      - date: 2026-07-22
+        git_sha: "working-tree"
+        note: "Repository truth audit invalidated every historical score as contaminated-non-decision-grade. At discovery time the ignored generated dataset was mutable and absent from the audit worktree; 30 of 36 retained runtime run rows pointed at missing project directories; semantic case, scene, character, shot, and reference labels leaked into the subject packet; the provider silently sampled frames; the deterministic scorer rewarded model-owned pass statuses and target-shaped prose; and the report trusted stored aggregates rather than regrading raw output. The v3 repair source-hash-locks two opaque cases, sends the exact complete frame/reference packet, uses observation-only strict JSON with trusted packet counts, excludes unsupported reference-fidelity and prop-discipline claims, regrades with the current scorer, requires exact runtime and Promptfoo matrices, and now makes future exact media packets Git-visible and hash-valid before promotion. No subject, Opus, image-provider, or paid call was made. The configured template-grid default is retained provisionally, not revalidated; a fresh complete v3 default-versus-one-ceiling run is required before any storyboard model/default decision."
+      - id: "017"
+        story: attempts/017-storyboard-retained-media-provenance.md
+        date: 2026-07-22
+        status: succeeded
+        approach: "Retain and hash every exact visual input, bind its packet identity through provider/report evidence, and reject decision-grade registry rows whose media cannot be resolved from a clean checkout."
+        worker_model: "GPT-5.6"
+        worker_model_date: 2026-07-22
+        subject_model: "none"
+        score_before: null
+        score_after: null
+        latency_before: null
+        latency_after: null
+        cost_before: 0.0
+        cost_after: 0.0
+        git_sha: "working-tree"
+        retry_status: open
+        note: "The two accidentally overwritten Story 186 JPEGs were restored locally from Backblaze and match their recorded original hashes. Historical v2 pixels and scores remain contaminated, non-durable, and non-decision-grade for independent leakage, sampling, scorer, modality, and retention-contract defects. The next actionable evidence is one fresh exact v3 default-versus-ceiling packet whose panels, source grids, references, storyboard artifacts, raw results, and hashes are manually reviewed and checked in. Promotion requires an explicit decision-grade classification, a real commit SHA, and proof that every evidence file is tracked and unchanged from that commit; no score or default may be promoted before that durable-media gate passes."
+        retry_when:
+          - condition: architecture-change
+            note: "Run only after the repaired Story 208 contract and retained-media promotion guard are committed."
 
   - id: runtime-media-validation
     name: Runtime Media Validation
@@ -2315,6 +2637,7 @@ evals:
     story_refs:
       - "140"
       - "144"
+      - "208"
     category_refs:
       - spec:5
       - spec:6
@@ -2332,6 +2655,7 @@ evals:
     script: benchmarks/scripts/runtime_media_validation_eval.py
     golden: benchmarks/fixtures/runtime_media_validation_cases.json
     test_cases: 4
+    historical_evidence_status: contaminated-pre-v2-fixture-non-decision-grade
 
     target:
       metric: overall
@@ -2342,6 +2666,7 @@ evals:
 
     scores:
       - model: "Hybrid (GPT-5.4)"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 1.0
           semantic_cases: 1.0
@@ -2354,6 +2679,7 @@ evals:
         result_file: benchmarks/results/runtime-media-validation-story-144-validate.json
         note: "Validation rerun for Story 144. Hybrid remains the runtime-default leader and cleared all 4 seeded cases again after the `ai_previz_video` target-override changes landed in `media_validation_v1`. This eval still measures the shared generated-video fixture pack, so ai-previz-specific trust coverage also comes from targeted unit tests plus the seeded browser verification."
       - model: "Deterministic Only"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.75
           semantic_cases: 0.5
@@ -2365,6 +2691,7 @@ evals:
         result_file: benchmarks/results/runtime-media-validation-story-144-validate.json
         note: "Comparator only, non-runtime-blocking. Fresh Story 144 validation rerun reproduced the single ambiguous prop-swap miss: deterministic probes still leave the semantic continuity break at `needs_review` because no semantic reviewer is present."
       - model: "AI-Only (GPT-5.4)"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.5
           semantic_cases: 1.0
@@ -2378,6 +2705,9 @@ evals:
         note: "Comparator only, non-runtime-blocking. Fresh Story 144 validation rerun reproduced the two ambiguous structural misses: without deterministic hard-failure handling, missing and corrupt media still collapse to `needs_review` because no sample packet exists for the model-only path."
 
     attempts:
+      - date: 2026-07-22
+        git_sha: "working-tree"
+        note: "Story 208 invalidated every historical score as contaminated and non-decision-grade. The retained reports explicitly judged answer-overlay text and labels from the old synthetic clips, while the repaired hash-locked media is text-free; the old quiet-bedside expectation also treated coherent stillness as ambiguity, and the old prop-swap prompt described the very color change it expected the validator to reject. The v2 manifest now separates matching-media, deliberate-mismatch, and structural-only intent, pins source clip/target hashes, and records runner/support fingerprints. No model/provider call was made; fresh v2 evidence is required before the old 1.000 hybrid score can drive a decision."
       - date: 2026-04-04
         git_sha: "9598304"
         note: "Story 144 validation reran the full runtime-media-validation benchmark after extending `media_validation_v1` to support `ai_previz_video` target refs. Hybrid stayed green at 1.000 overall and all remaining comparator-only mismatches were reverified as non-runtime-blocking and ambiguous."
@@ -2392,6 +2722,7 @@ evals:
       - spec:10
     story_refs:
       - "167"
+      - "208"
     category_refs:
       - spec:5
       - spec:7
@@ -2409,6 +2740,7 @@ evals:
     script: benchmarks/scripts/runtime_media_validation_eval.py
     golden: benchmarks/fixtures/runtime_final_output_validation_cases.json
     test_cases: 4
+    historical_evidence_status: contaminated-pre-v2-fixture-non-decision-grade
 
     target:
       metric: overall
@@ -2419,6 +2751,7 @@ evals:
 
     scores:
       - model: "Hybrid (GPT-5.4)"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 1.0
           semantic_cases: 1.0
@@ -2431,6 +2764,7 @@ evals:
         result_file: benchmarks/results/runtime-final-output-validation-story-167.json
         note: "Story 167 baseline and validation rerun. Hybrid remains the runtime-default leader for project-cut trust: deterministic probes catch missing/corrupt media, semantic review clears both partial and complete final-output fixtures, and the shared `media_validation_v1` substrate stays sufficient without a parallel validator."
       - model: "Deterministic Only"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.5
           semantic_cases: 0.0
@@ -2442,6 +2776,7 @@ evals:
         result_file: benchmarks/results/runtime-final-output-validation-story-167.json
         note: "Comparator only, non-runtime-blocking. Deterministic probes still leave both project-cut semantic cases at `needs_review` because no semantic reviewer is present; this is an explicit comparator limitation, not a runtime-default regression."
       - model: "AI-Only (GPT-5.4)"
+        evidence_status: contaminated-non-decision-grade
         metrics:
           overall: 0.5
           semantic_cases: 1.0
@@ -2455,6 +2790,9 @@ evals:
         note: "Comparator only, non-runtime-blocking. The model-only lane clears both semantic project-cut cases but still collapses missing/corrupt media to `needs_review` because there is no deterministic hard-failure path when the sample packet is empty."
 
     attempts:
+      - date: 2026-07-22
+        git_sha: "working-tree"
+        note: "Story 208 invalidated every historical score as contaminated and non-decision-grade. The retained report praised visible titles, character labels, and subtitles from the old answer-overlay clip; the repaired hash-locked source is text-free. The complete-cut fixture also repeats one synthetic source clip for both scenes, so it can measure sampled-media and structural validation behavior but cannot prove inter-scene creative coherence. The v2 manifest pins the clip/target hashes and discloses that scope. No model/provider call was made; fresh v2 evidence is required before the old 1.000 hybrid score can drive a decision."
       - date: 2026-04-12
         git_sha: "b4e586c"
         note: "Initial Story 167 fixture draft incorrectly expected the coherent partial/complete project-cut semantic cases to land at `needs_review`; rerunning the shared validator showed those expectations were golden-wrong, so the final-output fixture pack was corrected to expect `valid` for those two semantic cases before registry scoring."
@@ -2480,6 +2818,7 @@ evals:
       - "175"
       - "176"
       - "178"
+      - "208"
     category_refs:
       - spec:4
       - spec:5
@@ -2499,7 +2838,8 @@ evals:
     command: "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_ai_previz_runtime_eval.py --fixture-manifest benchmarks/fixtures/real_ai_previz_runtime_cases.json --output-prefix benchmarks/results/real-ai-previz-runtime-current"
     script: benchmarks/scripts/real_ai_previz_runtime_eval.py
     golden: benchmarks/fixtures/real_ai_previz_runtime_cases.json
-    test_cases: 13
+    test_cases: 15
+    historical_evidence_status: superseded-runtime-completeness-contract-non-decision-grade
 
     target:
       metric: overall
@@ -2509,6 +2849,7 @@ evals:
 
     scores:
       - model: "Story 178 QA-Skip Collapse (Imported-Project First-Pass Control, Still Runtime-Blocking)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2529,6 +2870,7 @@ evals:
         result_file: benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.json
         note: "Fresh `/validate` reran the imported-project first-pass compare with an explicit old-behavior shot-planning-QA control on identical imported-project substrate into `benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. The shipped route reached first playable at `32130 ms` (`14103 ms` prerequisites + `18027 ms` isolated `ai_previz`; `36258 ms` full completion) versus `40507 ms` (`22967 ms` prerequisites + `17540 ms` isolated `ai_previz`; `44928 ms` full completion) for the matched control. That is a `26.4%` prerequisite reduction versus the prior imported-project baseline (`19161 ms` on 2026-04-19) and a `38.6%` prerequisite reduction versus the matched control. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained in the runtime harness. The detector remains runtime-blocking versus `<=6000 ms`; same-scene regenerate metrics still come from the 2026-04-19 Story 178 / 152 artifacts because this validation rerun intentionally narrowed to the imported-project first-pass seam."
       - model: "Current Shipped xAI Lane (Imported-Project First Pass + Regenerate, Still Runtime-Blocking)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2559,6 +2901,7 @@ evals:
         result_file: benchmarks/results/real-ai-previz-runtime-story-178-first-pass-project-ready-2026-04-19.json
         note: "Story 178 extended the maintained runtime harness with an explicit imported-project first-pass case so the active Scene Workspace route no longer inherits the raw-input bootstrap baseline. Fresh 2026-04-19 result `benchmarks/results/real-ai-previz-runtime-story-178-first-pass-project-ready-2026-04-19.{json,md}` keeps all four shipped-xAI cases successful and moves the focus route to `imported_project_first_pass`: `37186 ms` first playable (`19161 ms` prerequisites + `18025 ms` isolated `ai_previz`; `40198 ms` full completion) for the first clip on an already imported project, versus `109868 ms` (`92216 ms` prerequisites + `17652 ms` isolated `ai_previz`) for the raw-input bootstrap bundle, `39062 ms` for same-scene full regenerate, and `18152 ms` for `start_from=ai_previz` reuse. This is a `59.9%` prerequisite reduction versus the previous `47865 ms` focus baseline without changing the compiled previz prompt contract, so `previz-usefulness` did not need a rerun. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained in the runtime harness. The detector stays runtime-blocking versus the Ideal `<=6000 ms` target, but the surfaced first-pass truth is now sharper: imported-project first pass and warmed reuse are materially faster than the old raw-input bundle, while xAI remains the shipped lane because usefulness still clears `0.803`."
       - model: "Story 175 Validation (One-Pass Prep Wins, Still Runtime-Blocking)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2576,6 +2919,7 @@ evals:
         result_file: benchmarks/results/real-ai-previz-runtime-story-175-validation-2026-04-19.json
         note: "Validation reran Story 175's two-case prerequisite-strategy compare after the implementation landed. The one-pass previz-prep lane (`shipped_lite_4_mvp_ingest_only`) reached first playable at `96821 ms` (`44048 ms` prerequisites + `52773 ms` ai-previz; `105702 ms` full completion), versus `209021 ms` (`156144 ms` prerequisites + `52877 ms` ai-previz; `213747 ms` full completion) for the maintained full `scene_ready` chain. That is a `67.0%` prerequisite reduction versus Story 174's `133291 ms` baseline and a `71.8%` reduction versus the paired full-chain control in the same validation run. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained; operator truth is aligned, but the detector stays runtime-blocking because even the improved shipped lane still misses the `<=6000 ms` fast-previz target. `previz-usefulness` was not rerun because the shipped compiled previz inputs and prompt contract did not change."
       - model: "Story 174 Compact Compare (Slight Edge, Still Runtime-Blocking)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2590,6 +2934,7 @@ evals:
         result_file: benchmarks/results/real-ai-previz-runtime-story-174-compact-candidate-2026-04-18.json
         note: "Auth-cleared Story 174 rerun compared the shipped Lite 4 lane against a compact-prompt Lite 4 candidate on identical scene-ready substrate. Both cases are fully successful. Compact Lite is fastest at `186659 ms` to first playable / `53368 ms` isolated ai-previz / `190622 ms` full completion, but it improves shipped Lite by only about `1%` (`605 ms` first playable and `605 ms` isolated ai-previz). Classification: no model/golden mismatch remained; the detector stays runtime-blocking because the result is still far outside the `<=6000 ms` target and well below the story's `15%` ship bar."
       - model: "xAI Dual Probe (Fastest Runtime, Still Runtime-Blocking)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2603,6 +2948,7 @@ evals:
         result_file: benchmarks/results/real-ai-previz-runtime-story-151-xai-2026-04-08.json
         note: "Story 151 widened the real runtime harness to include Grok Imagine, fixed the worktree dotenv/bootstrap mismatch, and added pack-local prompt budgeting for xAI's 4096-character prompt cap. The resulting two-case xAI probe is fully successful: `xai_4_480p_scene_ready` now lands at 130399 ms total / 22635 ms isolated ai-previz, and `xai_4_480p_mvp_ingest_only` lands at 65552 ms total / 21687 ms isolated ai-previz. This is the fastest measured AI-previz provider on pure runtime in the current harness shape, but it still fails Story 149's `<=6000 ms` detector by a wide margin, so the result remains runtime-blocking."
       - model: "Validation Decision Summary (No Dominant Winner)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2616,6 +2962,7 @@ evals:
         result_file: benchmarks/results/real-ai-previz-runtime-story-153-validation-decision-2026-04-08.json
         note: "Fresh `/validate` reran the combined decision-summary step on the current shared-scene-ready evidence. The result stayed unchanged: Fast 4 is the pure runtime median leader at 164799 ms total / 52196 ms isolated ai-previz, Lite 4 is still the usefulness leader at 0.828 vs 0.778, and no dominant winner is proven by the combined evidence alone. The detector remains runtime-blocking for Story 149."
       - model: "Shared Decision Summary (No Dominant Winner)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2629,6 +2976,7 @@ evals:
         result_file: benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-decision-2026-04-08.json
         note: "Story 153 combined the earlier three shared-substrate scene-ready passes with the fresh validation rerun into one decision summary. Fast 4 is now the median runtime leader at 164799 ms total / 52196 ms isolated ai-previz, but Lite 4 remains the usefulness leader at 0.828 vs Fast 4 at 0.778 and trails by only 6208 ms total / 3232 ms isolated ai-previz. No dominant winner is proven by the combined evidence alone, so Lite 4 stays the provisional shipped slow lane and the detector remains runtime-blocking."
       - model: "Validation Shared Pass (Fast 4 Single-Pass Winner)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2641,6 +2989,7 @@ evals:
         result_file: benchmarks/results/real-ai-previz-runtime-story-153-validation-shared-scene-ready-2026-04-08.json
         note: "Fresh `/validate` reran the four `scene_ready` pack candidates from shared `shot_planning` substrate once. All four succeeded, but this pass flipped back to `fast_4_scene_ready` as both the fastest total and the fastest isolated ai-previz case at 184313 ms total / 47207 ms isolated, while shipped Lite 4 landed at 199380 ms / 62274 ms. That does not overturn the earlier median-plus-usefulness argument for Lite 4, but it confirms pack ordering is still unstable enough that Story 153 should stay open."
       - model: "Shared Scene-Ready Median (Lite 4 Still Wins)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2653,6 +3002,7 @@ evals:
         result_file: benchmarks/results/real-ai-previz-runtime-story-153-shared-scene-ready-summary-2026-04-08.json
         note: "Story 153 tightened the comparison boundary after the noisy validation rerun by comparing the four `scene_ready` pack candidates from identical precomputed `shot_planning` state across three passes. Median result keeps shipped Lite 4 as the best current slower AI lane at 142634 ms total / 50320 ms isolated ai-previz, ahead of Fast 4 at 145285 ms / 57186 ms and ahead of the old Lite 8 control at 155501 ms / 60857 ms. Existing previz-usefulness evidence still favors Lite over Fast (0.828 vs 0.778). One direct `--repeat-count 3` attempt later stalled on a provider-side hang during `shipped_lite_4_scene_ready-ai-previz-r2-0443`, so the repeated evidence is preserved as sequential one-repeat passes plus the salvaged first pass."
       - model: "Validation Matrix (Winner Not Stable Yet)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2665,6 +3015,7 @@ evals:
         result_file: benchmarks/results/real-ai-previz-runtime-story-153-validation-2026-04-08.json
         note: "Fresh `/validate` reran the full 8-case matrix after switching the shipped recipe to Lite 4 / 720p. The rerun stayed fully successful and runtime-blocking, but it did not confirm Lite 4 as the stable overall winner: Lite 4 still beat the Lite 8 controls, yet `veo31_4_scene_ready` was fastest overall at 166188 ms and `fast_4_scene_ready` had the quickest scene-ready ai-previz segment at 95434 ms. The provider-floor question is still noisy because prerequisite variance is large enough to reshuffle the winner, so Story 153 should stay open."
       - model: "Provider Floor Full Matrix (Lite 4 Winner)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2677,6 +3028,7 @@ evals:
         result_file: benchmarks/results/real-ai-previz-runtime-story-153-provider-floor-2026-04-08.json
         note: "Story 153 completed the full 8-case provider-floor matrix and compared the pre-change shipped Lite 8s lane against Lite 4s, Fast 4s, and full Veo 4s candidates. Lite 4 scene-ready won at 146281 ms total (59734 ms prerequisites + 86547 ms ai-previz), improving the shipped Lite 8 baseline by 38645 ms overall and 45828 ms inside the ai-previz recipe. Existing previz-usefulness evidence already measures Veo 3.1 Lite at 4s / 720p, so Story 153 switched the shipped AI-previz recipe to that mode. Remaining detector failure is still runtime-blocking for Story 149."
       - model: "Compact Pilot (Lite 8s + Fast 4s)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2689,6 +3041,7 @@ evals:
         result_file: benchmarks/results/real-ai-previz-runtime-story-151-compact-pilot-2026-04-08.json
         note: "Story 151 compacted the AI-previz shot-planning prompt/output path without changing the schema contract. The three-case rerun stayed runtime-blocking but materially improved the honest path: shipped Lite scene-ready dropped from 270922 ms to 153528 ms, Fast 4 scene-ready dropped from 353687 ms to 182138 ms, and shipped Lite shot_planning itself dropped from 109.3s to 25.4s with token volume falling from 14210/6212 to 6066/2605. The ingest-only control remained noisy because `project_config` spiked on the rerun, but its internal previz segment still improved."
       - model: "Pilot Matrix (Lite 8s + Fast 4s)"
+        evidence_status: superseded-non-decision-grade
         metrics:
           overall: 0.5
           successful_case_ratio: 1.0
@@ -2702,6 +3055,9 @@ evals:
         note: "Story 150 pilot ran 3 real cases and then recovered the summary from completed run states after fixing a post-run fixture-path bug in the harness. All 3 cases succeeded, but none challenged the fast detector: shipped Lite 8s scene-ready was the best honest path at 270922 ms total (97846 ms prerequisites + 173076 ms ai-previz recipe), Fast 4s scene-ready was worse at 353687 ms, and Fast 4s ingest-only still needed 124929 ms. No semantic mismatches were present in the pilot subset; remaining failure is runtime-blocking."
 
     attempts:
+      - date: 2026-07-22
+        git_sha: "working-tree"
+        note: "Story 208 superseded every historical runtime score as non-decision-grade. The retained summary files predate the repaired completeness contract, do not declare a timing basis or decision-grade status, and point to generated project directories that are no longer retained. The current aggregator now separates fully successful from partial-repeat cases, gives any incomplete selected matrix an overall score of zero, and blocks provider decisions unless every selected aggregate is fully successful. No provider call was made; a fresh source-bound run is required before changing the shipped previz lane."
       - date: 2026-04-20
         git_sha: "e3c1d39"
         note: "Fresh `/validate` reran Story 178's imported-project first-pass compare into `benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. The shipped QA-skip route reached `32130 ms` first playable (`14103 ms` prerequisites + `18027 ms` isolated `ai_previz`; `36258 ms` full completion) versus `40507 ms` (`22967 ms` prerequisites + `17540 ms`; `44928 ms` full completion) for the explicit old-behavior control. Classification: no model-wrong, golden-wrong, or ambiguous mismatches remained; the detector stays runtime-blocking versus `<=6000 ms`, but the shipped route still clears Story 178's `>=25%` prerequisite-reduction bar."
@@ -2780,6 +3136,7 @@ evals:
       - "161"
       - "183"
       - "187"
+      - "208"
     category_refs:
       - spec:2
       - spec:3
@@ -2800,6 +3157,7 @@ evals:
     script: benchmarks/scripts/full_script_throughput_eval.py
     golden: benchmarks/fixtures/full_script_throughput_cases.json
     test_cases: 3
+    historical_evidence_status: unfingerprinted-runtime-context-non-decision-grade
 
     target:
       metric: overall
@@ -2808,6 +3166,7 @@ evals:
 
     scores:
       - model: "Story-Lane Baseline (Short+Medium Green, Long Runtime-Blocking)"
+        evidence_status: historical-context-non-decision-grade
         metrics:
           overall: 0.6667
           successful_case_ratio: 0.6667
@@ -2821,6 +3180,7 @@ evals:
         result_file: benchmarks/results/full-script-throughput-story-155-baseline-2026-04-10.json
         note: "Story 155 created the first honest screenplay-throughput detector for the shipped story-lane path and reran it after fixing a real normalization substrate bug that representative medium/long fixtures exposed (`clean_fountain_metadata` incorrectly treated indented title-page continuation lines as screenplay body, causing `script_normalize_v1` to crash before any model call). Final baseline: `open_frequency_short` succeeded at `142628 ms` / `$0.1741`, `last_birthday_card_medium` succeeded at `368853 ms` / `$0.5481`, and `big_fish_long` failed at `1087301 ms` / `$1.2844` after `analyze_scenes` alone consumed `888.476s` and `character_bible` plus `location_bible` then hit `LLM output truncated due to max token limit`. Classification: the long-form failure is **ambiguous** but **runtime-blocking** because the current modules do not yet prove whether the blocker is model weakness, prompt/output-budget configuration, or upstream candidate-volume inflation. Measured follow-up stories split cleanly: Story 159 for `continuity_tracking` runtime/output budgets, Story 160 for long-form bible truncation recovery, and Story 161 for long-form `analyze_scenes` scale."
       - model: "Story 160 Targeted Big Fish Rerun (Bible blocker cleared, continuity hung)"
+        evidence_status: historical-context-non-decision-grade
         metrics:
           overall: 0.0
           successful_case_ratio: 0.0
@@ -2834,8 +3194,11 @@ evals:
         measured: 2026-04-11
         git_sha: "7b943fd"
         result_file: output/runs/big_fish_long-world_building-1a9d/run_state.json
+        result_file_status: unavailable
+        result_file_reason: "Historical run_state lived under the ignored output/runs tree and was not retained; the registry note is non-reproducible historical context, not a durable score artifact."
         note: "Targeted `--filter-case big_fish_long` rerun for Story 160, measured on a dirty worktree containing the uncommitted bible-recovery changes. `character_bible` and `location_bible` both completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, clearing the previous runtime-blocking truncation failure. The case then moved into `continuity_tracking`, logged a schema validation issue (`entity_states.*.change_events.*.new_value = null` where the schema expects `str`), and produced no new `run_state.json` / `pipeline_events.jsonl` updates for roughly 26 minutes before the operator stopped the stuck rerun. Classification: the old bible failure is resolved; the remaining long-case blocker is **ambiguous** but **runtime-blocking** in downstream continuity tracking, owned by Story 159 rather than Story 160."
       - model: "Story 160 Validation Big Fish Rerun (Bibles green, continuity stalled)"
+        evidence_status: historical-context-non-decision-grade
         metrics:
           overall: 0.0
           successful_case_ratio: 0.0
@@ -2849,8 +3212,11 @@ evals:
         measured: 2026-04-11
         git_sha: "7b943fd"
         result_file: output/runs/big_fish_long-world_building-2dfa/run_state.json
+        result_file_status: unavailable
+        result_file_reason: "Historical run_state lived under the ignored output/runs tree and was not retained; the registry note is non-reproducible historical context, not a durable score artifact."
         note: "Fresh validation-pass `--filter-case big_fish_long` rerun for Story 160. `character_bible` and `location_bible` again completed after the modules skipped discovery-backed second-pass adjudication and forwarded explicit output budgets, re-verifying that the old truncation blocker is cleared. The run then started `continuity_tracking`, but `run_state.json` / `pipeline_events.jsonl` stopped updating at `2026-04-11 09:49:05 MDT`; after roughly 14 minutes with no new stdout or artifact events, the operator terminated the stalled rerun. The specific prior `entity_states.*.change_events.*.new_value = null` log did not reappear before termination, so the remaining long-case blocker stays **ambiguous** but **runtime-blocking** in downstream continuity tracking, owned by Story 159 rather than Story 160."
       - model: "Story 159 Short+Medium Rerun (Continuity tighter, still dominant)"
+        evidence_status: historical-context-non-decision-grade
         metrics:
           overall: 1.0
           successful_case_ratio: 1.0
@@ -2867,6 +3233,7 @@ evals:
         result_file: benchmarks/results/full-script-throughput-story-159-short-medium-2026-04-11.json
         note: "Story 159 reran the short/medium detector subset after tightening the continuity prompt/output contract, clipping carried-forward prompt context, enabling `fail_on_truncation=True`, lowering `max_tokens`, and hardening nullable `new_value` handling. Both cases completed successfully. Continuity remained the top normalized successful-case hotspot, but its measured budget improved from `72295.372 -> 65442.187 ms / 1k words` (`-9.5%`) and `9510.535 -> 8428.378 output tok / 1k words` (`-11.4%`). Per-case continuity deltas: `open_frequency_short` `61.988s -> 54.800s` and `7535 -> 6784` output tokens; `last_birthday_card_medium` `157.010s -> 150.395s` and `24560 -> 21095` output tokens. Persisted continuity artifact bytes increased because the module now stores merged carried-forward state snapshots, so the successful-case result is **non-runtime-blocking** but not converged: continuity is still the dominant hotspot and state-storage volume is now an explicit tradeoff instead of a hidden one."
       - model: "Story 159 Targeted Big Fish Rerun (Continuity stall renewed)"
+        evidence_status: historical-context-non-decision-grade
         metrics:
           overall: 0.0
           successful_case_ratio: 0.0
@@ -2883,8 +3250,11 @@ evals:
         measured: 2026-04-11
         git_sha: "4699b91"
         result_file: output/runs/big_fish_long-world_building-06d8/run_state.json
+        result_file_status: unavailable
+        result_file_reason: "Historical run_state lived under the ignored output/runs tree and was not retained; the registry note is non-reproducible historical context, not a durable score artifact."
         note: "Targeted `--filter-case big_fish_long --keep-projects` rerun for Story 159 on the current continuity code. `analyze_scenes` completed in `847.0068s`, `character_bible` in `144.4212s`, `location_bible` in `102.0051s`, `prop_bible` in `29.2672s`, and `entity_graph` in `11.2613s`, re-confirming that the old bible truncation blocker is cleared. `continuity_tracking` then started but produced no new `run_state.json`, `pipeline_events.jsonl`, or continuity artifacts for about `14.9` minutes while the process held an open provider HTTPS connection, so the operator terminated the rerun. The earlier `entity_states.*.change_events.*.new_value = null` schema validation failure did not recur before termination, so the remaining long-case blocker stays **ambiguous** but **runtime-blocking** as a renewed continuity-stage stall with no stage-heartbeat visibility."
       - model: "Story 162 Targeted Big Fish Rerun (Continuity honest, fallbacks explicit)"
+        evidence_status: historical-context-non-decision-grade
         metrics:
           overall: 1.0
           successful_case_ratio: 1.0
@@ -2902,6 +3272,7 @@ evals:
         result_file: benchmarks/results/full-script-throughput-story-162-big-fish-2026-04-11.json
         note: "Story 162 reran the Story 155 detector boundary on `big_fish_long` after adding continuity-scoped request timeouts, explicit scene failure classification, and incremental `announce_artifact` streaming. The case completed end to end at `2903127 ms` / `$3.30182558`; `analyze_scenes` still consumed `858.7512s`, but `continuity_tracking` no longer entered a 14.9-minute silent window and instead completed in `1748.4813s` while continuously emitting `continuity_state` `artifact_saved` events. Remaining long-form issue changed shape: `10` scenes (`026`, `048`, `064`, `093`, `171`, `177`, `183`, `185`, `191`, `192`) exhausted the new bounded scene budget with `LLM output truncated due to max token limit`, producing `77` `needs_review` fallback states. Classification: the old continuity stall is resolved, so the long-form continuity problem is now **non-runtime-blocking** quality/output-budget drift rather than a runtime blocker."
       - model: "Story 161 Targeted Big Fish Rerun (Analyze Scenes faster, continuity still dominant)"
+        evidence_status: historical-context-non-decision-grade
         metrics:
           overall: 1.0
           successful_case_ratio: 1.0
@@ -2920,6 +3291,7 @@ evals:
         result_file: benchmarks/results/full-script-throughput-story-161-big-fish-2026-04-12.json
         note: "Story 161 reran the `big_fish_long` Story 155 boundary after extracting scene-analysis batch planning, enabling adaptive `5-10` scene batches with a `2500`-word guard, and compacting per-batch prompt scaffolding. The long case completed end to end at `2808707 ms` / `$3.24163222`; `analyze_scenes` dropped to `810.038s` from Story 162's `858.7512s` and Story 155's `888.476s`, while output tokens fell from `60039 -> 53919` versus the original baseline. Downstream truth stayed healthy: `character_bible` finished in `147.496s`, `location_bible` in `106.126s`, and `continuity_tracking` continued to stream artifacts instead of stalling, then completed in `1723.375s`. Remaining long-form issue is still **non-runtime-blocking** quality/output-budget drift in continuity: `7` scenes (`048`, `093`, `169`, `175`, `183`, `189`, `190`) produced `52` `needs_review` continuity states after bounded truncation fallbacks. Classification: Story 161 materially shrank the scene-analysis wait cliff without breaking downstream world-building, but continuity remains the dominant long-form runtime/output hotspot."
       - model: "Story 183 Targeted Big Fish Runtime Refresh (Continuity dominant, scene analysis regressed)"
+        evidence_status: historical-context-non-decision-grade
         metrics:
           overall: 1.0
           successful_case_ratio: 1.0
@@ -2938,6 +3310,7 @@ evals:
         result_file: benchmarks/results/full-script-throughput-story-183-big-fish-2026-04-24.json
         note: "Story 183 reran the maintained `big_fish_long` detector subset on current code to refresh Deep Breakdown runtime truth. The case completed end to end at `3539391 ms` / `$3.5153332`, so the old long-form runtime blocker did not recur. Continuity remains the top runtime and output hotspot: `1968.725s`, `55.6%` of boundary runtime, `211268` output tokens, and `8126.63 output tok / 1k words`. Final retained artifacts show `625` valid and `48` `needs_review` latest continuity states across `6` fallback scenes (`026`, `166`, `172`, `178`, `180`, `189`), all with `LLM output truncated due to max token limit`; provider read timeouts on scenes `118`, `124`, and `143` recovered and did not appear in final fallback artifacts. Classification: continuity is still **non-runtime-blocking** quality/output-budget drift, not a renewed stall. However, `analyze_scenes` regressed materially to `1130.834s` from Story 161's `810.038s` and Story 155's original `888.476s`; that concrete stage regression is split to Story 187 instead of turning Story 183 into a generic optimization bucket."
       - model: "Story 187 Targeted Big Fish Rerun (Scene prompt compacted, continuity still dominant)"
+        evidence_status: historical-context-non-decision-grade
         metrics:
           overall: 1.0
           successful_case_ratio: 1.0
@@ -2959,7 +3332,10 @@ evals:
         result_file: benchmarks/results/full-script-throughput-story-187-big-fish-2026-04-24.json
         note: "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` improved from Story 183's regressed `1130.834s` to `1063.239s` (`-67.595s`) but did not recover Story 161's `810.038s`; output tokens increased slightly to `63789`, so the remaining scene-analysis regression is **ambiguous** and **non-runtime-blocking**, not fully converged. Downstream world-building stayed complete: entity discovery, bibles, graph, and continuity all finished. Continuity remains the dominant hotspot at `1810.641s`, `55.5%` of boundary runtime, `219388` output tokens, and `8438.974 output tok / 1k words`; retained artifacts show `628` valid and `58` `needs_review` latest continuity states across `7` fallback scenes (`017`, `026`, `048`, `093`, `174`, `180`, `182`), all truncation fallbacks. Classification: no runtime blocker recurred; remaining mismatches are **model-wrong/output-budget-limited** continuity quality drift plus an **ambiguous** residual scene-analysis runtime gap."
 
-    attempts: []
+    attempts:
+      - date: 2026-07-22
+        git_sha: "working-tree"
+        note: "Story 208 retained the old measurements as historical context but marked them non-decision-grade. Six retained summaries reference generated project directories that are no longer present, three additional score rows referenced ignored run_state files and are explicitly unavailable, and none fingerprints the exact manifest, runner, support code, and source fixtures. The repaired runner now records those hashes and discloses project retention. No provider call was made; a fresh retained run is required before using throughput history for a new default or convergence decision."
 
   - id: entity-discovery
     name: Entity Discovery
@@ -2970,23 +3346,41 @@ evals:
     story_refs:
       - "124"
       - "129"
+      - "208"
     category_refs:
       - spec:3
       - spec:8
     compromise_refs: []
     description: >
       Recall-focused discovery of all named entities (characters, locations, props)
-      from a full screenplay in a single pass. Missing an entity is worse than
-      a false positive — this is a completeness task. Weighted: character recall (0.45),
-      location recall (0.25), prop recall (0.15), JSON validity (0.10), optional
-      coverage (0.05).
+      from each of two repo-owned screenplays in a single pass. Missing an entity
+      is worse than a false positive, while the precision guard rejects noun
+      dumps. Historical one-screenplay rows are not decision-grade for the
+      expanded corpus.
     pipeline_stage: world_building
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/entity-discovery.yaml --no-cache -j 3"
     config: benchmarks/tasks/entity-discovery.yaml
     scorer: benchmarks/scorers/entity_discovery_scorer.py
     golden: benchmarks/golden/the-mariner-entity-discovery.json
-    test_cases: 1  # full screenplay single-pass
+    additional_goldens:
+      - benchmarks/golden/open-frequency-entity-discovery.json
+    corpus_sources:
+      - benchmarks/input/the-mariner.md
+      - tests/fixtures/ingest_inputs/open_frequency_short.fountain
+    test_cases: 2
+    historical_evidence_status: pre-open-frequency-corpus-non-decision-grade
+    decision_role: capability_detector
+    default_driving: false
+    runtime_alignment:
+      status: structurally-mismatched-capability-only
+      runtime_schema: src/cine_forge/modules/world_building/entity_discovery_v1/main.py#EntityDiscovery
+      limitation: >
+        This benchmark makes one full-screenplay call that returns three arrays.
+        Production discovery is taxonomy-specific, incremental, chunked, seeded
+        with existing entities, and optionally verified. This lane can compare
+        broad discovery capability but cannot select the production model until
+        a runtime-shaped incremental eval exists.
 
     target:
       metric: overall
@@ -3213,23 +3607,45 @@ evals:
     spec_refs:
       - spec:2
       - spec:8
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:2
       - spec:8
     compromise_refs: []
     description: >
-      Full script bible extraction from a complete screenplay — logline, synopsis,
-      act structure, themes, protagonist journey, genre, tone, setting. Evaluated
-      on field completeness, screenplay specificity (no generic analysis), and
-      thematic grounding. Once-per-project, always generated on screenplay import.
+      Full script bible extraction across two complete repo-owned screenplays —
+      logline, synopsis, act structure, themes, protagonist journey, genre, tone,
+      and setting. Evaluated on field completeness, screenplay specificity, and
+      thematic grounding. Historical one-screenplay rows are not decision-grade
+      for the expanded corpus.
     pipeline_stage: ingest
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/script-bible.yaml --no-cache -j 3"
     config: benchmarks/tasks/script-bible.yaml
     scorer: benchmarks/scorers/script_bible_scorer.py
     golden: benchmarks/golden/the-mariner-script-bible.json
-    test_cases: 1  # full screenplay
+    additional_goldens:
+      - benchmarks/golden/open-frequency-script-bible.json
+    corpus_sources:
+      - benchmarks/input/the-mariner.md
+      - tests/fixtures/ingest_inputs/open_frequency_short.fountain
+    test_cases: 2
+    historical_evidence_status: pre-open-frequency-corpus-non-decision-grade
+    decision_role: runtime_default_proxy
+    default_driving: true
+    runtime_alignment:
+      status: proxy-requires-fresh-runtime-shaped-evidence
+      runtime_schema: src/cine_forge/schemas/script_bible.py#ScriptBible
+      limitation: >
+        Production and the Gemini 3.x benchmark now align on a 65536-token
+        output cap, minimal thinking for Gemini 3.5 Flash-Lite, and omitted
+        sampling controls. The runtime still uses a materially different
+        EXTRACTION_PROMPT and enforces the ScriptBible response schema at the
+        API boundary, while Promptfoo uses the benchmark prompt plus
+        deterministic post-response validation. The configured default is
+        retained provisionally, but no repaired two-corpus row is
+        decision-grade for that exact runtime boundary.
 
     target:
       metric: overall
@@ -3249,6 +3665,7 @@ evals:
         result_file: benchmarks/results/script-bible-gemini36flash-2026-07-21.json
         note: "Story 208 produced a strong, specific bible, with dark-comedy and setting penalties classified golden/rubric-wrong or scorer-wrong. It still misses the 0.90 quality and $0.01 cost targets and offers no value win over equal-scoring Gemini 2.5 Flash-Lite. No default change."
       - model: "Gemini 3.5 Flash-Lite"
+        evidence_status: pre-repair-runtime-mismatched-non-decision-grade
         metrics:
           overall: 0.9100
         latency_ms: 6074
@@ -3257,7 +3674,7 @@ evals:
         measured: 2026-07-21
         git_sha: "f5a3ffb"
         result_file: benchmarks/results/script-bible-gemini35flashlite-confirmation-2026-07-21.json
-        note: "Story 208 cleared all targets in two no-cache runs: 0.95165/5650ms/$0.0054 first and 0.9100/6074ms/$0.0049 confirmation (mean 0.930825/5862ms/$0.00515). This is a meaningful quality and latency improvement over the current Gemini 2.5 Flash-Lite default at modest once-per-project cost. Classification: model-correct; recommend adopting for script_bible_v1 after explicit approval."
+        note: "Story 208 cleared the then-maintained one-corpus benchmark twice and the user approved adoption. The repository truth audit later replaced the scorer/golden contract, added a second corpus, and identified a materially different runtime prompt/output cap. This row is retained as adoption history but is non-decision-grade for the repaired runtime-shaped boundary; the configured default remains provisional pending a fresh exact-contract run."
       - model: "Grok 4.5"
         metrics:
           overall: 0.9750
@@ -3447,7 +3864,8 @@ evals:
     type: compromise
     spec_refs:
       - spec:8
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:8
     compromise_refs:
@@ -3473,7 +3891,8 @@ evals:
     type: compromise
     spec_refs:
       - spec:8
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:8
     compromise_refs:
@@ -3501,7 +3920,8 @@ evals:
     type: compromise
     spec_refs:
       - spec:2
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:2
     compromise_refs:
@@ -3527,7 +3947,8 @@ evals:
     type: compromise
     spec_refs:
       - spec:4
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:4
     compromise_refs:
@@ -3551,7 +3972,8 @@ evals:
     type: compromise
     spec_refs:
       - spec:9
-    story_refs: []
+    story_refs:
+      - "208"
     category_refs:
       - spec:9
     compromise_refs:

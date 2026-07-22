@@ -6,27 +6,56 @@ cost_usd per eval, and either prints a report or updates registry.yaml.
 
 Usage:
     python scripts/extract-eval-metrics.py                     # Print report
-    python scripts/extract-eval-metrics.py --update-registry   # Write to registry.yaml
+    python scripts/extract-eval-metrics.py --update-registry \
+        --result-file benchmarks/results/<one-run>.json        # Exact update
     python scripts/extract-eval-metrics.py --result-file X     # Single file report
 """
 
 import argparse
 import json
+import math
 import re
 import sys
 from collections import defaultdict
 from pathlib import Path
 from statistics import mean
 
-try:
-    import yaml
-except ImportError:
-    print("ERROR: PyYAML not installed. Run: pip install pyyaml", file=sys.stderr)
-    sys.exit(1)
+REPO_ROOT = Path(__file__).resolve().parent.parent
+SRC_ROOT = REPO_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
 
+from cine_forge.evals.cost_metrics import (  # noqa: E402
+    estimate_cost,
+    estimate_model_cost,
+    validate_reported_cost,
+)
+from cine_forge.evals.provider_identity import (  # noqa: E402
+    provider_display_name,
+    provider_model_slug,
+)
+from cine_forge.evals.registry_metrics import (  # noqa: E402
+    normalize_selected_result_file as _normalize_selected_result_file,
+)
+from cine_forge.evals.registry_metrics import (  # noqa: E402
+    render_registry_update as _render_registry_update,
+)
+from cine_forge.evals.result_json import load_result_json  # noqa: E402
+from cine_forge.evals.task_matrix import (  # noqa: E402, F401
+    validate_result_task_matrix,
+)
+from cine_forge.evals.task_provenance import (  # noqa: E402
+    validate_result_task_contract,
+)
+from cine_forge.evals.token_metrics import (  # noqa: E402
+    completion_tokens_for_cost,
+    is_gemini_provider,
+    raw_gemini_usage_metadata,
+    raw_standard_usage,
+)
 
-RESULTS_DIR = Path(__file__).parent.parent / "benchmarks" / "results"
-REGISTRY_PATH = Path(__file__).parent.parent / "docs" / "evals" / "registry.yaml"
+RESULTS_DIR = REPO_ROOT / "benchmarks" / "results"
+REGISTRY_PATH = REPO_ROOT / "docs" / "evals" / "registry.yaml"
 
 
 # ── Filename → eval ID mapping ────────────────────────────────────────────────
@@ -52,68 +81,10 @@ EVAL_ID_PREFIXES = [
 def filename_to_eval_id(filename: str) -> str | None:
     """Extract eval ID from a result filename like 'character-extraction-run3.json'."""
     stem = Path(filename).stem
-    stems_to_check = [stem]
-    if stem.startswith("model-scout-"):
-        stems_to_check.append(stem.removeprefix("model-scout-"))
-
-    for candidate in stems_to_check:
-        for prefix in sorted(EVAL_ID_PREFIXES, key=len, reverse=True):
-            if candidate.startswith(prefix):
-                return prefix
+    for prefix in sorted(EVAL_ID_PREFIXES, key=len, reverse=True):
+        if re.search(rf"(?:^|-){re.escape(prefix)}(?:-|$)", stem):
+            return prefix
     return None
-
-
-# ── Provider label normalization ──────────────────────────────────────────────
-
-def normalize_label(label: str) -> str:
-    """Convert provider label to registry model name.
-
-    'Claude Sonnet 4.6' → 'Sonnet 4.6'
-    'Claude Opus 4.6' → 'Opus 4.6'
-    'Claude Haiku 4.5' → 'Haiku 4.5'
-    'Claude Sonnet 4.5' → 'Sonnet 4.5'
-    'GPT-5.2' → 'GPT-5.2' (unchanged)
-    """
-    return re.sub(r"^Claude\s+", "", label)
-
-
-# ── Cost estimation for zero-cost Anthropic models ───────────────────────────
-
-# Pricing from src/cine_forge/ai/llm.py MODEL_PRICING_PER_M_TOKEN
-# (input_per_M, output_per_M) in USD
-PRICING: dict[str, tuple[float, float]] = {
-    "gpt-5.4": (2.5, 15.0),
-    "gpt-5.5": (5.0, 30.0),
-    "gpt-5.5-pro": (30.0, 180.0),
-    "gpt-5.4-mini": (0.75, 4.5),
-    "gpt-5.4-nano": (0.20, 1.25),
-    "claude-sonnet-4-6": (3.0, 15.0),
-    "claude-sonnet-4-5": (3.0, 15.0),
-    "claude-sonnet-4-5-20250929": (3.0, 15.0),
-    "claude-opus-4-6": (15.0, 75.0),
-    "claude-opus-4-8": (5.0, 25.0),
-    "claude-haiku-4-5-20251001": (0.80, 4.0),
-    "gemini-3.1-flash-lite": (0.10, 0.40),
-    "gemini-3.1-pro-preview": (1.50, 10.0),
-    "gemini-3.5-flash": (1.50, 9.0),
-    "gemini-3.5-flash-lite": (0.30, 2.50),
-    "gemini-3.6-flash": (1.50, 7.50),
-    "grok-4.3": (1.25, 2.50),
-    "grok-4.5": (2.0, 6.0),
-    "kimi-k2.6": (0.95, 4.0),
-}
-
-
-def estimate_cost(provider_id: str, prompt_tokens: int, completion_tokens: int) -> float | None:
-    """Estimate cost from token counts for models where promptfoo reports 0."""
-    # Extract model ID from provider string like 'anthropic:messages:claude-sonnet-4-6'
-    parts = provider_id.split(":")
-    model_id = parts[-1] if parts else provider_id
-    pricing = PRICING.get(model_id)
-    if not pricing:
-        return None
-    input_price, output_price = pricing
-    return (prompt_tokens * input_price + completion_tokens * output_price) / 1_000_000
 
 
 # ── Metrics extraction ────────────────────────────────────────────────────────
@@ -122,64 +93,147 @@ def estimate_cost(provider_id: str, prompt_tokens: int, completion_tokens: int) 
 def extract_from_file(path: Path) -> dict[str, dict]:
     """Extract per-model metrics from a single result file.
 
-    Returns: {model_name: {latencies: [...], costs: [...], cost_estimated: bool}}
+    Returns per-model samples without hiding missing latency or cost evidence.
     """
-    data = json.loads(path.read_text())
-    results = data.get("results", {}).get("results", [])
+    data = load_result_json(path)
+    results = extract_result_rows(data, path)
 
     models: dict[str, dict] = defaultdict(lambda: {
+        "sample_count": 0,
         "latencies": [],
         "costs": [],
         "cost_estimated": False,
     })
 
-    for entry in results:
+    for index, entry in enumerate(results):
+        if not isinstance(entry, dict):
+            raise ValueError(f"{path}: result row {index} must be a mapping")
         provider = entry.get("provider", {})
-        label = provider.get("label", provider.get("id", "unknown"))
-        model_name = normalize_label(label)
+        if not isinstance(provider, dict):
+            raise ValueError(f"{path}: result row {index} provider must be a mapping")
+        response = entry.get("response", {})
+        if not isinstance(response, dict):
+            raise ValueError(f"{path}: result row {index} response must be a mapping")
+        try:
+            model_slug = provider_model_slug(provider, response)
+            model_name = provider_display_name(provider, model_slug)
+        except ValueError as exc:
+            raise ValueError(f"{path}: result row {index} {exc}") from exc
+        models[model_name]["sample_count"] += 1
 
-        latency = entry.get("latencyMs")
-        cost = entry.get("cost", 0) or 0
-        provider_id = provider.get("id", "")
+        latency = _optional_nonnegative_number(entry.get("latencyMs"), "latencyMs")
+        raw_cost = entry.get("cost")
+        cost = (
+            0.0
+            if raw_cost is None
+            else _optional_nonnegative_number(raw_cost, "cost")
+        )
+        provider_id = str(provider.get("id", ""))
+        token_usage = response.get("tokenUsage", {})
+        if not isinstance(token_usage, dict):
+            raise ValueError(f"{path}: result row {index} tokenUsage must be a mapping")
+        raw_usage_metadata = raw_gemini_usage_metadata(
+            response,
+            required=is_gemini_provider(provider_id, model_slug=model_slug),
+        )
+        completion_tok = completion_tokens_for_cost(
+            provider_id,
+            token_usage,
+            model_slug=model_slug,
+            raw_usage_metadata=raw_usage_metadata,
+            raw_usage=(
+                None
+                if raw_usage_metadata is not None
+                else raw_standard_usage(response)
+            ),
+        )
+        prompt_tok = _required_nonnegative_integer(
+            token_usage.get("prompt"),
+            "tokenUsage.prompt",
+        )
+        derived_cost = (
+            estimate_model_cost(model_slug, prompt_tok, completion_tok)
+            if model_slug is not None
+            else estimate_cost(provider_id, prompt_tok, completion_tok)
+        )
 
         if latency is not None:
             models[model_name]["latencies"].append(latency)
 
         if cost > 0:
+            validate_reported_cost(
+                reported_cost=cost,
+                derived_cost=derived_cost,
+                model_slug=model_slug,
+            )
             models[model_name]["costs"].append(cost)
         else:
             # Try to estimate from tokens
-            token_usage = entry.get("response", {}).get("tokenUsage", {})
-            prompt_tok = token_usage.get("prompt", 0)
-            completion_tok = token_usage.get("completion", 0)
-            completion_details = token_usage.get("completionDetails") or {}
-            reasoning_tok = (
-                completion_details.get("reasoning", 0)
-                if isinstance(completion_details, dict)
-                else 0
-            )
-            if "xai:" in provider_id or "grok" in provider_id:
-                total_tok = token_usage.get("total", 0) or 0
-                completion_tok = max(
-                    completion_tok + reasoning_tok,
-                    total_tok - prompt_tok,
-                )
             if prompt_tok > 0:
-                estimated = estimate_cost(provider_id, prompt_tok, completion_tok)
-                if estimated is not None and estimated > 0:
-                    models[model_name]["costs"].append(estimated)
+                if derived_cost is not None and derived_cost > 0:
+                    models[model_name]["costs"].append(derived_cost)
                     models[model_name]["cost_estimated"] = True
 
     return dict(models)
 
 
+def _optional_nonnegative_number(value: object, name: str) -> float | int | None:
+    if value is None:
+        return None
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, (int, float))
+        or not math.isfinite(float(value))
+        or float(value) < 0.0
+    ):
+        raise ValueError(f"{name} must be a finite nonnegative number")
+    return value
+
+
+def _required_nonnegative_integer(value: object, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise ValueError(f"{name} must be a nonnegative integer")
+    return value
+
+
+def extract_result_rows(data: object, path: Path) -> list[object]:
+    """Return rows from supported Promptfoo result envelopes, or fail closed."""
+    if not isinstance(data, dict):
+        raise ValueError(f"{path}: top-level JSON value must be a mapping")
+
+    result_envelope = data.get("results")
+    if isinstance(result_envelope, dict):
+        rows = result_envelope.get("results")
+    elif isinstance(result_envelope, list):
+        rows = result_envelope
+    else:
+        rows = None
+
+    if not isinstance(rows, list):
+        raise ValueError(f"{path}: no recognized Promptfoo result envelope")
+    return rows
+
+
 def compute_averages(model_data: dict) -> dict:
-    """Compute average latency and cost from raw lists."""
+    """Compute averages only when every retained row has the metric."""
+    sample_count = model_data.get("sample_count", 0)
+    latency_count = len(model_data["latencies"])
+    cost_count = len(model_data["costs"])
     result = {
-        "latency_ms": round(mean(model_data["latencies"])) if model_data["latencies"] else None,
-        "cost_usd": round(mean(model_data["costs"]), 6) if model_data["costs"] else None,
+        "latency_ms": (
+            round(mean(model_data["latencies"]))
+            if sample_count > 0 and latency_count == sample_count
+            else None
+        ),
+        "cost_usd": (
+            round(mean(model_data["costs"]), 6)
+            if sample_count > 0 and cost_count == sample_count
+            else None
+        ),
         "cost_estimated": model_data.get("cost_estimated", False),
-        "sample_count": len(model_data["latencies"]),
+        "sample_count": sample_count,
+        "latency_sample_count": latency_count,
+        "cost_sample_count": cost_count,
     }
     return result
 
@@ -188,9 +242,10 @@ def compute_averages(model_data: dict) -> dict:
 
 
 def print_report(result_files: list[Path]):
-    """Print a human-readable report of latency/cost per eval per model."""
-    # Group by eval ID
-    eval_data: dict[str, dict[str, dict]] = defaultdict(dict)
+    """Print each retained run separately so duplicate runs stay visible."""
+    print("=" * 72)
+    print("  Eval Metrics Report — one row per retained result file and model")
+    print("=" * 72)
 
     for path in result_files:
         eval_id = filename_to_eval_id(path.name)
@@ -198,30 +253,21 @@ def print_report(result_files: list[Path]):
             print(f"  SKIP: {path.name} (unknown eval)", file=sys.stderr)
             continue
 
-        file_metrics = extract_from_file(path)
-        for model_name, data in file_metrics.items():
-            if model_name not in eval_data[eval_id]:
-                eval_data[eval_id][model_name] = data
-            else:
-                # Merge: use the file with more samples (more recent / complete run)
-                existing = eval_data[eval_id][model_name]
-                if len(data["latencies"]) >= len(existing["latencies"]):
-                    eval_data[eval_id][model_name] = data
-
-    # Print
-    print("=" * 72)
-    print("  Eval Metrics Report — Latency & Cost per Model")
-    print("=" * 72)
-
-    for eval_id in sorted(eval_data):
-        models = eval_data[eval_id]
-        print(f"\n  {eval_id}")
+        try:
+            models = extract_from_file(path)
+        except (json.JSONDecodeError, ValueError) as exc:
+            print(f"  SKIP: {path.name} ({exc})", file=sys.stderr)
+            continue
+        print(f"\n  {eval_id} — {path.name}")
         print(f"  {'─' * 68}")
 
-        # Sort by latency (fastest first)
         sorted_models = sorted(
             models.items(),
-            key=lambda x: mean(x[1]["latencies"]) if x[1]["latencies"] else float("inf"),
+            key=lambda item: (
+                mean(item[1]["latencies"])
+                if item[1]["latencies"]
+                else float("inf")
+            ),
         )
 
         for model_name, data in sorted_models:
@@ -230,102 +276,81 @@ def print_report(result_files: list[Path]):
             cost_str = f"${avg['cost_usd']:.4f}" if avg["cost_usd"] else "N/A"
             est = " (est)" if avg["cost_estimated"] else ""
             samples = avg["sample_count"]
-            print(f"    {model_name:25s}  {lat_str:>10s}  {cost_str:>10s}{est}  n={samples}")
+            observed = (
+                f"lat={avg['latency_sample_count']}/{samples}, "
+                f"cost={avg['cost_sample_count']}/{samples}"
+            )
+            print(
+                f"    {model_name:25s}  {lat_str:>10s}  "
+                f"{cost_str:>10s}{est}  {observed}"
+            )
 
 
 # ── Registry update mode ──────────────────────────────────────────────────────
 
 
+def normalize_selected_result_file(path: Path) -> str:
+    """Resolve a result path against this script's active repository root."""
+    return _normalize_selected_result_file(path, repo_root=REPO_ROOT)
+
+
+def render_registry_update(
+    registry_text: str,
+    all_metrics: dict[str, dict[str, dict]],
+    *,
+    selected_result_file: str,
+) -> tuple[str, int]:
+    """Render a registry update against this script's active repository root."""
+    return _render_registry_update(
+        registry_text,
+        all_metrics,
+        selected_result_file=selected_result_file,
+        repo_root=REPO_ROOT,
+    )
+
+
 def update_registry(result_files: list[Path], dry_run: bool = False):
-    """Add latency_ms and cost_usd to registry.yaml score entries.
-
-    Uses line-level insertion to preserve YAML formatting instead of
-    round-tripping through yaml.dump (which mangles comments and style).
-    """
+    """Update exact registry score blocks from one explicitly selected run."""
+    if len(result_files) != 1:
+        raise ValueError(
+            "registry updates require exactly one explicit --result-file; "
+            "combining retained runs is ambiguous"
+        )
     if not REGISTRY_PATH.exists():
-        print(f"ERROR: Registry not found at {REGISTRY_PATH}", file=sys.stderr)
-        sys.exit(1)
+        raise FileNotFoundError(f"Registry not found at {REGISTRY_PATH}")
 
-    yaml.safe_load(REGISTRY_PATH.read_text())
-    lines = REGISTRY_PATH.read_text().splitlines()
+    path = result_files[0]
+    selected_result_file = normalize_selected_result_file(path)
+    eval_id = filename_to_eval_id(path.name)
+    if not eval_id:
+        raise ValueError(f"cannot derive eval id from {path.name}")
+    result_payload = load_result_json(path)
+    result_rows = extract_result_rows(result_payload, path)
+    validate_result_task_contract(
+        REPO_ROOT / "benchmarks" / "tasks" / f"{eval_id}.yaml",
+        result_payload.get("config") if isinstance(result_payload, dict) else None,
+        result_rows,
+        repo_root=REPO_ROOT,
+    )
+    all_metrics = {
+        eval_id: {
+            model_name: compute_averages(data)
+            for model_name, data in extract_from_file(path).items()
+        }
+    }
+    original = REGISTRY_PATH.read_text()
+    rendered, updated = render_registry_update(
+        original,
+        all_metrics,
+        selected_result_file=selected_result_file,
+    )
+    print(f"Validated {updated} exact score entr{'y' if updated == 1 else 'ies'}")
 
-    # Build comprehensive metrics from all result files
-    all_metrics: dict[str, dict[str, dict]] = defaultdict(dict)
-
-    for path in result_files:
-        eval_id = filename_to_eval_id(path.name)
-        if not eval_id:
-            continue
-        file_metrics = extract_from_file(path)
-        for model_name, data in file_metrics.items():
-            avg = compute_averages(data)
-            if model_name not in all_metrics[eval_id]:
-                all_metrics[eval_id][model_name] = avg
-            else:
-                existing = all_metrics[eval_id][model_name]
-                if avg["sample_count"] >= existing["sample_count"]:
-                    all_metrics[eval_id][model_name] = avg
-
-    # Walk through lines and insert latency_ms/cost_usd after metrics blocks
-    updated = 0
-    current_eval_id = None
-    current_model = None
-    new_lines = []
-    i = 0
-
-    while i < len(lines):
-        line = lines[i]
-
-        # Track which eval we're in
-        if re.match(r'\s+- id:\s+\S+', line) or re.match(r'\s+id:\s+\S+', line):
-            m = re.search(r'id:\s+(\S+)', line)
-            if m:
-                current_eval_id = m.group(1)
-
-        # Track which model score block we're in
-        if re.match(r'\s+- model:\s+', line):
-            m = re.search(r'model:\s+"?([^"]+)"?', line)
-            if m:
-                current_model = m.group(1)
-
-        # Skip existing latency_ms, cost_usd, cost_estimated lines (we'll re-insert)
-        if re.match(r'\s+latency_ms:\s+', line):
-            i += 1
-            continue
-        if re.match(r'\s+cost_usd:\s+', line):
-            i += 1
-            continue
-        if re.match(r'\s+cost_estimated:\s+', line):
-            i += 1
-            continue
-
-        new_lines.append(line)
-
-        # After a "metrics:" + "overall:" block in a score entry, insert our fields
-        # We insert after the line containing "overall:" within a metrics block
-        if (re.match(r'\s+overall:\s+', line)
-                and current_eval_id in all_metrics
-                and current_model in all_metrics.get(current_eval_id, {})):
-            metrics = all_metrics[current_eval_id][current_model]
-            indent = "        "  # 8 spaces — same level as "metrics:"
-            if metrics["latency_ms"] is not None:
-                new_lines.append(f"{indent}latency_ms: {metrics['latency_ms']}")
-            if metrics["cost_usd"] is not None:
-                cost_str = f"{metrics['cost_usd']:.4f}"
-                new_lines.append(f"{indent}cost_usd: {cost_str}")
-                if metrics["cost_estimated"]:
-                    new_lines.append(f"{indent}cost_estimated: true")
-            updated += 1
-
-        i += 1
-
-    print(f"Updated {updated} score entries")
-
-    if not dry_run:
-        REGISTRY_PATH.write_text("\n".join(new_lines) + "\n")
-        print(f"Written to {REGISTRY_PATH}")
-    else:
+    if dry_run:
         print("(dry run — no changes written)")
+        return
+    REGISTRY_PATH.write_text(rendered)
+    print(f"Written to {REGISTRY_PATH}")
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -354,6 +379,9 @@ def main():
     if not result_files:
         print("No result files found.", file=sys.stderr)
         sys.exit(1)
+
+    if args.update_registry and args.result_file is None:
+        parser.error("--update-registry requires one explicit --result-file")
 
     print(f"Processing {len(result_files)} result file(s)...", file=sys.stderr)
 

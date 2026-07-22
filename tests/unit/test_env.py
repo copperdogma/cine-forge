@@ -3,6 +3,8 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+import pytest
+
 from cine_forge.env import (
     export_legacy_provider_envs,
     load_cine_forge_dotenv,
@@ -10,6 +12,8 @@ from cine_forge.env import (
     require_env,
     resolve_env,
 )
+
+pytestmark = pytest.mark.unit
 
 
 def test_resolve_env_prefers_cine_forge_alias(monkeypatch) -> None:

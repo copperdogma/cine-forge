@@ -1,19 +1,35 @@
 {
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "asset_audio_tags": [
+    "voiceover",
+    "soft_music"
+  ],
+  "audio_description": "Synthetic speech and tone exist in the MP4 but are excluded from frame scoring.",
+  "case_status": "quarantined",
   "clip_id": "flashback_sepia_drift",
-  "title": "Flashback sepia drift",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
   "duration_seconds": 4.0,
-  "resolution": "640x360",
   "fps": 8,
+  "generator_version": "frame-truth-v2",
   "has_audio": true,
-  "transcript": "We thought the tide would keep carrying us forward.",
-  "audio_description": "A gentle voiceover rides over soft strings.",
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "sampled_frame_sha256": [
+    "417da05c036d70b62a98ac7bd5f4b04d0bd194be34a855d466945394226e4f4d",
+    "c1238e4cb160b9aa05f5b62467a796c66c7b7b73bc9a06cc36f9c47621d887ab",
+    "fe7a0484fac3db90f0e065c2b55086688d6bc5ee8446d152c641605cbc228f66",
+    "7492c6f1a9a76e4519d3242001fb189a1cbeff18db77a92545b504b79ceaf2fd",
+    "628dabd4741908b541cc0ef16d69925d165d438ec7e03fdc64c79ce05bebb498"
+  ],
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "spec_sha256": "6eca872f4643d94038a4c5ce3841db4f47292cb816df7b53a11ddc7a633a2e7f",
+  "status_reason": "The frames show a scale change but cannot establish flashback, memory, parenthood, water, or voiceover.",
   "tags": [
     "flashback",
     "memory"
   ],
-  "anchor_subset": false,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+  "temporal_control": "dynamic",
+  "title": "Sepia two-shot push-in",
+  "transcript": "We thought the tide would keep carrying us forward.",
+  "unique_sampled_frames": 5
 }

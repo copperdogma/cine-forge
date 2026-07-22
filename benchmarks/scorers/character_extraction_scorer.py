@@ -1,285 +1,478 @@
-"""
-Character extraction scorer for promptfoo.
+"""Deterministic source-grounded scorer for character extraction."""
 
-Evaluates model output against a golden reference for character analysis quality.
-Scores on: JSON validity, narrative role, trait coverage, relationship identification,
-evidence grounding, scene coverage, and key fact recall.
-
-Promptfoo calls get_assert(output, context) where:
-- output: str — the model's raw text response
-- context: dict with 'vars' (test case variables), 'prompt', etc.
-
-Returns: dict with 'pass' (bool), 'score' (0-1), 'reason' (str).
-"""
+from __future__ import annotations
 
 import json
 import os
 import re
+import sys
+from difflib import SequenceMatcher
+from pathlib import Path
+
+SCORER_ROOT = Path(__file__).resolve().parent
+if str(SCORER_ROOT) not in sys.path:
+    sys.path.insert(0, str(SCORER_ROOT))
+
+from score_semantics import finalize_score  # noqa: E402
+
+STOP_WORDS = {
+    "a",
+    "an",
+    "and",
+    "are",
+    "as",
+    "at",
+    "by",
+    "for",
+    "from",
+    "in",
+    "is",
+    "of",
+    "on",
+    "the",
+    "to",
+    "with",
+}
+TOP_LEVEL_FIELDS = {
+    "character_id",
+    "name",
+    "aliases",
+    "description",
+    "explicit_evidence",
+    "inferred_traits",
+    "scene_presence",
+    "dialogue_summary",
+    "narrative_role",
+    "relationships",
+    "overall_confidence",
+}
+EVIDENCE_FIELDS = {"trait", "quote", "source_scene"}
+TRAIT_FIELDS = {"trait", "value", "confidence", "rationale"}
+RELATIONSHIP_FIELDS = {
+    "target_character",
+    "relationship_type",
+    "evidence",
+    "confidence",
+}
+NARRATIVE_ROLES = {"protagonist", "supporting"}
+SCENE_HEADING = re.compile(r"^(?:BEGIN FLASHBACK:\s*)?(?:INT|EXT)\.\s+\S", re.IGNORECASE)
+RELATIONSHIP_SIGNALS = {
+    "sibling": {"sibling", "siblings", "sister", "brother", "sis"},
+    "parent": {"parent", "parents", "father", "mother", "dad", "mom", "ma", "pa"},
+    "adversary": {
+        "adversary",
+        "enemy",
+        "fight",
+        "fights",
+        "attack",
+        "attacks",
+        "kidnap",
+        "kidnapped",
+        "kill",
+        "threat",
+        "gunpoint",
+        "gang",
+    },
+    "romantic_ex": {"ex", "former", "boyfriend", "girlfriend", "romantic"},
+    "family": {"family", "relative", "kin"},
+}
+RELATIONSHIP_DENIAL_RE = re.compile(
+    r"(?:\b(?:never|not)\s+(?:establishes?|shows?|states?|supports?|confirms?)\b|"
+    r"\bno\s+(?:evidence|support|basis)\b|"
+    r"\b(?:is|are|was|were)\s+not\s+"
+    r"(?:siblings?|family|related|parent|father|mother|adversaries|enemies|romantic)\b|"
+    r"\bunrelated\b)",
+    flags=re.IGNORECASE,
+)
+PASS_THRESHOLD = 0.65
 
 
-def normalize(s: str) -> str:
-    """Normalize a string for fuzzy comparison."""
-    s = s.upper().strip()
-    s = re.sub(r"\\-", "-", s)
-    s = re.sub(r"[^A-Z0-9\s]", "", s)
-    s = re.sub(r"\s+", " ", s)
-    return s
+def _resolve_golden_path(context: dict) -> str:
+    golden_path = context.get("vars", {}).get("golden_path", "")
+    if golden_path and not os.path.isabs(golden_path):
+        base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        for candidate in (os.path.join(base, golden_path), os.path.join(os.getcwd(), golden_path)):
+            if os.path.exists(candidate):
+                return candidate
+    return golden_path
 
 
-def text_contains(haystack: str, needle: str) -> bool:
-    """Check if normalized needle appears in normalized haystack."""
-    return normalize(needle) in normalize(haystack)
+def _parse_output(output: str) -> tuple[dict | None, float]:
+    try:
+        parsed = json.loads(output)
+        return (parsed if isinstance(parsed, dict) else None), 1.0
+    except json.JSONDecodeError:
+        match = re.search(r"```(?:json)?\s*([\s\S]*?)```", output)
+        if not match:
+            return None, 0.0
+        try:
+            parsed = json.loads(match.group(1))
+        except json.JSONDecodeError:
+            return None, 0.0
+        return (parsed if isinstance(parsed, dict) else None), 0.9
 
 
-def relationship_target_matches(
-    model_relationships_text: str,
-    target: str,
-    all_golden: dict,
-) -> bool:
-    """Allow golden aliases when checking relationship targets."""
-    target_golden = all_golden.get(target, {})
-    aliases = target_golden.get("aliases", []) if isinstance(target_golden, dict) else []
-    candidates = [target, *aliases]
-    normalized_text = normalize(model_relationships_text)
-    return any(normalize(candidate) in normalized_text for candidate in candidates if candidate)
+def _normalize(value: object) -> str:
+    return " ".join(re.findall(r"[A-Z0-9]+", str(value or "").upper()))
+
+
+def _canonical_heading(value: object) -> str:
+    unescaped = re.sub(r"\\([\\-])", r"\1", str(value or "").strip())
+    return " ".join(unescaped.upper().split())
+
+
+def _tokens(value: object) -> set[str]:
+    return {
+        token
+        for token in re.findall(r"[a-z0-9]+", str(value or "").lower())
+        if len(token) > 2 and token not in STOP_WORDS
+    }
+
+
+def _concept_matches(text: object, concept: object, threshold: float = 0.5) -> bool:
+    expected = _tokens(concept)
+    return bool(expected) and len(expected & _tokens(text)) / len(expected) >= threshold
+
+
+def _concept_recall(text: object, concepts: list[str], threshold: float = 0.5) -> float:
+    if not concepts:
+        return 1.0
+    return sum(_concept_matches(text, concept, threshold) for concept in concepts) / len(concepts)
+
+
+def _find_golden(all_golden: dict, character_name: str) -> dict | None:
+    normalized = _normalize(character_name)
+    return next(
+        (value for key, value in all_golden.items() if _normalize(key) == normalized),
+        None,
+    )
+
+
+def _identity_score(result: dict, golden: dict) -> tuple[float, bool]:
+    name_valid = _normalize(result.get("name")) == _normalize(golden.get("name"))
+    identifier_valid = result.get("character_id") == golden.get("character_id")
+    score = (float(name_valid) + float(identifier_valid)) / 2
+    return score, name_valid and identifier_valid
+
+
+def _alias_score(result: dict, golden: dict) -> tuple[float, bool]:
+    expected = {_normalize(value) for value in golden.get("aliases", []) if _normalize(value)}
+    actual_values = result.get("aliases", [])
+    actual = (
+        {_normalize(value) for value in actual_values if _normalize(value)}
+        if isinstance(actual_values, list)
+        else set()
+    )
+    if not expected:
+        return (1.0 if not actual else 0.0), not actual
+    overlap = len(expected & actual)
+    recall = overlap / len(expected)
+    precision = overlap / len(actual) if actual else 0.0
+    score = 2 * recall * precision / (recall + precision) if recall + precision else 0.0
+    return score, actual == expected
+
+
+def _relationship_type_key(value: object) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", str(value or "").strip().lower()).strip("_")
+
+
+def _relationship_evidence_valid(item: dict, screenplay: str) -> bool:
+    evidence = str(item.get("evidence", ""))
+    if not evidence.strip() or RELATIONSHIP_DENIAL_RE.search(evidence):
+        return False
+
+    relation_key = _relationship_type_key(item.get("relationship_type"))
+    relation_signals = RELATIONSHIP_SIGNALS.get(
+        relation_key,
+        _tokens(item.get("relationship_type")),
+    )
+    target_tokens = _tokens(item.get("target_character"))
+    evidence_tokens = _tokens(evidence)
+    source_tokens = _tokens(screenplay)
+    target_is_relationship_label = bool(target_tokens) and target_tokens <= relation_signals
+    evidence_names_target = bool(target_tokens & evidence_tokens) or (
+        target_is_relationship_label and bool(relation_signals & evidence_tokens)
+    )
+    source_names_target = bool(target_tokens & source_tokens) or (
+        target_is_relationship_label and bool(relation_signals & source_tokens)
+    )
+    return all(
+        (
+            evidence_names_target,
+            source_names_target,
+            bool(relation_signals & evidence_tokens),
+            bool(relation_signals & source_tokens),
+        )
+    )
+
+
+def _relationship_score(
+    result: dict,
+    golden: dict,
+    screenplay: str,
+) -> tuple[float, bool]:
+    expected = {
+        (_normalize(item.get("target")), _normalize(item.get("type")))
+        for item in golden.get("must_have_relationships", [])
+        if isinstance(item, dict)
+    }
+    relationships = result.get("relationships", [])
+    if not isinstance(relationships, list):
+        return 0.0, False
+    actual = {
+        (
+            _normalize(item.get("target_character")),
+            _normalize(item.get("relationship_type")),
+        )
+        for item in relationships
+        if isinstance(item, dict)
+    }
+    no_duplicates = len(actual) == len(relationships)
+    if not expected:
+        return (1.0 if not actual else 0.0), not actual and no_duplicates
+    overlap = len(expected & actual)
+    recall = overlap / len(expected)
+    precision = overlap / len(actual) if actual else 0.0
+    f1 = 2 * recall * precision / (recall + precision) if recall + precision else 0.0
+    expected_evidence_validity = [
+        _relationship_evidence_valid(item, screenplay)
+        for item in relationships
+        if isinstance(item, dict)
+        and (
+            _normalize(item.get("target_character")),
+            _normalize(item.get("relationship_type")),
+        )
+        in expected
+    ]
+    evidence_score = (
+        sum(expected_evidence_validity) / len(expected) if expected else 1.0
+    )
+    all_evidence_valid = (
+        len(expected_evidence_validity) == len(expected)
+        and all(expected_evidence_validity)
+    )
+    return f1 * evidence_score, actual == expected and no_duplicates and all_evidence_valid
+
+
+def _scene_score(result: dict, golden: dict) -> tuple[float, bool]:
+    expected = {_canonical_heading(value) for value in golden.get("must_mention_scenes", [])}
+    values = result.get("scene_presence", [])
+    actual = (
+        {_canonical_heading(value) for value in values if _canonical_heading(value)}
+        if isinstance(values, list)
+        else set()
+    )
+    if not expected:
+        return 1.0, True
+    overlap = len(expected & actual)
+    recall = overlap / len(expected)
+    precision = overlap / len(actual) if actual else 0.0
+    f1 = 2 * recall * precision / (recall + precision) if recall + precision else 0.0
+    return f1, actual == expected
+
+
+def _quote_grounded(quote: str, screenplay: str) -> bool:
+    quote_tokens = re.findall(r"[a-z0-9]+", quote.lower())
+    source_tokens = re.findall(r"[a-z0-9]+", screenplay.lower())
+    if len(quote_tokens) < 3 or not source_tokens:
+        return False
+    normalized_quote = " ".join(quote_tokens)
+    normalized_source = " ".join(source_tokens)
+    if normalized_quote in normalized_source:
+        return True
+    width = len(quote_tokens)
+    return any(
+        SequenceMatcher(None, quote_tokens, source_tokens[index : index + width]).ratio() >= 0.75
+        for index in range(max(1, len(source_tokens) - width + 1))
+    )
+
+
+def _scene_sections(screenplay: str) -> dict[str, str]:
+    sections: dict[str, list[str]] = {}
+    current_heading = ""
+    for line in screenplay.splitlines():
+        stripped = line.strip()
+        if SCENE_HEADING.match(stripped):
+            current_heading = _canonical_heading(stripped)
+            sections.setdefault(current_heading, []).append(stripped)
+        elif current_heading:
+            sections[current_heading].append(stripped)
+    return {heading: "\n".join(lines) for heading, lines in sections.items()}
+
+
+def _evidence_is_grounded(item: dict, sections: dict[str, str]) -> bool:
+    source_scene = _canonical_heading(item.get("source_scene"))
+    governed_text = sections.get(source_scene, "")
+    return bool(governed_text) and _quote_grounded(str(item.get("quote", "")), governed_text)
+
+
+def _evidence_scores(
+    result: dict,
+    golden: dict,
+    screenplay: str,
+) -> tuple[float, float, bool]:
+    evidence = result.get("explicit_evidence", [])
+    if not isinstance(evidence, list) or any(not isinstance(item, dict) for item in evidence):
+        return 0.0, 0.0, False
+    quotes = [str(item.get("quote", "")) for item in evidence]
+    quote_text = " ".join(quotes)
+    required_recall = _concept_recall(
+        quote_text,
+        golden.get("must_have_evidence", []),
+        threshold=0.7,
+    )
+    if not evidence:
+        return required_recall, 0.0, False
+    sections = _scene_sections(screenplay)
+    grounded = sum(
+        _evidence_is_grounded(item, sections)
+        and bool(str(item.get("trait", "")).strip())
+        for item in evidence
+    )
+    grounding = grounded / len(evidence)
+    return required_recall, grounding, required_recall == 1.0 and grounding == 1.0
+
+
+def _valid_confidence(value: object) -> bool:
+    return (
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and 0.0 <= value <= 1.0
+    )
+
+
+def _nonempty_strings(value: object, *, unique: bool = False) -> bool:
+    if not isinstance(value, list) or not all(
+        isinstance(item, str) and bool(item.strip()) for item in value
+    ):
+        return False
+    normalized = [_normalize(item) for item in value]
+    return not unique or len(normalized) == len(set(normalized))
+
+
+def _schema_score(result: dict) -> tuple[float, bool]:
+    traits = result.get("inferred_traits", [])
+    traits_valid = isinstance(traits, list) and all(
+        isinstance(item, dict)
+        and set(item) == TRAIT_FIELDS
+        and all(bool(str(item[field]).strip()) for field in ("trait", "value", "rationale"))
+        and _valid_confidence(item.get("confidence"))
+        for item in traits
+    )
+    evidence = result.get("explicit_evidence")
+    evidence_valid = isinstance(evidence, list) and all(
+        isinstance(item, dict)
+        and set(item) == EVIDENCE_FIELDS
+        and all(bool(str(item[field]).strip()) for field in EVIDENCE_FIELDS)
+        for item in evidence
+    )
+    relationships = result.get("relationships")
+    relationships_valid = isinstance(relationships, list) and all(
+        isinstance(item, dict)
+        and set(item) == RELATIONSHIP_FIELDS
+        and all(
+            isinstance(item.get(field), str) and bool(item[field].strip())
+            for field in ("target_character", "relationship_type", "evidence")
+        )
+        and _valid_confidence(item.get("confidence"))
+        for item in relationships
+    )
+    scalar_valid = all(
+        isinstance(result.get(field), str) and bool(result[field].strip())
+        for field in ("character_id", "name", "description", "dialogue_summary", "narrative_role")
+    )
+    checks = (
+        float(set(result) == TOP_LEVEL_FIELDS),
+        float(_valid_confidence(result.get("overall_confidence"))),
+        float(traits_valid),
+        float(evidence_valid),
+        float(relationships_valid),
+        float(scalar_valid),
+        float(_nonempty_strings(result.get("aliases"), unique=True)),
+        float(_nonempty_strings(result.get("scene_presence"), unique=True)),
+        float(bool(re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", str(result.get("character_id", ""))))),
+        float(result.get("narrative_role") in NARRATIVE_ROLES),
+    )
+    score = sum(checks) / len(checks)
+    valid = all(value == 1.0 for value in checks)
+    return score, valid
 
 
 def get_assert(output: str, context: dict) -> dict:
-    """Promptfoo assertion entry point."""
-
-    golden_path = context.get("vars", {}).get("golden_path", "")
+    golden_path = _resolve_golden_path(context)
     character_name = context.get("vars", {}).get("character_name", "")
-
-    # Resolve golden path
-    if golden_path and not os.path.isabs(golden_path):
-        base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        candidate = os.path.join(base, golden_path)
-        if os.path.exists(candidate):
-            golden_path = candidate
-        else:
-            candidate = os.path.join(os.getcwd(), golden_path)
-            if os.path.exists(candidate):
-                golden_path = candidate
-
-    if not golden_path or not os.path.exists(golden_path):
-        return {"pass": False, "score": 0, "reason": f"Golden file not found: {golden_path}"}
-
-    if not character_name:
-        return {"pass": False, "score": 0, "reason": "No character_name in vars"}
-
-    scores = {}
-    reasons = []
-
-    # --- 1. JSON validity ---
-    try:
-        result = json.loads(output)
-        scores["json_valid"] = 1.0
-    except json.JSONDecodeError:
-        match = re.search(r"```(?:json)?\s*([\s\S]*?)```", output)
-        if match:
-            try:
-                result = json.loads(match.group(1))
-                scores["json_valid"] = 0.9
-                reasons.append("JSON extracted from code block")
-            except json.JSONDecodeError:
-                return {"pass": False, "score": 0.0, "reason": "Invalid JSON output"}
-        else:
-            return {"pass": False, "score": 0.0, "reason": "Invalid JSON output"}
-
-    # --- 2. Load golden reference ---
-    with open(golden_path) as f:
-        all_golden = json.load(f)
-
-    golden_key = character_name.upper().strip()
-    golden = all_golden.get(golden_key)
-    if not golden:
-        # Try partial match
-        for k in all_golden:
-            if (
-                normalize(character_name) in normalize(k)
-                or normalize(k) in normalize(character_name)
-            ):
-                golden = all_golden[k]
-                break
-
-    if not golden:
-        return {
-            "pass": False,
-            "score": 0,
-            "reason": f"No golden data for character: {character_name}",
-        }
-
-    # --- 3. Narrative role ---
-    model_role = (result.get("narrative_role") or "").lower().strip()
-    expected_role = golden["narrative_role"].lower()
-    if model_role == expected_role:
-        scores["narrative_role"] = 1.0
-    elif (
-        model_role in ("protagonist", "supporting")
-        and expected_role in ("protagonist", "supporting")
-    ):
-        # Close enough — co-protagonist vs supporting is debatable
-        scores["narrative_role"] = 0.7
-        reasons.append(f"Role: '{model_role}' vs expected '{expected_role}'")
-    else:
-        scores["narrative_role"] = 0.0
-        reasons.append(f"Role: '{model_role}' vs expected '{expected_role}'")
-
-    # --- 4. Trait coverage ---
-    golden_traits = golden.get("key_traits", [])
-    if golden_traits:
-        # Flatten all model output text that could contain traits
-        model_text = json.dumps(result.get("inferred_traits", []) or []).lower()
-        model_text += " " + json.dumps(result.get("explicit_evidence", []) or []).lower()
-        model_text += " " + (result.get("description") or "").lower()
-
-        found = 0
-        missing = []
-        for trait in golden_traits:
-            # Check if any word stem (5+ char prefix) from the trait appears
-            trait_words = trait.lower().split()
-            matched = False
-            for word in trait_words:
-                # Use first 5 chars as stem for fuzzy matching
-                stem = word[:5] if len(word) >= 5 else word
-                if stem in model_text:
-                    matched = True
-                    break
-            if matched:
-                found += 1
-            else:
-                missing.append(trait)
-
-        scores["trait_coverage"] = found / len(golden_traits)
-        if missing:
-            reasons.append(f"Missing traits: {', '.join(missing[:3])}")
-    else:
-        scores["trait_coverage"] = 1.0
-
-    # --- 5. Relationship identification ---
-    golden_rels = golden.get("must_have_relationships", [])
-    if golden_rels:
-        model_rels = result.get("relationships", []) or []
-        model_rels_text = json.dumps(model_rels).upper()
-        # Also check description for relationship mentions
-        model_rels_text += " " + (result.get("description") or "").upper()
-
-        found = 0
-        missing = []
-        for rel in golden_rels:
-            if relationship_target_matches(model_rels_text, rel["target"], all_golden):
-                found += 1
-            else:
-                missing.append(f"{rel['target']} ({rel['type']})")
-
-        scores["relationship_recall"] = found / len(golden_rels)
-        if missing:
-            reasons.append(f"Missing rels: {', '.join(missing[:3])}")
-    else:
-        scores["relationship_recall"] = 1.0
-
-    # --- 6. Evidence grounding ---
-    golden_evidence = golden.get("must_have_evidence", [])
-    if golden_evidence:
-        model_evidence_text = json.dumps(result.get("explicit_evidence", []) or []).lower()
-        model_evidence_text += " " + json.dumps(result.get("inferred_traits", []) or []).lower()
-        model_evidence_text += " " + (result.get("description") or "").lower()
-
-        found = 0
-        for ev in golden_evidence:
-            if ev.lower() in model_evidence_text:
-                found += 1
-
-        scores["evidence_grounding"] = found / len(golden_evidence)
-        if found < len(golden_evidence):
-            reasons.append(f"Evidence: {found}/{len(golden_evidence)} key items found")
-    else:
-        scores["evidence_grounding"] = 1.0
-
-    # --- 7. Key fact recall ---
-    golden_facts = golden.get("key_facts", [])
-    if golden_facts:
-        # Serialize entire model output for broad matching
-        full_output = json.dumps(result).lower()
-
-        found = 0
-        for fact in golden_facts:
-            # Extract key terms from the fact (2+ word phrases)
-            terms = re.findall(r'\b\w{3,}\b', fact.lower())
-            # Require at least half the key terms to appear
-            matches = sum(1 for t in terms if t in full_output)
-            if terms and matches >= len(terms) * 0.5:
-                found += 1
-
-        scores["fact_recall"] = found / len(golden_facts)
-        if found < len(golden_facts):
-            reasons.append(f"Facts: {found}/{len(golden_facts)} recalled")
-    else:
-        scores["fact_recall"] = 1.0
-
-    # --- 8. Scene coverage ---
-    golden_scenes = golden.get("must_mention_scenes", [])
-    if golden_scenes:
-        model_scenes = json.dumps(result.get("scene_presence", []) or []).upper()
-        # Also check explicit_evidence source_scene fields
-        model_scenes += " " + json.dumps(result.get("explicit_evidence", []) or []).upper()
-
-        found = 0
-        for scene in golden_scenes:
-            # Fuzzy match on key location words
-            scene_words = [w for w in normalize(scene).split() if len(w) > 2]
-            if scene_words and all(w in normalize(model_scenes) for w in scene_words):
-                found += 1
-
-        scores["scene_coverage"] = found / len(golden_scenes)
-        if found < len(golden_scenes):
-            reasons.append(f"Scenes: {found}/{len(golden_scenes)} covered")
-    else:
-        scores["scene_coverage"] = 1.0
-
-    # --- 9. Field completeness ---
-    required_fields = [
-        "character_id", "name", "description", "narrative_role",
-        "scene_presence", "dialogue_summary", "relationships",
-        "overall_confidence",
-    ]
-    present = sum(1 for f in required_fields if f in result and result[f] is not None)
-    scores["field_completeness"] = present / len(required_fields)
-
-    # --- 10. Alias identification ---
-    golden_aliases = [a.upper() for a in golden.get("aliases", [])]
-    if golden_aliases:
-        model_aliases = [a.upper().strip() for a in (result.get("aliases") or [])]
-        # Also check if aliases appear in description
-        model_alias_text = " ".join(model_aliases) + " " + (result.get("description") or "").upper()
-        found = sum(1 for a in golden_aliases if a in model_alias_text)
-        scores["alias_recall"] = found / len(golden_aliases)
-        if found < len(golden_aliases):
-            reasons.append(f"Aliases: found {found}/{len(golden_aliases)}")
-    else:
-        scores["alias_recall"] = 1.0
-
-    # --- Weighted total ---
+    if not golden_path or not os.path.exists(golden_path) or not character_name:
+        return {"pass": False, "score": 0.0, "reason": "Missing golden or character_name"}
+    with open(golden_path) as handle:
+        all_golden = json.load(handle)
+    golden = _find_golden(all_golden, character_name)
+    if golden is None:
+        return {"pass": False, "score": 0.0, "reason": f"No golden for {character_name}"}
+    result, json_score = _parse_output(output)
+    if result is None:
+        return {"pass": False, "score": 0.0, "reason": "Invalid JSON object"}
+    identity_score, identity_valid = _identity_score(result, golden)
+    alias_score, aliases_valid = _alias_score(result, golden)
+    screenplay = str(context.get("vars", {}).get("screenplay", ""))
+    relationship_score, relationships_valid = _relationship_score(
+        result,
+        golden,
+        screenplay,
+    )
+    scene_score, scenes_valid = _scene_score(result, golden)
+    evidence_recall, source_grounding, evidence_valid = _evidence_scores(
+        result,
+        golden,
+        screenplay,
+    )
+    schema_score, schema_valid = _schema_score(result)
+    trait_text = json.dumps(result.get("inferred_traits", [])) + " " + str(
+        result.get("description", "")
+    )
+    scores = {
+        "json_valid": json_score,
+        "identity": identity_score,
+        "narrative_role": float(result.get("narrative_role") == golden.get("narrative_role")),
+        "trait_coverage": _concept_recall(trait_text, golden.get("key_traits", [])),
+        "relationship_accuracy": relationship_score,
+        "evidence_recall": evidence_recall,
+        "source_grounding": source_grounding,
+        "fact_recall": _concept_recall(json.dumps(result), golden.get("key_facts", [])),
+        "scene_accuracy": scene_score,
+        "schema_quality": schema_score,
+        "alias_accuracy": alias_score,
+    }
     weights = {
-        "json_valid": 0.10,
-        "narrative_role": 0.10,
-        "trait_coverage": 0.15,
-        "relationship_recall": 0.15,
-        "evidence_grounding": 0.10,
-        "fact_recall": 0.15,
-        "scene_coverage": 0.10,
-        "field_completeness": 0.05,
-        "alias_recall": 0.10,
+        "json_valid": 0.05,
+        "identity": 0.10,
+        "narrative_role": 0.05,
+        "trait_coverage": 0.10,
+        "relationship_accuracy": 0.15,
+        "evidence_recall": 0.10,
+        "source_grounding": 0.15,
+        "fact_recall": 0.10,
+        "scene_accuracy": 0.10,
+        "schema_quality": 0.05,
+        "alias_accuracy": 0.05,
     }
-
-    total = sum(scores.get(k, 0) * w for k, w in weights.items())
-
-    reason_parts = [f"{k}={v:.2f}" for k, v in sorted(scores.items())]
-    if reasons:
-        reason_parts.append(" | ".join(reasons))
-
-    return {
-        "pass": total >= 0.65,
-        "score": round(total, 4),
-        "reason": " | ".join(reason_parts),
-    }
+    total = sum(scores[key] * weight for key, weight in weights.items())
+    hard_gates = all(
+        (
+            identity_valid,
+            aliases_valid,
+            relationships_valid,
+            scenes_valid,
+            evidence_valid,
+            schema_valid,
+            scores["narrative_role"] == 1.0,
+            scores["trait_coverage"] == 1.0,
+            scores["fact_recall"] == 1.0,
+        )
+    )
+    details = " | ".join(f"{key}={value:.2f}" for key, value in sorted(scores.items()))
+    return finalize_score(
+        total,
+        pass_threshold=PASS_THRESHOLD,
+        hard_gates=hard_gates,
+        reason=details,
+    )

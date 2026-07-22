@@ -20,6 +20,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field
 
 from cine_forge.ai import call_llm, validate_fountain_structure
+from cine_forge.modules.ingest.scene_breakdown_v1.model_selection import resolve_work_model
 from cine_forge.schemas import (
     ArtifactHealth,
     FieldProvenance,
@@ -168,9 +169,7 @@ def run_module(
     canonical = _extract_canonical_script(inputs)
     script_text = canonical["script_text"]
 
-    work_model = (
-        params.get("work_model") or params.get("model") or "claude-haiku-4-5-20251001"
-    )
+    work_model = resolve_work_model(params=params, context=context)
     parser_coverage_threshold = float(params.get("parser_coverage_threshold", 0.25))
     max_workers = int(params.get("max_workers", 10))
 
@@ -853,6 +852,10 @@ def _sum_costs(costs: list[dict[str, Any]]) -> dict[str, Any]:
     total_usd = round(
         sum(float(item.get("estimated_cost_usd", 0.0) or 0.0) for item in costs), 8
     )
+    call_count = sum(
+        int(item.get("call_count", 0 if item.get("model") == "code" else 1) or 0)
+        for item in costs
+    )
     models = {
         item.get("model")
         for item in costs
@@ -860,6 +863,8 @@ def _sum_costs(costs: list[dict[str, Any]]) -> dict[str, Any]:
     }
     if not models:
         model_label = "code"
+    elif len(models) == 1:
+        model_label = next(iter(models))
     else:
         model_label = "mixed:" + "+".join(sorted(list(models)))
     return {
@@ -867,6 +872,7 @@ def _sum_costs(costs: list[dict[str, Any]]) -> dict[str, Any]:
         "input_tokens": total_input,
         "output_tokens": total_output,
         "estimated_cost_usd": total_usd,
+        "call_count": call_count,
     }
 
 
@@ -881,6 +887,7 @@ def _empty_cost(model: str) -> dict[str, Any]:
         "input_tokens": 0,
         "output_tokens": 0,
         "estimated_cost_usd": 0.0,
+        "call_count": 0,
         "latency_seconds": 0.0,
         "request_id": None,
     }

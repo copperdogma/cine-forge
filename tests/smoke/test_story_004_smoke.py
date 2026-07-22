@@ -27,4 +27,10 @@ def test_story_004_ingest_normalize_smoke() -> None:
 
     canonical_ref = ArtifactRef.model_validate(state["stages"]["normalize"]["artifact_refs"][0])
     canonical = engine.store.load_artifact(canonical_ref)
-    assert canonical.data["script_text"]
+    script_text = canonical.data["script_text"]
+    assert script_text
+    assert "Tessa stood beneath the awning" in script_text
+    assert "why her brother vanished three winters ago" in script_text
+    assert canonical.data["normalization"]["strategy"] == "full_conversion"
+    assert canonical.data["normalization"]["inventions"]
+    assert canonical.data["normalization"]["assumptions"]

@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-07-22-01] — Repair repository eval truth contracts (Story 208)
+
+### Added
+- Added a terminal repository truth-audit ledger, immutable contract manifest, source-linked second corpus, and adversarial coverage for every maintained scorer, fixture class, provider transport, custom runner, and registry evidence path.
+- Added strict provider-returned model, call-ID, raw-usage, prompt, task, grader, case-matrix, and retained-media provenance gates for decision-grade eval promotion.
+- Added Git-visible retained-media support for future storyboard v3 evidence so every scored panel, source grid, reference, artifact, result, and digest can be recovered from a clean checkout.
+
+### Changed
+- Reverified and repaired textual goldens, prompts, rubrics, visual targets, frame packets, scorer semantics, and custom eval reports; historical results whose contracts changed are retained only as contaminated diagnostic context.
+- Reclassified visual lanes around the modalities they actually expose, with clean frame-only packets and explicit deferrals for native video, audio, realistic-reference fidelity, and unretained runtime roots.
+- Updated Story 208, the registry, and audit records after Backblaze restored the two accidentally overwritten ignored Story 186 JPEGs to their original hashes; the historical v2 scores remain non-decision-grade for independent defects.
+
+### Fixed
+- Fixed false-green unit-test selection, live-provider leakage from ordinary tests, source-wrong fixtures, golden-derived acceptance input, exploitable scorer shortcuts, partial-matrix aggregation, duplicate-key result parsing, and stale methodology score propagation.
+- Fixed model identity and token accounting across OpenAI, Anthropic, Gemini, xAI, custom Promptfoo transports, production cost records, and registry extraction so substituted models or malformed usage fail closed.
+- Fixed registry promotion so dirty, untracked, changed, incomplete, symlinked, or contract-mismatched evidence cannot silently select a production default.
+- Fixed the contract manifest's self-referential `HEAD` field so the immutable commit containing the manifest can identify its bytes without making the manifest fail immediately after every commit.
+- Fixed immutable-manifest churn by hashing the registry's eval definitions while excluding append-only score and attempt history; promotion can add evidence without weakening command, target, case, or policy drift detection.
+
 ## [2026-07-21-01] — Evaluate Gemini 3.6 Flash and 3.5 Flash-Lite (Story 208)
 
 ### Added

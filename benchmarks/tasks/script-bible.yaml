@@ -1,11 +1,13 @@
 # Script Bible Benchmark
 # Evaluates models on producing a comprehensive script bible from a full screenplay.
 # This is a once-per-project, high-value analysis task.
+# It is a semantic capability proxy until production uses this exact prompt,
+# output budget, schema, and two-corpus contract or a runtime-shaped lane is run.
 #
 # Usage: cd benchmarks && promptfoo eval -c tasks/script-bible.yaml --no-cache -j 3
 # View:  promptfoo view
 
-description: "Script bible extraction from screenplay — The Mariner"
+description: "Script bible extraction from two repo-owned screenplays — The Mariner and Open Frequency"
 
 # Use Opus as judge — strongest reasoning, cross-provider for OpenAI/Gemini models
 defaultTest:
@@ -33,14 +35,12 @@ providers:
   - id: google:gemini-2.5-flash-lite
     label: "Gemini 2.5 Flash Lite"
     config:
-      temperature: 0
       maxOutputTokens: 16384
 
   - id: google:gemini-3.1-flash-lite
     label: "Gemini 3.1 Flash Lite"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
   - id: google:gemini-3.5-flash-lite
     label: "Gemini 3.5 Flash-Lite"
@@ -59,20 +59,17 @@ providers:
   - id: google:gemini-2.5-flash
     label: "Gemini 2.5 Flash"
     config:
-      temperature: 0
       maxOutputTokens: 16384
 
   - id: google:gemini-3-flash-preview
     label: "Gemini 3 Flash"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
   - id: google:gemini-3.5-flash
     label: "Gemini 3.5 Flash"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
   - id: google:gemini-3.6-flash
     label: "Gemini 3.6 Flash"
@@ -111,6 +108,7 @@ providers:
   - id: file://../providers/openai_responses_provider.py
     label: "GPT-5.5 Pro"
     config:
+      model: gpt-5.5-pro
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
@@ -144,34 +142,79 @@ providers:
   - id: google:gemini-3-pro-preview
     label: "Gemini 3 Pro"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
   - id: google:gemini-3.1-pro-preview
     label: "Gemini 3.1 Pro"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
 tests:
   - vars:
       screenplay: file://../input/the-mariner.md
       golden_path: golden/the-mariner-script-bible.json
-    assert:
+      golden_sha256: "e922269fc7492bf91305cb6bf36615358476a37d11ae1bae551e96870434a9c2"
+      ending_contract: >-
+        Rose affirms that Mariner became a real hero and never backs down;
+        Mariner smiles and clenches his hands into fists; the screenplay cuts
+        to black without resolving the confrontation.
+    assert: &script_bible_assertions
       - type: python
         value: file://../scorers/script_bible_scorer.py
       - type: llm-rubric
         value: |
-          Evaluate this script bible for the screenplay "The Mariner."
+          Evaluate the candidate script bible only against the supplied screenplay.
+          Do not rely on outside knowledge or reward a claim simply because it
+          resembles a conventional story beat.
 
-          Key quality criteria:
-          1. Is the logline specific to THIS screenplay — does it name The Mariner as protagonist, identify the gang/Salvatori as antagonist, and mention the building/floor stakes?
-          2. Does the synopsis cover the full arc: Mariner's vigilante crusade, Rose's revelation about stolen crypto, the father's dark truth, and the climactic confrontation?
-          3. Are the themes specific and grounded? Expect: father/legacy/disillusionment, identity/hero myth, loyalty/family, truth vs. comfortable lies.
-          4. Is the act structure accurate? The script has 3 acts roughly: setup of vigilante world → escalating gang conflict + Rose twist → climax on 15th floor + father revelation.
-          5. Is the protagonist journey correct? Mariner begins believing his father was a hero, discovers the man was abusive and alive, ends redefining heroism on his own terms.
-          6. Is the setting grounded in specifics? Expect: a contemporary post-collapse urban setting, the Ruddy & Greene Building (15th floor final confrontation), and Mariner's fishing-themed vigilante aesthetic.
-          7. Is the genre identified correctly? This is an Action-Thriller or Superhero-Noir — not drama or comedy.
-          8. Does the analysis avoid generic statements that could apply to any film?
+          SOURCE SCREENPLAY
+          =================
+          {{screenplay}}
+          =================
 
-          Score strictly: 0.8+ only if the bible could serve as a production reference document for THIS specific screenplay.
+          Grade all of these dimensions:
+          1. Fidelity and completeness: the logline, synopsis, narrative arc,
+             protagonist journey, conflict, and setting cover the material the
+             screenplay actually presents, with no material contradiction or
+             omission.
+          2. Ending discipline: distinguish the last written beat from an implied
+             next action. If the source cuts away before the external conflict is
+             resolved, the bible must preserve that uncertainty and must not
+             invent a fight, victory, escape, death, or other outcome.
+             The required terminal beats for this case are:
+             {{ending_contract}}
+             Omitting any named terminal beat is a material completeness failure.
+          3. Act structure: boundaries correspond to actual source headings or
+             clearly identified beats; every act summary and turning point is
+             supported by the screenplay.
+          4. Themes and evidence: themes are specific to this screenplay, and
+             every quotation or scene reference is faithful to the source rather
+             than fabricated or generic.
+          5. Genre and tone: labels reflect all materially present modes. Hybrid
+             labels are valid when supported; do not reject a source-supported
+             tonal component merely because another mode is more prominent.
+          6. Production usefulness: all required fields are substantive,
+             internally consistent, and specific enough to guide later work.
+          7. Exact schema: the root object contains exactly title, logline,
+             synopsis, act_structure, themes, narrative_arc, genre, tone,
+             protagonist_journey, central_conflict, setting_overview, and
+             confidence. Every act contains exactly act_number, title,
+             start_scene, end_scene, summary, and turning_points. Every theme
+             contains exactly theme, description, and evidence. Extra keys at
+             any of these levels are a hard failure.
+
+          A schema-only, generic, padded, or hallucinated bible must fail. Score
+          0.80 or higher, and pass, only if this could serve as a trustworthy
+          production reference for the supplied screenplay. Any invented ending
+          or materially source-contradictory claim is a hard failure.
+
+  # Second-corpus case: a complete four-scene ensemble short whose hopeful ending
+  # and community-service themes differ sharply from The Mariner.
+  - vars:
+      screenplay: file://../../tests/fixtures/ingest_inputs/open_frequency_short.fountain
+      golden_path: golden/open-frequency-script-bible.json
+      golden_sha256: "2e70cd6255c04b1cf9e7ef94d13b9a3935be3c026d12afbfaf21e4595cd83d5b"
+      ending_contract: >-
+        Maya's missing-dog plea leads to Comet's morning return; the ON AIR
+        sign steadies and the radio team settles back to work.
+    assert: *script_bible_assertions

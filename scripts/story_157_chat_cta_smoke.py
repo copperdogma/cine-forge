@@ -10,7 +10,6 @@ from playwright.sync_api import Page, sync_playwright
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
 DEFAULT_UI_BASE = "http://127.0.0.1:5174"
-DEFAULT_PROJECT_ID = "open-frequency"
 DEFAULT_SCENE_ID = "scene_001"
 DEFAULT_HOME_SHOT = Path("/tmp/story157-chat-home-desktop.png")
 DEFAULT_SCENE_SHOT = Path("/tmp/story157-chat-render-desktop.png")
@@ -124,11 +123,12 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Focused browser smoke for Story 157 chat CTA honesty. "
-            "Requires the local UI server to already be running."
+            "Requires the local UI server and an explicit representative project "
+            "produced through the normal pipeline."
         )
     )
     parser.add_argument("--ui-base", default=DEFAULT_UI_BASE)
-    parser.add_argument("--project-id", default=DEFAULT_PROJECT_ID)
+    parser.add_argument("--project-id", required=True)
     parser.add_argument("--scene-id", default=DEFAULT_SCENE_ID)
     parser.add_argument("--mode", choices=("desktop", "mobile", "both"), default="both")
     parser.add_argument("--home-shot", type=Path, default=DEFAULT_HOME_SHOT)

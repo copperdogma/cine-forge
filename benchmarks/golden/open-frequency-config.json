@@ -1,0 +1,99 @@
+{
+  "description": "Source-verified project config detection truth for Open Frequency",
+  "fields": {
+    "title": {
+      "expected_value": "Open Frequency",
+      "allowed_values": ["Open Frequency"],
+      "rationale_must_mention_any": ["Open Frequency"],
+      "match_type": "substring",
+      "min_confidence": 0.9,
+      "importance": "critical"
+    },
+    "format": {
+      "expected_values": ["short film"],
+      "allowed_values": ["short film"],
+      "rationale_must_mention_any": ["community radio studio", "morning"],
+      "match_type": "any_keyword",
+      "note": "A complete four-scene story moves from the failed night broadcast through the water-tower and shelter work to a resolved morning broadcast.",
+      "min_confidence": 0.7,
+      "importance": "important"
+    },
+    "genre": {
+      "expected_keywords": ["drama", "disaster"],
+      "allowed_values": ["drama", "disaster", "thriller"],
+      "rationale_must_mention_any": ["emergency power", "storm", "north shelter", "insulin"],
+      "must_include_at_least": 1,
+      "match_type": "keyword_overlap",
+      "min_confidence": 0.7,
+      "importance": "important"
+    },
+    "tone": {
+      "expected_keywords": ["tense", "urgent", "hopeful", "resilient", "warm", "wry", "lightly humorous"],
+      "allowed_values": ["community-focused", "hopeful", "lightly humorous", "resilient", "suspenseful", "tense", "uplifting", "urgent", "warm", "witty", "wry"],
+      "equivalent_value_groups": [
+        ["hopeful", "uplifting"],
+        ["lightly humorous", "witty", "wry"],
+        ["suspenseful", "tense"]
+      ],
+      "rationale_must_mention_any": ["only shot", "one miracle", "north shelter", "ON AIR sign"],
+      "must_include_at_least": 2,
+      "match_type": "keyword_overlap",
+      "min_confidence": 0.7,
+      "importance": "important"
+    },
+    "estimated_duration_minutes": {
+      "expected_range": [3, 10],
+      "rationale_must_mention_any": ["community radio studio", "water tower", "high school gym"],
+      "match_type": "numeric_range",
+      "note": "Four compact dialogue-and-action scenes form a brief short rather than a feature-length work.",
+      "min_confidence": 0.5,
+      "importance": "important"
+    },
+    "primary_characters": {
+      "must_include": ["ARIA", "NOAH", "JUNE", "KELL"],
+      "allowed_values": ["ARIA", "NOAH", "JUNE", "KELL"],
+      "rationale_must_mention_any": ["ARIA", "NOAH", "JUNE", "KELL"],
+      "match_type": "list_contains",
+      "min_confidence": 0.8,
+      "importance": "critical"
+    },
+    "supporting_characters": {
+      "should_include_any": ["MAYA", "UNKNOWN VOICE"],
+      "allowed_values": ["MAYA", "UNKNOWN VOICE", "UNKNOWN VOICE (RADIO)"],
+      "rationale_must_mention_any": ["MAYA", "UNKNOWN VOICE", "COMET"],
+      "min_count": 1,
+      "match_type": "list_overlap",
+      "min_confidence": 0.7,
+      "importance": "important"
+    },
+    "location_count": {
+      "expected_range": [3, 3],
+      "rationale_must_mention_any": ["community radio studio", "water tower", "high school gym"],
+      "match_type": "numeric_range",
+      "note": "The studio repeats at night and morning, leaving three distinct staged locations after deduplication.",
+      "min_confidence": 0.8,
+      "importance": "important"
+    },
+    "locations_summary": {
+      "must_mention": ["radio studio", "water tower", "high school gym"],
+      "forbidden_keywords": ["Ruddy", "Greene", "Mars", "palace"],
+      "source_bounded_value": true,
+      "allowed_source_tokens": ["basketball", "catwalk", "community", "court", "creek", "dawn", "emergency", "gym", "high", "morning", "night", "pre", "radio", "red", "school", "shelter", "station", "storm", "studio", "tower", "water"],
+      "allowed_novel_tokens": ["distinct", "include", "key", "location", "main", "setting", "story", "three"],
+      "rationale_must_mention_any": ["community radio studio", "water tower", "high school gym"],
+      "match_type": "text_contains",
+      "min_confidence": 0.8,
+      "importance": "important"
+    },
+    "target_audience": {
+      "expected_keywords": [],
+      "rationale_must_mention_any": ["storm", "insulin", "missing dog", "COMET"],
+      "match_type": "any_keyword",
+      "allow_null": true,
+      "require_null": true,
+      "note": "The source supports mild emergency peril but no responsible rating or demographic conclusion; null is preferred.",
+      "min_confidence": 0.7,
+      "importance": "important"
+    }
+  }
+}

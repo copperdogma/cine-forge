@@ -28,11 +28,16 @@ existing registry data.
 
 ### When to update `registry.yaml`
 
-**Always** update the registry when you run an eval. This is part of the Definition of Done.
+**Always** record an eval in the registry or its linked attempt history. Promote
+measurements into current score evidence only when the exact retained result
+passes the current task/provenance contract and its commit identifies the
+contracts that produced it. Diagnostic or dirty-contract runs remain explicit
+non-decision-grade history.
 
 | Situation | Action |
 |---|---|
-| Ran an eval (any reason) | Update the `scores` section with new measurements + git_sha + date |
+| Ran a decision-grade eval | Validate one exact result, then update `scores` with measurements + contract `git_sha` + date |
+| Ran a diagnostic/provisional eval | Record it as non-decision-grade history; do not replace current score evidence |
 | Completed an improvement attempt | Add entry to `attempts` list + update scores |
 | New eval created | Add full eval entry to registry |
 | New compromise identified | Add compromise eval entry |
@@ -190,11 +195,37 @@ After running a promptfoo eval, extract metrics from the result file:
 python scripts/extract-eval-metrics.py --result-file benchmarks/results/foo.json
 ```
 
-Or update all registry entries at once:
+To update registry metrics, first stage exactly one complete score row for the
+selected result in `docs/evals/registry.yaml`. Include model/call identity,
+evidence status, score metrics, measured date, contract `git_sha`, and the exact
+`result_file`. For decision-grade visual evidence, also include the checked-in
+retained-media manifest and its SHA-256. Then validate that exact row without
+writing and apply the same result:
 
 ```
-python scripts/extract-eval-metrics.py --update-registry
+PYTHONPATH=src .venv/bin/python scripts/extract-eval-metrics.py \
+  --update-registry --dry-run \
+  --result-file benchmarks/results/foo.json
+PYTHONPATH=src .venv/bin/python scripts/extract-eval-metrics.py \
+  --update-registry \
+  --result-file benchmarks/results/foo.json
 ```
+
+Bulk registry updates are intentionally unsupported. The selected result must
+match the current provider/model/call identity, task provider config, prompt
+bytes, assertions/rubrics, grader/default options, and exact case matrix.
+`extract-eval-metrics.py` does not create or classify a new score row; it
+requires the row to exist and refreshes only latency/cost fields after the
+identity and task contract pass.
+
+For visual and media evals, generated candidate outputs are not goldens. They
+are nevertheless immutable decision evidence when their bytes influenced a
+score. Retain the exact panels, grids, references, clips/frames, source artifact
+lineage, raw results, and a complete hash inventory in Git (or another
+repository-resolvable store). A hash manifest under ignored runtime output is
+not sufficient: it detects loss but cannot recover the scored bytes. A
+decision-grade row must cite a real commit (not `working-tree`) and every
+evidence file must be tracked and unchanged from that commit.
 
 ### Anthropic cost estimation
 Promptfoo does not compute cost for `claude-sonnet-4-6` (model IDs without date

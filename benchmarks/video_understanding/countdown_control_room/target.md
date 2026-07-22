@@ -1,11 +1,10 @@
-# Countdown control room
+# Ordered JPEG frame-packet reference
 
-- Summary: A control room cuts between screens and a central operator as a countdown and red warning lights intensify.
+- Summary: Three outlined blue screen-like rectangles sit above a central abstract figure while red illumination pulses.
 - Tone: urgent, tense
-- Emotion: panic
+- Emotion: [none]
 - Color / grade: navy, red
-- Camera language: cross_cut, locked_two_shot
-- Motion: pulsing_light
-- Continuity: intact — The countdown clock stays synchronized across the screen wall.
-- Audio intent: alarm, speech
-- Transcript: Thirty seconds. If the relay drops, the whole block goes dark.
+- Camera language inferable from the ordered samples: static, wide_master
+- Motion inferable from the ordered samples: pulsing_light
+- Continuity: intact - The screen outlines and central figure stay in the same positions.
+- Audio: unavailable to the subject and excluded from scoring

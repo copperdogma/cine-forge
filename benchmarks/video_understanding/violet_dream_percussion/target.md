@@ -1,11 +1,10 @@
-# Violet dream percussion
+# Ordered JPEG frame-packet reference
 
-- Summary: A violet dreamscape blooms with circular light patterns while sharp percussion turns the beauty slightly threatening.
+- Summary: Static blurred violet and magenta concentric circles fill a dark geometric field.
 - Tone: surreal, ominous
-- Emotion: wonder, suspicion
+- Emotion: wonder
 - Color / grade: violet, magenta, neon
-- Camera language: wide_master
-- Motion: spiral_orbit, slow_drift
-- Continuity: intact — The central halo stays aligned with the sleeper figure.
-- Audio intent: percussion, drone
-- Transcript: [none]
+- Camera language inferable from the ordered samples: static, wide_master
+- Motion inferable from the ordered samples: stillness
+- Continuity: intact - The concentric circles remain aligned in every submitted frame.
+- Audio: unavailable to the subject and excluded from scoring

@@ -65,14 +65,17 @@ def _is_playwright_mcp_process(command: str) -> bool:
     return cache_root in command and "--user-data-dir=" in command and "/mcp-" in command
 
 
-def _terminate_processes(processes: list[ProcessMatch], *, dry_run: bool) -> tuple[list[int], list[int]]:
+def _terminate_processes(
+    processes: list[ProcessMatch], *, dry_run: bool
+) -> tuple[list[int], list[int]]:
     if not processes:
         return [], []
 
     terminated: list[int] = []
     force_killed: list[int] = []
     for process in processes:
-        print(f"{'would terminate' if dry_run else 'terminating'} pid={process.pid} :: {process.command}")
+        action = "would terminate" if dry_run else "terminating"
+        print(f"{action} pid={process.pid} :: {process.command}")
         if dry_run:
             continue
         try:

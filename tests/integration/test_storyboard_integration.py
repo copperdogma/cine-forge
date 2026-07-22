@@ -20,10 +20,17 @@ def test_storyboard_recipe_persists_artifacts_files_and_track_entries(tmp_path: 
         recipe_path=workspace_root / "configs" / "recipes" / "recipe-storyboard-generation.yaml",
         run_id="integration-storyboards",
         force=True,
-        runtime_params={"image_model": "mock", "storyboard_style": "clean_line"},
+        runtime_params={
+            "default_model": "mock",
+            "image_model": "mock",
+            "storyboard_style": "clean_line",
+        },
     )
 
     assert run_state["stages"]["storyboards"]["status"] == "done"
+    assert run_state["stages"]["shot_planning"]["model_used"] == "mock"
+    assert run_state["stages"]["shot_planning"]["cost_usd"] == 0.0
+    assert run_state["total_cost_usd"] == 0.0
 
     refs = [
         ArtifactRef.model_validate(item)

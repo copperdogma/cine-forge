@@ -1,14 +1,18 @@
 from __future__ import annotations
 
+import shutil
+from pathlib import Path
 from typing import Any
 
 import pytest
 from pydantic import BaseModel
 
+from cine_forge.ai.fountain_validate import normalize_fountain_text
 from cine_forge.ai.llm import (
     LLMCallError,
     _breaker_state,
     _build_anthropic_payload,
+    _build_gemini_payload,
     _is_circuit_breaker_open,
     _normalize_anthropic_response,
     _normalize_gemini_response,
@@ -21,10 +25,311 @@ from cine_forge.ai.llm import (
     call_llm,
     estimate_cost_usd,
 )
+from cine_forge.modules.ingest.scene_breakdown_v1.main import (
+    _extract_scene_deterministic,
+    _split_into_scene_chunks,
+)
+from cine_forge.schemas import ScriptBible
 
 
 class DemoSchema(BaseModel):
     value: str
+
+
+class _ActionLineEntities(BaseModel):
+    characters: list[str]
+    props: list[str]
+
+
+_ACTION_ENTITY_CASES = [
+    pytest.param(
+        "INT. COMMUNITY RADIO STUDIO",
+        ["ARIA", "NOAH", "JUNE"],
+        ["TAPE REEL", "CRACKED MIXER"],
+        [],
+        ["MUGS OF TEA", "STACK OF SCRIPTS", "ON AIR LIGHT", "SKYLIGHT"],
+        id="studio-opening",
+    ),
+    pytest.param(
+        "EXT. HILLTOP WATER TOWER - NIGHT",
+        ["ARIA", "NOAH"],
+        ["PORTABLE ANTENNA"],
+        [],
+        ["PRAYER FLAGS", "GUARDRAIL", "SERVICE LADDER", "HANDHELD RECEIVER"],
+        id="water-tower",
+    ),
+    pytest.param(
+        "INT. STUDIO HALLWAY - NIGHT",
+        ["KELL", "JUNE", "PARAMEDIC", "ELDERLY NEIGHBOR"],
+        ["HANDWRITTEN EVACUATION ARROWS", "BATTERIES", "TANGLED CABLES"],
+        [],
+        ["FLUORESCENT LIGHTS", "WALL", "CONTROL-ROOM DOOR"],
+        id="studio-hallway",
+    ),
+    pytest.param(
+        "INT. COMMUNITY RADIO STUDIO - CONTINUOUS",
+        ["ARIA", "JUNE"],
+        ["MIC"],
+        ["NOAH"],
+        ["MONITORS", "GAIN", "ON AIR LIGHT"],
+        id="studio-continuous",
+    ),
+    pytest.param(
+        "EXT. TOWN SQUARE - PRE-DAWN",
+        [],
+        ["BLANKETS", "KETTLE", "CAMP STOVE"],
+        ["KELL", "ELDER WOMAN", "JUNE", "UNKNOWN VOICE"],
+        ["BATTERY RADIO", "FOLDING TABLE", "SECOND RECEIVER", "TARPS"],
+        id="town-square",
+    ),
+    pytest.param(
+        "INT. COMMUNITY RADIO STUDIO - MORNING",
+        ["ARIA", "NOAH", "JUNE", "KELL"],
+        ["MAP", "OPEN FREQUENCY SIGN", "CASSETTE DECK"],
+        [],
+        ["WET COATS", "CHAIRS", "CONSOLES", "FRESH BREAD", "ON AIR LIGHT"],
+        id="studio-morning",
+    ),
+    pytest.param(
+        "EXT. NORTH SHELTER GYM - AFTERNOON",
+        ["JUNE", "ARIA", "NOAH", "TEENAGER"],
+        [
+            "PORTABLE RECORDER",
+            "WEATHER RADIO",
+            "FOLDED MAP",
+            "LIST OF MISSING PETS",
+        ],
+        ["VOLUNTEER"],
+        ["COTS", "WHITEBOARD", "BLEACHERS", "RADIO DESK"],
+        id="north-shelter",
+    ),
+    pytest.param(
+        "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        ["KELL", "ARIA", "NOAH"],
+        ["NOTEBOOK", "FINAL CARD"],
+        ["JUNE", "UNKNOWN VOICE"],
+        ["INDEX CARDS", "CHALKBOARD SCHEDULE", "ON AIR LIGHT"],
+        id="studio-night",
+    ),
+]
+
+
+def _production_scene_text(source_text: str, heading: str) -> str:
+    for chunk in _split_into_scene_chunks(source_text):
+        scene = _extract_scene_deterministic(
+            chunk=chunk,
+            parser_backend="fixture-test",
+            parser_confident=True,
+        )
+        if scene["heading"] == heading:
+            return "\n".join(
+                element["content"]
+                for element in scene["elements"]
+                if element["element_type"] in {"action", "dialogue"}
+            )
+    raise AssertionError(f"missing source scene: {heading}")
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    (
+        "heading",
+        "expected_characters",
+        "expected_props",
+        "forbidden_characters",
+        "forbidden_props",
+    ),
+    _ACTION_ENTITY_CASES,
+)
+def test_fixture_dispatcher_returns_source_grounded_action_entities(
+    monkeypatch: pytest.MonkeyPatch,
+    heading: str,
+    expected_characters: list[str],
+    expected_props: list[str],
+    forbidden_characters: list[str],
+    forbidden_props: list[str],
+) -> None:
+    fixture_root = Path(__file__).resolve().parents[1] / "fixtures" / "mvp_mock_responses"
+    source_text = (fixture_root.parent / "sample_screenplay.fountain").read_text(
+        encoding="utf-8"
+    )
+    monkeypatch.setenv("CINE_FORGE_MOCK_FIXTURE_DIR", str(fixture_root))
+    scene_text = _production_scene_text(source_text, heading)
+
+    result, metadata = call_llm(
+        prompt=f"Scene heading: {heading}\n\nScene text:\n{scene_text}\n",
+        model="fixture",
+        response_schema=_ActionLineEntities,
+    )
+
+    assert isinstance(result, _ActionLineEntities)
+    assert result.characters == expected_characters
+    assert result.props == expected_props
+    assert set(result.characters).isdisjoint(forbidden_characters)
+    assert set(result.props).isdisjoint(forbidden_props)
+    assert metadata["estimated_cost_usd"] == 0.0
+
+
+@pytest.mark.unit
+def test_fixture_dispatcher_returns_source_grounded_script_bible(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fixture_root = Path(__file__).resolve().parents[1] / "fixtures" / "mvp_mock_responses"
+    source_path = fixture_root.parent / "sample_screenplay.fountain"
+    source_text = source_path.read_text(encoding="utf-8")
+    canonical_source = normalize_fountain_text(source_text)
+    monkeypatch.setenv("CINE_FORGE_MOCK_FIXTURE_DIR", str(fixture_root))
+
+    result, metadata = call_llm(
+        prompt=f"SCREENPLAY:\n{canonical_source}\n\n==========",
+        model="fixture",
+        response_schema=ScriptBible,
+    )
+
+    assert isinstance(result, ScriptBible)
+    assert result.title == "Signal in the Rain"
+    assert "Red Creek" in result.logline
+    assert metadata["request_id"] == "fixture-response"
+    for act in result.act_structure:
+        assert act.start_scene in canonical_source
+        assert act.end_scene in canonical_source
+        for turning_point in act.turning_points:
+            assert turning_point in canonical_source
+    for theme in result.themes:
+        for evidence in theme.evidence:
+            assert evidence in canonical_source
+
+
+@pytest.mark.unit
+def test_fixture_dispatcher_rejects_script_bible_for_an_unlinked_screenplay(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fixture_root = Path(__file__).resolve().parents[1] / "fixtures" / "mvp_mock_responses"
+    monkeypatch.setenv("CINE_FORGE_MOCK_FIXTURE_DIR", str(fixture_root))
+
+    with pytest.raises(LLMCallError, match="does not match linked source"):
+        call_llm(
+            prompt="SCREENPLAY:\nINT. DIFFERENT STORY - DAY\nNothing from Red Creek happens.",
+            model="fixture",
+            response_schema=ScriptBible,
+        )
+
+
+@pytest.mark.unit
+def test_fixture_dispatcher_rejects_script_bible_when_anchors_survive_corruption(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fixture_root = Path(__file__).resolve().parents[1] / "fixtures" / "mvp_mock_responses"
+    source_text = (fixture_root.parent / "sample_screenplay.fountain").read_text(
+        encoding="utf-8"
+    )
+    corrupted = normalize_fountain_text(
+        source_text.replace(
+            "A cramped studio hums with old gear.",
+            "A marble palace glows with brand-new equipment.",
+        )
+    )
+    monkeypatch.setenv("CINE_FORGE_MOCK_FIXTURE_DIR", str(fixture_root))
+
+    with pytest.raises(LLMCallError, match="exact canonical source content"):
+        call_llm(
+            prompt=f"SCREENPLAY:\n{corrupted}\n\n==========",
+            model="fixture",
+            response_schema=ScriptBible,
+        )
+
+
+@pytest.mark.unit
+def test_fixture_dispatcher_rejects_script_bible_with_appended_source(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fixture_root = Path(__file__).resolve().parents[1] / "fixtures" / "mvp_mock_responses"
+    source_text = (fixture_root.parent / "sample_screenplay.fountain").read_text(
+        encoding="utf-8"
+    )
+    canonical_source = normalize_fountain_text(source_text)
+    monkeypatch.setenv("CINE_FORGE_MOCK_FIXTURE_DIR", str(fixture_root))
+
+    with pytest.raises(LLMCallError, match="exact canonical source content"):
+        call_llm(
+            prompt=(
+                f"SCREENPLAY:\n{canonical_source}\n\n"
+                "INT. ORBITAL PALACE - NIGHT\nAn unrelated ending is appended."
+                "\n\n=========="
+            ),
+            model="fixture",
+            response_schema=ScriptBible,
+        )
+
+
+@pytest.mark.unit
+def test_fixture_dispatcher_rejects_unlinked_action_entity_prompt(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fixture_root = Path(__file__).resolve().parents[1] / "fixtures" / "mvp_mock_responses"
+    monkeypatch.setenv("CINE_FORGE_MOCK_FIXTURE_DIR", str(fixture_root))
+
+    with pytest.raises(LLMCallError, match="matched 0"):
+        call_llm(
+            prompt="Scene heading: INT. DIFFERENT STORY - DAY\nScene text: Nothing happens.",
+            model="fixture",
+            response_schema=_ActionLineEntities,
+        )
+
+
+@pytest.mark.unit
+def test_fixture_dispatcher_rejects_action_entities_when_anchor_survives_corruption(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fixture_root = Path(__file__).resolve().parents[1] / "fixtures" / "mvp_mock_responses"
+    source_text = (fixture_root.parent / "sample_screenplay.fountain").read_text(
+        encoding="utf-8"
+    )
+    heading = "INT. COMMUNITY RADIO STUDIO"
+    scene_text = _production_scene_text(source_text, heading).replace(
+        "ARIA threads a tape reel",
+        "ARIA destroys a tape reel",
+    )
+    monkeypatch.setenv("CINE_FORGE_MOCK_FIXTURE_DIR", str(fixture_root))
+
+    with pytest.raises(LLMCallError, match="prompt section hash mismatch"):
+        call_llm(
+            prompt=f"Scene heading: {heading}\n\nScene text:\n{scene_text}\n",
+            model="fixture",
+            response_schema=_ActionLineEntities,
+        )
+
+
+@pytest.mark.unit
+def test_fixture_dispatcher_rejects_action_entities_when_source_hash_changes(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    original_root = (
+        Path(__file__).resolve().parents[1] / "fixtures" / "mvp_mock_responses"
+    )
+    fixture_root = tmp_path / "fixtures" / "mvp_mock_responses"
+    fixture_root.mkdir(parents=True)
+    for filename in (
+        "scene_action_entities.json",
+        "scene_action_entities.provenance.json",
+    ):
+        shutil.copy2(original_root / filename, fixture_root / filename)
+    source_path = fixture_root.parent / "sample_screenplay.fountain"
+    shutil.copy2(original_root.parent / source_path.name, source_path)
+    source_path.write_text(
+        f"{source_path.read_text(encoding='utf-8')}\nTAMPERED\n", encoding="utf-8"
+    )
+    monkeypatch.setenv("CINE_FORGE_MOCK_FIXTURE_DIR", str(fixture_root))
+
+    with pytest.raises(LLMCallError, match="source hash mismatch"):
+        call_llm(
+            prompt=(
+                "Scene heading: INT. COMMUNITY RADIO STUDIO\n\n"
+                "Scene text:\nA cramped studio hums with old gear."
+            ),
+            model="fixture",
+            response_schema=_ActionLineEntities,
+        )
 
 
 @pytest.mark.unit
@@ -245,6 +550,7 @@ def test_call_llm_passes_request_timeout_to_provider_transport(
         seen["timeout"] = request_timeout_seconds
         return {
             "id": "req_timeout",
+            "model": "gpt-4o-mini",
             "choices": [{"message": {"content": "ok"}, "finish_reason": "stop"}],
             "usage": {"prompt_tokens": 10, "completion_tokens": 5},
         }
@@ -274,6 +580,7 @@ def test_call_llm_routes_xai_models_to_xai_transport(monkeypatch: pytest.MonkeyP
         seen["timeout"] = request_timeout_seconds
         return {
             "id": "xai_req",
+            "model": "grok-4.3",
             "choices": [{"message": {"content": "xai ok"}, "finish_reason": "stop"}],
             "usage": {"prompt_tokens": 100, "completion_tokens": 20},
         }
@@ -328,6 +635,8 @@ def test_parse_provider_unknown_prefix_falls_through() -> None:
 @pytest.mark.unit
 def test_normalize_gemini_response_basic() -> None:
     raw = {
+        "responseId": "gemini-response-basic",
+        "modelVersion": "gemini-3.5-flash-lite",
         "candidates": [{
             "content": {"parts": [{"text": "hello world"}]},
             "finishReason": "STOP",
@@ -338,15 +647,172 @@ def test_normalize_gemini_response_basic() -> None:
         },
     }
     normalized = _normalize_gemini_response(raw)
+    assert normalized["id"] == "gemini-response-basic"
+    assert normalized["model"] == "gemini-3.5-flash-lite"
     assert normalized["choices"][0]["message"]["content"] == "hello world"
     assert normalized["choices"][0]["finish_reason"] == "stop"
     assert normalized["usage"]["prompt_tokens"] == 100
     assert normalized["usage"]["completion_tokens"] == 50
+    assert normalized["usage"]["completion_tokens_details"] == {
+        "visible_tokens": 50,
+        "reasoning_tokens": 0,
+    }
+
+
+@pytest.mark.unit
+def test_gemini_hidden_thinking_is_billed_and_visible_tokens_are_retained() -> None:
+    raw = {
+        "responseId": "gemini-response-thinking",
+        "modelVersion": "gemini-3.5-flash-lite",
+        "candidates": [{
+            "content": {"parts": [{"text": "done"}]},
+            "finishReason": "STOP",
+        }],
+        "usageMetadata": {
+            "promptTokenCount": 100,
+            "candidatesTokenCount": 10,
+            "totalTokenCount": 1110,
+            "thoughtsTokenCount": 1000,
+        },
+    }
+
+    result, metadata = call_llm(
+        prompt="test",
+        model="gemini-3.5-flash-lite",
+        transport=lambda _: _normalize_gemini_response(raw),
+    )
+
+    assert result == "done"
+    assert metadata["input_tokens"] == 100
+    assert metadata["output_tokens"] == 1010
+    assert metadata["visible_output_tokens"] == 10
+    assert metadata["reasoning_output_tokens"] == 1000
+    assert metadata["request_id"] == "gemini-response-thinking"
+    assert metadata["estimated_cost_usd"] == pytest.approx(0.002555)
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    ("model", "thinking_level"),
+    [
+        ("gemini-3.5-flash-lite", "minimal"),
+        ("gemini-3.6-flash", "medium"),
+    ],
+)
+def test_new_gemini_payload_uses_thinking_level_without_sampling_controls(
+    model: str,
+    thinking_level: str,
+) -> None:
+    payload = _build_gemini_payload(
+        model=model,
+        prompt="Return structured JSON.",
+        temperature=0.7,
+        max_tokens=65_536,
+        response_schema=DemoSchema,
+        thinking_level=thinking_level,
+    )
+    config = payload["generationConfig"]
+
+    assert config["maxOutputTokens"] == 65_536
+    assert config["thinkingConfig"] == {"thinkingLevel": thinking_level}
+    assert config["responseMimeType"] == "application/json"
+    assert "responseSchema" in config
+    assert {"temperature", "topP", "topK", "thinkingBudget"}.isdisjoint(config)
+
+    capped = _build_gemini_payload(
+        model=model,
+        prompt="Return structured JSON.",
+        temperature=0.7,
+        max_tokens=98_304,
+        response_schema=DemoSchema,
+        thinking_level=thinking_level,
+    )
+    assert capped["generationConfig"]["maxOutputTokens"] == 65_536
+
+    legacy = _build_gemini_payload(
+        model="gemini-2.5-flash",
+        prompt="Return structured JSON.",
+        temperature=0.2,
+        max_tokens=4096,
+        response_schema=DemoSchema,
+    )
+    assert legacy["generationConfig"]["temperature"] == 0.2
+    assert "thinkingConfig" not in legacy["generationConfig"]
+
+
+@pytest.mark.unit
+def test_gemini_payload_rejects_invalid_or_legacy_thinking_level() -> None:
+    with pytest.raises(ValueError, match="thinking_level must be one of"):
+        _build_gemini_payload(
+            model="gemini-3.6-flash",
+            prompt="Return structured JSON.",
+            temperature=0.0,
+            max_tokens=65_536,
+            response_schema=DemoSchema,
+            thinking_level="ultra",
+        )
+
+    with pytest.raises(ValueError, match="not supported"):
+        _build_gemini_payload(
+            model="gemini-2.5-flash",
+            prompt="Return structured JSON.",
+            temperature=0.0,
+            max_tokens=4096,
+            response_schema=DemoSchema,
+            thinking_level="minimal",
+        )
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    ("usage", "message"),
+    [
+        ({}, "prompt_tokens must be a nonnegative integer"),
+        (
+            {"promptTokenCount": -1, "candidatesTokenCount": 2},
+            "prompt_tokens must be a nonnegative integer",
+        ),
+        (
+            {"promptTokenCount": True, "candidatesTokenCount": 2},
+            "prompt_tokens must be a nonnegative integer",
+        ),
+        (
+            {"promptTokenCount": 1, "candidatesTokenCount": 2.5},
+            "visible_completion_tokens must be a nonnegative integer",
+        ),
+        (
+            {
+                "promptTokenCount": 100,
+                "candidatesTokenCount": 10,
+                "totalTokenCount": 109,
+            },
+            "total_tokens must be at least",
+        ),
+    ],
+)
+def test_normalize_gemini_response_rejects_malformed_usage(
+    usage: dict[str, object],
+    message: str,
+) -> None:
+    raw = {
+        "responseId": "gemini-response-malformed",
+        "modelVersion": "gemini-3.6-flash",
+        "candidates": [{
+            "content": {"parts": [{"text": "done"}]},
+            "finishReason": "STOP",
+        }],
+        "usageMetadata": usage,
+    }
+
+    with pytest.raises(ValueError, match=message):
+        _normalize_gemini_response(raw)
 
 
 @pytest.mark.unit
 def test_normalize_gemini_response_truncation() -> None:
     raw = {
+        "responseId": "gemini-response-truncated",
+        "modelVersion": "gemini-3.6-flash",
         "candidates": [{
             "content": {"parts": [{"text": "partial"}]},
             "finishReason": "MAX_TOKENS",
@@ -355,6 +821,58 @@ def test_normalize_gemini_response_truncation() -> None:
     }
     normalized = _normalize_gemini_response(raw)
     assert normalized["choices"][0]["finish_reason"] == "length"
+
+
+@pytest.mark.unit
+def test_gemini_response_rejects_provider_model_substitution() -> None:
+    raw = {
+        "responseId": "gemini-response-substitution",
+        "modelVersion": "gemini-3.6-flash",
+        "candidates": [
+            {"content": {"parts": [{"text": "done"}]}, "finishReason": "STOP"}
+        ],
+        "usageMetadata": {"promptTokenCount": 100, "candidatesTokenCount": 10},
+    }
+
+    with pytest.raises(LLMCallError, match="modelVersion does not match"):
+        _normalize_gemini_response(raw, expected_model="gemini-3.5-flash-lite")
+
+
+@pytest.mark.unit
+def test_gemini_response_rejects_contradictory_thinking_tokens() -> None:
+    raw = {
+        "responseId": "gemini-response-thinking-contradiction",
+        "modelVersion": "gemini-3.5-flash-lite",
+        "candidates": [
+            {"content": {"parts": [{"text": "done"}]}, "finishReason": "STOP"}
+        ],
+        "usageMetadata": {
+            "promptTokenCount": 100,
+            "candidatesTokenCount": 10,
+            "totalTokenCount": 1110,
+            "thoughtsTokenCount": 999,
+        },
+    }
+
+    with pytest.raises(ValueError, match="does not reconcile"):
+        _normalize_gemini_response(raw, expected_model="gemini-3.5-flash-lite")
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize("missing", ["responseId", "modelVersion"])
+def test_gemini_response_requires_call_and_model_identity(missing: str) -> None:
+    raw = {
+        "responseId": "gemini-response-identity",
+        "modelVersion": "gemini-3.5-flash-lite",
+        "candidates": [
+            {"content": {"parts": [{"text": "done"}]}, "finishReason": "STOP"}
+        ],
+        "usageMetadata": {"promptTokenCount": 1, "candidatesTokenCount": 1},
+    }
+    raw.pop(missing)
+
+    with pytest.raises(LLMCallError, match=missing):
+        _normalize_gemini_response(raw)
 
 
 @pytest.mark.unit
@@ -415,7 +933,6 @@ def test_call_llm_with_gemini_model_uses_transport() -> None:
 
     def fake_gemini_transport(_: dict[str, Any]) -> dict[str, Any]:
         return {
-            "id": "",
             "choices": [{"message": {"content": '{"value":"gemini_ok"}'}, "finish_reason": "stop"}],
             "usage": {"prompt_tokens": 50, "completion_tokens": 20},
         }
@@ -518,6 +1035,7 @@ def test_normalize_anthropic_response_passes_through_cache_tokens() -> None:
     """Cache token counts from Anthropic usage are preserved in normalized response."""
     raw = {
         "id": "msg_123",
+        "model": "claude-sonnet-4-6",
         "content": [{"type": "text", "text": "answer"}],
         "stop_reason": "end_turn",
         "usage": {
@@ -528,5 +1046,6 @@ def test_normalize_anthropic_response_passes_through_cache_tokens() -> None:
         },
     }
     normalized = _normalize_anthropic_response(raw)
+    assert normalized["model"] == "claude-sonnet-4-6"
     assert normalized["usage"]["cache_read_input_tokens"] == 900
     assert normalized["usage"]["cache_creation_input_tokens"] == 100

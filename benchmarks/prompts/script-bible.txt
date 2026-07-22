@@ -9,24 +9,25 @@ Analyze the screenplay above and extract:
 
 1. **title** — The title of the screenplay.
 2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.
-3. **synopsis** — A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.
+3. **synopsis** — A 1-3 paragraph synopsis covering the story actually presented through its final written beat. Include key plot points but keep it concise. If the screenplay ends before an external conflict resolves, preserve that unresolved ending rather than supplying an outcome.
 4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:
    - act_number (1, 2, 3...)
-   - title (short label like "Setup", "Confrontation", "Resolution")
+   - title (a short, source-grounded label for the act's dramatic function)
    - start_scene (the scene heading or description where the act begins)
    - end_scene (where the act ends)
    - summary (1-2 sentences)
    - turning_points (key plot beats within the act)
+   Use exact source headings for act boundaries when they exist. If a boundary is a final transition rather than a heading, identify that transition without inventing a scene heading.
 5. **themes** — Major thematic concerns. For each:
    - theme (name)
    - description (how it manifests)
    - evidence (scene references or brief quotes, 2-4 items)
-6. **narrative_arc** — Describe the overall story shape and dramatic movement.
-7. **genre** — Primary genre (e.g. "Action-Thriller", "Drama", "Sci-Fi Horror").
-8. **tone** — Dominant tone (e.g. "Gritty and intense", "Darkly comedic").
-9. **protagonist_journey** — The protagonist's transformation arc.
+6. **narrative_arc** — Describe the overall story shape and dramatic movement through the final available beat. Do not turn an implied next action into a completed resolution.
+7. **genre** — Primary genre or supported hybrid genre.
+8. **tone** — Dominant tonal qualities supported by the screenplay.
+9. **protagonist_journey** — The protagonist's psychological trajectory in the supplied pages, without claiming a later transformation the pages do not show.
 10. **central_conflict** — The core dramatic conflict.
 11. **setting_overview** — Time period, locations, and world context.
 12. **confidence** — Your confidence in this analysis (0.0-1.0).
 
-Return ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Do not write generic analysis that could apply to any film.
+Return ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Theme evidence must be a faithful brief quote or a precise reference to material that appears in the screenplay. Do not invent scenes, outcomes, quotations, settings, or character knowledge. Do not write generic analysis that could apply to any film. Before returning, verify every claim against the supplied screenplay and verify that every required field is complete.

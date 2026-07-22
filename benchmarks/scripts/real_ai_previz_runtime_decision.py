@@ -11,6 +11,8 @@ from statistics import median
 
 from pydantic import BaseModel, Field
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
 
 class DecisionCase(BaseModel):
     case_id: str
@@ -49,13 +51,23 @@ def main() -> None:
 
     base_path = args.summary_file.resolve()
     payload = json.loads(base_path.read_text(encoding="utf-8"))
+    _require_decision_grade_summary(payload, base_path)
     cases = {
         case["case_id"]: DecisionCase.model_validate(case)
         for case in payload["cases"]
     }
+    _validate_balanced_samples(cases, source_path=base_path)
+
+    recommended_case_id = payload["summary"].get("recommended_shipped_case_id")
+    if not isinstance(recommended_case_id, str) or recommended_case_id not in cases:
+        raise ValueError(
+            f"Base runtime summary has an unknown recommended_shipped_case_id: {base_path}"
+        )
 
     for result_file in args.result_file:
         _append_result_file(cases=cases, result_path=result_file.resolve())
+
+    _validate_balanced_samples(cases, source_path=base_path)
 
     ordered_cases = sorted(cases.values(), key=lambda case: _median(case.all_total_elapsed_ms))
     runtime_winner = ordered_cases[0]
@@ -66,9 +78,10 @@ def main() -> None:
         key=lambda case: float(case.usefulness_overall),
         default=None,
     )
-    current_shipped = cases.get(payload["summary"]["recommended_shipped_case_id"])
+    current_shipped = cases[recommended_case_id]
 
     summary = {
+        "decision_grade": True,
         "current_shipped_case_id": current_shipped.case_id if current_shipped else None,
         "runtime_winner_case_id": runtime_winner.case_id,
         "runtime_winner_total_ms": _median(runtime_winner.all_total_elapsed_ms),
@@ -90,8 +103,8 @@ def main() -> None:
 
     output_payload = {
         "generated_at": datetime.now(UTC).isoformat(),
-        "base_summary_file": str(base_path),
-        "source_result_files": [str(result_file.resolve()) for result_file in args.result_file],
+        "base_summary_file": _display_path(base_path),
+        "source_result_files": [_display_path(result_file) for result_file in args.result_file],
         "summary": summary,
         "cases": [_case_payload(case, runtime_winner=runtime_winner) for case in ordered_cases],
     }
@@ -108,12 +121,92 @@ def main() -> None:
 
 def _append_result_file(*, cases: dict[str, DecisionCase], result_path: Path) -> None:
     payload = json.loads(result_path.read_text(encoding="utf-8"))
-    for case in payload["cases"]:
-        entry = cases.get(case["case_id"])
-        if entry is None:
-            raise KeyError(f"Unknown case_id in result file {result_path}: {case['case_id']}")
-        entry.all_ai_previz_elapsed_ms.append(int(case["ai_previz_elapsed_ms"]))
-        entry.all_total_elapsed_ms.append(int(case["total_elapsed_ms"]))
+    _require_decision_grade_summary(payload, result_path)
+    result_cases = payload["cases"]
+    observed_ids = [case["case_id"] for case in result_cases]
+    expected_ids = set(cases)
+    observed_set = set(observed_ids)
+    if len(observed_ids) != len(observed_set):
+        raise ValueError(f"Result file contains duplicate case IDs: {result_path}")
+    if observed_set != expected_ids:
+        missing = sorted(expected_ids - observed_set)
+        extra = sorted(observed_set - expected_ids)
+        raise ValueError(
+            f"Result file does not contain the exact case matrix: {result_path}; "
+            f"missing={missing}, extra={extra}"
+        )
+
+    additions: list[tuple[DecisionCase, int, int]] = []
+    for case in result_cases:
+        ai_elapsed = _runtime_ms(case.get("ai_previz_elapsed_ms"), result_path=result_path)
+        total_elapsed = _runtime_ms(case.get("total_elapsed_ms"), result_path=result_path)
+        additions.append((cases[case["case_id"]], ai_elapsed, total_elapsed))
+
+    for entry, ai_elapsed, total_elapsed in additions:
+        entry.all_ai_previz_elapsed_ms.append(ai_elapsed)
+        entry.all_total_elapsed_ms.append(total_elapsed)
+
+    _validate_balanced_samples(cases, source_path=result_path)
+
+
+def _require_decision_grade_summary(payload: dict, source_path: Path) -> None:
+    summary = payload.get("summary")
+    if not isinstance(summary, dict) or summary.get("decision_grade") is not True:
+        raise ValueError(
+            f"Base runtime summary is not decision-grade: {source_path}. "
+            "Every selected repeat must succeed before runtime can drive a decision."
+        )
+    cases = payload.get("cases")
+    if not isinstance(cases, list) or not cases:
+        raise ValueError(f"Base runtime summary has no cases: {source_path}")
+    case_ids: list[str] = []
+    for case in cases:
+        if not isinstance(case, dict):
+            raise ValueError(f"Runtime summary has a non-object case: {source_path}")
+        case_id = case.get("case_id")
+        if not isinstance(case_id, str) or not case_id.strip():
+            raise ValueError(f"Runtime summary has an invalid case_id: {source_path}")
+        case_ids.append(case_id)
+    if len(case_ids) != len(set(case_ids)):
+        raise ValueError(f"Runtime summary contains duplicate case IDs: {source_path}")
+
+
+def _runtime_ms(value: object, *, result_path: Path) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise ValueError(
+            f"Runtime result has an invalid nonnegative integer latency in {result_path}: {value!r}"
+        )
+    return value
+
+
+def _validate_balanced_samples(
+    cases: dict[str, DecisionCase], *, source_path: Path
+) -> None:
+    if not cases:
+        raise ValueError(f"Runtime decision has no cases: {source_path}")
+
+    sample_counts: set[int] = set()
+    for case in cases.values():
+        ai_values = case.all_ai_previz_elapsed_ms
+        total_values = case.all_total_elapsed_ms
+        if not ai_values or not total_values:
+            raise ValueError(
+                f"Runtime decision case {case.case_id!r} has no retained samples: {source_path}"
+            )
+        if len(ai_values) != len(total_values):
+            raise ValueError(
+                f"Runtime decision case {case.case_id!r} has unbalanced AI/total samples: "
+                f"{source_path}"
+            )
+        for value in [*ai_values, *total_values]:
+            _runtime_ms(value, result_path=source_path)
+        sample_counts.add(len(total_values))
+
+    if len(sample_counts) != 1:
+        raise ValueError(
+            f"Runtime decision cases have unequal sample counts {sorted(sample_counts)}: "
+            f"{source_path}"
+        )
 
 
 def _case_payload(case: DecisionCase, *, runtime_winner: DecisionCase) -> dict[str, object]:
@@ -173,6 +266,14 @@ def _decision_note(
 
 def _median(values: list[int]) -> int:
     return round(median(values))
+
+
+def _display_path(path: Path) -> str:
+    resolved = path.resolve()
+    try:
+        return str(resolved.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(resolved)
 
 
 def _render_markdown(payload: dict[str, object]) -> str:

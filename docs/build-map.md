@@ -50,7 +50,7 @@
 - **C4: Two-Tier Scene Architecture** — **climb**
   - Current: Structural scene breakdown lands quickly, while slower narrative enrichment remains separate and user-triggered.
   - Converge signal: Single-pass scene understanding becomes both fast enough and good enough to replace the split.
-  - Evidence: `compromise-C4-two-tier-scenes` still shows the best candidate below the quality/latency bar.
+  - Evidence: Story 208 invalidated the legacy scene scores. `compromise-C4-two-tier-scenes` has no current repaired-contract result proving a single pass clears both quality and latency bars.
 
 ## spec:3 — World Building & Continuity
 
@@ -91,7 +91,7 @@
 - **C5: Capability Gating** — **hold**
   - Current: Roles declare modality limits and route around them instead of pretending to perceive media they cannot understand.
   - Converge signal: One broadly usable multimodal model makes per-role modality declarations unnecessary.
-  - Evidence: `compromise-C5-role-modality` has no passing deletion signal.
+  - Evidence: Story 208 reclassified the visual lanes as ordered-frame comprehension and quarantined legacy modality scores. `compromise-C5-role-modality` has no native-video/audio decision-grade deletion signal.
 
 ## spec:5 — Operator Console & Interactive UX
 
@@ -171,6 +171,7 @@
 
 - Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.
 - Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks.
+- Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Configured defaults remain provisional until fresh repaired-contract evidence exists.
 
 ### Compromise Progress
 
@@ -181,11 +182,11 @@
 - **C2: Dedicated QA Validation Passes** — **hold**
   - Current: Dedicated QA / verification remains the safest path for structured output quality.
   - Converge signal: First-attempt output becomes reliable enough to demote QA to lightweight assertions only.
-  - Evidence: `compromise-C2-qa-validation` does not justify deletion yet.
+  - Evidence: Story 208 repaired and invalidated the legacy extraction and QA evidence. `compromise-C2-qa-validation` has no current decision-grade row, so dedicated QA remains.
 - **C3: Tiered Model Strategy** — **hold**
   - Current: Value-optimized model selection remains justified because no single model dominates CineForge's full task surface.
   - Converge signal: One model meets all current default-driving quality bars at acceptable latency and cost.
-  - Evidence: `compromise-C3-tiered-models` still leaves the repo below the single-model bar.
+  - Evidence: Story 208 invalidated the legacy cross-task scores. `compromise-C3-tiered-models` has no current decision-grade matrix proving one model clears every repaired quality, latency, and cost bar.
 
 ## spec:9 — Memory & Collaboration
 

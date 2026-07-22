@@ -65,9 +65,8 @@ output/
 logs/
 tmp/
 
-# Generated promptfoo image packets. Recreate with
-# benchmarks/scripts/generate_storyboard_generation_quality_dataset.py.
-benchmarks/storyboard_generation_quality/
+# Decision-bearing storyboard packets are intentionally not ignored. A fresh
+# v3 run must leave its exact media visible to Git before registry promotion.
 
 # Test corpus (copyrighted screenplays — not for distribution)
 tests/corpus/

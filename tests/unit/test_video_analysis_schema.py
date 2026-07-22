@@ -83,7 +83,7 @@ def test_video_analysis_prediction_and_score_validate() -> None:
         continuity_notes=["The white envelope stays with the same speaker."],
         audio_tags=["soft_music", "speech"],
         audio_notes=["One confession line over restrained piano."],
-        evidence=[{"timestamp_seconds": 1.5, "cue": "The frame tightens toward the speaker."}],
+        evidence=[{"frame_index": 1, "cue": "The frame tightens toward the speaker."}],
         overall_confidence=0.82,
     )
     score = VideoAnalysisScore(

@@ -3,10 +3,10 @@
 # Usage:
 #   source ~/.nvm/nvm.sh && nvm use 24 > /dev/null 2>&1
 #   cd benchmarks
-#   promptfoo eval -c tasks/video-understanding.yaml --no-cache --filter-first-n 6 -j 2 \
+#   promptfoo eval -c tasks/video-understanding.yaml --no-cache -j 2 \
 #     --output results/video-understanding-pilot-2026-03-19.json
 
-description: "Video understanding — director-facing clip-packet QA for generated outputs"
+description: "Ordered-JPEG frame understanding — six source-backed synthetic controls"
 
 defaultTest:
   options:
@@ -25,7 +25,7 @@ providers:
       max_tokens: 1400
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: video-understanding-v1
+      prompt_version: video-understanding-frame-packet-v2
       pythonExecutable: python
       timeout: 300000
 
@@ -38,7 +38,7 @@ providers:
       max_tokens: 1400
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: video-understanding-v1
+      prompt_version: video-understanding-frame-packet-v2
       pythonExecutable: python
       timeout: 300000
 
@@ -51,7 +51,7 @@ providers:
       max_tokens: 1400
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: video-understanding-v1
+      prompt_version: video-understanding-frame-packet-v2
       pythonExecutable: python
       timeout: 300000
 
@@ -63,7 +63,7 @@ providers:
       max_tokens: 1400
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: video-understanding-v1
+      prompt_version: video-understanding-frame-packet-v2
       pythonExecutable: python
       timeout: 300000
 
@@ -72,11 +72,10 @@ providers:
     config:
       provider: google
       model: gemini-2.5-pro
-      temperature: 0
       max_tokens: 65536
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: video-understanding-v1
+      prompt_version: video-understanding-frame-packet-v2
       pythonExecutable: python
       timeout: 300000
 
@@ -85,11 +84,10 @@ providers:
     config:
       provider: google
       model: gemini-2.5-flash
-      temperature: 0
       max_tokens: 65536
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: video-understanding-v1
+      prompt_version: video-understanding-frame-packet-v2
       pythonExecutable: python
       timeout: 300000
 
@@ -98,11 +96,10 @@ providers:
     config:
       provider: google
       model: gemini-3.1-pro-preview
-      temperature: 0
       max_tokens: 65536
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: video-understanding-v1
+      prompt_version: video-understanding-frame-packet-v2
       pythonExecutable: python
       timeout: 300000
 
@@ -111,11 +108,10 @@ providers:
     config:
       provider: google
       model: gemini-3-flash-preview
-      temperature: 0
       max_tokens: 65536
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: video-understanding-v1
+      prompt_version: video-understanding-frame-packet-v2
       pythonExecutable: python
       timeout: 300000
 
@@ -124,11 +120,10 @@ providers:
     config:
       provider: google
       model: gemini-3.5-flash
-      temperature: 0
       max_tokens: 65536
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: video-understanding-v1
+      prompt_version: video-understanding-frame-packet-v2
       pythonExecutable: python
       timeout: 300000
 
@@ -140,7 +135,7 @@ providers:
       max_tokens: 65536
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: video-understanding-v1
+      prompt_version: video-understanding-frame-packet-v2
       pythonExecutable: python
       timeout: 300000
 
@@ -152,14 +147,13 @@ providers:
       max_tokens: 65536
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: video-understanding-v1
+      prompt_version: video-understanding-frame-packet-v2
       pythonExecutable: python
       timeout: 300000
-
 tests:
   - vars:
       clip_id: dialogue_confession_push_in
-      clip_title: Dialogue confession push-in
+      evaluation_id: vfp_active_001
       clip_dir: ../video_understanding/dialogue_confession_push_in
       target_path: video_understanding/dialogue_confession_push_in/target.json
       target_markdown: file://../video_understanding/dialogue_confession_push_in/target.md
@@ -168,18 +162,25 @@ tests:
         value: file://../scorers/video_understanding_scorer.py
       - type: llm-rubric
         value: |
-          Evaluate this model's structured clip analysis against the reference below.
+          Evaluate this model's structured analysis against the ordered-frame
+          reference below.
 
           Reference analysis:
           {{target_markdown}}
 
-          Reward outputs that accurately capture tone, emotional read, camera language,
-          motion, continuity state, and audio intent. Penalize shallow summaries,
-          invented details, or missed directorial cues.
+          The subject received only five ordered JPEG samples plus neutral timing facts and
+          an opaque identifier. It did not receive the semantic clip ID, title, target,
+          transcript, MP4, or audio. Judge only claims observable across those still frames.
+          Ignore every audio line in the reference and require empty audio fields; do not
+          reward a claim of silence. Accept semantically equivalent visual wording, but
+          require concrete frame-grounded evidence at submitted sample times. Penalize
+          invented actions, edits, camera movement, continuity changes, identities, props,
+          locations, or story meaning that the ordered samples do not show.
+          Pass only at score >= 0.8.
 
   - vars:
       clip_id: alarm_chase_whip_pan
-      clip_title: Alarm chase whip pan
+      evaluation_id: vfp_active_002
       clip_dir: ../video_understanding/alarm_chase_whip_pan
       target_path: video_understanding/alarm_chase_whip_pan/target.json
       target_markdown: file://../video_understanding/alarm_chase_whip_pan/target.md
@@ -187,7 +188,7 @@ tests:
 
   - vars:
       clip_id: quiet_bedside_vigil
-      clip_title: Quiet bedside vigil
+      evaluation_id: vfp_active_003
       clip_dir: ../video_understanding/quiet_bedside_vigil
       target_path: video_understanding/quiet_bedside_vigil/target.json
       target_markdown: file://../video_understanding/quiet_bedside_vigil/target.md
@@ -195,136 +196,24 @@ tests:
 
   - vars:
       clip_id: prop_swap_continuity_break
-      clip_title: Prop swap continuity break
+      evaluation_id: vfp_active_004
       clip_dir: ../video_understanding/prop_swap_continuity_break
       target_path: video_understanding/prop_swap_continuity_break/target.json
       target_markdown: file://../video_understanding/prop_swap_continuity_break/target.md
     assert: *video_assertions
 
   - vars:
-      clip_id: neon_crosswalk_reveal
-      clip_title: Neon crosswalk reveal
-      clip_dir: ../video_understanding/neon_crosswalk_reveal
-      target_path: video_understanding/neon_crosswalk_reveal/target.json
-      target_markdown: file://../video_understanding/neon_crosswalk_reveal/target.md
-    assert: *video_assertions
-
-  - vars:
-      clip_id: muzak_aftermath_tableau
-      clip_title: Muzak aftermath tableau
-      clip_dir: ../video_understanding/muzak_aftermath_tableau
-      target_path: video_understanding/muzak_aftermath_tableau/target.json
-      target_markdown: file://../video_understanding/muzak_aftermath_tableau/target.md
-    assert: *video_assertions
-
-  - vars:
-      clip_id: radio_hold_tracking
-      clip_title: Radio hold tracking
-      clip_dir: ../video_understanding/radio_hold_tracking
-      target_path: video_understanding/radio_hold_tracking/target.json
-      target_markdown: file://../video_understanding/radio_hold_tracking/target.md
-    assert: *video_assertions
-
-  - vars:
-      clip_id: hallway_standoff_crosscut
-      clip_title: Hallway standoff cross-cut
-      clip_dir: ../video_understanding/hallway_standoff_crosscut
-      target_path: video_understanding/hallway_standoff_crosscut/target.json
-      target_markdown: file://../video_understanding/hallway_standoff_crosscut/target.md
-    assert: *video_assertions
-
-  - vars:
-      clip_id: sunset_reunion_pullback
-      clip_title: Sunset reunion pull-back
-      clip_dir: ../video_understanding/sunset_reunion_pullback
-      target_path: video_understanding/sunset_reunion_pullback/target.json
-      target_markdown: file://../video_understanding/sunset_reunion_pullback/target.md
-    assert: *video_assertions
-
-  - vars:
-      clip_id: surveillance_green_monitor
-      clip_title: Surveillance green monitor
-      clip_dir: ../video_understanding/surveillance_green_monitor
-      target_path: video_understanding/surveillance_green_monitor/target.json
-      target_markdown: file://../video_understanding/surveillance_green_monitor/target.md
-    assert: *video_assertions
-
-  - vars:
-      clip_id: flashback_sepia_drift
-      clip_title: Flashback sepia drift
-      clip_dir: ../video_understanding/flashback_sepia_drift
-      target_path: video_understanding/flashback_sepia_drift/target.json
-      target_markdown: file://../video_understanding/flashback_sepia_drift/target.md
-    assert: *video_assertions
-
-  - vars:
       clip_id: rooftop_escape_crash_zoom
-      clip_title: Rooftop escape crash zoom
+      evaluation_id: vfp_active_005
       clip_dir: ../video_understanding/rooftop_escape_crash_zoom
       target_path: video_understanding/rooftop_escape_crash_zoom/target.json
       target_markdown: file://../video_understanding/rooftop_escape_crash_zoom/target.md
     assert: *video_assertions
 
   - vars:
-      clip_id: mirror_isolation_profile
-      clip_title: Mirror isolation profile
-      clip_dir: ../video_understanding/mirror_isolation_profile
-      target_path: video_understanding/mirror_isolation_profile/target.json
-      target_markdown: file://../video_understanding/mirror_isolation_profile/target.md
-    assert: *video_assertions
-
-  - vars:
-      clip_id: warehouse_drone_wide
-      clip_title: Warehouse drone wide
-      clip_dir: ../video_understanding/warehouse_drone_wide
-      target_path: video_understanding/warehouse_drone_wide/target.json
-      target_markdown: file://../video_understanding/warehouse_drone_wide/target.md
-    assert: *video_assertions
-
-  - vars:
       clip_id: storm_tunnel_lateral_run
-      clip_title: Storm tunnel lateral run
+      evaluation_id: vfp_active_006
       clip_dir: ../video_understanding/storm_tunnel_lateral_run
       target_path: video_understanding/storm_tunnel_lateral_run/target.json
       target_markdown: file://../video_understanding/storm_tunnel_lateral_run/target.md
-    assert: *video_assertions
-
-  - vars:
-      clip_id: countdown_control_room
-      clip_title: Countdown control room
-      clip_dir: ../video_understanding/countdown_control_room
-      target_path: video_understanding/countdown_control_room/target.json
-      target_markdown: file://../video_understanding/countdown_control_room/target.md
-    assert: *video_assertions
-
-  - vars:
-      clip_id: golden_memory_orbit
-      clip_title: Golden memory orbit
-      clip_dir: ../video_understanding/golden_memory_orbit
-      target_path: video_understanding/golden_memory_orbit/target.json
-      target_markdown: file://../video_understanding/golden_memory_orbit/target.md
-    assert: *video_assertions
-
-  - vars:
-      clip_id: handheld_panic_stairwell
-      clip_title: Handheld panic stairwell
-      clip_dir: ../video_understanding/handheld_panic_stairwell
-      target_path: video_understanding/handheld_panic_stairwell/target.json
-      target_markdown: file://../video_understanding/handheld_panic_stairwell/target.md
-    assert: *video_assertions
-
-  - vars:
-      clip_id: match_cut_envelope
-      clip_title: Match-cut envelope
-      clip_dir: ../video_understanding/match_cut_envelope
-      target_path: video_understanding/match_cut_envelope/target.json
-      target_markdown: file://../video_understanding/match_cut_envelope/target.md
-    assert: *video_assertions
-
-  - vars:
-      clip_id: violet_dream_percussion
-      clip_title: Violet dream percussion
-      clip_dir: ../video_understanding/violet_dream_percussion
-      target_path: video_understanding/violet_dream_percussion/target.json
-      target_markdown: file://../video_understanding/violet_dream_percussion/target.md
     assert: *video_assertions

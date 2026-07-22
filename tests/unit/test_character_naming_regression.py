@@ -6,6 +6,8 @@ from cine_forge.modules.world_building.character_bible_v1.candidate_resolution i
     _normalize_character_name,
 )
 
+pytestmark = pytest.mark.unit
+
 
 @pytest.mark.parametrize("input_name, expected", [
     ("THE MARINER", "MARINER"),

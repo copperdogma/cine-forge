@@ -1,11 +1,10 @@
-# Quiet bedside vigil
+# Ordered JPEG frame-packet reference
 
-- Summary: A static bedside composition holds on one seated figure under a warm lamp while the room stays almost still.
-- Tone: intimate, mournful
-- Emotion: tenderness, grief
+- Summary: A warm static bedside composition holds on a bed, a lamp-like shape, and one abstract figure at frame right.
+- Tone: intimate
+- Emotion: [none]
 - Color / grade: amber, desaturated
-- Camera language: static, wide_master
-- Motion: stillness
-- Continuity: intact — The folded blanket remains untouched at frame right.
-- Audio intent: heartbeat, soft_music
-- Transcript: [none]
+- Camera language inferable from the ordered samples: static, wide_master
+- Motion inferable from the ordered samples: stillness
+- Continuity: intact - The bed, lamp-like block, and seated figure keep the same positions in every frame.
+- Audio: unavailable to the subject and excluded from scoring

@@ -8,24 +8,25 @@
       "VINNIE": [],
       "DAD": ["FATHER"]
     },
-    "optional": ["MIKEY", "CARLOS"]
+    "optional": ["ROSCO", "MIKEY", "CARLOS"]
   },
   "locations": {
     "required": ["RUDDY & GREENE BUILDING", "15TH FLOOR"],
     "acceptable_aliases": {
-      "RUDDY & GREENE BUILDING": ["RUDDY AND GREENE", "THE BUILDING"],
+      "RUDDY & GREENE BUILDING": ["RUDDY & GREEN BUILDING", "RUDDY AND GREENE"],
       "15TH FLOOR": ["FIFTEENTH FLOOR"]
     },
-    "optional": ["11TH FLOOR", "13TH FLOOR", "COASTLINE", "STAIRWELL", "ELEVATOR", "BACKYARD"]
+    "optional": ["CITY CENTRE", "11TH FLOOR", "12TH FLOOR STAIRWELL", "13TH FLOOR", "COASTLINE", "STAIRWELL", "ELEVATOR", "BACKYARD", "RUDDY & GREENE BUILDING - FRONT", "RUDDY & GREENE BUILDING - REAR"]
   },
   "props": {
     "required": ["OAR"],
     "acceptable_aliases": {
       "OAR": ["PADDLES", "PADDLE"],
       "FLARE GUN": ["FLARE", "FLARE PISTOL"],
-      "PURSE": ["HANDBAG", "BAG"]
+      "PURSE": ["HANDBAG", "BAG"],
+      "MEMORY STICK": ["CHIP", "BLOCKCHAIN CHIP"]
     },
-    "optional": ["FLARE GUN", "PURSE", "AIRTAG", "NET CAPE", "BRACERS"]
+    "optional": ["FLARE GUN", "PURSE", "AIRTAG", "MEMORY STICK", "NET CAPE", "BRACERS"]
   },
   "_notes": [
     "Precision/recall evaluation: reward finding required entities, penalize hallucination",

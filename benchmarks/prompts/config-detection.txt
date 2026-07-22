@@ -1,36 +1,52 @@
-You are configuring a film project from a screenplay. Analyze the following screenplay and detect project metadata.
+You are configuring a film project from a screenplay. Analyze only the supplied screenplay and detect project metadata.
 
 ==========
-SCREENPLAY:
+SOURCE SCREENPLAY:
 
 {{screenplay}}
 
 ==========
 TASK:
 
-Detect the following 10 project configuration fields. For each field, provide:
-- value: the detected value
-- confidence: 0.0-1.0 confidence score
-- rationale: brief explanation of how you determined the value
+Return exactly one JSON object with exactly these 10 top-level keys and no others:
 
-Return a JSON object with these fields:
+1. title (string): The title explicitly supplied by the screenplay.
+2. format (string): One of "feature film", "short film", "pilot", or "limited series". Determine format from the supplied work's boundaries, screenplay conventions, narrative completeness, and approximate formatted length. Do not use raw line or word count alone.
+3. genre (array of strings): All clearly supported genres, using conventional labels such as action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, or western.
+4. tone (array of strings): Distinct, source-supported tonal qualities. Do not pad the array with synonyms for one quality.
+5. estimated_duration_minutes (integer): A conservative runtime estimate based on approximate formatted screenplay pages and the usual one-page-per-minute rule.
+6. primary_characters (array of strings): Protagonists, co-leads, and major antagonists whose story function is primary.
+7. supporting_characters (array of strings): Other named or individually identified characters with meaningful presence.
+8. location_count (integer): The number of distinct staged locations, deduplicating repeated headings for the same place when appropriate.
+9. locations_summary (string): A concise summary of the key source locations.
+10. target_audience (string or null): A source-supported rating or demographic; use null when the screenplay does not support a responsible conclusion.
 
-1. title (string): The title of the screenplay/film
-2. format (string): The format type. Use one of: "feature film", "short film", "pilot", "limited series". Determine format from screenplay conventions (scene headings, character cues, dialogue formatting, narrative complexity) rather than raw page count alone.
-3. genre (array of strings): ALL applicable genres. Be comprehensive — most screenplays span multiple genres. Consider: action, adventure, animation, comedy, crime, documentary, drama, fantasy, horror, mystery, musical, romance, sci-fi, thriller, war, western. Include every genre that has clear evidence in the text.
-4. tone (array of strings): ALL tonal qualities present in the screenplay. Consider multiple dimensions: mood (dark, light, whimsical), intensity (intense, relaxed, frenetic), visual style (gritty, sleek, noir, stylized), violence level (violent, brutal, restrained), atmosphere (suspenseful, eerie, warm, bleak), and pacing (fast-paced, slow-burn, episodic). Include every quality supported by evidence.
-5. estimated_duration_minutes (integer): Estimated runtime in minutes (use ~1 page per minute rule)
-6. primary_characters (array of strings): Main characters (protagonists/antagonists)
-7. supporting_characters (array of strings): Supporting and minor characters
-8. location_count (integer): Number of distinct locations
-9. locations_summary (string): Brief description of the key locations
-10. target_audience (string or null): Target audience rating/demographic, null if uncertain
+Each top-level value must be an object containing exactly value, confidence, and rationale:
+- value: the typed value required above
+- confidence: a finite number from 0.0 through 1.0
+- rationale: a brief explanation citing concrete screenplay evidence for that value
 
-Be conservative. Avoid fabricated detail. Base all answers on evidence in the screenplay text.
+Grounding and completeness contract:
+- Use only the supplied screenplay. Do not import outside facts about a similarly named work.
+- Every rationale must identify concrete screenplay evidence; a generic rationale such as "this is typical" is invalid.
+- The value and rationale must agree. If the value and rationale contradict each other, the field is wrong even when one happens to be plausible.
+- Do not copy field descriptions, examples, or likely labels as if they were evidence.
+- Do not invent characters, locations, events, page counts, ratings, or genre/tone qualities.
+- Balance completeness with precision. Unsupported extra list items are defects, not harmless padding.
+- Verify all 10 fields, their types, and their rationales against the screenplay before responding.
 
-Example structure:
+Return only valid JSON. No explanations, markdown, code fences, comments, or trailing text.
+
+Required shape:
 {
-  "title": {"value": "...", "confidence": 0.95, "rationale": "..."},
-  "format": {"value": "...", "confidence": 0.9, "rationale": "..."},
-  ...
+  "title": {"value": "string", "confidence": 0.0, "rationale": "source evidence"},
+  "format": {"value": "<allowed format>", "confidence": 0.0, "rationale": "source evidence"},
+  "genre": {"value": ["genre"], "confidence": 0.0, "rationale": "source evidence"},
+  "tone": {"value": ["quality"], "confidence": 0.0, "rationale": "source evidence"},
+  "estimated_duration_minutes": {"value": 0, "confidence": 0.0, "rationale": "source evidence"},
+  "primary_characters": {"value": ["name"], "confidence": 0.0, "rationale": "source evidence"},
+  "supporting_characters": {"value": ["name"], "confidence": 0.0, "rationale": "source evidence"},
+  "location_count": {"value": 0, "confidence": 0.0, "rationale": "source evidence"},
+  "locations_summary": {"value": "string", "confidence": 0.0, "rationale": "source evidence"},
+  "target_audience": {"value": "<source-supported string or null>", "confidence": 0.0, "rationale": "source evidence or uncertainty"}
 }

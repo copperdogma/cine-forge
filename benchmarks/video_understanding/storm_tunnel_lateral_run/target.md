@@ -1,11 +1,10 @@
-# Storm tunnel lateral run
+# Ordered JPEG frame-packet reference
 
-- Summary: A lateral run through a storm tunnel pushes water streaks across frame as the camera keeps pace.
+- Summary: A cyan abstract runner moves laterally through a blue tunnel as repeated rain-like streaks shift across the ordered frames.
 - Tone: urgent, tense
-- Emotion: resolve
+- Emotion: [none]
 - Color / grade: teal, navy
-- Camera language: lateral_track
-- Motion: fast_lateral
-- Continuity: intact — The cyan flare remains in the runner's hand.
-- Audio intent: percussion, drone
-- Transcript: [none]
+- Camera language inferable from the ordered samples: static, wide_master
+- Motion inferable from the ordered samples: fast_lateral
+- Continuity: intact - The small cyan rectangle stays beside the runner across all five samples.
+- Audio: unavailable to the subject and excluded from scoring

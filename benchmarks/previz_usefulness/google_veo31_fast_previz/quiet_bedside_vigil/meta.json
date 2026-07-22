@@ -15,7 +15,7 @@
     "interior"
   ],
   "anchor_subset": true,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "analysis_frame_policy": "five_ordered_jpegs_v1",
   "candidate_variant": "google_veo31_fast_previz",
   "candidate_label": "Veo 3.1 Fast Previz",
   "operator_lane": "ai_previz",
@@ -38,5 +38,26 @@
     "bokeh glamour shots",
     "final-render finish"
   ],
-  "prompt_contract_path": "prompt_contract.json"
+  "prompt_contract_path": "prompt_contract.json",
+  "decision_role": "decision_candidate",
+  "decision_eligible": true,
+  "artifact_status": "retained_candidate_regrade_ready",
+  "retained_clip_bytes": true,
+  "retained_frame_bytes": true,
+  "retained_prompt_bytes": true,
+  "case_contract_path": "benchmarks/previz_usefulness/cases.json",
+  "case_contract_sha256": "3ad9ed4eeedeaf82174f53096a619346d21be00292f0e5edc386b4704689b60c",
+  "target_path": "benchmarks/previz_usefulness/targets/quiet_bedside_vigil.json",
+  "target_sha256": "a422c4e5e230cc3bb984b494a154ef10e6079630000272eb12ad657dc0fc1d0e",
+  "prompt_path": "prompt.txt",
+  "clip_sha256": "1ce5ac6e50ffd3a5f7f0dec04e74e71aa400afb9398b92447ed889f3622f351d",
+  "frame_sha256": {
+    "frame_00.jpg": "d68095c85d11a608c15d50d8465ecf3fe67ecf1d7c0ba42242793dfc428e5b61",
+    "frame_01.jpg": "87fc02df315f93615bcee4f8f837facb812800ee9612899f3bdabe3bad0fd79d",
+    "frame_02.jpg": "9121931e61782960ae2fe6b627ec229b39bf38343deacd467f2bc8aa2b1cc4b9",
+    "frame_03.jpg": "2c768d0fb02214f8030027bb8f1e0236f808fcfb5459045ef00a37bec559656d",
+    "frame_04.jpg": "14d43a16249e712d5b2df7f468e822f0a56706c2b8bf8908ea6fe8f4af385f5c"
+  },
+  "prompt_txt_sha256": "dbffb98b12709b21b6d52c28dae7497f8d0d42ef6cca1511f6312e126c1ad52e",
+  "prompt_contract_json_sha256": "c93e83cbea5e5eb97be7526cf6b7c08c3172f377e97c0df830ec1298f5fd87d8"
 }

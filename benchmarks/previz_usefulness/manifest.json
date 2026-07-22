@@ -1,36 +1,331 @@
 {
-  "clips": [
+  "schema_version": "previz-usefulness-manifest-v2",
+  "generator": "benchmarks/scripts/generate_previz_usefulness_dataset.py",
+  "case_contract_path": "benchmarks/previz_usefulness/cases.json",
+  "case_contract_sha256": "3ad9ed4eeedeaf82174f53096a619346d21be00292f0e5edc386b4704689b60c",
+  "subject_modality": "five_ordered_jpeg_frames_without_audio_or_semantic_metadata",
+  "decision_candidate_variants": [
+    "google_veo31_lite_previz",
+    "google_veo31_fast_previz",
+    "xai_grok_imagine_video_previz"
+  ],
+  "control_variants": {
+    "symbolic": {
+      "status": "control_only_non_comparable",
+      "decision_eligible": false,
+      "reason": "The deterministic source composition is a mechanical smoke control and is not provider-comparable decision evidence."
+    },
+    "annotated_symbolic": {
+      "status": "control_only_answer_leaking",
+      "decision_eligible": false,
+      "reason": "The rendered frames visibly embed scene title, shot intent, character labels, and camera annotations, so this lane cannot be compared with provider candidates that lack evaluator-authored overlays."
+    }
+  },
+  "cases": [
     {
+      "evaluation_id": "previz_case_001",
       "clip_id": "dialogue_confession_push_in",
       "title": "Dialogue confession push-in",
+      "target_path": "benchmarks/previz_usefulness/targets/dialogue_confession_push_in.json",
+      "target_sha256": "2d1a5db4519fb5b451a4ce3ad439fdaa281cfe1fd3503dce0b6ae1dc53f517b3",
+      "target_markdown_path": "benchmarks/previz_usefulness/targets/dialogue_confession_push_in.md",
+      "target_markdown_sha256": "079e3c8e0fb835d0141802f3e669d5c28989c7274bd2baa3e0ac057b51a81437",
       "variants": [
-        "symbolic",
-        "annotated_symbolic",
-        "google_veo31_lite_previz",
-        "google_veo31_fast_previz",
-        "xai_grok_imagine_video_previz"
+        {
+          "variant": "symbolic",
+          "candidate_label": "Symbolic Animatic",
+          "decision_role": "control_only",
+          "decision_eligible": false,
+          "artifact_status": "control_only_non_comparable",
+          "meta_path": "symbolic/dialogue_confession_push_in/meta.json",
+          "meta_sha256": "d1c87f2cf57fe27e263d85846e226c9cec33ff20bf6658d5e29576749d5bbb39",
+          "clip_sha256": "79d1570b68f393dae9e43dc4319d93fd250f54f69d7894d4497c266a1e9b003d",
+          "frame_sha256": {
+            "frame_00.jpg": "dde707ff471813a2bc4c40c90e91c51284196a8ebf46e9845774ffb914bb0f55",
+            "frame_01.jpg": "47cff2d0640e688192fed95dce388a6fef6baa81c471f7ff0f87276487ab02d6",
+            "frame_02.jpg": "6cc058969542627b0f6c147990e8bd729ab6c4e718d3dac64c2b6fd2ad830329",
+            "frame_03.jpg": "f4b8ccba9123eb0d69a20f0aad20e768eaff0b3bedccedb505bcc19b3ccf04f8",
+            "frame_04.jpg": "8690c387b59d1b354fe23e5208ff87bc1e79d7211f609e6d06d58e997d8fc180"
+          }
+        },
+        {
+          "variant": "annotated_symbolic",
+          "candidate_label": "Annotated Animatic",
+          "decision_role": "control_only",
+          "decision_eligible": false,
+          "artifact_status": "control_only_answer_leaking",
+          "meta_path": "annotated_symbolic/dialogue_confession_push_in/meta.json",
+          "meta_sha256": "cfcdb947e02865c66efe53f7d09d551d808db2c10117c4f345cc6425365f8823",
+          "clip_sha256": "0756b0b7e55fe769214cc49de8da59a4da5fd16bdae63c8cb4a23eb3de0807eb",
+          "frame_sha256": {
+            "frame_00.jpg": "af34285c7945a3103a66e46ffaaee4f1136184b2f7e63c6028da0dd7a8b668cc",
+            "frame_01.jpg": "33ccea6d720e99ab8396690dec920f8b47b3f531f84f0288824b059b461e3e4d",
+            "frame_02.jpg": "b5adab0a0dd54d7774a2341406da52504722d109c9a706b085f025dea4ba5319",
+            "frame_03.jpg": "0d07e81938e73c803866c07fa6706f455be6e6d6b388411af6650e820df2712c",
+            "frame_04.jpg": "1ac0612d5331a4b14d9b72c50e285f3f74d8912687a3ea23a8c3ac51a8696417"
+          }
+        },
+        {
+          "variant": "google_veo31_lite_previz",
+          "candidate_label": "Veo 3.1 Lite Previz",
+          "decision_role": "decision_candidate",
+          "decision_eligible": true,
+          "artifact_status": "retained_candidate_regrade_ready",
+          "meta_path": "google_veo31_lite_previz/dialogue_confession_push_in/meta.json",
+          "meta_sha256": "40b0656c07ff5d4306053c076d61b0aa1b105ce7ba958ed09b80ec4708b45013",
+          "clip_sha256": "859518cc385617496a4f87493ce4660ec4a70210c1d2208d9d3840cdc6b6553b",
+          "frame_sha256": {
+            "frame_00.jpg": "e3eece6d21e1ba571a8031eaef1e56e693d1d571afead22bf7c5a8ec4bbad382",
+            "frame_01.jpg": "2055ece166405a13133b179bb3467bfe339f33e82f7dcbd8bd6236dc9e938fad",
+            "frame_02.jpg": "7722cf5079b3eb0c4eaf8efd25c6388fed9d626d10ce9cf5b0b2ea77a31b2ef4",
+            "frame_03.jpg": "246c4f931cfe63a8aca4a22f55eebdfe831731a8ecc3eb23e6a5d08d9ced9fb2",
+            "frame_04.jpg": "9684e413e9960c67222515e364bea0c358e41241f86527161aa9bb6d47c336b5"
+          },
+          "prompt_txt_sha256": "6f8c69d9d792a311b1bd9c6dfb9213e155dbf6bc52587f5558af27ed28e8c2a1",
+          "prompt_contract_json_sha256": "213b6b4830fbab3e553a890757cdc4481430183c3a8c68510021b836b7a6a7c4"
+        },
+        {
+          "variant": "google_veo31_fast_previz",
+          "candidate_label": "Veo 3.1 Fast Previz",
+          "decision_role": "decision_candidate",
+          "decision_eligible": true,
+          "artifact_status": "retained_candidate_regrade_ready",
+          "meta_path": "google_veo31_fast_previz/dialogue_confession_push_in/meta.json",
+          "meta_sha256": "a0719c3f628b32370886b9381a9ab6ee060e413bef46901f5e2c6bf948f371cc",
+          "clip_sha256": "b7859e60e4ab776a7ea4aeb84fda38429ef22eaaa55c657fb6edb27559fd9840",
+          "frame_sha256": {
+            "frame_00.jpg": "617dfb4b239d0cb3a9171251524e1cf4279229b8eb45234c85bf99f196acb934",
+            "frame_01.jpg": "47e19f9bbe72aaeacde1f73e37fbe50a0e18f794bdc3ae94bc8530d99dd1538b",
+            "frame_02.jpg": "55f795d052d83019008f47511f30d1fc027ae25dcaa437a7ee9bba7b86202cba",
+            "frame_03.jpg": "4c79f28aabf3ac4ec0bcc96f89e078caa728130dbaa8fbf19d83a9bcbe5a32b8",
+            "frame_04.jpg": "8682867bca9e3f5cbd2345886b55e23b0ab163fdb1e239df6a026739b2979331"
+          },
+          "prompt_txt_sha256": "1c376a3c823397b2d6429d6fb4b0b312ffa23690c5690062f972e18620da7dab",
+          "prompt_contract_json_sha256": "3bd9e3ad0defb61447069105a121fd41ba23c52592ae1334697b6c335568c34a"
+        },
+        {
+          "variant": "xai_grok_imagine_video_previz",
+          "candidate_label": "Grok Imagine Previz",
+          "decision_role": "decision_candidate",
+          "decision_eligible": true,
+          "artifact_status": "retained_candidate_regrade_ready",
+          "meta_path": "xai_grok_imagine_video_previz/dialogue_confession_push_in/meta.json",
+          "meta_sha256": "5d478a3d55c1ca1a8a669eb7266d2091705ca08adb43562d869f529a6d239bda",
+          "clip_sha256": "ba349976285e682adba21eb7bb547c3265905f896f3b777440ef65cefd4386e9",
+          "frame_sha256": {
+            "frame_00.jpg": "d67677d251ef3eeebd5856242822a609106783c4ab301928ba1ad24264e32cae",
+            "frame_01.jpg": "8b7ce8488c4324b3e64be53fb0bfe31374aef323911a24ebd144d661bcc15898",
+            "frame_02.jpg": "9ec681d2590429e94feb89b571eedce7f0f4789b476c901a721cb7cdb5b36229",
+            "frame_03.jpg": "ee4fc093067e63d1f4495b16f5061fc7ff80f5f7a3249e7efd1276cbc57df8a0",
+            "frame_04.jpg": "1ac5e0cbf13a5abb808d063ba3add1fa8c302806458fb4b11d477fba9eb1cc2b"
+          },
+          "prompt_txt_sha256": "aaa1a43fdff8e785c9a985f5b2e2277ef1bbc9efe4e17e48788f5ff66c9a2291",
+          "prompt_contract_json_sha256": "fdc6c9fcdb91ca37f4eec2f1bae06b1d2705443e57dddc04bd03e0248865af70"
+        }
       ]
     },
     {
+      "evaluation_id": "previz_case_002",
       "clip_id": "quiet_bedside_vigil",
       "title": "Quiet bedside vigil",
+      "target_path": "benchmarks/previz_usefulness/targets/quiet_bedside_vigil.json",
+      "target_sha256": "a422c4e5e230cc3bb984b494a154ef10e6079630000272eb12ad657dc0fc1d0e",
+      "target_markdown_path": "benchmarks/previz_usefulness/targets/quiet_bedside_vigil.md",
+      "target_markdown_sha256": "7fbb9380ce2b6431a5052ec2caa28c58d62958de485ec5e1b41671253dcf517b",
       "variants": [
-        "symbolic",
-        "annotated_symbolic",
-        "google_veo31_lite_previz",
-        "google_veo31_fast_previz",
-        "xai_grok_imagine_video_previz"
+        {
+          "variant": "symbolic",
+          "candidate_label": "Symbolic Animatic",
+          "decision_role": "control_only",
+          "decision_eligible": false,
+          "artifact_status": "control_only_non_comparable",
+          "meta_path": "symbolic/quiet_bedside_vigil/meta.json",
+          "meta_sha256": "50ab0881aff50e121515d73bfa89150afa9f977ac5cd262abd330eaf9a29839f",
+          "clip_sha256": "26627f536ae6c35dca39d5abd9ae4d886666ba88a40cbebbecd4b4533865dc6f",
+          "frame_sha256": {
+            "frame_00.jpg": "266a20f017d0dcdb84a49de5d9e41b4490c9dc127ce8faec3c5e2ad3c1648e5a",
+            "frame_01.jpg": "266a20f017d0dcdb84a49de5d9e41b4490c9dc127ce8faec3c5e2ad3c1648e5a",
+            "frame_02.jpg": "266a20f017d0dcdb84a49de5d9e41b4490c9dc127ce8faec3c5e2ad3c1648e5a",
+            "frame_03.jpg": "266a20f017d0dcdb84a49de5d9e41b4490c9dc127ce8faec3c5e2ad3c1648e5a",
+            "frame_04.jpg": "266a20f017d0dcdb84a49de5d9e41b4490c9dc127ce8faec3c5e2ad3c1648e5a"
+          }
+        },
+        {
+          "variant": "annotated_symbolic",
+          "candidate_label": "Annotated Animatic",
+          "decision_role": "control_only",
+          "decision_eligible": false,
+          "artifact_status": "control_only_answer_leaking",
+          "meta_path": "annotated_symbolic/quiet_bedside_vigil/meta.json",
+          "meta_sha256": "2f194a13e9b50872877e5f996c6bdb0abcbf7a1a410c001c3d5df50104b9c5b8",
+          "clip_sha256": "20eeb4d657891d4cf07e569b527b74cbeca213194c7350174331ca5c267624e7",
+          "frame_sha256": {
+            "frame_00.jpg": "7632a3fd06fe307cf335318cbd478e5ae7536e9d48af0bd6c967e44bc106c074",
+            "frame_01.jpg": "7632a3fd06fe307cf335318cbd478e5ae7536e9d48af0bd6c967e44bc106c074",
+            "frame_02.jpg": "7632a3fd06fe307cf335318cbd478e5ae7536e9d48af0bd6c967e44bc106c074",
+            "frame_03.jpg": "7632a3fd06fe307cf335318cbd478e5ae7536e9d48af0bd6c967e44bc106c074",
+            "frame_04.jpg": "7632a3fd06fe307cf335318cbd478e5ae7536e9d48af0bd6c967e44bc106c074"
+          }
+        },
+        {
+          "variant": "google_veo31_lite_previz",
+          "candidate_label": "Veo 3.1 Lite Previz",
+          "decision_role": "decision_candidate",
+          "decision_eligible": true,
+          "artifact_status": "retained_candidate_regrade_ready",
+          "meta_path": "google_veo31_lite_previz/quiet_bedside_vigil/meta.json",
+          "meta_sha256": "79863b8fc849289e2c1f68e9e7ac7ac1914c0049c32e3e55b22ed9d812ba74f3",
+          "clip_sha256": "094e923d31b1f3bac4c59edf71a5db7c35bdb5b7c986ff021207eae35fd2989b",
+          "frame_sha256": {
+            "frame_00.jpg": "237b80d7504da487f7c57614dacdd4f548f1306026a7903cdfff84d9b11a95b8",
+            "frame_01.jpg": "eaeb88ebbfa38164a74f854c223e74f143fb7e0030fe6b59c52e52231daf1d3c",
+            "frame_02.jpg": "9990f3f9b560379b9e9ffdc616f90bc597a89edbb8367e018ac78efe1bb16d95",
+            "frame_03.jpg": "e084b3b7c71cae8d8ff14d0628f9833512a629d3e3617e06bbb2d88b74470b48",
+            "frame_04.jpg": "f4dfa58ed523f966f4245c1c66f432c26ab45b390069b9e268ab49bc08bdc661"
+          },
+          "prompt_txt_sha256": "e9154511f02e3936fe2905061e5f86d85c98bad0fd33c3af28ad6ca5f699f596",
+          "prompt_contract_json_sha256": "8b1aea68251ba6f6524970c21da8b78d5ecf9733d1388e580f26a5eaeed557ff"
+        },
+        {
+          "variant": "google_veo31_fast_previz",
+          "candidate_label": "Veo 3.1 Fast Previz",
+          "decision_role": "decision_candidate",
+          "decision_eligible": true,
+          "artifact_status": "retained_candidate_regrade_ready",
+          "meta_path": "google_veo31_fast_previz/quiet_bedside_vigil/meta.json",
+          "meta_sha256": "1317dca8ad8e86ba6d5aff0c930734c683ec279946f2f6b02a4b9ed6859f6a9b",
+          "clip_sha256": "1ce5ac6e50ffd3a5f7f0dec04e74e71aa400afb9398b92447ed889f3622f351d",
+          "frame_sha256": {
+            "frame_00.jpg": "d68095c85d11a608c15d50d8465ecf3fe67ecf1d7c0ba42242793dfc428e5b61",
+            "frame_01.jpg": "87fc02df315f93615bcee4f8f837facb812800ee9612899f3bdabe3bad0fd79d",
+            "frame_02.jpg": "9121931e61782960ae2fe6b627ec229b39bf38343deacd467f2bc8aa2b1cc4b9",
+            "frame_03.jpg": "2c768d0fb02214f8030027bb8f1e0236f808fcfb5459045ef00a37bec559656d",
+            "frame_04.jpg": "14d43a16249e712d5b2df7f468e822f0a56706c2b8bf8908ea6fe8f4af385f5c"
+          },
+          "prompt_txt_sha256": "dbffb98b12709b21b6d52c28dae7497f8d0d42ef6cca1511f6312e126c1ad52e",
+          "prompt_contract_json_sha256": "c93e83cbea5e5eb97be7526cf6b7c08c3172f377e97c0df830ec1298f5fd87d8"
+        },
+        {
+          "variant": "xai_grok_imagine_video_previz",
+          "candidate_label": "Grok Imagine Previz",
+          "decision_role": "decision_candidate",
+          "decision_eligible": true,
+          "artifact_status": "retained_candidate_regrade_ready",
+          "meta_path": "xai_grok_imagine_video_previz/quiet_bedside_vigil/meta.json",
+          "meta_sha256": "aabb33a3d1a672d8168e188cf9c42e0cd3f50fdad675e79989c2dd30127f885c",
+          "clip_sha256": "7d023eb8b82b17bf2f74bd2037885e20f225a9516d527550d2dd81044325702d",
+          "frame_sha256": {
+            "frame_00.jpg": "1d2e28a2787966ef379b883e40a39b46fb76585d7bc4be7d80d3c8704011239d",
+            "frame_01.jpg": "93637571ba117b4f2128fea96bbfad14d17ecfe2e1dd51940b989bd2e91364d8",
+            "frame_02.jpg": "7e29449fc5f38b30ff626609561275f5c3400461597465e55eddbd630ace6f8f",
+            "frame_03.jpg": "c37a2fbf101ebba2568e8e69ffd2806c087a530e0618dc10195abdce95813830",
+            "frame_04.jpg": "0eb91910f76bf2688bb775ce9b92cdc314955d4dad73814ea6fd331f84df986c"
+          },
+          "prompt_txt_sha256": "36290a0c91ee710254b0656e1ccc40c6fe6e3e87d7ed9581e368d5cf318b9ce4",
+          "prompt_contract_json_sha256": "28995a269e59c987bb9a1c417f644b508cbdb06c9567e7415d0eb90fecf8d9fd"
+        }
       ]
     },
     {
+      "evaluation_id": "previz_case_003",
       "clip_id": "radio_hold_tracking",
       "title": "Radio hold tracking",
+      "target_path": "benchmarks/previz_usefulness/targets/radio_hold_tracking.json",
+      "target_sha256": "9d5674792fb3d3995b32a432ec4e5d5317d0b2d40ad133e47fbe4f4f4671ae25",
+      "target_markdown_path": "benchmarks/previz_usefulness/targets/radio_hold_tracking.md",
+      "target_markdown_sha256": "ec5753b0b3469f9477b210dd014b3216c93ea210a988ba3a20a5e29af883e344",
       "variants": [
-        "symbolic",
-        "annotated_symbolic",
-        "google_veo31_lite_previz",
-        "google_veo31_fast_previz",
-        "xai_grok_imagine_video_previz"
+        {
+          "variant": "symbolic",
+          "candidate_label": "Symbolic Animatic",
+          "decision_role": "control_only",
+          "decision_eligible": false,
+          "artifact_status": "control_only_non_comparable",
+          "meta_path": "symbolic/radio_hold_tracking/meta.json",
+          "meta_sha256": "daa0751a1b33abdde5e6a95cea44d9e8ce93f192c412df6fa17a7a11781acd68",
+          "clip_sha256": "8ffe6d354b7883b329d9981ab7d7b109698ac7a3b4e9904d97c0106e8955bca7",
+          "frame_sha256": {
+            "frame_00.jpg": "57ce7bc37056c90dfa3e094df35ee7c1e3b0d12cae665e0d2ac4b799ca7ee160",
+            "frame_01.jpg": "816941eac3f79cc83dcf21cd8514e815587fb14466a82d2f265479c1a721cb52",
+            "frame_02.jpg": "1223f368412fbe31eacfb9544bed9dca6d1c2bd252bf2f5d0394fe3f55c40422",
+            "frame_03.jpg": "7c4c094d094d025c635118f393194b7d138529a14a37c90a43a6369ab9cbd846",
+            "frame_04.jpg": "1b9e81c87b00bbf61d584cdc881cb2077ee6625c40355735c2d1a307bcd65e06"
+          }
+        },
+        {
+          "variant": "annotated_symbolic",
+          "candidate_label": "Annotated Animatic",
+          "decision_role": "control_only",
+          "decision_eligible": false,
+          "artifact_status": "control_only_answer_leaking",
+          "meta_path": "annotated_symbolic/radio_hold_tracking/meta.json",
+          "meta_sha256": "c78aef19901aae9365dbc73fdd70a55b6a989c9ba949109fd55ecabcc5657e7e",
+          "clip_sha256": "373ad2841097d7721c96bc966467930633b6b1988cd8d4824d5ce7494d256347",
+          "frame_sha256": {
+            "frame_00.jpg": "9e4900faceaff0031b6b05224d414cc89c42610464a78cc7f34999692eac2376",
+            "frame_01.jpg": "bd6251708396d3753a2fcdc991016e91e38fe41e56e997ed377d283905075e3b",
+            "frame_02.jpg": "0681e666a2f42bfe50daa4b75896e284af8795d7f1df1768d18846690987e08f",
+            "frame_03.jpg": "9cfbb60c35ce2c850a880383654c383fc80f81121bc6d17e059b7a0b5fa2ccb8",
+            "frame_04.jpg": "595ab77b1e41637ae986bdae03d7713692b2c919a2bbd37e9c6f65b19ee860e6"
+          }
+        },
+        {
+          "variant": "google_veo31_lite_previz",
+          "candidate_label": "Veo 3.1 Lite Previz",
+          "decision_role": "decision_candidate",
+          "decision_eligible": true,
+          "artifact_status": "retained_candidate_regrade_ready",
+          "meta_path": "google_veo31_lite_previz/radio_hold_tracking/meta.json",
+          "meta_sha256": "53e31a4adfb6e9835285f4382dd39b834c14aa69603189ed6281b987531feb21",
+          "clip_sha256": "752e3754cd054dcd8cbdf89d24cc34968a65f3bb38cb063504ea304db84bbbf3",
+          "frame_sha256": {
+            "frame_00.jpg": "0f59a18e8550c45a9f2e5fb7ac847e7bc94e6f076830267228448ed34938a89f",
+            "frame_01.jpg": "ebf8587553c764db2e6bf66227bcc5615e46a1fcaf79b14b98696d0fa17768a0",
+            "frame_02.jpg": "da947f90f884e3ed96f00130d0439b478d60ed62ea35a4d1b6ed10563dd8a839",
+            "frame_03.jpg": "7213609426d4514e1f4eaedf0b5ccd6750a7d46fc4272702d33e42bca0b504df",
+            "frame_04.jpg": "c686283f72118a0366813a26a7edba290451090777a50df60d716a1b9789f988"
+          },
+          "prompt_txt_sha256": "d7137c18234187d5d9bcf200211f92fead7f77b0a798b9b762d89072f5314191",
+          "prompt_contract_json_sha256": "17d3b99869c60a55ce935e9bb7a165ce16c42f01decde5d9597982645c38cf2c"
+        },
+        {
+          "variant": "google_veo31_fast_previz",
+          "candidate_label": "Veo 3.1 Fast Previz",
+          "decision_role": "decision_candidate",
+          "decision_eligible": true,
+          "artifact_status": "retained_candidate_regrade_ready",
+          "meta_path": "google_veo31_fast_previz/radio_hold_tracking/meta.json",
+          "meta_sha256": "3de44707dcbf192e3b12740fbbb47998208c6ac37a2e4285043adb52495a3454",
+          "clip_sha256": "bb931d0a28d2bcfd16735e3431e42d14e25a5fd9f333cda6c1309b48c200df15",
+          "frame_sha256": {
+            "frame_00.jpg": "a373a103f7691ce5c9e08f1f7edc4f3ffa1383afc0350ac85c6340e628044ec7",
+            "frame_01.jpg": "b8f120a0aa4258263b1018058e8682597d3eb21a2b1c5a2780058ad6a487a2a3",
+            "frame_02.jpg": "0c79822cf756aab14931d17f063f8b262b18e634c773b03d0896fc5cfdf37dbe",
+            "frame_03.jpg": "8c679e9297f7f31e3680e76ce8ac30a14f8b1e425e56913336982c786985cc0e",
+            "frame_04.jpg": "5235ad3d80ff1d26b5fad703f594894dcbe037d308da8a4be54088ba349c5898"
+          },
+          "prompt_txt_sha256": "28320e09545e1e1c34d68315c270d32e58363c6d03da51a9e0aa2b36982e518c",
+          "prompt_contract_json_sha256": "215c5d9cbae89c8ca1e574886f0db27962ac23545a9fd8112f935f6bcda0921c"
+        },
+        {
+          "variant": "xai_grok_imagine_video_previz",
+          "candidate_label": "Grok Imagine Previz",
+          "decision_role": "decision_candidate",
+          "decision_eligible": true,
+          "artifact_status": "retained_candidate_regrade_ready",
+          "meta_path": "xai_grok_imagine_video_previz/radio_hold_tracking/meta.json",
+          "meta_sha256": "c13a937bd08043ac886c6e2b937894fa314bf24465ed04a150bedbf01db86896",
+          "clip_sha256": "0e9021eb2f799e47cab85346d76e80d8c798558fb577f6eecb11c9b28c0531f8",
+          "frame_sha256": {
+            "frame_00.jpg": "a195454bdffbfd0778253478bd77557b2c5aab263af524f2d05b19f1873eeae6",
+            "frame_01.jpg": "c9dea562b73d866f5053a1f864715c7c52197c5e452a1d1334d0c8b32cb61668",
+            "frame_02.jpg": "af4e9a317a4ef7bc920e08f7d74b80d2fcf68ea99d7abb9519cfaf66ba7699e8",
+            "frame_03.jpg": "cc22e0c11f90c26fe455fe9223b5e38bcf4eb2dd5020d030b625ccd4d5e4d196",
+            "frame_04.jpg": "c375cde4354f0f6956ffa728b0a8fa0b9edc58caafbef75c152c51d1cd875d53"
+          },
+          "prompt_txt_sha256": "84bf5eb016d7fbfa4de98a0880fd5728a1b215b75ca80da027f6ad2c4a96f3ab",
+          "prompt_contract_json_sha256": "ae576bda924e8d4db626de553b61a18eb9af41b4b8f06936974f4bbe9b694122"
+        }
       ]
     }
   ]

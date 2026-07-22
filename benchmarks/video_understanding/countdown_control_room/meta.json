@@ -1,19 +1,35 @@
 {
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "asset_audio_tags": [
+    "alarm",
+    "speech"
+  ],
+  "audio_description": "Synthetic speech and tone exist in the MP4 but are excluded from frame scoring.",
+  "case_status": "quarantined",
   "clip_id": "countdown_control_room",
-  "title": "Countdown control room",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
   "duration_seconds": 4.0,
-  "resolution": "640x360",
   "fps": 8,
+  "generator_version": "frame-truth-v2",
   "has_audio": true,
-  "transcript": "Thirty seconds. If the relay drops, the whole block goes dark.",
-  "audio_description": "Operator dialogue rides above warning bleeps.",
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "sampled_frame_sha256": [
+    "69c5e49e439c273c27625c247379ec2fcd29c6618751e5f76ad0e756c986dfd7",
+    "4c871fdda09f5f36c85fc62f3a3803d92cfbbfc6b3c9f0c2e648649ef52e2f7a",
+    "d583bb292f24b25663a4b87789748e1cb47d0fca3c1c520e733d300606c04e8b",
+    "a31ce0fe4353f339c626b50db9b41a0dbc32e0e8a44347dfb7c8d0bb7732d85e",
+    "69c5e49e439c273c27625c247379ec2fcd29c6618751e5f76ad0e756c986dfd7"
+  ],
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "spec_sha256": "aa07b353db42e8dd9873f8708c38a565106e7c1541ec5ced0529978182bcded5",
+  "status_reason": "Frames show pulsing light but no visible countdown, relay, operator action, or screen content.",
   "tags": [
     "dialogue",
     "procedural"
   ],
-  "anchor_subset": false,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+  "temporal_control": "dynamic",
+  "title": "Blue screen wall under red pulses",
+  "transcript": "Thirty seconds. If the relay drops, the whole block goes dark.",
+  "unique_sampled_frames": 4
 }

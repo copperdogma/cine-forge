@@ -1,60 +1,58 @@
 {
+  "anchor_subset": false,
+  "audio_description": null,
+  "audio_tags": [],
+  "camera_tags": [
+    "handheld_jitter",
+    "wide_master"
+  ],
   "clip_id": "handheld_panic_stairwell",
-  "title": "Handheld panic stairwell",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "has_audio": true,
-  "transcript": null,
-  "audio_description": "Heavy breaths, heartbeat, and clipped percussion.",
-  "summary_reference": "A handheld stairwell scramble jolts violently as the subject glances back and loses the frame edge.",
-  "required_keywords": [
-    "handheld",
-    "stairwell",
-    "panic"
-  ],
-  "tone_tags": [
-    "urgent",
-    "tense"
-  ],
-  "emotion_tags": [
+  "clip_tags": [
+    "action",
     "panic"
   ],
   "color_tags": [
     "red",
     "desaturated"
   ],
-  "camera_tags": [
-    "handheld_jitter"
+  "continuity_notes": [
+    "The small orange rectangle stays beside the runner."
   ],
+  "continuity_status": "intact",
+  "duration_seconds": 4.0,
+  "emotion_tags": [
+    "panic"
+  ],
+  "has_audio": true,
   "motion_tags": [
     "jitter",
     "escalating"
   ],
-  "continuity_status": "intact",
-  "continuity_notes": [
-    "The orange scarf stays around the subject's neck."
+  "required_keywords": [
+    "runner",
+    "orange",
+    "irregular"
   ],
-  "audio_tags": [
-    "heartbeat",
-    "percussion"
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "An orange abstract runner moves left to right with irregular horizontal position changes against diagonal lines.",
+  "title": "Orange jittering run",
+  "tone_tags": [
+    "urgent",
+    "tense"
   ],
-  "clip_tags": [
-    "action",
-    "panic"
-  ],
-  "anchor_subset": false,
+  "transcript": null,
   "weights": {
-    "summary": 0.18,
-    "tone": 0.14,
-    "emotion": 0.12,
-    "color": 0.1,
-    "camera": 0.12,
-    "motion": 0.1,
-    "continuity": 0.12,
-    "audio": 0.08,
-    "evidence": 0.04
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
   }
 }

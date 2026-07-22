@@ -1,0 +1,134 @@
+{
+  "big-fish": {
+    "file_stem": "Big-Fish",
+    "scene_count": 190,
+    "pdf_source_minimum_precision": 0.99,
+    "allowed_pdf_extra_tokens": [
+      "CONT'D",
+      "MORE",
+      "COPYRIGHT",
+      "EDWARD",
+      "JENNY",
+      "WILL",
+      "V",
+      "O",
+      "SANDRA",
+      "JOSEPHINE",
+      "AMOS",
+      "BEAMEN",
+      "PING"
+    ],
+    "identity_anchors": [
+      "Big Fish",
+      "John August",
+      "based on the novel by Daniel Wallace",
+      "FINAL PRODUCTION DRAFT",
+      "2003 Columbia Pictures"
+    ],
+    "ordered_scene_anchors": [
+      "INT. WILL'S BEDROOM - NIGHT (1973)",
+      "EXT. MAIN STREET OF ASHTON - DAY",
+      "EXT. THE SORORITY HOUSE - DAY",
+      "INT./EXT. VARIOUS LOCATIONS - DAY",
+      "EXT. RIVER / UNDERWATER - DAY"
+    ],
+    "dialogue_anchors": [
+      {
+        "speaker": "EDWARD",
+        "dialogue": "I didn't put any stock into such speculation or superstition"
+      },
+      {
+        "speaker": "AMOS",
+        "dialogue": "Every month you work for me, I'll tell you one thing about her"
+      },
+      {
+        "speaker": "TELLER WOMAN",
+        "dialogue": "there's no money. We're completely bankrupt"
+      },
+      {
+        "speaker": "WILL",
+        "dialogue": "You become what you always were. A very big fish"
+      }
+    ]
+  },
+  "brick-and-steel": {
+    "file_stem": "Brick-&-Steel",
+    "scene_count": 6,
+    "pdf_source_minimum_precision": 0.985,
+    "allowed_pdf_extra_tokens": ["CONT'D"],
+    "identity_anchors": [
+      "BRICK & STEEL",
+      "FULL RETIRED",
+      "Stu Maschwitz",
+      "Story by KTM",
+      "1/27/2012"
+    ],
+    "ordered_scene_anchors": [
+      "EXT. BRICK'S PATIO - DAY",
+      "INT. TRAILER HOME - DAY",
+      "EXT. WOODEN SHACK - DAY",
+      "INT. GARAGE - DAY",
+      "EXT. PALATIAL MANSION - DAY"
+    ],
+    "dialogue_anchors": [
+      {
+        "speaker": "STEEL",
+        "dialogue": "Beer's ready"
+      },
+      {
+        "speaker": "DAN",
+        "dialogue": "Then let's retire them. Permanently"
+      },
+      {
+        "speaker": "COGNITO",
+        "dialogue": "Everyone's coming after you mate"
+      },
+      {
+        "speaker": "HANDSOME MAN",
+        "dialogue": "I want them dead. DEAD"
+      }
+    ]
+  },
+  "the-last-birthday-card": {
+    "file_stem": "The-Last-Birthday-Card",
+    "scene_count": 24,
+    "pdf_source_minimum_precision": 0.99,
+    "allowed_pdf_extra_tokens": ["CONT'D", "MORE", "THE", "BOSS"],
+    "identity_anchors": [
+      "THE LAST BIRTHDAY CARD",
+      "Stu Maschwitz",
+      "7/8/1998",
+      "Registered WGAw No. 701428"
+    ],
+    "pdf_source_token_aliases": {
+      "APPARTMENT": "APARTMENT",
+      "THREATTM": "THREAT",
+      "DEDUCTABLE": "DEDUCTIBLE"
+    },
+    "ordered_scene_anchors": [
+      "INT. SAN FRANCISCO APARTMENT, DAY",
+      "EXT. GOLDEN GATE BRIDGE",
+      "INT. PALACE HOTEL LOBBY, A BIT LATER",
+      "INT. SOUTHERN EXPOSURE GALLERY, SOUTH OF MARKET",
+      "INT. SCOTT'S NEW APARTMENT, A FEW DAYS LATER"
+    ],
+    "dialogue_anchors": [
+      {
+        "speaker": "SCOTT",
+        "dialogue": "I got another birthday card today"
+      },
+      {
+        "speaker": "THE BOSS",
+        "dialogue": "Glad to hear it. I'll update my file"
+      },
+      {
+        "speaker": "NAK",
+        "dialogue": "That's why I make the big bucks"
+      },
+      {
+        "speaker": "SOPHISTICATED WOMAN",
+        "dialogue": "I saw your work last night at a party at Nak's"
+      }
+    ]
+  }
+}

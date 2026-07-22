@@ -1,0 +1,41 @@
+{
+  "description": "Golden reference for a deliberately corrupted, repo-authored Open Frequency Fountain excerpt",
+  "expected_scenes": [
+    "INT. COMMUNITY RADIO STUDIO - NIGHT",
+    "EXT. WATER TOWER CATWALK - NIGHT"
+  ],
+  "expected_characters": ["ARIA", "NOAH", "JUNE", "KELL", "UNKNOWN VOICE"],
+  "required_dialogue": [
+    {"character": "KELL", "fragment": "Bridge is closed. Cell towers are dead"},
+    {"character": "NOAH", "fragment": "Please tell me that antenna is less cursed"},
+    {"character": "KELL", "fragment": "It only tried to kill me once"},
+    {"character": "JUNE", "fragment": "Tonight we don't have time for a second opinion"},
+    {"character": "ARIA", "fragment": "Give me ten minutes and one miracle"},
+    {"character": "JUNE", "fragment": "Take fifteen. Keep the miracle"},
+    {"character": "NOAH", "fragment": "I miss boring weather"},
+    {"character": "ARIA", "fragment": "You miss boring jobs"},
+    {"character": "UNKNOWN VOICE", "fragment": "north shelter needs insulin and dry blankets"},
+    {"character": "ARIA", "fragment": "June, do you copy"},
+    {"character": "JUNE", "fragment": "Loud enough to make me useful"}
+  ],
+  "forbidden_patterns": [
+    "^\\s*>",
+    "^\\s*#{1,6}(?:\\s|$)",
+    "^\\s*-\\s+",
+    "\\\\-",
+    "\\\\!",
+    "\\\\:",
+    "```",
+    "\\*",
+    "__"
+  ],
+  "structural_rules": {
+    "scene_headings_uppercase": true,
+    "character_cues_uppercase": true,
+    "parentheticals_in_parens": true,
+    "no_markdown_formatting": true,
+    "blank_line_before_character_cue": true,
+    "preserve_source_action_order": true,
+    "preserve_source_transitions": true
+  }
+}

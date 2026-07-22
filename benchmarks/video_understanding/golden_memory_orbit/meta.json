@@ -1,19 +1,34 @@
 {
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "asset_audio_tags": [
+    "soft_music"
+  ],
+  "audio_description": "Synthetic tone exists in the MP4 but is excluded from frame scoring.",
+  "case_status": "quarantined",
   "clip_id": "golden_memory_orbit",
-  "title": "Golden memory orbit",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
   "duration_seconds": 4.0,
-  "resolution": "640x360",
   "fps": 8,
+  "generator_version": "frame-truth-v2",
   "has_audio": true,
-  "transcript": null,
-  "audio_description": "Warm, floating strings with no dialogue.",
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "sampled_frame_sha256": [
+    "b21c1ea83c9b63becdf28281a09bcf4b1066ae297ae8497bb5ecb7fad4ed6a6f",
+    "71b2d06b876f9d189ccee45dfe1b2d3a639f313bb3e9d49000c496277bf50917",
+    "25d50f1c54b32feaccd45bddb46f966cb91f6094bbcb503e50eaccdbb63c350d",
+    "526dc86b5cca6ef4f1e544741e1c283c04aba2573f720239d86c07f868c553da",
+    "eaec5fd51803659eb2f38703b61762218084529e6d99e99b4a2ba827ee9d8688"
+  ],
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "spec_sha256": "73737e1aef54289c0098ab5819702c6559676a14e56c28234b50fa52cb57e4bf",
+  "status_reason": "The frames support a push-in but not the former orbit, memory, lantern, or tender-recollection claims.",
   "tags": [
     "flashback",
     "stylized_color"
   ],
-  "anchor_subset": false,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+  "temporal_control": "dynamic",
+  "title": "Golden circle two-shot",
+  "transcript": null,
+  "unique_sampled_frames": 5
 }

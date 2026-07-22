@@ -11,18 +11,27 @@
       "character:billy": [
         {
           "key": "costume",
-          "value_patterns": ["leather jacket", "zipped"],
+          "value_patterns": ["leather jacket"],
+          "required": true
+        },
+        {
+          "key": "costume",
+          "value_patterns": ["zipped against the wind"],
           "required": true
         },
         {
           "key": "emotional_state",
-          "value_patterns": ["flat", "resigned", "tired", "disaffected"],
+          "value_patterns": ["flat"],
           "required": true
         },
         {
           "key": "props_carried",
-          "value_patterns": ["oar"],
-          "required": false
+          "value_patterns": [
+            "not carrying the oar",
+            "oar set down",
+            "set the oar against a piling"
+          ],
+          "required": true
         }
       ],
       "character:jane": [
@@ -34,7 +43,7 @@
         {
           "key": "props_carried",
           "value_patterns": ["envelope"],
-          "required": false
+          "required": true
         }
       ],
       "location:harbor_dock": [
@@ -46,24 +55,44 @@
         {
           "key": "weather",
           "value_patterns": ["wind", "windy"],
-          "required": false
+          "required": true
+        },
+        {
+          "key": "lighting",
+          "value_patterns": ["daylight"],
+          "required": true
         }
       ],
       "prop:oar": [
         {
           "key": "condition",
-          "value_patterns": ["intact", "weathered", "old", "oak"],
+          "value_patterns": ["weathered"],
+          "required": true
+        },
+        {
+          "key": "condition",
+          "value_patterns": ["oak"],
+          "required": true
+        },
+        {
+          "key": "condition",
+          "value_patterns": ["rope-wrapped grip", "rope wrapped grip"],
+          "required": true
+        },
+        {
+          "key": "condition",
+          "value_patterns": ["intact"],
           "required": true
         },
         {
           "key": "position",
-          "value_patterns": ["piling", "walking stick", "hand", "against"],
-          "required": false
+          "value_patterns": ["against a piling"],
+          "required": true
         },
         {
           "key": "ownership",
-          "value_patterns": ["billy", "father"],
-          "required": false
+          "value_patterns": ["Billy's father", "his father's"],
+          "required": true
         }
       ],
       "prop:envelope": [
@@ -71,33 +100,14 @@
           "key": "condition",
           "value_patterns": ["sealed"],
           "required": true
-        },
-        {
-          "key": "ownership",
-          "value_patterns": ["jane", "billy"],
-          "required": false
         }
       ]
     },
-    "expected_changes": {
-      "character:billy": [
-        {
-          "property_key": "costume",
-          "previous_patterns": ["flannel", "shirt", "jeans"],
-          "new_patterns": ["leather jacket"]
-        },
-        {
-          "property_key": "emotional_state",
-          "previous_patterns": ["tense"],
-          "new_patterns": ["flat", "resigned"]
-        }
-      ]
-    },
+    "expected_changes": {},
     "key_evidence": [
       "leather jacket zipped against the wind",
-      "I'm always late",
-      "weathered oak with a rope-wrapped grip",
-      "sealed ENVELOPE"
+      "She holds a sealed ENVELOPE",
+      "sets the OAR against a piling"
     ],
     "expected_confidence_range": [0.6, 1.0]
   },
@@ -112,17 +122,42 @@
       "character:billy": [
         {
           "key": "costume",
-          "value_patterns": ["torn", "leather jacket", "sleeve"],
+          "value_patterns": ["leather jacket"],
+          "required": true
+        },
+        {
+          "key": "costume",
+          "value_patterns": ["torn"],
+          "required": true
+        },
+        {
+          "key": "costume",
+          "value_patterns": ["left sleeve"],
           "required": true
         },
         {
           "key": "physical_condition",
-          "value_patterns": ["blood", "knuckles", "injured", "soaked"],
+          "value_patterns": ["dried blood visible"],
+          "required": true
+        },
+        {
+          "key": "physical_condition",
+          "value_patterns": ["on his knuckles"],
+          "required": true
+        },
+        {
+          "key": "physical_condition",
+          "value_patterns": ["soaked through"],
           "required": true
         },
         {
           "key": "emotional_state",
-          "value_patterns": ["hollow", "defeated", "numb", "despondent", "empty"],
+          "value_patterns": ["hollow", "empty"],
+          "required": true
+        },
+        {
+          "key": "props_carried",
+          "value_patterns": ["not carrying the oar", "oar at his feet"],
           "required": true
         }
       ],
@@ -134,31 +169,46 @@
         },
         {
           "key": "weather",
-          "value_patterns": ["rain", "storm"],
+          "value_patterns": ["rain"],
           "required": true
         },
         {
           "key": "lighting",
           "value_patterns": ["dark", "night"],
-          "required": false
+          "required": true
         }
       ],
       "prop:oar": [
         {
           "key": "condition",
-          "value_patterns": ["broken", "two pieces", "destroyed", "snapped"],
+          "value_patterns": ["broken"],
+          "required": true
+        },
+        {
+          "key": "condition",
+          "value_patterns": ["two pieces"],
           "required": true
         },
         {
           "key": "position",
-          "value_patterns": ["feet", "ground", "dock", "floor"],
-          "required": false
+          "value_patterns": ["at his feet"],
+          "required": true
+        },
+        {
+          "key": "ownership",
+          "value_patterns": ["Billy's father", "his father's"],
+          "required": true
         }
       ],
       "prop:envelope": [
         {
           "key": "condition",
-          "value_patterns": ["open", "scattered", "contents"],
+          "value_patterns": ["open"],
+          "required": true
+        },
+        {
+          "key": "condition",
+          "value_patterns": ["contents scattered in puddles"],
           "required": true
         }
       ]
@@ -167,58 +217,104 @@
       "character:billy": [
         {
           "property_key": "costume",
-          "previous_patterns": ["leather jacket", "zipped"],
-          "new_patterns": ["torn", "sleeve"]
+          "previous_patterns": ["leather jacket zipped against the wind"],
+          "new_patterns": [
+            "leather jacket torn at the left sleeve",
+            "leather jacket torn on the left sleeve"
+          ],
+          "evidence_patterns": ["leather jacket is torn at the left sleeve"],
+          "is_explicit": true
         },
         {
           "property_key": "physical_condition",
           "previous_patterns": [],
-          "new_patterns": ["blood", "knuckles", "injured", "soaked"]
+          "new_patterns": ["dried blood visible on his knuckles"],
+          "evidence_patterns": ["dried blood visible on his knuckles"],
+          "is_explicit": true
+        },
+        {
+          "property_key": "physical_condition",
+          "previous_patterns": [],
+          "new_patterns": ["soaked through"],
+          "evidence_patterns": ["sits on a coiled rope soaked through"],
+          "is_explicit": true
         },
         {
           "property_key": "emotional_state",
-          "previous_patterns": ["flat", "resigned"],
-          "new_patterns": ["hollow", "defeated", "empty", "numb"]
+          "previous_patterns": ["flat"],
+          "new_patterns": ["hollow", "empty"],
+          "evidence_patterns": ["stares at the dark water expression hollow"],
+          "is_explicit": true
         }
       ],
       "location:harbor_dock": [
         {
           "property_key": "time_of_day",
           "previous_patterns": ["day"],
-          "new_patterns": ["night"]
+          "new_patterns": ["night"],
+          "evidence_patterns": ["EXT HARBOR DOCK NIGHT"],
+          "is_explicit": true
         },
         {
           "property_key": "weather",
-          "previous_patterns": ["wind", "windy"],
-          "new_patterns": ["rain", "storm"]
+          "previous_patterns": ["wind"],
+          "new_patterns": ["rain"],
+          "evidence_patterns": ["Rain hammers the dock"],
+          "is_explicit": true
+        },
+        {
+          "property_key": "lighting",
+          "previous_patterns": ["daylight"],
+          "new_patterns": ["dark", "night"],
+          "evidence_patterns": ["EXT HARBOR DOCK NIGHT"],
+          "is_explicit": false
         }
       ],
       "prop:oar": [
         {
           "property_key": "condition",
-          "previous_patterns": ["intact", "weathered"],
-          "new_patterns": ["broken", "two pieces", "destroyed"]
+          "previous_patterns": [
+            "intact weathered oak with rope wrapped grip"
+          ],
+          "new_patterns": ["broken in two pieces", "broken into two pieces"],
+          "evidence_patterns": ["OAR lies broken in two pieces at his feet"],
+          "is_explicit": true
         },
         {
           "property_key": "position",
-          "previous_patterns": ["piling", "against"],
-          "new_patterns": ["feet", "ground", "dock"]
+          "previous_patterns": ["set against a piling"],
+          "new_patterns": ["at his feet"],
+          "evidence_patterns": ["OAR lies broken in two pieces at his feet"],
+          "is_explicit": true
         }
       ],
       "prop:envelope": [
         {
           "property_key": "condition",
           "previous_patterns": ["sealed"],
-          "new_patterns": ["open", "scattered"]
+          "new_patterns": ["open"],
+          "evidence_patterns": ["ENVELOPE is open"],
+          "is_explicit": true
+        },
+        {
+          "property_key": "condition",
+          "previous_patterns": ["sealed"],
+          "new_patterns": ["contents scattered in puddles"],
+          "evidence_patterns": ["contents scattered in puddles"],
+          "is_explicit": true
         }
       ]
     },
     "key_evidence": [
       "torn at the left sleeve",
       "dried blood visible on his knuckles",
+      "soaked through",
       "broken in two pieces",
+      "at his feet",
       "Rain hammers the dock",
+      "EXT. HARBOR DOCK - NIGHT",
       "expression hollow",
+      "ENVELOPE is open",
       "contents scattered in puddles"
     ],
     "expected_confidence_range": [0.7, 1.0]

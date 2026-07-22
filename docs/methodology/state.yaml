@@ -105,9 +105,10 @@
       "absorbs": ["AI Platform, Model Selection & Validation (old 8)"],
       "notes": [
         "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.",
-        "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks."
+        "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks.",
+        "Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Configured defaults remain provisional until fresh repaired-contract evidence exists."
       ],
-      "last_reviewed": "2026-04-10"
+      "last_reviewed": "2026-07-22"
     },
     "spec:9": {
       "substrate": "partial",
@@ -160,29 +161,29 @@
       "phase": "hold",
       "current": "Dedicated QA / verification remains the safest path for structured output quality.",
       "converge_signal": "First-attempt output becomes reliable enough to demote QA to lightweight assertions only.",
-      "evidence": "`compromise-C2-qa-validation` does not justify deletion yet.",
-      "last_reviewed": "2026-04-04"
+      "evidence": "Story 208 repaired and invalidated the legacy extraction and QA evidence. `compromise-C2-qa-validation` has no current decision-grade row, so dedicated QA remains.",
+      "last_reviewed": "2026-07-22"
     },
     "C3": {
       "phase": "hold",
       "current": "Value-optimized model selection remains justified because no single model dominates CineForge's full task surface.",
       "converge_signal": "One model meets all current default-driving quality bars at acceptable latency and cost.",
-      "evidence": "`compromise-C3-tiered-models` still leaves the repo below the single-model bar.",
-      "last_reviewed": "2026-04-04"
+      "evidence": "Story 208 invalidated the legacy cross-task scores. `compromise-C3-tiered-models` has no current decision-grade matrix proving one model clears every repaired quality, latency, and cost bar.",
+      "last_reviewed": "2026-07-22"
     },
     "C4": {
       "phase": "climb",
       "current": "Structural scene breakdown lands quickly, while slower narrative enrichment remains separate and user-triggered.",
       "converge_signal": "Single-pass scene understanding becomes both fast enough and good enough to replace the split.",
-      "evidence": "`compromise-C4-two-tier-scenes` still shows the best candidate below the quality/latency bar.",
-      "last_reviewed": "2026-04-04"
+      "evidence": "Story 208 invalidated the legacy scene scores. `compromise-C4-two-tier-scenes` has no current repaired-contract result proving a single pass clears both quality and latency bars.",
+      "last_reviewed": "2026-07-22"
     },
     "C5": {
       "phase": "hold",
       "current": "Roles declare modality limits and route around them instead of pretending to perceive media they cannot understand.",
       "converge_signal": "One broadly usable multimodal model makes per-role modality declarations unnecessary.",
-      "evidence": "`compromise-C5-role-modality` has no passing deletion signal.",
-      "last_reviewed": "2026-04-04"
+      "evidence": "Story 208 reclassified the visual lanes as ordered-frame comprehension and quarantined legacy modality scores. `compromise-C5-role-modality` has no native-video/audio decision-grade deletion signal.",
+      "last_reviewed": "2026-07-22"
     },
     "C6": {
       "phase": "hold",

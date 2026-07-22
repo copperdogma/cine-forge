@@ -1,4 +1,5 @@
 {
+  "contract_version": "runtime-media-truth-v2",
   "cases": [
     {
       "case_id": "quiet-bedside-review",
@@ -7,20 +8,28 @@
       "scene_heading": "Quiet bedside vigil",
       "prompt_text": "A static bedside composition holds on one seated figure under a warm lamp while the room stays almost still.",
       "mutation": "none",
-      "expected_health": "needs_review",
+      "expected_health": "valid",
       "category": "semantic",
-      "expectation_note": "Static sampled-frame packet should stay reviewable rather than fail outright."
+      "intent_contract": "matching_media",
+      "source_asset_sha256": "ebca1c583d84578e8f40bfdc7438b97160da0fe0689226d3e56d44aacc9d1037",
+      "source_target_path": "benchmarks/video_understanding/quiet_bedside_vigil/target.json",
+      "source_target_sha256": "20bbf829deb5618ff63ba77000f34998f5eb6d37cf0cfd58ec086beced7a3ea4",
+      "expectation_note": "A coherent static composition is valid; stillness is an observable negative temporal control, not grounds for needs_review by itself."
     },
     {
       "case_id": "prop-swap-revision",
       "label": "Prop swap revision",
       "clip_slug": "prop_swap_continuity_break",
       "scene_heading": "Prop swap continuity break",
-      "prompt_text": "A table scene cuts between matching framings, but the folder on the tabletop changes from red to blue after the cut.",
+      "prompt_text": "A static table composition holds throughout. The small tabletop marker must remain red in every frame with no color or identity change.",
       "mutation": "none",
       "expected_health": "needs_revision",
       "category": "semantic",
-      "expectation_note": "Continuity-breaking prop swap should be treated as blocking."
+      "intent_contract": "deliberate_visual_mismatch",
+      "source_asset_sha256": "f05f9ca2addce4a0d4798bb5ec11a3cbf8ec3ce4d70704eb029adf456eeb86b7",
+      "source_target_path": "benchmarks/video_understanding/prop_swap_continuity_break/target.json",
+      "source_target_sha256": "9f14e1f173f5d818b8f915016c498be241206814cfd6cf36d4b68cacdb875be8",
+      "expectation_note": "The hash-locked media changes the marker from red to blue, contradicting the stable-red prompt; the mismatch should be blocking."
     },
     {
       "case_id": "missing-file-revision",
@@ -31,6 +40,10 @@
       "mutation": "missing_file",
       "expected_health": "needs_revision",
       "category": "structural",
+      "intent_contract": "structural_only",
+      "source_asset_sha256": "ebca1c583d84578e8f40bfdc7438b97160da0fe0689226d3e56d44aacc9d1037",
+      "source_target_path": "benchmarks/video_understanding/quiet_bedside_vigil/target.json",
+      "source_target_sha256": "20bbf829deb5618ff63ba77000f34998f5eb6d37cf0cfd58ec086beced7a3ea4",
       "expectation_note": "Missing media file is a blocking runtime failure."
     },
     {
@@ -43,6 +56,10 @@
       "truncate_bytes": 512,
       "expected_health": "needs_revision",
       "category": "structural",
+      "intent_contract": "structural_only",
+      "source_asset_sha256": "ebca1c583d84578e8f40bfdc7438b97160da0fe0689226d3e56d44aacc9d1037",
+      "source_target_path": "benchmarks/video_understanding/quiet_bedside_vigil/target.json",
+      "source_target_sha256": "20bbf829deb5618ff63ba77000f34998f5eb6d37cf0cfd58ec086beced7a3ea4",
       "expectation_note": "Corrupt media that cannot decode is a blocking runtime failure."
     }
   ]

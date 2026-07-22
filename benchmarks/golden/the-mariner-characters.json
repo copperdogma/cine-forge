@@ -2,7 +2,7 @@
   "THE MARINER": {
     "character_id": "the-mariner",
     "name": "THE MARINER",
-    "aliases": ["Billy", "Will", "Mariner"],
+    "aliases": ["Billy", "Will", "Mariner", "Young Mariner", "Bosun"],
     "narrative_role": "protagonist",
     "key_traits": [
       "physically powerful",
@@ -17,28 +17,36 @@
       {"target": "SALVATORI", "type": "adversary"}
     ],
     "must_mention_scenes": [
-      "EXT. RUDDY & GREENE BUILDING - REAR",
+      "EXT. RUDDY & GREENE BUILDING - REAR - NIGHT",
       "INT. RUDDY & GREEN BUILDING - ELEVATOR",
-      "INT. 11TH FLOOR",
+      "INT. 11TH FLOOR - CONTINUOUS",
+      "BEGIN FLASHBACK: EXT. COASTLINE - DAY - PAST",
+      "INT. STAIRWELL - CONTINUOUS",
+      "INT. 12TH FLOOR STAIRWELL - CONTINUOUS",
       "INT. 13TH FLOOR",
-      "INT. 15TH FLOOR"
+      "INT. 15TH FLOOR",
+      "BEGIN FLASHBACK: EXT. BACKYARD - DAY - PAST",
+      "EXT. BACKYARD - DAY - (FLASHBACK)",
+      "INT. STAIRWELL - (BACK TO PRESENT)",
+      "EXT. COASTLINE - DAY - (FLASHBACK)"
     ],
     "must_have_evidence": [
       "built like a pro-wrestler",
-      "Dad tattoo",
-      "Mariner's code",
+      "heart-and-arrow TATTOO",
+      "honesty, bravery, and grit",
       "wounded child"
     ],
     "key_facts": [
       "His real name is Billy (or Will)",
       "Rose is his sister",
-      "He wears fishing-themed combat gear including an oar weapon",
+      "His fishing-themed combat gear includes anchor bracers, a weighted net cape, fish hooks, an oar, and a flare gun",
       "He tracked Rose via AirTag",
       "He believed his father was dead",
-      "His father actually abandoned the family",
+      "His father actually abandoned him",
       "He romanticized his abusive childhood",
       "He has a moral code he calls the Mariner's code",
-      "His family name is MacAngus (the delivery van reads McAngus Fish & Brewis)"
+      "Rose's final speech helps him reclaim his identity as a hero independent of his father",
+      "Dad identifies their family name as MacAngus; the rescue van is separately branded McAngus Fish & Brewis"
     ]
   },
   "ROSE": {
@@ -60,21 +68,25 @@
       {"target": "DAD", "type": "parent"}
     ],
     "must_mention_scenes": [
+      "EXT. RUDDY & GREENE BUILDING - REAR - NIGHT",
       "INT. RUDDY & GREEN BUILDING - ELEVATOR",
-      "INT. 11TH FLOOR",
-      "INT. STAIRWELL",
-      "INT. 15TH FLOOR"
+      "INT. 11TH FLOOR - CONTINUOUS",
+      "INT. STAIRWELL - CONTINUOUS",
+      "INT. 12TH FLOOR STAIRWELL - CONTINUOUS",
+      "INT. 13TH FLOOR",
+      "INT. 15TH FLOOR",
+      "EXT. BACKYARD - DAY - (FLASHBACK)"
     ],
     "must_have_evidence": [
       "mid-30s",
       "Tim Hortons uniform",
-      "stole gang money",
+      "gang money",
       "blockchain password"
     ],
     "key_facts": [
       "She is Mariner's sister",
       "She wears a Tim Hortons uniform",
-      "She stole $20 million in cryptocurrency from Salvatori's gang",
+      "She stole about $20 million in gang money controlled through a blockchain password",
       "Vinnie was her ex-boyfriend",
       "She knows the truth about their father",
       "She delivers the final speech redefining Mariner as a hero",
@@ -84,12 +96,12 @@
   "DAD": {
     "character_id": "dad",
     "name": "DAD",
-    "aliases": [],
+    "aliases": ["Pa"],
     "narrative_role": "supporting",
     "key_traits": [
       "abusive",
       "alcoholic",
-      "manipulative",
+      "neglectful",
       "absent"
     ],
     "must_have_relationships": [
@@ -97,12 +109,14 @@
       {"target": "ROSE", "type": "parent"}
     ],
     "must_mention_scenes": [
-      "EXT. COASTLINE - DAY",
-      "EXT. BACKYARD - DAY"
+      "BEGIN FLASHBACK: EXT. COASTLINE - DAY - PAST",
+      "BEGIN FLASHBACK: EXT. BACKYARD - DAY - PAST",
+      "EXT. BACKYARD - DAY - (FLASHBACK)",
+      "EXT. COASTLINE - DAY - (FLASHBACK)"
     ],
     "must_have_evidence": [
-      "punches young Mariner",
-      "drinking",
+      "PUNCHES him in the face",
+      "empty beer bottles",
       "Chimney Bay"
     ],
     "key_facts": [
@@ -110,7 +124,7 @@
       "He is presented in two versions: idealized and dark/true",
       "The idealized version shows warm teaching moments",
       "The dark version reveals physical abuse and alcoholism",
-      "He abandoned the family and lives in Chimney Bay",
+      "He abandoned Mariner and lives in Chimney Bay",
       "Mariner believed he was dead",
       "His 'hero' speech is self-aggrandizing in the dark version",
       "He is a fisherman",
@@ -133,7 +147,9 @@
       {"target": "THE MARINER", "type": "adversary"}
     ],
     "must_mention_scenes": [
-      "INT. 15TH FLOOR"
+      "INT. 15TH FLOOR",
+      "INT. STAIRWELL - (BACK TO PRESENT)",
+      "EXT. BACKYARD - DAY - (FLASHBACK)"
     ],
     "must_have_evidence": [
       "white silk suit",
@@ -142,7 +158,7 @@
       "golden tooth"
     ],
     "key_facts": [
-      "He is a crime boss who controls the Ruddy & Greene building",
+      "He confronts Rose in a luxurious 15th-floor office with armed thugs",
       "He is dressed entirely in white with red-tinted glasses",
       "Rose stole $20 million from his gang",
       "He demands the password from Rose at gunpoint",
@@ -175,6 +191,199 @@
       "He convinced Rose to rob the gang",
       "He is hit by Mariner's flare gun in the chest",
       "He patrols the 13th floor with Mikey and Carlos"
+    ]
+  },
+  "ROSCO": {
+    "character_id": "rosco",
+    "name": "ROSCO",
+    "aliases": [],
+    "narrative_role": "supporting",
+    "key_traits": [
+      "panicked",
+      "informative",
+      "subordinate"
+    ],
+    "must_have_relationships": [
+      {"target": "THE MARINER", "type": "adversary"},
+      {"target": "ROSE", "type": "adversary"}
+    ],
+    "must_mention_scenes": [
+      "INT. 12TH FLOOR STAIRWELL - CONTINUOUS"
+    ],
+    "must_have_evidence": [
+      "A thug (ROSCO)",
+      "decentralized digital ledger",
+      "Mr. Salvatori’s gonna kill ya"
+    ],
+    "key_facts": [
+      "He ambushes Rose and Mariner by opening the 12th-floor stairwell door",
+      "Under threat from Rose, he explains blockchain and reveals that Salvatori is involved",
+      "His interrupted warning reveals that Rose took about $20 million",
+      "Mariner cracks his head into the stairwell wall and Rosco crumples"
+    ]
+  },
+  "MIKEY": {
+    "character_id": "mikey",
+    "name": "MIKEY",
+    "aliases": [],
+    "narrative_role": "supporting",
+    "key_traits": [
+      "mocking",
+      "armed",
+      "physically outmatched"
+    ],
+    "must_have_relationships": [
+      {"target": "THE MARINER", "type": "adversary"},
+      {"target": "ROSE", "type": "adversary"}
+    ],
+    "must_mention_scenes": [
+      "INT. 13TH FLOOR"
+    ],
+    "must_have_evidence": [
+      "You heard about WaldoCoin?",
+      "Hey, Finding Nemo",
+      "holding Mikey and Carlos by the necks"
+    ],
+    "key_facts": [
+      "He patrols the 13th floor with Vinnie and Carlos",
+      "He mocks Mariner's fishing theme and flare gun",
+      "Mariner drops him by cracking his head against Carlos's"
+    ]
+  },
+  "CARLOS": {
+    "character_id": "carlos",
+    "name": "CARLOS",
+    "aliases": [],
+    "narrative_role": "supporting",
+    "key_traits": [
+      "aggressive",
+      "armed",
+      "physically outmatched"
+    ],
+    "must_have_relationships": [
+      {"target": "THE MARINER", "type": "adversary"},
+      {"target": "ROSE", "type": "adversary"}
+    ],
+    "must_mention_scenes": [
+      "INT. 13TH FLOOR"
+    ],
+    "must_have_evidence": [
+      "Freeze, assholes",
+      "holding Mikey and Carlos by the necks",
+      "wipes his BLOODY OAR on Carlos’ back"
+    ],
+    "key_facts": [
+      "He patrols the 13th floor with Vinnie and Mikey",
+      "He orders Rose and Mariner to the ground at gunpoint",
+      "Mariner drops him by cracking his head against Mikey's"
+    ]
+  },
+  "THUG 1": {
+    "character_id": "thug-1",
+    "name": "THUG 1",
+    "aliases": [],
+    "narrative_role": "supporting",
+    "key_traits": [
+      "armed",
+      "aggressive",
+      "physically outmatched"
+    ],
+    "must_have_relationships": [
+      {"target": "THE MARINER", "type": "adversary"},
+      {"target": "ROSE", "type": "adversary"}
+    ],
+    "must_mention_scenes": [
+      "INT. RUDDY & GREEN BUILDING - ELEVATOR"
+    ],
+    "must_have_evidence": [
+      "THUG 1 raises his GUN",
+      "Mariner SIDE-KICKS him in the chest"
+    ],
+    "key_facts": [
+      "He is one of three gunmen waiting when the elevator opens on the 12th floor",
+      "Mariner knocks away his gun and side-kicks him into the other thugs"
+    ]
+  },
+  "THUG 2": {
+    "character_id": "thug-2",
+    "name": "THUG 2",
+    "aliases": [],
+    "narrative_role": "supporting",
+    "key_traits": [
+      "armed",
+      "communicative",
+      "persistent"
+    ],
+    "must_have_relationships": [
+      {"target": "THE MARINER", "type": "adversary"},
+      {"target": "ROSE", "type": "adversary"}
+    ],
+    "must_mention_scenes": [
+      "INT. RUDDY & GREEN BUILDING - ELEVATOR"
+    ],
+    "must_have_evidence": [
+      "We’ve got them on twelve",
+      "Thug 2 LUNGES at the elevator BUTTON",
+      "Thug 2 SCREAMS and CURSES"
+    ],
+    "key_facts": [
+      "He reports Rose and Mariner's location by radio",
+      "He draws a gun with Thug 3 and lunges for the elevator button",
+      "Mariner strikes him with the oar through the closing elevator doors"
+    ]
+  },
+  "THUG 3": {
+    "character_id": "thug-3",
+    "name": "THUG 3",
+    "aliases": [],
+    "narrative_role": "supporting",
+    "key_traits": [
+      "armed",
+      "aggressive",
+      "physically outmatched"
+    ],
+    "must_have_relationships": [
+      {"target": "THE MARINER", "type": "adversary"},
+      {"target": "ROSE", "type": "adversary"}
+    ],
+    "must_mention_scenes": [
+      "INT. RUDDY & GREEN BUILDING - ELEVATOR"
+    ],
+    "must_have_evidence": [
+      "THUGS 2 & 3 DRAW GUNS",
+      "Thug 1 FLIES back, knocking the others to the GROUND"
+    ],
+    "key_facts": [
+      "He is one of three gunmen waiting when the elevator opens on the 12th floor",
+      "He draws a gun with Thug 2 after Thug 1 is knocked into them"
+    ]
+  },
+  "THUGS": {
+    "character_id": "15th-floor-thugs",
+    "name": "THUGS",
+    "aliases": [],
+    "narrative_role": "supporting",
+    "key_traits": [
+      "armed",
+      "aggressive",
+      "subordinate"
+    ],
+    "must_have_relationships": [
+      {"target": "THE MARINER", "type": "adversary"},
+      {"target": "ROSE", "type": "adversary"}
+    ],
+    "must_mention_scenes": [
+      "INT. 15TH FLOOR",
+      "EXT. BACKYARD - DAY - (FLASHBACK)"
+    ],
+    "must_have_evidence": [
+      "Two THUGS burst in through the office doors",
+      "The thugs take Mariner’s OAR",
+      "kick the back of his legs"
+    ],
+    "key_facts": [
+      "Two armed thugs enter the 15th-floor office immediately before Salvatori",
+      "They disarm Mariner and force him to kneel during Salvatori's confrontation with Rose"
     ]
   }
 }

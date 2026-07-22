@@ -7,9 +7,17 @@
       "source_id": "the-mariner",
       "target_type": "character",
       "target_id": "rose",
-      "relationship_type_keywords": ["sibling", "brother", "sister", "family"],
+      "relationship_type_keywords": ["sibling", "brother", "sister"],
       "direction": "symmetric",
-      "must_mention_evidence": ["sis", "Billy", "Will", "Rosey"],
+      "must_mention_evidence": [
+        "Just hours of pumpin' tin, sis",
+        "Did you mean an homage to... dad?"
+      ],
+      "scene_refs": [
+        "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+        "INT. 11TH FLOOR - CONTINUOUS",
+        "INT. 15TH FLOOR"
+      ],
       "min_confidence": 0.9,
       "importance": "critical"
     },
@@ -19,9 +27,23 @@
       "source_id": "dad",
       "target_type": "character",
       "target_id": "the-mariner",
-      "relationship_type_keywords": ["parent", "father", "son", "family"],
+      "relationship_type_keywords": ["parent", "father"],
       "direction": "source_to_target",
-      "must_mention_evidence": ["father", "dad", "flashback", "abandon"],
+      "must_mention_evidence": [
+        "Young Mariner (8) and his dad (30s, fisherman)",
+        "Young Mariner's dad patiently explains the basics of weightlifting",
+        "Dad taught me everything",
+        "shitty father who kicked the crap out of him and then abandoned him"
+      ],
+      "scene_refs": [
+        "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+        "INT. 11TH FLOOR - CONTINUOUS",
+        "BEGIN FLASHBACK: EXT. COASTLINE - DAY - PAST",
+        "BEGIN FLASHBACK: EXT. BACKYARD - DAY - PAST",
+        "INT. 15TH FLOOR",
+        "EXT. BACKYARD - DAY - (FLASHBACK)",
+        "EXT. COASTLINE - DAY - (FLASHBACK)"
+      ],
       "min_confidence": 0.9,
       "importance": "critical"
     },
@@ -31,9 +53,17 @@
       "source_id": "the-mariner",
       "target_type": "character",
       "target_id": "salvatori",
-      "relationship_type_keywords": ["adversary", "antagonist", "enemy", "rival", "opponent"],
+      "relationship_type_keywords": ["adversary", "antagonist", "enemy", "opponent"],
       "direction": "symmetric",
-      "must_mention_evidence": ["fight", "building", "gang", "kneeling"],
+      "must_mention_evidence": [
+        "The thugs take Mariner's OAR and kick the back of his legs",
+        "Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches"
+      ],
+      "scene_refs": [
+        "INT. 15TH FLOOR",
+        "INT. STAIRWELL - (BACK TO PRESENT)",
+        "EXT. BACKYARD - DAY - (FLASHBACK)"
+      ],
       "min_confidence": 0.8,
       "importance": "critical"
     },
@@ -45,7 +75,18 @@
       "target_id": "oar-bosun",
       "relationship_type_keywords": ["owns", "wields", "weapon", "uses", "carries"],
       "direction": "source_to_target",
-      "must_mention_evidence": ["BOSUN", "weapon", "oar"],
+      "must_mention_evidence": [
+        "He holds a STOUT WOODEN OAR in both hands",
+        "Mariner SWINGS HIS OAR in an arc, catching the gun",
+        "Mariner's OAR flashes through the closing doors",
+        "Mariner shoves his OAR into the doorframe and strains"
+      ],
+      "scene_refs": [
+        "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+        "INT. 13TH FLOOR",
+        "INT. 15TH FLOOR",
+        "EXT. BACKYARD - DAY - (FLASHBACK)"
+      ],
       "min_confidence": 0.9,
       "importance": "important"
     },
@@ -55,22 +96,39 @@
       "source_id": "rose",
       "target_type": "prop",
       "target_id": "roses-purse",
-      "relationship_type_keywords": ["owns", "possesses", "carries", "hides"],
+      "relationship_type_keywords": ["owns", "possesses", "carries"],
       "direction": "source_to_target",
-      "must_mention_evidence": ["blockchain", "password", "chip", "stole", "million"],
+      "must_mention_evidence": [
+        "I stashed an AirTag in your purse",
+        "Shit! My purse!",
+        "I'll buy you a new bloody purse",
+        "Rose tiptoes in and picks up her PURSE"
+      ],
+      "scene_refs": [
+        "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+        "INT. STAIRWELL - CONTINUOUS",
+        "INT. 15TH FLOOR"
+      ],
       "min_confidence": 0.8,
       "importance": "important"
     },
     {
-      "relationship_id": "salvatori-15th-floor-headquarters",
+      "relationship_id": "salvatori-15th-floor-base",
       "source_type": "character",
       "source_id": "salvatori",
       "target_type": "location",
       "target_id": "15th-floor",
-      "relationship_type_keywords": ["headquarters", "office", "occupies", "controls", "base"],
+      "relationship_type_keywords": ["headquarters", "office", "occupies", "base"],
       "direction": "source_to_target",
-      "must_mention_evidence": ["15th", "floor", "luxur", "nightclub"],
-      "min_confidence": 0.8,
+      "must_mention_evidence": [
+        "This floor isn't destroyed like the others. It's CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub",
+        "Rosey! Somehow I just knew you'd be back",
+        "SALVATORI enters, holding a SUBMACHINE GUN"
+      ],
+      "scene_refs": [
+        "INT. 15TH FLOOR"
+      ],
+      "min_confidence": 0.7,
       "importance": "important"
     },
     {
@@ -79,11 +137,22 @@
       "source_id": "rose",
       "target_type": "character",
       "target_id": "salvatori",
-      "relationship_type_keywords": ["adversary", "antagonist", "enemy", "victim", "theft"],
+      "relationship_type_keywords": ["adversary", "antagonist", "enemy"],
       "direction": "symmetric",
-      "must_mention_evidence": ["stole", "password", "gang", "Memory stick"],
+      "must_mention_evidence": [
+        "Mr. Salvatori's gonna kill ya, Rosie",
+        "Mr. Salvatori just wants his password",
+        "Salvatori strides confidently up to Rose, submachine gun levelled at her gut",
+        "Salvatori points his GUN at Rose's head"
+      ],
+      "scene_refs": [
+        "INT. 12TH FLOOR STAIRWELL - CONTINUOUS",
+        "INT. 13TH FLOOR",
+        "INT. 15TH FLOOR",
+        "EXT. BACKYARD - DAY - (FLASHBACK)"
+      ],
       "min_confidence": 0.8,
-      "importance": "critical"
+      "importance": "important"
     },
     {
       "relationship_id": "dad-rose-parent",
@@ -91,9 +160,17 @@
       "source_id": "dad",
       "target_type": "character",
       "target_id": "rose",
-      "relationship_type_keywords": ["parent", "father", "daughter", "family"],
+      "relationship_type_keywords": ["parent", "father"],
       "direction": "source_to_target",
-      "must_mention_evidence": ["father", "Chimney Bay", "abandoned"],
+      "must_mention_evidence": [
+        "Did you mean an homage to... dad?",
+        "Just hours of pumpin' tin, sis. Just like dad taught me.",
+        "You're serious about this dad shit? You talking about the summer he took you to buddy's place?"
+      ],
+      "scene_refs": [
+        "INT. 11TH FLOOR - CONTINUOUS",
+        "INT. 15TH FLOOR"
+      ],
       "min_confidence": 0.6,
       "importance": "secondary"
     },
@@ -103,10 +180,24 @@
       "source_id": "rose",
       "target_type": "character",
       "target_id": "vinnie",
-      "relationship_type_keywords": ["romantic", "ex", "boyfriend", "former"],
+      "relationship_type_keywords": [
+        "romantic-ex",
+        "ex-boyfriend",
+        "former-boyfriend",
+        "ex-partner",
+        "former-partner",
+        "past-romantic-partner"
+      ],
       "direction": "symmetric",
-      "must_mention_evidence": ["ex", "boyfriend", "Vinnie"],
-      "min_confidence": 0.7,
+      "must_mention_evidence": [
+        "Ex boyfriend",
+        "maybe you can be my booty call some more",
+        "Vinnie's unique... charm convinced me that robbing these jackasses was the right move"
+      ],
+      "scene_refs": [
+        "INT. 13TH FLOOR"
+      ],
+      "min_confidence": 0.9,
       "importance": "secondary"
     },
     {
@@ -117,28 +208,25 @@
       "target_id": "flare-gun",
       "relationship_type_keywords": ["owns", "wields", "weapon", "uses", "carries"],
       "direction": "source_to_target",
-      "must_mention_evidence": ["flare", "orange", "pistol", "Finding Nemo"],
-      "min_confidence": 0.8,
-      "importance": "important"
-    },
-    {
-      "relationship_id": "mariner-airtag-tracking",
-      "source_type": "character",
-      "source_id": "the-mariner",
-      "target_type": "prop",
-      "target_id": "airtag",
-      "relationship_type_keywords": ["uses", "planted", "tracks", "surveillance", "hidden"],
-      "direction": "source_to_target",
-      "must_mention_evidence": ["AirTag", "stashed", "purse", "Thanksgiving", "tracking"],
+      "must_mention_evidence": [
+        "Mainer slowly unholsters his weapon - a fat, bright-orange pistol",
+        "Is that a... flare gun?",
+        "Blinding red flare streaks out... Mariner spins, broad back protecting Rose",
+        "Flare hits VINNIE in the chest"
+      ],
+      "scene_refs": [
+        "INT. 13TH FLOOR"
+      ],
       "min_confidence": 0.8,
       "importance": "important"
     }
   ],
-  "min_must_find": 6,
-  "max_total_edges": 15,
+  "min_must_find": 10,
+  "max_total_edges": 10,
   "false_positive_examples": [
+    "Any relationship involving GIRL IN CAGE or CONSIGLIERE (neither entity appears in the screenplay)",
     "Dad-Salvatori (they never share a scene — Dad is flashback only, Salvatori is present-day only)",
-    "Mariner-Vinnie employer/employee (Mariner does not work for anyone; he is an independent vigilante)",
+    "Mariner-Vinnie employer/employee (no employment relationship is established; they are opponents in the 13th-floor fight)",
     "Rose-Oar (Rose never wields or meaningfully interacts with the oar — it is Mariner's weapon throughout)",
     "Dad-Purse (Dad has no connection to the purse or the money plot)",
     "Relationships fabricated from general crime-thriller tropes not evidenced in this screenplay"

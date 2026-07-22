@@ -9,22 +9,23 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-SUPPORTED_FILE_FORMATS = {"txt", "md", "fountain", "pdf", "fdx", "docx"}
-TOKENIZED_TIME_WORDS = {
-    "DAY",
-    "NIGHT",
-    "MORNING",
-    "EVENING",
-    "AFTERNOON",
-    "DAWN",
-    "DUSK",
-    "LATER",
-    "CONTINUOUS",
-}
-SCENE_HEAD_TOKENS = {"INT.", "EXT.", "INT/EXT.", "I/E.", "EST."}
-SCENE_HEADING_LINE_RE = re.compile(
-    r"^(INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)\s*[A-Z0-9]", flags=re.IGNORECASE
+from cine_forge.modules.ingest.story_ingest_v1.classification import (
+    classify_format as classify_format,
 )
+from cine_forge.modules.ingest.story_ingest_v1.classification import (
+    classify_format_with_diagnostics,
+)
+from cine_forge.modules.ingest.story_ingest_v1.pdf_layout import (
+    normalize_pdf_layout_text_with_diagnostics as _normalize_pdf_layout_text_with_diagnostics,
+)
+from cine_forge.modules.ingest.story_ingest_v1.pdf_layout import (
+    repair_compact_screenplay_headings as _repair_compact_screenplay_headings,
+)
+from cine_forge.modules.ingest.story_ingest_v1.pdf_layout import (
+    repair_pdf_tokenized_layout as _repair_pdf_tokenized_layout,
+)
+
+SUPPORTED_FILE_FORMATS = {"txt", "md", "fountain", "pdf", "fdx", "docx"}
 
 
 def read_source_text(input_path: Path) -> str:
@@ -43,11 +44,35 @@ def read_source_text_with_diagnostics(input_path: Path) -> tuple[str, dict[str, 
 
     if file_format == "pdf":
         extracted, extraction_backend_diagnostics = _extract_pdf_text_with_diagnostics(input_path)
-        repaired, diagnostics = _repair_pdf_tokenized_layout(extracted)
-        repaired, compact_diagnostics = _repair_compact_screenplay_headings(repaired)
+        tokenized_repaired, diagnostics = _repair_pdf_tokenized_layout(extracted)
+        repaired, compact_diagnostics = _repair_compact_screenplay_headings(
+            tokenized_repaired
+        )
         diagnostics.update(compact_diagnostics)
         diagnostics.update(extraction_backend_diagnostics)
-        diagnostics["reflow_applied"] = repaired != extracted
+        dual_dialogue_reflow_count = int(
+            extraction_backend_diagnostics.get("dual_dialogue_reflow_count", 0)
+        )
+        diagnostics["reflow_applied"] = bool(
+            dual_dialogue_reflow_count or repaired != extracted
+        )
+        diagnostics["transformation_lineage"] = [
+            {
+                "operation": "pdf_layout_dual_dialogue_reflow",
+                "applied": dual_dialogue_reflow_count > 0,
+                "change_count": dual_dialogue_reflow_count,
+            },
+            {
+                "operation": "pdf_tokenized_layout_repair",
+                "applied": tokenized_repaired != extracted,
+            },
+            {
+                "operation": "pdf_compact_heading_repair",
+                "applied": repaired != tokenized_repaired,
+                "change_count": int(diagnostics.get("compact_heading_repairs", 0))
+                + int(diagnostics.get("flashback_heading_breaks", 0)),
+            },
+        ]
         diagnostics["original_character_count"] = len(extracted)
         diagnostics["repaired_character_count"] = len(repaired)
         return repaired, diagnostics
@@ -64,182 +89,6 @@ def detect_file_format(input_path: Path) -> str:
     if file_format not in SUPPORTED_FILE_FORMATS:
         raise ValueError(f"Unsupported input format '{file_format}' for file '{input_path}'")
     return file_format
-
-
-def classify_format(content: str, file_format: str) -> dict[str, Any]:
-    classification, _ = classify_format_with_diagnostics(content=content, file_format=file_format)
-    return classification
-
-
-def classify_format_with_diagnostics(
-    content: str, file_format: str
-) -> tuple[dict[str, Any], dict[str, Any]]:
-    """Classify ingested content format using deterministic heuristics."""
-    if file_format == "fdx":
-        return {
-            "detected_format": "screenplay",
-            "confidence": 0.99,
-            "evidence": ["File extension is .fdx, a screenplay-oriented XML format"],
-        }, {"score_breakdown": {"screenplay": 0.99, "prose": 0.0, "notes": 0.0}}
-
-    lines = [line.rstrip() for line in content.splitlines()]
-    non_empty = [line for line in lines if line.strip()]
-    non_empty_count = max(len(non_empty), 1)
-    paragraph_blocks = _paragraph_blocks(lines)
-    paragraph_count = max(len(paragraph_blocks), 1)
-
-    scene_heading_count = sum(
-        1
-        for line in non_empty
-        if SCENE_HEADING_LINE_RE.match(line.strip())
-    )
-    transition_count = sum(
-        1 for line in non_empty if re.match(r"^[A-Z][A-Z0-9 '\-]+TO:$", line.strip())
-    )
-    parenthetical_count = sum(1 for line in non_empty if re.match(r"^\([^)]+\)$", line.strip()))
-    character_cue_count = sum(1 for line in non_empty if _looks_like_character_cue(line))
-
-    bullet_count = sum(1 for line in non_empty if re.match(r"^(\-|\*|\+)\s+\S+", line.strip()))
-    numbered_count = sum(1 for line in non_empty if re.match(r"^\d+[.)]\s+\S+", line.strip()))
-    colon_heading_count = sum(
-        1 for line in non_empty if re.match(r"^[A-Za-z][^:]{1,40}:\s+\S+", line.strip())
-    )
-    short_fragment_count = sum(1 for line in non_empty if len(line.split()) <= 6)
-    single_word_line_count = sum(1 for line in non_empty if len(line.split()) == 1)
-
-    prose_paragraph_count = sum(
-        1
-        for block in paragraph_blocks
-        if len(block.split()) >= 16 and not re.match(r"^[A-Z0-9 .'\-()]+$", block.strip())
-    )
-    sentence_like_count = sum(
-        1 for block in paragraph_blocks if len(re.findall(r"[A-Za-z][^.!?]*[.!?]", block)) >= 2
-    )
-    prose_line_count = sum(
-        1
-        for line in non_empty
-        if len(line.split()) >= 8
-        and re.search(r"[a-z]", line)
-        and not re.match(r"^(\-|\*|\+)\s+\S+", line.strip())
-        and not re.match(r"^\d+[.)]\s+\S+", line.strip())
-        and not re.match(r"^[A-Z0-9 .'\-()]+$", line.strip())
-    )
-
-    tokenized_heading_sequences = _count_tokenized_scene_headings(non_empty)
-    single_word_ratio = _ratio(single_word_line_count, non_empty_count)
-    cue_weight = max(0.1, 1.0 - (single_word_ratio * 0.85))
-
-    screenplay_score = min(
-        1.0,
-        (
-            0.45 * _ratio(scene_heading_count, non_empty_count)
-            + (0.2 * _ratio(character_cue_count, non_empty_count) * cue_weight)
-            + 0.2 * _ratio(transition_count, non_empty_count)
-            + 0.1 * _ratio(parenthetical_count, non_empty_count)
-            + min(0.6, scene_heading_count * 0.06)
-            + min(0.25, transition_count * 0.05)
-            + min(0.5, tokenized_heading_sequences * 0.18)
-            + (0.35 if file_format in {"fountain", "fdx", "docx", "pdf"} else 0.0)
-        ),
-    )
-    notes_score = min(
-        1.0,
-        (
-            0.45 * _ratio(bullet_count + numbered_count, non_empty_count)
-            + 0.15 * _ratio(colon_heading_count, non_empty_count)
-            + 0.2 * _ratio(short_fragment_count, non_empty_count)
-        ),
-    )
-    prose_score = min(
-        1.0,
-        (
-            0.65 * _ratio(prose_paragraph_count, paragraph_count)
-            + 0.25 * _ratio(sentence_like_count, paragraph_count)
-            + 0.2 * _ratio(prose_line_count, non_empty_count)
-            - 0.3 * _ratio(scene_heading_count + character_cue_count, non_empty_count)
-            - min(0.7, scene_heading_count * 0.07)
-            - min(0.3, transition_count * 0.05)
-            - 0.5 * _ratio(bullet_count + numbered_count, non_empty_count)
-            - 0.6 * single_word_ratio
-            - min(0.45, tokenized_heading_sequences * 0.16)
-        ),
-    )
-    prose_score = max(0.0, prose_score)
-
-    evidence: list[str] = []
-    if scene_heading_count:
-        evidence.append(f"Detected {scene_heading_count} scene headings (INT./EXT./EST.)")
-    if character_cue_count:
-        evidence.append(f"Detected {character_cue_count} uppercase character cue candidates")
-    if transition_count:
-        evidence.append(f"Detected {transition_count} screenplay transition lines ending with TO:")
-    if bullet_count or numbered_count:
-        evidence.append(
-            "Detected note-style list structure "
-            f"({bullet_count} bullets, {numbered_count} numbered items)"
-        )
-    if prose_paragraph_count:
-        evidence.append(f"Detected {prose_paragraph_count} long narrative-style paragraphs")
-    if tokenized_heading_sequences:
-        evidence.append(
-            "Detected tokenized screenplay heading patterns "
-            f"({tokenized_heading_sequences} heading sequences)"
-        )
-    if single_word_ratio >= 0.45:
-        evidence.append(
-            "Detected extraction noise with many single-word lines "
-            f"({single_word_line_count}/{non_empty_count})"
-        )
-    if file_format in {"fountain", "fdx"}:
-        evidence.append(f"File extension is .{file_format}, a screenplay-oriented format")
-
-    label = "unknown"
-    confidence = 0.25
-
-    if screenplay_score >= 0.45 and prose_score >= 0.35:
-        label = "hybrid"
-        confidence = min(0.95, (screenplay_score + prose_score) / 2)
-    else:
-        scored = [
-            ("screenplay", screenplay_score),
-            ("prose", prose_score),
-            ("notes", notes_score),
-        ]
-        top_label, top_score = max(scored, key=lambda item: item[1])
-        second_score = sorted((value for _, value in scored), reverse=True)[1]
-        margin = max(0.0, top_score - second_score)
-        confidence = min(0.99, max(0.2, top_score + (margin * 0.4)))
-        if top_score >= 0.3:
-            label = top_label
-
-    if not evidence:
-        evidence.append("No strong structural signals were detected")
-
-    return {
-        "detected_format": label,
-        "confidence": round(confidence, 3),
-        "evidence": evidence,
-    }, {
-        "line_counts": {
-            "total_lines": len(lines),
-            "non_empty_lines": len(non_empty),
-            "single_word_lines": single_word_line_count,
-            "paragraph_blocks": len(paragraph_blocks),
-        },
-        "signals": {
-            "scene_headings": scene_heading_count,
-            "character_cues": character_cue_count,
-            "transitions": transition_count,
-            "parentheticals": parenthetical_count,
-            "prose_paragraphs": prose_paragraph_count,
-            "tokenized_heading_sequences": tokenized_heading_sequences,
-        },
-        "score_breakdown": {
-            "screenplay": round(screenplay_score, 3),
-            "prose": round(prose_score, 3),
-            "notes": round(notes_score, 3),
-        },
-    }
 
 
 def run_module(
@@ -324,34 +173,52 @@ def _extract_pdf_text_with_diagnostics(input_path: Path) -> tuple[str, dict[str,
     lengths: dict[str, int] = {}
 
     attempted.append("pdfplumber")
-    text = _extract_pdf_text_via_pdfplumber(input_path)
+    pdfplumber_layout_diagnostics: dict[str, Any] = {}
+    text = _extract_pdf_text_via_pdfplumber(
+        input_path,
+        diagnostics=pdfplumber_layout_diagnostics,
+    )
     lengths["pdfplumber"] = len(text)
     if _is_meaningful_pdf_text(text):
         return text, {
             "pdf_extractors_attempted": attempted,
             "pdf_extractor_selected": "pdfplumber",
             "pdf_extractor_output_lengths": lengths,
+            **_selected_layout_diagnostics(pdfplumber_layout_diagnostics),
         }
 
     attempted.append("ocrmypdf")
-    ocr_text = _extract_pdf_text_via_ocr(input_path)
+    ocr_layout_diagnostics: dict[str, Any] = {}
+    ocr_text = _extract_pdf_text_via_ocr(
+        input_path,
+        diagnostics=ocr_layout_diagnostics,
+    )
     lengths["ocrmypdf"] = len(ocr_text)
     if _is_meaningful_pdf_text(ocr_text):
         return ocr_text, {
             "pdf_extractors_attempted": attempted,
             "pdf_extractor_selected": "ocrmypdf",
             "pdf_extractor_output_lengths": lengths,
+            **_selected_layout_diagnostics(ocr_layout_diagnostics),
         }
 
     # Return best available text even if sparse so downstream can still classify/report.
+    fallback_layout_diagnostics = (
+        pdfplumber_layout_diagnostics if text else ocr_layout_diagnostics
+    )
     return text or ocr_text, {
         "pdf_extractors_attempted": attempted,
         "pdf_extractor_selected": "fallback_sparse",
         "pdf_extractor_output_lengths": lengths,
+        **_selected_layout_diagnostics(fallback_layout_diagnostics),
     }
 
 
-def _extract_pdf_text_via_pdfplumber(input_path: Path) -> str:
+def _extract_pdf_text_via_pdfplumber(
+    input_path: Path,
+    *,
+    diagnostics: dict[str, Any] | None = None,
+) -> str:
     try:
         import pdfplumber
     except ModuleNotFoundError as exc:
@@ -361,18 +228,30 @@ def _extract_pdf_text_via_pdfplumber(input_path: Path) -> str:
         ) from exc
 
     pages: list[str] = []
+    dual_dialogue_reflow_count = 0
     try:
         with pdfplumber.open(input_path) as pdf:
             for page in pdf.pages:
                 # layout=True preserves the visual structure of the page (columns/alignment)
-                text = _normalize_pdf_layout_text(page.extract_text(layout=True) or "")
+                text, page_diagnostics = _normalize_pdf_layout_text_with_diagnostics(
+                    page.extract_text(layout=True) or ""
+                )
+                dual_dialogue_reflow_count += int(
+                    page_diagnostics["dual_dialogue_reflow_count"]
+                )
                 pages.append(text)
     except Exception:
         return ""
+    if diagnostics is not None:
+        diagnostics["dual_dialogue_reflow_count"] = dual_dialogue_reflow_count
     return "\n".join(pages)
 
 
-def _extract_pdf_text_via_ocr(input_path: Path) -> str:
+def _extract_pdf_text_via_ocr(
+    input_path: Path,
+    *,
+    diagnostics: dict[str, Any] | None = None,
+) -> str:
     ocrmypdf_bin = shutil.which("ocrmypdf")
     if not ocrmypdf_bin:
         return ""
@@ -394,9 +273,20 @@ def _extract_pdf_text_via_ocr(input_path: Path) -> str:
             )
             if result.returncode != 0 or not ocr_output.exists():
                 return ""
-            return _extract_pdf_text_via_pdfplumber(ocr_output)
+            return _extract_pdf_text_via_pdfplumber(
+                ocr_output,
+                diagnostics=diagnostics,
+            )
         except Exception:
             return ""
+
+
+def _selected_layout_diagnostics(diagnostics: dict[str, Any]) -> dict[str, Any]:
+    reflow_count = int(diagnostics.get("dual_dialogue_reflow_count", 0))
+    return {
+        "dual_dialogue_reflow_applied": reflow_count > 0,
+        "dual_dialogue_reflow_count": reflow_count,
+    }
 
 
 def _is_meaningful_pdf_text(text: str) -> bool:
@@ -405,28 +295,6 @@ def _is_meaningful_pdf_text(text: str) -> bool:
         return False
     word_gap_count = len(re.findall(r"\b[A-Za-z]{3,}\s+[A-Za-z]{3,}\b", stripped))
     return word_gap_count >= 4
-
-
-def _normalize_pdf_layout_text(text: str) -> str:
-    if not text:
-        return ""
-
-    normalized_lines: list[str] = []
-    blank_pending = False
-
-    for raw_line in text.splitlines():
-        line = re.sub(r"\s+", " ", raw_line).strip()
-        if not line:
-            if normalized_lines:
-                blank_pending = True
-            continue
-
-        if blank_pending:
-            normalized_lines.append("")
-            blank_pending = False
-        normalized_lines.append(line)
-
-    return "\n".join(normalized_lines).strip()
 
 
 def _extract_docx_text(input_path: Path) -> str:
@@ -445,156 +313,3 @@ def _extract_docx_text(input_path: Path) -> str:
         if text:
             paragraphs.append(text)
     return "\n\n".join(paragraphs)
-
-
-def _repair_pdf_tokenized_layout(extracted: str) -> tuple[str, dict[str, Any]]:
-    lines = [line.strip() for line in extracted.splitlines() if line.strip()]
-    if not lines:
-        return extracted, {"tokenized_layout_detected": False}
-
-    single_word = sum(1 for line in lines if len(line.split()) == 1)
-    avg_words = sum(len(line.split()) for line in lines) / max(len(lines), 1)
-    tokenized_ratio = single_word / max(len(lines), 1)
-    tokenized_layout = len(lines) >= 80 and tokenized_ratio >= 0.55 and avg_words <= 2.2
-
-    diagnostics: dict[str, Any] = {
-        "tokenized_layout_detected": tokenized_layout,
-        "line_count": len(lines),
-        "single_word_line_count": single_word,
-        "single_word_line_ratio": round(tokenized_ratio, 3),
-        "average_words_per_line": round(avg_words, 3),
-    }
-    if not tokenized_layout:
-        return extracted, diagnostics
-
-    merged = re.sub(r"\s+", " ", " ".join(lines)).strip()
-    merged = re.sub(
-        r"\s+(?=(?:FADE IN:|FADE OUT:|CUT TO:|DISSOLVE TO:|SMASH CUT TO:))",
-        "\n",
-        merged,
-    )
-    merged = re.sub(r"\s+(?=(?:INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)\s)", "\n", merged)
-    merged = re.sub(
-        (
-            r"((?:INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)[^\n]{0,140}?"
-            r"-\s*(?:DAY|NIGHT|MORNING|EVENING|AFTERNOON|DAWN|DUSK|LATER|CONTINUOUS))\s+"
-        ),
-        r"\1\n",
-        merged,
-        flags=re.IGNORECASE,
-    )
-    normalized = re.sub(r"\n{3,}", "\n\n", merged).strip()
-    diagnostics["recovered_scene_heading_count"] = sum(
-        1
-        for line in normalized.splitlines()
-        if line.split() and line.split()[0].upper() in SCENE_HEAD_TOKENS
-    )
-    return normalized, diagnostics
-
-
-def _repair_compact_screenplay_headings(text: str) -> tuple[str, dict[str, Any]]:
-    if not text:
-        return text, {"compact_heading_repairs": 0, "flashback_heading_breaks": 0}
-
-    def _normalize_compact_lines(raw_text: str) -> tuple[str, int]:
-        repair_count = 0
-        updated_lines: list[str] = []
-        for line in raw_text.splitlines():
-            candidate = line
-            spaced = re.sub(
-                r"^(INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)(?=[A-Z0-9])",
-                r"\1 ",
-                candidate,
-                flags=re.IGNORECASE,
-            )
-            if spaced != candidate:
-                repair_count += 1
-                candidate = spaced
-
-            if SCENE_HEADING_LINE_RE.match(candidate.strip()):
-                dashed = re.sub(r"\s*-\s*", " - ", candidate)
-                if dashed != candidate:
-                    repair_count += 1
-                    candidate = dashed
-            updated_lines.append(candidate)
-        return "\n".join(updated_lines), repair_count
-
-    normalized, compact_repairs = _normalize_compact_lines(text)
-    flashback_breaks = 0
-    for anchor in ("BEGINFLASHBACK:", "ENDFLASHBACK.", "BACKTO PRESENT:"):
-        updated = re.sub(
-            rf"({re.escape(anchor)})\s*(INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)",
-            r"\1\n\2",
-            normalized,
-            flags=re.IGNORECASE,
-        )
-        if updated != normalized:
-            flashback_breaks += 1
-            normalized = updated
-
-    normalized, post_break_repairs = _normalize_compact_lines(normalized)
-    compact_repairs += post_break_repairs
-
-    return normalized, {
-        "compact_heading_repairs": compact_repairs,
-        "flashback_heading_breaks": flashback_breaks,
-    }
-
-
-def _count_tokenized_scene_headings(lines: list[str]) -> int:
-    if not lines:
-        return 0
-
-    tokens = [line.strip().upper() for line in lines if line.strip()]
-    count = 0
-    idx = 0
-    while idx < len(tokens):
-        token = tokens[idx]
-        if token not in SCENE_HEAD_TOKENS:
-            idx += 1
-            continue
-
-        window = tokens[idx + 1 : idx + 14]
-        if "-" in window and any(word in TOKENIZED_TIME_WORDS for word in window):
-            count += 1
-            idx += 1
-            continue
-
-        idx += 1
-    return count
-
-
-def _looks_like_character_cue(line: str) -> bool:
-    text = line.strip()
-    if not text:
-        return False
-    if len(text) > 35:
-        return False
-    if not re.match(r"^[A-Z0-9 .'\-()]+$", text):
-        return False
-    words = [word for word in text.split() if word]
-    if not words or len(words) > 4:
-        return False
-    return all(any(char.isalpha() for char in word) for word in words)
-
-
-def _ratio(count: int, total: int) -> float:
-    if total <= 0:
-        return 0.0
-    return count / total
-
-
-def _paragraph_blocks(lines: list[str]) -> list[str]:
-    blocks: list[str] = []
-    current: list[str] = []
-    for line in lines:
-        stripped = line.strip()
-        if not stripped:
-            if current:
-                blocks.append(" ".join(current))
-                current = []
-            continue
-        current.append(stripped)
-    if current:
-        blocks.append(" ".join(current))
-    return blocks

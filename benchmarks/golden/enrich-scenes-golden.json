@@ -2,16 +2,17 @@
   "elevator": {
     "heading": "INT. RUDDY & GREEN BUILDING - ELEVATOR",
     "location": "RUDDY & GREEN BUILDING - ELEVATOR",
-    "time_of_day": "NIGHT",
+    "time_of_day": "UNSPECIFIED",
     "int_ext": "INT",
-    "characters_present": ["ROSE", "MARINER"],
+    "characters_present": ["ROSE", "MARINER", "THUG 1", "THUG 2", "THUG 3"],
     "expected_tone": ["tense", "dark comedy", "absurd", "gritty"],
     "expected_beat_types": ["character_introduction", "revelation", "conflict", "comic_relief"],
     "key_details": [
-      "Rose discovers skull fragment — dark comedy beat",
+      "Rose suspects the bloody, hairy scrap is part of a skull — dark comedy beat",
       "Mariner's full costume description — character establishment",
       "AirTag revelation — trust/conflict beat",
-      "Muzak contrast with violence — tonal juxtaposition"
+      "Muzak contrast with violence — tonal juxtaposition",
+      "Three thugs ambush Rose and Mariner on floor twelve; Mariner fights them off while Rose closes the elevator doors"
     ]
   },
   "flashback": {
@@ -24,9 +25,10 @@
     "expected_beat_types": ["thematic_statement", "character_development", "foreshadowing"],
     "key_details": [
       "Father-son bonding over fishing",
-      "Dad defines heroism — thematic core of the screenplay",
-      "Idealized version of Dad (warm, perfect memory)",
-      "Golden lighting — visual warmth signaling idealized memory"
+      "Dad defines a hero as someone brave and true",
+      "The flashback presents Dad warmly as he teaches Young Mariner to cast and they laugh together",
+      "Dad tells Young Mariner to fetch him another beer",
+      "Golden lighting — visual warmth signaling an idealized memory"
     ]
   }
 }

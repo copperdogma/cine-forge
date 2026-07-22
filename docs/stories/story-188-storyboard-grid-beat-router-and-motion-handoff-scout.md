@@ -54,7 +54,7 @@ Continue Story 186's storyboard-quality line by turning Scout 022's script-to-3x
 
 - **Root / parent need**: R7 and R12 require fast, engaging visual iteration that users can react to and refine without guessing what failed. `spec:6.2` makes storyboards the current visualization surface; `spec:6.3` and `spec:7` make storyboard-to-previz/render handoff a future pressure.
 - **Parent eval**: `storyboard-generation-quality` already measures the real storyboard lane on representative Open Frequency cases with runtime truth plus multimodal quality scoring.
-- **Latest result**: Story 186 promoted the `gpt-image-2` template-grid storyboard lane as the shipped fast batch default. The split registry row shows grid keeps `style_consistency=1.0`, `text_cleanliness=1.0`, `reference_fidelity=0.75`, and cuts storyboard-stage latency from `410166ms` to `94511.5ms` and cost from `$0.447` to `$0.275`, but scores only `story_specificity=0.5` and `identity_consistency=0.5`.
+- **Historical result (superseded by Story 208)**: Story 186 promoted the `gpt-image-2` template-grid storyboard lane as the shipped fast batch default. Its April packet reported `style_consistency=1.0`, `text_cleanliness=1.0`, `reference_fidelity=0.75`, storyboard-stage latency `94511.5ms`, cost `$0.275`, `story_specificity=0.5`, and `identity_consistency=0.5`. Story 208 later classified that packet and every derived row contaminated/non-decision-grade; these values are context, not current model/default evidence.
 - **Measured failure mode**: The grid route is product-useful for speed and clean style, but it loses story detail and recurring-character stability compared with the desired storyboard usefulness bar.
 - **Child candidate**: A beat-router grid candidate, inspired by Scout 022, should give the grid prompt an explicit ordered scene-level story plan. If implemented, rerun `storyboard-generation-quality` and update `docs/evals/registry.yaml` with the new measured row and mismatch classification.
 
@@ -127,7 +127,18 @@ The apparent `gpt-image-2` model-name failure was not a real unsupported-model i
 
 The reproducible failure was prompt size: the beat-grid candidate built a 38,091-character prompt by duplicating verbose character identity locks in both the ordered beat router and panel briefs. OpenAI surfaced that oversized reference/edit request as HTTP 400 `Invalid value: 'gpt-image-2'. Value must be 'dall-e-2'.` After compacting beat and panel text in `build_grid_prompt(...)`, the same path produced a 16,839-character prompt and exact replay passed with `gpt-image-2`.
 
-## Current Evidence
+## Historical Evidence (Quarantined by Story 208)
+
+The files and measurements below document what Story 188 observed in April.
+They do not constitute a maintained comparison now: the exact candidate pixels
+were ignored and non-durable, and the v2 subject/scorer/report contract was
+independently contaminated. The one accidentally overwritten directly scored
+panel and its source grid were later restored from Backblaze and match their
+recorded original hashes, but that local restoration does not make the evidence
+decision-grade. The checked-in case fixture is golden/source truth; generated
+candidates are not goldens, but their exact bytes must still be checked in when
+a score depends on them. Only a fresh, manually reviewed v3 packet with retained media and verified
+hashes can replace this history.
 
 - Failed blocker evidence retained for traceability: `benchmarks/results/storyboard-generation-quality-story-188-beat-grid-subset.{json,md}` records the original `success=0/1` runtime failure.
 - Fixed bounded runtime subset: `benchmarks/results/storyboard-generation-quality-story-188-beat-grid-subset-fixed.{json,md}` records `success=1/1`, `13` frames, storyboard-stage latency `85645ms`, and total cost `$0.2641`.
@@ -136,9 +147,13 @@ The reproducible failure was prompt size: the beat-grid candidate built a 38,091
 - Validation quality rerun: `benchmarks/results/storyboard-generation-quality-story-188-template-vs-beat-validation-decision.{json,md}` reran promptfoo against the same generated runtime dataset. It records template-grid `overall=0.6613` and beat-grid `overall=0.6838`; both stay below the `0.75` usefulness floor, and beat-grid still regresses identity consistency (`0.375`) plus prop discipline (`0.5`).
 - Manual artifact inspection: generated grids for `scene_001` and `scene_002` are coherent monochrome storyboard sheets with no readable text leakage. The remaining quality miss is character identity drift, not a runtime blocker.
 
-## Decision
+## Historical Decision
 
-Do not promote the beat-grid candidate over the current template-grid default. The maintained runtime proves beat-grid is viable, and the validation judge pass gave it a slightly higher aggregate than template-grid, but neither candidate clears the `0.75` usefulness floor and beat-grid still worsens the critical recurring-identity and prop-discipline dimensions. Keep `gpt_image_2_template_grid_storyboards` as the default and leave beat-grid as a measured non-default candidate.
+Story 188 did not promote beat-grid over the configured template-grid default.
+Story 208 preserves that runtime configuration but withdraws the evidence claim:
+the old packet no longer proves either candidate's current quality or relative
+fitness. Beat-grid remains an historical non-default candidate until a fresh v3
+comparison satisfies the durable-media and manual-review gates.
 
 ## Architectural Fit
 

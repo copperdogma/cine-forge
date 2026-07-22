@@ -1,16 +1,20 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from collections import defaultdict
 from pathlib import Path
 from statistics import mean
-from typing import Any
+from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, NonNegativeInt
 
 from cine_forge.schemas.video_analysis import VideoAnalysisTarget
 
 
 class RecipeRunSummary(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     run_id: str
     recipe_id: str
     elapsed_ms: int = Field(ge=0)
@@ -18,9 +22,30 @@ class RecipeRunSummary(BaseModel):
     error: str | None = None
     total_cost_usd: float = Field(ge=0.0)
     stage_statuses: dict[str, str] = Field(default_factory=dict)
-    stage_durations_ms: dict[str, int] = Field(default_factory=dict)
-    artifact_counts: dict[str, int] = Field(default_factory=dict)
+    stage_durations_ms: dict[str, NonNegativeInt] = Field(default_factory=dict)
+    artifact_counts: dict[str, NonNegativeInt] = Field(default_factory=dict)
     artifact_paths: dict[str, str] = Field(default_factory=dict)
+
+
+class RenderTargetCriterionSource(BaseModel):
+    """One source-backed reason a final-render target criterion exists."""
+
+    source_kind: Literal["screenplay", "reference_style_contract"]
+    source_ref: str = Field(min_length=1)
+    quotes: list[str] = Field(default_factory=list, min_length=1)
+    rationale: str = Field(min_length=1)
+
+
+class RenderTargetProvenance(BaseModel):
+    """Versioned intended-brief provenance kept separate from candidate pixels."""
+
+    contract_version: str = Field(min_length=1)
+    source_fixture: str = Field(min_length=1)
+    source_fixture_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    scene_heading: str = Field(min_length=1)
+    scored_dimensions: list[str] = Field(min_length=1)
+    excluded_dimensions: dict[str, str] = Field(default_factory=dict)
+    criteria: dict[str, list[RenderTargetCriterionSource]] = Field(default_factory=dict)
 
 
 class RenderProviderFloorCase(BaseModel):
@@ -30,6 +55,7 @@ class RenderProviderFloorCase(BaseModel):
     scene_id: str = Field(default="scene_001", min_length=1)
     notes: str | None = None
     analysis_target: VideoAnalysisTarget
+    target_provenance: RenderTargetProvenance
 
 
 class RenderProviderFloorManifest(BaseModel):
@@ -37,12 +63,18 @@ class RenderProviderFloorManifest(BaseModel):
 
 
 class CandidateSpec(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     pack_id: str = Field(min_length=1)
     variant: str = Field(min_length=1)
     label: str = Field(min_length=1)
+    provider: Literal["openai", "google"]
+    target_model: str = Field(min_length=1)
 
 
 class CandidateRunSummary(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     case_id: str
     case_label: str
     scene_id: str
@@ -72,7 +104,7 @@ class CandidateRunSummary(BaseModel):
     media_validation_path: str | None = None
     request_id: str | None = None
     provider_job_id: str | None = None
-    reference_usage_counts: dict[str, int] = Field(default_factory=dict)
+    reference_usage_counts: dict[str, NonNegativeInt] = Field(default_factory=dict)
     active_input_count: int = Field(ge=0, default=0)
     prompt_context_count: int = Field(ge=0, default=0)
     unsupported_count: int = Field(ge=0, default=0)
@@ -82,6 +114,8 @@ class CandidateRunSummary(BaseModel):
 
 
 class CandidateAggregate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     candidate_variant: str
     candidate_label: str
     engine_pack_id: str
@@ -105,20 +139,69 @@ CANDIDATE_SPECS: dict[str, CandidateSpec] = {
         pack_id="openai_sora2",
         variant="openai_sora2",
         label="OpenAI Sora 2 Render",
+        provider="openai",
+        target_model="sora-2",
     ),
     "google_veo31": CandidateSpec(
         pack_id="google_veo31",
         variant="google_veo31",
         label="Google Veo 3.1 Render",
+        provider="google",
+        target_model="veo-3.1-generate-preview",
     ),
     "google_veo31_fast": CandidateSpec(
         pack_id="google_veo31_fast",
         variant="google_veo31_fast",
         label="Google Veo 3.1 Fast Render",
+        provider="google",
+        target_model="veo-3.1-fast-generate-preview",
     ),
 }
 
 DEFAULT_CANDIDATE_PACKS = tuple(CANDIDATE_SPECS.keys())
+RUNTIME_EVAL_ID = "final-render-provider-floor-runtime"
+RUNTIME_COMPARISON_SETTINGS = {
+    "duration_seconds": 8,
+    "aspect_ratio": "16:9",
+    "normalized_resolution": "720p",
+}
+
+
+def runtime_payload_sha256(payload: dict[str, Any]) -> str:
+    """Return a formatting-independent fingerprint for one runtime evidence payload."""
+    encoded = json.dumps(
+        payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        allow_nan=False,
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def build_runtime_payload(
+    *,
+    measured_at: str,
+    manifest_path: Path,
+    repo_root: Path,
+    selected_packs: tuple[str, ...],
+    comparison_settings: dict[str, Any],
+    summary_rows: list[CandidateAggregate],
+    runs: list[CandidateRunSummary],
+) -> dict[str, Any]:
+    """Build the hash-bound runtime evidence envelope outside the runner entrypoint."""
+    return {
+        "eval_id": RUNTIME_EVAL_ID,
+        "measured_at": measured_at,
+        "fixture_manifest": display_repo_relative_path(manifest_path, repo_root),
+        "fixture_manifest_sha256": hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+        "candidate_packs": list(selected_packs),
+        "comparison_settings": comparison_settings,
+        "summary": {
+            "candidates": [row.model_dump(mode="json") for row in summary_rows],
+        },
+        "runs": [run.model_dump(mode="json") for run in runs],
+    }
 
 
 def display_repo_relative_path(path: Path, repo_root: Path) -> str:

@@ -1,0 +1,42 @@
+{
+  "title": "Open Frequency",
+  "scene_count": 4,
+  "scenes": [
+    {
+      "scene_number": 1,
+      "heading": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "int_ext": "INT",
+      "location": "COMMUNITY RADIO STUDIO",
+      "time_of_day": "NIGHT",
+      "summary": "During a storm and power emergency, Aria, Noah, June, and Kell prepare the community radio station to reach the town through the hill relay. The ON AIR sign flickers and dies while Aria asks for ten minutes and a miracle.",
+      "characters": ["ARIA", "NOAH", "JUNE", "KELL"]
+    },
+    {
+      "scene_number": 2,
+      "heading": "EXT. WATER TOWER CATWALK - NIGHT",
+      "int_ext": "EXT",
+      "location": "WATER TOWER CATWALK",
+      "time_of_day": "NIGHT",
+      "summary": "Aria and Noah secure the portable antenna to the water tower in dangerous wind and receive a weak radio plea for insulin and dry blankets at the north shelter. June answers over the radio, and Aria tightens the last bolt.",
+      "characters": ["ARIA", "NOAH", "UNKNOWN VOICE", "JUNE"]
+    },
+    {
+      "scene_number": 3,
+      "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+      "int_ext": "INT",
+      "location": "HIGH SCHOOL GYM SHELTER",
+      "time_of_day": "PRE-DAWN",
+      "summary": "At the shelter, June records updates while Kell sorts batteries and Maya asks the station to announce her missing dog, Comet. Noah reports by radio that the east road is open one lane, and June takes Maya's flyer for the broadcast.",
+      "characters": ["JUNE", "KELL", "MAYA", "NOAH"]
+    },
+    {
+      "scene_number": 4,
+      "heading": "INT. COMMUNITY RADIO STUDIO - MORNING",
+      "int_ext": "INT",
+      "location": "COMMUNITY RADIO STUDIO",
+      "time_of_day": "MORNING",
+      "summary": "The radio team returns to a storm-worn studio as Maya arrives with the recovered Comet. June broadcasts the road, shelter, and dog updates, Noah starts a brass-heavy cassette cue, and the ON AIR sign settles into a solid red glow while the group resumes work.",
+      "characters": ["ARIA", "NOAH", "JUNE", "KELL", "MAYA", "COMET"]
+    }
+  ]
+}

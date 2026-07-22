@@ -114,9 +114,8 @@ def test_final_output_recipe_builds_partial_cut_from_preserved_render_batch_fail
 
     def _fake_call_llm(**kwargs):
         schema = kwargs["response_schema"]
-        prompt_inputs = kwargs.get("prompt_inputs") or {}
-        scene_block = str(prompt_inputs.get("scene_block") or "")
-        scene_id = "scene_002" if "Scene 2:" in scene_block else "scene_001"
+        prompt = str(kwargs.get("prompt") or "")
+        scene_id = "scene_002" if "Scene 2:" in prompt else "scene_001"
         return (
             schema.model_validate(
                 {
@@ -153,9 +152,8 @@ def test_final_output_recipe_builds_partial_cut_from_preserved_render_batch_fail
     call_count = {"value": 0}
 
     def _fake_generate_video(*, request, engine_pack):
-        del request
         call_count["value"] += 1
-        if call_count["value"] == 2:
+        if "scene_002" in request.prompt:
             raise RuntimeError("synthetic second-scene failure")
         return VideoGenerationResult(
             video_bytes=clip_bytes,
@@ -171,16 +169,17 @@ def test_final_output_recipe_builds_partial_cut_from_preserved_render_batch_fail
     )
     monkeypatch.setattr("cine_forge.ai.video.generate_video", _fake_generate_video)
 
-    with pytest.raises(RuntimeError, match="preserved 1 successful scene render"):
+    with pytest.raises(RuntimeError, match="preserved 2 successful render unit"):
         engine.run(
             recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
             run_id="integration-render-partial-for-final-output",
             force=True,
-            start_from="render",
+            start_from="render_clip_planning",
             runtime_params={
                 "scene_scope": {"mode": "all_scenes", "scene_ids": []},
                 "engine_pack_id": "google_veo31",
                 "compiler_model": "gpt-5.4-mini",
+                "planner_model": "mock",
                 "duration_seconds": 8,
             },
         )

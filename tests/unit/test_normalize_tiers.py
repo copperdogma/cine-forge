@@ -84,14 +84,17 @@ def test_tier1_hardcodes_metadata() -> None:
 
 
 @pytest.mark.unit
-def test_tier3_rejects_prose_input() -> None:
-    """Non-screenplay input should be rejected with INVALID health."""
+def test_tier2_converts_prose_without_dropping_source_content() -> None:
+    """Recognized prose is story input and must not be rejected as invalid."""
     inputs = {"raw_input": _make_raw_input(PROSE_INPUT, detected_format="prose", confidence=0.9)}
-    result = run_module(inputs, {}, {})
+    result = run_module(inputs, {"work_model": "mock", "qa_model": "mock"}, {})
     artifact = result["artifacts"][0]
-    assert artifact["metadata"]["health"] == "needs_revision"
-    assert artifact["metadata"]["annotations"]["normalization_tier"] == 3
-    assert artifact["data"]["script_text"] == ""
+    assert artifact["metadata"]["health"] == "valid"
+    assert artifact["metadata"]["annotations"]["normalization_tier"] == 2
+    assert artifact["data"]["normalization"]["strategy"] == "full_conversion"
+    assert PROSE_INPUT in artifact["data"]["script_text"]
+    assert artifact["data"]["normalization"]["inventions"]
+    assert artifact["data"]["normalization"]["assumptions"]
 
 
 @pytest.mark.unit

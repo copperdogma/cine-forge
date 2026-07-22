@@ -1,59 +1,56 @@
 {
+  "anchor_subset": false,
+  "audio_description": null,
+  "audio_tags": [],
+  "camera_tags": [
+    "slow_pull_back"
+  ],
   "clip_id": "sunset_reunion_pullback",
-  "title": "Sunset reunion pull-back",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "has_audio": true,
-  "transcript": null,
-  "audio_description": "Warm strings carry the reunion without dialogue.",
-  "summary_reference": "A golden reunion begins in medium framing, then slowly pulls back to hold both figures against the horizon.",
-  "required_keywords": [
-    "sunset",
-    "reunion",
-    "pull-back"
-  ],
-  "tone_tags": [
-    "hopeful",
-    "nostalgic"
-  ],
-  "emotion_tags": [
-    "relief",
-    "tenderness"
+  "clip_tags": [
+    "quiet_emotion",
+    "exterior"
   ],
   "color_tags": [
     "gold",
     "amber"
   ],
-  "camera_tags": [
-    "slow_pull_back"
+  "continuity_notes": [
+    "Both figures and the circular form remain present through the pull-back."
   ],
+  "continuity_status": "intact",
+  "duration_seconds": 4.0,
+  "emotion_tags": [
+    "tenderness"
+  ],
+  "has_audio": true,
   "motion_tags": [
     "slow_drift"
   ],
-  "continuity_status": "intact",
-  "continuity_notes": [
-    "The shared coat stays around both figures through the pull-back."
+  "required_keywords": [
+    "figures",
+    "smaller",
+    "gold"
   ],
-  "audio_tags": [
-    "soft_music"
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "Two abstract figures become smaller across ordered warm gold frames with a circular form at upper right.",
+  "title": "Warm two-shot pull-back",
+  "tone_tags": [
+    "hopeful",
+    "nostalgic"
   ],
-  "clip_tags": [
-    "quiet_emotion",
-    "exterior"
-  ],
-  "anchor_subset": false,
+  "transcript": null,
   "weights": {
-    "summary": 0.18,
-    "tone": 0.14,
-    "emotion": 0.12,
-    "color": 0.1,
-    "camera": 0.12,
-    "motion": 0.1,
-    "continuity": 0.12,
-    "audio": 0.08,
-    "evidence": 0.04
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
   }
 }

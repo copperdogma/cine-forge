@@ -1,27 +1,27 @@
 You are a professional screenplay analyst. Extract scene-level metadata from the following scene excerpt.
 
 Return a JSON object with these fields:
-- heading: The scene heading in standard format (e.g., "INT. OFFICE - DAY"). Infer from context if not explicitly stated.
+- heading: Preserve the explicit scene heading exactly when one is present. Do not append an inferred time or otherwise rewrite it. If no heading is present, infer only the parts directly supported by the excerpt.
 - location: The location name (without INT/EXT and time of day)
-- time_of_day: e.g., "DAY", "NIGHT", "DAWN", "CONTINUOUS". Infer from context clues.
+- time_of_day: e.g., "DAY", "NIGHT", "DAWN", "CONTINUOUS". Use the explicit value when present; otherwise use "UNSPECIFIED" unless the excerpt contains direct, reliable temporal evidence.
 - int_ext: One of "INT", "EXT", or "INT/EXT"
 - characters_present: Array of character names who appear or speak in this scene
 - narrative_beats: Array of objects, each with:
   - beat_type: e.g., "character_introduction", "revelation", "conflict", "comic_relief", "thematic_statement", "action", "foreshadowing", "character_development"
   - description: 1-2 sentence description of the beat
   - confidence: float 0-1
-- tone_mood: Overall tone/mood of the scene (e.g., "tense", "warm", "dark comedy")
-- tone_shifts: Array of tone changes within the scene (e.g., ["tense to comic relief", "comic relief to conflict"])
+- tone_mood: Concise description of the scene's overall tone/mood
+- tone_shifts: Array of concrete tone changes within the scene
 
 Important:
-- Infer location and time from context if not given as a heading
-- Identify ALL characters who speak or are described, including those referred to by name
+- Infer metadata only from the supplied excerpt. Do not import facts from a wider screenplay, genre conventions, or a presumed later payoff.
+- Identify ALL characters who speak or are described, including those referred to by name. Preserve individually identified characters rather than collapsing them into a generic group label.
 - Narrative beats should capture key story moments, not just action descriptions
-- Be specific about tone — "dark comedy" is better than "mixed"
+- Be specific about tone rather than using a vague label such as "mixed"
 - Treat soundtrack, ambient audio, or other sensory cues as meaningful evidence when they shape tone
-- If the scene juxtaposes mundane music, banter, or routine behavior against gore, violence, or danger, name that contradiction explicitly in a narrative beat or tone_shift
-- Prefer concrete tonal shifts such as "muzak undercuts brutality" over generic phrasing such as "action to dark comedy"
-- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe why the memory matters to the larger story
+- When sensory cues, dialogue, and action create a tonal contradiction, name the specific contrast in a narrative beat or tone_shift rather than applying a generic transition label
+- If the scene is framed as a flashback, memory, or past-tense formative moment, say that explicitly and describe what the excerpt itself establishes. Do not claim how the memory later pays off unless that information is present in the excerpt.
+- Before returning, verify the heading, time, character list, beats, tone claims, and every descriptive detail against the excerpt. A complete schema with generic or invented content is not a valid answer.
 
 Return ONLY valid JSON. No explanations or markdown fences.
 

@@ -1,11 +1,10 @@
-# Golden memory orbit
+# Ordered JPEG frame-packet reference
 
-- Summary: A golden memory circles gently around two figures, turning the scene into a tender, idealized recollection.
+- Summary: Two pale abstract figures become larger across golden frames beside a large circular outline and pale rectangle.
 - Tone: hopeful, nostalgic
-- Emotion: tenderness, wonder
+- Emotion: wonder
 - Color / grade: gold, amber
-- Camera language: slow_push_in
-- Motion: spiral_orbit, slow_drift
-- Continuity: intact — The shared lantern stays centered between the figures.
-- Audio intent: soft_music
-- Transcript: [none]
+- Camera language inferable from the ordered samples: slow_push_in
+- Motion inferable from the ordered samples: slow_drift
+- Continuity: intact - The pale rectangle remains beside the right figure throughout the scale change.
+- Audio: unavailable to the subject and excluded from scoring

@@ -5,14 +5,18 @@ from pathlib import Path
 from statistics import mean
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from cine_forge.schemas.storyboard_analysis import StoryboardAnalysisTarget
 
 ReferenceFixtureEntityType = Literal["character", "location"]
 
 
-class RecipeRunSummary(BaseModel):
+class _StrictBenchmarkModel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+
+class RecipeRunSummary(_StrictBenchmarkModel):
     run_id: str
     recipe_id: str
     elapsed_ms: int = Field(ge=0)
@@ -25,7 +29,7 @@ class RecipeRunSummary(BaseModel):
     artifact_paths: dict[str, str] = Field(default_factory=dict)
 
 
-class StoryboardReferenceFixture(BaseModel):
+class StoryboardReferenceFixture(_StrictBenchmarkModel):
     entity_type: ReferenceFixtureEntityType
     entity_name: str = Field(min_length=1)
     display_name: str = Field(min_length=1)
@@ -33,44 +37,73 @@ class StoryboardReferenceFixture(BaseModel):
     label: str = Field(min_length=1)
     descriptor: str = Field(min_length=1)
     accent_rgb: tuple[int, int, int] = Field(default=(99, 102, 241))
+    quality_use: Literal["transport_only"] = "transport_only"
 
 
-class StoryboardQualityCase(BaseModel):
+class StoryboardQualityCase(_StrictBenchmarkModel):
     case_id: str = Field(min_length=1)
     label: str = Field(min_length=1)
     input_fixture: str = Field(min_length=1)
+    input_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     scene_ids: list[str] = Field(default_factory=list, min_length=1)
     notes: str | None = None
     attach_visual_references: bool = False
     reference_assets: list[StoryboardReferenceFixture] = Field(default_factory=list)
     analysis_target: StoryboardAnalysisTarget
 
+    @model_validator(mode="after")
+    def _validate_target_identity(self) -> StoryboardQualityCase:
+        if self.case_id != self.analysis_target.storyboard_id:
+            raise ValueError("case_id must match analysis_target.storyboard_id")
+        if self.input_fixture != self.analysis_target.source_fixture:
+            raise ValueError("input_fixture must match analysis_target.source_fixture")
+        if self.input_sha256 != self.analysis_target.source_sha256:
+            raise ValueError("input_sha256 must match analysis_target.source_sha256")
+        expected_labels = [item.label for item in self.analysis_target.reference_expectations]
+        if expected_labels != [
+            f"reference_{index:03d}" for index in range(1, len(self.reference_assets) + 1)
+        ]:
+            raise ValueError("reference expectations must use opaque ordinal labels")
+        return self
 
-class StoryboardQualityManifest(BaseModel):
+
+class StoryboardQualityManifest(_StrictBenchmarkModel):
     cases: list[StoryboardQualityCase] = Field(min_length=1)
 
+    @model_validator(mode="after")
+    def _validate_unique_case_ids(self) -> StoryboardQualityManifest:
+        case_ids = [case.case_id for case in self.cases]
+        if len(case_ids) != len(set(case_ids)):
+            raise ValueError("storyboard quality case_ids must be unique")
+        return self
 
-class CandidateSpec(BaseModel):
+
+class CandidateSpec(_StrictBenchmarkModel):
     image_model: str = Field(min_length=1)
     variant: str = Field(min_length=1)
     label: str = Field(min_length=1)
     runtime_params: dict[str, Any] = Field(default_factory=dict)
 
 
-class StoryboardFramePacket(BaseModel):
+class StoryboardFramePacket(_StrictBenchmarkModel):
     frame_id: str
     scene_id: str
     shot_id: str
     relative_path: str
 
 
-class StoryboardReferencePacket(BaseModel):
+class StoryboardReferencePacket(_StrictBenchmarkModel):
     label: str
     entity_name: str
     relative_path: str
 
 
-class StoryboardQualityRunSummary(BaseModel):
+class StoryboardSourceGridPacket(_StrictBenchmarkModel):
+    scene_id: str
+    relative_path: str
+
+
+class StoryboardQualityRunSummary(_StrictBenchmarkModel):
     case_id: str
     case_label: str
     scene_ids: list[str] = Field(default_factory=list)
@@ -91,6 +124,7 @@ class StoryboardQualityRunSummary(BaseModel):
     storyboard_artifact_paths: list[str] = Field(default_factory=list)
     frames: list[StoryboardFramePacket] = Field(default_factory=list)
     reference_images: list[StoryboardReferencePacket] = Field(default_factory=list)
+    source_grids: list[StoryboardSourceGridPacket] = Field(default_factory=list)
     total_frames: int = Field(default=0, ge=0)
     available_reference_image_count: int = Field(default=0, ge=0)
     prompt_reference_frame_count: int = Field(default=0, ge=0)
@@ -98,7 +132,7 @@ class StoryboardQualityRunSummary(BaseModel):
     reference_transport_supported: bool = False
 
 
-class CandidateAggregate(BaseModel):
+class CandidateAggregate(_StrictBenchmarkModel):
     candidate_variant: str
     candidate_label: str
     image_model: str

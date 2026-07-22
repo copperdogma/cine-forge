@@ -1,58 +1,56 @@
 {
+  "anchor_subset": false,
+  "audio_description": null,
+  "audio_tags": [],
+  "camera_tags": [
+    "wide_master",
+    "static"
+  ],
   "clip_id": "warehouse_drone_wide",
-  "title": "Warehouse drone wide",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "has_audio": true,
-  "transcript": null,
-  "audio_description": "A low industrial drone with no speech.",
-  "summary_reference": "A wide warehouse master holds on empty aisles while a low drone turns the stillness ominous.",
-  "required_keywords": [
-    "warehouse",
-    "wide",
-    "drone"
-  ],
-  "tone_tags": [
+  "clip_tags": [
+    "wide_space",
     "ominous"
-  ],
-  "emotion_tags": [
-    "isolation"
   ],
   "color_tags": [
     "desaturated",
     "monochrome"
   ],
-  "camera_tags": [
-    "wide_master",
-    "static"
+  "continuity_notes": [
+    "The repeated blocks and pale rectangle remain fixed across the packet."
   ],
+  "continuity_status": "intact",
+  "duration_seconds": 4.0,
+  "emotion_tags": [
+    "isolation"
+  ],
+  "has_audio": true,
   "motion_tags": [
     "stillness"
   ],
-  "continuity_status": "intact",
-  "continuity_notes": [
-    "The hanging work light stays over the same aisle."
+  "required_keywords": [
+    "wide",
+    "blocks",
+    "static"
   ],
-  "audio_tags": [
-    "drone"
-  ],
-  "clip_tags": [
-    "wide_space",
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "A static desaturated wide view contains repeated tall aisle-like blocks and one pale hanging rectangle.",
+  "title": "Empty gray aisle",
+  "tone_tags": [
     "ominous"
   ],
-  "anchor_subset": false,
+  "transcript": null,
   "weights": {
-    "summary": 0.18,
-    "tone": 0.14,
-    "emotion": 0.12,
-    "color": 0.1,
-    "camera": 0.12,
-    "motion": 0.1,
-    "continuity": 0.12,
-    "audio": 0.08,
-    "evidence": 0.04
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
   }
 }

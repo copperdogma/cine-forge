@@ -1,14 +1,16 @@
-# Story 143 / 149 — Previz usefulness and fast-lane policy benchmark
+# Story 143 / 149 / 176 / 178 — retained AI-previz usefulness benchmark
 #
 # Usage:
 #   source ~/.nvm/nvm.sh && nvm use 24 > /dev/null 2>&1
 #   cd benchmarks
+#   # Safe local refresh: no provider-generation calls.
 #   python scripts/generate_previz_usefulness_dataset.py
-#   python scripts/generate_previz_usefulness_dataset.py --skip-ai --output-dir tmp/previz_fast_lane
-#   PROMPTFOO_PYTHON=python python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 \
-#     --output results/previz-usefulness-story-143-2026-04-03.json
+#   PROMPTFOO_PYTHON=python python ../scripts/with_cine_forge_provider_env.py \
+#     promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1
+#
+# Paid clip generation is never implicit. It requires the separate --generate-ai opt-in.
 
-description: "Previz usefulness — compare deterministic fallback/control baselines against the current one-pass AI-previz provider-floor candidates"
+description: "Previz usefulness — regrade retained provider-generated AI candidates against their source-authored generation briefs; deterministic controls and evaluator-authored overlays are excluded from decision evidence"
 
 defaultTest:
   options:
@@ -19,45 +21,15 @@ prompts:
 
 providers:
   - id: file://../providers/video_understanding_provider.py
-    label: "Symbolic Animatic"
-    config:
-      provider: openai
-      model: gpt-5.4
-      temperature: 0
-      max_tokens: 1400
-      max_frames: 5
-      frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: previz-usefulness-v2
-      clip_root: ../previz_usefulness
-      candidate_variant: symbolic
-      pythonExecutable: python
-      timeout: 300000
-
-  - id: file://../providers/video_understanding_provider.py
-    label: "Annotated Animatic"
-    config:
-      provider: openai
-      model: gpt-5.4
-      temperature: 0
-      max_tokens: 1400
-      max_frames: 5
-      frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: previz-usefulness-v2
-      clip_root: ../previz_usefulness
-      candidate_variant: annotated_symbolic
-      pythonExecutable: python
-      timeout: 300000
-
-  - id: file://../providers/video_understanding_provider.py
     label: "Veo 3.1 Lite Previz"
-    config:
+    config: &analysis_config
       provider: openai
       model: gpt-5.4
       temperature: 0
       max_tokens: 1400
       max_frames: 5
-      frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: previz-usefulness-v2
+      frame_policy: five_ordered_jpegs_v1
+      prompt_version: previz-usefulness-v3-source-brief-frame-contract
       clip_root: ../previz_usefulness
       candidate_variant: google_veo31_lite_previz
       pythonExecutable: python
@@ -66,65 +38,55 @@ providers:
   - id: file://../providers/video_understanding_provider.py
     label: "Veo 3.1 Fast Previz"
     config:
-      provider: openai
-      model: gpt-5.4
-      temperature: 0
-      max_tokens: 1400
-      max_frames: 5
-      frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: previz-usefulness-v2
-      clip_root: ../previz_usefulness
+      <<: *analysis_config
       candidate_variant: google_veo31_fast_previz
-      pythonExecutable: python
-      timeout: 300000
 
   - id: file://../providers/video_understanding_provider.py
     label: "Grok Imagine Previz"
     config:
-      provider: openai
-      model: gpt-5.4
-      temperature: 0
-      max_tokens: 1400
-      max_frames: 5
-      frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: previz-usefulness-v2
-      clip_root: ../previz_usefulness
+      <<: *analysis_config
       candidate_variant: xai_grok_imagine_video_previz
-      pythonExecutable: python
-      timeout: 300000
 
 tests:
   - vars:
       clip_id: dialogue_confession_push_in
-      clip_title: Dialogue confession push-in
-      target_path: video_understanding/dialogue_confession_push_in/target.json
-      target_markdown: file://../video_understanding/dialogue_confession_push_in/target.md
+      evaluation_id: previz_case_001
+      target_path: previz_usefulness/targets/dialogue_confession_push_in.json
+      target_markdown: file://../previz_usefulness/targets/dialogue_confession_push_in.md
     assert: &previz_usefulness_assertions
       - type: python
         value: file://../scorers/video_understanding_scorer.py
       - type: llm-rubric
         value: |
-          Evaluate this model's structured clip analysis against the reference below.
+          Evaluate this model's structured frame analysis against the authored previz generation
+          intent below. The reference is a visual scoring projection of the brief that generated
+          every retained candidate; it was not inferred from any candidate output.
 
           Reference analysis:
           {{target_markdown}}
 
-          Reward outputs that preserve camera placement, blocking clarity, motion readability,
-          pacing, prop/location legibility, and character distinctness from the reference scene.
-          Also reward outputs that still read like intentionally low-fidelity previs rather than
-          polished final imagery. Penalize outputs that flatten spatial relationships, miss the
-          planned movement, blur character identity, or imply decorative final-render detail.
+          The subject received only five ordered JPEG samples plus neutral timing facts and an
+          opaque identifier. It did not receive audio, transcript, title, target metadata, or a
+          playable clip. Judge only visual claims supported by those samples; ignore every
+          audio/transcript line in the reference and require empty audio fields. Reward faithful
+          camera placement, blocking clarity, visible motion progression, prop/location
+          legibility, and deliberately low-fidelity previs readability. Score whether the
+          submitted frames realize the intended visual brief; do not reward a fluent analysis for
+          accurately describing a candidate that missed the brief. Do not require audio, dialogue,
+          pacing, actions, edits, or camera movement hidden between samples. Accept equivalent
+          visual wording and penalize invented detail or ungrounded evidence.
+          Pass only at score >= 0.8.
 
   - vars:
       clip_id: quiet_bedside_vigil
-      clip_title: Quiet bedside vigil
-      target_path: video_understanding/quiet_bedside_vigil/target.json
-      target_markdown: file://../video_understanding/quiet_bedside_vigil/target.md
+      evaluation_id: previz_case_002
+      target_path: previz_usefulness/targets/quiet_bedside_vigil.json
+      target_markdown: file://../previz_usefulness/targets/quiet_bedside_vigil.md
     assert: *previz_usefulness_assertions
 
   - vars:
       clip_id: radio_hold_tracking
-      clip_title: Radio hold tracking
-      target_path: video_understanding/radio_hold_tracking/target.json
-      target_markdown: file://../video_understanding/radio_hold_tracking/target.md
+      evaluation_id: previz_case_003
+      target_path: previz_usefulness/targets/radio_hold_tracking.json
+      target_markdown: file://../previz_usefulness/targets/radio_hold_tracking.md
     assert: *previz_usefulness_assertions

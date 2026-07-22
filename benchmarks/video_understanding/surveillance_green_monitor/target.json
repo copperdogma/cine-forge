@@ -1,59 +1,57 @@
 {
+  "anchor_subset": false,
+  "audio_description": null,
+  "audio_tags": [],
+  "camera_tags": [
+    "static",
+    "wide_master"
+  ],
   "clip_id": "surveillance_green_monitor",
-  "title": "Surveillance green monitor",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "has_audio": true,
-  "transcript": null,
-  "audio_description": "A low electrical hum with no dialogue.",
-  "summary_reference": "A green surveillance feed watches a quiet doorway in a locked wide frame with timestamp overlays and monitor noise.",
-  "required_keywords": [
-    "surveillance",
-    "green",
+  "clip_tags": [
+    "stylized_color",
     "monitor"
-  ],
-  "tone_tags": [
-    "detached",
-    "ominous"
-  ],
-  "emotion_tags": [
-    "isolation"
   ],
   "color_tags": [
     "green",
     "monochrome"
   ],
-  "camera_tags": [
-    "wide_master",
-    "static"
+  "continuity_notes": [
+    "The border and centered shapes remain fixed in every frame."
   ],
+  "continuity_status": "intact",
+  "duration_seconds": 4.0,
+  "emotion_tags": [
+    "isolation"
+  ],
+  "has_audio": true,
   "motion_tags": [
     "stillness"
   ],
-  "continuity_status": "intact",
-  "continuity_notes": [
-    "The doorway and feed overlays remain stable."
+  "required_keywords": [
+    "green",
+    "border",
+    "rectangle"
   ],
-  "audio_tags": [
-    "drone"
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "A monochrome green border frames a centered doorway-like rectangle and narrow vertical block.",
+  "title": "Green doorway monitor",
+  "tone_tags": [
+    "detached",
+    "ominous"
   ],
-  "clip_tags": [
-    "stylized_color",
-    "monitor"
-  ],
-  "anchor_subset": false,
+  "transcript": null,
   "weights": {
-    "summary": 0.18,
-    "tone": 0.14,
-    "emotion": 0.12,
-    "color": 0.1,
-    "camera": 0.12,
-    "motion": 0.1,
-    "continuity": 0.12,
-    "audio": 0.08,
-    "evidence": 0.04
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
   }
 }

@@ -1,19 +1,34 @@
 {
-  "clip_id": "mirror_isolation_profile",
-  "title": "Mirror isolation profile",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "fps": 8,
-  "has_audio": false,
-  "transcript": null,
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "asset_audio_tags": [
+    "silent"
+  ],
   "audio_description": null,
+  "case_status": "quarantined",
+  "clip_id": "mirror_isolation_profile",
+  "duration_seconds": 4.0,
+  "fps": 8,
+  "generator_version": "frame-truth-v2",
+  "has_audio": false,
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "sampled_frame_sha256": [
+    "aa4f54ef40b2fb0a3d5579a007f658239b5323cb51b44b02aeb6a550ed2841eb",
+    "aa4f54ef40b2fb0a3d5579a007f658239b5323cb51b44b02aeb6a550ed2841eb",
+    "aa4f54ef40b2fb0a3d5579a007f658239b5323cb51b44b02aeb6a550ed2841eb",
+    "aa4f54ef40b2fb0a3d5579a007f658239b5323cb51b44b02aeb6a550ed2841eb",
+    "aa4f54ef40b2fb0a3d5579a007f658239b5323cb51b44b02aeb6a550ed2841eb"
+  ],
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "spec_sha256": "2f73d17b46335830723bc46fb3ef2fcb2d0bf768ff6a9c7b5aa3e033305563bd",
+  "status_reason": "A valid static portrait fixture, but redundant with the active stillness control and without distinct temporal evidence.",
   "tags": [
     "quiet_emotion",
     "portrait"
   ],
-  "anchor_subset": false,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+  "temporal_control": "static",
+  "title": "Violet mirror profile",
+  "transcript": null,
+  "unique_sampled_frames": 1
 }

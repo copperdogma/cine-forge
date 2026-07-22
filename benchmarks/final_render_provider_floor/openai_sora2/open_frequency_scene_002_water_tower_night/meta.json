@@ -2,18 +2,26 @@
   "clip_id": "open_frequency_scene_002_water_tower_night",
   "title": "Open Frequency scene 002 \u2014 water tower catwalk night",
   "source_type": "licensed_internal",
-  "source_description": "Story 169 candidate generated with openai_sora2 (sora-2) on the representative reference-conditioned render harness.",
+  "source_description": "Story 169 candidate generated with openai_sora2 (sora-2) on the representative reference-conditioned harness.",
   "rights": "Project-owned internal benchmark fixture",
   "duration_seconds": 8.0,
   "resolution": "720p",
   "has_audio": true,
-  "transcript": null,
-  "audio_description": null,
-  "tags": [
-    "exterior",
-    "weather",
-    "night",
-    "reference_conditioned"
+  "analysis_frame_policy": "five_interior_sixths_jpegs_v2",
+  "sample_times_seconds": [
+    1.333,
+    2.667,
+    4.0,
+    5.333,
+    6.667
+  ],
+  "clip_sha256": "f96ae2fe6fab66f15068299beef7ef20353854e5d5d1ffac06186a352a7b0553",
+  "sampled_frame_sha256": [
+    "d1814f315d69b204f8c3f346ce8e7df2304318f090bfe6c2f84cb96fafe1abe3",
+    "3feb51bf411cdbdc43315f47b302a6be898a8d9e864201285df592e1ac3b4660",
+    "0d6e15f0b59d7f76fe07b62a06552f3b506aa6694a673bbdc18ff8c412784514",
+    "610b54fd9457b4e10189dc649ed59a9d9599ff957bb899bf256d39c9bb389f14",
+    "cdbe093c65dac86d61f4dc3a5fbf785354339007cc407cfe2c8ea277a0db2204"
   ],
   "candidate_variant": "openai_sora2",
   "candidate_label": "OpenAI Sora 2 Render",
@@ -22,7 +30,9 @@
   "target_model": "sora-2",
   "generation_latency_ms": 186275,
   "end_to_end_latency_ms": 389793,
-  "estimated_generation_cost_usd": 0.00747,
+  "total_run_cost_usd": 0.011238,
+  "generation_cost_usd": null,
+  "generation_cost_status": "unavailable_in_retained_runtime_result",
   "request_id": "video_69e140b96cd48190b3979a16548a28130ce2a8118001e334",
   "provider_job_id": "video_69e140b96cd48190b3979a16548a28130ce2a8118001e334",
   "reference_usage_counts": {
@@ -45,5 +55,13 @@
       "purpose": "style_reference",
       "transparency_note": "style_reference.png (style_reference, soft_locked): style cue from filename/purpose only; do not claim unseen image content."
     }
-  ]
+  ],
+  "runtime_provenance": {
+    "runtime_result_sha256": "6814ecf024d9a4423e2746c39aafde477be7cf0212332d62dbd8eb8f0a57a12c",
+    "project_dir": "output/story-169-openai_sora2-open_frequency_scene_002_water_tower_night-20c6da",
+    "render_prompt_path": "artifacts/render_prompt/scene_002/v1.json",
+    "generated_video_artifact_path": "artifacts/generated_video/scene_002/v1.json",
+    "generated_media_path": "artifacts/generated_video_media/scene_002/v1/scene_render.mp4",
+    "retained_clip_fallback_used": true
+  }
 }

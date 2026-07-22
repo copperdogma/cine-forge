@@ -13,7 +13,6 @@ from playwright.sync_api import Page, sync_playwright
 from cine_forge.artifacts.store import ArtifactStore
 from cine_forge.schemas import ArtifactMetadata
 
-
 ROOT = Path(__file__).resolve().parents[3]
 REPORT_DIR = Path(__file__).resolve().parent / "browser"
 API_BASE = "http://127.0.0.1:8123/api"
@@ -116,9 +115,7 @@ def _seed_failure_fixture() -> str:
 def _attach_page_observers(page: Page, records: dict[str, list[str]]) -> None:
     page.on(
         "console",
-        lambda msg: records["console_errors"].append(msg.text)
-        if msg.type == "error"
-        else None,
+        lambda msg: records["console_errors"].append(msg.text) if msg.type == "error" else None,
     )
     page.on("pageerror", lambda exc: records["page_errors"].append(str(exc)))
 

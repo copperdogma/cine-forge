@@ -1,11 +1,10 @@
-# Rooftop escape crash zoom
+# Ordered JPEG frame-packet reference
 
-- Summary: A runner clears a rooftop gap as the camera crash-zooms toward the leap under hard sodium light.
+- Summary: An amber abstract runner rises over a visible gap between dark rooftop blocks while growing larger from left to right.
 - Tone: urgent, tense
-- Emotion: panic, resolve
+- Emotion: [none]
 - Color / grade: amber, navy
-- Camera language: crash_zoom
-- Motion: escalating
-- Continuity: intact — The yellow cable remains looped at the runner's waist.
-- Audio intent: percussion, drone
-- Transcript: [none]
+- Camera language inferable from the ordered samples: static, wide_master
+- Motion inferable from the ordered samples: escalating, fast_lateral
+- Continuity: intact - The small yellow rectangle stays beside the runner while crossing the rooftop gap.
+- Audio: unavailable to the subject and excluded from scoring

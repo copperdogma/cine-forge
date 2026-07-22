@@ -1,19 +1,34 @@
 {
-  "clip_id": "prop_swap_continuity_break",
-  "title": "Prop swap continuity break",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "fps": 8,
-  "has_audio": false,
-  "transcript": null,
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "asset_audio_tags": [
+    "silent"
+  ],
   "audio_description": null,
+  "case_status": "active_frame_eval",
+  "clip_id": "prop_swap_continuity_break",
+  "duration_seconds": 4.0,
+  "fps": 8,
+  "generator_version": "frame-truth-v2",
+  "has_audio": false,
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "sampled_frame_sha256": [
+    "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+    "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+    "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+    "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+    "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+  ],
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "spec_sha256": "8a82b68cda6c17358dedbc04e41127b4e39b3aae846acc9af213e3a07386480f",
+  "status_reason": "Positive discontinuity control: a visible two-state color change occurs at a submitted sample boundary.",
   "tags": [
     "continuity",
     "prop"
   ],
-  "anchor_subset": true,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+  "temporal_control": "change_point",
+  "title": "Tabletop color discontinuity",
+  "transcript": null,
+  "unique_sampled_frames": 2
 }

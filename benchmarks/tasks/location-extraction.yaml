@@ -1,185 +1,264 @@
 # Location Extraction Benchmark
-# Evaluates models on extracting structured location data from a screenplay.
-# Mirrors CineForge's location_bible_v1 module.
-#
-# Usage: cd benchmarks && promptfoo eval -c tasks/location-extraction.yaml --no-cache -j 3
-# View:  promptfoo view
+# All maintained location goldens are independent cases. Historical three-case
+# scores are not comparable to this strict contract.
 
-description: "Location extraction from screenplay — The Mariner"
+description: "Location extraction from screenplay — The Mariner (all locations)"
 
 defaultTest:
   options:
     provider: anthropic:messages:claude-opus-4-6
+  assert:
+    - type: python
+      value: file://../scorers/bible_extraction_scorer.py
+    - type: llm-rubric
+      value: |
+        Evaluate only the candidate JSON for the single requested location
+        {{location_name}} against the verified contract and source below.
+
+        Exact identity contract:
+        - location_id: {{expected_id}}
+        - name: {{expected_name}}
+        - aliases (complete set, no additions): {{expected_aliases}}
+        - scene_presence (complete exact source-heading set): {{expected_scenes}}
+
+        Verified minimum source concepts:
+        - physical_traits: {{verified_physical}}
+        - key story facts: {{verified_facts}}
+        - narrative significance: {{verified_narrative}}
+
+        Hard gates:
+        - Require exactly one unfenced JSON object with exactly location_id, name,
+          aliases, description, physical_traits, scene_presence,
+          narrative_significance, and overall_confidence. Require the documented
+          types and a finite numeric confidence from 0 through 1.
+        - The identity, aliases, and scene set must match the exact contract.
+          Facts repeated in prose cannot substitute for an omitted or partial
+          typed value, and no second entity may be returned.
+        - Verify every material claim against the screenplay. Fabricated or
+          negated evidence, an unsupported alias, a wrong scene, facts imported
+          from another location, or a confident contradiction is a hard failure.
+        - Require grounded coverage of every verified minimum concept. The list
+          is a minimum, not permission to invent other details.
+        - Allow conservative paraphrase in description and narrative analysis
+          when it preserves the source meaning. Do not demand exact wording for
+          analytical prose or treat plausible genre padding as evidence.
+        Set pass=false if any hard gate fails.
+
+        SOURCE SCREENPLAY:
+        ==========
+        {{screenplay}}
+        ==========
 
 prompts:
   - file://../prompts/location-extraction.txt
 
 providers:
-  # --- Cheap tier ---
   - id: openai:gpt-4.1-nano
     label: "GPT-4.1 Nano"
     config:
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
-
   - id: openai:gpt-4.1-mini
     label: "GPT-4.1 Mini"
     config:
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
-
   - id: google:gemini-2.5-flash-lite
     label: "Gemini 2.5 Flash Lite"
     config:
-      temperature: 0
       maxOutputTokens: 16384
-
-  # --- Mid tier ---
   - id: openai:gpt-4.1
     label: "GPT-4.1"
     config:
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
-
   - id: anthropic:messages:claude-haiku-4-5-20251001
     label: "Claude Haiku 4.5"
     config:
       temperature: 0
       max_tokens: 4096
-
   - id: anthropic:messages:claude-sonnet-4-5-20250929
     label: "Claude Sonnet 4.5"
     config:
       temperature: 0
       max_tokens: 4096
-
   - id: anthropic:messages:claude-sonnet-4-6
     label: "Claude Sonnet 4.6"
     config:
       temperature: 0
       max_tokens: 4096
-
   - id: google:gemini-2.5-flash
     label: "Gemini 2.5 Flash"
     config:
-      temperature: 0
       maxOutputTokens: 16384
-
   - id: google:gemini-3-flash-preview
     label: "Gemini 3 Flash"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
-
-  # --- SOTA tier ---
+      maxOutputTokens: 65536
   - id: openai:gpt-5.2
     label: "GPT-5.2"
     config:
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
-
   - id: openai:gpt-5.5
     label: "GPT-5.5"
     config:
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
-
   - id: file://../providers/openai_responses_provider.py
     label: "GPT-5.5 Pro"
     config:
+      model: gpt-5.5-pro
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
-
   - id: anthropic:messages:claude-opus-4-6
     label: "Claude Opus 4.6"
     config:
       temperature: 0
       max_tokens: 4096
-
   - id: google:gemini-2.5-pro
     label: "Gemini 2.5 Pro"
     config:
-      temperature: 0
       maxOutputTokens: 16384
-
   - id: google:gemini-3-pro-preview
     label: "Gemini 3 Pro"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
 tests:
-  # Test 1: RUDDY & GREENE BUILDING — main setting, multi-floor, most complex
+  - vars:
+      location_name: "CITY CENTRE"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-locations.json
+      golden_entry_sha256: "f732e2d83bd71621d8b893e0856e10ee06abe6d8db6966592b61d94577aae001"
+      expected_id: "city-centre"
+      expected_name: "CITY CENTRE"
+      expected_aliases: '["ruined city"]'
+      expected_scenes: '["EXT. CITY CENTRE - NIGHT"]'
+      verified_physical: >-
+        fires in barrels and destroyed buildings; homeless people huddled for warmth; a fallen skyscraper and rubble; background gunshots and screams; distant sirens
+      verified_facts: >-
+        opening establishing shot; pandemic and economic collapse; 2025 commercial-real-estate collapse makes urban centres no-go zones; vigilantes arise where police could not act
+      verified_narrative: "world-building; dystopian setting"
   - vars:
       location_name: "RUDDY & GREENE BUILDING"
       screenplay: file://../input/the-mariner.md
       golden_path: golden/the-mariner-locations.json
-    assert:
-      - type: python
-        value: file://../scorers/bible_extraction_scorer.py
-      - type: llm-rubric
-        value: |
-          Evaluate the location extraction for RUDDY & GREENE BUILDING from "The Mariner."
-
-          Key quality criteria:
-          1. Does it describe the building as a classic 15-story sandstone structure, now decayed?
-          2. Does it mention bullet holes, graffiti, and the contrast with its former beauty?
-          3. Does it identify the building as the main setting housing Salvatori's criminal operation?
-          4. Does it note the multi-floor structure (elevator, stairwells, floors 11-15)?
-          5. Does it capture the vertical journey as a narrative device?
-          6. Does it list relevant scene headings (front, rear, elevator)?
-          7. Is the description grounded in actual screenplay text?
-
-          Score strictly: the building is the central location and a good extraction captures both physical detail and narrative function.
-
-  # Test 2: 15TH FLOOR — Salvatori's office, climactic location
+      golden_entry_sha256: "8915be89e1edce111beea78911689e697901beea197a418fc442a842d2b007ea"
+      expected_id: "ruddy-and-greene-building"
+      expected_name: "RUDDY & GREENE BUILDING"
+      expected_aliases: '["Ruddy & Green Building", "the building"]'
+      expected_scenes: >-
+        ["EXT. RUDDY & GREENE BUILDING - FRONT - NIGHT", "EXT. RUDDY & GREENE BUILDING - REAR - NIGHT", "INT. RUDDY & GREEN BUILDING - ELEVATOR", "INT. 11TH FLOOR - CONTINUOUS", "INT. STAIRWELL - CONTINUOUS", "INT. 12TH FLOOR STAIRWELL - CONTINUOUS", "INT. 13TH FLOOR", "INT. 15TH FLOOR", "INT. STAIRWELL - (BACK TO PRESENT)"]
+      verified_physical: >-
+        classic 15-story sandstone building; bullet holes and graffiti; once beautiful and now decayed; European SUVs; grimy rear alley; dim damaged lower corridors with flickering lights, papers, and furniture; clean luxurious dim 15th-floor contrast
+      verified_facts: >-
+        central story location; Salvatori's gang occupies multiple floors; Mariner enters at the rear in a fish-delivery van; Mariner fights through the building and reaches the elevator with Rose; fifteen stories
+      verified_narrative: "central; criminal; Salvatori; vertical climb"
+  - vars:
+      location_name: "RUDDY & GREEN BUILDING - ELEVATOR"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-locations.json
+      golden_entry_sha256: "5a0a2eb33339fc04d99efb700466045f7e7f77a280eba81218ce5c997845e6aa"
+      expected_id: "ruddy-and-green-building-elevator"
+      expected_name: "RUDDY & GREEN BUILDING - ELEVATOR"
+      expected_aliases: '["elevator"]'
+      expected_scenes: '["INT. RUDDY & GREEN BUILDING - ELEVATOR"]'
+      verified_physical: >-
+        muzak; a bloody scrap with hair on the floor; doors open onto upper floors
+      verified_facts: >-
+        Rose and Mariner catch their breath after rescue; Mariner reveals the AirTag; three thugs ambush them at floor twelve; Rose redirects to eleven and the stairs
+      verified_narrative: "escape; pursuit; vertical movement"
+  - vars:
+      location_name: "11TH FLOOR"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-locations.json
+      golden_entry_sha256: "df580a9ff0176c0fd83d70643d4202f2de8fd007e528cb8e0379bd3ed9c9454a"
+      expected_id: "11th-floor"
+      expected_name: "11TH FLOOR"
+      expected_aliases: '[]'
+      expected_scenes: '["INT. 11TH FLOOR - CONTINUOUS"]'
+      verified_physical: >-
+        dim corridors; flickering lights; papers and office furniture in the hallway; empty room with toppled filing cabinet
+      verified_facts: >-
+        Rose and Mariner seek a stairwell; they hide behind the cabinet; Mariner's Dad tattoo triggers the first idealized coastline flashback
+      verified_narrative: "concealment; memory; flashback"
+  - vars:
+      location_name: "STAIRWELL"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-locations.json
+      golden_entry_sha256: "118abe5d21a01fab15123d18d955d3c3f0d8698982514b45f674715a3bdab5f8"
+      expected_id: "stairwell"
+      expected_name: "STAIRWELL"
+      expected_aliases: '["12th floor stairwell"]'
+      expected_scenes: >-
+        ["INT. STAIRWELL - CONTINUOUS", "INT. 12TH FLOOR STAIRWELL - CONTINUOUS", "INT. STAIRWELL - (BACK TO PRESENT)"]
+      verified_physical: >-
+        floor-access door slams Rose into Mariner; wall where Mariner subdues Rosco
+      verified_facts: >-
+        Rose turns upward for the purse while Mariner tries to leave; purse lining holds Rose's blockchain password; Rosco reveals Rose stole gang money; return from flashback is explicitly headed back to present
+      verified_narrative: "choice; revelation; transition"
+  - vars:
+      location_name: "13TH FLOOR"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-locations.json
+      golden_entry_sha256: "7a6a4cfec0de8a2df90c1c861142fabd0a0f9ff089ed3fe36b5c39e5659ae1ab"
+      expected_id: "13th-floor"
+      expected_name: "13TH FLOOR"
+      expected_aliases: '[]'
+      expected_scenes: '["INT. 13TH FLOOR"]'
+      verified_physical: >-
+        ruined corridor; open doorway; stark red light from a burning flare
+      verified_facts: >-
+        Vinnie, Mikey, and Carlos patrol; Rose and Mariner argue about criminals and his code; Mariner shoots Vinnie with the flare gun and defeats the others; Rose calls Vinnie her ex and bandages Mariner
+      verified_narrative: "fight; Mariner's code; Vinnie"
   - vars:
       location_name: "15TH FLOOR"
       screenplay: file://../input/the-mariner.md
       golden_path: golden/the-mariner-locations.json
-    assert:
-      - type: python
-        value: file://../scorers/bible_extraction_scorer.py
-      - type: llm-rubric
-        value: |
-          Evaluate the location extraction for the 15TH FLOOR from "The Mariner."
-
-          Key quality criteria:
-          1. Does it describe the luxurious, dimly lit office atmosphere?
-          2. Does it mention specific details: wooden desk, Persian rug, leather-bound books, fine booze?
-          3. Does it identify this as Salvatori's personal headquarters?
-          4. Does it note this is where the climactic confrontation occurs?
-          5. Does it mention evidence of earlier violence (pooled blood, gouged walls)?
-          6. Does it capture the contrast between luxury and violence?
-          7. Does it note the still-burning cigar and melting ice as environmental storytelling?
-
-          Score strictly: this is the climactic location where the story's revelations happen.
-
-  # Test 3: COASTLINE — flashback, dual presentation, thematic heart
+      golden_entry_sha256: "81bb0ae93e1932707c77c4b617c5979f0f0046b84c700b2e1cbfdb78048bcdd5"
+      expected_id: "15th-floor"
+      expected_name: "15TH FLOOR"
+      expected_aliases: '[]'
+      expected_scenes: '["INT. 15TH FLOOR"]'
+      verified_physical: >-
+        clean and luxurious; dim like an old nightclub; huge wooden desk; Persian rug; leather-bound books; fine booze; pool table; cigar lounge; mismatched paintings; mints and Rose's purse; pooled blood and gouged walls; smashed door, chair, and ropes; burning cigar and melting ice
+      verified_facts: >-
+        Salvatori and armed thugs confront Rose and Mariner; Rose's purse holds the password; climactic confrontation; evidence of earlier violence; cigar and ice signal immediate presence
+      verified_narrative: "climax; confrontation; revelation; luxury; violence"
   - vars:
       location_name: "COASTLINE"
       screenplay: file://../input/the-mariner.md
       golden_path: golden/the-mariner-locations.json
-    assert:
-      - type: python
-        value: file://../scorers/bible_extraction_scorer.py
-      - type: llm-rubric
-        value: |
-          Evaluate the location extraction for the COASTLINE from "The Mariner."
-
-          Key quality criteria:
-          1. Does it identify this as a flashback-only location?
-          2. Does it capture the DUAL PRESENTATION — idealized vs. dark versions?
-          3. Idealized version: golden light, warm teaching moment, father-son bonding?
-          4. Dark version: beer bottles, shivering child, drunk/mocking father?
-          5. Does it connect this to Mariner's false memories about his father?
-          6. Does it note the thematic significance — memory vs. truth?
-          7. Is evidence grounded in actual screenplay descriptions?
-
-          Score strictly: the dual presentation is the screenplay's most important narrative device and MUST be captured.
+      golden_entry_sha256: "c234602cdd2a59f15c09cadf6f63b1edd87e0bafe5ed99340039372541606eb1"
+      expected_id: "coastline"
+      expected_name: "COASTLINE"
+      expected_aliases: '["shoreline"]'
+      expected_scenes: >-
+        ["BEGIN FLASHBACK: EXT. COASTLINE - DAY - PAST", "EXT. COASTLINE - DAY - (FLASHBACK)"]
+      verified_physical: >-
+        wooden sailboat near the shoreline; golden light in the idealized version; empty beer bottles in the revealed version
+      verified_facts: >-
+        flashback-only; contrasting idealized memory and revealed truth; Dad teaches eight-year-old Mariner to cast; revealed Dad urinates and demands beer while the child shivers
+      verified_narrative: "flashback; dual presentation; memory; truth; father"
+  - vars:
+      location_name: "BACKYARD"
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-locations.json
+      golden_entry_sha256: "a2b6936bc8d98d8c8e13d7c123104b3ffea76b7ca9ddb7bcb06b8afe8a7515f2"
+      expected_id: "backyard"
+      expected_name: "BACKYARD"
+      expected_aliases: '["yard"]'
+      expected_scenes: >-
+        ["BEGIN FLASHBACK: EXT. BACKYARD - DAY - PAST", "EXT. BACKYARD - DAY - (FLASHBACK)"]
+      verified_physical: >-
+        idyllic trim house and pie; warm dappled sun; later overgrown weeds; discarded bottles and rusty weights; duct-tape-repaired bench press
+      verified_facts: >-
+        flashback-only; idealized memory versus revealed truth; Dad patiently teaches weightlifting in one version; Dad punches and berates young Mariner in the other; origin of Mariner's strength
+      verified_narrative: "flashback; dual presentation; memory; truth; abuse; father"

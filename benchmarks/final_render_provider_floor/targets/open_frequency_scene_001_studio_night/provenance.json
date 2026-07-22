@@ -1,0 +1,102 @@
+{
+  "contract_version": "final-render-intended-source-brief-v2",
+  "source_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+  "source_fixture_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+  "scene_heading": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+  "scored_dimensions": [
+    "summary",
+    "tone",
+    "emotion",
+    "continuity",
+    "evidence"
+  ],
+  "excluded_dimensions": {
+    "audio": "No audio is submitted to the analysis model.",
+    "camera": "The retained source fixture does not specify a shot or lens contract, and the five frames cannot prove the camera path between samples.",
+    "color": "The screenplay does not prescribe a canonical grade; Story 169's synthetic locator cards are not a versioned semantic style reference.",
+    "motion": "The screenplay describes action, but five still samples cannot establish continuous motion or pacing between frames."
+  },
+  "criteria": {
+    "summary_reference": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_001",
+        "quotes": [
+          "Rain rattles the skylight. Old consoles hum under emergency power.",
+          "ARIA threads a tape reel while NOAH coaxes a signal out of a battered mixer.",
+          "JUNE covers a whiteboard with road closures, shelter names, and call signs.",
+          "KELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag."
+        ],
+        "rationale": "These literal screenplay facts define the intended visible location, ensemble, equipment, and weather pressure."
+      }
+    ],
+    "required_keywords": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_001",
+        "quotes": [
+          "INT. COMMUNITY RADIO STUDIO - NIGHT",
+          "JUNE covers a whiteboard with road closures, shelter names, and call signs.",
+          "KELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag."
+        ],
+        "rationale": "The required nouns are directly named and should be recoverable from an adherent visual treatment."
+      }
+    ],
+    "tone_tags": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_001",
+        "quotes": [
+          "Bridge is closed. Cell towers are dead. The hill relay is our only shot.",
+          "Give me ten minutes and one miracle.",
+          "Take fifteen. Keep the miracle."
+        ],
+        "rationale": "Immediate infrastructure failure supplies tension while the team's continued attempt and dry encouragement support hope."
+      }
+    ],
+    "emotion_tags": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_001",
+        "quotes": [
+          "Aria flips a switch. The ON AIR sign flickers, then dies again.",
+          "Give me ten minutes and one miracle."
+        ],
+        "rationale": "Aria continues working after another failure, which directly supports resolve; the old unsupported suspicion tag is removed."
+      }
+    ],
+    "continuity_status": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_001",
+        "quotes": [
+          "ARIA threads a tape reel while NOAH coaxes a signal out of a battered mixer.",
+          "JUNE covers a whiteboard with road closures, shelter names, and call signs.",
+          "KELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag."
+        ],
+        "rationale": "A coherent render should preserve the four people and their established equipment across the sampled sequence."
+      }
+    ],
+    "continuity_notes": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_001",
+        "quotes": [
+          "KELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag."
+        ],
+        "rationale": "The introduced antenna and lantern are explicit continuity anchors rather than scorer-invented props."
+      }
+    ],
+    "evidence": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_001",
+        "quotes": [
+          "Rain rattles the skylight. Old consoles hum under emergency power.",
+          "Aria flips a switch. The ON AIR sign flickers, then dies again."
+        ],
+        "rationale": "Frame evidence is valid only when it points to visible cues from this intended source brief."
+      }
+    ]
+  }
+}

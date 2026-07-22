@@ -9,7 +9,8 @@ from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError, sync_playwright
+from playwright.sync_api import Page, sync_playwright
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
 DEFAULT_API_BASE = "http://127.0.0.1:8000/api"
 DEFAULT_UI_BASE = "http://127.0.0.1:5188"
@@ -110,8 +111,7 @@ def ensure_scene_character_performance(
             stage = state["state"]["stages"]["character_and_performance"]
             if stage["status"] != "done":
                 raise AssertionError(
-                    "character_and_performance run finished with "
-                    f"{stage['status']}"
+                    f"character_and_performance run finished with {stage['status']}"
                 )
             wait_for_character_readiness(api_base, project_id, scene_id, "yellow")
             return
@@ -187,18 +187,20 @@ def record_browser_errors(
 ) -> None:
     page.on(
         "console",
-        lambda msg: console_errors.append(f"{prefix} console[{msg.type}]: {msg.text}")
-        if msg.type == "error"
-        else None,
+        lambda msg: (
+            console_errors.append(f"{prefix} console[{msg.type}]: {msg.text}")
+            if msg.type == "error"
+            else None
+        ),
     )
     page.on("pageerror", lambda exc: page_errors.append(f"{prefix} pageerror: {exc}"))
     page.on(
         "response",
-        lambda response: response_errors.append(
-            f"{prefix} response[{response.status}]: {response.url}"
-        )
-        if response.status >= 400
-        else None,
+        lambda response: (
+            response_errors.append(f"{prefix} response[{response.status}]: {response.url}")
+            if response.status >= 400
+            else None
+        ),
     )
 
 

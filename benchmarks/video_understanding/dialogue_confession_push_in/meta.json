@@ -1,19 +1,35 @@
 {
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "asset_audio_tags": [
+    "soft_music",
+    "speech"
+  ],
+  "audio_description": "Synthetic speech and tone exist in the MP4 but are excluded from frame scoring.",
+  "case_status": "active_frame_eval",
   "clip_id": "dialogue_confession_push_in",
-  "title": "Dialogue confession push-in",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
   "duration_seconds": 4.0,
-  "resolution": "640x360",
   "fps": 8,
+  "generator_version": "frame-truth-v2",
   "has_audio": true,
-  "transcript": "I should have told you before the train left.",
-  "audio_description": "Soft piano under a single confession line.",
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "sampled_frame_sha256": [
+    "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+    "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+    "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+    "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+    "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+  ],
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "spec_sha256": "a83a76d4ac36367d74ec070938c349baf274650ca98c72b71449b50dc2de9127",
+  "status_reason": "Positive scale-change control: all five frames visibly tighten on the same two figures.",
   "tags": [
     "dialogue",
     "quiet_emotion"
   ],
-  "anchor_subset": true,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+  "temporal_control": "dynamic",
+  "title": "Cool two-shot push-in",
+  "transcript": "I should have told you before the train left.",
+  "unique_sampled_frames": 5
 }

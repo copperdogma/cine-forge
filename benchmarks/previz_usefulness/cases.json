@@ -1,0 +1,149 @@
+{
+  "schema_version": "previz-usefulness-case-contract-v1",
+  "contract_basis": "Source-authored generation briefs recovered from the retained Story 143 prompt_contract.json and prompt.txt artifacts. These fields describe intended output and were not inferred from any candidate clip or model analysis.",
+  "subject_modality": "five_ordered_jpeg_frames_without_audio_or_semantic_metadata",
+  "decision_candidate_variants": [
+    "google_veo31_lite_previz",
+    "google_veo31_fast_previz",
+    "xai_grok_imagine_video_previz"
+  ],
+  "control_variants": {
+    "symbolic": {
+      "status": "control_only_non_comparable",
+      "decision_eligible": false,
+      "reason": "The deterministic source composition is a mechanical smoke control and is not provider-comparable decision evidence."
+    },
+    "annotated_symbolic": {
+      "status": "control_only_answer_leaking",
+      "decision_eligible": false,
+      "reason": "The rendered frames visibly embed scene title, shot intent, character labels, and camera annotations, so this lane cannot be compared with provider candidates that lack evaluator-authored overlays."
+    }
+  },
+  "cases": [
+    {
+      "evaluation_id": "previz_case_001",
+      "clip_id": "dialogue_confession_push_in",
+      "title": "Dialogue confession push-in",
+      "source_fixture_dir": "benchmarks/video_understanding/dialogue_confession_push_in",
+      "target_path": "benchmarks/previz_usefulness/targets/dialogue_confession_push_in.json",
+      "target_markdown_path": "benchmarks/previz_usefulness/targets/dialogue_confession_push_in.md",
+      "character_labels": [
+        "Subject A",
+        "Subject B"
+      ],
+      "generation_brief": {
+        "summary_reference": "A cool blue two-shot slowly pushes toward the hesitant speaker holding a white envelope during a hushed confession.",
+        "transcript": "I should have told you before the train left.",
+        "audio_description": "Soft piano under a single confession line.",
+        "tone_tags": [
+          "intimate",
+          "regretful"
+        ],
+        "emotion_tags": [
+          "hesitation",
+          "vulnerability"
+        ],
+        "color_tags": [
+          "navy",
+          "teal"
+        ],
+        "camera_tags": [
+          "locked_two_shot",
+          "slow_push_in"
+        ],
+        "motion_tags": [
+          "measured"
+        ],
+        "continuity_notes": [
+          "The white envelope stays in the right speaker's hand through the push-in."
+        ],
+        "clip_tags": [
+          "dialogue",
+          "quiet_emotion"
+        ]
+      }
+    },
+    {
+      "evaluation_id": "previz_case_002",
+      "clip_id": "quiet_bedside_vigil",
+      "title": "Quiet bedside vigil",
+      "source_fixture_dir": "benchmarks/video_understanding/quiet_bedside_vigil",
+      "target_path": "benchmarks/previz_usefulness/targets/quiet_bedside_vigil.json",
+      "target_markdown_path": "benchmarks/previz_usefulness/targets/quiet_bedside_vigil.md",
+      "character_labels": [
+        "Caretaker"
+      ],
+      "generation_brief": {
+        "summary_reference": "A static bedside composition holds on one seated figure under a warm lamp while the room stays almost still.",
+        "transcript": null,
+        "audio_description": "A soft room tone with a faint heartbeat monitor and low piano.",
+        "tone_tags": [
+          "intimate",
+          "mournful"
+        ],
+        "emotion_tags": [
+          "tenderness",
+          "grief"
+        ],
+        "color_tags": [
+          "amber",
+          "desaturated"
+        ],
+        "camera_tags": [
+          "static",
+          "wide_master"
+        ],
+        "motion_tags": [
+          "stillness"
+        ],
+        "continuity_notes": [
+          "The folded blanket remains untouched at frame right."
+        ],
+        "clip_tags": [
+          "quiet_emotion",
+          "interior"
+        ]
+      }
+    },
+    {
+      "evaluation_id": "previz_case_003",
+      "clip_id": "radio_hold_tracking",
+      "title": "Radio hold tracking",
+      "source_fixture_dir": "benchmarks/video_understanding/radio_hold_tracking",
+      "target_path": "benchmarks/previz_usefulness/targets/radio_hold_tracking.json",
+      "target_markdown_path": "benchmarks/previz_usefulness/targets/radio_hold_tracking.md",
+      "character_labels": [
+        "Subject A",
+        "Subject B"
+      ],
+      "generation_brief": {
+        "summary_reference": "A lateral tracking move follows two officers along a blue corridor while a radio command orders them to hold position.",
+        "transcript": "Unit three, hold position until the lights settle.",
+        "audio_description": "A dry radio dispatch over light room tone.",
+        "tone_tags": [
+          "urgent"
+        ],
+        "emotion_tags": [
+          "resolve"
+        ],
+        "color_tags": [
+          "navy",
+          "teal"
+        ],
+        "camera_tags": [
+          "lateral_track"
+        ],
+        "motion_tags": [
+          "measured"
+        ],
+        "continuity_notes": [
+          "The amber flashlight stays with the lead officer."
+        ],
+        "clip_tags": [
+          "dialogue",
+          "procedural"
+        ]
+      }
+    }
+  ]
+}

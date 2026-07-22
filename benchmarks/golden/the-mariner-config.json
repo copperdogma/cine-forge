@@ -3,71 +3,88 @@
   "fields": {
     "title": {
       "expected_value": "The Mariner",
+      "allowed_values": ["The Mariner"],
+      "rationale_must_mention_any": ["The Mariner", "title card"],
       "match_type": "substring",
       "min_confidence": 0.9,
       "importance": "critical"
     },
     "format": {
-      "expected_values": ["short", "short film", "short-form"],
+      "expected_values": ["short film"],
+      "allowed_values": ["short film"],
+      "rationale_must_mention_any": ["FADE IN", "CUT TO BLACK"],
       "match_type": "any_keyword",
-      "note": "Complete short film: FADE IN to CUT TO BLACK, ~10-15 formatted pages, single-night single-location story with full narrative arc. Not a feature film excerpt. 'screenplay' removed — too broad, matches 'feature screenplay' and gives false credit to models that misidentify this as a feature.",
-      "min_confidence": 0.6,
+      "note": "Complete short film: FADE IN to CUT TO BLACK, ~10-15 formatted pages, mostly one night in and around the Ruddy & Greene Building, with a full narrative arc and brief daytime flashbacks. Not a feature film excerpt.",
+      "min_confidence": 0.8,
       "importance": "important"
     },
     "genre": {
-      "expected_keywords": ["action", "crime", "thriller", "drama", "superhero"],
+      "expected_keywords": ["action", "crime", "thriller", "drama", "comedy"],
+      "allowed_values": ["action", "adventure", "comedy", "crime", "dark comedy", "drama", "dystopian", "sci-fi", "science fiction", "thriller"],
+      "rationale_must_mention_any": ["gunfire", "fighting", "thugs", "Salvatori", "vigilanties"],
       "must_include_at_least": 2,
       "match_type": "keyword_overlap",
       "min_confidence": 0.7,
       "importance": "important"
     },
     "tone": {
-      "expected_keywords": ["dark", "gritty", "violent", "intense", "noir", "bleak", "brutal", "suspenseful", "fast-paced", "dystopian", "darkly comic", "dark humor", "humorous"],
+      "expected_keywords": ["dark", "gritty", "violent", "intense", "bleak", "brutal", "suspenseful", "fast-paced", "dystopian", "darkly comic"],
+      "allowed_values": ["bleak", "brutal", "dark", "dark comedy", "darkly comedic", "darkly comic", "dystopian", "fast-paced", "grim", "gritty", "intense", "irreverent", "melancholic", "somber", "suspenseful", "tense", "tragic", "violent"],
+      "rationale_must_mention_any": ["ruined city", "blood", "violent fighting", "gunfire", "CUT TO BLACK"],
       "must_include_at_least": 3,
       "match_type": "keyword_overlap",
-      "note": "Screenplay has clear dark/gritty/violent tone plus dystopian setting, fast pacing, and suspense. Raising minimum to 3 since all models should identify multiple tonal qualities.",
+      "note": "Screenplay has a clear dark, gritty, violent tone plus a dystopian setting, fast pacing, suspense, and dark comedy. The list uses distinct qualities rather than counting dark-comedy synonyms as separate targets.",
       "min_confidence": 0.7,
       "importance": "important"
     },
     "estimated_duration_minutes": {
-      "expected_range": [8, 35],
+      "expected_range": [10, 25],
+      "rationale_must_mention_any": ["FADE IN", "CUT TO BLACK"],
       "match_type": "numeric_range",
-      "note": "Complete short film at ~10-15 formatted pages = ~10-15 min screen time. Up to 30-35 min if action sequences play long. Models estimating 90+ min are treating this as a feature excerpt, which is wrong.",
+      "note": "Complete short film at ~10-15 formatted pages = ~10-15 minutes by the requested one-page-per-minute rule. The upper allowance covers action and flashbacks playing longer without accepting feature-like estimates.",
       "min_confidence": 0.5,
       "importance": "important"
     },
     "primary_characters": {
       "must_include": ["MARINER", "ROSE"],
+      "allowed_values": ["THE MARINER", "MARINER", "BILLY", "WILL", "ROSE", "ROSEY", "ROSIE", "SALVATORI", "MR. SALVATORI"],
+      "rationale_must_mention_any": ["Mariner", "Rose", "Salvatori"],
       "match_type": "list_contains",
       "min_confidence": 0.8,
       "importance": "critical"
     },
     "supporting_characters": {
       "should_include_any": ["DAD", "SALVATORI", "VINNIE", "MIKEY", "CARLOS", "ROSCO"],
-      "min_count": 3,
+      "allowed_values": ["DAD", "FATHER", "SALVATORI", "MR. SALVATORI", "VINNIE", "MIKEY", "CARLOS", "ROSCO", "THUG 1", "THUG 2", "THUG 3", "YOUNG MARINER", "YOUNG BILLY", "THE MARINER", "MARINER", "ROSE"],
+      "rationale_must_mention_any": ["Dad", "Salvatori", "Vinnie", "Mikey", "Carlos", "Rosco"],
+      "min_count": 4,
       "match_type": "list_overlap",
-      "note": "Removed CONSIGLIERE and GIRL (don't exist in screenplay). Added MIKEY, CARLOS, ROSCO (all have dialogue). Raised min to 3 since there are 6 clear supporting characters.",
-      "min_confidence": 0.6,
+      "note": "All six are named supporting characters with dialogue or major dramatic presence; four is the minimum acceptable coverage for a field that asks for supporting and minor characters.",
+      "min_confidence": 0.7,
       "importance": "secondary"
     },
     "location_count": {
       "expected_range": [5, 20],
+      "rationale_must_mention_any": ["Ruddy", "15th floor", "stairwell", "elevator"],
       "match_type": "numeric_range",
       "min_confidence": 0.5,
       "importance": "secondary"
     },
     "locations_summary": {
-      "must_mention": ["building", "floor", "elevator"],
+      "must_mention": ["Ruddy", "Greene", "building"],
+      "forbidden_keywords": ["Mars", "palace", "space station", "spaceship"],
+      "rationale_must_mention_any": ["Ruddy", "15th floor", "stairwell", "elevator"],
       "match_type": "text_contains",
-      "min_confidence": 0.6,
+      "min_confidence": 0.8,
       "importance": "secondary"
     },
     "target_audience": {
-      "expected_keywords": ["adult", "mature", "R", "18+", "restricted"],
+      "expected_keywords": ["adult", "mature", "R-rated", "18+"],
+      "rationale_must_mention_any": ["blood", "gunfire", "violent", "GUN"],
       "match_type": "any_keyword",
-      "allow_null": true,
-      "min_confidence": 0.4,
-      "importance": "secondary"
+      "allow_null": false,
+      "min_confidence": 0.8,
+      "importance": "important"
     }
   }
 }

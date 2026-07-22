@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from cine_forge.ai import LongDocStrategy, select_strategy
 
 _CLEAN_SCREENPLAY_SOURCE_FORMATS = {"screenplay", "fountain"}
@@ -20,6 +22,32 @@ class NormalizationRoute:
         self.target_strategy = target_strategy
         self.long_doc_strategy = long_doc_strategy
         self.use_smart_chunk_skip = use_smart_chunk_skip
+
+
+def classify_normalization_tier(
+    *,
+    screenplay_path: bool,
+    parser_check: Any,
+    quality_score: float,
+    file_format: str = "",
+) -> int:
+    """Select code-only or assisted normalization for supported story inputs.
+
+    Tier 1 is a code-only pass for already-valid screenplay text. Tier 2 uses
+    AI for broken screenplays and all other textual story inputs. Raw inputs are
+    already schema-validated as story content, so there is no rejection tier.
+    """
+
+    normalized_file_format = str(file_format).strip().lower()
+
+    # PDF extraction can contain layout artifacts even when the parser regards
+    # the text as valid, so keep it on the assisted cleanup path.
+    if normalized_file_format == "pdf":
+        return 2
+
+    if screenplay_path and parser_check.parseable and quality_score >= 0.6:
+        return 1
+    return 2
 
 
 def build_normalization_route(

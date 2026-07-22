@@ -1,60 +1,56 @@
 {
+  "anchor_subset": true,
+  "audio_description": null,
+  "audio_tags": [],
+  "camera_tags": [
+    "static",
+    "wide_master"
+  ],
   "clip_id": "rooftop_escape_crash_zoom",
-  "title": "Rooftop escape crash zoom",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "has_audio": true,
-  "transcript": null,
-  "audio_description": "Aggressive percussion punches through a low synth bed.",
-  "summary_reference": "A runner clears a rooftop gap as the camera crash-zooms toward the leap under hard sodium light.",
-  "required_keywords": [
-    "rooftop",
-    "crash",
-    "leap"
-  ],
-  "tone_tags": [
-    "urgent",
-    "tense"
-  ],
-  "emotion_tags": [
-    "panic",
-    "resolve"
+  "clip_tags": [
+    "action",
+    "vertical_space"
   ],
   "color_tags": [
     "amber",
     "navy"
   ],
-  "camera_tags": [
-    "crash_zoom"
-  ],
-  "motion_tags": [
-    "escalating"
+  "continuity_notes": [
+    "The small yellow rectangle stays beside the runner while crossing the rooftop gap."
   ],
   "continuity_status": "intact",
-  "continuity_notes": [
-    "The yellow cable remains looped at the runner's waist."
+  "duration_seconds": 4.0,
+  "emotion_tags": [],
+  "has_audio": true,
+  "motion_tags": [
+    "escalating",
+    "fast_lateral"
   ],
-  "audio_tags": [
-    "percussion",
-    "drone"
+  "required_keywords": [
+    "runner",
+    "gap",
+    "larger"
   ],
-  "clip_tags": [
-    "action",
-    "vertical_space"
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "An amber abstract runner rises over a visible gap between dark rooftop blocks while growing larger from left to right.",
+  "title": "Rooftop gap lateral run",
+  "tone_tags": [
+    "urgent",
+    "tense"
   ],
-  "anchor_subset": false,
+  "transcript": null,
   "weights": {
-    "summary": 0.18,
-    "tone": 0.14,
-    "emotion": 0.12,
-    "color": 0.1,
-    "camera": 0.12,
-    "motion": 0.1,
-    "continuity": 0.12,
-    "audio": 0.08,
-    "evidence": 0.04
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
   }
 }

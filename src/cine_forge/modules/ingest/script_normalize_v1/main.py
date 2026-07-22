@@ -26,7 +26,18 @@ from cine_forge.ai import (
     validate_fountain_structure,
 )
 from cine_forge.ai.fountain_validate import lint_fountain_text, normalize_fountain_text
-from cine_forge.modules.ingest.script_normalize_v1.routing import build_normalization_route
+from cine_forge.modules.ingest.script_normalize_v1.mocking import (
+    build_mock_metadata,
+    build_mock_screenplay,
+    empty_mock_cost,
+)
+from cine_forge.modules.ingest.script_normalize_v1.model_selection import (
+    resolve_normalization_models,
+)
+from cine_forge.modules.ingest.script_normalize_v1.routing import (
+    build_normalization_route,
+    classify_normalization_tier,
+)
 from cine_forge.schemas import ArtifactHealth, Assumption, CanonicalScript, Invention, QAResult
 
 SCENE_HEADING_RE = re.compile(
@@ -65,7 +76,6 @@ _PatchList.model_rebuild()
 def run_module(
     inputs: dict[str, Any], params: dict[str, Any], context: dict[str, Any]
 ) -> dict[str, Any]:
-    del context
     raw_input = _extract_raw_input(inputs)
     fdx_conversion = detect_and_convert_fdx(raw_input["content"])
     content = (
@@ -85,12 +95,10 @@ def run_module(
     screenplay_path = _is_screenplay_path(raw_input)
     parser_check = validate_fountain_structure(content)
     quality_score = compute_structural_quality(parser_check)
-    tier = _classify_tier(
+    tier = classify_normalization_tier(
         screenplay_path=screenplay_path,
         parser_check=parser_check,
         quality_score=quality_score,
-        source_format=source_format,
-        source_confidence=source_confidence,
         file_format=file_format,
     )
 
@@ -124,21 +132,11 @@ def run_module(
         # Tier 1 failed lint — fall through to Tier 2
         tier = 2
 
-    # --- Tier 3: Reject non-screenplay ---
-    if tier == 3:
-        return _build_rejection_output(
-            raw_input=raw_input,
-            source_format=source_format,
-            parser_check=parser_check,
-            fdx_conversion=fdx_conversion,
-        )
-
     # --- Tier 2: Smart chunk-skip (LLM only for broken scenes) ---
-    work_model = params.get("work_model") or params.get("model") or "claude-haiku-4-5-20251001"
-    verify_model = (
-        params.get("verify_model") or params.get("qa_model") or "gpt-4.1-mini"
+    work_model, verify_model, escalate_model = resolve_normalization_models(
+        params=params,
+        context=context,
     )
-    escalate_model = params.get("escalate_model") or "claude-opus-4-6"
     qa_model = verify_model
     max_retries = int(params.get("max_retries", 2))
     skip_qa = bool(params.get("skip_qa", False))
@@ -293,48 +291,6 @@ def run_module(
     )
 
 
-def _classify_tier(
-    screenplay_path: bool,
-    parser_check: Any,
-    quality_score: float,
-    source_format: str,
-    source_confidence: float,
-    file_format: str = "",
-) -> int:
-    """Classify input into processing tier.
-
-    Tier 1: Code-only passthrough (valid Fountain, good structural quality)
-    Tier 2: LLM-assisted (screenplay but needs fixes)
-    Tier 3: Reject (not a screenplay at all)
-    """
-    # Quality gate: even if heuristics think it's a screenplay, reject if
-    # the parser finds no real screenplay elements (scenes, characters, dialogue)
-    if (
-        not screenplay_path
-        and quality_score < 0.3
-        and source_format not in ("screenplay", "fountain", "fdx")
-    ):
-        return 3
-    if (
-        screenplay_path
-        and source_format == "prose"
-        and source_confidence >= 0.7
-        and quality_score < 0.6
-    ):
-        return 3
-
-    # PDF files almost always benefit from Tier 2 to clean up extraction
-    # artifacts (page headers/footers) and reconstruct title pages properly.
-    if file_format == "pdf":
-        return 2
-
-    if screenplay_path and parser_check.parseable and quality_score >= 0.6:
-        return 1
-    if screenplay_path or source_format in ("screenplay", "fountain", "fdx"):
-        return 2
-    return 3
-
-
 def _run_tier1(
     content: str,
     source_format: str,
@@ -411,8 +367,8 @@ def _normalize_smart_chunks(
             # This scene needs LLM help (or is the title chunk)
             if model == "mock":
                 return {
-                    "text": _mock_screenplay(scene, "screenplay", "smart_chunk_skip"),
-                    "cost": _empty_cost(model),
+                    "text": build_mock_screenplay(scene, "screenplay", "smart_chunk_skip"),
+                    "cost": empty_mock_cost(model),
                     "fixed": True,
                 }
 
@@ -567,64 +523,6 @@ def _build_output(
     }
 
 
-def _build_rejection_output(
-    raw_input: dict[str, Any],
-    source_format: str,
-    parser_check: Any,
-    fdx_conversion: Any,
-) -> dict[str, Any]:
-    """Build output for Tier 3 — rejected non-screenplay input."""
-    canonical_payload = CanonicalScript.model_validate(
-        {
-            "title": _guess_title(raw_input),
-            "script_text": "",
-            "line_count": 0,
-            "scene_count": 0,
-            "normalization": {
-                "source_format": source_format,
-                "strategy": "rejected",
-                "inventions": [],
-                "assumptions": [],
-                "overall_confidence": 0.0,
-                "rationale": (
-                    "Input does not appear to be a screenplay"
-                    " — rejected without processing"
-                ),
-            },
-        }
-    ).model_dump(mode="json")
-
-    return {
-        "artifacts": [
-            {
-                "artifact_type": "canonical_script",
-                "entity_id": "project",
-                "data": canonical_payload,
-                "metadata": {
-                    "intent": "Reject non-screenplay input",
-                    "rationale": (
-                        "Input lacks screenplay structure"
-                        " (scene headings, character cues, dialogue)"
-                    ),
-                    "alternatives_considered": [],
-                    "confidence": 0.0,
-                    "source": "code",
-                    "schema_version": "1.0.0",
-                    "health": ArtifactHealth.NEEDS_REVISION.value,
-                    "annotations": {
-                        "normalization_strategy": "rejected",
-                        "normalization_tier": 3,
-                        "parser_backend": parser_check.parser_backend,
-                        "screenplay_parseable_input": parser_check.parseable,
-                        "fdx_input_detected": fdx_conversion.is_fdx,
-                    },
-                },
-            }
-        ],
-        "cost": _sum_costs([]),
-    }
-
-
 def _require_non_empty_script_text(script_text: str) -> None:
     if not isinstance(script_text, str) or not script_text.strip():
         raise ValueError(
@@ -644,11 +542,11 @@ def _normalize_once(
     patch_fuzzy_threshold: float,
 ) -> tuple[str, dict[str, Any], list[dict[str, Any]], str]:
     if model == "mock":
-        script_text = _mock_screenplay(
+        script_text = build_mock_screenplay(
             content=content, source_format=source_format, strategy=target_strategy
         )
-        metadata = _mock_metadata(source_format=source_format, strategy=target_strategy)
-        return script_text, metadata, [_empty_cost(model)], "mock-normalization"
+        metadata = build_mock_metadata(source_format=source_format, strategy=target_strategy)
+        return script_text, metadata, [empty_mock_cost(model)], "mock-normalization"
 
     strategy_name = long_doc_strategy.name
     prompt = _build_normalization_prompt(
@@ -802,7 +700,7 @@ def _run_qa(
             issues=[],
             summary="Mock QA pass for deterministic test coverage.",
         )
-        return result, [], _empty_cost(model)
+        return result, [], empty_mock_cost(model)
     plan, metadata = qa_check_with_repairs(
         original_input=original_input,
         prompt_used=prompt_used,
@@ -957,7 +855,7 @@ def _is_screenplay_path(raw_input: dict[str, Any]) -> bool:
     if fdx_conversion.fountain_text:
         content_for_validation = fdx_conversion.fountain_text
     parser_check = validate_fountain_structure(content_for_validation)
-    if parser_check.parseable:
+    if parser_check.parseable and compute_structural_quality(parser_check) >= 0.6:
         return True
     lines = content.splitlines()
     heading_count = sum(1 for line in lines if SCENE_HEADING_RE.match(line.strip()))
@@ -1028,42 +926,6 @@ def _parse_patch_text(raw_patch_text: str) -> list[SearchReplacePatch]:
     from cine_forge.ai.patching import parse_search_replace_blocks
 
     return parse_search_replace_blocks(raw_patch_text)
-
-
-def _mock_screenplay(content: str, source_format: str, strategy: str) -> str:
-    if source_format == "screenplay" and strategy in ("passthrough_cleanup", "smart_chunk_skip"):
-        return content
-    source_lines = [line.strip() for line in content.splitlines() if line.strip()]
-    summary = source_lines[0] if source_lines else "A story unfolds."
-    return (
-        "INT. UNKNOWN LOCATION - DAY\n\n"
-        "NARRATOR\n"
-        f"{summary}\n\n"
-        "CUT TO:\n\n"
-        "EXT. UNKNOWN LOCATION - NIGHT\n\n"
-        "NARRATOR\n"
-        "The scene ends."
-    )
-
-
-def _mock_metadata(source_format: str, strategy: str) -> dict[str, Any]:
-    return {
-        "source_format": source_format,
-        "strategy": strategy,
-        "inventions": [],
-        "assumptions": [],
-        "overall_confidence": 0.82 if strategy == "passthrough_cleanup" else 0.7,
-        "rationale": "Mock normalization metadata for deterministic tests.",
-    }
-
-
-def _empty_cost(model: str) -> dict[str, Any]:
-    return {
-        "model": model,
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "estimated_cost_usd": 0.0,
-    }
 
 
 def dump_json(data: Any) -> str:

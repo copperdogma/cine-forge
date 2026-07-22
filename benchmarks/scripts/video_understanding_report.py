@@ -9,33 +9,33 @@ import json
 import sys
 from collections import defaultdict
 from pathlib import Path
-from statistics import mean
-
-import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCORERS_ROOT = REPO_ROOT / "benchmarks" / "scorers"
 if str(SCORERS_ROOT) not in sys.path:
     sys.path.insert(0, str(SCORERS_ROOT))
 
-score_output_against_target = importlib.import_module(
-    "video_understanding_scorer"
-).score_output_against_target
+_scorer = importlib.import_module("video_understanding_scorer")
+score_output_against_target = _scorer.score_output_against_target
+_support = importlib.import_module("video_understanding_report_support")
+_case_id = _support.case_id
+_exact_component_score = _support.exact_component_score
+_finalize_rows = _support.finalize_rows
+_finite_number = _support.finite_number
+_lineage_errors = _support.lineage_errors
+_load_expected_contracts = _support.load_expected_contracts
+_load_previous_scores = _support.load_previous_scores
+_new_bucket = _support.new_bucket
+_recommend = _support.recommend
+_resolve_target_path = _support.resolve_target_path
+render_markdown = _support.render_markdown
 
 
 REGISTRY_PATH = REPO_ROOT / "docs" / "evals" / "registry.yaml"
-_DIMENSION_NAMES = (
-    "summary",
-    "tone",
-    "emotion",
-    "color",
-    "camera",
-    "motion",
-    "continuity",
-    "audio",
-    "evidence",
-    "hard_constraints",
-)
+TASK_PATH = REPO_ROOT / "benchmarks" / "tasks" / "video-understanding.yaml"
+BENCHMARK_ROOT = REPO_ROOT / "benchmarks"
+_DIMENSION_NAMES = _support.DIMENSION_NAMES
+_RUBRIC_PASS_THRESHOLD = 0.8
 
 
 def main() -> None:
@@ -65,205 +65,146 @@ def main() -> None:
     print(md_path)
 
 
-def build_summary(results: list[dict]) -> dict:
-    providers: dict[str, dict] = defaultdict(
-        lambda: {
-            "python_scores": [],
-            "rubric_scores": [],
-            "combined_scores": [],
-            "latencies": [],
-            "costs": [],
-            "dimension_scores": defaultdict(list),
-            "calls": 0,
-        }
-    )
-    previous_scores = _load_previous_scores()
-
+def build_summary(
+    results: list[dict],
+    *,
+    expected_cases: set[str] | None = None,
+    expected_contracts: dict[str, dict] | None = None,
+) -> dict:
+    if expected_cases is None:
+        expected_contracts = expected_contracts or _load_expected_contracts(
+            TASK_PATH, BENCHMARK_ROOT
+        )
+        expected_cases = set(expected_contracts)
+    providers: dict[str, dict] = defaultdict(_new_bucket)
     for entry in results:
-        provider = entry.get("provider", {})
-        label = provider.get("label", provider.get("id", "unknown"))
-        target_path = _resolve_target_path(entry.get("vars", {}).get("target_path", ""))
-        python_score = _component_score(entry, "python")
-        dimension_scores = dict.fromkeys(_DIMENSION_NAMES, 0.0)
-        try:
-            score = score_output_against_target(
-                output=entry.get("response", {}).get("output", ""),
-                target_path=target_path,
-                model_label=label,
-                prompt_version=entry.get("response", {}).get("metadata", {}).get(
-                    "prompt_version"
-                ),
-            )
-            if python_score is None:
-                python_score = score.overall_score
-            dimension_scores = {
-                dimension.dimension: dimension.score for dimension in score.dimensions
-            }
-        except Exception:
-            if python_score is None:
-                python_score = 0.0
-
-        rubric_score = _rubric_score(entry)
-        combined_score = mean(
-            [value for value in [python_score, rubric_score] if value is not None]
+        _record_entry(
+            entry,
+            providers=providers,
+            expected_contracts=expected_contracts,
         )
-
-        bucket = providers[label]
-        bucket["python_scores"].append(python_score)
-        if rubric_score is not None:
-            bucket["rubric_scores"].append(rubric_score)
-        bucket["combined_scores"].append(combined_score)
-        if entry.get("latencyMs") is not None:
-            bucket["latencies"].append(entry["latencyMs"])
-        if entry.get("cost") is not None:
-            bucket["costs"].append(entry["cost"])
-        bucket["calls"] += 1
-        for name, value in dimension_scores.items():
-            bucket["dimension_scores"][name].append(value)
-
-    rows = []
-    for label, bucket in providers.items():
-        overall = round(mean(bucket["combined_scores"]), 4)
-        avg_cost = round(mean(bucket["costs"]), 6) if bucket["costs"] else None
-        avg_latency = round(mean(bucket["latencies"])) if bucket["latencies"] else None
-        value = round(overall / avg_cost, 2) if avg_cost else None
-        rows.append(
-            {
-                "model": label,
-                "python_overall": round(mean(bucket["python_scores"]), 4),
-                "rubric_overall": round(mean(bucket["rubric_scores"]), 4)
-                if bucket["rubric_scores"]
-                else None,
-                "overall": overall,
-                "latency_ms": avg_latency,
-                "cost_usd": avg_cost,
-                "value_score_per_dollar": value,
-                "dimension_scores": {
-                    name: round(mean(values), 4)
-                    for name, values in sorted(bucket["dimension_scores"].items())
-                },
-                "calls": bucket["calls"],
-                "previous_overall": previous_scores.get(label),
-            }
-        )
-
-    rows.sort(key=lambda item: item["overall"], reverse=True)
-    recommendation = _recommend(rows)
+    rows = _finalize_rows(
+        providers,
+        expected_cases=expected_cases,
+        previous_scores=_load_previous_scores(REGISTRY_PATH),
+    )
     return {
         "eval_id": "video-understanding",
+        "prompt_version": _support.CURRENT_PROMPT_VERSION,
+        "expected_cases": sorted(expected_cases),
         "models": rows,
-        "recommendation": recommendation,
+        "recommendation": _recommend(rows),
     }
 
 
-def render_markdown(summary: dict) -> str:
-    lines = [
-        "# Video Benchmark Report v1",
-        "",
-        f"Recommendation: **{summary['recommendation']['decision']}**",
-        "",
-        summary["recommendation"]["rationale"],
-        "",
-        "| Model | Overall | Python | Rubric | Latency | Cost/call | Value |",
-        "|---|---:|---:|---:|---:|---:|---:|",
-    ]
-    for row in summary["models"]:
-        latency = f"{row['latency_ms']} ms" if row["latency_ms"] is not None else "n/a"
-        cost = f"${row['cost_usd']:.5f}" if row["cost_usd"] is not None else "n/a"
-        value = f"{row['value_score_per_dollar']:.2f}" if row["value_score_per_dollar"] else "n/a"
-        rubric = f"{row['rubric_overall']:.3f}" if row["rubric_overall"] is not None else "n/a"
-        lines.append(
-            f"| {row['model']} | {row['overall']:.3f} | {row['python_overall']:.3f} "
-            f"| {rubric} | {latency} | {cost} | {value} |"
+def _record_entry(
+    entry: dict,
+    *,
+    providers: dict[str, dict],
+    expected_contracts: dict[str, dict] | None,
+) -> None:
+    provider = entry.get("provider", {})
+    label = provider.get("label") or provider.get("id") or "unknown"
+    vars_data = entry.get("vars", {})
+    current_case = _case_id(vars_data)
+    bucket = providers[label]
+    if current_case in bucket["case_ids"]:
+        bucket["duplicate_case_ids"].add(current_case)
+    bucket["case_ids"].add(current_case)
+    bucket["calls"] += 1
+
+    contract = expected_contracts.get(current_case) if expected_contracts else None
+    for error in _lineage_errors(
+        entry,
+        case_contract=contract,
+        benchmark_root=BENCHMARK_ROOT,
+    ):
+        bucket["contract_errors"].append(f"{current_case}: {error}")
+
+    stored_python, stored_python_pass, python_error = _exact_component_score(
+        entry, "python"
+    )
+    rubric_score, rubric_pass, rubric_error = _exact_component_score(
+        entry, "llm-rubric"
+    )
+    del stored_python  # The current scorer, not the retained component, is authoritative.
+    for error in (python_error, rubric_error):
+        if error:
+            bucket["contract_errors"].append(f"{current_case}: {error}")
+
+    python_score = None
+    current_hard_constraints_passed = False
+    dimension_scores = dict.fromkeys(_DIMENSION_NAMES, 0.0)
+    try:
+        evaluation_id = str(vars_data.get("evaluation_id", "")).strip()
+        score = score_output_against_target(
+            output=entry.get("response", {}).get("output", ""),
+            target_path=_resolve_target_path(
+                str(vars_data.get("target_path", "")), BENCHMARK_ROOT
+            ),
+            model_label=label,
+            prompt_version=entry.get("response", {}).get("metadata", {}).get(
+                "prompt_version"
+            ),
+            expected_clip_id=evaluation_id or None,
+        )
+        raw_python_score = float(score.overall_score)
+        finalized = _scorer.finalize_score(
+            raw_python_score,
+            pass_threshold=_scorer.PASS_THRESHOLD,
+            hard_gates=bool(
+                getattr(
+                    score,
+                    "hard_constraints_passed",
+                    raw_python_score >= _scorer.PASS_THRESHOLD,
+                )
+            ),
+            reason=f"current_regrade={raw_python_score:.4f}",
+        )
+        python_score = float(finalized["score"])
+        current_hard_constraints_passed = bool(finalized["pass"])
+        dimension_scores = {
+            dimension.dimension: dimension.score for dimension in score.dimensions
+        }
+    except ValueError:
+        python_score = 0.0
+    except Exception as exc:
+        bucket["regrade_errors"].append(
+            f"{current_case}: {type(exc).__name__}: {exc}"
         )
 
-    lines.extend(["", "## Dimension Means", ""])
-    for row in summary["models"]:
-        lines.append(f"### {row['model']}")
-        for name, value in row["dimension_scores"].items():
-            lines.append(f"- {name}: {value:.3f}")
-        lines.append("")
-    return "\n".join(lines).rstrip() + "\n"
+    component_contract_ok = python_error is None and rubric_error is None
+    if python_score is not None:
+        bucket["python_scores"].append(python_score)
+    if rubric_score is not None:
+        bucket["rubric_scores"].append(rubric_score)
+    if python_score is not None and rubric_score is not None and component_contract_ok:
+        bucket["combined_scores"].append((python_score + rubric_score) / 2)
+        if (
+            stored_python_pass is not True
+            or not current_hard_constraints_passed
+            or python_score < _scorer.PASS_THRESHOLD
+            or rubric_pass is not True
+            or rubric_score < _RUBRIC_PASS_THRESHOLD
+        ):
+            bucket["failed_case_ids"].add(current_case)
+    else:
+        bucket["incomplete_case_ids"].add(current_case)
 
-
-def _recommend(rows: list[dict]) -> dict:
-    if not rows:
-        return {"decision": "retest", "rationale": "No results were available."}
-    best = rows[0]
-    runner_up = rows[1] if len(rows) > 1 else None
-    if best["calls"] < 6:
-        return {
-            "decision": "retest",
-            "rationale": (
-                "Pilot sample is still too small. "
-                "Expand beyond the anchor subset before adopting."
-            ),
-        }
-    if runner_up and best["overall"] - runner_up["overall"] < 0.02:
-        return {
-            "decision": "retest",
-            "rationale": (
-                "Top models are within the noise band. "
-                "Expand coverage or tighten the rubric before switching defaults."
-            ),
-        }
-    if best["overall"] >= 0.80:
-        return {
-            "decision": "adopt",
-            "rationale": (
-                f"{best['model']} led the pilot with {best['overall']:.3f} overall quality"
-                " and cleared the initial acceptability floor."
-            ),
-        }
-    return {
-        "decision": "hold",
-        "rationale": (
-            f"{best['model']} is the current leader at {best['overall']:.3f},"
-            " but the pilot quality bar is still too low for a switch recommendation."
-        ),
-    }
-
-
-def _rubric_score(entry: dict) -> float | None:
-    scores = []
-    component_results = entry.get("gradingResult", {}).get("componentResults", [])
-    for component in component_results:
-        assertion = component.get("assertion", {})
-        if assertion.get("type") == "llm-rubric" and component.get("score") is not None:
-            scores.append(component["score"])
-    return round(mean(scores), 4) if scores else None
-
-
-def _component_score(entry: dict, assertion_type: str) -> float | None:
-    component_results = entry.get("gradingResult", {}).get("componentResults", [])
-    scores = []
-    for component in component_results:
-        assertion = component.get("assertion", {})
-        if assertion.get("type") == assertion_type and component.get("score") is not None:
-            scores.append(component["score"])
-    return round(mean(scores), 4) if scores else None
-
-
-def _load_previous_scores() -> dict[str, float]:
-    if not REGISTRY_PATH.exists():
-        return {}
-    data = yaml.safe_load(REGISTRY_PATH.read_text())
-    for entry in data.get("evals", []):
-        if entry.get("id") != "video-understanding":
-            continue
-        return {
-            score["model"]: score.get("metrics", {}).get("overall")
-            for score in entry.get("scores", [])
-            if score.get("metrics", {}).get("overall") is not None
-        }
-    return {}
-
-
-def _resolve_target_path(value: str) -> Path:
-    path = Path(value)
-    if path.is_absolute():
-        return path
-    return (REPO_ROOT / "benchmarks" / value).resolve()
+    latency = _finite_number(entry.get("latencyMs"), minimum=0.0)
+    cost = _finite_number(entry.get("cost"), minimum=0.0)
+    if latency is None:
+        bucket["contract_errors"].append(
+            f"{current_case}: latencyMs must be finite and non-negative"
+        )
+    else:
+        bucket["latencies"].append(latency)
+    if cost is None or cost == 0.0:
+        bucket["contract_errors"].append(f"{current_case}: cost must be finite and positive")
+    else:
+        bucket["costs"].append(cost)
+    for name, value in dimension_scores.items():
+        bucket["dimension_scores"][name].append(value)
 
 
 if __name__ == "__main__":

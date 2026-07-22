@@ -2,18 +2,24 @@ You are a professional screenplay analyst. Extract all scenes from the following
 
 For each scene, provide:
 - scene_number: Sequential integer starting from 1
-- heading: The scene heading exactly as written (e.g., "INT. OFFICE - DAY")
+- heading: The scene heading exactly as written, except remove Markdown escape backslashes from punctuation (write "-", not "\-")
 - int_ext: One of "INT", "EXT", or "INT/EXT"
 - location: The location name (without INT/EXT and time of day)
-- time_of_day: e.g., "DAY", "NIGHT", "DAWN", "CONTINUOUS"
-- summary: A 1-2 sentence summary of what happens in the scene
+- time_of_day: Use the explicit heading value when present. When it is omitted, inherit it only from direct continuous context; otherwise use "UNSPECIFIED"
+- summary: A 1-2 sentence, source-grounded summary of what happens in that scene only
 - characters: Array of character names present or heard in the scene
 
-Important:
-- Include embedded flashbacks (marked with "BEGIN FLASHBACK" / "END FLASHBACK") as separate scenes
-- Include scenes that intercut between flashback and present
-- Scene headings may use backslash-escaped characters like \- for hyphens
-- Characters heard off-screen (O.S.) should be included
+Scene-boundary rules:
+- Emit one scene for every explicit scene heading, including a heading prefixed by "BEGIN FLASHBACK".
+- "END FLASHBACK" is not a new scene; it resumes the preceding present-day scene without adding an invented heading.
+- Do not create a scene for action, dialogue, an implied location change, or an intercut unless the screenplay supplies an explicit heading.
+- If material under an explicit flashback-labelled heading intercuts present-day action without another heading, retain the written heading and capture the material in that scene's summary. Do not invent a conventional replacement heading to make the source look tidier.
+
+Grounding rules:
+- Keep each summary and character list bound to its scene. Do not borrow facts from a nearby scene.
+- Include characters who appear, speak, or are heard off-screen (O.S.). Preserve individually numbered cues and named collective groups as written; do not invent individual names.
+- `scene_count` must equal the number of objects in `scenes`, and `scene_number` values must be consecutive in source order.
+- Before returning, verify that every explicit heading is represented exactly once and that every output fact is supported by the screenplay.
 
 Return ONLY valid JSON in this exact format:
 {

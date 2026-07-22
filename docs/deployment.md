@@ -110,7 +110,7 @@ it as a replacement for the representative post-rollout eval above.
 ```bash
 curl -sf -X POST "https://cineforge.copper-dog.com/api/health/live-smoke"
 
-PYTHONPATH=src .venv/bin/python scripts/live_ai_capability_smoke.py
+PYTHONPATH=src .venv/bin/python scripts/live_ai_capability_smoke.py --run-live
 ```
 
 Use this when the cheap dependency surface is not enough and you want a

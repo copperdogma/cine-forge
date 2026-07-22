@@ -124,8 +124,9 @@ them, use `/setup-methodology` instead.
 
 - If `docs/setup-checklist.md` contains historical retrofit notes, preserve them
   and add the new working-copy structure above them instead of deleting context.
-- If the benchmark workspace is outside the current checkout, document the
-  sidequest-worktree contract rather than inventing a fake in-repo path.
+- If the maintained benchmark workspace is absent from the current checkout,
+  restore it through the methodology package rather than pointing the registry
+  at a sibling worktree's unverifiable bytes.
 - If stale setup references remain after sync, audit AGENTS, runbooks, and
   user-invocable skills first; historical scout docs and old story files may
   remain untouched.

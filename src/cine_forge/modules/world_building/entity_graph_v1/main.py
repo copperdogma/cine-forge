@@ -4,22 +4,14 @@ from __future__ import annotations
 
 from typing import Any
 
-from pydantic import RootModel
-
 from cine_forge.ai.llm import call_llm
+from cine_forge.modules.world_building.entity_graph_v1.contracts import (
+    RuntimeEntityEdgeList,
+)
 from cine_forge.schemas import (
     EntityEdge,
     EntityGraph,
 )
-
-
-class EdgeList(RootModel):
-    """Temporary container for list of edges."""
-
-    root: list[EntityEdge]
-
-
-EdgeList.model_rebuild()
 
 
 def run_module(
@@ -332,7 +324,7 @@ def _extract_new_relationships(
     result, cost = call_llm(
         prompt=prompt,
         model=model,
-        response_schema=EdgeList
+        response_schema=RuntimeEntityEdgeList
     )
     
     return result.root, cost

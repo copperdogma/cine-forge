@@ -45,6 +45,7 @@ markers = [
   "unit: fast tests for isolated units",
   "integration: tests spanning multiple components",
   "smoke: lightweight end-to-end checks",
+  "acceptance: live or boundary-level acceptance checks",
   "round_trip: screenplay format round-trip fidelity tests",
 ]
 

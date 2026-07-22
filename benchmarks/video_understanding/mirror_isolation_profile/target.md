@@ -1,11 +1,10 @@
-# Mirror isolation profile
+# Ordered JPEG frame-packet reference
 
-- Summary: A violet profile close-up and mirror split isolate one figure in a hushed self-interrogation.
+- Summary: Two violet profile-like figures sit on opposite sides of a bright vertical dividing line.
 - Tone: detached, mournful
-- Emotion: isolation, hesitation
+- Emotion: isolation
 - Color / grade: violet, desaturated
-- Camera language: profile_closeup, static
-- Motion: stillness
-- Continuity: intact — The cracked mirror line stays centered between face and reflection.
-- Audio intent: silent
-- Transcript: [none]
+- Camera language inferable from the ordered samples: profile_closeup, static
+- Motion inferable from the ordered samples: stillness
+- Continuity: intact - The figures and central dividing line remain fixed across all frames.
+- Audio: unavailable to the subject and excluded from scoring

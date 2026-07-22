@@ -1,19 +1,35 @@
 {
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "asset_audio_tags": [
+    "radio",
+    "speech"
+  ],
+  "audio_description": "Synthetic speech exists in the MP4 but is excluded from frame scoring.",
+  "case_status": "quarantined",
   "clip_id": "radio_hold_tracking",
-  "title": "Radio hold tracking",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
   "duration_seconds": 4.0,
-  "resolution": "640x360",
   "fps": 8,
+  "generator_version": "frame-truth-v2",
   "has_audio": true,
-  "transcript": "Unit three, hold position until the lights settle.",
-  "audio_description": "A dry radio dispatch over light room tone.",
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "sampled_frame_sha256": [
+    "6aabff943bde053f84f6230c3a876f488a41e52d22afb6a31de3548490d3c040",
+    "6aabff943bde053f84f6230c3a876f488a41e52d22afb6a31de3548490d3c040",
+    "6aabff943bde053f84f6230c3a876f488a41e52d22afb6a31de3548490d3c040",
+    "6aabff943bde053f84f6230c3a876f488a41e52d22afb6a31de3548490d3c040",
+    "6aabff943bde053f84f6230c3a876f488a41e52d22afb6a31de3548490d3c040"
+  ],
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "spec_sha256": "14189d078e187c0c1db847ea696aba58b00fdad6ce8c553570db7436167efa58",
+  "status_reason": "The static shapes do not visually establish radio speech, a hold command, officers, or tracking movement.",
   "tags": [
     "dialogue",
     "procedural"
   ],
-  "anchor_subset": false,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+  "temporal_control": "static",
+  "title": "Blue corridor two-shot",
+  "transcript": "Unit three, hold position until the lights settle.",
+  "unique_sampled_frames": 1
 }

@@ -26,6 +26,45 @@ except ImportError:
 REGISTRY_PATH = Path(__file__).parent.parent / "docs" / "evals" / "registry.yaml"
 
 
+def _is_non_decision_grade(status: object) -> bool:
+    return isinstance(status, str) and "non-decision-grade" in status
+
+
+def _is_explicit_decision_grade(status: object) -> bool:
+    return (
+        isinstance(status, str)
+        and "decision-grade" in status
+        and "non-decision-grade" not in status
+    )
+
+
+def _latest_decision_grade_scores(evaluation: dict) -> dict[str, dict]:
+    """Return one current, reproducible score per model without cherry-picking."""
+    historical_status = evaluation.get("historical_evidence_status")
+    by_model: dict[str, list[tuple[str, int, dict]]] = defaultdict(list)
+    for index, score in enumerate(evaluation.get("scores", [])):
+        evidence_status = score.get("evidence_status")
+        if _is_non_decision_grade(evidence_status):
+            continue
+        if _is_non_decision_grade(historical_status) and not _is_explicit_decision_grade(
+            evidence_status
+        ):
+            continue
+        if score.get("metrics", {}).get("overall") is None:
+            continue
+        if not all(score.get(field) for field in ("measured", "git_sha", "result_file")):
+            continue
+        model = score.get("model")
+        if not isinstance(model, str) or not model:
+            continue
+        by_model[model].append((str(score["measured"]), -index, score))
+
+    return {
+        model: max(candidates, key=lambda candidate: candidate[:2])[2]
+        for model, candidates in by_model.items()
+    }
+
+
 def load_registry() -> dict:
     """Load the eval registry."""
     if not REGISTRY_PATH.exists():
@@ -54,18 +93,20 @@ def check_c3(registry: dict) -> dict:
     model_scores: dict[str, dict[str, float]] = defaultdict(dict)
     eval_targets: dict[str, float] = {}
 
+    excluded_evals = []
     for ev in quality_evals:
         eval_id = ev["id"]
         target = ev.get("target", {}).get("value", 1.0)
         eval_targets[eval_id] = target
 
-        for score_entry in ev.get("scores", []):
+        current_scores = _latest_decision_grade_scores(ev)
+        if not current_scores:
+            excluded_evals.append(eval_id)
+        for score_entry in current_scores.values():
             model = score_entry["model"]
             overall = score_entry.get("metrics", {}).get("overall")
             if overall is not None:
-                # Keep the best score per model per eval
-                if eval_id not in model_scores[model] or overall > model_scores[model][eval_id]:
-                    model_scores[model][eval_id] = overall
+                model_scores[model][eval_id] = overall
 
     # Check each model: does it meet ALL targets?
     all_eval_ids = set(eval_targets.keys())
@@ -118,9 +159,17 @@ def check_c3(registry: dict) -> dict:
         "name": "Tiered Model Strategy",
         "gate": "Single model meets all quality eval targets",
         "passed": passed,
+        "status": (
+            "no-decision-grade-data"
+            if not candidates
+            else "incomplete-decision-grade-data"
+            if excluded_evals
+            else "data-available"
+        ),
         "best_candidate": best,
         "all_candidates": candidates,
         "eval_targets": eval_targets,
+        "excluded_evals": excluded_evals,
     }
 
 
@@ -142,14 +191,26 @@ def check_c2(registry: dict) -> dict:
             "note": "QA pass eval not found in registry",
         }
 
-    # Check if any model achieves perfect or near-perfect QA
-    best_score = 0.0
+    # Report only current decision-grade evidence; contaminated rows cannot open a gate.
+    best_score = None
     best_model = None
-    for s in qa_eval.get("scores", []):
+    for s in _latest_decision_grade_scores(qa_eval).values():
         overall = s.get("metrics", {}).get("overall", 0)
-        if overall > best_score:
+        if best_score is None or overall > best_score:
             best_score = overall
             best_model = s["model"]
+
+    if best_score is None:
+        return {
+            "compromise_id": "C2",
+            "name": "Dedicated QA Passes",
+            "gate": "10 diverse extraction tasks pass structural + semantic on first attempt",
+            "passed": False,
+            "status": "no-decision-grade-data",
+            "best_qa_score": None,
+            "best_qa_model": None,
+            "note": "No current decision-grade QA score is available.",
+        }
 
     return {
         "compromise_id": "C2",
@@ -187,7 +248,7 @@ def check_c4(registry: dict) -> dict:
     for ev, store in [(scene_ext, ext_scores), (scene_enr, enr_scores)]:
         if not ev:
             continue
-        for s in ev.get("scores", []):
+        for s in _latest_decision_grade_scores(ev).values():
             model = s["model"]
             overall = s.get("metrics", {}).get("overall")
             latency = s.get("latency_ms")
@@ -280,16 +341,30 @@ def format_c3_report(result: dict) -> str:
 
     if result["passed"]:
         winner = result["best_candidate"]
-        lines.append(f"\n  PASSED — {winner['model']} meets all {winner['evals_total']} eval targets!")
+        lines.append(
+            f"\n  PASSED — {winner['model']} meets all "
+            f"{winner['evals_total']} eval targets!"
+        )
         lines.append("  This compromise can potentially be eliminated.")
     else:
         lines.append("\n  NOT YET — No single model meets all targets.\n")
+
+    if result["excluded_evals"]:
+        lines.append(
+            "  No current decision-grade score: "
+            + ", ".join(sorted(result["excluded_evals"]))
+            + ".\n"
+        )
 
     # Show top candidates
     lines.append("  Top candidates (by evals met):\n")
     for c in result["all_candidates"][:8]:  # Show top 8
         status = "PASS" if c["passed"] else f"{c['evals_met']}/{c['evals_total']}"
-        tested = f"(tested on {c['evals_tested']}/{c['evals_total']})" if c["evals_tested"] < c["evals_total"] else ""
+        tested = (
+            f"(tested on {c['evals_tested']}/{c['evals_total']})"
+            if c["evals_tested"] < c["evals_total"]
+            else ""
+        )
         lines.append(f"    {c['model']:20s}  {status}  {tested}")
 
         if c["gaps"] and not c["passed"]:
@@ -357,7 +432,8 @@ def main():
         ),
         check_capability_compromise(
             "C7", "Working Memory Distinction",
-            "Context windows exceed 10M tokens at negligible cost, OR native persistent cross-session memory"
+            "Context windows exceed 10M tokens at negligible cost, OR native "
+            "persistent cross-session memory"
         ),
     ]
 

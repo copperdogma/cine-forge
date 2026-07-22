@@ -135,9 +135,9 @@ class VideoAnalysisWeights(BaseModel):
 
 
 class VideoEvidence(BaseModel):
-    """Evidence snippet cited by a model or scorer."""
+    """Evidence tied to one submitted image in the ordered frame packet."""
 
-    timestamp_seconds: float = Field(ge=0.0)
+    frame_index: int = Field(ge=0, le=4)
     cue: str = Field(min_length=1)
 
 
@@ -218,4 +218,3 @@ class VideoAnalysisScore(BaseModel):
     dimensions: list[VideoAnalysisDimensionScore] = Field(default_factory=list, min_length=1)
     rationale: str = Field(min_length=1)
     prompt_version: str | None = None
-

@@ -13,6 +13,8 @@ from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import ArtifactMetadata
 from cine_forge.schemas.scene_scope import SceneActionPreflight, SceneExecutionScope
 
+pytestmark = pytest.mark.unit
+
 
 def _make_client(workspace_root: Path) -> TestClient:
     app = create_app(workspace_root=workspace_root)

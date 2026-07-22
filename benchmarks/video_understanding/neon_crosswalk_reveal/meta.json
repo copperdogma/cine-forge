@@ -1,19 +1,34 @@
 {
+  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "asset_audio_tags": [
+    "drone"
+  ],
+  "audio_description": "Synthetic tone exists in the MP4 but is excluded from frame scoring.",
+  "case_status": "quarantined",
   "clip_id": "neon_crosswalk_reveal",
-  "title": "Neon crosswalk reveal",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
   "duration_seconds": 4.0,
-  "resolution": "640x360",
   "fps": 8,
+  "generator_version": "frame-truth-v2",
   "has_audio": true,
-  "transcript": null,
-  "audio_description": "A low synth drone hangs under the reveal.",
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "sampled_frame_sha256": [
+    "482e169770bbf436874e714bcb7822d406a86a98bf7f7bf4cf24c9c607fdccbc",
+    "482e169770bbf436874e714bcb7822d406a86a98bf7f7bf4cf24c9c607fdccbc",
+    "482e169770bbf436874e714bcb7822d406a86a98bf7f7bf4cf24c9c607fdccbc",
+    "482e169770bbf436874e714bcb7822d406a86a98bf7f7bf4cf24c9c607fdccbc",
+    "482e169770bbf436874e714bcb7822d406a86a98bf7f7bf4cf24c9c607fdccbc"
+  ],
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "spec_sha256": "78124fb85f2ebd4473166e637b2119cd5b1af07f2f48e249e87088cd19f49c8d",
+  "status_reason": "The generated packet is static and cannot substantiate the former crosswalk or overhead-reveal claims.",
   "tags": [
     "stylized_color",
     "city"
   ],
-  "anchor_subset": true,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1"
+  "temporal_control": "static",
+  "title": "Magenta cyan geometric tableau",
+  "transcript": null,
+  "unique_sampled_frames": 1
 }

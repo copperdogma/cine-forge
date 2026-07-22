@@ -299,9 +299,11 @@
           "config-detection",
           "full-script-throughput",
           "normalization",
+          "previz-usefulness",
           "scene-enrichment",
           "scene-extraction",
-          "script-bible"
+          "script-bible",
+          "storyboard-generation-quality"
         ]
       },
       {
@@ -392,8 +394,10 @@
           "entity-discovery",
           "full-script-throughput",
           "location-extraction",
+          "previz-usefulness",
           "prop-extraction",
-          "relationship-discovery"
+          "relationship-discovery",
+          "storyboard-generation-quality"
         ]
       },
       {
@@ -551,6 +555,7 @@
         ],
         "evalIds": [
           "compromise-C5-role-modality",
+          "previz-usefulness",
           "real-ai-previz-runtime"
         ]
       },
@@ -993,9 +998,10 @@
           ],
           "notes": [
             "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.",
-            "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks."
+            "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks.",
+            "Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Configured defaults remain provisional until fresh repaired-contract evidence exists."
           ],
-          "last_reviewed": "2026-04-10"
+          "last_reviewed": "2026-07-22"
         },
         "compromiseIds": [
           "C1",
@@ -1535,14 +1541,14 @@
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
           "posture": "no-trigger-recorded",
-          "whyNow": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…",
+          "whyNow": "",
           "retryTriggerStatus": "none",
           "retryWhen": [],
           "lastRelevantAction": {
-            "date": "2026-04-24",
+            "date": null,
             "sourceType": "eval-score",
             "source": "docs/evals/registry.yaml",
-            "summary": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…"
+            "summary": ""
           },
           "storyIds": [
             "155",
@@ -1566,8 +1572,8 @@
           "phase": "hold",
           "current": "Dedicated QA / verification remains the safest path for structured output quality.",
           "converge_signal": "First-attempt output becomes reliable enough to demote QA to lightweight assertions only.",
-          "evidence": "`compromise-C2-qa-validation` does not justify deletion yet.",
-          "last_reviewed": "2026-04-04"
+          "evidence": "Story 208 repaired and invalidated the legacy extraction and QA evidence. `compromise-C2-qa-validation` has no current decision-grade row, so dedicated QA remains.",
+          "last_reviewed": "2026-07-22"
         },
         "storyIds": [
           "189",
@@ -1616,8 +1622,8 @@
           "phase": "hold",
           "current": "Value-optimized model selection remains justified because no single model dominates CineForge's full task surface.",
           "converge_signal": "One model meets all current default-driving quality bars at acceptable latency and cost.",
-          "evidence": "`compromise-C3-tiered-models` still leaves the repo below the single-model bar.",
-          "last_reviewed": "2026-04-04"
+          "evidence": "Story 208 invalidated the legacy cross-task scores. `compromise-C3-tiered-models` has no current decision-grade matrix proving one model clears every repaired quality, latency, and cost bar.",
+          "last_reviewed": "2026-07-22"
         },
         "storyIds": [
           "155",
@@ -1704,8 +1710,8 @@
           "phase": "climb",
           "current": "Structural scene breakdown lands quickly, while slower narrative enrichment remains separate and user-triggered.",
           "converge_signal": "Single-pass scene understanding becomes both fast enough and good enough to replace the split.",
-          "evidence": "`compromise-C4-two-tier-scenes` still shows the best candidate below the quality/latency bar.",
-          "last_reviewed": "2026-04-04"
+          "evidence": "Story 208 invalidated the legacy scene scores. `compromise-C4-two-tier-scenes` has no current repaired-contract result proving a single pass clears both quality and latency bars.",
+          "last_reviewed": "2026-07-22"
         },
         "storyIds": [
           "155",
@@ -1722,18 +1728,18 @@
         ],
         "actionability": {
           "sourceKind": "eval",
-          "sourceId": "full-script-throughput",
+          "sourceId": "compromise-C4-two-tier-scenes",
           "sourcePath": "docs/evals/registry.yaml",
           "recommendedNow": false,
           "posture": "no-trigger-recorded",
-          "whyNow": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…",
+          "whyNow": "",
           "retryTriggerStatus": "none",
           "retryWhen": [],
           "lastRelevantAction": {
-            "date": "2026-04-24",
+            "date": null,
             "sourceType": "eval-score",
             "source": "docs/evals/registry.yaml",
-            "summary": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…"
+            "summary": ""
           },
           "storyIds": [
             "155",
@@ -1758,8 +1764,8 @@
           "phase": "hold",
           "current": "Roles declare modality limits and route around them instead of pretending to perceive media they cannot understand.",
           "converge_signal": "One broadly usable multimodal model makes per-role modality declarations unnecessary.",
-          "evidence": "`compromise-C5-role-modality` has no passing deletion signal.",
-          "last_reviewed": "2026-04-04"
+          "evidence": "Story 208 reclassified the visual lanes as ordered-frame comprehension and quarantined legacy modality scores. `compromise-C5-role-modality` has no native-video/audio decision-grade deletion signal.",
+          "last_reviewed": "2026-07-22"
         },
         "storyIds": [
           "199",
@@ -13631,7 +13637,7 @@
     },
     {
       "id": "208",
-      "title": "Gemini 3.6 Flash and 3.5 Flash-Lite Model-Slot Eval Refresh",
+      "title": "Gemini Model Refresh and Repository Eval Truth Audit",
       "path": "docs/stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md",
       "status": "In Progress",
       "priority": "High",
@@ -13672,11 +13678,14 @@
         "methodology_tooling"
       ],
       "roadmapTags": [
+        "eval-truth",
         "evals",
         "gemini-3.5-flash-lite",
         "gemini-3.6-flash",
+        "golden-verification",
         "google",
-        "model-refresh"
+        "model-refresh",
+        "test-integrity"
       ],
       "legacySystem": "Cross-Cutting",
       "blockerSummary": null,
@@ -13830,13 +13839,15 @@
       "name": "Character Extraction",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/character-extraction.yaml --no-cache -j 3",
-      "description": "Structured character bible from screenplay — traits, arc, relationships, evidence grounding. Tests depth of character understanding beyond surface-level extraction.",
+      "description": "Structured character bible from screenplay — traits, arc, relationships, evidence grounding. All twelve maintained The Mariner characters plus Open Frequency's Maya are independently tested. Historical rows remain provenance only until the expanded two-corpus contract is rerun.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:3",
         "spec:8"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:3",
         "spec:8"
@@ -13844,19 +13855,16 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "Opus 4.8",
-        "measured": "2026-05-29",
-        "metrics": {
-          "overall": 0.9326
-        },
-        "note": "Story 206 Opus 4.8 probe passed all three character cases, but stayed below the 0.95 quality target and narrowly missed latency/cost budgets. Remaining gaps are model-wrong/non-runtime-blocking for default selection: ROSE trait coverage missed resourceful/sharp-tongued/brave, DAD evidence/fact recall trailed the golden, and outputs used JSON fences. No character-bible default change; Sonnet 4.6 r…"
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "pre-open-frequency-corpus-non-decision-grade",
+      "excludedScoreCount": 15,
       "declaredSpecRefs": [
         "spec:3",
         "spec:8"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:3",
         "spec:8"
@@ -13873,14 +13881,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 206 Opus 4.8 probe passed all three character cases, but stayed below the 0.95 quality target and narrowly missed latency/cost budgets. Remaining gaps are model-wrong/non-runtime-blocking for default selection: ROSE trait coverage missed resourceful/sharp-tongued/brave, DAD evidence/fact recall trailed the golden, and outputs used JSON fences. No character-bible default change; Sonnet 4.6 r…",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-05-29",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 206 Opus 4.8 probe passed all three character cases, but stayed below the 0.95 quality target and narrowly missed latency/cost budgets. Remaining gaps are model-wrong/non-runtime-blocking for default selection: ROSE trait coverage missed resourceful/sharp-tongued/brave, DAD evidence/fact recall trailed the golden, and outputs used JSON fences. No character-bible default change; Sonnet 4.6 r…"
+          "summary": ""
         }
       }
     },
@@ -13894,7 +13902,9 @@
       "specRefs": [
         "spec:8"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:8"
       ],
@@ -13904,10 +13914,14 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": null,
+      "historicalEvidenceStatus": "",
+      "excludedScoreCount": 0,
       "declaredSpecRefs": [
         "spec:8"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:8"
       ],
@@ -13945,7 +13959,9 @@
       "specRefs": [
         "spec:8"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:8"
       ],
@@ -13955,10 +13971,14 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": null,
+      "historicalEvidenceStatus": "",
+      "excludedScoreCount": 0,
       "declaredSpecRefs": [
         "spec:8"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:8"
       ],
@@ -13996,7 +14016,9 @@
       "specRefs": [
         "spec:2"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:2"
       ],
@@ -14006,10 +14028,14 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": null,
+      "historicalEvidenceStatus": "",
+      "excludedScoreCount": 0,
       "declaredSpecRefs": [
         "spec:2"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:2"
       ],
@@ -14047,7 +14073,9 @@
       "specRefs": [
         "spec:4"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:4"
       ],
@@ -14057,10 +14085,14 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": null,
+      "historicalEvidenceStatus": "",
+      "excludedScoreCount": 0,
       "declaredSpecRefs": [
         "spec:4"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:4"
       ],
@@ -14098,7 +14130,9 @@
       "specRefs": [
         "spec:9"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:9"
       ],
@@ -14108,10 +14142,14 @@
       "retryWhen": [],
       "attempts": [],
       "latestScore": null,
+      "historicalEvidenceStatus": "",
+      "excludedScoreCount": 0,
       "declaredSpecRefs": [
         "spec:9"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:9"
       ],
@@ -14144,13 +14182,15 @@
       "name": "Config Detection",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/config-detection.yaml --no-cache -j 3",
-      "description": "Auto-detect project metadata from screenplay: title, genre, tone, format, duration, cast size. Gemini 3 Flash is the production winner after golden fix + prompt improvement — all targets met at 13s, $0.009. Note: golden was corrected during attempt 001 (format=short film, not feature film; duration=[8,35]; supporting chars fixed).",
+      "description": "Auto-detect project metadata from two source-verified screenplays: title, genre, tone, format, duration, cast size, locations, audience, and calibrated rationale. Story 208 replaced substring and partial-credit false greens with an exact ten-field schema, negation-aware phrase matching, finite confidence checks, source-anchored rationales, and hard gates against unsupported categorical padding. Historical rows predate that strict two-corpus semantic contract and cannot prove the configured defa…",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:2",
         "spec:8"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:2",
         "spec:8"
@@ -14167,19 +14207,16 @@
           "retryWhen": []
         }
       ],
-      "latestScore": {
-        "model": "Gemini 3.5 Flash-Lite",
-        "measured": "2026-07-21",
-        "metrics": {
-          "overall": 0.8195
-        },
-        "note": "Story 208 is fast and cheap but remains well below the 0.92 quality target and current Gemini 3 Flash default. Classification: model-wrong/non-runtime-blocking for challenger selection; no default change."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "superseded-strict-semantic-contract-non-decision-grade",
+      "excludedScoreCount": 14,
       "declaredSpecRefs": [
         "spec:2",
         "spec:8"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:2",
         "spec:8"
@@ -14196,7 +14233,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 208 is fast and cheap but remains well below the 0.92 quality target and current Gemini 3 Flash default. Classification: model-wrong/non-runtime-blocking for challenger selection; no default change.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
@@ -14213,14 +14250,15 @@
       "name": "Continuity Extraction",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/continuity-extraction.yaml --no-cache -j 3",
-      "description": "Entity state tracking and continuity change detection between scenes. Tests temporal reasoning — what changed, what persisted, what's new. Newest eval (Story 092). Best-performing overall.",
+      "description": "Entity state tracking and continuity change detection between scenes. Tests temporal reasoning — what changed, what persisted, and what is new. Story 208 replaced fuzzy property/event credit with exact entity and schema gates, one-to-one change matching, source-quoted evidence, directional reasons, and calibrated finite confidence. Historical rows predate this event contract and cannot rank runtime defaults.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:3",
         "spec:8"
       ],
       "storyIds": [
-        "092"
+        "092",
+        "208"
       ],
       "categoryRefs": [
         "spec:3",
@@ -14229,20 +14267,16 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "GPT-5.5",
-        "measured": "2026-04-24",
-        "metrics": {
-          "overall": 0.964
-        },
-        "note": "Strong pass, but below the Sonnet 4.6 target score and above the current cost target."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "superseded-event-contract-non-decision-grade",
+      "excludedScoreCount": 10,
       "declaredSpecRefs": [
         "spec:3",
         "spec:8"
       ],
       "declaredStoryIds": [
-        "092"
+        "092",
+        "208"
       ],
       "declaredCategoryRefs": [
         "spec:3",
@@ -14260,14 +14294,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Strong pass, but below the Sonnet 4.6 target score and above the current cost target.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-24",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Strong pass, but below the Sonnet 4.6 target score and above the current cost target."
+          "summary": ""
         }
       }
     },
@@ -14276,7 +14310,7 @@
       "name": "Entity Discovery",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/entity-discovery.yaml --no-cache -j 3",
-      "description": "Recall-focused discovery of all named entities (characters, locations, props) from a full screenplay in a single pass. Missing an entity is worse than a false positive — this is a completeness task. Weighted: character recall (0.45), location recall (0.25), prop recall (0.15), JSON validity (0.10), optional coverage (0.05).",
+      "description": "Recall-focused discovery of all named entities (characters, locations, props) from each of two repo-owned screenplays in a single pass. Missing an entity is worse than a false positive, while the precision guard rejects noun dumps. Historical one-screenplay rows are not decision-grade for the expanded corpus.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:3",
@@ -14284,7 +14318,8 @@
       ],
       "storyIds": [
         "124",
-        "129"
+        "129",
+        "208"
       ],
       "categoryRefs": [
         "spec:3",
@@ -14293,21 +14328,17 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "Gemini 3.6 Flash",
-        "measured": "2026-07-21",
-        "metrics": {
-          "overall": 0.92
-        },
-        "note": "Story 208 found every required entity; remaining differences are ambiguous inclusion bias plus a minor fenced-JSON formatting miss. It remains below the 0.93 target and ties much cheaper, faster lanes. Non-runtime-blocking; no default change."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "pre-open-frequency-corpus-non-decision-grade",
+      "excludedScoreCount": 22,
       "declaredSpecRefs": [
         "spec:3",
         "spec:8"
       ],
       "declaredStoryIds": [
         "124",
-        "129"
+        "129",
+        "208"
       ],
       "declaredCategoryRefs": [
         "spec:3",
@@ -14325,14 +14356,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 208 found every required entity; remaining differences are ambiguous inclusion bias plus a minor fenced-JSON formatting miss. It remains below the 0.93 target and ties much cheaper, faster lanes. Non-runtime-blocking; no default change.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-07-21",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 208 found every required entity; remaining differences are ambiguous inclusion bias plus a minor fenced-JSON formatting miss. It remains below the 0.93 target and ties much cheaper, faster lanes. Non-runtime-blocking; no default change."
+          "summary": ""
         }
       }
     },
@@ -14340,8 +14371,8 @@
       "id": "final-render-provider-floor",
       "name": "Final Render Provider Floor",
       "type": "quality",
-      "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_render_provider_floor_eval.py --fixture-manifest benchmarks/fixtures/final_render_provider_floor_cases.json --output-prefix benchmarks/results/final-render-provider-floor-runtime && PYTHONPATH=src .venv/bin/python benchmarks/scripts/generate_final_render_provider_floor_dataset.py --runtime-result benchmarks/results/final-render-provider-floor-runtime.json && source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && PROMPTFOO_PYTHON=.venv/bin/python promptfoo eval -c benchmarks/tasks/final-render-provider-floor.yaml --no-cache -j 3 --output benchmarks/results/final-render-provider-floor-quality.json && PYTHONPATH=src .venv/bin/python benchmarks/scripts/final_render_provider_floor_report.py --runtime-result benchmarks/results/final-render-provider-floor-runtime.json --promptfoo-result benchmarks/results/final-render-provider-floor-quality.json --output-prefix benchmarks/results/final-render-provider-floor-decision",
-      "description": "Measures the shipped reference-conditioned final-render route on a fixed two-scene Story 168-style substrate across the wired candidate packs (`openai_sora2`, `google_veo31`, `google_veo31_fast`). Combines a live runtime harness that records success, latency, cost, and reference-slot usage with Story 030's video-understanding scorer for semantic quality.",
+      "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/real_render_provider_floor_eval.py --fixture-manifest benchmarks/fixtures/final_render_provider_floor_cases.json --output-prefix benchmarks/results/final-render-provider-floor-runtime && PYTHONPATH=src .venv/bin/python benchmarks/scripts/generate_final_render_provider_floor_dataset.py --runtime-result benchmarks/results/final-render-provider-floor-runtime.json && source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && set +e && PROMPTFOO_PYTHON=.venv/bin/python promptfoo eval -c benchmarks/tasks/final-render-provider-floor.yaml --no-cache -j 3 --output benchmarks/results/final-render-provider-floor-quality.json; status=$?; set -e; if [ $status -ne 0 ] && [ $status -ne 100 ]; then exit $status; fi; PYTHONPATH=src .venv/bin/python benchmarks/scripts/final_render_provider_floor_report.py --runtime-result benchmarks/results/final-render-provider-floor-runtime.json --promptfoo-result benchmarks/results/final-render-provider-floor-quality.json --output-prefix benchmarks/results/final-render-provider-floor-decision; exit $status",
+      "description": "Measures the shipped reference-conditioned final-render route on a fixed two-scene Story 168-style substrate across the wired candidate packs (`openai_sora2`, `google_veo31`, `google_veo31_fast`). Combines a live runtime harness that records success, latency, cost, and reference-slot usage with a five-frame semantic-adherence comparison against versioned screenplay-derived intended briefs. Candidate frames never define their own targets; dimensions the source or five samples cannot establish ar…",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:5",
@@ -14350,7 +14381,8 @@
         "spec:8"
       ],
       "storyIds": [
-        "169"
+        "169",
+        "208"
       ],
       "categoryRefs": [
         "spec:5",
@@ -14363,14 +14395,9 @@
       ],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "Google Veo 3.1 Render",
-        "measured": "2026-04-16",
-        "metrics": {
-          "overall": 0.7497
-        },
-        "note": "Story 169 winner and new shipped default. Passed both scenes, preserved three direct reference-image inputs per scene, and beat the old `openai_sora2` default by 0.138 overall quality at 0.63x the total runtime."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "contaminated-non-decision-grade",
+      "excludedScoreCount": 3,
       "declaredSpecRefs": [
         "spec:5",
         "spec:6",
@@ -14378,7 +14405,8 @@
         "spec:8"
       ],
       "declaredStoryIds": [
-        "169"
+        "169",
+        "208"
       ],
       "declaredCategoryRefs": [
         "spec:5",
@@ -14402,14 +14430,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 169 winner and new shipped default. Passed both scenes, preserved three direct reference-image inputs per scene, and beat the old `openai_sora2` default by 0.138 overall quality at 0.63x the total runtime.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-16",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 169 winner and new shipped default. Passed both scenes, preserved three direct reference-image inputs per scene, and beat the old `openai_sora2` default by 0.138 overall quality at 0.63x the total runtime."
+          "summary": ""
         }
       }
     },
@@ -14431,7 +14459,8 @@
         "160",
         "161",
         "183",
-        "187"
+        "187",
+        "208"
       ],
       "categoryRefs": [
         "spec:2",
@@ -14445,14 +14474,9 @@
       ],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "Story 187 Targeted Big Fish Rerun (Scene prompt compacted, continuity still dominant)",
-        "measured": "2026-04-24",
-        "metrics": {
-          "overall": 1
-        },
-        "note": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…"
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "unfingerprinted-runtime-context-non-decision-grade",
+      "excludedScoreCount": 9,
       "declaredSpecRefs": [
         "spec:2",
         "spec:3",
@@ -14464,7 +14488,8 @@
         "160",
         "161",
         "183",
-        "187"
+        "187",
+        "208"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -14488,14 +14513,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-24",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 187 reran the maintained `big_fish_long` detector subset after changing the runtime scene-analysis prompt from globally repeated tonal/flashback special-case guidance to compact always-on guidance plus cue-conditioned expansion. The scene-enrichment guardrail stayed green (`2/2` promptfoo cases, `100%`), and the case completed end to end at `3263471 ms` / `$3.5857468`. `analyze_scenes` impr…"
+          "summary": ""
         }
       }
     },
@@ -14504,13 +14529,15 @@
       "name": "Location Extraction",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/location-extraction.yaml --no-cache -j 3",
-      "description": "Structured location bible — physical detail, narrative function, scene references. Tests spatial reasoning and thematic interpretation.",
+      "description": "Structured location bible — physical detail, narrative function, scene references. Tests spatial reasoning and thematic interpretation across all nine maintained location goldens. Historical three-case rows predate the strict schema, exact-set, and contradiction gates.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:3",
         "spec:8"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:3",
         "spec:8"
@@ -14518,19 +14545,16 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "GPT-5.5",
-        "measured": "2026-04-24",
-        "metrics": {
-          "overall": 0.9504
-        },
-        "note": "Meets quality and latency targets and becomes the quality leader, but narrowly misses the cost target."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "superseded-three-case-permissive-contract-non-decision-grade",
+      "excludedScoreCount": 9,
       "declaredSpecRefs": [
         "spec:3",
         "spec:8"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:3",
         "spec:8"
@@ -14547,14 +14571,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Meets quality and latency targets and becomes the quality leader, but narrowly misses the cost target.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-24",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Meets quality and latency targets and becomes the quality leader, but narrowly misses the cost target."
+          "summary": ""
         }
       }
     },
@@ -14563,13 +14587,15 @@
       "name": "Normalization",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/normalization.yaml --no-cache -j 3",
-      "description": "Convert prose narrative or broken Fountain to valid Fountain screenplay format. Tests format understanding and faithful content preservation. Gemini providers had parse errors during initial run.",
+      "description": "Convert prose narrative or broken Fountain to valid Fountain screenplay format. Tests format understanding and faithful content preservation across two Signal in the Rain inputs plus a separately derived, deliberately corrupted Open Frequency excerpt. Historical two-case rows are not decision-grade for the expanded contract.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:2",
         "spec:8"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:2",
         "spec:8"
@@ -14577,19 +14603,16 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "GPT-5.5 Pro",
-        "measured": "2026-04-24",
-        "metrics": {
-          "overall": 0.88
-        },
-        "note": "Slightly above GPT-5.5 quality, but far outside current latency and cost budgets."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "pre-open-frequency-corrupted-case-non-decision-grade",
+      "excludedScoreCount": 12,
       "declaredSpecRefs": [
         "spec:2",
         "spec:8"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:2",
         "spec:8"
@@ -14606,14 +14629,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Slightly above GPT-5.5 quality, but far outside current latency and cost budgets.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-24",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Slightly above GPT-5.5 quality, but far outside current latency and cost budgets."
+          "summary": ""
         }
       }
     },
@@ -14621,8 +14644,8 @@
       "id": "previz-usefulness",
       "name": "Previz Usefulness",
       "type": "quality",
-      "command": "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && PROMPTFOO_PYTHON=../.venv/bin/python ../.venv/bin/python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19.json && ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19.json --output-prefix results/previz-usefulness-story-176-one-pass-provider-floor-2026-04-19",
-      "description": "Compares fixed scene-level previz candidates on the same fixture pack: Story 027's symbolic baseline, Story 137's richer deterministic annotated animatic, and the current maintained low-fidelity AI-previz provider-floor lanes (`veo-3.1-fast`, `veo-3.1-lite`, and `xai_grok_imagine_video`). Historical Sora 2 and compact Lite results remain comparative evidence only. Uses Story 030's frame-packet video-understanding substrate with GPT-5.4 as the fixed analysis model and a rubric centered on camera…",
+      "command": "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && ../.venv/bin/python scripts/generate_previz_usefulness_dataset.py && set +e && PROMPTFOO_PYTHON=../.venv/bin/python ../.venv/bin/python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c tasks/previz-usefulness.yaml --no-cache -j 1 --output results/previz-usefulness-repaired.json; status=$?; set -e; if [ $status -ne 0 ] && [ $status -ne 100 ]; then exit $status; fi; ../.venv/bin/python scripts/previz_usefulness_report.py --result-file results/previz-usefulness-repaired.json --output-prefix results/previz-usefulness-repaired; exit $status",
+      "description": "Regrades retained provider-generated `veo-3.1-fast`, `veo-3.1-lite`, and `xai_grok_imagine_video` candidate clips against a dedicated source-authored generation-brief contract using five ordered JPEGs and GPT-5.4 as the fixed analysis model. The symbolic and annotated variants remain reproducibility controls only: they are excluded from provider decisions because their deterministic frames, especially the annotated lane, expose answer-bearing titles, labels, and shot intent. Historical scores p…",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:5",
@@ -14637,9 +14660,14 @@
         "144",
         "149",
         "174",
-        "176"
+        "176",
+        "178",
+        "208"
       ],
       "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:4",
         "spec:5",
         "spec:6",
         "spec:7",
@@ -14649,14 +14677,9 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "Grok Imagine Previz",
-        "measured": "2026-04-20",
-        "metrics": {
-          "overall": 0.8997
-        },
-        "note": "Fresh `/validate` reran the narrowed Story 178 fixed-pack usefulness slice into `benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. Grok Imagine improves to `0.8997` overall at `17935 ms` generation latency while the paired validation runtime compare holds the shipped imported-project first pass at `32130 ms` / `14103 ms` prerequisites. Clas…"
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "contaminated-non-decision-grade",
+      "excludedScoreCount": 7,
       "declaredSpecRefs": [
         "spec:5",
         "spec:6",
@@ -14670,9 +14693,14 @@
         "144",
         "149",
         "174",
-        "176"
+        "176",
+        "178",
+        "208"
       ],
       "declaredCategoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:4",
         "spec:5",
         "spec:6",
         "spec:7",
@@ -14682,6 +14710,9 @@
       "declaredCompromiseIds": [],
       "missingLineageKeys": [],
       "derivedCategoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:4",
         "spec:5",
         "spec:6",
         "spec:7",
@@ -14694,14 +14725,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Fresh `/validate` reran the narrowed Story 178 fixed-pack usefulness slice into `benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. Grok Imagine improves to `0.8997` overall at `17935 ms` generation latency while the paired validation runtime compare holds the shipped imported-project first pass at `32130 ms` / `14103 ms` prerequisites. Clas…",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-20",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Fresh `/validate` reran the narrowed Story 178 fixed-pack usefulness slice into `benchmarks/results/previz-usefulness-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. Grok Imagine improves to `0.8997` overall at `17935 ms` generation latency while the paired validation runtime compare holds the shipped imported-project first pass at `32130 ms` / `14103 ms` prerequisites. Clas…"
+          "summary": ""
         }
       }
     },
@@ -14710,13 +14741,15 @@
       "name": "Prop Extraction",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/prop-extraction.yaml --no-cache -j 3",
-      "description": "Structured prop bible — physical description, symbolism, plot function, scene appearances. Tests object-level narrative understanding.",
+      "description": "Structured prop bible — physical description, symbolism, plot function, scene appearances. Tests object-level narrative understanding across all seven maintained prop goldens using the complete runtime PropBible schema. Historical rows omitted associated_characters and covered only three props.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:3",
         "spec:8"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:3",
         "spec:8"
@@ -14724,19 +14757,16 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "GPT-5.5 Pro",
-        "measured": "2026-04-24",
-        "metrics": {
-          "overall": 0.8621
-        },
-        "note": "Improves over GPT-5.5 but is still below the existing leaders and far outside latency/cost budgets."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "superseded-three-case-runtime-schema-misaligned-non-decision-grade",
+      "excludedScoreCount": 9,
       "declaredSpecRefs": [
         "spec:3",
         "spec:8"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:3",
         "spec:8"
@@ -14753,14 +14783,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Improves over GPT-5.5 but is still below the existing leaders and far outside latency/cost budgets.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-24",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Improves over GPT-5.5 but is still below the existing leaders and far outside latency/cost budgets."
+          "summary": ""
         }
       }
     },
@@ -14769,30 +14799,29 @@
       "name": "QA Pass",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/qa-pass.yaml --no-cache -j 3",
-      "description": "QA gate — model judges whether an extraction is good or bad. Tests calibrated judgment (accept good work, reject bad work). Most models perform well; near-ceiling for mid-tier+.",
+      "description": "QA gate — model judges whether an extraction is good or bad. The repaired two-case contract uses a source-faithful accepted extraction and a deliberately defective rejection control. Historical rows predate the source-truth and strict issue-accounting repair and cannot drive a QA default or compromise detector until they are regraded.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:8"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:8"
       ],
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "Gemini 3.5 Flash-Lite",
-        "measured": "2026-07-21",
-        "metrics": {
-          "overall": 0.595
-        },
-        "note": "Story 208 raw score is not decision-grade. Classification: golden-wrong/non-runtime-blocking—the fixture labeled good contains real extraction errors that the model correctly rejected. Repair the QA golden and rerun before any default comparison."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "contaminated-non-decision-grade",
+      "excludedScoreCount": 18,
       "declaredSpecRefs": [
         "spec:8"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:8"
       ],
@@ -14807,14 +14836,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 208 raw score is not decision-grade. Classification: golden-wrong/non-runtime-blocking—the fixture labeled good contains real extraction errors that the model correctly rejected. Repair the QA golden and rerun before any default comparison.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-07-21",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 208 raw score is not decision-grade. Classification: golden-wrong/non-runtime-blocking—the fixture labeled good contains real extraction errors that the model correctly rejected. Repair the QA golden and rerun before any default comparison."
+          "summary": ""
         }
       }
     },
@@ -14840,7 +14869,8 @@
         "174",
         "175",
         "176",
-        "178"
+        "178",
+        "208"
       ],
       "categoryRefs": [
         "spec:4",
@@ -14853,14 +14883,9 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "Story 178 QA-Skip Collapse (Imported-Project First-Pass Control, Still Runtime-Blocking)",
-        "measured": "2026-04-20",
-        "metrics": {
-          "overall": 0.5
-        },
-        "note": "Fresh `/validate` reran the imported-project first-pass compare with an explicit old-behavior shot-planning-QA control on identical imported-project substrate into `benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. The shipped route reached first playable at `32130 ms` (`14103 ms` prerequisites + `18027 ms` isolated `ai_previz`; `36258…"
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "superseded-runtime-completeness-contract-non-decision-grade",
+      "excludedScoreCount": 13,
       "declaredSpecRefs": [
         "spec:5",
         "spec:6",
@@ -14876,7 +14901,8 @@
         "174",
         "175",
         "176",
-        "178"
+        "178",
+        "208"
       ],
       "declaredCategoryRefs": [
         "spec:4",
@@ -14902,14 +14928,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Fresh `/validate` reran the imported-project first-pass compare with an explicit old-behavior shot-planning-QA control on identical imported-project substrate into `benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. The shipped route reached first playable at `32130 ms` (`14103 ms` prerequisites + `18027 ms` isolated `ai_previz`; `36258…",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-20",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Fresh `/validate` reran the imported-project first-pass compare with an explicit old-behavior shot-planning-QA control on identical imported-project substrate into `benchmarks/results/real-ai-previz-runtime-story-178-shot-planning-qa-collapse-validation-2026-04-20.{json,md}`. The shipped route reached first playable at `32130 ms` (`14103 ms` prerequisites + `18027 ms` isolated `ai_previz`; `36258…"
+          "summary": ""
         }
       }
     },
@@ -14918,13 +14944,15 @@
       "name": "Relationship Discovery",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/relationship-discovery.yaml --no-cache -j 3",
-      "description": "Narrative relationships between all entity types — family, adversary, ownership edges. Tests cross-entity reasoning over full screenplay.",
+      "description": "Source-grounded relationship capability across all entity types — family, adversary, and ownership edges — from a full screenplay and canonical catalog. This richer benchmark contract is intentionally separate from entity_graph_v1's name-list input and bare runtime edge-list transport.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:3",
         "spec:8"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:3",
         "spec:8"
@@ -14932,19 +14960,16 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "GPT-5.5 Pro",
-        "measured": "2026-04-24",
-        "metrics": {
-          "overall": 0.9864
-        },
-        "note": "Better than GPT-5.5, but still below current leaders and far outside latency/cost budgets."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "superseded-scorer-and-runtime-misalignment-non-decision-grade",
+      "excludedScoreCount": 10,
       "declaredSpecRefs": [
         "spec:3",
         "spec:8"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:3",
         "spec:8"
@@ -14961,14 +14986,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Better than GPT-5.5, but still below current leaders and far outside latency/cost budgets.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-24",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Better than GPT-5.5, but still below current leaders and far outside latency/cost budgets."
+          "summary": ""
         }
       }
     },
@@ -14986,7 +15011,8 @@
         "spec:10"
       ],
       "storyIds": [
-        "167"
+        "167",
+        "208"
       ],
       "categoryRefs": [
         "spec:5",
@@ -14997,14 +15023,9 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "Hybrid (GPT-5.4)",
-        "measured": "2026-04-12",
-        "metrics": {
-          "overall": 1
-        },
-        "note": "Story 167 baseline and validation rerun. Hybrid remains the runtime-default leader for project-cut trust: deterministic probes catch missing/corrupt media, semantic review clears both partial and complete final-output fixtures, and the shared `media_validation_v1` substrate stays sufficient without a parallel validator."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "contaminated-pre-v2-fixture-non-decision-grade",
+      "excludedScoreCount": 3,
       "declaredSpecRefs": [
         "spec:5",
         "spec:7",
@@ -15012,7 +15033,8 @@
         "spec:10"
       ],
       "declaredStoryIds": [
-        "167"
+        "167",
+        "208"
       ],
       "declaredCategoryRefs": [
         "spec:5",
@@ -15034,14 +15056,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 167 baseline and validation rerun. Hybrid remains the runtime-default leader for project-cut trust: deterministic probes catch missing/corrupt media, semantic review clears both partial and complete final-output fixtures, and the shared `media_validation_v1` substrate stays sufficient without a parallel validator.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-12",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 167 baseline and validation rerun. Hybrid remains the runtime-default leader for project-cut trust: deterministic probes catch missing/corrupt media, semantic review clears both partial and complete final-output fixtures, and the shared `media_validation_v1` substrate stays sufficient without a parallel validator."
+          "summary": ""
         }
       }
     },
@@ -15059,7 +15081,8 @@
       ],
       "storyIds": [
         "140",
-        "144"
+        "144",
+        "208"
       ],
       "categoryRefs": [
         "spec:5",
@@ -15071,14 +15094,9 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "Hybrid (GPT-5.4)",
-        "measured": "2026-04-04",
-        "metrics": {
-          "overall": 1
-        },
-        "note": "Validation rerun for Story 144. Hybrid remains the runtime-default leader and cleared all 4 seeded cases again after the `ai_previz_video` target-override changes landed in `media_validation_v1`. This eval still measures the shared generated-video fixture pack, so ai-previz-specific trust coverage also comes from targeted unit tests plus the seeded browser verification."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "contaminated-pre-v2-fixture-non-decision-grade",
+      "excludedScoreCount": 3,
       "declaredSpecRefs": [
         "spec:7",
         "spec:8",
@@ -15086,7 +15104,8 @@
       ],
       "declaredStoryIds": [
         "140",
-        "144"
+        "144",
+        "208"
       ],
       "declaredCategoryRefs": [
         "spec:5",
@@ -15110,14 +15129,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Validation rerun for Story 144. Hybrid remains the runtime-default leader and cleared all 4 seeded cases again after the `ai_previz_video` target-override changes landed in `media_validation_v1`. This eval still measures the shared generated-video fixture pack, so ai-previz-specific trust coverage also comes from targeted unit tests plus the seeded browser verification.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-04-04",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Validation rerun for Story 144. Hybrid remains the runtime-default leader and cleared all 4 seeded cases again after the `ai_previz_video` target-override changes landed in `media_validation_v1`. This eval still measures the shared generated-video fixture pack, so ai-previz-specific trust coverage also comes from targeted unit tests plus the seeded browser verification."
+          "summary": ""
         }
       }
     },
@@ -15126,13 +15145,15 @@
       "name": "Scene Enrichment",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/scene-enrichment.yaml --no-cache -j 3",
-      "description": "Scene-level metadata enrichment — dramatic beats, tone shifts, character presence, location mapping. Tests nuanced scene analysis.",
+      "description": "Scene-level metadata enrichment — dramatic beats, tone shifts, character presence, location mapping, and source-grounded evidence. Story 208 made exact schema, scene identity, source-supported beats, heading-derived time, character set, and contradiction handling hard gates. Historical rows predate this source-grounding contract.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:2",
         "spec:8"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:2",
         "spec:8"
@@ -15149,19 +15170,16 @@
           "retryWhen": []
         }
       ],
-      "latestScore": {
-        "model": "Gemini 3.6 Flash",
-        "measured": "2026-07-21",
-        "metrics": {
-          "overall": 0.879175
-        },
-        "note": "Story 208 passed both cases but remains below the 0.93 target and Sonnet 4.6 default. Classification: model-wrong on an invented DAY value; scorer-wrong or ambiguous on exact tone synonyms. Non-runtime-blocking for the current default; no change."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "superseded-source-grounding-contract-non-decision-grade",
+      "excludedScoreCount": 20,
       "declaredSpecRefs": [
         "spec:2",
         "spec:8"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:2",
         "spec:8"
@@ -15178,7 +15196,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 208 passed both cases but remains below the 0.93 target and Sonnet 4.6 default. Classification: model-wrong on an invented DAY value; scorer-wrong or ambiguous on exact tone synonyms. Non-runtime-blocking for the current default; no change.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
@@ -15195,13 +15213,15 @@
       "name": "Scene Extraction",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/scene-extraction.yaml --no-cache -j 3",
-      "description": "Scene boundaries, headings, characters, summaries from full screenplay. Tests structural parsing combined with narrative understanding. Earlier Gemini providers were excluded after parse issues at time of testing; newer Gemini lanes should use generous output caps and record whether failures are parser/runtime issues or model-quality misses.",
+      "description": "Scene boundaries, headings, characters, and summaries across two repo-owned screenplays. Tests structural parsing combined with narrative understanding, including unusual explicit time labels and radio-only voices. Earlier Gemini providers were excluded after parse issues at time of testing; newer Gemini lanes should use generous output caps and record whether failures are parser/runtime issues or model-quality misses.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:2",
         "spec:8"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:2",
         "spec:8"
@@ -15209,19 +15229,16 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "Gemini 3.5 Flash-Lite",
-        "measured": "2026-07-21",
-        "metrics": {
-          "overall": 0.81415
-        },
-        "note": "Story 208 passed the harness and is fast, but misses the 0.90 quality target. Classification: model-wrong/non-runtime-blocking for challenger selection; no scene-extraction default change."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "pre-open-frequency-corpus-non-decision-grade",
+      "excludedScoreCount": 16,
       "declaredSpecRefs": [
         "spec:2",
         "spec:8"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:2",
         "spec:8"
@@ -15238,14 +15255,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 208 passed the harness and is fast, but misses the 0.90 quality target. Classification: model-wrong/non-runtime-blocking for challenger selection; no scene-extraction default change.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-07-21",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 208 passed the harness and is fast, but misses the 0.90 quality target. Classification: model-wrong/non-runtime-blocking for challenger selection; no scene-extraction default change."
+          "summary": ""
         }
       }
     },
@@ -15254,13 +15271,15 @@
       "name": "Script Bible",
       "type": "quality",
       "command": "cd benchmarks && promptfoo eval -c tasks/script-bible.yaml --no-cache -j 3",
-      "description": "Full script bible extraction from a complete screenplay — logline, synopsis, act structure, themes, protagonist journey, genre, tone, setting. Evaluated on field completeness, screenplay specificity (no generic analysis), and thematic grounding. Once-per-project, always generated on screenplay import.",
+      "description": "Full script bible extraction across two complete repo-owned screenplays — logline, synopsis, act structure, themes, protagonist journey, genre, tone, and setting. Evaluated on field completeness, screenplay specificity, and thematic grounding. Historical one-screenplay rows are not decision-grade for the expanded corpus.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:2",
         "spec:8"
       ],
-      "storyIds": [],
+      "storyIds": [
+        "208"
+      ],
       "categoryRefs": [
         "spec:2",
         "spec:8"
@@ -15268,19 +15287,16 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [],
-      "latestScore": {
-        "model": "Gemini 3.5 Flash-Lite",
-        "measured": "2026-07-21",
-        "metrics": {
-          "overall": 0.91
-        },
-        "note": "Story 208 cleared all targets in two no-cache runs: 0.95165/5650ms/$0.0054 first and 0.9100/6074ms/$0.0049 confirmation (mean 0.930825/5862ms/$0.00515). This is a meaningful quality and latency improvement over the current Gemini 2.5 Flash-Lite default at modest once-per-project cost. Classification: model-correct; recommend adopting for script_bible_v1 after explicit approval."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "pre-open-frequency-corpus-non-decision-grade",
+      "excludedScoreCount": 21,
       "declaredSpecRefs": [
         "spec:2",
         "spec:8"
       ],
-      "declaredStoryIds": [],
+      "declaredStoryIds": [
+        "208"
+      ],
       "declaredCategoryRefs": [
         "spec:2",
         "spec:8"
@@ -15297,14 +15313,14 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Story 208 cleared all targets in two no-cache runs: 0.95165/5650ms/$0.0054 first and 0.9100/6074ms/$0.0049 confirmation (mean 0.930825/5862ms/$0.00515). This is a meaningful quality and latency improvement over the current Gemini 2.5 Flash-Lite default at modest once-per-project cost. Classification: model-correct; recommend adopting for script_bible_v1 after explicit approval.",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-07-21",
+          "date": null,
           "sourceType": "eval-score",
           "source": "docs/evals/registry.yaml",
-          "summary": "Story 208 cleared all targets in two no-cache runs: 0.95165/5650ms/$0.0054 first and 0.9100/6074ms/$0.0049 confirmation (mean 0.930825/5862ms/$0.00515). This is a meaningful quality and latency improvement over the current Gemini 2.5 Flash-Lite default at modest once-per-project cost. Classification: model-correct; recommend adopting for script_bible_v1 after explicit approval."
+          "summary": ""
         }
       }
     },
@@ -15312,8 +15328,8 @@
       "id": "storyboard-generation-quality",
       "name": "Storyboard Generation Quality",
       "type": "quality",
-      "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/storyboard_generation_quality_eval.py --fixture-manifest benchmarks/fixtures/storyboard_generation_quality_cases.json --candidate gpt_image_2_template_grid_storyboards --output-prefix benchmarks/results/storyboard-generation-quality-runtime && PYTHONPATH=src .venv/bin/python benchmarks/scripts/generate_storyboard_generation_quality_dataset.py --runtime-result benchmarks/results/storyboard-generation-quality-runtime.json && source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && set +e && PROMPTFOO_PYTHON=.venv/bin/python promptfoo eval -c benchmarks/tasks/storyboard-generation-quality.yaml --no-cache -j 1 --filter-providers 'GPT Image 2 Template Grid Storyboards' --output benchmarks/results/storyboard-generation-quality-quality.json; status=$?; set -e; if [ $status -ne 0 ] && [ $status -ne 100 ]; then exit $status; fi; PYTHONPATH=src .venv/bin/python benchmarks/scripts/storyboard_generation_quality_report.py --runtime-result benchmarks/results/storyboard-generation-quality-runtime.json --promptfoo-result benchmarks/results/storyboard-generation-quality-quality.json --output-prefix benchmarks/results/storyboard-generation-quality-decision; exit $status",
-      "description": "Measures the real storyboard-generation lane on representative multi-scene Open Frequency cases. Combines a live runtime harness that records reference availability, prompt-level reference usage, and direct provider-input counts with a multimodal promptfoo judge for recurring character consistency, obvious reference adherence, readable-text failures, and prop-only non-insert collapses.",
+      "command": "PYTHONPATH=src .venv/bin/python benchmarks/scripts/storyboard_generation_quality_eval.py --fixture-manifest benchmarks/fixtures/storyboard_generation_quality_cases.json --candidate gpt_image_2_template_grid_storyboards --candidate gpt_image_2_storyboards --output-prefix benchmarks/results/storyboard-generation-quality-runtime && PYTHONPATH=src .venv/bin/python benchmarks/scripts/generate_storyboard_generation_quality_dataset.py --runtime-result benchmarks/results/storyboard-generation-quality-runtime.json && source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && set +e && PROMPTFOO_PYTHON=.venv/bin/python promptfoo eval -c benchmarks/tasks/storyboard-generation-quality.yaml --no-cache -j 1 --filter-providers '^(GPT Image 2 Storyboards|GPT Image 2 Template Grid Storyboards)$' --output benchmarks/results/storyboard-generation-quality-quality.json; status=$?; set -e; if [ $status -ne 0 ] && [ $status -ne 100 ]; then exit $status; fi; PYTHONPATH=src .venv/bin/python benchmarks/scripts/storyboard_generation_quality_report.py --runtime-result benchmarks/results/storyboard-generation-quality-runtime.json --promptfoo-result benchmarks/results/storyboard-generation-quality-quality.json --output-prefix benchmarks/results/storyboard-generation-quality-decision; exit $status",
+      "description": "Measures the real storyboard-generation lane on representative multi-scene Open Frequency cases. The runtime harness records frame completeness and reference availability, prompt use, and direct provider-input counts. The quality side sends every generated frame under opaque ordinal labels and derives source coverage, medium continuity, recurring-subject continuity, readable-text failures, and frame-bound evidence from visual observations. The current abstract reference cards prove transport on…",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:5",
@@ -15324,9 +15340,12 @@
       "storyIds": [
         "186",
         "188",
-        "190"
+        "190",
+        "208"
       ],
       "categoryRefs": [
+        "spec:2",
+        "spec:3",
         "spec:5",
         "spec:6",
         "spec:7",
@@ -15366,16 +15385,21 @@
           "retryWhen": [
             "realistic-reference-fixture"
           ]
+        },
+        {
+          "id": "017",
+          "date": "2026-07-22",
+          "approach": "Retain and hash every exact visual input, bind its packet identity through provider/report evidence, and reject decision-grade registry rows whose media cannot be resolved from a clean checkout.",
+          "note": "The two accidentally overwritten Story 186 JPEGs were restored locally from Backblaze and match their recorded original hashes. Historical v2 pixels and scores remain contaminated, non-durable, and non-decision-grade for independent leakage, sampling, scorer, modality, and retention-contract defects. The next actionable evidence is one fresh exact v3 default-versus-ceiling packet whose panels, so…",
+          "retryStatus": "open",
+          "retryWhen": [
+            "architecture-change"
+          ]
         }
       ],
-      "latestScore": {
-        "model": "GPT Image 2 Beat Grid Storyboards",
-        "measured": "2026-04-24",
-        "metrics": {
-          "overall": 0.6838
-        },
-        "note": "Story 188 validation reran the promptfoo quality pass against the generated current-template-vs-beat-grid runtime dataset. Beat-grid scored higher than the previous judge pass at `overall=0.6838`, but it still does not clear the `0.75` usefulness floor and still regresses the critical identity/prop dimensions (`identity_consistency=0.375`, `prop_discipline=0.5`). Runtime truth from the already-ge…"
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "contaminated-non-decision-grade",
+      "excludedScoreCount": 7,
       "declaredSpecRefs": [
         "spec:5",
         "spec:6",
@@ -15385,9 +15409,12 @@
       "declaredStoryIds": [
         "186",
         "188",
-        "190"
+        "190",
+        "208"
       ],
       "declaredCategoryRefs": [
+        "spec:2",
+        "spec:3",
         "spec:5",
         "spec:6",
         "spec:7",
@@ -15398,6 +15425,8 @@
       ],
       "missingLineageKeys": [],
       "derivedCategoryRefs": [
+        "spec:2",
+        "spec:3",
         "spec:5",
         "spec:6",
         "spec:7",
@@ -15409,17 +15438,17 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "wait-for-trigger",
-        "whyNow": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…",
+        "whyNow": "The two accidentally overwritten Story 186 JPEGs were restored locally from Backblaze and match their recorded original hashes. Historical v2 pixels and scores remain contaminated, non-durable, and non-decision-grade for independent leakage, sampling, scorer, modality, and retention-contract defects. The next actionable evidence is one fresh exact v3 default-versus-ceiling packet whose panels, so…",
         "retryTriggerStatus": "waiting",
         "retryWhen": [
-          "realistic-reference-fixture"
+          "architecture-change"
         ],
         "lastRelevantAction": {
-          "date": "2026-04-25",
+          "date": "2026-07-22",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "006",
-          "summary": "Story 190 bounded the comparison to the reference-conditioned case before spending on a full maintained rerun. Runtime was structurally green for both current template-grid and reference-anchor candidates (`success=1/1` each), and promptfoo scoring completed with `2/2` passing assertion rows. The reference-anchor candidate did not improve the targeted dimensions: both candidates stayed at `identi…"
+          "sourceId": "017",
+          "summary": "The two accidentally overwritten Story 186 JPEGs were restored locally from Backblaze and match their recorded original hashes. Historical v2 pixels and scores remain contaminated, non-durable, and non-decision-grade for independent leakage, sampling, scorer, modality, and retention-contract defects. The next actionable evidence is one fresh exact v3 default-versus-ceiling packet whose panels, so…"
         }
       }
     },
@@ -15427,8 +15456,8 @@
       "id": "video-understanding",
       "name": "Video Understanding",
       "type": "quality",
-      "command": "cd benchmarks && PROMPTFOO_PYTHON=python promptfoo eval -c tasks/video-understanding.yaml --no-cache --filter-first-n 6 -j 1",
-      "description": "Director-facing QA of generated scene clips using a clip packet (mp4 + sampled frames + transcript/audio metadata). Measures tone, emotion, shot language, motion, continuity, and audio intent on Story 030's anchor subset before the full 20-clip matrix rerun.",
+      "command": "source ~/.nvm/nvm.sh && nvm use 24 >/dev/null 2>&1 && cd benchmarks && set +e && PROMPTFOO_PYTHON=../.venv/bin/python promptfoo eval -c tasks/video-understanding.yaml --no-cache -j 1 --output results/video-understanding-repaired.json; status=$?; set -e; if [ $status -ne 0 ] && [ $status -ne 100 ]; then exit $status; fi; ../.venv/bin/python scripts/video_understanding_report.py --result-file results/video-understanding-repaired.json --output-prefix results/video-understanding-repaired; exit $status",
+      "description": "Frame-only QA of generated scene imagery using five ordered JPEGs plus neutral timing facts and an opaque subject identifier. Measures only visual tone, emotion, color, inferable shot language, inferable motion, continuity, and frame-grounded evidence across six source-backed controls. Audio, transcript, MP4 content, semantic titles, and quarantined synthetic cases are not submitted or scored.",
       "path": "docs/evals/registry.yaml",
       "specRefs": [
         "spec:7",
@@ -15436,7 +15465,8 @@
         "spec:9"
       ],
       "storyIds": [
-        "030"
+        "030",
+        "208"
       ],
       "categoryRefs": [
         "spec:7",
@@ -15457,21 +15487,17 @@
           ]
         }
       ],
-      "latestScore": {
-        "model": "Gemini 3.6 Flash",
-        "measured": "2026-07-21",
-        "metrics": {
-          "overall": 0.588392
-        },
-        "note": "Story 208 six-anchor raw result passed 2/6 and is not decision-grade. Classification: mixed model-wrong/ambiguous plus material golden- and rubric-wrong contamination: neon and muzak targets describe motion/objects absent from byte-identical symbolic frames, while dialogue penalties conflict with visible content and the 13-key contract. Non-runtime-blocking; repair fixtures before comparison."
-      },
+      "latestScore": null,
+      "historicalEvidenceStatus": "",
+      "excludedScoreCount": 12,
       "declaredSpecRefs": [
         "spec:7",
         "spec:8",
         "spec:9"
       ],
       "declaredStoryIds": [
-        "030"
+        "030",
+        "208"
       ],
       "declaredCategoryRefs": [
         "spec:7",
@@ -15491,7 +15517,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "trigger-exhausted",
-        "whyNow": "Story 208 six-anchor raw result passed 2/6 and is not decision-grade. Classification: mixed model-wrong/ambiguous plus material golden- and rubric-wrong contamination: neon and muzak targets describe motion/objects absent from byte-identical symbolic frames, while dialogue penalties conflict with visible content and the 13-key contract. Non-runtime-blocking; repair fixtures before comparison.",
+        "whyNow": "",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
           "new-approach"
@@ -15629,9 +15655,10 @@
         ],
         "notes": [
           "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.",
-          "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks."
+          "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks.",
+          "Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Configured defaults remain provisional until fresh repaired-contract evidence exists."
         ],
-        "last_reviewed": "2026-04-10"
+        "last_reviewed": "2026-07-22"
       },
       "spec:9": {
         "substrate": "partial",
@@ -15690,29 +15717,29 @@
         "phase": "hold",
         "current": "Dedicated QA / verification remains the safest path for structured output quality.",
         "converge_signal": "First-attempt output becomes reliable enough to demote QA to lightweight assertions only.",
-        "evidence": "`compromise-C2-qa-validation` does not justify deletion yet.",
-        "last_reviewed": "2026-04-04"
+        "evidence": "Story 208 repaired and invalidated the legacy extraction and QA evidence. `compromise-C2-qa-validation` has no current decision-grade row, so dedicated QA remains.",
+        "last_reviewed": "2026-07-22"
       },
       "C3": {
         "phase": "hold",
         "current": "Value-optimized model selection remains justified because no single model dominates CineForge's full task surface.",
         "converge_signal": "One model meets all current default-driving quality bars at acceptable latency and cost.",
-        "evidence": "`compromise-C3-tiered-models` still leaves the repo below the single-model bar.",
-        "last_reviewed": "2026-04-04"
+        "evidence": "Story 208 invalidated the legacy cross-task scores. `compromise-C3-tiered-models` has no current decision-grade matrix proving one model clears every repaired quality, latency, and cost bar.",
+        "last_reviewed": "2026-07-22"
       },
       "C4": {
         "phase": "climb",
         "current": "Structural scene breakdown lands quickly, while slower narrative enrichment remains separate and user-triggered.",
         "converge_signal": "Single-pass scene understanding becomes both fast enough and good enough to replace the split.",
-        "evidence": "`compromise-C4-two-tier-scenes` still shows the best candidate below the quality/latency bar.",
-        "last_reviewed": "2026-04-04"
+        "evidence": "Story 208 invalidated the legacy scene scores. `compromise-C4-two-tier-scenes` has no current repaired-contract result proving a single pass clears both quality and latency bars.",
+        "last_reviewed": "2026-07-22"
       },
       "C5": {
         "phase": "hold",
         "current": "Roles declare modality limits and route around them instead of pretending to perceive media they cannot understand.",
         "converge_signal": "One broadly usable multimodal model makes per-role modality declarations unnecessary.",
-        "evidence": "`compromise-C5-role-modality` has no passing deletion signal.",
-        "last_reviewed": "2026-04-04"
+        "evidence": "Story 208 reclassified the visual lanes as ordered-frame comprehension and quarantined legacy modality scores. `compromise-C5-role-modality` has no native-video/audio decision-grade deletion signal.",
+        "last_reviewed": "2026-07-22"
       },
       "C6": {
         "phase": "hold",

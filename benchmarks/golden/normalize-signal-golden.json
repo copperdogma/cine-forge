@@ -1,27 +1,35 @@
 {
   "description": "Golden reference for normalization eval — Signal in the Rain",
   "expected_scenes": [
-    "COMMUNITY RADIO STUDIO",
-    "HILLTOP WATER TOWER",
-    "STUDIO HALLWAY",
-    "COMMUNITY RADIO STUDIO - CONTINUOUS"
+    "INT. COMMUNITY RADIO STUDIO",
+    "EXT. HILLTOP WATER TOWER - NIGHT",
+    "INT. STUDIO HALLWAY - NIGHT",
+    "INT. COMMUNITY RADIO STUDIO - CONTINUOUS"
   ],
   "expected_characters": ["JUNE", "NOAH", "ARIA", "KELL"],
   "required_dialogue": [
-    {"character": "JUNE", "fragment": "half the valley hears us"},
-    {"character": "NOAH", "fragment": "we hear them too"},
-    {"character": "ARIA", "fragment": "stop talking and start listening"},
-    {"character": "NOAH", "fragment": "warm studios and bad coffee"},
-    {"character": "ARIA", "fragment": "coffee dream alive"},
+    {"character": "JUNE", "fragment": "If this works, half the valley hears us"},
+    {"character": "NOAH", "fragment": "If this works, we hear them too"},
+    {"character": "ARIA", "fragment": "Then we stop talking and start listening"},
+    {"character": "NOAH", "fragment": "I still vote for warm studios and bad coffee"},
+    {"character": "ARIA", "fragment": "We lost warm. Keep the coffee dream alive"},
+    {"character": "NOAH", "fragment": "Did you hear that?"},
+    {"character": "ARIA", "fragment": "Only enough to hope"},
     {"character": "KELL", "fragment": "Generator room flooded"},
-    {"character": "JUNE", "fragment": "Good evening, Red Creek"}
+    {"character": "KELL", "fragment": "We can run one board, maybe two"},
+    {"character": "JUNE", "fragment": "One board is enough"},
+    {"character": "KELL", "fragment": "For news, maybe. For miracles?"},
+    {"character": "JUNE", "fragment": "We schedule those after midnight"},
+    {"character": "NOAH", "fragment": "Tower looks stable. Feed us a carrier tone"},
+    {"character": "JUNE", "fragment": "Good evening, Red Creek. If you're out there, key once and wait"}
   ],
   "forbidden_patterns": [
-    "^>",
-    "^##",
+    "^\\s*>",
+    "^\\s*#{1,6}(?:\\s|$)",
     "\\\\-",
+    "\\\\!",
     "```",
-    "\\*\\*",
+    "\\*",
     "__"
   ],
   "structural_rules": {
@@ -29,6 +37,7 @@
     "character_cues_uppercase": true,
     "parentheticals_in_parens": true,
     "no_markdown_formatting": true,
-    "blank_line_before_character_cue": true
+    "blank_line_before_character_cue": true,
+    "preserve_source_action_order": true
   }
 }

@@ -17,7 +17,7 @@ baseline methodology package already exists. It is separate from
 
 - `docs/evals/registry.yaml` exists
 - `docs/evals/README.md` exists
-- the benchmark workspace exists or its sidequest-worktree contract is documented
+- the current checkout contains both `benchmarks/` and the eval registry
 - relevant story / spec / methodology-category context exists for the new eval
 
 ## Steps
@@ -35,9 +35,9 @@ baseline methodology package already exists. It is separate from
    - runtime/capability/deletion-gate intent
 
 3. `[judgment]` Resolve the benchmark workspace.
-   - if `benchmarks/` exists in the current checkout, use it
-   - otherwise use the documented sidequest benchmark workspace from `AGENTS.md`
-   - if the local path still cannot be verified, ask for it
+   - require `benchmarks/` and `docs/evals/registry.yaml` in the same checkout
+   - if either is missing, restore the methodology package or ask for the
+     intended checkout; do not mix a sibling worktree's contracts
 
 4. `[script]` Scaffold the registry entry.
    - add a full entry in `docs/evals/registry.yaml`
@@ -73,9 +73,9 @@ baseline methodology package already exists. It is separate from
 
 ## Troubleshooting
 
-- If the benchmark workspace lives in a sidequest worktree, keep registry paths
-  in the documented `benchmarks/...` shape instead of baking in a machine-local
-  absolute path.
+- Keep task contracts and the registry in the same checkout. Registry paths use
+  the repo-relative `benchmarks/...` shape; never bake in a machine-local path or
+  point at a sibling worktree's bytes.
 - If the task looks like "rerun or tune an existing eval", use `/improve-eval`
   instead.
 - If the repo is missing its eval/golden baseline entirely, use

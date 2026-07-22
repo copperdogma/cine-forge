@@ -211,11 +211,14 @@ def test_read_source_text_pdf_reports_extractor_path_diagnostics(
 
     monkeypatch.setattr(
         "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_via_pdfplumber",
-        lambda _: "x",
+        lambda _, **_kwargs: "x",
     )
     monkeypatch.setattr(
         "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_via_ocr",
-        lambda _: "INT. ROOM - NIGHT\nMARA\nOCR path chosen with enough words to pass checks.",
+        lambda _, **_kwargs: (
+            "INT. ROOM - NIGHT\nMARA\n"
+            "OCR path chosen with enough words to pass checks."
+        ),
     )
 
     def _fake_meaningful(text: str) -> bool:
@@ -493,6 +496,31 @@ def test_classify_compact_pdf_screenplay_detects_screenplay_signals() -> None:
 
 
 @pytest.mark.unit
+def test_classify_pdf_does_not_treat_uppercase_technical_headers_as_screenplay() -> None:
+    content = "\n\n".join(
+        [
+            "PATENT OFFICE.\nUNITED STATES\nAPPARATUS FOR REGISTERING VOTES.",
+            (
+                "Be it known that I have invented a useful improvement in apparatus for "
+                "registering votes. The following is a full and exact description of the "
+                "construction, with reference to the accompanying drawings."
+            ),
+            (
+                "Figure 1 is a plan of the apparatus with the cover removed. Figure 2 is a "
+                "longitudinal section, and Figure 3 shows the registering wheels."
+            ),
+        ]
+    )
+
+    result, diagnostics = classify_format_with_diagnostics(content=content, file_format="pdf")
+
+    assert result["detected_format"] == "prose"
+    assert diagnostics["signals"]["scene_headings"] == 0
+    assert diagnostics["signals"]["transitions"] == 0
+    assert diagnostics["score_breakdown"]["prose"] > diagnostics["score_breakdown"]["screenplay"]
+
+
+@pytest.mark.unit
 def test_run_module_builds_raw_input_payload(tmp_path: Path) -> None:
     source = tmp_path / "notes.md"
     source_text = "- beat one\n- beat two\n"
@@ -560,6 +588,43 @@ def test_run_module_records_classification_and_extraction_diagnostics(
     assert diagnostics["classification_diagnostics"]["signals"]["scene_headings"] >= 2
     assert result["artifacts"][0]["data"]["classification"]["detected_format"] != "unknown"
     assert diagnostics["extraction_diagnostics"]["tokenized_layout_detected"] is True
+
+
+@pytest.mark.unit
+def test_run_module_records_pdf_reflow_in_transformation_lineage(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = tmp_path / "dual-dialogue.pdf"
+    source.write_bytes(b"%PDF-1.4 mock")
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.story_ingest_v1.main._extract_pdf_text_with_diagnostics",
+        lambda _: (
+            "INT. STUDIO - NIGHT\nSTEEL\nScrew retirement.\n\n"
+            "BRICK ^\nScrew retirement.",
+            {
+                "dual_dialogue_reflow_applied": True,
+                "dual_dialogue_reflow_count": 1,
+                "pdf_extractor_selected": "pdfplumber",
+            },
+        ),
+    )
+
+    result = run_module(
+        inputs={},
+        params={"input_file": str(source)},
+        context={"run_id": "unit", "stage_id": "ingest", "runtime_params": {}},
+    )
+
+    diagnostics = result["artifacts"][0]["metadata"]["annotations"][
+        "extraction_diagnostics"
+    ]
+    assert diagnostics["reflow_applied"] is True
+    assert diagnostics["dual_dialogue_reflow_applied"] is True
+    assert diagnostics["transformation_lineage"][0] == {
+        "operation": "pdf_layout_dual_dialogue_reflow",
+        "applied": True,
+        "change_count": 1,
+    }
 
 
 @pytest.mark.unit

@@ -1,0 +1,102 @@
+{
+  "contract_version": "final-render-intended-source-brief-v2",
+  "source_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+  "source_fixture_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+  "scene_heading": "EXT. WATER TOWER CATWALK - NIGHT",
+  "scored_dimensions": [
+    "summary",
+    "tone",
+    "emotion",
+    "continuity",
+    "evidence"
+  ],
+  "excluded_dimensions": {
+    "audio": "No audio is submitted to the analysis model.",
+    "camera": "The retained source fixture does not specify a shot or lens contract, and the five frames cannot prove the camera path between samples.",
+    "color": "The screenplay supplies darkness and a lantern but does not prescribe canonical color tags or a grade.",
+    "motion": "The screenplay describes action and wind, but five still samples cannot establish continuous motion or pacing between frames."
+  },
+  "criteria": {
+    "summary_reference": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_002",
+        "quotes": [
+          "Wind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy.",
+          "Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.",
+          "Noah plugs the cable into a handheld receiver. Static spits, then settles into a thin human voice.",
+          "Aria smiles for the first time all night and tightens the last bolt."
+        ],
+        "rationale": "These literal screenplay facts define the intended visible setting, people, props, technical action, and reaction."
+      }
+    ],
+    "required_keywords": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_002",
+        "quotes": [
+          "EXT. WATER TOWER CATWALK - NIGHT",
+          "The town below is mostly dark except for the high school gym and a gas station canopy.",
+          "Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail."
+        ],
+        "rationale": "The required nouns are directly named and visually central to the intended scene."
+      }
+    ],
+    "tone_tags": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_002",
+        "quotes": [
+          "Wind lashes the catwalk.",
+          "Red Creek station... if anyone hears this... north shelter needs insulin and dry blankets.",
+          "Aria smiles for the first time all night and tightens the last bolt."
+        ],
+        "rationale": "Exposure and an urgent medical request support urgency; the successful contact and smile support hope."
+      }
+    ],
+    "emotion_tags": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_002",
+        "quotes": [
+          "Aria and Noah freeze.",
+          "Aria smiles for the first time all night and tightens the last bolt."
+        ],
+        "rationale": "The characters keep working and visibly respond to contact, supporting resolve and relief; the old unsupported wonder tag is removed."
+      }
+    ],
+    "continuity_status": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_002",
+        "quotes": [
+          "Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.",
+          "Noah plugs the cable into a handheld receiver."
+        ],
+        "rationale": "A coherent render should preserve the same two people and established radio equipment across the sampled sequence."
+      }
+    ],
+    "continuity_notes": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_002",
+        "quotes": [
+          "Wind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy.",
+          "Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail."
+        ],
+        "rationale": "The elevated catwalk, dark town, two people, lantern, and antenna are explicit continuity anchors."
+      }
+    ],
+    "evidence": [
+      {
+        "source_kind": "screenplay",
+        "source_ref": "scene_002",
+        "quotes": [
+          "Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.",
+          "Aria smiles for the first time all night and tightens the last bolt."
+        ],
+        "rationale": "Frame evidence is valid only when it points to visible cues from this intended source brief."
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "cases": [
+    {
+      "prompt_anchor": "A cramped studio hums with old gear.",
+      "prompt_section_sha256": "9e8ddaa0856872b0b92a10bdb73399cf171cbd19534ee6237887cc173be7510e",
+      "response": {
+        "characters": ["ARIA", "NOAH", "JUNE"],
+        "props": ["TAPE REEL", "CRACKED MIXER"]
+      }
+    },
+    {
+      "prompt_anchor": "Wind lashes prayer flags tied to the guardrail.",
+      "prompt_section_sha256": "f7f704a3c0f8bdadd308c46cf249683d4db8b1b2b89a26adf42437e476a803fb",
+      "response": {
+        "characters": ["ARIA", "NOAH"],
+        "props": ["PORTABLE ANTENNA"]
+      }
+    },
+    {
+      "prompt_anchor": "Fluorescent lights buzz.",
+      "prompt_section_sha256": "5becac82e83beaab7de1420fee94434d9c665111ec48417a356c39123e23c889",
+      "response": {
+        "characters": ["KELL", "JUNE", "PARAMEDIC", "ELDERLY NEIGHBOR"],
+        "props": [
+          "HANDWRITTEN EVACUATION ARROWS",
+          "BATTERIES",
+          "TANGLED CABLES"
+        ]
+      }
+    },
+    {
+      "prompt_anchor": "Monitors glow back to life one by one.",
+      "prompt_section_sha256": "3f3b14673bf2152b06d50bd7527f2545d18ac2b88a361fa68bb574165e2e3ea3",
+      "response": {
+        "characters": ["ARIA", "JUNE"],
+        "props": ["MIC"]
+      }
+    },
+    {
+      "prompt_anchor": "Rain has thinned to mist.",
+      "prompt_section_sha256": "3fa0717331a43e48c9464c02fdbd946506675101c1d044d90f72fbb1908fbfa1",
+      "response": {
+        "characters": [],
+        "props": ["BLANKETS", "KETTLE", "CAMP STOVE"]
+      }
+    },
+    {
+      "prompt_anchor": "Wet coats hang from every chair.",
+      "prompt_section_sha256": "370749a8e20856a2946e4f392fd17531f8d755658de1fc2d9095a9e81e47c1a0",
+      "response": {
+        "characters": ["ARIA", "NOAH", "JUNE", "KELL"],
+        "props": ["MAP", "OPEN FREQUENCY SIGN", "CASSETTE DECK"]
+      }
+    },
+    {
+      "prompt_anchor": "Cots line a basketball court.",
+      "prompt_section_sha256": "7a4d5e105027c7801a3647e34f7390d73f1b397d575ce8b71c62a0d4fa42f429",
+      "response": {
+        "characters": ["JUNE", "ARIA", "NOAH", "TEENAGER"],
+        "props": [
+          "PORTABLE RECORDER",
+          "WEATHER RADIO",
+          "FOLDED MAP",
+          "LIST OF MISSING PETS"
+        ]
+      }
+    },
+    {
+      "prompt_anchor": "The studio wall is now covered with index cards: roads, meds, names, reunions.",
+      "prompt_section_sha256": "03a31da484cca54f9d2c4ffb08735651465e602e30f05cfa8e931aab3faccbdd",
+      "response": {
+        "characters": ["KELL", "ARIA", "NOAH"],
+        "props": ["NOTEBOOK", "FINAL CARD"]
+      }
+    }
+  ]
+}

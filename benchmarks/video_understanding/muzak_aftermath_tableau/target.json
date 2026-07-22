@@ -1,58 +1,53 @@
 {
-  "clip_id": "muzak_aftermath_tableau",
-  "title": "Muzak aftermath tableau",
-  "source_type": "synthetic_previz",
-  "source_description": "Generated locally by benchmarks/scripts/generate_video_understanding_dataset.py",
-  "rights": "Project-owned synthetic benchmark asset",
-  "duration_seconds": 4.0,
-  "resolution": "640x360",
-  "has_audio": true,
-  "transcript": null,
-  "audio_description": "Cheerful store music plays against a wrecked room.",
-  "summary_reference": "A static aftermath tableau holds on a trashed table while cheerful elevator-style muzak creates tonal dissonance.",
-  "required_keywords": [
-    "muzak",
-    "aftermath",
-    "tableau"
-  ],
-  "tone_tags": [
-    "playful",
-    "detached"
-  ],
-  "emotion_tags": [
-    "suspicion"
-  ],
-  "color_tags": [
-    "desaturated"
-  ],
+  "anchor_subset": false,
+  "audio_description": null,
+  "audio_tags": [],
   "camera_tags": [
     "static",
     "wide_master"
   ],
-  "motion_tags": [
-    "stillness"
-  ],
-  "continuity_status": "intact",
-  "continuity_notes": [
-    "The tipped chair and broken glass stay fixed in place."
-  ],
-  "audio_tags": [
-    "muzak"
-  ],
+  "clip_id": "muzak_aftermath_tableau",
   "clip_tags": [
     "audio_intent",
     "contrast"
   ],
-  "anchor_subset": true,
+  "color_tags": [
+    "desaturated"
+  ],
+  "continuity_notes": [
+    "The layered rectangular forms remain fixed in all five frames."
+  ],
+  "continuity_status": "intact",
+  "duration_seconds": 4.0,
+  "emotion_tags": [],
+  "has_audio": true,
+  "motion_tags": [
+    "stillness"
+  ],
+  "required_keywords": [
+    "rectangular",
+    "table",
+    "static"
+  ],
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "A static desaturated composition holds on two layered rectangular table-like forms.",
+  "title": "Gray table tableau",
+  "tone_tags": [
+    "detached"
+  ],
+  "transcript": null,
   "weights": {
-    "summary": 0.18,
-    "tone": 0.14,
-    "emotion": 0.12,
-    "color": 0.1,
-    "camera": 0.12,
-    "motion": 0.1,
-    "continuity": 0.12,
-    "audio": 0.08,
-    "evidence": 0.04
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
   }
 }

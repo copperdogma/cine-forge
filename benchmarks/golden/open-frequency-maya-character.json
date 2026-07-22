@@ -1,0 +1,33 @@
+{
+  "MAYA": {
+    "character_id": "maya",
+    "name": "MAYA",
+    "aliases": [],
+    "narrative_role": "supporting",
+    "key_traits": [
+      "devoted to Comet",
+      "persistent",
+      "hopeful"
+    ],
+    "must_have_relationships": [
+      {"target": "COMET", "type": "family"}
+    ],
+    "must_mention_scenes": [
+      "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+      "INT. COMMUNITY RADIO STUDIO - MORNING"
+    ],
+    "must_have_evidence": [
+      "a teenager in a soaked marching-band jacket",
+      "He's family",
+      "under the vending machine in the band room"
+    ],
+    "key_facts": [
+      "Maya is a teenager wearing a soaked marching-band jacket",
+      "She asks the station to announce a missing dog named Comet",
+      "She says Comet stole her grilled cheese and slept through the evacuation",
+      "She spells Comet's name for the broadcast",
+      "She later finds Comet under the vending machine in the band room",
+      "She brings the muddy, sleepy Comet to the radio studio in the morning"
+    ]
+  }
+}

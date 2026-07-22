@@ -1,6 +1,6 @@
 # Story 169 — final-render provider-floor quality comparison
 
-description: "Reference-conditioned final-render provider floor — compare the wired packs on the same representative clip set"
+description: "Reference-conditioned final-render adherence — compare five-frame candidate packets against the same versioned intended source briefs"
 
 defaultTest:
   options:
@@ -18,8 +18,8 @@ providers:
       temperature: 0
       max_tokens: 1400
       max_frames: 5
-      frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: final-render-provider-floor-v1
+      frame_policy: five_interior_sixths_jpegs_v2
+      prompt_version: final-render-provider-floor-v2
       clip_root: ../final_render_provider_floor
       candidate_variant: openai_sora2
       pythonExecutable: python
@@ -33,8 +33,8 @@ providers:
       temperature: 0
       max_tokens: 1400
       max_frames: 5
-      frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: final-render-provider-floor-v1
+      frame_policy: five_interior_sixths_jpegs_v2
+      prompt_version: final-render-provider-floor-v2
       clip_root: ../final_render_provider_floor
       candidate_variant: google_veo31
       pythonExecutable: python
@@ -48,8 +48,8 @@ providers:
       temperature: 0
       max_tokens: 1400
       max_frames: 5
-      frame_policy: five_evenly_spaced_jpegs_v1
-      prompt_version: final-render-provider-floor-v1
+      frame_policy: five_interior_sixths_jpegs_v2
+      prompt_version: final-render-provider-floor-v2
       clip_root: ../final_render_provider_floor
       candidate_variant: google_veo31_fast
       pythonExecutable: python
@@ -58,7 +58,7 @@ providers:
 tests:
   - vars:
       clip_id: open_frequency_scene_001_studio_night
-      clip_title: Open Frequency scene 001 — radio studio night
+      evaluation_id: render_case_001
       target_path: final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.json
       target_markdown: file://../final_render_provider_floor/targets/open_frequency_scene_001_studio_night/target.md
     assert: &final_render_provider_assertions
@@ -68,17 +68,23 @@ tests:
         value: |
           Evaluate this model's structured clip analysis against the reference below.
 
-          Reference analysis:
+          Intended source brief:
           {{target_markdown}}
 
-          Reward outputs that preserve the intended dramatic beats, setting, character distinctness,
-          lighting mood, and reference-conditioned visual specificity from the target scene. Penalize
-          clips that flatten the environment, lose who is present, ignore the storm-night atmosphere,
-          or read like generic video instead of a deliberately staged final render.
+          The subject received only five ordered JPEG samples plus neutral timing facts and an
+          opaque identifier. It did not receive audio, transcript, title, target metadata, or a
+          playable clip. The brief is generation intent, not a description reverse-engineered from
+          any candidate: missing intended cues are provider-adherence failures and candidate pixels
+          never redefine the target. Judge only scored visual criteria that the five samples can
+          establish. Ignore every audio/transcript line in the intended brief and require empty
+          audio fields; do not require excluded color, camera, motion, or audio criteria. Reward an
+          honest structured account whose reported visible cues satisfy the source brief, and
+          penalize invented detail or ungrounded evidence. Accept equivalent visual wording.
+          Pass only at score >= 0.8.
 
   - vars:
       clip_id: open_frequency_scene_002_water_tower_night
-      clip_title: Open Frequency scene 002 — water tower catwalk night
+      evaluation_id: render_case_002
       target_path: final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.json
       target_markdown: file://../final_render_provider_floor/targets/open_frequency_scene_002_water_tower_night/target.md
     assert: *final_render_provider_assertions

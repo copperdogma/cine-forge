@@ -4,17 +4,26 @@
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
+import math
+import sys
 from pathlib import Path
-from statistics import mean
 from typing import Any
 
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DATASET_ROOT = REPO_ROOT / "benchmarks" / "final_render_provider_floor"
+TASK_PATH = REPO_ROOT / "benchmarks" / "tasks" / "final-render-provider-floor.yaml"
 REGISTRY_PATH = REPO_ROOT / "docs" / "evals" / "registry.yaml"
-BASELINE_VARIANT = "openai_sora2"
+SCORER_ROOT = REPO_ROOT / "benchmarks" / "scorers"
+if str(SCORER_ROOT) not in sys.path:
+    sys.path.insert(0, str(SCORER_ROOT))
+
+from final_render_provider_floor_report_contract import validated_evidence  # noqa: E402
+
+_scorer = importlib.import_module("video_understanding_scorer")
 
 
 def main() -> None:
@@ -48,65 +57,26 @@ def build_summary(
     runtime_payload: dict[str, Any],
     promptfoo_payload: dict[str, Any],
     dataset_root: Path,
+    task_path: Path = TASK_PATH,
 ) -> dict[str, Any]:
-    runtime_rows: dict[str, dict[str, Any]] = {}
-    for row in runtime_payload.get("summary", {}).get("candidates", []):
-        runtime_rows[str(row["candidate_variant"])] = dict(row)
-
-    quality_rows: dict[str, dict[str, Any]] = {}
     entries = promptfoo_payload.get("results", {}).get("results", [])
-    by_variant: dict[str, list[dict[str, Any]]] = {}
-    for entry in entries:
-        metadata = entry.get("response", {}).get("metadata", {})
-        variant = str(metadata.get("candidate_variant") or "")
-        if not variant:
-            continue
-        by_variant.setdefault(variant, []).append(entry)
-
-    for variant, variant_entries in by_variant.items():
-        meta = _load_candidate_meta(
+    evidence = (
+        validated_evidence(
+            promptfoo_entries=entries,
+            runtime_payload=runtime_payload,
             dataset_root=dataset_root,
-            candidate_variant=variant,
-            clip_id=str(variant_entries[0].get("vars", {}).get("clip_id", "")),
+            task_path=task_path,
+            scorer=_scorer,
         )
-        quality_rows[variant] = {
-            "candidate_variant": variant,
-            "candidate_label": meta.get("candidate_label") or variant,
-            "python_overall": _mean_component(variant_entries, "python"),
-            "rubric_overall": _mean_component(variant_entries, "llm-rubric"),
-            "overall": _mean_component(variant_entries, None),
-            "analysis_latency_ms": _mean_value(variant_entries, "latencyMs"),
-            "analysis_cost_usd": _mean_value(variant_entries, "cost"),
-            "calls": len(variant_entries),
-        }
-
-    variants = sorted(set(runtime_rows) | set(quality_rows))
+        if isinstance(entries, list)
+        else None
+    )
     rows: list[dict[str, Any]] = []
-    for variant in variants:
-        runtime = runtime_rows.get(variant, {})
-        quality = quality_rows.get(variant, {})
-        rows.append(
-            {
-                "candidate_variant": variant,
-                "candidate_label": quality.get("candidate_label")
-                or runtime.get("candidate_label")
-                or variant,
-                "engine_pack_id": runtime.get("engine_pack_id") or variant,
-                "target_model": runtime.get("target_model"),
-                "success_ratio": runtime.get("success_ratio"),
-                "quality_overall": quality.get("overall"),
-                "quality_python": quality.get("python_overall"),
-                "quality_rubric": quality.get("rubric_overall"),
-                "mean_total_elapsed_ms": runtime.get("mean_total_elapsed_ms"),
-                "mean_render_stage_elapsed_ms": runtime.get("mean_render_stage_elapsed_ms"),
-                "mean_total_cost_usd": runtime.get("mean_total_cost_usd"),
-                "mean_reference_usage_counts": runtime.get("mean_reference_usage_counts", {}),
-                "mean_active_input_count": runtime.get("mean_active_input_count"),
-                "mean_prompt_context_count": runtime.get("mean_prompt_context_count"),
-                "mean_unsupported_count": runtime.get("mean_unsupported_count"),
-                "calls": quality.get("calls", 0),
-            }
-        )
+    if evidence is not None:
+        for variant in evidence["variants"]:
+            runtime = evidence["runtime_rows"][variant]
+            quality = evidence["quality_rows"][variant]
+            rows.append(_candidate_row(runtime=runtime, quality=quality))
 
     rows.sort(
         key=lambda row: (
@@ -114,19 +84,64 @@ def build_summary(
             row["mean_total_elapsed_ms"] or float("inf"),
         )
     )
-    recommendation = _recommend(rows)
+    evidence_status = (
+        "decision-grade" if evidence is not None else "contaminated-non-decision-grade"
+    )
+    policy = _registry_policy()
+    previous_default = policy.get("default_model") if policy else None
+    recommendation = (
+        _recommend(rows, policy=policy)
+        if evidence_status == "decision-grade"
+        else {
+            "decision": "hold_current_default_repaired_rerun_required",
+            "rationale": (
+                "The supplied evidence did not satisfy the maintained v2 task matrix, current "
+                "scorer replay, and runtime reconciliation contract. Run a complete repaired-v2 "
+                "evaluation before reconsidering the provider default."
+            ),
+        }
+    )
     return {
         "eval_id": "final-render-provider-floor",
-        "runtime_result_file": str(runtime_payload.get("fixture_manifest", "")),
+        "evidence_status": evidence_status,
+        "runtime_fixture_manifest": str(runtime_payload.get("fixture_manifest", "")),
+        "runtime_result": evidence["runtime_result"] if evidence is not None else None,
         "candidates": rows,
         "recommendation": recommendation,
-        "previous_default": _registry_default(),
+        "previous_default": previous_default,
+    }
+
+
+def _candidate_row(
+    *, runtime: dict[str, Any], quality: dict[str, Any]
+) -> dict[str, Any]:
+    return {
+        "candidate_variant": runtime["candidate_variant"],
+        "candidate_label": runtime["candidate_label"],
+        "engine_pack_id": runtime["engine_pack_id"],
+        "target_model": runtime["target_model"],
+        "success_ratio": runtime["success_ratio"],
+        "quality_overall": quality["overall"],
+        "quality_python": quality["python_overall"],
+        "quality_rubric": quality["rubric_overall"],
+        "mean_total_elapsed_ms": runtime["mean_total_elapsed_ms"],
+        "mean_render_stage_elapsed_ms": runtime["mean_render_stage_elapsed_ms"],
+        "mean_total_cost_usd": runtime["mean_total_cost_usd"],
+        "mean_reference_usage_counts": runtime["mean_reference_usage_counts"],
+        "mean_active_input_count": runtime["mean_active_input_count"],
+        "mean_prompt_context_count": runtime["mean_prompt_context_count"],
+        "mean_unsupported_count": runtime["mean_unsupported_count"],
+        "analysis_latency_ms": quality["analysis_latency_ms"],
+        "analysis_cost_usd": quality["analysis_cost_usd"],
+        "calls": quality["calls"],
     }
 
 
 def render_markdown(summary: dict[str, Any]) -> str:
     lines = [
         "# Final Render Provider Floor Decision",
+        "",
+        f"Evidence status: **{summary['evidence_status']}**",
         "",
         f"Recommendation: **{summary['recommendation']['decision']}**",
         "",
@@ -159,13 +174,24 @@ def render_markdown(summary: dict[str, Any]) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
-def _recommend(rows: list[dict[str, Any]]) -> dict[str, str]:
+def _recommend(
+    rows: list[dict[str, Any]], *, policy: dict[str, Any] | None
+) -> dict[str, str]:
     if not rows:
         return {
             "decision": "keep_current_default",
             "rationale": "No provider-floor results were available.",
         }
-    baseline = next((row for row in rows if row["candidate_variant"] == BASELINE_VARIANT), None)
+    if not policy:
+        return {
+            "decision": "keep_current_default",
+            "rationale": "The configured default and target gates could not be resolved.",
+        }
+    baseline_variant = policy["default_model"]
+    baseline = next(
+        (row for row in rows if row["candidate_variant"] == baseline_variant),
+        None,
+    )
     if baseline is None:
         return {
             "decision": "keep_current_default",
@@ -183,16 +209,33 @@ def _recommend(rows: list[dict[str, Any]]) -> dict[str, str]:
             "rationale": "No candidate completed the full matrix with usable quality scores.",
         }
 
+    challengers = [
+        row for row in eligible if row["candidate_variant"] != baseline_variant
+    ]
+    target_qualified = [
+        row for row in challengers if not _target_failures(row, policy)
+    ]
+    if not target_qualified:
+        strongest = max(
+            challengers,
+            key=_candidate_rank,
+            default=None,
+        )
+        failures = _target_failures(strongest, policy) if strongest else []
+        if failures:
+            return {
+                "decision": "keep_current_default_target_missed",
+                "rationale": (
+                    f"{strongest['candidate_label']} cannot replace the current default because "
+                    f"it missed maintained target gates: {', '.join(failures)}."
+                ),
+            }
+
     best = max(
-        eligible,
-        key=lambda row: (
-            row["quality_overall"] or 0.0,
-            -float(row.get("mean_total_elapsed_ms") or 10**12),
-            float((row.get("mean_reference_usage_counts") or {}).get("reference_image", 0.0))
-            + float((row.get("mean_reference_usage_counts") or {}).get("input_reference", 0.0)),
-        ),
+        [baseline, *target_qualified],
+        key=_candidate_rank,
     )
-    if best["candidate_variant"] == BASELINE_VARIANT:
+    if best["candidate_variant"] == baseline_variant:
         return {
             "decision": "keep_current_default",
             "rationale": (
@@ -211,13 +254,13 @@ def _recommend(rows: list[dict[str, Any]]) -> dict[str, str]:
     baseline_direct = _direct_inputs(baseline)
     best_direct = _direct_inputs(best)
 
-    if quality_margin >= 0.03 and runtime_ratio <= 1.15 and best_direct > baseline_direct:
+    if quality_margin >= 0.03 and runtime_ratio <= 1.15 and best_direct >= baseline_direct:
         return {
             "decision": f"switch_default_to_{best['engine_pack_id']}",
             "rationale": (
                 f"{best['candidate_label']} beat the current default by {quality_margin:.3f} "
                 f"quality points, stayed within {runtime_ratio:.2f}x of the current total runtime, "
-                "and preserved more direct image conditioning on average. That is a defensible "
+                "and preserved at least as much direct image conditioning on average. That is a "
                 "provider-floor improvement instead of noisy churn."
             ),
         }
@@ -232,62 +275,65 @@ def _recommend(rows: list[dict[str, Any]]) -> dict[str, str]:
     }
 
 
+def _candidate_rank(row: dict[str, Any]) -> tuple[float, float, float]:
+    return (
+        row["quality_overall"] or 0.0,
+        -float(row.get("mean_total_elapsed_ms") or 10**12),
+        _direct_inputs(row),
+    )
+
+
+def _target_failures(row: dict[str, Any], policy: dict[str, Any]) -> list[str]:
+    failures: list[str] = []
+    if float(row["quality_overall"]) < policy["quality_min"]:
+        failures.append(f"quality < {policy['quality_min']}")
+    if float(row["mean_total_elapsed_ms"]) > policy["latency_max"]:
+        failures.append(f"latency > {policy['latency_max']} ms")
+    if float(row["mean_total_cost_usd"]) > policy["cost_max"]:
+        failures.append(f"cost > ${policy['cost_max']}")
+    return failures
+
+
 def _direct_inputs(row: dict[str, Any]) -> float:
     usage = row.get("mean_reference_usage_counts") or {}
     return float(usage.get("input_reference", 0.0)) + float(usage.get("reference_image", 0.0))
 
 
-def _mean_component(entries: list[dict[str, Any]], assertion_type: str | None) -> float | None:
-    values: list[float] = []
-    for entry in entries:
-        if assertion_type is None:
-            score = entry.get("score")
-            if score is not None:
-                values.append(float(score))
-            continue
-        for component in entry.get("gradingResult", {}).get("componentResults", []):
-            assertion = component.get("assertion", {})
-            if assertion.get("type") == assertion_type and component.get("score") is not None:
-                values.append(float(component["score"]))
-    if not values:
-        return None
-    return round(mean(values), 4)
-
-
-def _mean_value(entries: list[dict[str, Any]], key: str) -> float | None:
-    values: list[float] = []
-    for entry in entries:
-        value = entry.get(key)
-        if key == "cost":
-            value = entry.get("cost")
-        if value is not None:
-            values.append(float(value))
-    if not values:
-        return None
-    return round(mean(values), 6)
-
-
-def _load_candidate_meta(
-    *,
-    dataset_root: Path,
-    candidate_variant: str,
-    clip_id: str,
-) -> dict[str, Any]:
-    meta_path = dataset_root / candidate_variant / clip_id / "meta.json"
-    if not meta_path.exists():
-        return {}
-    payload = json.loads(meta_path.read_text(encoding="utf-8"))
-    return payload if isinstance(payload, dict) else {}
-
-
 def _registry_default() -> str | None:
+    policy = _registry_policy()
+    return policy.get("default_model") if policy else None
+
+
+def _registry_policy() -> dict[str, Any] | None:
     if not REGISTRY_PATH.exists():
-        return BASELINE_VARIANT
+        return None
     data = yaml.safe_load(REGISTRY_PATH.read_text(encoding="utf-8"))
     for entry in data.get("evals", []):
         if entry.get("id") == "final-render-provider-floor":
-            return entry.get("default_model") or BASELINE_VARIANT
-    return BASELINE_VARIANT
+            default_model = entry.get("default_model")
+            target = entry.get("target")
+            values = (
+                target.get("value"),
+                target.get("latency_ms_max"),
+                target.get("cost_usd_max"),
+            ) if isinstance(target, dict) else ()
+            if not isinstance(default_model, str) or len(values) != 3:
+                return None
+            if any(
+                isinstance(value, bool)
+                or not isinstance(value, (int, float))
+                or not math.isfinite(float(value))
+                or float(value) <= 0
+                for value in values
+            ):
+                return None
+            return {
+                "default_model": default_model,
+                "quality_min": float(values[0]),
+                "latency_max": float(values[1]),
+                "cost_max": float(values[2]),
+            }
+    return None
 
 
 def _fmt(value: float | None) -> str:
@@ -299,9 +345,7 @@ def _fmt(value: float | None) -> str:
 
 
 def _fmt_cost(value: float | None) -> str:
-    if value is None:
-        return "n/a"
-    return f"${value:.4f}"
+    return "n/a" if value is None else f"${value:.4f}"
 
 
 if __name__ == "__main__":

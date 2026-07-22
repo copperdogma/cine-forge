@@ -677,6 +677,7 @@ function parseScoreSection(sectionLines) {
       metrics: {
         overall: parseNamedMetricValue(item.metrics, "overall"),
       },
+      evidenceStatus: String(item.evidence_status || "").trim(),
       note: summarizeText(String(item.note || "").trim(), 400),
     }))
     .filter((item) => item.model || item.measured || item.note || item.metrics.overall != null);
@@ -711,9 +712,30 @@ function compareNullableNumbers(a, b) {
   return a - b;
 }
 
-function selectCurrentScore(scores) {
-  if (!scores.length) return null;
-  return scores
+function isNonDecisionGradeEvidenceStatus(value) {
+  const normalized = String(value || "").trim().toLowerCase().replaceAll("_", "-");
+  return normalized.includes("non-decision-grade") || normalized.includes("contaminated");
+}
+
+function isExplicitDecisionGradeEvidenceStatus(value) {
+  const normalized = String(value || "").trim().toLowerCase().replaceAll("_", "-");
+  return normalized.includes("decision-grade") && !normalized.includes("non-decision-grade");
+}
+
+function decisionGradeScores(scores, historicalEvidenceStatus = "") {
+  const historicalInvalid = isNonDecisionGradeEvidenceStatus(historicalEvidenceStatus);
+  return scores.filter((score) => {
+    if (isNonDecisionGradeEvidenceStatus(score.evidenceStatus)) return false;
+    return !(
+      historicalInvalid && !isExplicitDecisionGradeEvidenceStatus(score.evidenceStatus)
+    );
+  });
+}
+
+function selectCurrentScore(scores, historicalEvidenceStatus = "") {
+  const eligible = decisionGradeScores(scores, historicalEvidenceStatus);
+  if (!eligible.length) return null;
+  return eligible
     .slice()
     .sort(
       (a, b) =>
@@ -1039,7 +1061,9 @@ function parseEvalRegistry() {
     if (!current || !current.id) return;
     const topLevelRetryWhen = parseRetryWhenSection(collectSectionLines(block, "retry_when", 4));
     const attempts = parseAttemptSection(collectSectionLines(block, "attempts", 4));
-    const latestScore = selectCurrentScore(parseScoreSection(collectSectionLines(block, "scores", 4))) || null;
+    const parsedScores = parseScoreSection(collectSectionLines(block, "scores", 4));
+    const eligibleScores = decisionGradeScores(parsedScores, current.historical_evidence_status);
+    const latestScore = selectCurrentScore(eligibleScores) || null;
     const specRefs = uniqueSorted(current.spec_refs || [], compareSpecRefs);
     const storyIds = uniqueSorted(current.story_refs || [], compareStoryIdStrings);
     const categoryRefs = uniqueSorted(current.category_refs || [], compareSpecRefs);
@@ -1058,6 +1082,8 @@ function parseEvalRegistry() {
       retryWhen: topLevelRetryWhen,
       attempts,
       latestScore,
+      historicalEvidenceStatus: current.historical_evidence_status || "",
+      excludedScoreCount: parsedScores.length - eligibleScores.length,
       declaredSpecRefs: specRefs,
       declaredStoryIds: storyIds,
       declaredCategoryRefs: categoryRefs,
@@ -1117,7 +1143,9 @@ function parseEvalRegistry() {
       currentTextField = null;
     }
 
-    const fieldMatch = line.match(/^ {4}(name|type|command|description):(?:\s+(.*))?$/);
+    const fieldMatch = line.match(
+      /^ {4}(name|type|command|description|historical_evidence_status):(?:\s+(.*))?$/,
+    );
     if (fieldMatch) {
       const key = fieldMatch[1];
       const rawValue = fieldMatch[2] ? fieldMatch[2].trim() : "";
@@ -1746,18 +1774,28 @@ function buildGraph() {
   }
 
   for (const evalRecord of evals) {
-    const derivedCategoryRefs = new Set();
+    const directCategoryRefs = new Set();
     for (const specRef of evalRecord.specRefs) {
       const categoryId = categoryForSpecRef(specRef);
-      if (categoryId) derivedCategoryRefs.add(categoryId);
+      if (categoryId) directCategoryRefs.add(categoryId);
     }
     for (const compromiseId of evalRecord.compromiseIds) {
       const compromise = compromiseById.get(compromiseId);
-      if (compromise) derivedCategoryRefs.add(compromise.categoryId);
+      if (compromise) directCategoryRefs.add(compromise.categoryId);
     }
+    const storySupportedCategoryRefs = new Set();
     for (const storyId of evalRecord.storyIds) {
       const story = storyById.get(storyId);
-      if (story) story.categoryRefs.forEach((categoryId) => derivedCategoryRefs.add(categoryId));
+      if (story) story.categoryRefs.forEach((categoryId) => storySupportedCategoryRefs.add(categoryId));
+    }
+    // Direct spec/compromise ownership is mandatory. Story refs retain creation
+    // and material-ownership provenance, so they may support an explicitly
+    // declared extra category, but they never widen eval ownership implicitly.
+    // This keeps a cross-cutting audit story from contaminating every narrow eval
+    // it repairs while still validating intentionally cross-cutting evals.
+    const derivedCategoryRefs = new Set(directCategoryRefs);
+    for (const categoryId of evalRecord.declaredCategoryRefs) {
+      if (storySupportedCategoryRefs.has(categoryId)) derivedCategoryRefs.add(categoryId);
     }
     evalRecord.derivedCategoryRefs = uniqueSorted(derivedCategoryRefs, compareSpecRefs);
     evalRecord.categoryRefs = uniqueSorted(

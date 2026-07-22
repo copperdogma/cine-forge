@@ -1,11 +1,12 @@
-# Relationship Discovery Benchmark
-# Evaluates models on discovering narrative relationships between screenplay entities.
-# Mirrors CineForge's entity_graph_v1 module — AI relationship discovery step.
+# Source-Grounded Relationship Capability Benchmark
+# Evaluates models on discovering narrative relationships from a full screenplay.
+# This intentionally does NOT mirror entity_graph_v1's name-list input or its bare
+# RuntimeEntityEdgeList transport, so these scores must not drive that module's default.
 #
 # Usage: cd benchmarks && promptfoo eval -c tasks/relationship-discovery.yaml --no-cache -j 3
 # View:  promptfoo view
 
-description: "Entity relationship discovery from screenplay — The Mariner"
+description: "Source-grounded relationship discovery capability — The Mariner (non-runtime-default-driving)"
 
 defaultTest:
   options:
@@ -33,7 +34,6 @@ providers:
   - id: google:gemini-2.5-flash-lite
     label: "Gemini 2.5 Flash Lite"
     config:
-      temperature: 0
       maxOutputTokens: 16384
 
   # --- Mid tier ---
@@ -65,14 +65,12 @@ providers:
   - id: google:gemini-2.5-flash
     label: "Gemini 2.5 Flash"
     config:
-      temperature: 0
       maxOutputTokens: 16384
 
   - id: google:gemini-3-flash-preview
     label: "Gemini 3 Flash"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
   # --- SOTA tier ---
   - id: openai:gpt-5.2
@@ -92,6 +90,7 @@ providers:
   - id: file://../providers/openai_responses_provider.py
     label: "GPT-5.5 Pro"
     config:
+      model: gpt-5.5-pro
       temperature: 0
       max_tokens: 4096
       response_format: { type: "json_object" }
@@ -105,21 +104,19 @@ providers:
   - id: google:gemini-2.5-pro
     label: "Gemini 2.5 Pro"
     config:
-      temperature: 0
       maxOutputTokens: 16384
 
   - id: google:gemini-3-pro-preview
     label: "Gemini 3 Pro"
     config:
-      temperature: 0
-      maxOutputTokens: 16384
+      maxOutputTokens: 65536
 
 tests:
   # Single test case — relationship discovery uses all entities at once
   - vars:
-      characters: "THE MARINER, ROSE, DAD, SALVATORI, VINNIE, GIRL IN CAGE, CONSIGLIERE"
-      locations: "RUDDY & GREENE BUILDING, 15TH FLOOR, COASTLINE, ELEVATOR, STAIRWELL, 13TH FLOOR"
-      props: "OAR (BOSUN), PURSE, FLARE GUN"
+      characters: "the-mariner=THE MARINER; rose=ROSE; dad=DAD; salvatori=SALVATORI; vinnie=VINNIE; girl-in-cage=GIRL IN CAGE; consigliere=CONSIGLIERE"
+      locations: "ruddy-and-greene-building=RUDDY & GREENE BUILDING; 15th-floor=15TH FLOOR; coastline=COASTLINE; ruddy-and-green-building-elevator=RUDDY & GREEN BUILDING - ELEVATOR; stairwell=STAIRWELL; 13th-floor=13TH FLOOR"
+      props: "oar-bosun=OAR (BOSUN); roses-purse=PURSE; flare-gun=FLARE GUN"
       screenplay: file://../input/the-mariner.md
       golden_path: golden/the-mariner-relationships.json
     assert:
@@ -127,23 +124,53 @@ tests:
         value: file://../scorers/relationship_scorer.py
       - type: llm-rubric
         value: |
-          Evaluate the relationship discovery output for "The Mariner" screenplay.
+          Evaluate only the JSON relationship graph against the source screenplay and canonical
+          entity catalog below. Do not assume an edge is grounded merely because its endpoints
+          were supplied or its evidence repeats a relationship label.
 
-          The model was given character, location, and prop entity lists and asked to identify
-          5-10 high-impact narrative relationships.
+          Canonical entity catalog:
+          Characters: {{characters}}
+          Locations: {{locations}}
+          Props: {{props}}
 
-          Key quality criteria:
-          1. Does it identify the SIBLING relationship between The Mariner and Rose?
-          2. Does it identify the PARENT relationship between Dad and The Mariner?
-          3. Does it identify the ADVERSARY relationship between The Mariner and Salvatori?
-          4. Does it connect The Mariner to his OAR (BOSUN) as a defining weapon/prop?
-          5. Does it identify Rose's PURSE as containing the blockchain password MacGuffin?
-          6. Does it connect Salvatori to the 15TH FLOOR as his headquarters?
-          7. Does it identify Rose and Vinnie as former romantic partners?
-          8. Is evidence grounded in the actual screenplay (specific quotes or scene references)?
-          9. Are relationship types meaningful and specific (not generic "related to")?
-          10. Are there any obviously false or fabricated relationships?
+          Verified relationship criteria:
+          1. All three critical relationships must be present: the-mariner <-> rose as symmetric
+             siblings; dad -> the-mariner as parent/father; and the-mariner <-> salvatori as
+             symmetric adversaries. Correct endpoints with a generic or wrong type do not count.
+          2. All ten distinct maintained relationships are required. The remaining seven are:
+             the-mariner -> oar-bosun as weapon/use; rose -> roses-purse as
+             owns/carries; salvatori -> 15th-floor as office/headquarters; rose <-> salvatori as
+             adversaries; dad -> rose as parent/father; rose <-> vinnie as ex-partners; and
+             the-mariner -> flare-gun as weapon/use.
+          3. Each edge must use exact catalog IDs/types, a meaningful specific relationship_type,
+             correct direction for endpoint order, 2-4 evidence objects with exactly quote and
+             scene_ref, the complete maintained relationship-specific set of exact governing
+             scene_refs, and a numeric confidence from 0 to 1. Every quote must be a contiguous
+             source excerpt and its evidence.scene_ref must be the exact heading containing it.
+             Reusing a global heading list across unrelated edges fails.
+          4. GIRL IN CAGE (`girl-in-cage`) and CONSIGLIERE (`consigliere`) do not occur in the
+             screenplay. Any edge involving either is fabricated and must fail. Also reject
+             Dad-Salvatori, Rose-Oar, Dad-Purse, Mariner-as-owner/headquarters-of-the-building,
+             or any other trope/co-occurrence invention.
 
-          Score strictly: a good relationship extraction captures the NARRATIVE structure
-          of the screenplay, not just surface-level co-occurrences. Critical family and
-          adversarial relationships must be present.
+          Judge contract (hard gates):
+          - Require exactly {"edges": [...]} with the prompt's exact nested schema and exactly 10
+            distinct edges. Reject Markdown fences, top-level lists, missing/extra keys, duplicate
+            edges, omitted governing scene_refs, and unsupported extra edges. A schema-only graph
+            or an empty/generic edge list is not a pass.
+          - Check every endpoint identity, relationship type, direction, evidence item, and
+            scene_ref against the source. Any fabricated evidence or edge, materially wrong scene,
+            wrong canonical ID/type/direction, or confident contradiction is a hard failure.
+          - Credit a fact only in the correct typed field. Copying target relationship words into
+            generic evidence cannot compensate for a wrong type, endpoint, direction, missing
+            scene_refs, or unsupported edge; fluent generic padding receives no credit.
+          - Legitimate paraphrase is allowed for the relationship_type label only. Evidence.quote
+            must be a contiguous source excerpt (punctuation and whitespace may normalize), and
+            it may not be relocated to a different evidence.scene_ref.
+          - Set pass=false if any hard gate fails, any one of the ten maintained relationships is
+            missing, or even one materially false or additional edge is included.
+
+          SOURCE SCREENPLAY:
+          ==========
+          {{screenplay}}
+          ==========

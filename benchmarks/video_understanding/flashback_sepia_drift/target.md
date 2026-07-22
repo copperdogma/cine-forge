@@ -1,11 +1,10 @@
-# Flashback sepia drift
+# Ordered JPEG frame-packet reference
 
-- Summary: A sepia memory drifts past two figures near the water with a soft, nostalgic voiceover.
+- Summary: Two abstract figures grow closer across sepia frames beside a brown rectangle and a circular outline.
 - Tone: nostalgic
-- Emotion: nostalgia, wonder
+- Emotion: [none]
 - Color / grade: sepia, gold
-- Camera language: slow_push_in
-- Motion: slow_drift
-- Continuity: intact — The oar remains with the parent figure during the drift.
-- Audio intent: voiceover, soft_music
-- Transcript: We thought the tide would keep carrying us forward.
+- Camera language inferable from the ordered samples: slow_push_in
+- Motion inferable from the ordered samples: slow_drift
+- Continuity: intact - The brown rectangle stays beside the right figure throughout the push-in.
+- Audio: unavailable to the subject and excluded from scoring

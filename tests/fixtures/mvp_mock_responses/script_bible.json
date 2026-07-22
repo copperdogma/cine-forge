@@ -1,0 +1,78 @@
+{
+  "title": "Signal in the Rain",
+  "logline": "During a flood-isolating storm, three community-radio operators must restore a failing broadcast network and turn their tiny station into Red Creek's lifeline.",
+  "synopsis": "As a violent storm cuts Red Creek off, June, Aria, and Noah struggle to make their aging community-radio equipment heard. The studio loses power while Aria and Noah climb the water tower with a portable antenna, and the team must choose between waiting for ideal conditions and transmitting with the one board their flooded generator can still support. Three answering chirps and a reply from the north shelter prove that the improvised network works.\n\nThrough the following day, the station grows from a fragile emergency broadcast into a community information hub. Volunteers relay road, medicine, meal, and missing-pet updates while the operators preserve room for music and humor. By the second night, nineteen reunions have been confirmed, and the steady ON AIR light embodies a town learning that attentive communication can hold it together.",
+  "act_structure": [
+    {
+      "act_number": 1,
+      "title": "Signal Lost",
+      "start_scene": "INT. COMMUNITY RADIO STUDIO",
+      "end_scene": "EXT. HILLTOP WATER TOWER - NIGHT",
+      "summary": "The storm kills the studio's ON AIR light, sending Aria and Noah up the water tower to establish a fragile path back to the isolated town.",
+      "turning_points": [
+        "The ON AIR light flickers once, then goes dark.",
+        "A burst of static jumps from the handheld receiver."
+      ]
+    },
+    {
+      "act_number": 2,
+      "title": "A Community Answers",
+      "start_scene": "INT. STUDIO HALLWAY - NIGHT",
+      "end_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+      "summary": "Working with flooded power and damaged equipment, the team restores one board, hears the first replies, and reframes the station as a practical relay for the whole town.",
+      "turning_points": [
+        "Then three tiny chirps answer in sequence.",
+        "Red Creek station, this is north shelter. We copy your broadcast.",
+        "Announcements on the hour. Songs in between."
+      ]
+    },
+    {
+      "act_number": 3,
+      "title": "Open Frequency",
+      "start_scene": "EXT. NORTH SHELTER GYM - AFTERNOON",
+      "end_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "summary": "The improvised broadcast becomes a durable, two-way civic network that coordinates resources, preserves morale, and reunites nineteen people by day two.",
+      "turning_points": [
+        "Community board goes out every half hour.",
+        "ARIA slides a final card onto the board: REUNIONS CONFIRMED: 19.",
+        "Let's make room for twenty."
+      ]
+    }
+  ],
+  "themes": [
+    {
+      "theme": "Listening as service",
+      "description": "The station becomes useful when its operators stop treating broadcasting as one-way performance and make room for the town to answer.",
+      "evidence": [
+        "Then we stop talking and start listening.",
+        "Good evening, Red Creek. If you're out there, key once and wait.",
+        "Remember when silence meant dead air?"
+      ]
+    },
+    {
+      "theme": "Community resilience",
+      "description": "Neighbors turn damaged local infrastructure into a shared network for safety, supplies, information, and reunion.",
+      "evidence": [
+        "One board is enough.",
+        "We're recording every call sign. We'll relay until sunup.",
+        "The studio wall is now covered with index cards: roads, meds, names, reunions."
+      ]
+    },
+    {
+      "theme": "Hope through practical action",
+      "description": "Hope is sustained through concrete, repeatable work rather than certainty, from aiming the antenna to making space for the next reunion.",
+      "evidence": [
+        "Only enough to hope.",
+        "Then we use every minute.",
+        "Let's make room for twenty."
+      ]
+    }
+  ],
+  "narrative_arc": "The story moves from communications failure and physical isolation, through the first uncertain proof of contact, to an expanding two-way network that becomes part of Red Creek's daily recovery. Repeated changes in the ON AIR light and the meaning of silence track that movement from fragility to dependable connection.",
+  "genre": "Community survival drama",
+  "tone": "Grounded, tense, and ultimately hopeful",
+  "protagonist_journey": "June grows from an operator testing whether a damaged station can reach anyone into the calm coordinator of a sustained community network, while Aria and Noah turn technical improvisation into shared civic purpose.",
+  "central_conflict": "A storm has isolated Red Creek while flooded power and failing radio equipment threaten the team's effort to connect residents with shelters, road information, and one another.",
+  "setting_overview": "Contemporary Red Creek over a storm night and the following day, moving among an aging community-radio studio, a wind-lashed water tower, the town square, and the north shelter gym.",
+  "confidence": 0.96
+}

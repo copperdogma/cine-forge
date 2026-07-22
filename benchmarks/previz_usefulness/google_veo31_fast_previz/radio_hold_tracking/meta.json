@@ -15,7 +15,7 @@
     "procedural"
   ],
   "anchor_subset": false,
-  "analysis_frame_policy": "five_evenly_spaced_jpegs_v1",
+  "analysis_frame_policy": "five_ordered_jpegs_v1",
   "candidate_variant": "google_veo31_fast_previz",
   "candidate_label": "Veo 3.1 Fast Previz",
   "operator_lane": "ai_previz",
@@ -38,5 +38,26 @@
     "bokeh glamour shots",
     "final-render finish"
   ],
-  "prompt_contract_path": "prompt_contract.json"
+  "prompt_contract_path": "prompt_contract.json",
+  "decision_role": "decision_candidate",
+  "decision_eligible": true,
+  "artifact_status": "retained_candidate_regrade_ready",
+  "retained_clip_bytes": true,
+  "retained_frame_bytes": true,
+  "retained_prompt_bytes": true,
+  "case_contract_path": "benchmarks/previz_usefulness/cases.json",
+  "case_contract_sha256": "3ad9ed4eeedeaf82174f53096a619346d21be00292f0e5edc386b4704689b60c",
+  "target_path": "benchmarks/previz_usefulness/targets/radio_hold_tracking.json",
+  "target_sha256": "9d5674792fb3d3995b32a432ec4e5d5317d0b2d40ad133e47fbe4f4f4671ae25",
+  "prompt_path": "prompt.txt",
+  "clip_sha256": "bb931d0a28d2bcfd16735e3431e42d14e25a5fd9f333cda6c1309b48c200df15",
+  "frame_sha256": {
+    "frame_00.jpg": "a373a103f7691ce5c9e08f1f7edc4f3ffa1383afc0350ac85c6340e628044ec7",
+    "frame_01.jpg": "b8f120a0aa4258263b1018058e8682597d3eb21a2b1c5a2780058ad6a487a2a3",
+    "frame_02.jpg": "0c79822cf756aab14931d17f063f8b262b18e634c773b03d0896fc5cfdf37dbe",
+    "frame_03.jpg": "8c679e9297f7f31e3680e76ce8ac30a14f8b1e425e56913336982c786985cc0e",
+    "frame_04.jpg": "5235ad3d80ff1d26b5fad703f594894dcbe037d308da8a4be54088ba349c5898"
+  },
+  "prompt_txt_sha256": "28320e09545e1e1c34d68315c270d32e58363c6d03da51a9e0aa2b36982e518c",
+  "prompt_contract_json_sha256": "215c5d9cbae89c8ca1e574886f0db27962ac23545a9fd8112f935f6bcda0921c"
 }

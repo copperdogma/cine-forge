@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from pydantic import ValidationError
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BENCHMARK_SCRIPT_ROOT = REPO_ROOT / "benchmarks" / "scripts"
@@ -141,6 +142,18 @@ def test_runtime_eval_manifest_parses_shipped_and_patched_cases() -> None:
 
 
 @pytest.mark.unit
+def test_runtime_eval_manifest_rejects_duplicate_case_ids() -> None:
+    case = {
+        "case_id": "duplicate",
+        "label": "Duplicate",
+        "input_fixture": "tests/fixtures/sample_screenplay.fountain",
+    }
+
+    with pytest.raises(ValidationError, match="case_id values must be unique"):
+        runtime_support.RuntimeEvalManifest.model_validate({"cases": [case, case]})
+
+
+@pytest.mark.unit
 def test_materialize_eval_recipe_can_patch_shot_planning_without_ai_previz_override() -> None:
     case = runtime_support.RuntimeEvalCase(
         case_id="project_ready_control",
@@ -258,7 +271,8 @@ def test_aggregate_attempts_and_summary_use_successful_medians() -> None:
     assert summary["fastest_scene_ready_ms"] == 162_000
     assert summary["fastest_isolated_ai_previz_ms"] == 52_000
     assert summary["fastest_scene_ready_full_completion_ms"] == 165_500
-    assert summary["overall"] == 0.5
+    assert summary["decision_grade"] is False
+    assert summary["overall"] == 0.0
 
 
 @pytest.mark.unit
@@ -323,8 +337,12 @@ def test_summarize_results_falls_back_to_partial_success_when_needed() -> None:
         fast_previz_target_ms=6_000,
     )
 
-    assert summary["successful_cases"] == 2
+    assert summary["successful_cases"] == 0
     assert summary["fully_successful_cases"] == 0
+    assert summary["partial_success_cases"] == 2
+    assert summary["timing_evidence_basis"] == "partial_success_diagnostic"
+    assert summary["decision_grade"] is False
+    assert summary["overall"] == 0.0
     assert summary["focus_prerequisite_mode"] == "scene_ready"
     assert summary["fastest_focus_case_id"] == "fast_partial"
     assert summary["fastest_scene_ready_case_id"] == "fast_partial"

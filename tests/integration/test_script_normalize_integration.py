@@ -88,6 +88,9 @@ def test_normalization_valid_screenplay_fixture_emits_parseable_output() -> None
     )
     script_text = result["artifacts"][0]["data"]["script_text"]
     assert validate_fountain_structure(script_text).parseable is True
+    assert "INT. LAB - NIGHT" in script_text
+    assert "MARA\nWe begin now." in script_text
+    assert "JONAH\nCopy that." in script_text
 
 
 @pytest.mark.integration
@@ -106,6 +109,8 @@ def test_normalization_malformed_screenplay_fixture_emits_parseable_output() -> 
     )
     script_text = result["artifacts"][0]["data"]["script_text"]
     assert validate_fountain_structure(script_text).parseable is True
+    assert "MARA" in script_text
+    assert "begin now without proper formatting or structure" in script_text
 
 
 @pytest.mark.integration
@@ -132,6 +137,8 @@ def test_normalization_fdx_fixture_detects_interop_and_emits_parseable_output() 
     assert artifact["metadata"]["annotations"]["interop_exports"][0]["success"] is True
     script_text = artifact["data"]["script_text"]
     assert validate_fountain_structure(script_text).parseable is True
+    assert "INT. GARAGE - NIGHT" in script_text
+    assert "ALEX\nStart the engine." in script_text
 
 
 @pytest.mark.integration

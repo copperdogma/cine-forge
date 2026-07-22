@@ -2,7 +2,7 @@
   "CITY CENTRE": {
     "location_id": "city-centre",
     "name": "CITY CENTRE",
-    "aliases": ["city center", "ruined city"],
+    "aliases": ["ruined city"],
     "physical_traits": [
       "fires burning from barrels and destroyed buildings",
       "homeless people huddled for warmth",
@@ -28,35 +28,145 @@
   "RUDDY & GREENE BUILDING": {
     "location_id": "ruddy-and-greene-building",
     "name": "RUDDY & GREENE BUILDING",
-    "aliases": ["Ruddy & Green Building", "the building"],
+    "aliases": [
+      "Ruddy & Green Building",
+      "the building"
+    ],
     "physical_traits": [
       "classic 15-story sandstone building",
       "riddled with bullet holes and graffiti",
       "once beautiful, now decayed",
-      "rows of high-end European SUVs parked outside"
+      "rows of high-end European SUVs parked outside",
+      "grimy rear alley",
+      "dim, damaged interior corridors with flickering lights, papers, and office furniture",
+      "clean, luxurious, dimly lit 15th floor contrasts with the ruined lower floors"
     ],
     "must_mention_scenes": [
-      "EXT. RUDDY & GREENE BUILDING - FRONT",
-      "EXT. RUDDY & GREENE BUILDING - REAR",
-      "INT. RUDDY & GREEN BUILDING - ELEVATOR"
+      "EXT. RUDDY & GREENE BUILDING - FRONT - NIGHT",
+      "EXT. RUDDY & GREENE BUILDING - REAR - NIGHT",
+      "INT. RUDDY & GREEN BUILDING - ELEVATOR",
+      "INT. 11TH FLOOR - CONTINUOUS",
+      "INT. STAIRWELL - CONTINUOUS",
+      "INT. 12TH FLOOR STAIRWELL - CONTINUOUS",
+      "INT. 13TH FLOOR",
+      "INT. 15TH FLOOR",
+      "INT. STAIRWELL - (BACK TO PRESENT)"
     ],
     "key_facts": [
       "Central location for the story",
-      "Salvatori's criminal headquarters spanning multiple floors",
+      "Salvatori's gang occupies and patrols multiple floors",
       "Mariner enters through the rear in a fish delivery van",
-      "Rose was held here before Mariner rescued her",
+      "Mariner fights through the building and emerges into the elevator with Rose",
       "Fifteen-story building"
     ],
     "narrative_significance_must_mention": [
       "central",
       "criminal",
-      "Salvatori"
+      "Salvatori",
+      "vertical"
+    ]
+  },
+  "RUDDY & GREEN BUILDING - ELEVATOR": {
+    "location_id": "ruddy-and-green-building-elevator",
+    "name": "RUDDY & GREEN BUILDING - ELEVATOR",
+    "aliases": ["elevator"],
+    "physical_traits": [
+      "muzak plays inside the elevator",
+      "a bloody scrap of something with hair lies on the floor",
+      "doors open directly onto the building's upper floors"
+    ],
+    "must_mention_scenes": [
+      "INT. RUDDY & GREEN BUILDING - ELEVATOR"
+    ],
+    "key_facts": [
+      "Rose and Mariner catch their breath here after he rescues her",
+      "Mariner reveals that he tracked Rose through an AirTag hidden in her purse",
+      "Three thugs ambush them when the doors open on floor twelve",
+      "Rose redirects the elevator to eleven so they can take the stairs back up"
+    ],
+    "narrative_significance_must_mention": [
+      "escape",
+      "pursuit",
+      "vertical"
+    ]
+  },
+  "11TH FLOOR": {
+    "location_id": "11th-floor",
+    "name": "11TH FLOOR",
+    "aliases": [],
+    "physical_traits": [
+      "dim corridors",
+      "flickering lights",
+      "papers and office furniture litter the hallway",
+      "empty room with a toppled filing cabinet"
+    ],
+    "must_mention_scenes": [
+      "INT. 11TH FLOOR - CONTINUOUS"
+    ],
+    "key_facts": [
+      "Rose and Mariner search the floor for a stairwell",
+      "They hide behind a toppled filing cabinet while someone passes",
+      "Mariner's Dad tattoo prompts the first idealized coastline flashback"
+    ],
+    "narrative_significance_must_mention": [
+      "concealment",
+      "memory",
+      "flashback"
+    ]
+  },
+  "STAIRWELL": {
+    "location_id": "stairwell",
+    "name": "STAIRWELL",
+    "aliases": ["12th floor stairwell"],
+    "physical_traits": [
+      "floor-access door that slams Rose into Mariner",
+      "wall where Mariner subdues Rosco"
+    ],
+    "must_mention_scenes": [
+      "INT. STAIRWELL - CONTINUOUS",
+      "INT. 12TH FLOOR STAIRWELL - CONTINUOUS",
+      "INT. STAIRWELL - (BACK TO PRESENT)"
+    ],
+    "key_facts": [
+      "Rose turns upward for the purse while Mariner initially tries to leave",
+      "Rose claims that the purse lining holds the blockchain password to her life savings",
+      "Rosco's capture leads to the revelation that Rose stole gang money",
+      "After the revealed backyard flashback and before the revealed coastline flashback, the source labels the return as INT. STAIRWELL - (BACK TO PRESENT)"
+    ],
+    "narrative_significance_must_mention": [
+      "choice",
+      "revelation",
+      "transition"
+    ]
+  },
+  "13TH FLOOR": {
+    "location_id": "13th-floor",
+    "name": "13TH FLOOR",
+    "aliases": [],
+    "physical_traits": [
+      "ruined corridor",
+      "open doorway off the hallway",
+      "stark red light from a still-burning flare"
+    ],
+    "must_mention_scenes": [
+      "INT. 13TH FLOOR"
+    ],
+    "key_facts": [
+      "Vinnie, Mikey, and Carlos patrol this floor",
+      "Rose and Mariner argue here about stealing from criminals and the Mariner's code",
+      "Mariner shoots Vinnie with a flare gun and defeats Mikey and Carlos",
+      "Rose identifies Vinnie as her ex-boyfriend and bandages Mariner's wounded leg"
+    ],
+    "narrative_significance_must_mention": [
+      "fight",
+      "code",
+      "Vinnie"
     ]
   },
   "15TH FLOOR": {
     "location_id": "15th-floor",
     "name": "15TH FLOOR",
-    "aliases": ["Salvatori's headquarters", "top floor"],
+    "aliases": [],
     "physical_traits": [
       "clean and luxurious",
       "dimly lit like an old nightclub",
@@ -66,55 +176,62 @@
       "fine booze in glass case",
       "pool table",
       "cigar lounge",
-      "mismatched paintings of different periods"
+      "mismatched paintings of different periods",
+      "bowl of mints and Rose's purse on the desk",
+      "pooled blood and gouged walls from the earlier fight",
+      "smashed door with a chair and ropes on the floor",
+      "still-burning cigar and melting ice in a tumbler"
     ],
     "must_mention_scenes": [
       "INT. 15TH FLOOR"
     ],
     "key_facts": [
-      "Salvatori's personal headquarters and office",
+      "Salvatori enters the office-like room with armed thugs and confronts Rose and Mariner",
       "Contains Rose's purse with the blockchain password",
       "Location of the climactic confrontation",
       "Evidence of earlier violence with pooled blood and gouged walls",
-      "Still-burning cigar and melting ice suggest Salvatori left recently"
+      "Still-burning cigar and melting ice signal Salvatori's immediate presence before he enters"
     ],
     "narrative_significance_must_mention": [
       "climax",
       "confrontation",
-      "revelation"
+      "revelation",
+      "luxury",
+      "violence"
     ]
   },
   "COASTLINE": {
     "location_id": "coastline",
     "name": "COASTLINE",
-    "aliases": ["shoreline", "coastline flashback"],
+    "aliases": ["shoreline"],
     "physical_traits": [
-      "shoreline with wooden sailboat",
+      "wooden sailboat bobbing near the shoreline",
       "golden light in idealized version",
-      "empty beer bottles littering boat bottom in dark version",
-      "young Mariner shivering and under-dressed in dark version"
+      "empty beer bottles littering the boat bottom in the revealed version"
     ],
     "must_mention_scenes": [
-      "EXT. COASTLINE - DAY"
+      "BEGIN FLASHBACK: EXT. COASTLINE - DAY - PAST",
+      "EXT. COASTLINE - DAY - (FLASHBACK)"
     ],
     "key_facts": [
       "Appears only in flashback scenes",
-      "Shown in two contrasting versions: idealized and dark",
-      "Idealized version: father teaches young Mariner to fish in warm golden light",
-      "Dark version: father is drunk and demanding beer from the child",
+      "Shown in two contrasting versions: idealized memory and revealed truth",
+      "Idealized version: father teaches young Mariner to cast in warm golden light",
+      "Revealed version: father urinates over the side and demands beer while the under-dressed child shivers",
       "Young Mariner is about eight years old in the flashback"
     ],
     "narrative_significance_must_mention": [
       "flashback",
       "dual",
       "memory",
+      "truth",
       "father"
     ]
   },
   "BACKYARD": {
     "location_id": "backyard",
     "name": "BACKYARD",
-    "aliases": ["yard", "backyard flashback"],
+    "aliases": ["yard"],
     "physical_traits": [
       "idyllic version: trim house with homemade pie in the window",
       "idyllic version: warm sun dappling through trees",
@@ -123,11 +240,12 @@
       "dark version: bench press repaired with peeling duct-tape"
     ],
     "must_mention_scenes": [
-      "EXT. BACKYARD - DAY"
+      "BEGIN FLASHBACK: EXT. BACKYARD - DAY - PAST",
+      "EXT. BACKYARD - DAY - (FLASHBACK)"
     ],
     "key_facts": [
       "Appears only in flashback scenes",
-      "Shown in two contrasting versions: idealized and dark",
+      "Shown in two contrasting versions: idealized memory and revealed truth",
       "Idealized version: father patiently teaches young Mariner weightlifting",
       "Dark version: father punches young Mariner and berates him",
       "Origin of Mariner's physical strength and fighting ability"
@@ -135,6 +253,8 @@
     "narrative_significance_must_mention": [
       "flashback",
       "dual",
+      "memory",
+      "truth",
       "abuse",
       "father"
     ]
