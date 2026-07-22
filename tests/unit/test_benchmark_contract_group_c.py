@@ -117,7 +117,10 @@ def test_qa_contract_is_blind_to_candidate_labels_and_matches_verified_truth() -
     positive = json.loads(
         (ROOT / "benchmarks" / "input" / "qa-good-scene.json").read_text()
     )
+    judge = task["defaultTest"]["options"]["provider"]
 
+    assert judge["id"] == "anthropic:messages:claude-opus-4-6"
+    assert judge["config"]["max_tokens"] >= 4096
     assert golden["good_scene"]["expected_passed"] is True
     assert golden["bad_scene"]["expected_passed"] is False
     assert golden["good_scene"]["max_errors"] == 0

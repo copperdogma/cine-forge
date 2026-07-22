@@ -1,6 +1,6 @@
 # Eval Attempt 018 - QA Pass Post-Commit Calibration
 
-**Status:** In progress after repaired contract verification
+**Status:** In progress after judge output-budget failure
 **Eval:** qa-pass
 **Date:** 2026-07-22
 **Worker Model:** GPT-5.6 with two independent source/scorer reviewers
@@ -53,12 +53,31 @@ this final gate, roll the contract manifest forward, and rerun without cache.
 4. Preserve this diagnostic result, commit the corrected v2 contract manifest,
    then rerun the same four rows to a new result path.
 
+## Second Diagnostic
+
+- Contract commit: `f89271b14146ce6924c093257eea89930586414a`
+- Result: `benchmarks/results/qa-pass-story-208-post-repair-v2-2026-07-22.json`
+- Result SHA-256:
+  `01daf7b90f5f5c1ef36a557b974b25efbb89a781c01e125bd2e2c5780c873629`
+- The repaired deterministic gate behaved correctly: Flash-Lite's six-error
+  negative control scored `0.9437`, while fewer-than-six and unsupported
+  judgments stayed red. Remaining subject misses are model-wrong.
+- Both positive-case Opus calls stopped at exactly `1,024` completion tokens
+  and returned unparseable rubric output; the two shorter negative graders
+  completed at `548` and `504` tokens. Promptfoo's bare Anthropic judge string
+  did not inherit the separately declared subject-provider budget.
+- Classification: judge-contract-wrong and decision-blocking. The narrow retry
+  sets `defaultTest.options.provider.config.max_tokens: 4096`, rolls the
+  immutable contract manifest to v3, commits, and repeats only these four rows.
+
 ## Definition of Done
 
 - [x] Diagnostic result retained with exact contract and file identity
 - [x] Significant mismatches independently classified
 - [x] Direct fixture/scorer defects repaired without lowering the valid gate
 - [x] Independent source-first positive-fixture CLEAN pass
-- [ ] Corrected contract committed before the replacement run
-- [ ] Fresh four-row no-cache subject-plus-Opus result inspected and recorded
+- [x] Corrected source/scorer contract committed before the replacement run
+- [x] Second four-row diagnostic inspected and judge truncation classified
+- [ ] Explicit judge output budget and manifest v3 committed before final retry
+- [ ] Final four-row no-cache subject-plus-Opus result inspected and recorded
 - [ ] Registry and Story 208 updated with the final decision

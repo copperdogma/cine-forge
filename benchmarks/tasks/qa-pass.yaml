@@ -10,7 +10,10 @@ description: "QA pass — independently judge scene-extraction fidelity"
 # Use Opus as judge
 defaultTest:
   options:
-    provider: anthropic:messages:claude-opus-4-6
+    provider:
+      id: anthropic:messages:claude-opus-4-6
+      config:
+        max_tokens: 4096
 
 prompts:
   - file://../prompts/qa-pass.txt
