@@ -3,8 +3,17 @@
 Central tracking for all evaluation metrics, improvement attempts, and compromise gates.
 
 Baseline eval/golden setup now belongs to `/setup-methodology`. Once that
-package exists, use `/create-eval` to scaffold new evals and `/improve-eval`
-to iterate on existing ones.
+package exists, use `/evaluate-model <natural-language brief>` for new-model,
+repeated-model, multi-model, narrow-slot, audit-only, or force-fresh model
+evaluation. It resolves current access and settings, selects maintained
+decision surfaces, qualifies provider transport and schemas, runs a fair
+bounded comparison, investigates failures, and records a scoped adoption
+decision without requiring separate workflow commands.
+
+Use `/create-eval` to scaffold a genuinely new capability measure. Use
+`/improve-eval` to iterate on an existing prompt, scorer, rubric, golden, cost,
+or latency problem; `/evaluate-model` may invoke both workflows internally when
+the model brief actually requires them.
 
 ## Structure
 
@@ -83,6 +92,12 @@ A score is **stale** if the codebase has changed significantly since `git_sha`. 
 
 Use `/create-eval` when the registry needs a new entry, a new benchmark config
 or script needs to be scaffolded, or a new compromise gate is being introduced.
+
+Do not create a parallel eval merely because another subject model arrived.
+Use `/evaluate-model` to add or repair the minimum provider lane on an existing
+maintained task. If no maintained task can answer the adoption question, the
+skill may create one coherent capability eval through `/create-eval` as part of
+the same owning story.
 
 Use `/improve-eval` only after the eval already exists.
 
@@ -178,6 +193,27 @@ target:
 ```
 
 The AI evaluating whether an attempt "succeeded" uses all of this context — score, latency, cost, and constraints — to make a holistic judgment that includes speed and cost tradeoffs, not just peak quality.
+
+For model-slot decisions, resolve three distinct facts:
+
+1. the current target and constraints from this registry,
+2. the actual runtime default from executable module/config code, and
+3. the best eligible maintained evidence after freshness, transport, fixture,
+   scoring, privacy, and target checks.
+
+They are not interchangeable. A challenger can beat a stale runtime default
+without becoming the best eligible choice, and the highest raw score can be
+ineligible because it misses latency/cost, used a bad contract, or came from a
+contaminated fixture. Evaluate each model slot independently.
+
+### Current QA/video quarantine
+
+Story 208 and the affected registry notes record material truth-surface
+contamination in `qa-pass` and `video-understanding`. Until source-backed
+repairs and clean verification supersede those notes, their raw scores are not
+eligible evidence for model adoption/rejection, runtime-default changes, or
+C2/C3/C5 compromise movement. A model evaluation must repair and revalidate the
+surface through `/improve-eval`, or report the relevant slot as not measured.
 
 ## Speed and Cost
 

@@ -1081,7 +1081,8 @@
           "205",
           "206",
           "207",
-          "208"
+          "208",
+          "209"
         ],
         "adrIds": [
           "ADR-001",
@@ -1315,7 +1316,8 @@
           "154",
           "156",
           "172",
-          "203"
+          "203",
+          "209"
         ],
         "adrIds": [],
         "evalIds": []
@@ -13708,6 +13710,66 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "209",
+      "title": "Evidence-First Evaluate-Model Workflow",
+      "path": "docs/stories/story-209-evaluate-model-evidence-first-workflow.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "Execution Ideal (AI owns technical workflow)",
+        "R12 (transparency & control)"
+      ],
+      "specRefs": [
+        "spec:11.3",
+        "spec:11.4",
+        "spec:8"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [
+        "035",
+        "208"
+      ],
+      "categoryRefs": [
+        "spec:8",
+        "spec:11"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "agent-tools",
+        "evals",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260722-1730",
+        "date": "2026-07-22",
+        "summary": "independent-hardening-and-validation: findings-first review"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "209",
+        "sourcePath": "docs/stories/story-209-evaluate-model-evidence-first-workflow.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "independent-hardening-and-validation: findings-first review",
+        "lastRelevantAction": {
+          "date": "2026-07-22",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-209-evaluate-model-evidence-first-workflow.md",
+          "summary": "independent-hardening-and-validation: findings-first review"
+        }
+      }
     }
   ],
   "adrs": [
@@ -14812,10 +14874,21 @@
       ],
       "compromiseIds": [],
       "retryWhen": [],
-      "attempts": [],
+      "attempts": [
+        {
+          "id": "018",
+          "date": "2026-07-22",
+          "approach": "Preserved the first post-commit four-row run as diagnostic, repaired the remaining source uncertainty and six-error accounting defects, and will rerun the same two subjects only after the v2 contract manifest is committed.",
+          "note": "",
+          "retryStatus": "ready-after-contract-commit",
+          "retryWhen": [
+            "architecture-change"
+          ]
+        }
+      ],
       "latestScore": null,
       "historicalEvidenceStatus": "contaminated-non-decision-grade",
-      "excludedScoreCount": 18,
+      "excludedScoreCount": 24,
       "declaredSpecRefs": [
         "spec:8"
       ],
@@ -14835,15 +14908,18 @@
         "sourceId": "qa-pass",
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
-        "posture": "no-trigger-recorded",
+        "posture": "wait-for-trigger",
         "whyNow": "",
-        "retryTriggerStatus": "none",
-        "retryWhen": [],
+        "retryTriggerStatus": "waiting",
+        "retryWhen": [
+          "architecture-change"
+        ],
         "lastRelevantAction": {
-          "date": null,
-          "sourceType": "eval-score",
+          "date": "2026-07-22",
+          "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "summary": ""
+          "sourceId": "018",
+          "summary": "Preserved the first post-commit four-row run as diagnostic, repaired the remaining source uncertainty and six-error accounting defects, and will rerun the same two subjects only after the v2 contract manifest is committed."
         }
       }
     },
@@ -15485,11 +15561,21 @@
           "retryWhen": [
             "new-approach"
           ]
+        },
+        {
+          "id": "019",
+          "date": "2026-07-22",
+          "approach": "Preserved the first post-commit twelve-row run as diagnostic, rolled the output contract to v3 with exact nested types and Gemini responseSchema, and will rerun the same subjects only after the v2 contract manifest is committed.",
+          "note": "",
+          "retryStatus": "ready-after-contract-commit",
+          "retryWhen": [
+            "architecture-change"
+          ]
         }
       ],
       "latestScore": null,
       "historicalEvidenceStatus": "",
-      "excludedScoreCount": 12,
+      "excludedScoreCount": 14,
       "declaredSpecRefs": [
         "spec:7",
         "spec:8",
@@ -15516,18 +15602,18 @@
         "sourceId": "video-understanding",
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
-        "posture": "trigger-exhausted",
+        "posture": "wait-for-trigger",
         "whyNow": "",
-        "retryTriggerStatus": "exhausted",
+        "retryTriggerStatus": "waiting",
         "retryWhen": [
-          "new-approach"
+          "architecture-change"
         ],
         "lastRelevantAction": {
-          "date": "2026-03-19",
+          "date": "2026-07-22",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "002",
-          "summary": "Raised Gemini maxOutputTokens from 1400 to 65536 after usage metadata showed hidden thinking was exhausting the output budget across the Google suite."
+          "sourceId": "019",
+          "summary": "Preserved the first post-commit twelve-row run as diagnostic, rolled the output contract to v3 with exact nested types and Gemini responseSchema, and will rerun the same subjects only after the v2 contract manifest is committed."
         }
       }
     }
@@ -16012,9 +16098,10 @@
             "146",
             "147",
             "154",
-            "172"
+            "172",
+            "209"
           ],
-          "stories_since_audit": 0,
+          "stories_since_audit": 1,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",

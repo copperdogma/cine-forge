@@ -29,7 +29,7 @@ This file is the project-wide source of truth for agent behavior and engineering
 > (`climb`, `hold`, `converge`, `unplanned`). Read both when work touches
 > planning, methodology, or simplification decisions. Canonical methodology
 > bootstrap skill: `/setup-methodology`. Recurring companion skills:
-> `/create-eval`, `/improve-eval`, and `/align`.
+> `/evaluate-model`, `/create-eval`, `/improve-eval`, and `/align`.
 >
 > **Operational rule**:
 > - If the user says **"prioritize X"**, update or inspect `docs/methodology/state.yaml` first. That is where category ownership, current phase, `active_focus`, and campaigns live. If the priority changes execution, create or update the owning story too.
@@ -184,15 +184,31 @@ For multi-model research tasks, use the `deep-research` CLI tool (v0.3.3+).
 
 ### Model Benchmarking (promptfoo)
 
-We use [promptfoo](https://www.promptfoo.dev/) for evaluating AI model quality across pipeline tasks. The maintained task, prompt, scorer, golden, result, and registry contracts live together in the active CineForge checkout. Run and record evidence from the same exact checkout; do not combine a sidequest task with a different checkout's registry. New agent-created branches should use `codex/*`.
+We use [promptfoo](https://www.promptfoo.dev/) for evaluating AI model quality
+across pipeline tasks. The benchmark workspace is the verified CineForge
+checkout containing the selected task, prompt, scorer, golden, result, and
+registry contracts. Prefer the current checkout when those files are present;
+otherwise resolve the documented sidequest worktree from `git worktree list`
+instead of relying on a remembered absolute path. Run and record evidence from
+that same exact checkout; never combine a sidequest task with a different
+checkout's registry. New agent-created branches should use `codex/*`.
 
 Runbook: `docs/runbooks/promptfoo.md`
+
+Use `/evaluate-model <natural-language brief>` for new-model, repeated-model,
+multi-model, narrow-slot, audit-only, and force-fresh requests. It owns the
+end-to-end decision workflow: current docs and exact access, benchmark-workspace
+resolution, transport/schema qualification, fair bounded runs, mismatch
+classification, durable provenance, and per-slot adoption recommendations.
+Do not require the user to separately run discovery, create-story, Promptfoo,
+or improve-eval for an ordinary model evaluation.
 
 #### Prerequisites
 - **Node.js 24 LTS** (v24.13.1+). Promptfoo requires Node 22+. Installed via nvm.
 - **promptfoo** installed globally: `npm install -g promptfoo` (v0.120.24+).
 - Shell sessions need nvm loaded: `source ~/.nvm/nvm.sh && nvm use 24`.
-- API keys: `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, and `GEMINI_API_KEY` must be set in environment.
+- Provider credentials must be available to the selected checkout's
+  `scripts/with_cine_forge_provider_env.py`; do not manually print or copy them.
 - If you want a freshness delay for the global `promptfoo` install, configure it at the user level (`~/.npmrc`). npm added `min-release-age` in `11.10.0`; a repo-local file cannot reliably enforce it for global installs.
 
 #### Workspace Structure
@@ -209,25 +225,42 @@ benchmarks/
 
 #### Running Benchmarks
 ```bash
-# From the benchmarks/ directory in the active evidence checkout:
+# From the benchmarks/ directory in the resolved evidence checkout:
 source ~/.nvm/nvm.sh && nvm use 24 > /dev/null 2>&1
+CINEFORGE_ROOT=/absolute/path/to/the/selected/cine-forge-checkout
+CINEFORGE_PYTHON=/absolute/path/to/a/cine-forge-python
 
-# Run a benchmark (no cache for reproducibility)
-promptfoo eval -c tasks/character-extraction.yaml --no-cache -j 3
+# Run a filtered benchmark through the repo-scoped provider environment.
+PROMPTFOO_PYTHON="$CINEFORGE_PYTHON" \
+  "$CINEFORGE_PYTHON" "$CINEFORGE_ROOT/scripts/with_cine_forge_provider_env.py" \
+  promptfoo eval -c tasks/character-extraction.yaml --no-cache \
+  --filter-providers "Declared model" -j 1
 
 # Save results to file
-promptfoo eval -c tasks/character-extraction.yaml --no-cache --output results/run-name.json
+PROMPTFOO_PYTHON="$CINEFORGE_PYTHON" \
+  "$CINEFORGE_PYTHON" "$CINEFORGE_ROOT/scripts/with_cine_forge_provider_env.py" \
+  promptfoo eval -c tasks/character-extraction.yaml --no-cache \
+  --filter-providers "Declared model" -j 1 \
+  --output results/run-name.json
 
 # View results in web UI
 promptfoo view
 
 # Override the judge/grader model
-promptfoo eval -c tasks/character-extraction.yaml --grader anthropic:messages:claude-opus-4-6
+PROMPTFOO_PYTHON="$CINEFORGE_PYTHON" \
+  "$CINEFORGE_PYTHON" "$CINEFORGE_ROOT/scripts/with_cine_forge_provider_env.py" \
+  promptfoo eval -c tasks/character-extraction.yaml \
+  --grader '<predeclared-judge-provider-id>'
 ```
 
 #### Judge / Grader Model
 
-**Default**: promptfoo uses `gpt-5` (OpenAI) for `llm-rubric` assertions when `OPENAI_API_KEY` is set.
+Use the maintained task/registry judge and freeze it independently from the
+subject-model arms before viewing scores. Confirm from current provider docs
+that it remains capable of the rubric. Record same-provider and capability
+bias; a marginal decision-changing result needs a predeclared capable
+cross-provider judge or symmetric second judge on frozen outputs rather than a
+post-hoc judge swap.
 
 **Our standard**: Use **`claude-opus-4-6`** as the pinned judge for maintained
 eval comparability. This is a reproducibility choice, not a claim that it is the
@@ -237,13 +270,15 @@ Anthropic; an Anthropic subject judged by Opus is same-provider evidence and
 needs independent corroboration or an alternate-provider judge before an
 adoption decision.
 
-**Provider prefixes**: `openai:`, `anthropic:messages:`, `google:` (uses `GEMINI_API_KEY`). Always evaluate models from all three providers.
+Common provider prefixes include `openai:`, `anthropic:messages:`, and
+`google:`. Evaluate only the declared candidate and maintained comparator arms;
+do not expand a narrow request into an all-provider tournament.
 
 Override per-eval in the YAML config:
 ```yaml
 defaultTest:
   options:
-    provider: anthropic:messages:claude-opus-4-6
+    provider: <predeclared-judge-provider-id>
 ```
 
 Or per-assertion:
@@ -251,10 +286,16 @@ Or per-assertion:
 assert:
   - type: llm-rubric
     value: "Evaluate the output..."
-    provider: anthropic:messages:claude-opus-4-6
+    provider: <predeclared-judge-provider-id>
 ```
 
 Or via CLI: `--grader anthropic:messages:claude-opus-4-6`
+
+Record judge-provider and capability bias whenever a model comparison could
+change a runtime decision. A same-provider judge must not be the sole evidence
+for a marginal win or loss. Use a predeclared capable cross-provider judge or a
+symmetric second judge on frozen outputs when needed, disclose disagreement,
+and never judge-shop after seeing scores.
 
 #### Python Scorer Interface
 
@@ -339,18 +380,23 @@ All eval scores, targets, and improvement attempts are tracked in **`docs/evals/
 - **Check compromise gates**: `.venv/bin/python scripts/check-compromises.py`
 - **Discover available models**: `.venv/bin/python scripts/discover-models.py --summary`
 - **Triage what to work on next**: `/triage` for cross-system prioritization, `/triage-evals` for eval-only triage
+- **Evaluate one or more models**: `/evaluate-model <natural-language brief>`
 - **Improve an eval**: `/improve-eval`
-- **Re-run for a new model**: Add a provider block to `benchmarks/tasks/*.yaml`
-  → `(cd benchmarks && promptfoo eval -c tasks/<name>.yaml --no-cache
-  --filter-providers "ModelName" -j 3)` → update
-  `docs/evals/registry.yaml` from the repository root with that exact result
 - **Registry updates require current task provenance**: a retained result may update scores only when its selected provider config and exact requested/returned model identity, provider response ID/raw usage, prompt bytes, test vars/assertions/rubrics, grader/default options, and exact case matrix match the current task. Retained JSON must have no duplicate keys. Stale or non-replayable results remain available to print-only diagnostics but cannot be promoted into current registry evidence.
+- **Create a new capability measure**: `/create-eval`; do not use this merely to add another subject model to an existing maintained task
 - **Close out with an adoption recommendation**: After any eval or model-slot refresh, report whether to adopt, where to adopt it, and the reasoning behind that decision.
 
 Maintained Promptfoo semantic-quality lanes use deterministic scoring plus an
 LLM rubric where applicable, with Opus 4.6 as the judge. Custom runtime and
 compromise detectors use the runner and evidence contracts declared in the
 registry. Benchmark configs live in `benchmarks/tasks/`.
+
+Read current targets from the registry and compare a challenger with both the
+actual runtime default and the best eligible maintained evidence for that slot;
+these are not assumed to be identical. Advance slots independently. While the
+Story 208/registry contamination findings remain current, quarantine raw
+`qa-pass` and `video-understanding` scores from adoption/default/compromise
+decisions until their truth surfaces are source-repaired and revalidated.
 
 #### Value-Optimized Module Defaults
 
@@ -444,9 +490,10 @@ Current runbooks:
 - `check-in-worktree-landing.md` — Safe check-in and landing flow for task branches and worktrees (skill: `/check-in-diff`)
 - `codebase-improvement-scout.md` — Repo hygiene scan and cleanup triage flow (skill: `/codebase-improvement-scout`)
 - `create-eval.md` — Scaffold a new eval in the registry and benchmark workspace (skill: `/create-eval`)
+- `evaluate-model.md` — Fair end-to-end model qualification, comparison, debugging, and adoption workflow (skill: `/evaluate-model`)
 - `finish-and-push.md` — Bundled story closure plus validated landing flow (skill: `/finish-and-push`)
 - `golden-build.md` — Building hand-curated golden references and auditing eval mismatches (canonical bootstrap: `/setup-methodology`; day-to-day: `/golden-create`, `/golden-verify`)
-- `promptfoo.md` — Run, inspect, and record promptfoo benchmark passes from one exact evidence checkout
+- `promptfoo.md` — Resolve, run, inspect, and record Promptfoo benchmark passes from one exact CineForge evidence checkout
 - `setup-methodology.md` — Install or refresh the methodology package and canonical setup surface (skill: `/setup-methodology`)
 - `triage.md` — Cross-system routing to the highest-value next action (skill: `/triage`)
 - `triage-evals.md` — Cheap diagnosis of which eval, compromise gate, or stale benchmark needs attention next (skill: `/triage-evals`)

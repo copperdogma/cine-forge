@@ -1,5 +1,22 @@
 # Changelog
 
+## [Unreleased] — Add evidence-first model evaluation workflow (Story 209)
+
+### Added
+- Added the self-contained `/evaluate-model` skill for natural, narrow,
+  multi-model, audit-only, and force-fresh model evaluation briefs.
+- Added a matching runbook covering exact model/access verification,
+  production-contract probes, bounded Promptfoo execution, failure diagnosis,
+  provenance, and per-slot adoption decisions.
+
+### Changed
+- Routed model evaluations through current runtime/default truth, dynamic
+  registry gates, structural-plus-rubric scoring, judge-bias controls, and the
+  CineForge provider-env wrapper.
+- Quarantined the known contaminated QA/video truth surfaces from model
+  adoption and compromise decisions until source-backed repair and clean
+  revalidation supersede Story 208's findings.
+
 ## [2026-07-22-01] — Repair repository eval truth contracts (Story 208)
 
 ### Added
