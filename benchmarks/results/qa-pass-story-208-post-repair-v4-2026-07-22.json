@@ -1,0 +1,1057 @@
+{
+  "evalId": "eval-iNe-2026-07-22T23:28:31",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-07-22T23:28:31.953Z",
+    "prompts": [
+      {
+        "raw": "You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\n{{scene_text}}\n\n==========\nCANDIDATE EXTRACTION:\n{{extracted_data}}\n==========",
+        "label": "prompts/qa-pass.txt: You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\n{{scene_text}}\n\n==========\nCANDIDATE EXTRACTION:\n{{extracted_data}}\n==========",
+        "id": "01b035ecf548723f487b501e2947758409febe7f1e73064d84e82dfde05191fb",
+        "provider": "Gemini 3.5 Flash-Lite",
+        "metrics": {
+          "score": 1.6968,
+          "testPassCount": 1,
+          "testFailCount": 1,
+          "testErrorCount": 0,
+          "assertPassCount": 3,
+          "assertFailCount": 1,
+          "totalLatencyMs": 3564,
+          "tokenUsage": {
+            "prompt": 3771,
+            "completion": 514,
+            "cached": 0,
+            "total": 4285,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 5910,
+              "prompt": 4477,
+              "completion": 1433,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      },
+      {
+        "raw": "You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\n{{scene_text}}\n\n==========\nCANDIDATE EXTRACTION:\n{{extracted_data}}\n==========",
+        "label": "prompts/qa-pass.txt: You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\n{{scene_text}}\n\n==========\nCANDIDATE EXTRACTION:\n{{extracted_data}}\n==========",
+        "id": "01b035ecf548723f487b501e2947758409febe7f1e73064d84e82dfde05191fb",
+        "provider": "Gemini 3.6 Flash",
+        "metrics": {
+          "score": 1.4999,
+          "testPassCount": 0,
+          "testFailCount": 2,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 2,
+          "totalLatencyMs": 13033,
+          "tokenUsage": {
+            "prompt": 3771,
+            "completion": 426,
+            "cached": 0,
+            "total": 6374,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 2177,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 5918,
+              "prompt": 4421,
+              "completion": 1497,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "error": "raw_score=0.8167 | confidence_calibration=1.00 | issue_detection=0.67 | json_valid=1.00 | pass_correct=1.00 | severity_accuracy=1.00 | summary_quality=0.00 | Summary misses required source-grounded conclusions",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.74995,
+          "reason": "raw_score=0.8167 | confidence_calibration=1.00 | issue_detection=0.67 | json_valid=1.00 | pass_correct=1.00 | severity_accuracy=1.00 | summary_quality=0.00 | Summary misses required source-grounded conclusions",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 3471,
+            "prompt": 2471,
+            "completion": 1000,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.5999,
+              "reason": "raw_score=0.8167 | confidence_calibration=1.00 | issue_detection=0.67 | json_valid=1.00 | pass_correct=1.00 | severity_accuracy=1.00 | summary_quality=0.00 | Summary misses required source-grounded conclusions",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/qa_pass_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+              },
+              "pass": true,
+              "score": 0.9,
+              "reason": "The QA judgment correctly identifies that the extraction is faithful to the source scene. I independently verified all major claims in the extraction against the source: heading metadata, characters present, summary details (Tim Hortons uniform, muzak, skull scrap, Mariner's detailed costume, AirTag revelation, thug confrontation on floor 12, Rose's tactical decision to go to 11, the 'functional and an homage' exchange), narrative beats, and tone. No material fabrications, contradictions, or significant omissions were found. The QA judgment's verdict of passed=true with no issues is accurate, and its summary substantiates the verdict with source-grounded reasoning. The confidence of 1.0 is slightly aggressive but defensible given the extraction quality.",
+              "tokensUsed": {
+                "total": 3471,
+                "prompt": 2471,
+                "completion": 1000,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"passed\\\":true,\\\"confidence\\\":1,\\\"issues\\\":[],\\\"summary\\\":\\\"The candidate extraction is completely faithful to the source scene, accurately capturing heading metadata, character presence, summary events, narrative beats, and tone without any material defects or fabrications.\\\"}\\n</Output>\\n<Rubric>\\nEvaluate the candidate QA judgment by independently comparing the scene\\nextraction with the source. Do not assume whether the extraction or QA\\njudgment should pass from a filename, test label, or rubric wording.\\n\\nSOURCE SCENE\\n============\\nINT. RUDDY & GREEN BUILDING - ELEVATOR\\n\\nUB40's \\\"I Can't Help Falling in Love With You\\\" muzak.\\n\\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\\n\\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\\n\\nROSE\\nIs that skull??\\n\\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\\n\\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \\\"THE MARINER\\\"\\n\\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\\n\\nMARINER\\nYeaaaaah...\\n\\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \\\"Dad\\\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\\n\\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\\n\\nROSE\\nHow the hell did you find me?\\n\\nMariner looks down and mumbles something.\\n\\nROSE\\n(annoyed)\\nWhat?\\n\\nMARINER\\nAirTag.\\n\\nROSE\\nWhat??\\n\\nMARINER\\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\\n\\nROSE\\nShit! My purse!\\n\\nMARINER\\nJust in case! I worry about--\\n\\nROSE\\nShut it! We gotta go back for it.\\n\\nMARINER\\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\\n\\nROSE\\n(laughing)\\nYou think they’re after you?\\n\\nMariner looks confused. DING - elevator doors open on 12.\\n\\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\\n\\nRose has been frantically pressing the CLOSE DOOR button.\\n\\nThe thugs struggle to their feet.\\n\\nTHUG 2\\n(into radio)\\nWe’ve got them on twelve.\\n\\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\\n\\nTHUG\\n(muffled)\\nGo! Go! Down to eight!\\n\\nRose presses 11.\\n\\nROSE\\nWe’ll take the stairs up. They won’t expect that.\\n\\nMARINER\\nBecause it’s stupid!\\n\\nRose raises an eyebrow at Mariner’s crazy outfit.\\n\\nMARINER\\nIt’s functional! ... And an homage.\\n============\\n\\nEXTRACTION BEING REVIEWED\\n=========================\\n{\\n  \\\"scene_number\\\": null,\\n  \\\"heading\\\": \\\"INT. RUDDY & GREEN BUILDING - ELEVATOR\\\",\\n  \\\"int_ext\\\": \\\"INT\\\",\\n  \\\"location\\\": \\\"RUDDY & GREEN BUILDING - ELEVATOR\\\",\\n  \\\"time_of_day\\\": null,\\n  \\\"characters_present\\\": [\\\"ROSE\\\", \\\"MARINER\\\", \\\"THUG 1\\\", \\\"THUG 2\\\", \\\"THUG 3\\\"],\\n  \\\"summary\\\": \\\"Mid-30s Rose, wearing a Tim Hortons uniform with messy hair and blood on her face, catches her breath beside the far bloodier Mariner while romantic muzak plays. She picks up a bloody scrap with hair, snorts, drops it, and asks whether it is skull. Mariner's face, beard, red cap, and mask are described before a full-screen title card introduces him; after he confirms that the scrap is skull, the screenplay details his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar. Mariner admits that he hid an AirTag in Rose's purse at Thanksgiving; when he assumes the armed men targeted her because of him, Rose laughs and challenges that assumption. Three armed thugs attack when the doors open on twelve, and Mariner deflects a gun with his oar and kicks one thug into the others while Rose closes the doors under gunfire. After a thug orders the group down to eight, Rose chooses eleven so she and Mariner can take the stairs back up, then silently questions his outfit before he calls it functional and an homage.\\\",\\n  \\\"narrative_beats\\\": [\\n    {\\\"beat_type\\\": \\\"comic_relief\\\", \\\"description\\\": \\\"Rose is introduced in a Tim Hortons uniform with messy hair and blood on her face while romantic muzak plays; she handles a bloody scrap with hair and asks whether it is skull.\\\", \\\"confidence\\\": 0.99},\\n    {\\\"beat_type\\\": \\\"character_introduction\\\", \\\"description\\\": \\\"The source describes the much bloodier Mariner's face, beard, red cap, and mask, presents a full-screen title card naming him, then has him confirm that the scrap is skull before detailing his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar.\\\", \\\"confidence\\\": 0.99},\\n    {\\\"beat_type\\\": \\\"revelation\\\", \\\"description\\\": \\\"Mariner admits he stashed an AirTag in Rose's purse at Thanksgiving, and Rose realizes the purse was left behind.\\\", \\\"confidence\\\": 0.98},\\n    {\\\"beat_type\\\": \\\"conflict\\\", \\\"description\\\": \\\"Rose and Mariner argue about returning for the purse and whether the armed men targeted her because of him.\\\", \\\"confidence\\\": 0.96},\\n    {\\\"beat_type\\\": \\\"revelation\\\", \\\"description\\\": \\\"Rose laughs at Mariner's belief that the attackers went after her because of him, implying that his assumption about their target is wrong.\\\", \\\"confidence\\\": 0.97},\\n    {\\\"beat_type\\\": \\\"conflict\\\", \\\"description\\\": \\\"Three armed thugs confront them on twelve; Mariner uses his oar and a kick to break the attack while Rose closes the elevator doors under gunfire.\\\", \\\"confidence\\\": 0.99},\\n    {\\\"beat_type\\\": \\\"character_development\\\", \\\"description\\\": \\\"After a muffled thug orders the group down to eight, Rose sends the elevator to eleven so she and Mariner can take the stairs up, showing improvisational resolve despite his objection.\\\", \\\"confidence\\\": 0.98},\\n    {\\\"beat_type\\\": \\\"comic_relief\\\", \\\"description\\\": \\\"Rose raises an eyebrow at Mariner's strange costume, and he insists that it is functional and an homage.\\\", \\\"confidence\\\": 0.99}\\n  ],\\n  \\\"tone_mood\\\": \\\"darkly comic, tense, intimate, and violently kinetic\\\",\\n  \\\"confidence\\\": 0.98\\n}\\n=========================\\n\\nGrade all of these dimensions:\\n1. Verdict: independently decide passed from source fidelity. Any factual\\n   contradiction, fabrication, wrong identity/heading, or material omission\\n   requires passed=false; only genuinely minor warnings may coexist with true.\\n2. Issue recall and precision: every distinct material defect is identified\\n   in its correct field, while accurate content is not attacked. A generic\\n   complaint or copied candidate wording is not a grounded issue.\\n3. Severity: factual errors and meaning-changing omissions are errors;\\n   lesser imprecision may be a warning; notes cannot hide actual defects.\\n4. Summary and confidence: the summary substantiates the verdict with source\\n   facts, and confidence represents certainty in this QA judgment rather\\n   than copying the extraction's confidence.\\n5. Exact schema: the QA result uses the requested top-level and issue keys,\\n   valid types, and substantive descriptions. A schema-only result is not a pass.\\n\\nA generic, copied, contradictory, invented, or schema-only QA judgment must\\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\\nissues, severities, summary, and confidence are source-faithful and remaining\\ndefects are genuinely minor.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{\n  \"scene_number\": null,\n  \"heading\": \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"int_ext\": \"INT\",\n  \"location\": \"RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"time_of_day\": null,\n  \"characters_present\": [\"ROSE\", \"MARINER\", \"THUG 1\", \"THUG 2\", \"THUG 3\"],\n  \"summary\": \"Mid-30s Rose, wearing a Tim Hortons uniform with messy hair and blood on her face, catches her breath beside the far bloodier Mariner while romantic muzak plays. She picks up a bloody scrap with hair, snorts, drops it, and asks whether it is skull. Mariner's face, beard, red cap, and mask are described before a full-screen title card introduces him; after he confirms that the scrap is skull, the screenplay details his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar. Mariner admits that he hid an AirTag in Rose's purse at Thanksgiving; when he assumes the armed men targeted her because of him, Rose laughs and challenges that assumption. Three armed thugs attack when the doors open on twelve, and Mariner deflects a gun with his oar and kicks one thug into the others while Rose closes the doors under gunfire. After a thug orders the group down to eight, Rose chooses eleven so she and Mariner can take the stairs back up, then silently questions his outfit before he calls it functional and an homage.\",\n  \"narrative_beats\": [\n    {\"beat_type\": \"comic_relief\", \"description\": \"Rose is introduced in a Tim Hortons uniform with messy hair and blood on her face while romantic muzak plays; she handles a bloody scrap with hair and asks whether it is skull.\", \"confidence\": 0.99},\n    {\"beat_type\": \"character_introduction\", \"description\": \"The source describes the much bloodier Mariner's face, beard, red cap, and mask, presents a full-screen title card naming him, then has him confirm that the scrap is skull before detailing his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar.\", \"confidence\": 0.99},\n    {\"beat_type\": \"revelation\", \"description\": \"Mariner admits he stashed an AirTag in Rose's purse at Thanksgiving, and Rose realizes the purse was left behind.\", \"confidence\": 0.98},\n    {\"beat_type\": \"conflict\", \"description\": \"Rose and Mariner argue about returning for the purse and whether the armed men targeted her because of him.\", \"confidence\": 0.96},\n    {\"beat_type\": \"revelation\", \"description\": \"Rose laughs at Mariner's belief that the attackers went after her because of him, implying that his assumption about their target is wrong.\", \"confidence\": 0.97},\n    {\"beat_type\": \"conflict\", \"description\": \"Three armed thugs confront them on twelve; Mariner uses his oar and a kick to break the attack while Rose closes the elevator doors under gunfire.\", \"confidence\": 0.99},\n    {\"beat_type\": \"character_development\", \"description\": \"After a muffled thug orders the group down to eight, Rose sends the elevator to eleven so she and Mariner can take the stairs up, showing improvisational resolve despite his objection.\", \"confidence\": 0.98},\n    {\"beat_type\": \"comic_relief\", \"description\": \"Rose raises an eyebrow at Mariner's strange costume, and he insists that it is functional and an homage.\", \"confidence\": 0.99}\n  ],\n  \"tone_mood\": \"darkly comic, tense, intimate, and violently kinetic\",\n  \"confidence\": 0.98\n}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+              }
+            }
+          ]
+        },
+        "id": "89a75252-6bee-4e0d-b02b-ca205502bffc",
+        "latencyMs": 866,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n\n==========\nCANDIDATE EXTRACTION:\n{\n  \"scene_number\": null,\n  \"heading\": \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"int_ext\": \"INT\",\n  \"location\": \"RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"time_of_day\": null,\n  \"characters_present\": [\"ROSE\", \"MARINER\", \"THUG 1\", \"THUG 2\", \"THUG 3\"],\n  \"summary\": \"Mid-30s Rose, wearing a Tim Hortons uniform with messy hair and blood on her face, catches her breath beside the far bloodier Mariner while romantic muzak plays. She picks up a bloody scrap with hair, snorts, drops it, and asks whether it is skull. Mariner's face, beard, red cap, and mask are described before a full-screen title card introduces him; after he confirms that the scrap is skull, the screenplay details his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar. Mariner admits that he hid an AirTag in Rose's purse at Thanksgiving; when he assumes the armed men targeted her because of him, Rose laughs and challenges that assumption. Three armed thugs attack when the doors open on twelve, and Mariner deflects a gun with his oar and kicks one thug into the others while Rose closes the doors under gunfire. After a thug orders the group down to eight, Rose chooses eleven so she and Mariner can take the stairs back up, then silently questions his outfit before he calls it functional and an homage.\",\n  \"narrative_beats\": [\n    {\"beat_type\": \"comic_relief\", \"description\": \"Rose is introduced in a Tim Hortons uniform with messy hair and blood on her face while romantic muzak plays; she handles a bloody scrap with hair and asks whether it is skull.\", \"confidence\": 0.99},\n    {\"beat_type\": \"character_introduction\", \"description\": \"The source describes the much bloodier Mariner's face, beard, red cap, and mask, presents a full-screen title card naming him, then has him confirm that the scrap is skull before detailing his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar.\", \"confidence\": 0.99},\n    {\"beat_type\": \"revelation\", \"description\": \"Mariner admits he stashed an AirTag in Rose's purse at Thanksgiving, and Rose realizes the purse was left behind.\", \"confidence\": 0.98},\n    {\"beat_type\": \"conflict\", \"description\": \"Rose and Mariner argue about returning for the purse and whether the armed men targeted her because of him.\", \"confidence\": 0.96},\n    {\"beat_type\": \"revelation\", \"description\": \"Rose laughs at Mariner's belief that the attackers went after her because of him, implying that his assumption about their target is wrong.\", \"confidence\": 0.97},\n    {\"beat_type\": \"conflict\", \"description\": \"Three armed thugs confront them on twelve; Mariner uses his oar and a kick to break the attack while Rose closes the elevator doors under gunfire.\", \"confidence\": 0.99},\n    {\"beat_type\": \"character_development\", \"description\": \"After a muffled thug orders the group down to eight, Rose sends the elevator to eleven so she and Mariner can take the stairs up, showing improvisational resolve despite his objection.\", \"confidence\": 0.98},\n    {\"beat_type\": \"comic_relief\", \"description\": \"Rose raises an eyebrow at Mariner's strange costume, and he insists that it is functional and an homage.\", \"confidence\": 0.99}\n  ],\n  \"tone_mood\": \"darkly comic, tense, intimate, and violently kinetic\",\n  \"confidence\": 0.98\n}\n==========",
+          "label": "prompts/qa-pass.txt: You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\n{{scene_text}}\n\n==========\nCANDIDATE EXTRACTION:\n{{extracted_data}}\n==========",
+          "config": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          }
+        },
+        "promptId": "01b035ecf548723f487b501e2947758409febe7f1e73064d84e82dfde05191fb",
+        "promptIdx": 0,
+        "provider": {
+          "id": "google:gemini-3.5-flash-lite",
+          "label": "Gemini 3.5 Flash-Lite"
+        },
+        "response": {
+          "output": "{\n  \"passed\": true,\n  \"confidence\": 1.0,\n  \"issues\": [],\n  \"summary\": \"The candidate extraction is completely faithful to the source scene, accurately capturing heading metadata, character presence, summary events, narrative beats, and tone without any material defects or fabrications.\"\n}",
+          "tokenUsage": {
+            "prompt": 2235,
+            "completion": 67,
+            "total": 2302,
+            "numRequests": 1
+          },
+          "raw": {
+            "candidates": [
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "{\n  \"passed\": true,\n  \"confidence\": 1.0,\n  \"issues\": [],\n  \"summary\": \"The candidate extraction is completely faithful to the source scene, accurately capturing heading metadata, character presence, summary events, narrative beats, and tone without any material defects or fabrications.\"\n}",
+                      "thoughtSignature": "EjQKMgERTTIPE+LQNGA2NQ9vP65bcrmye8NkSCZK+9GfoTsLYepgPhgjwyglfQbk4GGoChBY"
+                    }
+                  ],
+                  "role": "model"
+                },
+                "finishReason": "STOP",
+                "index": 0
+              }
+            ],
+            "usageMetadata": {
+              "promptTokenCount": 2235,
+              "candidatesTokenCount": 67,
+              "totalTokenCount": 2302,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 2235
+                }
+              ],
+              "serviceTier": "standard"
+            },
+            "modelVersion": "gemini-3.5-flash-lite",
+            "responseId": "IFJhau2fErmb_uMPw-rhmQ4"
+          },
+          "cached": false,
+          "metadata": {}
+        },
+        "score": 0.74995,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+            "extracted_data": "file://../input/qa-good-scene.json",
+            "golden_path": "golden/qa-pass-golden.json",
+            "test_key": "good_scene"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/qa_pass_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-good-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "good_scene"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "raw_score=0.8167 | confidence_calibration=1.00 | issue_detection=0.67 | json_valid=1.00 | pass_correct=1.00 | severity_accuracy=1.00 | summary_quality=0.00 | Summary misses required source-grounded conclusions",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.72495,
+          "reason": "raw_score=0.8167 | confidence_calibration=1.00 | issue_detection=0.67 | json_valid=1.00 | pass_correct=1.00 | severity_accuracy=1.00 | summary_quality=0.00 | Summary misses required source-grounded conclusions",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 3503,
+            "prompt": 2477,
+            "completion": 1026,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.5999,
+              "reason": "raw_score=0.8167 | confidence_calibration=1.00 | issue_detection=0.67 | json_valid=1.00 | pass_correct=1.00 | severity_accuracy=1.00 | summary_quality=0.00 | Summary misses required source-grounded conclusions",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/qa_pass_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+              },
+              "pass": true,
+              "score": 0.85,
+              "reason": "The QA judgment correctly identifies the extraction as faithful to the source. Independent verification confirms no material factual contradictions, fabrications, wrong identities, or significant omissions. Minor omissions (specific UB40 song title, 'at ma's' detail) exist but are genuinely minor and don't warrant a failed verdict. The QA judgment's passed=true verdict, empty issues list, substantive summary, and 0.98 confidence are all appropriate and source-faithful.",
+              "tokensUsed": {
+                "total": 3503,
+                "prompt": 2477,
+                "completion": 1026,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"passed\\\":true,\\\"confidence\\\":0.98,\\\"issues\\\":[],\\\"summary\\\":\\\"The candidate extraction is fully faithful to the source scene. Metadata, character identification, summary fidelity, narrative beats, and tone are accurate and well-grounded without any material defects.\\\"}\\n</Output>\\n<Rubric>\\nEvaluate the candidate QA judgment by independently comparing the scene\\nextraction with the source. Do not assume whether the extraction or QA\\njudgment should pass from a filename, test label, or rubric wording.\\n\\nSOURCE SCENE\\n============\\nINT. RUDDY & GREEN BUILDING - ELEVATOR\\n\\nUB40's \\\"I Can't Help Falling in Love With You\\\" muzak.\\n\\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\\n\\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\\n\\nROSE\\nIs that skull??\\n\\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\\n\\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \\\"THE MARINER\\\"\\n\\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\\n\\nMARINER\\nYeaaaaah...\\n\\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \\\"Dad\\\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\\n\\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\\n\\nROSE\\nHow the hell did you find me?\\n\\nMariner looks down and mumbles something.\\n\\nROSE\\n(annoyed)\\nWhat?\\n\\nMARINER\\nAirTag.\\n\\nROSE\\nWhat??\\n\\nMARINER\\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\\n\\nROSE\\nShit! My purse!\\n\\nMARINER\\nJust in case! I worry about--\\n\\nROSE\\nShut it! We gotta go back for it.\\n\\nMARINER\\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\\n\\nROSE\\n(laughing)\\nYou think they’re after you?\\n\\nMariner looks confused. DING - elevator doors open on 12.\\n\\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\\n\\nRose has been frantically pressing the CLOSE DOOR button.\\n\\nThe thugs struggle to their feet.\\n\\nTHUG 2\\n(into radio)\\nWe’ve got them on twelve.\\n\\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\\n\\nTHUG\\n(muffled)\\nGo! Go! Down to eight!\\n\\nRose presses 11.\\n\\nROSE\\nWe’ll take the stairs up. They won’t expect that.\\n\\nMARINER\\nBecause it’s stupid!\\n\\nRose raises an eyebrow at Mariner’s crazy outfit.\\n\\nMARINER\\nIt’s functional! ... And an homage.\\n============\\n\\nEXTRACTION BEING REVIEWED\\n=========================\\n{\\n  \\\"scene_number\\\": null,\\n  \\\"heading\\\": \\\"INT. RUDDY & GREEN BUILDING - ELEVATOR\\\",\\n  \\\"int_ext\\\": \\\"INT\\\",\\n  \\\"location\\\": \\\"RUDDY & GREEN BUILDING - ELEVATOR\\\",\\n  \\\"time_of_day\\\": null,\\n  \\\"characters_present\\\": [\\\"ROSE\\\", \\\"MARINER\\\", \\\"THUG 1\\\", \\\"THUG 2\\\", \\\"THUG 3\\\"],\\n  \\\"summary\\\": \\\"Mid-30s Rose, wearing a Tim Hortons uniform with messy hair and blood on her face, catches her breath beside the far bloodier Mariner while romantic muzak plays. She picks up a bloody scrap with hair, snorts, drops it, and asks whether it is skull. Mariner's face, beard, red cap, and mask are described before a full-screen title card introduces him; after he confirms that the scrap is skull, the screenplay details his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar. Mariner admits that he hid an AirTag in Rose's purse at Thanksgiving; when he assumes the armed men targeted her because of him, Rose laughs and challenges that assumption. Three armed thugs attack when the doors open on twelve, and Mariner deflects a gun with his oar and kicks one thug into the others while Rose closes the doors under gunfire. After a thug orders the group down to eight, Rose chooses eleven so she and Mariner can take the stairs back up, then silently questions his outfit before he calls it functional and an homage.\\\",\\n  \\\"narrative_beats\\\": [\\n    {\\\"beat_type\\\": \\\"comic_relief\\\", \\\"description\\\": \\\"Rose is introduced in a Tim Hortons uniform with messy hair and blood on her face while romantic muzak plays; she handles a bloody scrap with hair and asks whether it is skull.\\\", \\\"confidence\\\": 0.99},\\n    {\\\"beat_type\\\": \\\"character_introduction\\\", \\\"description\\\": \\\"The source describes the much bloodier Mariner's face, beard, red cap, and mask, presents a full-screen title card naming him, then has him confirm that the scrap is skull before detailing his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar.\\\", \\\"confidence\\\": 0.99},\\n    {\\\"beat_type\\\": \\\"revelation\\\", \\\"description\\\": \\\"Mariner admits he stashed an AirTag in Rose's purse at Thanksgiving, and Rose realizes the purse was left behind.\\\", \\\"confidence\\\": 0.98},\\n    {\\\"beat_type\\\": \\\"conflict\\\", \\\"description\\\": \\\"Rose and Mariner argue about returning for the purse and whether the armed men targeted her because of him.\\\", \\\"confidence\\\": 0.96},\\n    {\\\"beat_type\\\": \\\"revelation\\\", \\\"description\\\": \\\"Rose laughs at Mariner's belief that the attackers went after her because of him, implying that his assumption about their target is wrong.\\\", \\\"confidence\\\": 0.97},\\n    {\\\"beat_type\\\": \\\"conflict\\\", \\\"description\\\": \\\"Three armed thugs confront them on twelve; Mariner uses his oar and a kick to break the attack while Rose closes the elevator doors under gunfire.\\\", \\\"confidence\\\": 0.99},\\n    {\\\"beat_type\\\": \\\"character_development\\\", \\\"description\\\": \\\"After a muffled thug orders the group down to eight, Rose sends the elevator to eleven so she and Mariner can take the stairs up, showing improvisational resolve despite his objection.\\\", \\\"confidence\\\": 0.98},\\n    {\\\"beat_type\\\": \\\"comic_relief\\\", \\\"description\\\": \\\"Rose raises an eyebrow at Mariner's strange costume, and he insists that it is functional and an homage.\\\", \\\"confidence\\\": 0.99}\\n  ],\\n  \\\"tone_mood\\\": \\\"darkly comic, tense, intimate, and violently kinetic\\\",\\n  \\\"confidence\\\": 0.98\\n}\\n=========================\\n\\nGrade all of these dimensions:\\n1. Verdict: independently decide passed from source fidelity. Any factual\\n   contradiction, fabrication, wrong identity/heading, or material omission\\n   requires passed=false; only genuinely minor warnings may coexist with true.\\n2. Issue recall and precision: every distinct material defect is identified\\n   in its correct field, while accurate content is not attacked. A generic\\n   complaint or copied candidate wording is not a grounded issue.\\n3. Severity: factual errors and meaning-changing omissions are errors;\\n   lesser imprecision may be a warning; notes cannot hide actual defects.\\n4. Summary and confidence: the summary substantiates the verdict with source\\n   facts, and confidence represents certainty in this QA judgment rather\\n   than copying the extraction's confidence.\\n5. Exact schema: the QA result uses the requested top-level and issue keys,\\n   valid types, and substantive descriptions. A schema-only result is not a pass.\\n\\nA generic, copied, contradictory, invented, or schema-only QA judgment must\\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\\nissues, severities, summary, and confidence are source-faithful and remaining\\ndefects are genuinely minor.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{\n  \"scene_number\": null,\n  \"heading\": \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"int_ext\": \"INT\",\n  \"location\": \"RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"time_of_day\": null,\n  \"characters_present\": [\"ROSE\", \"MARINER\", \"THUG 1\", \"THUG 2\", \"THUG 3\"],\n  \"summary\": \"Mid-30s Rose, wearing a Tim Hortons uniform with messy hair and blood on her face, catches her breath beside the far bloodier Mariner while romantic muzak plays. She picks up a bloody scrap with hair, snorts, drops it, and asks whether it is skull. Mariner's face, beard, red cap, and mask are described before a full-screen title card introduces him; after he confirms that the scrap is skull, the screenplay details his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar. Mariner admits that he hid an AirTag in Rose's purse at Thanksgiving; when he assumes the armed men targeted her because of him, Rose laughs and challenges that assumption. Three armed thugs attack when the doors open on twelve, and Mariner deflects a gun with his oar and kicks one thug into the others while Rose closes the doors under gunfire. After a thug orders the group down to eight, Rose chooses eleven so she and Mariner can take the stairs back up, then silently questions his outfit before he calls it functional and an homage.\",\n  \"narrative_beats\": [\n    {\"beat_type\": \"comic_relief\", \"description\": \"Rose is introduced in a Tim Hortons uniform with messy hair and blood on her face while romantic muzak plays; she handles a bloody scrap with hair and asks whether it is skull.\", \"confidence\": 0.99},\n    {\"beat_type\": \"character_introduction\", \"description\": \"The source describes the much bloodier Mariner's face, beard, red cap, and mask, presents a full-screen title card naming him, then has him confirm that the scrap is skull before detailing his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar.\", \"confidence\": 0.99},\n    {\"beat_type\": \"revelation\", \"description\": \"Mariner admits he stashed an AirTag in Rose's purse at Thanksgiving, and Rose realizes the purse was left behind.\", \"confidence\": 0.98},\n    {\"beat_type\": \"conflict\", \"description\": \"Rose and Mariner argue about returning for the purse and whether the armed men targeted her because of him.\", \"confidence\": 0.96},\n    {\"beat_type\": \"revelation\", \"description\": \"Rose laughs at Mariner's belief that the attackers went after her because of him, implying that his assumption about their target is wrong.\", \"confidence\": 0.97},\n    {\"beat_type\": \"conflict\", \"description\": \"Three armed thugs confront them on twelve; Mariner uses his oar and a kick to break the attack while Rose closes the elevator doors under gunfire.\", \"confidence\": 0.99},\n    {\"beat_type\": \"character_development\", \"description\": \"After a muffled thug orders the group down to eight, Rose sends the elevator to eleven so she and Mariner can take the stairs up, showing improvisational resolve despite his objection.\", \"confidence\": 0.98},\n    {\"beat_type\": \"comic_relief\", \"description\": \"Rose raises an eyebrow at Mariner's strange costume, and he insists that it is functional and an homage.\", \"confidence\": 0.99}\n  ],\n  \"tone_mood\": \"darkly comic, tense, intimate, and violently kinetic\",\n  \"confidence\": 0.98\n}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+              }
+            }
+          ]
+        },
+        "id": "12bff10b-0b0f-405c-a2d8-302fc2ec17d9",
+        "latencyMs": 5142,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n\n==========\nCANDIDATE EXTRACTION:\n{\n  \"scene_number\": null,\n  \"heading\": \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"int_ext\": \"INT\",\n  \"location\": \"RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"time_of_day\": null,\n  \"characters_present\": [\"ROSE\", \"MARINER\", \"THUG 1\", \"THUG 2\", \"THUG 3\"],\n  \"summary\": \"Mid-30s Rose, wearing a Tim Hortons uniform with messy hair and blood on her face, catches her breath beside the far bloodier Mariner while romantic muzak plays. She picks up a bloody scrap with hair, snorts, drops it, and asks whether it is skull. Mariner's face, beard, red cap, and mask are described before a full-screen title card introduces him; after he confirms that the scrap is skull, the screenplay details his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar. Mariner admits that he hid an AirTag in Rose's purse at Thanksgiving; when he assumes the armed men targeted her because of him, Rose laughs and challenges that assumption. Three armed thugs attack when the doors open on twelve, and Mariner deflects a gun with his oar and kicks one thug into the others while Rose closes the doors under gunfire. After a thug orders the group down to eight, Rose chooses eleven so she and Mariner can take the stairs back up, then silently questions his outfit before he calls it functional and an homage.\",\n  \"narrative_beats\": [\n    {\"beat_type\": \"comic_relief\", \"description\": \"Rose is introduced in a Tim Hortons uniform with messy hair and blood on her face while romantic muzak plays; she handles a bloody scrap with hair and asks whether it is skull.\", \"confidence\": 0.99},\n    {\"beat_type\": \"character_introduction\", \"description\": \"The source describes the much bloodier Mariner's face, beard, red cap, and mask, presents a full-screen title card naming him, then has him confirm that the scrap is skull before detailing his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar.\", \"confidence\": 0.99},\n    {\"beat_type\": \"revelation\", \"description\": \"Mariner admits he stashed an AirTag in Rose's purse at Thanksgiving, and Rose realizes the purse was left behind.\", \"confidence\": 0.98},\n    {\"beat_type\": \"conflict\", \"description\": \"Rose and Mariner argue about returning for the purse and whether the armed men targeted her because of him.\", \"confidence\": 0.96},\n    {\"beat_type\": \"revelation\", \"description\": \"Rose laughs at Mariner's belief that the attackers went after her because of him, implying that his assumption about their target is wrong.\", \"confidence\": 0.97},\n    {\"beat_type\": \"conflict\", \"description\": \"Three armed thugs confront them on twelve; Mariner uses his oar and a kick to break the attack while Rose closes the elevator doors under gunfire.\", \"confidence\": 0.99},\n    {\"beat_type\": \"character_development\", \"description\": \"After a muffled thug orders the group down to eight, Rose sends the elevator to eleven so she and Mariner can take the stairs up, showing improvisational resolve despite his objection.\", \"confidence\": 0.98},\n    {\"beat_type\": \"comic_relief\", \"description\": \"Rose raises an eyebrow at Mariner's strange costume, and he insists that it is functional and an homage.\", \"confidence\": 0.99}\n  ],\n  \"tone_mood\": \"darkly comic, tense, intimate, and violently kinetic\",\n  \"confidence\": 0.98\n}\n==========",
+          "label": "prompts/qa-pass.txt: You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\n{{scene_text}}\n\n==========\nCANDIDATE EXTRACTION:\n{{extracted_data}}\n==========",
+          "config": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          }
+        },
+        "promptId": "01b035ecf548723f487b501e2947758409febe7f1e73064d84e82dfde05191fb",
+        "promptIdx": 1,
+        "provider": {
+          "id": "google:gemini-3.6-flash",
+          "label": "Gemini 3.6 Flash"
+        },
+        "response": {
+          "output": "{\n  \"passed\": true,\n  \"confidence\": 0.98,\n  \"issues\": [],\n  \"summary\": \"The candidate extraction is fully faithful to the source scene. Metadata, character identification, summary fidelity, narrative beats, and tone are accurate and well-grounded without any material defects.\"\n}",
+          "tokenUsage": {
+            "prompt": 2235,
+            "completion": 69,
+            "total": 3247,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 943,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "raw": {
+            "candidates": [
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "{\n  \"passed\": true,\n  \"confidence\": 0.98,\n  \"issues\": [],\n  \"summary\": \"The candidate extraction is fully faithful to the source scene. Metadata, character identification, summary fidelity, narrative beats, and tone are accurate and well-grounded without any material defects.\"\n}",
+                      "thoughtSignature": "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"
+                    }
+                  ],
+                  "role": "model"
+                },
+                "finishReason": "STOP",
+                "index": 0
+              }
+            ],
+            "usageMetadata": {
+              "promptTokenCount": 2235,
+              "candidatesTokenCount": 69,
+              "totalTokenCount": 3247,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 2235
+                }
+              ],
+              "thoughtsTokenCount": 943,
+              "serviceTier": "standard"
+            },
+            "modelVersion": "gemini-3.6-flash",
+            "responseId": "IFJhapSiEsPU_uMPzu_CuAE"
+          },
+          "cached": false,
+          "metadata": {}
+        },
+        "score": 0.72495,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+            "extracted_data": "file://../input/qa-good-scene.json",
+            "golden_path": "golden/qa-pass-golden.json",
+            "test_key": "good_scene"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/qa_pass_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-good-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "good_scene"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "raw_score=0.8865 | confidence_calibration=1.00 | issue_detection=0.71 | json_valid=1.00 | pass_correct=1.00 | severity_accuracy=0.73 | summary_quality=1.00 | Only 5 required issue fields/reason concepts were detected; need 6; Only 5 required issues are actionable (warning or error, not a note); need 6; Only 5 required issues have error severity; need 6",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.77495,
+          "reason": "raw_score=0.8865 | confidence_calibration=1.00 | issue_detection=0.71 | json_valid=1.00 | pass_correct=1.00 | severity_accuracy=0.73 | summary_quality=1.00 | Only 5 required issue fields/reason concepts were detected; need 6; Only 5 required issues are actionable (warning or error, not a note); need 6; Only 5 required issues have error severity; need 6",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2415,
+            "prompt": 1944,
+            "completion": 471,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.5999,
+              "reason": "raw_score=0.8865 | confidence_calibration=1.00 | issue_detection=0.71 | json_valid=1.00 | pass_correct=1.00 | severity_accuracy=0.73 | summary_quality=1.00 | Only 5 required issue fields/reason concepts were detected; need 6; Only 5 required issues are actionable (warning or error, not a note); need 6; Only 5 required issues have error severity; need 6",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/qa_pass_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+              },
+              "pass": true,
+              "score": 0.95,
+              "reason": "The QA judgment correctly identifies that the extraction is almost entirely fabricated and assigns passed=false with high confidence. Let me verify each dimension:\n\n1. **Verdict**: The QA correctly determines passed=false. The extraction fabricates characters (BILLY instead of Mariner), invents a completely false narrative (groceries and evening plans), changes the location, and mischaracterizes the tone. This is clearly correct.\n\n2. **Issue recall and precision**: The QA identifies 5 distinct issues:\n - Characters: correctly flags BILLY as fabricated, Mariner is the actual character. ✓\n - Summary: correctly flags the fabricated narrative about groceries. ✓\n - Narrative beats: correctly flags omission of actual events and fabrication of false ones. ✓\n - Location: correctly flags change from 'RUDDY & GREEN BUILDING - ELEVATOR' to 'OFFICE BUILDING - ELEVATOR'. ✓\n - Tone: correctly flags 'casual' as wrong; the source depicts action, violence, and comedic chaos. ✓\n - Additional issues not flagged: time_of_day is listed as 'DAY' but the source doesn't specify time of day (minor). The extraction also omits THUG characters, but since the main issues are already covered comprehensively, this is acceptable.\n\n3. **Severity**: All issues are correctly marked as 'error' since they involve factual contradictions and fabrications. This is appropriate.\n\n4. **Summary and confidence**: The summary accurately substantiates the verdict with specific references to source facts. Confidence of 1 is appropriate given the extreme divergence between extraction and source.\n\n5. **Schema**: The output uses proper JSON structure with passed, confidence, issues (each with severity, location, description), and summary fields. All types are valid.\n\nThe QA judgment is thorough, accurate, and well-grounded in the source material. All identified issues are real and properly categorized.",
+              "tokensUsed": {
+                "total": 2415,
+                "prompt": 1944,
+                "completion": 471,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"passed\\\":false,\\\"confidence\\\":1,\\\"issues\\\":[{\\\"severity\\\":\\\"error\\\",\\\"location\\\":\\\"characters_present\\\",\\\"description\\\":\\\"Substitutes the primary character Mariner with a fabricated character named 'BILLY'.\\\"},{\\\"severity\\\":\\\"error\\\",\\\"location\\\":\\\"summary\\\",\\\"description\\\":\\\"Completely fabricates the scene summary with an untrue narrative about groceries and evening plans, omitting the bloody aftermath, AirTag tracking plot point, and elevator fight.\\\"},{\\\"severity\\\":\\\"error\\\",\\\"location\\\":\\\"narrative_beats\\\",\\\"description\\\":\\\"Omits all actual scene events (bloody aftermath, AirTag discovery, combat on floor 12) and fabricates a narrative beat about discussing daily plans.\\\"},{\\\"severity\\\":\\\"error\\\",\\\"location\\\":\\\"location\\\",\\\"description\\\":\\\"Alters the source location from 'RUDDY & GREEN BUILDING - ELEVATOR' to 'OFFICE BUILDING - ELEVATOR'.\\\"},{\\\"severity\\\":\\\"error\\\",\\\"location\\\":\\\"tone_mood\\\",\\\"description\\\":\\\"Labels the tone as 'casual', contradicting the bloody action, gunfire, and comedic chaos depicted in the source.\\\"}],\\\"summary\\\":\\\"The candidate extraction is almost entirely fabricated, misidentifying the main male character, inventing non-existent narrative details and beats, altering the location, and mischaracterizing the tone. Consequently, the candidate fails the evaluation.\\\"}\\n</Output>\\n<Rubric>\\nEvaluate the candidate QA judgment by independently comparing the scene\\nextraction with the source. Do not assume whether the extraction or QA\\njudgment should pass from a filename, test label, or rubric wording.\\n\\nSOURCE SCENE\\n============\\nINT. RUDDY & GREEN BUILDING - ELEVATOR\\n\\nUB40's \\\"I Can't Help Falling in Love With You\\\" muzak.\\n\\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\\n\\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\\n\\nROSE\\nIs that skull??\\n\\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\\n\\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \\\"THE MARINER\\\"\\n\\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\\n\\nMARINER\\nYeaaaaah...\\n\\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \\\"Dad\\\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\\n\\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\\n\\nROSE\\nHow the hell did you find me?\\n\\nMariner looks down and mumbles something.\\n\\nROSE\\n(annoyed)\\nWhat?\\n\\nMARINER\\nAirTag.\\n\\nROSE\\nWhat??\\n\\nMARINER\\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\\n\\nROSE\\nShit! My purse!\\n\\nMARINER\\nJust in case! I worry about--\\n\\nROSE\\nShut it! We gotta go back for it.\\n\\nMARINER\\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\\n\\nROSE\\n(laughing)\\nYou think they’re after you?\\n\\nMariner looks confused. DING - elevator doors open on 12.\\n\\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\\n\\nRose has been frantically pressing the CLOSE DOOR button.\\n\\nThe thugs struggle to their feet.\\n\\nTHUG 2\\n(into radio)\\nWe’ve got them on twelve.\\n\\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\\n\\nTHUG\\n(muffled)\\nGo! Go! Down to eight!\\n\\nRose presses 11.\\n\\nROSE\\nWe’ll take the stairs up. They won’t expect that.\\n\\nMARINER\\nBecause it’s stupid!\\n\\nRose raises an eyebrow at Mariner’s crazy outfit.\\n\\nMARINER\\nIt’s functional! ... And an homage.\\n============\\n\\nEXTRACTION BEING REVIEWED\\n=========================\\n{\\n  \\\"scene_number\\\": 4,\\n  \\\"heading\\\": \\\"INT. OFFICE BUILDING - ELEVATOR\\\",\\n  \\\"int_ext\\\": \\\"INT\\\",\\n  \\\"location\\\": \\\"OFFICE BUILDING - ELEVATOR\\\",\\n  \\\"time_of_day\\\": \\\"DAY\\\",\\n  \\\"characters_present\\\": [\\\"ROSE\\\", \\\"BILLY\\\"],\\n  \\\"summary\\\": \\\"Billy and Rose take the elevator in an office building. They discuss their plans for the evening. Rose mentions she needs to pick up groceries.\\\",\\n  \\\"narrative_beats\\\": [\\n    {\\\"beat_type\\\": \\\"exposition\\\", \\\"description\\\": \\\"Characters discuss daily plans.\\\", \\\"confidence\\\": 0.85}\\n  ],\\n  \\\"tone_mood\\\": \\\"casual\\\",\\n  \\\"confidence\\\": 0.88\\n}\\n=========================\\n\\nGrade all of these dimensions:\\n1. Verdict: independently decide passed from source fidelity. Any factual\\n   contradiction, fabrication, wrong identity/heading, or material omission\\n   requires passed=false; only genuinely minor warnings may coexist with true.\\n2. Issue recall and precision: every distinct material defect is identified\\n   in its correct field, while accurate content is not attacked. A generic\\n   complaint or copied candidate wording is not a grounded issue.\\n3. Severity: factual errors and meaning-changing omissions are errors;\\n   lesser imprecision may be a warning; notes cannot hide actual defects.\\n4. Summary and confidence: the summary substantiates the verdict with source\\n   facts, and confidence represents certainty in this QA judgment rather\\n   than copying the extraction's confidence.\\n5. Exact schema: the QA result uses the requested top-level and issue keys,\\n   valid types, and substantive descriptions. A schema-only result is not a pass.\\n\\nA generic, copied, contradictory, invented, or schema-only QA judgment must\\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\\nissues, severities, summary, and confidence are source-faithful and remaining\\ndefects are genuinely minor.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{\n  \"scene_number\": 4,\n  \"heading\": \"INT. OFFICE BUILDING - ELEVATOR\",\n  \"int_ext\": \"INT\",\n  \"location\": \"OFFICE BUILDING - ELEVATOR\",\n  \"time_of_day\": \"DAY\",\n  \"characters_present\": [\"ROSE\", \"BILLY\"],\n  \"summary\": \"Billy and Rose take the elevator in an office building. They discuss their plans for the evening. Rose mentions she needs to pick up groceries.\",\n  \"narrative_beats\": [\n    {\"beat_type\": \"exposition\", \"description\": \"Characters discuss daily plans.\", \"confidence\": 0.85}\n  ],\n  \"tone_mood\": \"casual\",\n  \"confidence\": 0.88\n}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+              }
+            }
+          ]
+        },
+        "id": "638de73d-a1c0-4b92-96c3-c078fe6af6c5",
+        "latencyMs": 7891,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n\n==========\nCANDIDATE EXTRACTION:\n{\n  \"scene_number\": 4,\n  \"heading\": \"INT. OFFICE BUILDING - ELEVATOR\",\n  \"int_ext\": \"INT\",\n  \"location\": \"OFFICE BUILDING - ELEVATOR\",\n  \"time_of_day\": \"DAY\",\n  \"characters_present\": [\"ROSE\", \"BILLY\"],\n  \"summary\": \"Billy and Rose take the elevator in an office building. They discuss their plans for the evening. Rose mentions she needs to pick up groceries.\",\n  \"narrative_beats\": [\n    {\"beat_type\": \"exposition\", \"description\": \"Characters discuss daily plans.\", \"confidence\": 0.85}\n  ],\n  \"tone_mood\": \"casual\",\n  \"confidence\": 0.88\n}\n==========",
+          "label": "prompts/qa-pass.txt: You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\n{{scene_text}}\n\n==========\nCANDIDATE EXTRACTION:\n{{extracted_data}}\n==========",
+          "config": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          }
+        },
+        "promptId": "01b035ecf548723f487b501e2947758409febe7f1e73064d84e82dfde05191fb",
+        "promptIdx": 1,
+        "provider": {
+          "id": "google:gemini-3.6-flash",
+          "label": "Gemini 3.6 Flash"
+        },
+        "response": {
+          "output": "{\n  \"passed\": false,\n  \"confidence\": 1.0,\n  \"issues\": [\n    {\n      \"severity\": \"error\",\n      \"location\": \"characters_present\",\n      \"description\": \"Substitutes the primary character Mariner with a fabricated character named 'BILLY'.\"\n    },\n    {\n      \"severity\": \"error\",\n      \"location\": \"summary\",\n      \"description\": \"Completely fabricates the scene summary with an untrue narrative about groceries and evening plans, omitting the bloody aftermath, AirTag tracking plot point, and elevator fight.\"\n    },\n    {\n      \"severity\": \"error\",\n      \"location\": \"narrative_beats\",\n      \"description\": \"Omits all actual scene events (bloody aftermath, AirTag discovery, combat on floor 12) and fabricates a narrative beat about discussing daily plans.\"\n    },\n    {\n      \"severity\": \"error\",\n      \"location\": \"location\",\n      \"description\": \"Alters the source location from 'RUDDY & GREEN BUILDING - ELEVATOR' to 'OFFICE BUILDING - ELEVATOR'.\"\n    },\n    {\n      \"severity\": \"error\",\n      \"location\": \"tone_mood\",\n      \"description\": \"Labels the tone as 'casual', contradicting the bloody action, gunfire, and comedic chaos depicted in the source.\"\n    }\n  ],\n  \"summary\": \"The candidate extraction is almost entirely fabricated, misidentifying the main male character, inventing non-existent narrative details and beats, altering the location, and mischaracterizing the tone. Consequently, the candidate fails the evaluation.\"\n}",
+          "tokenUsage": {
+            "prompt": 1536,
+            "completion": 357,
+            "total": 3127,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 1234,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "raw": {
+            "candidates": [
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "{\n  \"passed\": false,\n  \"confidence\": 1.0,\n  \"issues\": [\n    {\n      \"severity\": \"error\",\n      \"location\": \"characters_present\",\n      \"description\": \"Substitutes the primary character Mariner with a fabricated character named 'BILLY'.\"\n    },\n    {\n      \"severity\": \"error\",\n      \"location\": \"summary\",\n      \"description\": \"Completely fabricates the scene summary with an untrue narrative about groceries and evening plans, omitting the bloody aftermath, AirTag tracking plot point, and elevator fight.\"\n    },\n    {\n      \"severity\": \"error\",\n      \"location\": \"narrative_beats\",\n      \"description\": \"Omits all actual scene events (bloody aftermath, AirTag discovery, combat on floor 12) and fabricates a narrative beat about discussing daily plans.\"\n    },\n    {\n      \"severity\": \"error\",\n      \"location\": \"location\",\n      \"description\": \"Alters the source location from 'RUDDY & GREEN BUILDING - ELEVATOR' to 'OFFICE BUILDING - ELEVATOR'.\"\n    },\n    {\n      \"severity\": \"error\",\n      \"location\": \"tone_mood\",\n      \"description\": \"Labels the tone as 'casual', contradicting the bloody action, gunfire, and comedic chaos depicted in the source.\"\n    }\n  ],\n  \"summary\": \"The candidate extraction is almost entirely fabricated, misidentifying the main male character, inventing non-existent narrative details and beats, altering the location, and mischaracterizing the tone. Consequently, the candidate fails the evaluation.\"\n}",
+                      "thoughtSignature": "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"
+                    }
+                  ],
+                  "role": "model"
+                },
+                "finishReason": "STOP",
+                "index": 0
+              }
+            ],
+            "usageMetadata": {
+              "promptTokenCount": 1536,
+              "candidatesTokenCount": 357,
+              "totalTokenCount": 3127,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 1536
+                }
+              ],
+              "thoughtsTokenCount": 1234,
+              "serviceTier": "standard"
+            },
+            "modelVersion": "gemini-3.6-flash",
+            "responseId": "PFJhar-CCuiu_PUPh8HnyQQ"
+          },
+          "cached": false,
+          "metadata": {}
+        },
+        "score": 0.77495,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+            "extracted_data": "file://../input/qa-bad-scene.json",
+            "golden_path": "golden/qa-pass-golden.json",
+            "test_key": "bad_scene"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/qa_pass_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-bad-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "bad_scene"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.94685,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2439,
+            "prompt": 2006,
+            "completion": 433,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.9437,
+              "reason": "confidence_calibration=1.00 | issue_detection=0.85 | json_valid=1.00 | pass_correct=1.00 | severity_accuracy=0.88 | summary_quality=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/qa_pass_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+              },
+              "pass": true,
+              "score": 0.95,
+              "reason": "The QA judgment correctly identifies that the extraction is a complete hallucination and assigns passed=false with high confidence. Let me verify each dimension:\n\n1. **Verdict**: The QA correctly determines passed=false. The extraction fabricates characters (BILLY), invents a completely wrong summary (groceries, evening plans), misses the heading ('RUDDY & GREEN BUILDING' vs 'OFFICE BUILDING'), fabricates time_of_day, and misses all actual narrative content. This is correct.\n\n2. **Issue recall and precision**: The QA identifies:\n   - Heading mismatch: correct (OFFICE BUILDING vs RUDDY & GREEN BUILDING)\n   - Time of day fabrication: correct (source has no time of day)\n   - BILLY invented: correct (no Billy in source)\n   - MARINER omitted: correct\n   - Summary fabrication: correct (groceries/evening plans vs bloody elevator ride, AirTag, shootout)\n   - Narrative beats fabrication: correct\n   - Tone 'casual' is wrong: correct (should be violent, chaotic, darkly comedic)\n   All issues are grounded in the source. No accurate content is attacked. The coverage is thorough.\n\n3. **Severity**: All issues are marked as 'error', which is appropriate given they are all factual errors or fabrications.\n\n4. **Summary and confidence**: The summary accurately states this is a 'complete hallucination' which is substantiated by the source comparison. Confidence of 1 is appropriate given the extreme divergence.\n\n5. **Schema**: Uses proper structure with passed, confidence, issues (severity, description, location), and summary. All valid.\n\nThis is an excellent QA judgment that accurately identifies all major defects in a completely fabricated extraction.",
+              "tokensUsed": {
+                "total": 2439,
+                "prompt": 2006,
+                "completion": 433,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"passed\\\":false,\\\"confidence\\\":1,\\\"issues\\\":[{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Heading location does not match the source heading, which is 'RUDDY & GREEN BUILDING - ELEVATOR'.\\\",\\\"location\\\":\\\"heading\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Time of day is not supplied in the source scene heading, and should not be assumed as 'DAY'.\\\",\\\"location\\\":\\\"time_of_day\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Character 'BILLY' is invented; the male character in the scene is Mariner.\\\",\\\"location\\\":\\\"characters_present\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Character 'MARINER' is omitted from the character list.\\\",\\\"location\\\":\\\"characters_present\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Summary completely fabricates the events of the scene (discussing evening plans, groceries) while omitting the actual brutal elevator ride, blood, AirTag revelation, and gunfight with thugs.\\\",\\\"location\\\":\\\"summary\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Narrative beats miss all actual actions in the scene, such as the bloody elevator ride, the AirTag confession, and the shootout with thugs, replacing them with a fabricated exposition beat.\\\",\\\"location\\\":\\\"narrative_beats\\\"},{\\\"severity\\\":\\\"error\\\",\\\"description\\\":\\\"Tone 'casual' is inaccurate and fails to capture the chaotic, violent, and absurdly bloody atmosphere of the scene.\\\",\\\"location\\\":\\\"tone_mood\\\"}],\\\"summary\\\":\\\"The candidate extraction is a complete hallucination, fabricating characters, locations, summary, tone, and narrative beats that bear no relation to the source scene.\\\"}\\n</Output>\\n<Rubric>\\nEvaluate the candidate QA judgment by independently comparing the scene\\nextraction with the source. Do not assume whether the extraction or QA\\njudgment should pass from a filename, test label, or rubric wording.\\n\\nSOURCE SCENE\\n============\\nINT. RUDDY & GREEN BUILDING - ELEVATOR\\n\\nUB40's \\\"I Can't Help Falling in Love With You\\\" muzak.\\n\\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\\n\\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\\n\\nROSE\\nIs that skull??\\n\\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\\n\\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \\\"THE MARINER\\\"\\n\\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\\n\\nMARINER\\nYeaaaaah...\\n\\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \\\"Dad\\\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\\n\\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\\n\\nROSE\\nHow the hell did you find me?\\n\\nMariner looks down and mumbles something.\\n\\nROSE\\n(annoyed)\\nWhat?\\n\\nMARINER\\nAirTag.\\n\\nROSE\\nWhat??\\n\\nMARINER\\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\\n\\nROSE\\nShit! My purse!\\n\\nMARINER\\nJust in case! I worry about--\\n\\nROSE\\nShut it! We gotta go back for it.\\n\\nMARINER\\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\\n\\nROSE\\n(laughing)\\nYou think they’re after you?\\n\\nMariner looks confused. DING - elevator doors open on 12.\\n\\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\\n\\nRose has been frantically pressing the CLOSE DOOR button.\\n\\nThe thugs struggle to their feet.\\n\\nTHUG 2\\n(into radio)\\nWe’ve got them on twelve.\\n\\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\\n\\nTHUG\\n(muffled)\\nGo! Go! Down to eight!\\n\\nRose presses 11.\\n\\nROSE\\nWe’ll take the stairs up. They won’t expect that.\\n\\nMARINER\\nBecause it’s stupid!\\n\\nRose raises an eyebrow at Mariner’s crazy outfit.\\n\\nMARINER\\nIt’s functional! ... And an homage.\\n============\\n\\nEXTRACTION BEING REVIEWED\\n=========================\\n{\\n  \\\"scene_number\\\": 4,\\n  \\\"heading\\\": \\\"INT. OFFICE BUILDING - ELEVATOR\\\",\\n  \\\"int_ext\\\": \\\"INT\\\",\\n  \\\"location\\\": \\\"OFFICE BUILDING - ELEVATOR\\\",\\n  \\\"time_of_day\\\": \\\"DAY\\\",\\n  \\\"characters_present\\\": [\\\"ROSE\\\", \\\"BILLY\\\"],\\n  \\\"summary\\\": \\\"Billy and Rose take the elevator in an office building. They discuss their plans for the evening. Rose mentions she needs to pick up groceries.\\\",\\n  \\\"narrative_beats\\\": [\\n    {\\\"beat_type\\\": \\\"exposition\\\", \\\"description\\\": \\\"Characters discuss daily plans.\\\", \\\"confidence\\\": 0.85}\\n  ],\\n  \\\"tone_mood\\\": \\\"casual\\\",\\n  \\\"confidence\\\": 0.88\\n}\\n=========================\\n\\nGrade all of these dimensions:\\n1. Verdict: independently decide passed from source fidelity. Any factual\\n   contradiction, fabrication, wrong identity/heading, or material omission\\n   requires passed=false; only genuinely minor warnings may coexist with true.\\n2. Issue recall and precision: every distinct material defect is identified\\n   in its correct field, while accurate content is not attacked. A generic\\n   complaint or copied candidate wording is not a grounded issue.\\n3. Severity: factual errors and meaning-changing omissions are errors;\\n   lesser imprecision may be a warning; notes cannot hide actual defects.\\n4. Summary and confidence: the summary substantiates the verdict with source\\n   facts, and confidence represents certainty in this QA judgment rather\\n   than copying the extraction's confidence.\\n5. Exact schema: the QA result uses the requested top-level and issue keys,\\n   valid types, and substantive descriptions. A schema-only result is not a pass.\\n\\nA generic, copied, contradictory, invented, or schema-only QA judgment must\\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\\nissues, severities, summary, and confidence are source-faithful and remaining\\ndefects are genuinely minor.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{\n  \"scene_number\": 4,\n  \"heading\": \"INT. OFFICE BUILDING - ELEVATOR\",\n  \"int_ext\": \"INT\",\n  \"location\": \"OFFICE BUILDING - ELEVATOR\",\n  \"time_of_day\": \"DAY\",\n  \"characters_present\": [\"ROSE\", \"BILLY\"],\n  \"summary\": \"Billy and Rose take the elevator in an office building. They discuss their plans for the evening. Rose mentions she needs to pick up groceries.\",\n  \"narrative_beats\": [\n    {\"beat_type\": \"exposition\", \"description\": \"Characters discuss daily plans.\", \"confidence\": 0.85}\n  ],\n  \"tone_mood\": \"casual\",\n  \"confidence\": 0.88\n}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+              }
+            }
+          ]
+        },
+        "id": "f21076b4-4ddf-450d-8031-be3e69751447",
+        "latencyMs": 2698,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n\n==========\nCANDIDATE EXTRACTION:\n{\n  \"scene_number\": 4,\n  \"heading\": \"INT. OFFICE BUILDING - ELEVATOR\",\n  \"int_ext\": \"INT\",\n  \"location\": \"OFFICE BUILDING - ELEVATOR\",\n  \"time_of_day\": \"DAY\",\n  \"characters_present\": [\"ROSE\", \"BILLY\"],\n  \"summary\": \"Billy and Rose take the elevator in an office building. They discuss their plans for the evening. Rose mentions she needs to pick up groceries.\",\n  \"narrative_beats\": [\n    {\"beat_type\": \"exposition\", \"description\": \"Characters discuss daily plans.\", \"confidence\": 0.85}\n  ],\n  \"tone_mood\": \"casual\",\n  \"confidence\": 0.88\n}\n==========",
+          "label": "prompts/qa-pass.txt: You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\n{{scene_text}}\n\n==========\nCANDIDATE EXTRACTION:\n{{extracted_data}}\n==========",
+          "config": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          }
+        },
+        "promptId": "01b035ecf548723f487b501e2947758409febe7f1e73064d84e82dfde05191fb",
+        "promptIdx": 0,
+        "provider": {
+          "id": "google:gemini-3.5-flash-lite",
+          "label": "Gemini 3.5 Flash-Lite"
+        },
+        "response": {
+          "output": "{\n  \"passed\": false,\n  \"confidence\": 1.0,\n  \"issues\": [\n    {\n      \"severity\": \"error\",\n      \"description\": \"Heading location does not match the source heading, which is 'RUDDY & GREEN BUILDING - ELEVATOR'.\",\n      \"location\": \"heading\"\n    },\n    {\n      \"severity\": \"error\",\n      \"description\": \"Time of day is not supplied in the source scene heading, and should not be assumed as 'DAY'.\",\n      \"location\": \"time_of_day\"\n    },\n    {\n      \"severity\": \"error\",\n      \"description\": \"Character 'BILLY' is invented; the male character in the scene is Mariner.\",\n      \"location\": \"characters_present\"\n    },\n    {\n      \"severity\": \"error\",\n      \"description\": \"Character 'MARINER' is omitted from the character list.\",\n      \"location\": \"characters_present\"\n    },\n    {\n      \"severity\": \"error\",\n      \"description\": \"Summary completely fabricates the events of the scene (discussing evening plans, groceries) while omitting the actual brutal elevator ride, blood, AirTag revelation, and gunfight with thugs.\",\n      \"location\": \"summary\"\n    },\n    {\n      \"severity\": \"error\",\n      \"description\": \"Narrative beats miss all actual actions in the scene, such as the bloody elevator ride, the AirTag confession, and the shootout with thugs, replacing them with a fabricated exposition beat.\",\n      \"location\": \"narrative_beats\"\n    },\n    {\n      \"severity\": \"error\",\n      \"description\": \"Tone 'casual' is inaccurate and fails to capture the chaotic, violent, and absurdly bloody atmosphere of the scene.\",\n      \"location\": \"tone_mood\"\n    }\n  ],\n  \"summary\": \"The candidate extraction is a complete hallucination, fabricating characters, locations, summary, tone, and narrative beats that bear no relation to the source scene.\"\n}",
+          "tokenUsage": {
+            "prompt": 1536,
+            "completion": 447,
+            "total": 1983,
+            "numRequests": 1
+          },
+          "raw": {
+            "candidates": [
+              {
+                "content": {
+                  "parts": [
+                    {
+                      "text": "{\n  \"passed\": false,\n  \"confidence\": 1.0,\n  \"issues\": [\n    {\n      \"severity\": \"error\",\n      \"description\": \"Heading location does not match the source heading, which is 'RUDDY & GREEN BUILDING - ELEVATOR'.\",\n      \"location\": \"heading\"\n    },\n    {\n      \"severity\": \"error\",\n      \"description\": \"Time of day is not supplied in the source scene heading, and should not be assumed as 'DAY'.\",\n      \"location\": \"time_of_day\"\n    },\n    {\n      \"severity\": \"error\",\n      \"description\": \"Character 'BILLY' is invented; the male character in the scene is Mariner.\",\n      \"location\": \"characters_present\"\n    },\n    {\n      \"severity\": \"error\",\n      \"description\": \"Character 'MARINER' is omitted from the character list.\",\n      \"location\": \"characters_present\"\n    },\n    {\n      \"severity\": \"error\",\n      \"description\": \"Summary completely fabricates the events of the scene (discussing evening plans, groceries) while omitting the actual brutal elevator ride, blood, AirTag revelation, and gunfight with thugs.\",\n      \"location\": \"summary\"\n    },\n    {\n      \"severity\": \"error\",\n      \"description\": \"Narrative beats miss all actual actions in the scene, such as the bloody elevator ride, the AirTag confession, and the shootout with thugs, replacing them with a fabricated exposition beat.\",\n      \"location\": \"narrative_beats\"\n    },\n    {\n      \"severity\": \"error\",\n      \"description\": \"Tone 'casual' is inaccurate and fails to capture the chaotic, violent, and absurdly bloody atmosphere of the scene.\",\n      \"location\": \"tone_mood\"\n    }\n  ],\n  \"summary\": \"The candidate extraction is a complete hallucination, fabricating characters, locations, summary, tone, and narrative beats that bear no relation to the source scene.\"\n}",
+                      "thoughtSignature": "EjQKMgERTTIPrHNOZ3PrZ1+DIWFr2WXgGnSEW8dwstVrFD3H0i5FVyxG3pLvRDB2hprHQNy0"
+                    }
+                  ],
+                  "role": "model"
+                },
+                "finishReason": "STOP",
+                "index": 0
+              }
+            ],
+            "usageMetadata": {
+              "promptTokenCount": 1536,
+              "candidatesTokenCount": 447,
+              "totalTokenCount": 1983,
+              "promptTokensDetails": [
+                {
+                  "modality": "TEXT",
+                  "tokenCount": 1536
+                }
+              ],
+              "serviceTier": "standard"
+            },
+            "modelVersion": "gemini-3.5-flash-lite",
+            "responseId": "N1JhaoXpIrDD_uMP456qsA4"
+          },
+          "cached": false,
+          "metadata": {}
+        },
+        "score": 0.94685,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+            "extracted_data": "file://../input/qa-bad-scene.json",
+            "golden_path": "golden/qa-pass-golden.json",
+            "test_key": "bad_scene"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/qa_pass_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-bad-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "bad_scene"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 1,
+      "failures": 3,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 7542,
+        "completion": 940,
+        "cached": 0,
+        "total": 10659,
+        "numRequests": 4,
+        "completionDetails": {
+          "reasoning": 2177,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 11828,
+          "prompt": 8898,
+          "completion": 2930,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 49804,
+      "evaluationDurationMs": 49804
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "QA pass — independently judge scene-extraction fidelity",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/eval-truth-audit-20260721/cine-forge/benchmarks/prompts/qa-pass.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:chat:gpt-5.4-nano",
+        "label": "GPT-5.4 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:chat:gpt-5.4-mini",
+        "label": "GPT-5.4 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-5-20250929",
+        "label": "Claude Sonnet 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "maxOutputTokens": 65536
+        }
+      },
+      {
+        "id": "google:gemini-3.5-flash",
+        "label": "Gemini 3.5 Flash",
+        "config": {
+          "maxOutputTokens": 65536
+        }
+      },
+      {
+        "id": "google:gemini-3.5-flash-lite",
+        "label": "Gemini 3.5 Flash-Lite",
+        "config": {
+          "maxOutputTokens": 65536,
+          "inputCost": 3e-7,
+          "outputCost": 0.0000025
+        }
+      },
+      {
+        "id": "google:gemini-3.6-flash",
+        "label": "Gemini 3.6 Flash",
+        "config": {
+          "maxOutputTokens": 65536,
+          "inputCost": 0.0000015,
+          "outputCost": 0.0000075
+        }
+      },
+      {
+        "id": "openai:gpt-5.2",
+        "label": "GPT-5.2",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-5.5",
+        "label": "GPT-5.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "file://../providers/openai_responses_provider.py",
+        "label": "GPT-5.5 Pro",
+        "config": {
+          "model": "gpt-5.5-pro",
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "xai:grok-4.3",
+        "label": "Grok 4.3",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "xai:grok-4.5",
+        "label": "Grok 4.5",
+        "config": {
+          "max_tokens": 4096,
+          "reasoning_effort": "high",
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:kimi-k2.6",
+        "label": "Kimi K2.6",
+        "config": {
+          "apiBaseUrl": "https://api.moonshot.ai/v1",
+          "apiKeyEnvar": "[REDACTED]",
+          "temperature": 1,
+          "top_p": 0.95,
+          "max_tokens": 32768,
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-pro",
+        "label": "Gemini 2.5 Pro",
+        "config": {
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "maxOutputTokens": 65536
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-good-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "good_scene"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/qa_pass_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-bad-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "bad_scene"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/qa_pass_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": {
+          "id": "anthropic:messages:claude-opus-4-6",
+          "config": {
+            "max_tokens": 4096
+          }
+        }
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/qa-pass-story-208-post-repair-v4-2026-07-22.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-07-22T23:29:21.946Z",
+    "evaluationCreatedAt": "2026-07-22T23:28:31.953Z"
+  }
+}
