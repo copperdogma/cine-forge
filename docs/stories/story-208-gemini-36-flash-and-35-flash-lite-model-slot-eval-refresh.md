@@ -184,34 +184,15 @@ made them non-decision-grade under the repaired contracts.
 
 ## Blocker Summary
 
-The final frozen storyboard v3 comparison is ready but blocked on explicit
-authorization to send the project-owned internal Open Frequency screenplay and
-derived benchmark material to Anthropic and OpenAI. No storyboard
-payload has been sent.
+N/A
 
 ## Blocker Evidence
 
-The repaired contract, committed runtime candidates, retained-media gate, and
-local preflight are green. The runtime is configured to use Anthropic models
-for screenplay/scene/shot/identity work and OpenAI for verification plus
-`gpt-image-2` generation. The quality pass then sends the exact retained
-frame/reference packet to OpenAI GPT-5.4 for multimodal analysis and sends that
-analysis plus the maintained target/rubric to Anthropic Opus 4.6 for judging.
-The external-action safety review therefore requires a specific user approval
-for the complete two-provider data flow.
+N/A
 
 ## Unblock Condition
 
-User explicitly approves sending the project-owned Open Frequency screenplay,
-derived script/world/shot-plan/identity material to Anthropic Claude
-Haiku/Sonnet and OpenAI GPT-4.1 mini during prerequisite processing; sending
-generated storyboard prompts, blank grid templates, and four synthetic
-transport-reference JPEGs to OpenAI GPT Image 2; sending all generated
-storyboard and reference JPEGs to OpenAI GPT-5.4 for analysis; and sending the
-resulting analyses plus source-backed targets to Anthropic Claude Opus 4.6 for
-judging. The bounded matrix is two cases by two genuinely distinct candidates;
-the historical cost estimate is about `$1.50` excluding retries and pricing
-drift.
+N/A
 
 ## Architectural Fit
 
@@ -405,3 +386,5 @@ This expanded plan changes maintained goldens, scorers, test selection, visual f
 20260722-final-validation-and-storyboard-authorization-gate - the final bounded validation is green on the committed repair: the complete backend suite passed `2,124` with `5` explicit skips; the frontend passed `21/21` tests plus lint and production build; all `16` Promptfoo task configs validated offline; all `19` textual goldens passed with `38` documented warnings; all `280` retained result JSON files passed the duplicate-key-rejecting loader; registry consistency passed across `25` evals; all `165/165` truth-ledger rows are terminal; and contract manifest v6 passed across `922` files with bundle SHA-256 `fefdfdefe88b8dea970675e6a3cfe40ef91691dab344169efca11a4b7884c6d4`. The worktree was clean and no provider call occurred. The only remaining frozen action is the fresh two-case storyboard v3 default-versus-ceiling comparison. It is technically ready, but the external-action safety gate requires explicit approval for the complete provider data flow described below; no storyboard payload has been sent. Operator impact: every local and retained-evidence gate is green, while the sole paid/external evidence step remains visibly permission-bound rather than happening implicitly.
 
 20260722-storyboard-provider-disclosure-and-candidate-preflight - a no-call replay of the exact remaining command, recipes, candidate definitions, and provider configuration found two direct final-gate defects. First, the earlier authorization wording understated the external data flow: each of the four runtime arms sends the project-owned screenplay or derived scene/entity/shot/identity material to configured Anthropic and OpenAI models before image generation; OpenAI GPT-5.4 later receives each complete retained frame/reference packet; and Anthropic Opus 4.6 receives each analysis plus its maintained target/rubric. Runtime `work_model` precedence means the recipe's Gemini discovery default is not used, so no Google call is expected. Second, the supposed per-frame ceiling inherited the shipped `template` grid default while the named default explicitly selected the same mode, making the planned comparison two stochastic samples of one implementation. Added an explicit `storyboard_grid_mode=off` contract and runtime-resolution regression for `gpt_image_2_storyboards`, retained explicit `template` for the shipped candidate, and rolled the immutable contract manifest to v7. The source remains hash-locked at `81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95`; provider credentials are available through the repository wrapper; and all local entrypoints load successfully. No provider call occurred. Operator impact: the paid run will now compare two genuinely different lanes, and consent will cover the real data path rather than a misleading subset.
+
+20260722-first-approved-storyboard-runtime-output-cap - after the user explicitly approved the complete Anthropic/OpenAI data flow, the first v7 runtime arm began at clean commit `5cc8ba2`. MVP ingestion failed before image generation because `script_bible_v1` requested `65,536` output tokens from `claude-haiku-4-5-20251001`, whose live API rejected anything above `64,000`; the harness had launched the world prerequisite in parallel, which completed before interruption. The two run states record `$0.0043752` plus `$0.139287`, or `$0.1436622` total. No storyboard recipe, GPT Image 2 request, runtime result, retained packet, GPT-5.4 analysis, or Opus rubric call occurred. Stopped rather than repeating the same failure across the remaining three arms. The direct v8 repair caps only that exact Haiku model at `64,000` inside its provider payload, preserves any lower caller request, and leaves other models unchanged; focused AI-transport and script-bible tests plus Ruff pass. Operator impact: the retry can use the already approved provider/model path without an invalid request or a silent model substitution.

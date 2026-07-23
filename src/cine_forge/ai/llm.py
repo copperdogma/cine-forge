@@ -68,6 +68,9 @@ MODEL_PRICING_PER_M_TOKEN: dict[str, tuple[float, float]] = {
 ANTHROPIC_MODELS_WITHOUT_TEMPERATURE = {
     "claude-opus-4-8",
 }
+ANTHROPIC_MAX_OUTPUT_TOKENS = {
+    "claude-haiku-4-5-20251001": 64_000,
+}
 
 OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions"
 XAI_CHAT_URL = "https://api.x.ai/v1/chat/completions"
@@ -588,10 +591,17 @@ def _build_anthropic_payload(
     else:
         user_content = prompt
 
+    requested_max_tokens = max_tokens or 16384
+    model_max_tokens = ANTHROPIC_MAX_OUTPUT_TOKENS.get(model)
+    effective_max_tokens = (
+        min(requested_max_tokens, model_max_tokens)
+        if model_max_tokens is not None
+        else requested_max_tokens
+    )
     payload: dict[str, Any] = {
         "model": model,
         "messages": [{"role": "user", "content": user_content}],
-        "max_tokens": max_tokens or 16384,
+        "max_tokens": effective_max_tokens,
     }
     if model not in ANTHROPIC_MODELS_WITHOUT_TEMPERATURE:
         payload["temperature"] = temperature

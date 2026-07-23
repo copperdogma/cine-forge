@@ -60,6 +60,12 @@ hashes before judging or registry promotion.
   two stochastic samples of one implementation. The v7 contract explicitly
   sets `gpt_image_2_storyboards` to `storyboard_grid_mode=off` and retains
   `template` for the shipped candidate, with direct runtime-resolution coverage.
+- The first fully authorized runtime stopped before image generation when the
+  exact Haiku 4.5 endpoint rejected `max_tokens=65536` against its live `64000`
+  maximum. The failed MVP and completed parallel world prerequisite recorded
+  `$0.1436622` total before interruption; no runtime-result or storyboard image
+  was produced. Contract v8 caps only that exact model at its provider limit,
+  preserves lower caller requests, and adds direct payload regression coverage.
 
 ## Conclusion
 

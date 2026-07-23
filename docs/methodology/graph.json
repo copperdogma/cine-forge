@@ -13690,9 +13690,9 @@
         "test-integrity"
       ],
       "legacySystem": "Cross-Cutting",
-      "blockerSummary": "The final frozen storyboard v3 comparison is ready but blocked on explicit\nauthorization to send the project-owned internal Open Frequency screenplay and\nderived benchmark material to Anthropic and OpenAI. No storyboard\npayload has been sent.",
-      "blockerEvidence": "The repaired contract, committed runtime candidates, retained-media gate, and\nlocal preflight are green. The runtime is configured to use Anthropic models\nfor screenplay/scene/shot/identity work and OpenAI for verification plus\n`gpt-image-2` generation. The quality pass then sends the exact retained\nframe/reference packet to OpenAI GPT-5.4 for multimodal analysis and sends that\nanalysis plus the maintained target/rubric to Anthropic Opus 4.6 for judging.\nThe external-action safety review therefore requires a specific user approval\nfor the complete two-provider data flow.",
-      "unblockCondition": "User explicitly approves sending the project-owned Open Frequency screenplay,\nderived script/world/shot-plan/identity material to Anthropic Claude\nHaiku/Sonnet and OpenAI GPT-4.1 mini during prerequisite processing; sending\ngenerated storyboard prompts, blank grid templates, and four synthetic\ntransport-reference JPEGs to OpenAI GPT Image 2; sending all generated\nstoryboard and reference JPEGs to OpenAI GPT-5.4 for analysis; and sending the\nresulting analyses plus source-backed targets to Anthropic Claude Opus 4.6 for\njudging. The bounded matrix is two cases by two genuinely distinct candidates;\nthe historical cost estimate is about `$1.50` excluding retries and pricing\ndrift.",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
       "lastWorkLogEntry": null,
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -16225,7 +16225,6 @@
   "validation": {
     "errors": [],
     "warnings": [
-      "story 208 is In Progress but still carries blocker details; clear them or restore N/A when unblocked",
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
       "UI scout freshness due: attention needed — last run 2026-04-12 is 102 days old against a 14-day cadence"
     ]

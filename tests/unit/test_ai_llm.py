@@ -1007,6 +1007,32 @@ def test_caching_disabled_leaves_content_as_string() -> None:
 
 
 @pytest.mark.unit
+def test_anthropic_payload_caps_haiku_at_its_live_output_limit() -> None:
+    payload = _build_anthropic_payload(
+        model="claude-haiku-4-5-20251001",
+        prompt="Return structured JSON.",
+        temperature=0.0,
+        max_tokens=65_536,
+        response_schema=DemoSchema,
+    )
+
+    assert payload["max_tokens"] == 64_000
+
+
+@pytest.mark.unit
+def test_anthropic_payload_preserves_lower_requested_output_limit() -> None:
+    payload = _build_anthropic_payload(
+        model="claude-haiku-4-5-20251001",
+        prompt="Return structured JSON.",
+        temperature=0.0,
+        max_tokens=4_096,
+        response_schema=DemoSchema,
+    )
+
+    assert payload["max_tokens"] == 4_096
+
+
+@pytest.mark.unit
 def test_caching_not_applied_for_non_anthropic_transport() -> None:
     """enable_caching=True with a non-Anthropic model calls transport without cache_control."""
     calls = []
