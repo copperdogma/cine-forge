@@ -451,6 +451,43 @@ def test_report_cannot_rank_or_clear_a_failed_rubric_gate(tmp_path: Path) -> Non
 
 
 @pytest.mark.unit
+def test_report_names_failed_quality_dimensions_without_blaming_packet_evidence(
+    tmp_path: Path,
+) -> None:
+    runtime, dataset_root = _materialized_eval(tmp_path)
+    variant = runtime["candidate_variants"][0]
+    entries = [
+        _promptfoo_entry(
+            dataset_root=dataset_root,
+            case_id=case_id,
+            output=good_analysis(case_id=case_id),
+        )
+        for case_id in ("sbq_case_001", "sbq_case_002")
+    ]
+    output = json.loads(entries[0]["response"]["output"])
+    output["character_assessments"][0]["second_half_traits"] = ["different", "identity"]
+    entries[0]["response"]["output"] = json.dumps(output)
+
+    summary = report.build_summary(
+        runtime_payload=runtime,
+        promptfoo_payload={"results": {"results": entries}},
+        dataset_root=dataset_root,
+        baseline_variant=variant,
+    )
+
+    row = summary["candidates"][0]
+    assert row["hard_constraints_passed"] is False
+    assert row["hard_constraint_failures"] == ["identity_consistency"]
+    assert summary["recommendation"] == {
+        "decision": "analysis_contract_failed",
+        "rationale": (
+            "At least one default-case analysis failed maintained hard "
+            "dimensions: identity_consistency."
+        ),
+    }
+
+
+@pytest.mark.unit
 def test_report_checks_reference_transport_per_case_not_by_mean(tmp_path: Path) -> None:
     runtime, dataset_root = _materialized_eval(tmp_path)
     runtime["runs"][1]["direct_reference_input_count"] = 0
