@@ -1477,6 +1477,32 @@ evals:
     scores:
       - model: "Gemini 3.6 Flash"
         metrics:
+          overall: 0.74995
+          deterministic: 0.5999
+          rubric: 0.9
+        latency_ms: 6516
+        cost_usd: 0.012589
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "2367cc0"
+        result_file: benchmarks/results/qa-pass-story-208-post-repair-v4-2026-07-22.json
+        evidence_status: decision-grade
+        note: "Final Attempt 018 result on the independently CLEAN v4 source fixture and explicit 4,096-token Opus judge. The model passed neither case: both outputs used generic summaries that omitted required source anchors, and the negative judgment found only five required defect concepts with fewer than six required error-level findings. Opus was lenient on the generic summaries, but the independent deterministic gate prevented a false dual pass. Model-wrong, non-runtime-blocking challenger rejection; do not adopt for QA."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.8484
+          deterministic: 0.7718
+          rubric: 0.925
+        latency_ms: 1782
+        cost_usd: 0.001208
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "2367cc0"
+        result_file: benchmarks/results/qa-pass-story-208-post-repair-v4-2026-07-22.json
+        evidence_status: decision-grade
+        note: "Final Attempt 018 result on the independently CLEAN v4 source fixture and explicit 4,096-token Opus judge. Flash-Lite cleanly passed the six-error negative control but its positive judgment supplied none of the required AirTag, armed-thug, or oar/gunfire grounding facts, so only one of two cases dual-passed. Opus was lenient on the generic positive summary, but the deterministic gate prevented a false pass. Model-wrong, non-runtime-blocking challenger rejection; do not adopt for QA."
+      - model: "Gemini 3.6 Flash"
+        metrics:
           overall: 0.66245
           deterministic: 0.5999
           rubric: 0.725
@@ -1726,17 +1752,15 @@ evals:
       - id: "018"
         story: attempts/018-qa-pass-post-commit-calibration.md
         date: 2026-07-22
-        status: in-progress
-        approach: "Preserved the first post-commit four-row run as diagnostic, repaired the remaining source uncertainty and six-error accounting defects, and will rerun the same two subjects only after the v2 contract manifest is committed."
+        status: succeeded
+        approach: "Preserved three contaminated diagnostics, repaired source truth, six-error accounting, and the Opus output budget, then ran the final source-clean v4 contract. Flash-Lite reached 0.8484 with one of two dual passes; Gemini 3.6 reached 0.74995 with none. Both challengers are rejected for QA."
         worker_model: "Codex (GPT-5.6)"
         worker_model_date: 2026-07-22
         subject_model: "Gemini 3.6 Flash and Gemini 3.5 Flash-Lite"
         score_before: null
-        score_after: null
-        retry_status: ready-after-contract-commit
-        retry_when:
-          - condition: architecture-change
-            note: "Rerun the exact four-row matrix after the corrected positive fixture, scorer accounting, and v2 manifest have an immutable commit identity."
+        score_after: 0.8484
+        latency_after: 1782
+        retry_status: retired
 
   - id: continuity-extraction
     name: Continuity Extraction
@@ -1928,6 +1952,32 @@ evals:
     scores:
       - model: "Gemini 3.6 Flash"
         metrics:
+          overall: 0.4397
+          deterministic: 0.4294
+          rubric: 0.45
+        latency_ms: 6356
+        cost_usd: 0.017154
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "2367cc0"
+        result_file: benchmarks/results/video-understanding-story-208-post-repair-v3-2026-07-22.json
+        evidence_status: decision-grade
+        note: "Final Attempt 019 v3 ordered-frame result: all six schema-valid cases failed both quality gates, with complete requested/returned identity, call IDs, raw usage, exact case coverage, and a data-complete HOLD report. Model-wrong misses include motion, continuity, camera, recurring-object, tone, and evidence errors. Known conservative matcher/target defects can raise the aggregate only to about 0.4575, still far below the 0.80 target with all six cases failing; they are documented follow-up rather than a decision-changing blocker. Decision-grade for HOLD/do-not-adopt, not for fine-grained ranking or native video/audio claims."
+      - model: "Gemini 3.5 Flash-Lite"
+        metrics:
+          overall: 0.4071
+          deterministic: 0.4442
+          rubric: 0.37
+        latency_ms: 2307
+        cost_usd: 0.00273
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "2367cc0"
+        result_file: benchmarks/results/video-understanding-story-208-post-repair-v3-2026-07-22.json
+        evidence_status: decision-grade
+        note: "Final Attempt 019 v3 ordered-frame result: all six schema-valid cases failed both quality gates, with complete requested/returned identity, call IDs, raw usage, exact case coverage, and a data-complete HOLD report. Model-wrong misses include motion, continuity, camera, recurring-object, tone, and evidence errors. Non-decision-changing target/synonym defects are documented follow-up; they cannot rescue any row or change HOLD. Decision-grade for HOLD/do-not-adopt, not for fine-grained ranking or native video/audio claims."
+      - model: "Gemini 3.6 Flash"
+        metrics:
           overall: 0.193333
           deterministic: 0.0
           rubric: 0.386667
@@ -2105,17 +2155,15 @@ evals:
       - id: "019"
         story: attempts/019-video-understanding-post-commit-calibration.md
         date: 2026-07-22
-        status: in-progress
-        approach: "Preserved the first post-commit twelve-row run as diagnostic, rolled the output contract to v3 with exact nested types and Gemini responseSchema, and will rerun the same subjects only after the v2 contract manifest is committed."
+        status: succeeded
+        approach: "Preserved the contract-contaminated diagnostic, rolled the ordered-frame output contract to typed v3 with Gemini responseSchema, and ran the final twelve-row matrix. Gemini 3.6 reached 0.4397 and Flash-Lite 0.4071; both failed all six cases, so the decision is HOLD/do-not-adopt."
         worker_model: "Codex (GPT-5.6)"
         worker_model_date: 2026-07-22
         subject_model: "Gemini 3.6 Flash and Gemini 3.5 Flash-Lite"
         score_before: null
-        score_after: null
-        retry_status: ready-after-contract-commit
-        retry_when:
-          - condition: architecture-change
-            note: "Rerun the exact twelve-row matrix after the v3 prompt, schema transport, lineage, and v2 manifest have an immutable commit identity."
+        score_after: 0.4397
+        latency_after: 6356
+        retry_status: retired
 
   - id: previz-usefulness
     name: Previz Usefulness

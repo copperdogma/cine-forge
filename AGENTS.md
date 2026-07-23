@@ -393,10 +393,9 @@ registry. Benchmark configs live in `benchmarks/tasks/`.
 
 Read current targets from the registry and compare a challenger with both the
 actual runtime default and the best eligible maintained evidence for that slot;
-these are not assumed to be identical. Advance slots independently. While the
-Story 208/registry contamination findings remain current, quarantine raw
-`qa-pass` and `video-understanding` scores from adoption/default/compromise
-decisions until their truth surfaces are source-repaired and revalidated.
+these are not assumed to be identical. Advance slots independently. Historical
+`qa-pass` and `video-understanding` rows remain quarantined; use only later rows
+explicitly marked decision-grade after source repair and clean revalidation.
 
 #### Value-Optimized Module Defaults
 

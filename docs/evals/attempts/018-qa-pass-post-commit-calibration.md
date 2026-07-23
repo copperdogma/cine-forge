@@ -1,6 +1,6 @@
 # Eval Attempt 018 - QA Pass Post-Commit Calibration
 
-**Status:** In progress after independently adjudicated fixture defect
+**Status:** Succeeded — repaired gate rejects both challengers
 **Eval:** qa-pass
 **Date:** 2026-07-22
 **Worker Model:** GPT-5.6 with two independent source/scorer reviewers
@@ -88,6 +88,29 @@ this final gate, roll the contract manifest forward, and rerun without cache.
   chronology mismatch around Mariner's introduction, title card, and confirmation.
   All remaining subject misses stay classified model-wrong.
 
+## Final v4 Result
+
+- Contract commit: `2f5d4b4accd2e525ed14937c46152878d1651598`
+- Durable evidence commit: `2367cc0`
+- Result: `benchmarks/results/qa-pass-story-208-post-repair-v4-2026-07-22.json`
+- Result SHA-256:
+  `6fcbe00034d33b7ead55f7c2def405e68a3a0dc76f762a6359206adaf1d5854f`
+- Gemini 3.6 Flash: deterministic `0.5999`, rubric `0.9000`, combined
+  `0.74995`, `6,516 ms/call`, about `$0.012589/call`; `0/2` dual passes.
+- Gemini 3.5 Flash-Lite: deterministic `0.7718`, rubric `0.9250`, combined
+  `0.8484`, `1,782 ms/call`, about `$0.001208/call`; `1/2` dual passes.
+- Both challengers are model-wrong and rejected for QA. Their generic positive
+  summaries omit all three required source anchors; 3.6 also misses the
+  six-error negative threshold. Opus was lenient on those generic outputs, an
+  ambiguous calibration issue, but the deterministic hard gate prevented every
+  false dual pass. No fixture, identity, accounting, or transport defect remains.
+
+## Conclusion
+
+**Result:** succeeded. The repaired QA decision surface is decision-grade for
+this bounded challenger rejection. Do not adopt either model for the QA slot.
+The rubric-leniency cleanup is follow-up because it did not flip any dual pass.
+
 ## Definition of Done
 
 - [x] Diagnostic result retained with exact contract and file identity
@@ -99,6 +122,6 @@ this final gate, roll the contract manifest forward, and rerun without cache.
 - [x] Explicit judge output budget and manifest v3 committed before retry
 - [x] Full-budget diagnostic inspected and fixture dispute independently adjudicated
 - [x] Corrected fixture receives a later independent CLEAN pass
-- [ ] Manifest v4 committed before the final retry
-- [ ] Final four-row no-cache subject-plus-Opus result inspected and recorded
-- [ ] Registry and Story 208 updated with the final decision
+- [x] Manifest v4 committed before the final retry
+- [x] Final four-row no-cache subject-plus-Opus result inspected and recorded
+- [x] Registry and Story 208 updated with the final decision

@@ -40,23 +40,35 @@ def render_registry_update(
     for eval_id, model_metrics in all_metrics.items():
         for model_name, metrics in model_metrics.items():
             matches = blocks.get((eval_id, model_name), [])
-            if len(matches) != 1:
+            if not matches:
                 raise ValueError(
                     "expected exactly one registry score block for "
-                    f"{eval_id}/{model_name}; found {len(matches)}"
+                    f"{eval_id}/{model_name}; found 0"
                 )
-            start, end = matches[0]
-            score_block = lines[start:end]
-            existing_result_file = _score_block_result_file(
-                score_block,
-                repo_root=repo_root,
-            )
-            if existing_result_file != expected_result_file:
+            candidates: list[tuple[int, int, list[str]]] = []
+            observed_result_files: list[str] = []
+            for start, end in matches:
+                score_block = lines[start:end]
+                existing_result_file = _score_block_result_file(
+                    score_block,
+                    repo_root=repo_root,
+                )
+                observed_result_files.append(existing_result_file)
+                if existing_result_file == expected_result_file:
+                    candidates.append((start, end, score_block))
+            if not candidates and len(matches) == 1:
                 raise ValueError(
                     "registry score block result_file mismatch for "
                     f"{eval_id}/{model_name}: expected {expected_result_file}, "
-                    f"found {existing_result_file}"
+                    f"found {observed_result_files[0]}"
                 )
+            if len(candidates) != 1:
+                raise ValueError(
+                    "expected exactly one registry score block for "
+                    f"{eval_id}/{model_name} with result_file "
+                    f"{expected_result_file}; found {len(candidates)}"
+                )
+            start, end, score_block = candidates[0]
             replacements.append(
                 (start, end, _render_score_block(score_block, metrics))
             )

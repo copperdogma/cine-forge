@@ -28,6 +28,7 @@ if str(SRC_ROOT) not in sys.path:
 from cine_forge.evals.cost_metrics import (  # noqa: E402
     estimate_cost,
     estimate_model_cost,
+    reported_cost_is_estimated,
     validate_reported_cost,
 )
 from cine_forge.evals.provider_identity import (  # noqa: E402
@@ -56,7 +57,6 @@ from cine_forge.evals.token_metrics import (  # noqa: E402
 
 RESULTS_DIR = REPO_ROOT / "benchmarks" / "results"
 REGISTRY_PATH = REPO_ROOT / "docs" / "evals" / "registry.yaml"
-
 
 # ── Filename → eval ID mapping ────────────────────────────────────────────────
 # Derives eval ID from result filename prefix.
@@ -167,6 +167,8 @@ def extract_from_file(path: Path) -> dict[str, dict]:
                 model_slug=model_slug,
             )
             models[model_name]["costs"].append(cost)
+            if reported_cost_is_estimated(provider_id, response.get("metadata")):
+                models[model_name]["cost_estimated"] = True
         else:
             # Try to estimate from tokens
             if prompt_tok > 0:
@@ -326,10 +328,13 @@ def update_registry(result_files: list[Path], dry_run: bool = False):
         raise ValueError(f"cannot derive eval id from {path.name}")
     result_payload = load_result_json(path)
     result_rows = extract_result_rows(result_payload, path)
+    result_envelope = result_payload.get("results")
+    result_prompts = result_envelope.get("prompts") if isinstance(result_envelope, dict) else None
     validate_result_task_contract(
         REPO_ROOT / "benchmarks" / "tasks" / f"{eval_id}.yaml",
         result_payload.get("config") if isinstance(result_payload, dict) else None,
         result_rows,
+        result_prompts,
         repo_root=REPO_ROOT,
     )
     all_metrics = {

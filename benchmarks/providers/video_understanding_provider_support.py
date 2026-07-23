@@ -118,6 +118,7 @@ def build_promptfoo_response(
         "returned_model": returned_model.strip(),
         "request_id": request_id.strip(),
         "provider": request["provider"],
+        "cost_estimated": cost_usd is not None,
         "modality": "ordered_jpeg_frame_packet",
         "audio_submitted": False,
         "frame_count": packet["frame_count"],

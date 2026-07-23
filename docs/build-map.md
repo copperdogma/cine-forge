@@ -91,7 +91,7 @@
 - **C5: Capability Gating** — **hold**
   - Current: Roles declare modality limits and route around them instead of pretending to perceive media they cannot understand.
   - Converge signal: One broadly usable multimodal model makes per-role modality declarations unnecessary.
-  - Evidence: Story 208 reclassified the visual lanes as ordered-frame comprehension and quarantined legacy modality scores. `compromise-C5-role-modality` has no native-video/audio decision-grade deletion signal.
+  - Evidence: Story 208's fresh ordered-frame rows reject both Gemini challengers and do not measure native video/audio. `compromise-C5-role-modality` therefore has no decision-grade deletion signal.
 
 ## spec:5 — Operator Console & Interactive UX
 
@@ -171,7 +171,7 @@
 
 - Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.
 - Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks.
-- Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Configured defaults remain provisional until fresh repaired-contract evidence exists.
+- Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Fresh repaired QA and ordered-frame challenger rows reject Gemini 3.6 Flash and Gemini 3.5 Flash-Lite, while configured defaults and other lanes remain provisional until their own fresh repaired-contract evidence exists.
 
 ### Compromise Progress
 
@@ -182,7 +182,7 @@
 - **C2: Dedicated QA Validation Passes** — **hold**
   - Current: Dedicated QA / verification remains the safest path for structured output quality.
   - Converge signal: First-attempt output becomes reliable enough to demote QA to lightweight assertions only.
-  - Evidence: Story 208 repaired and invalidated the legacy extraction and QA evidence. `compromise-C2-qa-validation` has no current decision-grade row, so dedicated QA remains.
+  - Evidence: Story 208's fresh repaired QA rows reject both Gemini challengers; `compromise-C2-qa-validation` still has no decision-grade deletion signal, so dedicated QA remains.
 - **C3: Tiered Model Strategy** — **hold**
   - Current: Value-optimized model selection remains justified because no single model dominates CineForge's full task surface.
   - Converge signal: One model meets all current default-driving quality bars at acceptable latency and cost.
@@ -273,4 +273,4 @@
 
 ---
 
-*Last generated: 2026-07-22*
+*Last generated: 2026-07-23*

@@ -154,7 +154,17 @@ def _result_payload_with_current_contract(rows: list[dict], task: dict) -> dict:
         if "apiKeyEnvar" in provider["config"]:
             provider["config"]["apiKeyEnvar"] = "[REDACTED]"
     return {
-        "results": {"results": rows},
+        "results": {
+            "results": rows,
+            "prompts": [
+                {
+                    "raw": prompt_text,
+                    "label": f"prompts/task.txt: {prompt_text}",
+                    "provider": provider["label"] or provider["id"],
+                }
+                for provider in saved_providers
+            ],
+        },
         "config": {
             "defaultTest": task["defaultTest"],
             "prompts": task["prompts"],
@@ -438,6 +448,30 @@ def test_known_model_reported_cost_must_match_derived_usage_within_tolerance(
             module.extract_from_file(path)
 
 
+def test_custom_provider_reported_cost_is_marked_estimated(tmp_path: Path) -> None:
+    module = _load_module()
+    path = tmp_path / "video-understanding-custom-cost.json"
+    entry = _result_entry(cost=0.0003)
+    entry["provider"]["id"] = "file://../providers/video_understanding_provider.py"
+    entry["response"]["raw"]["modelVersion"] = "gemini-3.6-flash"
+    path.write_text(json.dumps({"results": {"results": [entry]}}))
+
+    raw = module.extract_from_file(path)["Gemini 3.6 Flash"]
+
+    assert raw["cost_estimated"] is True
+
+
+def test_declared_cost_estimation_provenance_must_be_boolean(tmp_path: Path) -> None:
+    module = _load_module()
+    path = tmp_path / "config-detection-invalid-cost-provenance.json"
+    entry = _result_entry(cost=0.0003)
+    entry["response"]["metadata"] = {"cost_estimated": "yes"}
+    path.write_text(json.dumps({"results": {"results": [entry]}}))
+
+    with pytest.raises(ValueError, match="cost_estimated must be a boolean"):
+        module.extract_from_file(path)
+
+
 @pytest.mark.parametrize(
     ("provider", "response"),
     [
@@ -701,9 +735,13 @@ evals:
   - id: config-detection
     scores:
       - model: "Gemini 3.6 Flash"
-        metrics: {overall: 0.7}
+        metrics:
+          overall: 0.7
+        result_file: benchmarks/results/config-detection-gemini36.json
       - model: "Gemini 3.6 Flash"
-        metrics: {overall: 0.8}
+        metrics:
+          overall: 0.8
+        result_file: benchmarks/results/config-detection-gemini36.json
 """
 
     with pytest.raises(ValueError, match="exactly one registry score block"):
@@ -718,6 +756,52 @@ evals:
             metrics,
             selected_result_file="benchmarks/results/config-detection-gemini36.json",
         )
+
+
+def test_registry_render_selects_exact_result_file_from_model_history() -> None:
+    module = _load_module()
+    registry = """\
+evals:
+  - id: config-detection
+    scores:
+      - model: "Gemini 3.6 Flash"
+        metrics:
+          overall: 0.6
+        latency_ms: 600
+        cost_usd: 0.006
+        result_file: benchmarks/results/config-detection-old.json
+      - model: "Gemini 3.6 Flash"
+        metrics:
+          overall: 0.7
+        latency_ms: 700
+        cost_usd: 0.007
+        result_file: benchmarks/results/config-detection-new.json
+"""
+    metrics = {
+        "config-detection": {
+            "Gemini 3.6 Flash": {
+                "latency_ms": 1234,
+                "cost_usd": 0.0042,
+                "cost_estimated": False,
+                "sample_count": 1,
+                "latency_sample_count": 1,
+                "cost_sample_count": 1,
+            }
+        }
+    }
+
+    rendered, updated = module.render_registry_update(
+        registry,
+        metrics,
+        selected_result_file="benchmarks/results/config-detection-new.json",
+    )
+
+    assert updated == 1
+    assert "latency_ms: 600" in rendered
+    assert "cost_usd: 0.006" in rendered
+    assert "latency_ms: 1234" in rendered
+    assert "cost_usd: 0.0042" in rendered
+    assert "latency_ms: 700" not in rendered
 
 
 def test_registry_render_rejects_partial_result_metrics() -> None:
@@ -880,6 +964,85 @@ evals:
     assert registry_path.read_text() == registry_text
 
 
+def test_task_contract_accepts_promptfoo_provider_prompt_column_index(
+    tmp_path: Path,
+) -> None:
+    module = _load_module()
+    cases = [{"case": "identity"}]
+    task_path, task = _write_contract_task(tmp_path, "qa-pass", cases)
+    google_row = _result_entry(case_vars=cases[0])
+    anthropic_row = _result_entry(
+        label="Claude Haiku 4.5",
+        provider_id="anthropic:messages:claude-haiku-4-5-20251001",
+        case_vars=cases[0],
+    )
+    anthropic_row["response"]["raw"] = {
+        "id": "anthropic-response-123",
+        "model": "claude-haiku-4-5-20251001",
+        "usage": {"input_tokens": 100, "output_tokens": 20},
+    }
+    payload = _result_payload_with_current_contract(
+        [google_row, anthropic_row],
+        task,
+    )
+    payload["results"]["results"][1]["promptIdx"] = 1
+
+    module.validate_result_task_contract(
+        task_path,
+        payload["config"],
+        payload["results"]["results"],
+        payload["results"]["prompts"],
+        repo_root=tmp_path,
+    )
+
+    payload["results"]["results"][1]["promptIdx"] = 0
+    with pytest.raises(ValueError, match="points to a different provider column"):
+        module.validate_result_task_contract(
+            task_path,
+            payload["config"],
+            payload["results"]["results"],
+            payload["results"]["prompts"],
+            repo_root=tmp_path,
+        )
+
+
+@pytest.mark.parametrize(
+    ("mutation", "error"),
+    [
+        ("column_template", "template bytes do not match exactly one current prompt"),
+        ("out_of_range", "outside result prompt columns"),
+        ("non_integer", "promptIdx must be an integer"),
+    ],
+)
+def test_task_contract_rejects_invalid_result_prompt_column_provenance(
+    tmp_path: Path,
+    mutation: str,
+    error: str,
+) -> None:
+    module = _load_module()
+    cases = [{"case": "identity"}]
+    task_path, task = _write_contract_task(tmp_path, "qa-pass", cases)
+    payload = _result_payload_with_current_contract(
+        [_result_entry(case_vars=cases[0])],
+        task,
+    )
+    if mutation == "column_template":
+        payload["results"]["prompts"][0]["raw"] += " stale"
+    elif mutation == "out_of_range":
+        payload["results"]["results"][0]["promptIdx"] = 1
+    else:
+        payload["results"]["results"][0]["promptIdx"] = "0"
+
+    with pytest.raises(ValueError, match=error):
+        module.validate_result_task_contract(
+            task_path,
+            payload["config"],
+            payload["results"]["results"],
+            payload["results"]["prompts"],
+            repo_root=tmp_path,
+        )
+
+
 def test_registry_update_rejects_known_stale_qa_promptfoo_config() -> None:
     module = _load_module()
     stale_result = (
@@ -891,7 +1054,7 @@ def test_registry_update_rejects_known_stale_qa_promptfoo_config() -> None:
 
     with pytest.raises(
         ValueError,
-        match=r"result config\.tests do not match current task",
+        match=r"result config\.defaultTest does not match current task",
     ):
         module.update_registry([stale_result], dry_run=True)
 
@@ -933,6 +1096,7 @@ def test_current_task_contract_rejects_semantic_provenance_mutations(
             task_path,
             payload["config"],
             payload["results"]["results"],
+            payload["results"]["prompts"],
             repo_root=tmp_path,
         )
 
@@ -963,6 +1127,7 @@ def test_current_task_contract_rejects_unconfigured_selected_provider(
             task_path,
             payload["config"],
             payload["results"]["results"],
+            payload["results"]["prompts"],
             repo_root=tmp_path,
         )
 
@@ -1021,6 +1186,7 @@ def test_registry_contract_rejects_provider_model_substitution(
             task_path,
             payload["config"],
             payload["results"]["results"],
+            payload["results"]["prompts"],
             repo_root=tmp_path,
         )
 
@@ -1048,6 +1214,7 @@ def test_registry_contract_requires_non_gemini_provider_owned_identity(
             task_path,
             payload["config"],
             payload["results"]["results"],
+            payload["results"]["prompts"],
             repo_root=tmp_path,
         )
 
@@ -1089,6 +1256,7 @@ def test_registry_contract_accepts_exact_same_base_dated_snapshot(
         task_path,
         payload["config"],
         payload["results"]["results"],
+        payload["results"]["prompts"],
         repo_root=tmp_path,
     )
 
@@ -1120,6 +1288,7 @@ def test_registry_contract_accepts_visual_requested_model_alias_metadata(
         task_path,
         payload["config"],
         payload["results"]["results"],
+        payload["results"]["prompts"],
         repo_root=tmp_path,
     )
 
@@ -1129,6 +1298,7 @@ def test_registry_contract_accepts_visual_requested_model_alias_metadata(
             task_path,
             payload["config"],
             payload["results"]["results"],
+            payload["results"]["prompts"],
             repo_root=tmp_path,
         )
 

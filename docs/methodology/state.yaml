@@ -106,7 +106,7 @@
       "notes": [
         "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.",
         "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks.",
-        "Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Configured defaults remain provisional until fresh repaired-contract evidence exists."
+        "Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Fresh repaired QA and ordered-frame challenger rows reject Gemini 3.6 Flash and Gemini 3.5 Flash-Lite, while configured defaults and other lanes remain provisional until their own fresh repaired-contract evidence exists."
       ],
       "last_reviewed": "2026-07-22"
     },
@@ -161,7 +161,7 @@
       "phase": "hold",
       "current": "Dedicated QA / verification remains the safest path for structured output quality.",
       "converge_signal": "First-attempt output becomes reliable enough to demote QA to lightweight assertions only.",
-      "evidence": "Story 208 repaired and invalidated the legacy extraction and QA evidence. `compromise-C2-qa-validation` has no current decision-grade row, so dedicated QA remains.",
+      "evidence": "Story 208's fresh repaired QA rows reject both Gemini challengers; `compromise-C2-qa-validation` still has no decision-grade deletion signal, so dedicated QA remains.",
       "last_reviewed": "2026-07-22"
     },
     "C3": {
@@ -182,7 +182,7 @@
       "phase": "hold",
       "current": "Roles declare modality limits and route around them instead of pretending to perceive media they cannot understand.",
       "converge_signal": "One broadly usable multimodal model makes per-role modality declarations unnecessary.",
-      "evidence": "Story 208 reclassified the visual lanes as ordered-frame comprehension and quarantined legacy modality scores. `compromise-C5-role-modality` has no native-video/audio decision-grade deletion signal.",
+      "evidence": "Story 208's fresh ordered-frame rows reject both Gemini challengers and do not measure native video/audio. `compromise-C5-role-modality` therefore has no decision-grade deletion signal.",
       "last_reviewed": "2026-07-22"
     },
     "C6": {

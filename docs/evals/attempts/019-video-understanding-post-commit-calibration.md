@@ -1,6 +1,6 @@
 # Eval Attempt 019 - Video Understanding Post-Commit Calibration
 
-**Status:** In progress after diagnostic contract failure
+**Status:** Succeeded — decision-grade HOLD for both challengers
 **Eval:** video-understanding
 **Date:** 2026-07-22
 **Worker Model:** GPT-5.6 with independent result review
@@ -52,12 +52,54 @@ rows without cache.
    then rerun the same twelve rows to a new result path and regenerate the
    report.
 
+## Final v3 Result
+
+- Contract commit: `f89271b14146ce6924c093257eea89930586414a`
+- Durable evidence commit: `2367cc0`
+- Raw result:
+  `benchmarks/results/video-understanding-story-208-post-repair-v3-2026-07-22.json`
+  (`2891a9d0988b562eb199ff71f171136a1a583028c37d59ba91203dd9d7a9dd72`)
+- Report JSON:
+  `benchmarks/results/video-understanding-story-208-post-repair-v3-2026-07-22-report.json`
+  (`a29edb847c0bb68c0a0bc26c0f69149d28f3564df9bddaaaab4f5e9830899a5c`)
+- Report Markdown:
+  `benchmarks/results/video-understanding-story-208-post-repair-v3-2026-07-22-report.md`
+  (`329c8f84658eb5bde6aa8563cea25ef8a23c3aab8de53ebf36a0719d940ec5a5`)
+- All twelve outputs satisfy the exact 13-field schema, every expected case
+  appears once per subject, identity/raw usage are complete, and the report has
+  no contract or regrade errors. Both models fail all six cases.
+- Gemini 3.6 Flash: deterministic `0.4294`, rubric `0.4500`, combined `0.4397`,
+  `6,356 ms/call`, about `$0.017154/call`.
+- Gemini 3.5 Flash-Lite: deterministic `0.4442`, rubric `0.3700`, combined
+  `0.4071`, `2,307 ms/call`, about `$0.002730/call`.
+
+## Classification and Boundary
+
+- Model-wrong failures span motion, continuity, camera language, recurring
+  objects, tone/emotion, and frame-bound evidence; neither challenger is close
+  to the `0.80` gate.
+- Subjective silent-frame tone/speed readings are ambiguous and do not affect
+  the rejection.
+- Row inspection found conservative target/matcher defects: gold/amber synonym
+  penalties, missing red/blue palette truth, rectangle/rectangular matching,
+  an unsupported increasing-scale rooftop target, and exact-keyword penalties
+  for semantic equivalents. The largest quantified correction moves 3.6 only
+  from `0.4397` to about `0.4575`; every row still fails and HOLD is unchanged.
+  Per the user's frozen boundary these are recorded follow-up, not another audit
+  expansion. The result is decision-grade for HOLD/do-not-adopt, not for fine
+  ranking or native video/audio capability claims.
+
+## Conclusion
+
+**Result:** succeeded. Retain both challengers as non-defaults for this ordered-
+frame lane. Remaining failures are non-runtime-blocking for current production.
+
 ## Definition of Done
 
 - [x] Diagnostic result retained with exact contract and file identity
 - [x] Every significant parse/content mismatch classified
 - [x] v3 prompt and Gemini response schema implemented with focused tests
 - [x] Independent v3 contract review passes
-- [ ] Corrected contract committed before the replacement run
-- [ ] Fresh twelve-row no-cache subject-plus-Opus result and report inspected
-- [ ] Registry and Story 208 updated with the final decision
+- [x] Corrected contract committed before the replacement run
+- [x] Fresh twelve-row no-cache subject-plus-Opus result and report inspected
+- [x] Registry and Story 208 updated with the final decision

@@ -31,6 +31,7 @@ def validate_result_task_contract(
     task_path: Path,
     result_config: object,
     result_rows: list[object],
+    result_prompts: object,
     *,
     repo_root: Path,
 ) -> None:
@@ -47,11 +48,16 @@ def validate_result_task_contract(
         selected_providers=selected_providers,
         prompts=prompts,
     )
+    prompt_columns = _validate_result_prompt_columns(
+        result_prompts,
+        selected_providers=selected_providers,
+        prompts=prompts,
+    )
     _validate_rows_against_task(
         task,
         canonical_task,
         result_rows,
-        prompts=prompts,
+        prompt_columns=prompt_columns,
         repo_root=repo_root,
     )
 
@@ -159,12 +165,64 @@ def _validate_saved_prompt_specs(
             raise ValueError("result config.prompts do not match current task")
 
 
+def _validate_result_prompt_columns(
+    value: object,
+    *,
+    selected_providers: set[tuple[str, str]],
+    prompts: tuple[tuple[str | None, str], ...],
+) -> tuple[tuple[tuple[str, str], str, str], ...]:
+    """Bind Promptfoo's provider-prompt table columns to the current task."""
+    if not isinstance(value, list) or not value:
+        raise ValueError("result prompts must be a non-empty list")
+
+    provider_keys: dict[str, tuple[str, str]] = {}
+    for identity in selected_providers:
+        provider_id, label = identity
+        key = label or provider_id
+        if key in provider_keys:
+            raise ValueError(f"selected providers share result prompt key {key!r}")
+        provider_keys[key] = identity
+
+    observed: set[tuple[tuple[str, str], int]] = set()
+    columns: list[tuple[tuple[str, str], str, str]] = []
+    for index, item in enumerate(value):
+        if not isinstance(item, dict):
+            raise ValueError(f"result prompts[{index}] must be a mapping")
+        provider_key = item.get("provider")
+        if not isinstance(provider_key, str) or provider_key not in provider_keys:
+            raise ValueError(
+                f"result prompts[{index}].provider is outside the selected task providers"
+            )
+        label = item.get("label")
+        raw = item.get("raw")
+        matches = [
+            prompt_index
+            for prompt_index, (_, template) in enumerate(prompts)
+            if raw == template
+            and isinstance(label, str)
+            and (label == template or label.endswith(f": {template}"))
+        ]
+        if len(matches) != 1:
+            raise ValueError(
+                f"result prompts[{index}] template bytes do not match exactly one current prompt"
+            )
+        identity = provider_keys[provider_key]
+        prompt_index = matches[0]
+        pair = (identity, prompt_index)
+        if pair in observed:
+            raise ValueError("result prompts contain a duplicate provider-prompt column")
+        observed.add(pair)
+        assert isinstance(label, str)
+        columns.append((identity, prompts[prompt_index][1], label))
+    return tuple(columns)
+
+
 def _validate_rows_against_task(
     task: dict,
     task_path: Path,
     rows: list[object],
     *,
-    prompts: tuple[tuple[str | None, str], ...],
+    prompt_columns: tuple[tuple[tuple[str, str], str, str], ...],
     repo_root: Path,
 ) -> None:
     default = _normalize_test(task.get("defaultTest", {}), "task defaultTest")
@@ -196,7 +254,7 @@ def _validate_rows_against_task(
             row,
             index=index,
             expected_case=expected_case,
-            prompts=prompts,
+            prompt_columns=prompt_columns,
             task_path=task_path,
             repo_root=repo_root,
         )
@@ -354,23 +412,31 @@ def _validate_row_prompt(
     *,
     index: int,
     expected_case: dict,
-    prompts: tuple[tuple[str | None, str], ...],
+    prompt_columns: tuple[tuple[tuple[str, str], str, str], ...],
     task_path: Path,
     repo_root: Path,
 ) -> None:
     prompt_index = row.get("promptIdx")
     if isinstance(prompt_index, bool) or not isinstance(prompt_index, int):
         raise ValueError(f"result row {index}.promptIdx must be an integer")
-    if prompt_index < 0 or prompt_index >= len(prompts):
-        raise ValueError(f"result row {index}.promptIdx is outside current prompts")
+    # Promptfoo indexes provider-prompt result-table columns here, not the
+    # task's prompt-template list. With one template and two providers, valid
+    # rows therefore carry promptIdx 0 and 1.
+    if prompt_index < 0 or prompt_index >= len(prompt_columns):
+        raise ValueError(
+            f"result row {index}.promptIdx is outside result prompt columns"
+        )
     prompt = row.get("prompt")
     if not isinstance(prompt, dict):
         raise ValueError(f"result row {index}.prompt must be a mapping")
-    _, template = prompts[prompt_index]
+    column_provider, template, column_label = prompt_columns[prompt_index]
+    row_provider = _provider_identity(row["provider"], f"result row {index}")
+    if column_provider != row_provider:
+        raise ValueError(
+            f"result row {index}.promptIdx points to a different provider column"
+        )
     label = prompt.get("label")
-    if not isinstance(label, str) or not (
-        label == template or label.endswith(f": {template}")
-    ):
+    if label != column_label:
         raise ValueError(f"result row {index} prompt label bytes do not match current task")
     expected_raw = _render_prompt(
         template,

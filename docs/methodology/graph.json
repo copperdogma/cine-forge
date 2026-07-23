@@ -999,7 +999,7 @@
           "notes": [
             "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.",
             "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks.",
-            "Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Configured defaults remain provisional until fresh repaired-contract evidence exists."
+            "Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Fresh repaired QA and ordered-frame challenger rows reject Gemini 3.6 Flash and Gemini 3.5 Flash-Lite, while configured defaults and other lanes remain provisional until their own fresh repaired-contract evidence exists."
           ],
           "last_reviewed": "2026-07-22"
         },
@@ -1574,7 +1574,7 @@
           "phase": "hold",
           "current": "Dedicated QA / verification remains the safest path for structured output quality.",
           "converge_signal": "First-attempt output becomes reliable enough to demote QA to lightweight assertions only.",
-          "evidence": "Story 208 repaired and invalidated the legacy extraction and QA evidence. `compromise-C2-qa-validation` has no current decision-grade row, so dedicated QA remains.",
+          "evidence": "Story 208's fresh repaired QA rows reject both Gemini challengers; `compromise-C2-qa-validation` still has no decision-grade deletion signal, so dedicated QA remains.",
           "last_reviewed": "2026-07-22"
         },
         "storyIds": [
@@ -1766,7 +1766,7 @@
           "phase": "hold",
           "current": "Roles declare modality limits and route around them instead of pretending to perceive media they cannot understand.",
           "converge_signal": "One broadly usable multimodal model makes per-role modality declarations unnecessary.",
-          "evidence": "Story 208 reclassified the visual lanes as ordered-frame comprehension and quarantined legacy modality scores. `compromise-C5-role-modality` has no native-video/audio decision-grade deletion signal.",
+          "evidence": "Story 208's fresh ordered-frame rows reject both Gemini challengers and do not measure native video/audio. `compromise-C5-role-modality` therefore has no decision-grade deletion signal.",
           "last_reviewed": "2026-07-22"
         },
         "storyIds": [
@@ -14878,15 +14878,21 @@
         {
           "id": "018",
           "date": "2026-07-22",
-          "approach": "Preserved the first post-commit four-row run as diagnostic, repaired the remaining source uncertainty and six-error accounting defects, and will rerun the same two subjects only after the v2 contract manifest is committed.",
+          "approach": "Preserved three contaminated diagnostics, repaired source truth, six-error accounting, and the Opus output budget, then ran the final source-clean v4 contract. Flash-Lite reached 0.8484 with one of two dual passes; Gemini 3.6 reached 0.74995 with none. Both challengers are rejected for QA.",
           "note": "",
-          "retryStatus": "ready-after-contract-commit",
-          "retryWhen": [
-            "architecture-change"
-          ]
+          "retryStatus": "retired",
+          "retryWhen": []
         }
       ],
-      "latestScore": null,
+      "latestScore": {
+        "model": "Gemini 3.5 Flash-Lite",
+        "measured": "2026-07-22",
+        "metrics": {
+          "overall": 0.8484
+        },
+        "evidenceStatus": "decision-grade",
+        "note": "Final Attempt 018 result on the independently CLEAN v4 source fixture and explicit 4,096-token Opus judge. Flash-Lite cleanly passed the six-error negative control but its positive judgment supplied none of the required AirTag, armed-thug, or oar/gunfire grounding facts, so only one of two cases dual-passed. Opus was lenient on the generic positive summary, but the deterministic gate prevented a…"
+      },
       "historicalEvidenceStatus": "contaminated-non-decision-grade",
       "excludedScoreCount": 24,
       "declaredSpecRefs": [
@@ -14908,18 +14914,16 @@
         "sourceId": "qa-pass",
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
-        "posture": "wait-for-trigger",
-        "whyNow": "",
-        "retryTriggerStatus": "waiting",
-        "retryWhen": [
-          "architecture-change"
-        ],
+        "posture": "no-trigger-recorded",
+        "whyNow": "Final Attempt 018 result on the independently CLEAN v4 source fixture and explicit 4,096-token Opus judge. Flash-Lite cleanly passed the six-error negative control but its positive judgment supplied none of the required AirTag, armed-thug, or oar/gunfire grounding facts, so only one of two cases dual-passed. Opus was lenient on the generic positive summary, but the deterministic gate prevented a…",
+        "retryTriggerStatus": "none",
+        "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-07-22",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
           "sourceId": "018",
-          "summary": "Preserved the first post-commit four-row run as diagnostic, repaired the remaining source uncertainty and six-error accounting defects, and will rerun the same two subjects only after the v2 contract manifest is committed."
+          "summary": "Preserved three contaminated diagnostics, repaired source truth, six-error accounting, and the Opus output budget, then ran the final source-clean v4 contract. Flash-Lite reached 0.8484 with one of two dual passes; Gemini 3.6 reached 0.74995 with none. Both challengers are rejected for QA."
         }
       }
     },
@@ -15565,15 +15569,21 @@
         {
           "id": "019",
           "date": "2026-07-22",
-          "approach": "Preserved the first post-commit twelve-row run as diagnostic, rolled the output contract to v3 with exact nested types and Gemini responseSchema, and will rerun the same subjects only after the v2 contract manifest is committed.",
+          "approach": "Preserved the contract-contaminated diagnostic, rolled the ordered-frame output contract to typed v3 with Gemini responseSchema, and ran the final twelve-row matrix. Gemini 3.6 reached 0.4397 and Flash-Lite 0.4071; both failed all six cases, so the decision is HOLD/do-not-adopt.",
           "note": "",
-          "retryStatus": "ready-after-contract-commit",
-          "retryWhen": [
-            "architecture-change"
-          ]
+          "retryStatus": "retired",
+          "retryWhen": []
         }
       ],
-      "latestScore": null,
+      "latestScore": {
+        "model": "Gemini 3.6 Flash",
+        "measured": "2026-07-22",
+        "metrics": {
+          "overall": 0.4397
+        },
+        "evidenceStatus": "decision-grade",
+        "note": "Final Attempt 019 v3 ordered-frame result: all six schema-valid cases failed both quality gates, with complete requested/returned identity, call IDs, raw usage, exact case coverage, and a data-complete HOLD report. Model-wrong misses include motion, continuity, camera, recurring-object, tone, and evidence errors. Known conservative matcher/target defects can raise the aggregate only to about 0.45…"
+      },
       "historicalEvidenceStatus": "",
       "excludedScoreCount": 14,
       "declaredSpecRefs": [
@@ -15602,18 +15612,16 @@
         "sourceId": "video-understanding",
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
-        "posture": "wait-for-trigger",
-        "whyNow": "",
-        "retryTriggerStatus": "waiting",
-        "retryWhen": [
-          "architecture-change"
-        ],
+        "posture": "no-trigger-recorded",
+        "whyNow": "Final Attempt 019 v3 ordered-frame result: all six schema-valid cases failed both quality gates, with complete requested/returned identity, call IDs, raw usage, exact case coverage, and a data-complete HOLD report. Model-wrong misses include motion, continuity, camera, recurring-object, tone, and evidence errors. Known conservative matcher/target defects can raise the aggregate only to about 0.45…",
+        "retryTriggerStatus": "none",
+        "retryWhen": [],
         "lastRelevantAction": {
           "date": "2026-07-22",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
           "sourceId": "019",
-          "summary": "Preserved the first post-commit twelve-row run as diagnostic, rolled the output contract to v3 with exact nested types and Gemini responseSchema, and will rerun the same subjects only after the v2 contract manifest is committed."
+          "summary": "Preserved the contract-contaminated diagnostic, rolled the ordered-frame output contract to typed v3 with Gemini responseSchema, and ran the final twelve-row matrix. Gemini 3.6 reached 0.4397 and Flash-Lite 0.4071; both failed all six cases, so the decision is HOLD/do-not-adopt."
         }
       }
     }
@@ -15742,7 +15750,7 @@
         "notes": [
           "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.",
           "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks.",
-          "Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Configured defaults remain provisional until fresh repaired-contract evidence exists."
+          "Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Fresh repaired QA and ordered-frame challenger rows reject Gemini 3.6 Flash and Gemini 3.5 Flash-Lite, while configured defaults and other lanes remain provisional until their own fresh repaired-contract evidence exists."
         ],
         "last_reviewed": "2026-07-22"
       },
@@ -15803,7 +15811,7 @@
         "phase": "hold",
         "current": "Dedicated QA / verification remains the safest path for structured output quality.",
         "converge_signal": "First-attempt output becomes reliable enough to demote QA to lightweight assertions only.",
-        "evidence": "Story 208 repaired and invalidated the legacy extraction and QA evidence. `compromise-C2-qa-validation` has no current decision-grade row, so dedicated QA remains.",
+        "evidence": "Story 208's fresh repaired QA rows reject both Gemini challengers; `compromise-C2-qa-validation` still has no decision-grade deletion signal, so dedicated QA remains.",
         "last_reviewed": "2026-07-22"
       },
       "C3": {
@@ -15824,7 +15832,7 @@
         "phase": "hold",
         "current": "Roles declare modality limits and route around them instead of pretending to perceive media they cannot understand.",
         "converge_signal": "One broadly usable multimodal model makes per-role modality declarations unnecessary.",
-        "evidence": "Story 208 reclassified the visual lanes as ordered-frame comprehension and quarantined legacy modality scores. `compromise-C5-role-modality` has no native-video/audio decision-grade deletion signal.",
+        "evidence": "Story 208's fresh ordered-frame rows reject both Gemini challengers and do not measure native video/audio. `compromise-C5-role-modality` therefore has no decision-grade deletion signal.",
         "last_reviewed": "2026-07-22"
       },
       "C6": {
@@ -16218,7 +16226,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 101 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 102 days old against a 14-day cadence"
     ]
   }
 }

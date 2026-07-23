@@ -139,9 +139,9 @@ runs.
    - Use both the maintained structural scorer and semantic rubric, and record
      judge-provider/capability bias. A same-provider judge is not sole evidence
      for a marginal decision-changing result.
-   - While Story 208/registry contamination notes remain current, quarantine
-     raw `qa-pass` and `video-understanding` scores from adoption/default/
-     compromise decisions until source-backed repair and revalidation.
+   - Keep historical Story 208 `qa-pass` and `video-understanding` rows
+     quarantined. Use only later rows explicitly marked decision-grade after
+     source-backed repair and clean revalidation.
 
 ## Boundaries
 

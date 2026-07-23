@@ -78,3 +78,17 @@ def validate_reported_cost(
             f"within rel={REPORTED_COST_REL_TOLERANCE:g}, "
             f"abs=${REPORTED_COST_ABS_TOLERANCE_USD:g}"
         )
+
+
+def reported_cost_is_estimated(provider_id: str, metadata: object) -> bool:
+    """Classify nonzero cost evidence as provider-reported or locally estimated."""
+    if metadata is not None and not isinstance(metadata, dict):
+        raise ValueError("response metadata must be a mapping")
+    declared = metadata.get("cost_estimated") if isinstance(metadata, dict) else None
+    if declared is not None:
+        if not isinstance(declared, bool):
+            raise ValueError("response metadata.cost_estimated must be a boolean")
+        return declared
+    # Promptfoo did not calculate a cost supplied by a local file provider;
+    # maintained custom providers derive it from token usage and price tables.
+    return provider_id.startswith("file://")

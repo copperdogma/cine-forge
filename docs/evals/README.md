@@ -206,14 +206,14 @@ without becoming the best eligible choice, and the highest raw score can be
 ineligible because it misses latency/cost, used a bad contract, or came from a
 contaminated fixture. Evaluate each model slot independently.
 
-### Current QA/video quarantine
+### QA/video evidence boundary
 
 Story 208 and the affected registry notes record material truth-surface
-contamination in `qa-pass` and `video-understanding`. Until source-backed
-repairs and clean verification supersede those notes, their raw scores are not
-eligible evidence for model adoption/rejection, runtime-default changes, or
-C2/C3/C5 compromise movement. A model evaluation must repair and revalidate the
-surface through `/improve-eval`, or report the relevant slot as not measured.
+contamination in historical `qa-pass` and `video-understanding` rows. Those raw
+scores remain ineligible for model adoption/rejection, runtime-default changes,
+or C2/C3/C5 compromise movement. Use only a later row explicitly marked
+decision-grade after source-backed repair and clean revalidation; otherwise
+repair the surface through `/improve-eval` or report the slot as not measured.
 
 ## Speed and Cost
 

@@ -120,6 +120,42 @@ def test_gemini_cost_includes_hidden_thinking_but_keeps_visible_completion() -> 
 
 
 @pytest.mark.unit
+def test_promptfoo_response_declares_locally_estimated_cost() -> None:
+    request = {
+        "evaluation_id": "opaque_001",
+        "frame_policy": "five_evenly_spaced_jpegs_v1",
+        "model": "gemini-3.6-flash",
+        "packet": {
+            "frame_count": 1,
+            "frame_sha256": ["a" * 64],
+            "meta": {"candidate_variant": None, "clip_id": "case_a"},
+            "meta_sha256": "b" * 64,
+            "sample_times_seconds": [0.0],
+        },
+        "prompt_version": "video-understanding-frame-packet-v3",
+        "provider": "google",
+    }
+    response = {
+        "output": "{}",
+        "raw": {
+            "modelVersion": "gemini-3.6-flash",
+            "responseId": "provider-call-123",
+        },
+        "token_usage": {"completion": 10, "prompt": 100, "total": 110},
+    }
+
+    result = provider._build_promptfoo_response(
+        request=request,
+        response=response,
+        latency_ms=100,
+        cost_usd=0.000225,
+        subject_contract_sha256=None,
+    )
+
+    assert result["metadata"]["cost_estimated"] is True
+
+
+@pytest.mark.unit
 @pytest.mark.parametrize(
     ("token_usage", "message"),
     [
