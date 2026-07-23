@@ -110,7 +110,6 @@ def regrade_variant(
     entries: list[dict[str, Any]],
 ) -> dict[str, Any]:
     scores = []
-    hard_constraint_failures: set[str] = set()
     python_values: list[float] = []
     python_passes: list[bool] = []
     recorded_python_passes: list[bool] = []
@@ -121,23 +120,11 @@ def regrade_variant(
         target_path = storyboard_scorer._resolve_relative(
             str(entry.get("vars", {}).get("target_path") or "")
         )
-        output = _entry_output(entry)
         score = storyboard_scorer.score_output_against_target(
-            output=output,
+            output=_entry_output(entry),
             target_path=target_path,
             model_label="promptfoo-provider",
             prompt_version=storyboard_scorer.PROMPT_VERSION,
-        )
-        target = storyboard_scorer.StoryboardAnalysisTarget.model_validate_json(
-            target_path.read_text(encoding="utf-8")
-        )
-        prediction = storyboard_scorer.parse_prediction(output)
-        hard_constraint_failures.update(
-            _failed_hard_constraints(
-                score=score,
-                prediction=prediction,
-                target=target,
-            )
         )
         scores.append(score)
         finalized = storyboard_scorer.finalize_score(
@@ -174,7 +161,6 @@ def regrade_variant(
             else None
         ),
         "hard_constraints_passed": hard_constraints_passed,
-        "hard_constraint_failures": sorted(hard_constraint_failures),
         "quality_gates_passed": quality_gates_passed,
         "dimension_scores": {
             name: round(mean(values), 4) for name, values in sorted(dimensions.items())
@@ -183,35 +169,6 @@ def regrade_variant(
         "analysis_cost_usd": _mean_entry_value(entries, "cost"),
         "calls": len(entries),
     }
-
-
-def _failed_hard_constraints(
-    *,
-    score: Any,
-    prediction: Any,
-    target: Any,
-) -> set[str]:
-    failures: set[str] = set()
-    if not storyboard_scorer._packet_contract_passes(
-        prediction=prediction,
-        target=target,
-    ):
-        failures.add("packet_contract")
-    hard_dimensions = {
-        "evidence",
-        "identity_consistency",
-        "story_specificity",
-        "style_consistency",
-        "text_cleanliness",
-    }
-    if target.prop_discipline_evaluable:
-        hard_dimensions.add("prop_discipline")
-    failures.update(
-        dimension.dimension
-        for dimension in score.dimensions
-        if dimension.dimension in hard_dimensions and not dimension.passed
-    )
-    return failures
 
 
 def runtime_contract_by_variant(

@@ -139,7 +139,6 @@ def _build_candidate_row(
         "quality_python_regraded": quality["python_overall"],
         "quality_rubric_recorded": quality["rubric_overall"],
         "hard_constraints_passed": quality["hard_constraints_passed"],
-        "hard_constraint_failures": quality["hard_constraint_failures"],
         "quality_gates_passed": quality["quality_gates_passed"],
         "dimension_scores": quality["dimension_scores"],
         "runtime_contract_passed": runtime_contract["passed"],
@@ -170,14 +169,10 @@ def render_markdown(summary: dict[str, Any]) -> str:
         summary["recommendation"]["rationale"],
         "",
         (
-            "| Candidate | Quality | Current Python | Recorded Rubric | Hard | "
-            "Hard failures | Runtime | Story | Style | Identity | Text | "
-            "Mean Total ms | Mean Cost |"
+            "| Candidate | Quality | Current Python | Recorded Rubric | Hard | Runtime | "
+            "Story | Style | Identity | Text | Mean Total ms | Mean Cost |"
         ),
-        (
-            "| --- | ---: | ---: | ---: | --- | --- | --- | ---: | ---: | ---: | "
-            "---: | ---: | ---: |"
-        ),
+        "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for row in summary["candidates"]:
         dimensions = row["dimension_scores"]
@@ -186,7 +181,6 @@ def render_markdown(summary: dict[str, Any]) -> str:
             f"{_fmt(row['quality_python_regraded'])} | "
             f"{_fmt(row['quality_rubric_recorded'])} | "
             f"{'pass' if row['hard_constraints_passed'] else 'fail'} | "
-            f"{', '.join(row['hard_constraint_failures']) or 'none'} | "
             f"{'pass' if row['runtime_contract_passed'] else 'fail'} | "
             f"{_fmt(dimensions.get('story_specificity'))} | "
             f"{_fmt(dimensions.get('style_consistency'))} | "
@@ -216,12 +210,11 @@ def _recommend(
             "rationale": "; ".join(baseline["runtime_contract_failures"]),
         }
     if not baseline["hard_constraints_passed"]:
-        failures = ", ".join(baseline["hard_constraint_failures"]) or "unspecified"
         return {
             "decision": "analysis_contract_failed",
             "rationale": (
-                "At least one default-case analysis failed maintained hard "
-                f"dimensions: {failures}."
+                "At least one default-case analysis failed packet/evidence hard "
+                "constraints."
             ),
         }
     if not baseline["quality_gates_passed"]:

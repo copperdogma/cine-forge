@@ -85,16 +85,11 @@ hashes before judging or registry promotion.
   retained; the provenance-stamped decision matrix replaces only that failed
   judge row.
 - Manual inspection covered every generated frame plus all source grids and
-  reference cards. All required broad cue groups are materially represented,
-  crops match their full grids, and no retained media is corrupt. The
-  image-generation misses are model-wrong and non-runtime-blocking: recurring
-  identity drift is material in the per-frame case, storm cues are subdued,
-  and lantern/boot blocking plus the receiver beat are not always clear.
-  Separately, GPT-5.4 under-read some visible tower/catwalk, receiver, and
-  recurring-identity evidence, especially in the more coherent template-grid
-  packet. Those are analysis-model-wrong, non-runtime-blocking mismatches; the
-  recorded deterministic dimensions measure packet-analysis accuracy and must
-  not be presented as pure image-model quality. Abstract cards are
+  reference cards. All required source cue groups are materially represented,
+  crops match their full grids, and no retained media is corrupt. Significant
+  misses are model-wrong and non-runtime-blocking: recurring identity drift
+  (materially worse per-frame), subdued storm cues, uncertain lantern/boot
+  blocking, and incomplete receiver/location recognition. Abstract cards are
   transport-only; penalizing absent glyph/color reproduction would be
   golden-wrong. No source golden requires correction.
 
@@ -145,10 +140,8 @@ would still be new evidence and the v2 contract was independently contaminated.
 - [x] Added deterministic and adversarial retained-media controls
 - [x] Rejected missing classification, dirty/untracked evidence, stale schema,
       and symlink substitution
-- [x] Recorded the authorized runtime, analysis, bounded-retry, and aborted-run
-      latency/cost accounting
-- [x] Preserved every diagnostic and retry artifact; no failed or partial row
-      was silently accepted as decision evidence
+- [x] Recorded latency and cost as not measured / zero-provider-call
+- [x] Did not run or silently accept a score change
 - [x] Recorded an explicit retry trigger
 - [x] Completed the exact fresh two-case/two-candidate runtime matrix
 - [x] Retained and hash-validated every scored visual byte outside `output/`
