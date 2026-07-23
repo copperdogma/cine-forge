@@ -199,6 +199,16 @@ def test_gpt_image_2_template_grid_remains_default_candidate() -> None:
 
 
 @pytest.mark.unit
+def test_per_frame_quality_ceiling_explicitly_disables_the_runtime_grid_default() -> None:
+    per_frame = support.CANDIDATE_SPECS["gpt_image_2_storyboards"]
+    template_grid = support.CANDIDATE_SPECS["gpt_image_2_template_grid_storyboards"]
+
+    assert per_frame.image_model == template_grid.image_model == "gpt-image-2"
+    assert per_frame.runtime_params == {"storyboard_grid_mode": "off"}
+    assert template_grid.runtime_params["storyboard_grid_mode"] == "template"
+
+
+@pytest.mark.unit
 def test_generator_rejects_missing_and_duplicate_cases(tmp_path: Path) -> None:
     runtime = _fake_runtime(tmp_path)
     missing = deepcopy(runtime)

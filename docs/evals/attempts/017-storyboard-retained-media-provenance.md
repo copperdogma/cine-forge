@@ -55,6 +55,11 @@ hashes before judging or registry promotion.
   dependencies, with an independent required-set regression.
 - Kept all old Story 186/188/190 measurements quarantined. No damaged or
   contaminated byte was promoted into the repository evidence packet.
+- Final no-call preflight found that the named per-frame comparator inherited
+  the shipped `template` grid default, so the planned matrix would have compared
+  two stochastic samples of one implementation. The v7 contract explicitly
+  sets `gpt_image_2_storyboards` to `storyboard_grid_mode=off` and retains
+  `template` for the shipped candidate, with direct runtime-resolution coverage.
 
 ## Conclusion
 

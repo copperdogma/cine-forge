@@ -154,6 +154,7 @@ CANDIDATE_SPECS: dict[str, CandidateSpec] = {
         image_model="gpt-image-2",
         variant="gpt_image_2_storyboards",
         label="GPT Image 2 Storyboards",
+        runtime_params={"storyboard_grid_mode": "off"},
     ),
     "gpt_image_2_square_storyboards": CandidateSpec(
         image_model="gpt-image-2",

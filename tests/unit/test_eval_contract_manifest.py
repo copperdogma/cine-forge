@@ -16,18 +16,19 @@ SPEC.loader.exec_module(manifest)
 
 @pytest.mark.unit
 def test_current_story_208_manifest_rolls_forward_without_rewriting_v1() -> None:
-    assert manifest.DEFAULT_OUTPUT.name == "story-208-contract-manifest-v6.json"
+    assert manifest.DEFAULT_OUTPUT.name == "story-208-contract-manifest-v7.json"
     payload = manifest.build_manifest(
         REPO_ROOT,
         manifest.DEFAULT_LEDGER,
         manifest.DEFAULT_OUTPUT,
     )
-    assert payload["manifest_id"] == "story-208-eval-contracts-v6"
+    assert payload["manifest_id"] == "story-208-eval-contracts-v7"
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v1.json").exists()
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v2.json").exists()
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v3.json").exists()
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v4.json").exists()
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v5.json").exists()
+    assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v6.json").exists()
 
 
 @pytest.mark.unit

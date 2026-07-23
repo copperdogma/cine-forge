@@ -29,6 +29,30 @@ def _jpeg_bytes(size: str = "1536x1024") -> bytes:
 
 
 @pytest.mark.unit
+def test_runtime_candidates_resolve_to_distinct_per_frame_and_template_modes(
+    tmp_path: Path,
+) -> None:
+    input_file = tmp_path / "source.fountain"
+    input_file.write_text("INT. ROOM - DAY\n", encoding="utf-8")
+
+    per_frame = runtime_eval._build_runtime_params(
+        input_file=input_file,
+        scene_ids=["scene_001"],
+        candidate=runtime_eval.CANDIDATE_SPECS["gpt_image_2_storyboards"],
+    )
+    template_grid = runtime_eval._build_runtime_params(
+        input_file=input_file,
+        scene_ids=["scene_001"],
+        candidate=runtime_eval.CANDIDATE_SPECS[
+            "gpt_image_2_template_grid_storyboards"
+        ],
+    )
+
+    assert per_frame["storyboard_grid_mode"] == "off"
+    assert template_grid["storyboard_grid_mode"] == "template"
+
+
+@pytest.mark.unit
 def test_runtime_collector_reads_direct_reference_inputs_from_artifact(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
