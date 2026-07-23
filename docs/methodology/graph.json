@@ -13690,9 +13690,9 @@
         "test-integrity"
       ],
       "legacySystem": "Cross-Cutting",
-      "blockerSummary": null,
-      "blockerEvidence": null,
-      "unblockCondition": null,
+      "blockerSummary": "The final frozen storyboard v3 comparison is ready but blocked on explicit\nauthorization to send the non-public two-case Open Frequency fixture, prompts,\nand reference images to external providers. No storyboard payload has been\nsent.",
+      "blockerEvidence": "The repaired contract, committed runtime candidates, retained-media gate, and\nlocal preflight are green. The remaining command would send fixture material to\nOpenAI for image generation and the resulting exact comparison packet to\nAnthropic for judging; the external-action safety review therefore requires a\nspecific user approval after that data flow was disclosed.",
+      "unblockCondition": "User explicitly approves sending the frozen two-case Open Frequency storyboard\nfixture, prompts, and reference images to OpenAI for generation and Anthropic\nfor judging.",
       "lastWorkLogEntry": null,
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -16225,6 +16225,7 @@
   "validation": {
     "errors": [],
     "warnings": [
+      "story 208 is In Progress but still carries blocker details; clear them or restore N/A when unblocked",
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
       "UI scout freshness due: attention needed — last run 2026-04-12 is 102 days old against a 14-day cadence"
     ]

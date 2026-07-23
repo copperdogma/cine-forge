@@ -184,15 +184,24 @@ made them non-decision-grade under the repaired contracts.
 
 ## Blocker Summary
 
-N/A
+The final frozen storyboard v3 comparison is ready but blocked on explicit
+authorization to send the non-public two-case Open Frequency fixture, prompts,
+and reference images to external providers. No storyboard payload has been
+sent.
 
 ## Blocker Evidence
 
-N/A
+The repaired contract, committed runtime candidates, retained-media gate, and
+local preflight are green. The remaining command would send fixture material to
+OpenAI for image generation and the resulting exact comparison packet to
+Anthropic for judging; the external-action safety review therefore requires a
+specific user approval after that data flow was disclosed.
 
 ## Unblock Condition
 
-N/A
+User explicitly approves sending the frozen two-case Open Frequency storyboard
+fixture, prompts, and reference images to OpenAI for generation and Anthropic
+for judging.
 
 ## Architectural Fit
 
@@ -382,3 +391,5 @@ This expanded plan changes maintained goldens, scorers, test selection, visual f
 20260722-final-evidence-promotion-gate - replayed the documented registry-promotion command against the final QA/video files and found two direct provenance/accounting defects in the gate itself. Promptfoo `promptIdx` indexes provider-prompt result-table columns rather than the task prompt list, so the validator now binds each row through the retained `results.prompts` column, exact provider, template, rendered bytes, grader config, and current task. Registry updates now select the unique row by eval, model, and exact `result_file`, preserving same-model history while rejecting duplicate targets. Custom-provider token-priced costs are explicitly classified estimated, including both final video rows. Focused adversarial tests, Ruff, exact dry-run and write promotion, registry consistency, ledger consistency, and diff hygiene pass. `task_provenance.py` is now 487 lines with no method over 100 lines; decomposition remains an adjacent follow-up under the user's frozen boundary. No provider call occurred in this repair. Operator impact: the normal promotion command now accepts the valid two-provider evidence without weakening byte provenance or silently rewriting the wrong historical row.
 
 20260722-full-unit-gate-repair - the post-checkpoint honest unit run selected 2,039 tests and exposed two direct final-gate regressions: a historical-quarantine assertion rejected the two newly decision-grade video rows, and the maintained visual provider was 409 lines against its enforced `<400` limit. The registry regression now names the exact two eligible `(model, result_file)` pairs and still requires every other historical row to remain contaminated. Reused the existing provider-support boundary for cost derivation, leaving the dynamically loaded entrypoint at 363 lines and the focused helper at 215 without changing transport behavior. The two originally failing tests plus the full video benchmark slice and focused Ruff passed; the complete offline unit gate then passed `2,039/2,039`. No provider call occurred. Operator impact: new clean evidence can coexist with quarantined history, and the visual transport remains within its enforced review-size boundary.
+
+20260722-final-validation-and-storyboard-authorization-gate - the final bounded validation is green on the committed repair: the complete backend suite passed `2,124` with `5` explicit skips; the frontend passed `21/21` tests plus lint and production build; all `16` Promptfoo task configs validated offline; all `19` textual goldens passed with `38` documented warnings; all `280` retained result JSON files passed the duplicate-key-rejecting loader; registry consistency passed across `25` evals; all `165/165` truth-ledger rows are terminal; and contract manifest v6 passed across `922` files with bundle SHA-256 `fefdfdefe88b8dea970675e6a3cfe40ef91691dab344169efca11a4b7884c6d4`. The worktree was clean and no provider call occurred. The only remaining frozen action is the fresh two-case storyboard v3 default-versus-ceiling comparison. It is technically ready, but the external-action safety gate requires explicit approval to send the non-public Open Frequency fixture, prompts, and reference images to OpenAI for generation and Anthropic for judging; no storyboard payload has been sent. Operator impact: every local and retained-evidence gate is green, while the sole paid/external evidence step remains visibly permission-bound rather than happening implicitly.
