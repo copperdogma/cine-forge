@@ -1,0 +1,102 @@
+{
+  "schema_version": "storyboard-generation-quality-decision-correction-v1",
+  "eval_id": "storyboard-generation-quality",
+  "evidence_status": "current-contract-complete",
+  "correction_scope": "Documentation and model-attribution correction only; retained media, provider outputs, scores, latency, cost, hard-gate outcome, and default decision are unchanged.",
+  "source_decision": {
+    "path": "benchmarks/results/storyboard-generation-quality-v3-decision-2026-07-22.json",
+    "sha256": "b9f38ae27685f5fa631d41f99da5ff39535bdda75144e69c429d569d078388d7"
+  },
+  "correction": {
+    "original_rationale": "At least one default-case analysis failed packet/evidence hard constraints.",
+    "corrected_rationale": "At least one default-case analysis failed maintained hard dimensions: identity_consistency and story_specificity.",
+    "basis": [
+      "All four retained rows have exact packet identity and complete frame/reference counts.",
+      "Both candidates pass the runtime contract.",
+      "Both candidates score evidence=1.0.",
+      "The maintained hard gate also requires story_specificity and identity_consistency to pass; both dimensions fail for both candidates."
+    ]
+  },
+  "candidates": [
+    {
+      "candidate_label": "GPT Image 2 Template Grid Storyboards",
+      "candidate_variant": "gpt_image_2_template_grid_storyboards",
+      "quality_overall": null,
+      "quality_python_regraded": 0.6962,
+      "quality_rubric_recorded": 0.615,
+      "hard_constraints_passed": false,
+      "hard_constraint_failures": [
+        "identity_consistency",
+        "story_specificity"
+      ],
+      "runtime_contract_passed": true,
+      "dimension_scores": {
+        "evidence": 1.0,
+        "identity_consistency": 0.3972,
+        "prop_discipline": 1.0,
+        "reference_fidelity": 1.0,
+        "story_specificity": 0.6667,
+        "style_consistency": 0.7345,
+        "text_cleanliness": 1.0
+      },
+      "mean_total_elapsed_ms": 366968.0,
+      "mean_storyboard_stage_elapsed_ms": 110761.5,
+      "mean_total_cost_usd": 0.272
+    },
+    {
+      "candidate_label": "GPT Image 2 Storyboards",
+      "candidate_variant": "gpt_image_2_storyboards",
+      "quality_overall": null,
+      "quality_python_regraded": 0.6331,
+      "quality_rubric_recorded": 0.77,
+      "hard_constraints_passed": false,
+      "hard_constraint_failures": [
+        "identity_consistency",
+        "story_specificity"
+      ],
+      "runtime_contract_passed": true,
+      "dimension_scores": {
+        "evidence": 1.0,
+        "identity_consistency": 0.1871,
+        "prop_discipline": 1.0,
+        "reference_fidelity": 1.0,
+        "story_specificity": 0.6667,
+        "style_consistency": 0.6818,
+        "text_cleanliness": 1.0
+      },
+      "mean_total_elapsed_ms": 645751.0,
+      "mean_storyboard_stage_elapsed_ms": 413651.0,
+      "mean_total_cost_usd": 0.42
+    }
+  ],
+  "mismatch_classification": {
+    "image_generation_model_wrong_non_runtime_blocking": [
+      "Material recurring-identity drift in the per-frame conditioned case.",
+      "Subdued storm cues.",
+      "Unclear lantern/boot staging and incomplete receiver depiction in some frames."
+    ],
+    "packet_analysis_model_wrong_non_runtime_blocking": [
+      "GPT-5.4 under-read some visible tower/catwalk and receiver evidence.",
+      "GPT-5.4 under-read comparatively coherent recurring-identity evidence in the template-grid packet."
+    ],
+    "ambiguous_non_runtime_blocking": [
+      "The final ON AIR state and some lantern/boot blocking remain visually uncertain.",
+      "One per-frame antenna depiction is plausible but reads like a blank panel."
+    ],
+    "golden_wrong": [],
+    "golden_limit": "Abstract reference cards prove transport only; absent glyph or color reproduction is not a quality failure."
+  },
+  "recommendation": {
+    "decision": "analysis_contract_failed",
+    "rationale": "At least one default-case analysis failed maintained hard dimensions: identity_consistency and story_specificity.",
+    "default_action": "No quality promotion or default change. Keep template-grid only as the faster, cheaper value hold."
+  },
+  "retained_media": {
+    "manifest": "benchmarks/storyboard_generation_quality/manifest.json",
+    "manifest_sha256": "6bf488777cd23f374204ac273ba2dcd114eb18c9b24ee039f52da65909dceef6",
+    "promptfoo_result": "benchmarks/results/storyboard-generation-quality-v3-quality-decision-matrix-2026-07-22.json",
+    "promptfoo_result_sha256": "94794169a8f25a0eeeffe95bd8a873df82103664ea212da54c7daa2672bf6b21",
+    "runtime_result": "benchmarks/results/storyboard-generation-quality-v3-runtime-2026-07-22.json",
+    "runtime_result_sha256": "ec2a5622307441a91de968f29b99718a32ecab6030035d8a429831ed1eff21d0"
+  }
+}
