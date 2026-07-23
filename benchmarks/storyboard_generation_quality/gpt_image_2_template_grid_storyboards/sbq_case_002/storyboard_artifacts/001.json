@@ -1,0 +1,654 @@
+{
+  "data": {
+    "aspect_ratio": "16:9",
+    "character_identity_locks": [
+      {
+        "appearance_summary": "Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.",
+        "character_id": "aria",
+        "distinguishing_features": [
+          "Dark hair, pulled back or short",
+          "Alert, focused eyes",
+          "30s-40s age band",
+          "Medium build"
+        ],
+        "name": "ARIA",
+        "source": "llm",
+        "wardrobe_summary": "Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality."
+      },
+      {
+        "appearance_summary": "Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.",
+        "character_id": "noah",
+        "distinguishing_features": [
+          "Dark short hair, neatly maintained",
+          "Alert, focused eyes suited to monitoring equipment",
+          "Lean to average build",
+          "Clean-shaven or light stubble"
+        ],
+        "name": "NOAH",
+        "source": "llm",
+        "wardrobe_summary": "Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up. Possibly a hoodie or light jacket. Worn sneakers or work shoes. No flashy accessories\u2014everything functional and understated."
+      },
+      {
+        "appearance_summary": "June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.",
+        "character_id": "june",
+        "distinguishing_features": [
+          "Alert, focused eyes suggesting attentiveness and quick decision-making",
+          "Calm, composed expression even under pressure",
+          "Practical grooming with no elaborate styling",
+          "Hands that move with purpose and familiarity around equipment"
+        ],
+        "name": "JUNE",
+        "source": "llm",
+        "wardrobe_summary": "Functional work clothing: fitted long-sleeve shirt or simple sweater, possibly with station branding or utility pockets. Neutral earth tones or muted colors. Comfortable, worn-in pieces that allow movement and suggest many hours on shift. No jewelry or accessories that would catch on equipment."
+      },
+      {
+        "appearance_summary": "Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.",
+        "character_id": "kell",
+        "distinguishing_features": [
+          "Short, practical hairstyle requiring minimal maintenance",
+          "Alert, focused eyes with slight crow's feet suggesting experience",
+          "Composed, serious expression with capacity for dry humor",
+          "Medium build, neither heavy nor lean"
+        ],
+        "name": "KELL",
+        "source": "llm",
+        "wardrobe_summary": "Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy."
+      }
+    ],
+    "frames": [
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00153,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 8.0,
+        "frame_id": "scene_001_frame_01",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_01_001_master_wide.jpg"
+        },
+        "notes": "Rain audible on skylight. Old consoles hum. Aria threads tape reel with focused precision. Noah leans into mixer, adjusting levels. June writes on whiteboard (road closures, shelter names, call signs visible). Kell rushes in from outside, bringing a gust of weather and urgency. All four are visible in their respective work zones.",
+        "overlay": {
+          "blocking_indicator": "Aria at tape reel station (stage left), Noah at mixer (stage center-left), June at whiteboard (stage right), Kell enters from door (upstage center) carrying antenna, lantern, and tool bag.",
+          "camera_angle": "Eye level, slightly elevated to show all four stations",
+          "camera_indicator": "Eye level, slightly elevated to show all four stations; movement=Static; lens=24-35mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria",
+            "Noah",
+            "June",
+            "Kell (enters during shot)"
+          ],
+          "edit_intent": "Establish the studio space, the four-person team, their spatial relationships, and the atmosphere of focused emergency work. This shot anchors the scene and allows the editor to cut to closer coverage of individual stations and dialogue exchanges.",
+          "shot_ids": [
+            "001_MASTER_WIDE"
+          ],
+          "shot_size": "Wide"
+        },
+        "primary_shot_id": "001_MASTER_WIDE",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 8 active panels, filled left-to-right then top-to-bottom.\nScene: INT. COMMUNITY RADIO STUDIO - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot 001_MASTER_WIDE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, slightly elevated to show all four stations, movement Static, lens 24-35mm equivalent. Characters: Aria, Noah, June, Kell (enters during shot). ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment.\n\nPanel 2 / shot 002_CU_ARIA_TAPE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at hands and tape reel, movement Static, lens 50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hands and the tape reel in frame. Her face visible in profile or three-quarter view, focused on the work. Action: Aria threads the tape reel with practiced, deliberate movements. Her hands are steady. The tape, reel, and threading mechanism are clearly visible. Her expression is calm and concentrated. Edit intent: Isolate Aria's technical competence and focus.\n\nPanel 3 / shot 003_CU_NOAH_MIXER:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at mixer controls and Noah's hands, movement Static, lens 50mm equivalent. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up. Possibly a hoodie or light jacket. Worn sneakers or work shoes. No flashy accessories\u2014everything functional and understated. Blocking: Noah's hands on mixer controls, face visible in profile or three-quarter view, leaning in with concentration. Action: Noah adjusts mixer levels, coaxing a signal out of the battered equipment. His hands move with precision; his expression shows focused problem-solving. The mixer's worn condition is visible.; render all written content as blank shapes or illegible marks.\n\nPanel 4 / shot 004_MEDIUM_JUNE_WHITEBOARD:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, slightly favoring June, movement Static, lens 35-50mm equivalent. Characters: June. JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater, possibly with station branding or utility pockets. Neutral earth tones or muted colors. Comfortable, worn-in pieces that allow movement and suggest many hours on shift. No jewelry or accessories that would catch on equipment. Blocking: June at whiteboard with blank diagrams and illegible sketch marks. whiteboard with blank diagrams and illegible sketch marks.; render all written content as blank shapes or illegible marks. Action: June covers the whiteboard with blank diagrams and illegible sketch marks. She writes with focus and efficiency, occasionally stepping back to review what she's written.\n\nPanel 5 / shot 005_WIDE_KELL_ENTRANCE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, framing the door and the studio interior, movement Static or slight pan to follow Kell's movement into the studio, lens 24-35mm equivalent. Characters: Kell, Aria, Noah, June. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt.\n\nPanel 6 / shot 006_OTS_KELL_NOAH:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Over-the-shoulder, Over Kell's shoulder, favoring Noah, movement Static, lens 50-85mm equivalent. Characters: Kell, Noah. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up.\n\nPanel 7 / shot 007_CU_ARIA_SWITCH_ONAIR:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Eye level or slightly overhead, framing Aria's hand on the switch and the ON AIR sign in the background, movement Static, lens 35-50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hand on the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Aria's face visible in profile or three-quarter view. Action: Aria flips the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Her expression shows frustration but not panic.\n\nPanel 8 / shot 008_MEDIUM_ARIA_JUNE_FINAL:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, two-shot favoring both Aria and June, movement Static, lens 50-85mm equivalent. Characters: Aria, June. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater.",
+        "shot_ids": [
+          "001_MASTER_WIDE"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00153,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 4.0,
+        "frame_id": "scene_001_frame_02",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_02_002_cu_aria_tape.jpg"
+        },
+        "notes": "Aria threads the tape reel with practiced, deliberate movements. Her hands are steady. The tape, reel, and threading mechanism are clearly visible. Her expression is calm and concentrated.",
+        "overlay": {
+          "blocking_indicator": "Aria's hands and the tape reel in frame. Her face visible in profile or three-quarter view, focused on the work.",
+          "camera_angle": "Slightly overhead, looking down at hands and tape reel",
+          "camera_indicator": "Slightly overhead, looking down at hands and tape reel; movement=Static; lens=50mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria"
+          ],
+          "edit_intent": "Isolate Aria's technical competence and focus. This close-up grounds the scene's technical stakes and shows her as a skilled operator. Can be intercut with other stations or used as a reaction beat.",
+          "shot_ids": [
+            "002_CU_ARIA_TAPE"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "002_CU_ARIA_TAPE",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 8 active panels, filled left-to-right then top-to-bottom.\nScene: INT. COMMUNITY RADIO STUDIO - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot 001_MASTER_WIDE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, slightly elevated to show all four stations, movement Static, lens 24-35mm equivalent. Characters: Aria, Noah, June, Kell (enters during shot). ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment.\n\nPanel 2 / shot 002_CU_ARIA_TAPE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at hands and tape reel, movement Static, lens 50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hands and the tape reel in frame. Her face visible in profile or three-quarter view, focused on the work. Action: Aria threads the tape reel with practiced, deliberate movements. Her hands are steady. The tape, reel, and threading mechanism are clearly visible. Her expression is calm and concentrated. Edit intent: Isolate Aria's technical competence and focus.\n\nPanel 3 / shot 003_CU_NOAH_MIXER:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at mixer controls and Noah's hands, movement Static, lens 50mm equivalent. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up. Possibly a hoodie or light jacket. Worn sneakers or work shoes. No flashy accessories\u2014everything functional and understated. Blocking: Noah's hands on mixer controls, face visible in profile or three-quarter view, leaning in with concentration. Action: Noah adjusts mixer levels, coaxing a signal out of the battered equipment. His hands move with precision; his expression shows focused problem-solving. The mixer's worn condition is visible.; render all written content as blank shapes or illegible marks.\n\nPanel 4 / shot 004_MEDIUM_JUNE_WHITEBOARD:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, slightly favoring June, movement Static, lens 35-50mm equivalent. Characters: June. JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater, possibly with station branding or utility pockets. Neutral earth tones or muted colors. Comfortable, worn-in pieces that allow movement and suggest many hours on shift. No jewelry or accessories that would catch on equipment. Blocking: June at whiteboard with blank diagrams and illegible sketch marks. whiteboard with blank diagrams and illegible sketch marks.; render all written content as blank shapes or illegible marks. Action: June covers the whiteboard with blank diagrams and illegible sketch marks. She writes with focus and efficiency, occasionally stepping back to review what she's written.\n\nPanel 5 / shot 005_WIDE_KELL_ENTRANCE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, framing the door and the studio interior, movement Static or slight pan to follow Kell's movement into the studio, lens 24-35mm equivalent. Characters: Kell, Aria, Noah, June. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt.\n\nPanel 6 / shot 006_OTS_KELL_NOAH:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Over-the-shoulder, Over Kell's shoulder, favoring Noah, movement Static, lens 50-85mm equivalent. Characters: Kell, Noah. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up.\n\nPanel 7 / shot 007_CU_ARIA_SWITCH_ONAIR:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Eye level or slightly overhead, framing Aria's hand on the switch and the ON AIR sign in the background, movement Static, lens 35-50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hand on the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Aria's face visible in profile or three-quarter view. Action: Aria flips the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Her expression shows frustration but not panic.\n\nPanel 8 / shot 008_MEDIUM_ARIA_JUNE_FINAL:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, two-shot favoring both Aria and June, movement Static, lens 50-85mm equivalent. Characters: Aria, June. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater.",
+        "shot_ids": [
+          "002_CU_ARIA_TAPE"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00153,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 4.0,
+        "frame_id": "scene_001_frame_03",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_03_003_cu_noah_mixer.jpg"
+        },
+        "notes": "Noah adjusts mixer levels, coaxing a signal out of the battered equipment. His hands move with precision; his expression shows focused problem-solving. The mixer's worn condition is visible.",
+        "overlay": {
+          "blocking_indicator": "Noah's hands on mixer controls, face visible in profile or three-quarter view, leaning in with concentration.",
+          "camera_angle": "Slightly overhead, looking down at mixer controls and Noah's hands",
+          "camera_indicator": "Slightly overhead, looking down at mixer controls and Noah's hands; movement=Static; lens=50mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Noah"
+          ],
+          "edit_intent": "Isolate Noah's technical work and his collaborative role. This close-up parallels Aria's tape work and shows the team's distributed technical effort. Sets up his dialogue about the antenna.",
+          "shot_ids": [
+            "003_CU_NOAH_MIXER"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "003_CU_NOAH_MIXER",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 8 active panels, filled left-to-right then top-to-bottom.\nScene: INT. COMMUNITY RADIO STUDIO - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot 001_MASTER_WIDE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, slightly elevated to show all four stations, movement Static, lens 24-35mm equivalent. Characters: Aria, Noah, June, Kell (enters during shot). ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment.\n\nPanel 2 / shot 002_CU_ARIA_TAPE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at hands and tape reel, movement Static, lens 50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hands and the tape reel in frame. Her face visible in profile or three-quarter view, focused on the work. Action: Aria threads the tape reel with practiced, deliberate movements. Her hands are steady. The tape, reel, and threading mechanism are clearly visible. Her expression is calm and concentrated. Edit intent: Isolate Aria's technical competence and focus.\n\nPanel 3 / shot 003_CU_NOAH_MIXER:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at mixer controls and Noah's hands, movement Static, lens 50mm equivalent. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up. Possibly a hoodie or light jacket. Worn sneakers or work shoes. No flashy accessories\u2014everything functional and understated. Blocking: Noah's hands on mixer controls, face visible in profile or three-quarter view, leaning in with concentration. Action: Noah adjusts mixer levels, coaxing a signal out of the battered equipment. His hands move with precision; his expression shows focused problem-solving. The mixer's worn condition is visible.; render all written content as blank shapes or illegible marks.\n\nPanel 4 / shot 004_MEDIUM_JUNE_WHITEBOARD:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, slightly favoring June, movement Static, lens 35-50mm equivalent. Characters: June. JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater, possibly with station branding or utility pockets. Neutral earth tones or muted colors. Comfortable, worn-in pieces that allow movement and suggest many hours on shift. No jewelry or accessories that would catch on equipment. Blocking: June at whiteboard with blank diagrams and illegible sketch marks. whiteboard with blank diagrams and illegible sketch marks.; render all written content as blank shapes or illegible marks. Action: June covers the whiteboard with blank diagrams and illegible sketch marks. She writes with focus and efficiency, occasionally stepping back to review what she's written.\n\nPanel 5 / shot 005_WIDE_KELL_ENTRANCE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, framing the door and the studio interior, movement Static or slight pan to follow Kell's movement into the studio, lens 24-35mm equivalent. Characters: Kell, Aria, Noah, June. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt.\n\nPanel 6 / shot 006_OTS_KELL_NOAH:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Over-the-shoulder, Over Kell's shoulder, favoring Noah, movement Static, lens 50-85mm equivalent. Characters: Kell, Noah. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up.\n\nPanel 7 / shot 007_CU_ARIA_SWITCH_ONAIR:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Eye level or slightly overhead, framing Aria's hand on the switch and the ON AIR sign in the background, movement Static, lens 35-50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hand on the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Aria's face visible in profile or three-quarter view. Action: Aria flips the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Her expression shows frustration but not panic.\n\nPanel 8 / shot 008_MEDIUM_ARIA_JUNE_FINAL:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, two-shot favoring both Aria and June, movement Static, lens 50-85mm equivalent. Characters: Aria, June. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater.",
+        "shot_ids": [
+          "003_CU_NOAH_MIXER"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00153,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 5.0,
+        "frame_id": "scene_001_frame_04",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_04_004_medium_june_whiteboard.jpg"
+        },
+        "notes": "June covers the whiteboard with critical information: road closures, shelter names, call signs. She writes with focus and efficiency, occasionally stepping back to review what she's written. Her body language suggests leadership and information management.",
+        "overlay": {
+          "blocking_indicator": "June at whiteboard, writing or reviewing information. Whiteboard visible in frame with road closures, shelter names, and call signs legible or suggested.",
+          "camera_angle": "Eye level, slightly favoring June",
+          "camera_indicator": "Eye level, slightly favoring June; movement=Static; lens=35-50mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "June"
+          ],
+          "edit_intent": "Establish June's role as the information coordinator and decision-maker. This shot shows her managing the flow of critical data. Can be intercut with other stations or used as a reaction beat.",
+          "shot_ids": [
+            "004_MEDIUM_JUNE_WHITEBOARD"
+          ],
+          "shot_size": "Medium"
+        },
+        "primary_shot_id": "004_MEDIUM_JUNE_WHITEBOARD",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 8 active panels, filled left-to-right then top-to-bottom.\nScene: INT. COMMUNITY RADIO STUDIO - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot 001_MASTER_WIDE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, slightly elevated to show all four stations, movement Static, lens 24-35mm equivalent. Characters: Aria, Noah, June, Kell (enters during shot). ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment.\n\nPanel 2 / shot 002_CU_ARIA_TAPE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at hands and tape reel, movement Static, lens 50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hands and the tape reel in frame. Her face visible in profile or three-quarter view, focused on the work. Action: Aria threads the tape reel with practiced, deliberate movements. Her hands are steady. The tape, reel, and threading mechanism are clearly visible. Her expression is calm and concentrated. Edit intent: Isolate Aria's technical competence and focus.\n\nPanel 3 / shot 003_CU_NOAH_MIXER:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at mixer controls and Noah's hands, movement Static, lens 50mm equivalent. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up. Possibly a hoodie or light jacket. Worn sneakers or work shoes. No flashy accessories\u2014everything functional and understated. Blocking: Noah's hands on mixer controls, face visible in profile or three-quarter view, leaning in with concentration. Action: Noah adjusts mixer levels, coaxing a signal out of the battered equipment. His hands move with precision; his expression shows focused problem-solving. The mixer's worn condition is visible.; render all written content as blank shapes or illegible marks.\n\nPanel 4 / shot 004_MEDIUM_JUNE_WHITEBOARD:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, slightly favoring June, movement Static, lens 35-50mm equivalent. Characters: June. JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater, possibly with station branding or utility pockets. Neutral earth tones or muted colors. Comfortable, worn-in pieces that allow movement and suggest many hours on shift. No jewelry or accessories that would catch on equipment. Blocking: June at whiteboard with blank diagrams and illegible sketch marks. whiteboard with blank diagrams and illegible sketch marks.; render all written content as blank shapes or illegible marks. Action: June covers the whiteboard with blank diagrams and illegible sketch marks. She writes with focus and efficiency, occasionally stepping back to review what she's written.\n\nPanel 5 / shot 005_WIDE_KELL_ENTRANCE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, framing the door and the studio interior, movement Static or slight pan to follow Kell's movement into the studio, lens 24-35mm equivalent. Characters: Kell, Aria, Noah, June. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt.\n\nPanel 6 / shot 006_OTS_KELL_NOAH:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Over-the-shoulder, Over Kell's shoulder, favoring Noah, movement Static, lens 50-85mm equivalent. Characters: Kell, Noah. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up.\n\nPanel 7 / shot 007_CU_ARIA_SWITCH_ONAIR:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Eye level or slightly overhead, framing Aria's hand on the switch and the ON AIR sign in the background, movement Static, lens 35-50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hand on the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Aria's face visible in profile or three-quarter view. Action: Aria flips the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Her expression shows frustration but not panic.\n\nPanel 8 / shot 008_MEDIUM_ARIA_JUNE_FINAL:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, two-shot favoring both Aria and June, movement Static, lens 50-85mm equivalent. Characters: Aria, June. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater.",
+        "shot_ids": [
+          "004_MEDIUM_JUNE_WHITEBOARD"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00153,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 6.0,
+        "frame_id": "scene_001_frame_05",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_05_005_wide_kell_entrance.jpg"
+        },
+        "notes": "Kell rushes in from outside, bringing wind and rain sound. The door opens and closes. Kell moves quickly toward the center of the studio, setting down the antenna and tool bag. The other three look up from their work, acknowledging Kell's arrival and the urgency it signals.",
+        "overlay": {
+          "blocking_indicator": "Kell enters from upstage center, carrying portable antenna, dented lantern, and canvas tool bag. The door is visible. Aria, Noah, and June are visible in their respective stations, reacting to Kell's arrival.",
+          "camera_angle": "Eye level, framing the door and the studio interior",
+          "camera_indicator": "Eye level, framing the door and the studio interior; movement=Static or slight pan to follow Kell's movement into the studio; lens=24-35mm equivalent",
+          "camera_movement": "Static or slight pan to follow Kell's movement into the studio",
+          "character_labels": [
+            "Kell",
+            "Aria",
+            "Noah",
+            "June"
+          ],
+          "edit_intent": "Capture Kell's entrance as a moment of external urgency breaking into the controlled interior space. The dialogue delivers critical information about the emergency situation. This shot establishes the stakes and the team's options.",
+          "shot_ids": [
+            "005_WIDE_KELL_ENTRANCE"
+          ],
+          "shot_size": "Wide"
+        },
+        "primary_shot_id": "005_WIDE_KELL_ENTRANCE",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 8 active panels, filled left-to-right then top-to-bottom.\nScene: INT. COMMUNITY RADIO STUDIO - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot 001_MASTER_WIDE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, slightly elevated to show all four stations, movement Static, lens 24-35mm equivalent. Characters: Aria, Noah, June, Kell (enters during shot). ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment.\n\nPanel 2 / shot 002_CU_ARIA_TAPE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at hands and tape reel, movement Static, lens 50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hands and the tape reel in frame. Her face visible in profile or three-quarter view, focused on the work. Action: Aria threads the tape reel with practiced, deliberate movements. Her hands are steady. The tape, reel, and threading mechanism are clearly visible. Her expression is calm and concentrated. Edit intent: Isolate Aria's technical competence and focus.\n\nPanel 3 / shot 003_CU_NOAH_MIXER:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at mixer controls and Noah's hands, movement Static, lens 50mm equivalent. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up. Possibly a hoodie or light jacket. Worn sneakers or work shoes. No flashy accessories\u2014everything functional and understated. Blocking: Noah's hands on mixer controls, face visible in profile or three-quarter view, leaning in with concentration. Action: Noah adjusts mixer levels, coaxing a signal out of the battered equipment. His hands move with precision; his expression shows focused problem-solving. The mixer's worn condition is visible.; render all written content as blank shapes or illegible marks.\n\nPanel 4 / shot 004_MEDIUM_JUNE_WHITEBOARD:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, slightly favoring June, movement Static, lens 35-50mm equivalent. Characters: June. JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater, possibly with station branding or utility pockets. Neutral earth tones or muted colors. Comfortable, worn-in pieces that allow movement and suggest many hours on shift. No jewelry or accessories that would catch on equipment. Blocking: June at whiteboard with blank diagrams and illegible sketch marks. whiteboard with blank diagrams and illegible sketch marks.; render all written content as blank shapes or illegible marks. Action: June covers the whiteboard with blank diagrams and illegible sketch marks. She writes with focus and efficiency, occasionally stepping back to review what she's written.\n\nPanel 5 / shot 005_WIDE_KELL_ENTRANCE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, framing the door and the studio interior, movement Static or slight pan to follow Kell's movement into the studio, lens 24-35mm equivalent. Characters: Kell, Aria, Noah, June. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt.\n\nPanel 6 / shot 006_OTS_KELL_NOAH:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Over-the-shoulder, Over Kell's shoulder, favoring Noah, movement Static, lens 50-85mm equivalent. Characters: Kell, Noah. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up.\n\nPanel 7 / shot 007_CU_ARIA_SWITCH_ONAIR:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Eye level or slightly overhead, framing Aria's hand on the switch and the ON AIR sign in the background, movement Static, lens 35-50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hand on the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Aria's face visible in profile or three-quarter view. Action: Aria flips the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Her expression shows frustration but not panic.\n\nPanel 8 / shot 008_MEDIUM_ARIA_JUNE_FINAL:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, two-shot favoring both Aria and June, movement Static, lens 50-85mm equivalent. Characters: Aria, June. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater.",
+        "shot_ids": [
+          "005_WIDE_KELL_ENTRANCE"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00153,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 4.0,
+        "frame_id": "scene_001_frame_06",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_06_006_ots_kell_noah.jpg"
+        },
+        "notes": "Kell sets down the antenna and tool bag. Noah looks up from the mixer, eyeing the antenna with skepticism. Kell delivers the line about the antenna with dry humor.",
+        "overlay": {
+          "blocking_indicator": "Kell in foreground (out of focus or partially in frame), Noah in background at mixer, reacting to Kell's comment about the antenna.",
+          "camera_angle": "Over Kell's shoulder, favoring Noah",
+          "camera_indicator": "Over Kell's shoulder, favoring Noah; movement=Static; lens=50-85mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Kell",
+            "Noah"
+          ],
+          "edit_intent": "Capture the dialogue exchange and the humor that bonds the team. Noah's skepticism and Kell's dry response establish their working relationship and provide a moment of levity under pressure.",
+          "shot_ids": [
+            "006_OTS_KELL_NOAH"
+          ],
+          "shot_size": "Over-the-shoulder"
+        },
+        "primary_shot_id": "006_OTS_KELL_NOAH",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 8 active panels, filled left-to-right then top-to-bottom.\nScene: INT. COMMUNITY RADIO STUDIO - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot 001_MASTER_WIDE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, slightly elevated to show all four stations, movement Static, lens 24-35mm equivalent. Characters: Aria, Noah, June, Kell (enters during shot). ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment.\n\nPanel 2 / shot 002_CU_ARIA_TAPE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at hands and tape reel, movement Static, lens 50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hands and the tape reel in frame. Her face visible in profile or three-quarter view, focused on the work. Action: Aria threads the tape reel with practiced, deliberate movements. Her hands are steady. The tape, reel, and threading mechanism are clearly visible. Her expression is calm and concentrated. Edit intent: Isolate Aria's technical competence and focus.\n\nPanel 3 / shot 003_CU_NOAH_MIXER:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at mixer controls and Noah's hands, movement Static, lens 50mm equivalent. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up. Possibly a hoodie or light jacket. Worn sneakers or work shoes. No flashy accessories\u2014everything functional and understated. Blocking: Noah's hands on mixer controls, face visible in profile or three-quarter view, leaning in with concentration. Action: Noah adjusts mixer levels, coaxing a signal out of the battered equipment. His hands move with precision; his expression shows focused problem-solving. The mixer's worn condition is visible.; render all written content as blank shapes or illegible marks.\n\nPanel 4 / shot 004_MEDIUM_JUNE_WHITEBOARD:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, slightly favoring June, movement Static, lens 35-50mm equivalent. Characters: June. JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater, possibly with station branding or utility pockets. Neutral earth tones or muted colors. Comfortable, worn-in pieces that allow movement and suggest many hours on shift. No jewelry or accessories that would catch on equipment. Blocking: June at whiteboard with blank diagrams and illegible sketch marks. whiteboard with blank diagrams and illegible sketch marks.; render all written content as blank shapes or illegible marks. Action: June covers the whiteboard with blank diagrams and illegible sketch marks. She writes with focus and efficiency, occasionally stepping back to review what she's written.\n\nPanel 5 / shot 005_WIDE_KELL_ENTRANCE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, framing the door and the studio interior, movement Static or slight pan to follow Kell's movement into the studio, lens 24-35mm equivalent. Characters: Kell, Aria, Noah, June. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt.\n\nPanel 6 / shot 006_OTS_KELL_NOAH:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Over-the-shoulder, Over Kell's shoulder, favoring Noah, movement Static, lens 50-85mm equivalent. Characters: Kell, Noah. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up.\n\nPanel 7 / shot 007_CU_ARIA_SWITCH_ONAIR:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Eye level or slightly overhead, framing Aria's hand on the switch and the ON AIR sign in the background, movement Static, lens 35-50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hand on the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Aria's face visible in profile or three-quarter view. Action: Aria flips the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Her expression shows frustration but not panic.\n\nPanel 8 / shot 008_MEDIUM_ARIA_JUNE_FINAL:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, two-shot favoring both Aria and June, movement Static, lens 50-85mm equivalent. Characters: Aria, June. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater.",
+        "shot_ids": [
+          "006_OTS_KELL_NOAH"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00153,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 3.0,
+        "frame_id": "scene_001_frame_07",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_07_007_cu_aria_switch_onair.jpg"
+        },
+        "notes": "Aria flips the switch. The ON AIR sign flickers, then dies. Her expression shows frustration but not panic. She pulls her hand back, assessing the situation.",
+        "overlay": {
+          "blocking_indicator": "Aria's hand on the switch. The ON AIR sign visible in the background, in focus or slightly soft. Aria's face visible in profile or three-quarter view.",
+          "camera_angle": "Eye level or slightly overhead, framing Aria's hand on the switch and the ON AIR sign in the background",
+          "camera_indicator": "Eye level or slightly overhead, framing Aria's hand on the switch and the ON AIR sign in the background; movement=Static; lens=35-50mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria"
+          ],
+          "edit_intent": "Isolate the moment of technical failure as a turning point. The ON AIR sign dying is a visual punctuation mark that raises stakes and sets up Aria's final line about needing ten minutes and a miracle.",
+          "shot_ids": [
+            "007_CU_ARIA_SWITCH_ONAIR"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "007_CU_ARIA_SWITCH_ONAIR",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 8 active panels, filled left-to-right then top-to-bottom.\nScene: INT. COMMUNITY RADIO STUDIO - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot 001_MASTER_WIDE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, slightly elevated to show all four stations, movement Static, lens 24-35mm equivalent. Characters: Aria, Noah, June, Kell (enters during shot). ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment.\n\nPanel 2 / shot 002_CU_ARIA_TAPE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at hands and tape reel, movement Static, lens 50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hands and the tape reel in frame. Her face visible in profile or three-quarter view, focused on the work. Action: Aria threads the tape reel with practiced, deliberate movements. Her hands are steady. The tape, reel, and threading mechanism are clearly visible. Her expression is calm and concentrated. Edit intent: Isolate Aria's technical competence and focus.\n\nPanel 3 / shot 003_CU_NOAH_MIXER:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at mixer controls and Noah's hands, movement Static, lens 50mm equivalent. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up. Possibly a hoodie or light jacket. Worn sneakers or work shoes. No flashy accessories\u2014everything functional and understated. Blocking: Noah's hands on mixer controls, face visible in profile or three-quarter view, leaning in with concentration. Action: Noah adjusts mixer levels, coaxing a signal out of the battered equipment. His hands move with precision; his expression shows focused problem-solving. The mixer's worn condition is visible.; render all written content as blank shapes or illegible marks.\n\nPanel 4 / shot 004_MEDIUM_JUNE_WHITEBOARD:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, slightly favoring June, movement Static, lens 35-50mm equivalent. Characters: June. JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater, possibly with station branding or utility pockets. Neutral earth tones or muted colors. Comfortable, worn-in pieces that allow movement and suggest many hours on shift. No jewelry or accessories that would catch on equipment. Blocking: June at whiteboard with blank diagrams and illegible sketch marks. whiteboard with blank diagrams and illegible sketch marks.; render all written content as blank shapes or illegible marks. Action: June covers the whiteboard with blank diagrams and illegible sketch marks. She writes with focus and efficiency, occasionally stepping back to review what she's written.\n\nPanel 5 / shot 005_WIDE_KELL_ENTRANCE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, framing the door and the studio interior, movement Static or slight pan to follow Kell's movement into the studio, lens 24-35mm equivalent. Characters: Kell, Aria, Noah, June. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt.\n\nPanel 6 / shot 006_OTS_KELL_NOAH:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Over-the-shoulder, Over Kell's shoulder, favoring Noah, movement Static, lens 50-85mm equivalent. Characters: Kell, Noah. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up.\n\nPanel 7 / shot 007_CU_ARIA_SWITCH_ONAIR:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Eye level or slightly overhead, framing Aria's hand on the switch and the ON AIR sign in the background, movement Static, lens 35-50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hand on the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Aria's face visible in profile or three-quarter view. Action: Aria flips the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Her expression shows frustration but not panic.\n\nPanel 8 / shot 008_MEDIUM_ARIA_JUNE_FINAL:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, two-shot favoring both Aria and June, movement Static, lens 50-85mm equivalent. Characters: Aria, June. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater.",
+        "shot_ids": [
+          "007_CU_ARIA_SWITCH_ONAIR"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00153,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 4.0,
+        "frame_id": "scene_001_frame_08",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_08_008_medium_aria_june_final.jpg"
+        },
+        "notes": "Aria delivers her line about needing ten minutes and a miracle. June responds with her line, reassuring Aria and showing leadership. The exchange is calm but urgent, showing trust and collaboration between the two characters.",
+        "overlay": {
+          "blocking_indicator": "Aria and June in frame, facing each other or at angles that allow both to be seen. Aria may be at or near her station; June may be moving or standing nearby.",
+          "camera_angle": "Eye level, two-shot favoring both Aria and June",
+          "camera_indicator": "Eye level, two-shot favoring both Aria and June; movement=Static; lens=50-85mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria",
+            "June"
+          ],
+          "edit_intent": "Capture the final dialogue exchange as a moment of trust and leadership. June's response reassures Aria and the audience that the team has a plan and confidence in each other. This shot provides a moment of calm before the cut.",
+          "shot_ids": [
+            "008_MEDIUM_ARIA_JUNE_FINAL"
+          ],
+          "shot_size": "Medium"
+        },
+        "primary_shot_id": "008_MEDIUM_ARIA_JUNE_FINAL",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 8 active panels, filled left-to-right then top-to-bottom.\nScene: INT. COMMUNITY RADIO STUDIO - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot 001_MASTER_WIDE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, slightly elevated to show all four stations, movement Static, lens 24-35mm equivalent. Characters: Aria, Noah, June, Kell (enters during shot). ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment.\n\nPanel 2 / shot 002_CU_ARIA_TAPE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at hands and tape reel, movement Static, lens 50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hands and the tape reel in frame. Her face visible in profile or three-quarter view, focused on the work. Action: Aria threads the tape reel with practiced, deliberate movements. Her hands are steady. The tape, reel, and threading mechanism are clearly visible. Her expression is calm and concentrated. Edit intent: Isolate Aria's technical competence and focus.\n\nPanel 3 / shot 003_CU_NOAH_MIXER:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Slightly overhead, looking down at mixer controls and Noah's hands, movement Static, lens 50mm equivalent. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up. Possibly a hoodie or light jacket. Worn sneakers or work shoes. No flashy accessories\u2014everything functional and understated. Blocking: Noah's hands on mixer controls, face visible in profile or three-quarter view, leaning in with concentration. Action: Noah adjusts mixer levels, coaxing a signal out of the battered equipment. His hands move with precision; his expression shows focused problem-solving. The mixer's worn condition is visible.; render all written content as blank shapes or illegible marks.\n\nPanel 4 / shot 004_MEDIUM_JUNE_WHITEBOARD:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, slightly favoring June, movement Static, lens 35-50mm equivalent. Characters: June. JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater, possibly with station branding or utility pockets. Neutral earth tones or muted colors. Comfortable, worn-in pieces that allow movement and suggest many hours on shift. No jewelry or accessories that would catch on equipment. Blocking: June at whiteboard with blank diagrams and illegible sketch marks. whiteboard with blank diagrams and illegible sketch marks.; render all written content as blank shapes or illegible marks. Action: June covers the whiteboard with blank diagrams and illegible sketch marks. She writes with focus and efficiency, occasionally stepping back to review what she's written.\n\nPanel 5 / shot 005_WIDE_KELL_ENTRANCE:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Wide, Eye level, framing the door and the studio interior, movement Static or slight pan to follow Kell's movement into the studio, lens 24-35mm equivalent. Characters: Kell, Aria, Noah, June. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt.\n\nPanel 6 / shot 006_OTS_KELL_NOAH:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Over-the-shoulder, Over Kell's shoulder, favoring Noah, movement Static, lens 50-85mm equivalent. Characters: Kell, Noah. KELL: Practical, capable adult in their 30s-40s with a grounded, no-nonsense presence. Medium build, alert posture. Hair kept short and functional. Clean-shaven or with minimal facial hair. Weathered but composed expression suggesting experience in high-pressure situations.; wardrobe Functional, layered clothing suitable for extended indoor work. Practical fabrics and neutral tones. Possibly a work shirt, utility-style jacket, or vest with accessible pockets. Worn but well-maintained. No flashy accessories. Footwear practical and sturdy. | NOAH: Noah is a technical operator in his late 20s to early 30s with a lean to average build. He has dark hair, typically worn short and practical. Clean-shaven or with light stubble. His appearance is functional and understated, reflecting someone comfortable in technical environments.; wardrobe Practical, layered clothing suitable for a radio station environment. Dark jeans or work pants paired with a fitted long-sleeve shirt or casual button-up.\n\nPanel 7 / shot 007_CU_ARIA_SWITCH_ONAIR:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Close-up, Eye level or slightly overhead, framing Aria's hand on the switch and the ON AIR sign in the background, movement Static, lens 35-50mm equivalent. Characters: Aria. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. Blocking: Aria's hand on the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Aria's face visible in profile or three-quarter view. Action: Aria flips the switch. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Her expression shows frustration but not panic.\n\nPanel 8 / shot 008_MEDIUM_ARIA_JUNE_FINAL:\nSetting: INT. COMMUNITY RADIO STUDIO - NIGHT. Framing: Medium, Eye level, two-shot favoring both Aria and June, movement Static, lens 50-85mm equivalent. Characters: Aria, June. ARIA: Aria is a skilled technician in their 30s-40s with a practical, capable appearance. Medium build, alert posture. Hair is dark and pulled back or kept short for functionality. Clean-shaven or minimal facial hair. Intelligent, focused expression.; wardrobe Practical layered clothing suitable for long shifts: fitted long-sleeve shirt or sweater, possibly with a vest or unbuttoned overshirt. Neutral colors (grays, blacks, dark blues). Functional and unadorned\u2014no jewelry or accessories that would interfere with technical work. Worn-in, lived-in quality. | JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a control room. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal facial hair or clean-shaven. Weathered but composed facial features reflecting years of steady work.; wardrobe Functional work clothing: fitted long-sleeve shirt or simple sweater.",
+        "shot_ids": [
+          "008_MEDIUM_ARIA_JUNE_FINAL"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      }
+    ],
+    "scene_heading": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+    "scene_id": "scene_001",
+    "scene_number": 1,
+    "scene_ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "path": "artifacts/scene/scene_001/v2.json",
+      "version": 2
+    },
+    "shot_plan_ref": {
+      "artifact_type": "shot_plan",
+      "entity_id": "scene_001",
+      "path": "artifacts/shot_plan/scene_001/v1.json",
+      "version": 1
+    },
+    "style": "sketch",
+    "total_estimated_cost_usd": 0.0173128
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "final_stage_model_used": "claude-haiku-4-5-20251001+gpt-image-2",
+      "final_stage_provider_used": "anthropic",
+      "frame_count": 8,
+      "grid_max_panels": 8,
+      "grid_mode": "template",
+      "grid_reference_anchors": false,
+      "identity_model": "claude-haiku-4-5-20251001",
+      "image_model": "gpt-image-2",
+      "image_size": null,
+      "style": "sketch"
+    },
+    "confidence": 0.8555555555555556,
+    "cost_data": {
+      "estimated_cost_usd": 0.0319656,
+      "input_tokens": 2807,
+      "latency_seconds": null,
+      "model": "claude-haiku-4-5-20251001+gpt-image-2",
+      "output_tokens": 1310,
+      "request_id": null
+    },
+    "created_at": "2026-07-23T02:56:34.859156Z",
+    "health": "valid",
+    "intent": "Scene-level storyboard frames for composition and blocking review.",
+    "lineage": [
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_001",
+        "path": "artifacts/scene/scene_001/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "shot_plan",
+        "entity_id": "scene_001",
+        "path": "artifacts/shot_plan/scene_001/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "project_config",
+        "entity_id": "project",
+        "path": "artifacts/project_config/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "aria",
+        "path": "artifacts/character_bible/aria/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_aria",
+        "path": "artifacts/bibles/character_aria/manifest_v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "noah",
+        "path": "artifacts/character_bible/noah/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_noah",
+        "path": "artifacts/bibles/character_noah/manifest_v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "june",
+        "path": "artifacts/character_bible/june/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_june",
+        "path": "artifacts/bibles/character_june/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "kell",
+        "path": "artifacts/character_bible/kell/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_kell",
+        "path": "artifacts/bibles/character_kell/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "community_radio_studio",
+        "path": "artifacts/location_bible/community_radio_studio/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_community_radio_studio",
+        "path": "artifacts/bibles/location_community_radio_studio/manifest_v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "track_manifest",
+        "entity_id": "project",
+        "path": "artifacts/track_manifest/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "shot_plan",
+        "entity_id": "scene_002",
+        "path": "artifacts/shot_plan/scene_002/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "maya",
+        "path": "artifacts/character_bible/maya/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "water_tower_catwalk",
+        "path": "artifacts/location_bible/water_tower_catwalk/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "storyboard_v1",
+    "producing_role": null,
+    "rationale": "Storyboard generation converts shot-planning intent into a cheap visual fallback lane before animatics or final renders exist.",
+    "ref": {
+      "artifact_type": "storyboard",
+      "entity_id": "scene_001",
+      "path": "artifacts/storyboard/scene_001/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "hybrid"
+  }
+}

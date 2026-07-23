@@ -1,0 +1,941 @@
+{
+  "evalId": "derived:eval-DEv-2026-07-23T03:36:40+eval-YR9-2026-07-23T03:39:49",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-07-23T03:36:40.276Z",
+    "prompts": [
+      {
+        "raw": "You are CineForge's storyboard-packet observation analyst.\n\nInspect only the submitted images. You are not given the source title, scene\nnames, character names, shot labels, filenames, target answer, or transport\nmetrics. Do not invent them.\n\nReturn one strict JSON object with exactly these model-owned keys:\n- storyboard_id\n- summary\n- keywords\n- style_assessment\n- character_assessments\n- reference_assessments\n- readable_text_frame_ids\n- prop_only_frame_ids\n- evidence\n- overall_confidence\n\nThe provider adds `packet_frame_count` and `packet_reference_count` after your\nresponse. Do not return either provider-owned key.\n\nRules:\n- Copy the opaque `storyboard_id` from the packet header exactly.\n- Keep `summary` to two visually grounded sentences at most.\n- `keywords` must be short lowercase phrases visible in generated frames.\n- Split generated frames into an early half and a late half by ordinal.\n- `style_assessment` must contain exactly `first_half_mediums`,\n  `second_half_mediums`, `first_half_frame_ids`, and `second_half_frame_ids`.\n  Describe observed medium traits, not whether you think the result should pass.\n- Track the two most prominent human subjects that visibly recur across both\n  halves as `subject_001` and `subject_002`. Each `character_assessments` item\n  must contain exactly `name`, `first_half_traits`, `second_half_traits`,\n  `first_half_frame_ids`, and `second_half_frame_ids`. Give at least two visible\n  traits per half. Do not assign story character names.\n- Return one `reference_assessments` item for each supplied reference image, in\n  ordinal order. Each item must contain exactly `label`,\n  `observed_similarities`, and `generated_frame_ids`; use labels\n  `reference_001`, `reference_002`, and so on. An empty similarity list is the\n  honest answer when an abstract or weak reference cannot support a match.\n- `readable_text_frame_ids` lists only generated frames containing actually\n  readable words, letters, numerals, captions, labels, or speech bubbles.\n- `prop_only_frame_ids` lists generated frames that collapse into an isolated\n  product/object image instead of presenting a visible scene beat.\n- `evidence` must contain four to eight items with exactly `frame_id` and `cue`.\n  Use only opaque `frame_###` identifiers and describe visible pixels.\n- Never use a reference identifier as a generated-frame evidence identifier.\n- `overall_confidence` is a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "label": "prompts/storyboard-understanding.txt: You are CineForge's storyboard-packet observation analyst.\n\nInspect only the submitted images. You are not given the source title, scene\nnames, character names, shot labels, filenames, target answer, or transport\nmetrics. Do not invent them.\n\nReturn one strict JSON object with exactly these model-owned keys:\n- storyboard_id\n- summary\n- keywords\n- style_assessment\n- character_assessments\n- reference_assessments\n- readable_text_frame_ids\n- prop_only_frame_ids\n- evidence\n- overall_confidence\n\nThe provider adds `packet_frame_count` and `packet_reference_count` after your\nresponse. Do not return either provider-owned key.\n\nRules:\n- Copy the opaque `storyboard_id` from the packet header exactly.\n- Keep `summary` to two visually grounded sentences at most.\n- `keywords` must be short lowercase phrases visible in generated frames.\n- Split generated frames into an early half and a late half by ordinal.\n- `style_assessment` must contain exactly `first_half_mediums`,\n  `second_half_mediums`, `first_half_frame_ids`, and `second_half_frame_ids`.\n  Describe observed medium traits, not whether you think the result should pass.\n- Track the two most prominent human subjects that visibly recur across both\n  halves as `subject_001` and `subject_002`. Each `character_assessments` item\n  must contain exactly `name`, `first_half_traits`, `second_half_traits`,\n  `first_half_frame_ids`, and `second_half_frame_ids`. Give at least two visible\n  traits per half. Do not assign story character names.\n- Return one `reference_assessments` item for each supplied reference image, in\n  ordinal order. Each item must contain exactly `label`,\n  `observed_similarities`, and `generated_frame_ids`; use labels\n  `reference_001`, `reference_002`, and so on. An empty similarity list is the\n  honest answer when an abstract or weak reference cannot support a match.\n- `readable_text_frame_ids` lists only generated frames containing actually\n  readable words, letters, numerals, captions, labels, or speech bubbles.\n- `prop_only_frame_ids` lists generated frames that collapse into an isolated\n  product/object image instead of presenting a visible scene beat.\n- `evidence` must contain four to eight items with exactly `frame_id` and `cue`.\n  Use only opaque `frame_###` identifiers and describe visible pixels.\n- Never use a reference identifier as a generated-frame evidence identifier.\n- `overall_confidence` is a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "id": "767a9173909ebb9f81c8526de0485159784079b10c8f3e42c91717382b7499c7",
+        "provider": "GPT Image 2 Storyboards",
+        "metrics": {
+          "score": 1.4031500000000001,
+          "testPassCount": 0,
+          "testFailCount": 2,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 2,
+          "totalLatencyMs": 28423,
+          "tokenUsage": {
+            "prompt": 56078,
+            "completion": 2187,
+            "cached": 0,
+            "total": 58265,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "prompt": 3430,
+              "completion": 1789,
+              "cached": 0,
+              "total": 5219,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.173
+        }
+      },
+      {
+        "raw": "You are CineForge's storyboard-packet observation analyst.\n\nInspect only the submitted images. You are not given the source title, scene\nnames, character names, shot labels, filenames, target answer, or transport\nmetrics. Do not invent them.\n\nReturn one strict JSON object with exactly these model-owned keys:\n- storyboard_id\n- summary\n- keywords\n- style_assessment\n- character_assessments\n- reference_assessments\n- readable_text_frame_ids\n- prop_only_frame_ids\n- evidence\n- overall_confidence\n\nThe provider adds `packet_frame_count` and `packet_reference_count` after your\nresponse. Do not return either provider-owned key.\n\nRules:\n- Copy the opaque `storyboard_id` from the packet header exactly.\n- Keep `summary` to two visually grounded sentences at most.\n- `keywords` must be short lowercase phrases visible in generated frames.\n- Split generated frames into an early half and a late half by ordinal.\n- `style_assessment` must contain exactly `first_half_mediums`,\n  `second_half_mediums`, `first_half_frame_ids`, and `second_half_frame_ids`.\n  Describe observed medium traits, not whether you think the result should pass.\n- Track the two most prominent human subjects that visibly recur across both\n  halves as `subject_001` and `subject_002`. Each `character_assessments` item\n  must contain exactly `name`, `first_half_traits`, `second_half_traits`,\n  `first_half_frame_ids`, and `second_half_frame_ids`. Give at least two visible\n  traits per half. Do not assign story character names.\n- Return one `reference_assessments` item for each supplied reference image, in\n  ordinal order. Each item must contain exactly `label`,\n  `observed_similarities`, and `generated_frame_ids`; use labels\n  `reference_001`, `reference_002`, and so on. An empty similarity list is the\n  honest answer when an abstract or weak reference cannot support a match.\n- `readable_text_frame_ids` lists only generated frames containing actually\n  readable words, letters, numerals, captions, labels, or speech bubbles.\n- `prop_only_frame_ids` lists generated frames that collapse into an isolated\n  product/object image instead of presenting a visible scene beat.\n- `evidence` must contain four to eight items with exactly `frame_id` and `cue`.\n  Use only opaque `frame_###` identifiers and describe visible pixels.\n- Never use a reference identifier as a generated-frame evidence identifier.\n- `overall_confidence` is a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "label": "prompts/storyboard-understanding.txt: You are CineForge's storyboard-packet observation analyst.\n\nInspect only the submitted images. You are not given the source title, scene\nnames, character names, shot labels, filenames, target answer, or transport\nmetrics. Do not invent them.\n\nReturn one strict JSON object with exactly these model-owned keys:\n- storyboard_id\n- summary\n- keywords\n- style_assessment\n- character_assessments\n- reference_assessments\n- readable_text_frame_ids\n- prop_only_frame_ids\n- evidence\n- overall_confidence\n\nThe provider adds `packet_frame_count` and `packet_reference_count` after your\nresponse. Do not return either provider-owned key.\n\nRules:\n- Copy the opaque `storyboard_id` from the packet header exactly.\n- Keep `summary` to two visually grounded sentences at most.\n- `keywords` must be short lowercase phrases visible in generated frames.\n- Split generated frames into an early half and a late half by ordinal.\n- `style_assessment` must contain exactly `first_half_mediums`,\n  `second_half_mediums`, `first_half_frame_ids`, and `second_half_frame_ids`.\n  Describe observed medium traits, not whether you think the result should pass.\n- Track the two most prominent human subjects that visibly recur across both\n  halves as `subject_001` and `subject_002`. Each `character_assessments` item\n  must contain exactly `name`, `first_half_traits`, `second_half_traits`,\n  `first_half_frame_ids`, and `second_half_frame_ids`. Give at least two visible\n  traits per half. Do not assign story character names.\n- Return one `reference_assessments` item for each supplied reference image, in\n  ordinal order. Each item must contain exactly `label`,\n  `observed_similarities`, and `generated_frame_ids`; use labels\n  `reference_001`, `reference_002`, and so on. An empty similarity list is the\n  honest answer when an abstract or weak reference cannot support a match.\n- `readable_text_frame_ids` lists only generated frames containing actually\n  readable words, letters, numerals, captions, labels, or speech bubbles.\n- `prop_only_frame_ids` lists generated frames that collapse into an isolated\n  product/object image instead of presenting a visible scene beat.\n- `evidence` must contain four to eight items with exactly `frame_id` and `cue`.\n  Use only opaque `frame_###` identifiers and describe visible pixels.\n- Never use a reference identifier as a generated-frame evidence identifier.\n- `overall_confidence` is a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "id": "767a9173909ebb9f81c8526de0485159784079b10c8f3e42c91717382b7499c7",
+        "provider": "GPT Image 2 Template Grid Storyboards",
+        "metrics": {
+          "score": 1.3112,
+          "testPassCount": 0,
+          "testFailCount": 2,
+          "testErrorCount": 0,
+          "assertPassCount": 1,
+          "assertFailCount": 3,
+          "totalLatencyMs": 22571,
+          "tokenUsage": {
+            "prompt": 8578,
+            "completion": 1690,
+            "cached": 0,
+            "total": 10268,
+            "numRequests": 2,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "prompt": 3276,
+              "completion": 1964,
+              "cached": 0,
+              "total": 5240,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.046795
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0.08284,
+        "error": "raw_score=0.6184 | overall=0.6184; hard_constraints=fail; story_specificity=0.67, style_consistency=0.70, identity_consistency=0.11, reference_fidelity=1.00, text_cleanliness=1.00, prop_discipline=1.00, evidence=1.00",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.7192,
+          "reason": "raw_score=0.6184 | overall=0.6184; hard_constraints=fail; story_specificity=0.67, style_consistency=0.70, identity_consistency=0.11, reference_fidelity=1.00, text_cleanliness=1.00, prop_discipline=1.00, evidence=1.00",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2504,
+            "prompt": 1595,
+            "completion": 909,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.6184,
+              "reason": "raw_score=0.6184 | overall=0.6184; hard_constraints=fail; story_specificity=0.67, style_consistency=0.70, identity_consistency=0.11, reference_fidelity=1.00, text_cleanliness=1.00, prop_discipline=1.00, evidence=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/storyboard_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+              },
+              "pass": true,
+              "score": 0.82,
+              "reason": "The analysis covers all required visual cue groups (radio studio, equipment, storm/night, antenna/receiver, lantern) with frame-bound evidence. The water tower/catwalk is described as 'high platform'/'rooftop platform' \u2014 a minor misidentification but visually defensible. Medium is correctly identified as monochrome/grayscale. Two recurring subjects are tracked with opaque names across halves. No semantic character names, no readable text claims, no reference-fidelity overclaims (reference_assessments is empty). Evidence is observational and frame-bound. No unsupported story details or narrative fabrication. Overall a strong, source-aligned analysis with one minor location identification gap.",
+              "tokensUsed": {
+                "total": 2504,
+                "prompt": 1595,
+                "completion": 909,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"character_assessments\\\":[{\\\"first_half_frame_ids\\\":[\\\"frame_005\\\",\\\"frame_006\\\",\\\"frame_008\\\"],\\\"first_half_traits\\\":[\\\"young adult woman with dark hair, often tied back or loose around face\\\",\\\"wears practical jacket or hoodie and works directly with equipment\\\"],\\\"name\\\":\\\"subject_001\\\",\\\"second_half_frame_ids\\\":[\\\"frame_009\\\",\\\"frame_010\\\",\\\"frame_013\\\",\\\"frame_014\\\",\\\"frame_015\\\"],\\\"second_half_traits\\\":[\\\"same dark-haired woman in outdoor utility clothing with backpack straps visible\\\",\\\"focused or urgent expression while handling lantern, radio handset, and cable connections\\\"]},{\\\"first_half_frame_ids\\\":[\\\"frame_001\\\",\\\"frame_002\\\",\\\"frame_003\\\"],\\\"first_half_traits\\\":[\\\"young adult man with short dark hair and light stubble\\\",\\\"wears casual jacket or sweater and headphones while operating audio console\\\"],\\\"name\\\":\\\"subject_002\\\",\\\"second_half_frame_ids\\\":[\\\"frame_008\\\",\\\"frame_009\\\",\\\"frame_011\\\",\\\"frame_012\\\",\\\"frame_013\\\"],\\\"second_half_traits\\\":[\\\"same short-haired man in outdoor jacket working on antenna hardware and radio box\\\",\\\"concentrated expression with hands on clamps, connectors, and mast components\\\"]}],\\\"evidence\\\":[{\\\"cue\\\":\\\"wide interior room with reel-to-reel deck, mixing board, lanterns, rain at skylights, and multiple people working\\\",\\\"frame_id\\\":\\\"frame_001\\\"},{\\\"cue\\\":\\\"older woman with hair in a bun draws looping lines and boxes on a whiteboard beside radio gear and a microphone\\\",\\\"frame_id\\\":\\\"frame_004\\\"},{\\\"cue\\\":\\\"dark-haired woman reaches to flip a wall switch above a console while a microphone stands in the foreground\\\",\\\"frame_id\\\":\\\"frame_006\\\"},{\\\"cue\\\":\\\"exterior high platform at night with city below; woman braces by railing while man adjusts a tall antenna mast\\\",\\\"frame_id\\\":\\\"frame_008\\\"},{\\\"cue\\\":\\\"close-up of woman kneeling on wet metal grating, positioning a glowing lantern near the railing\\\",\\\"frame_id\\\":\\\"frame_010\\\"},{\\\"cue\\\":\\\"man plugs a cable into a handheld radio box with rooftop railing and distant lights behind him\\\",\\\"frame_id\\\":\\\"frame_012\\\"},{\\\"cue\\\":\\\"woman grips a radio handset beside a tabletop unit while man steadies antenna pole, both looking outward\\\",\\\"frame_id\\\":\\\"frame_013\\\"},{\\\"cue\\\":\\\"woman smiles while tightening a connector on a mounted equipment panel with multiple cables attached\\\",\\\"frame_id\\\":\\\"frame_015\\\"}],\\\"keywords\\\":[\\\"radio equipment\\\",\\\"mixing console\\\",\\\"whiteboard diagrams\\\",\\\"microphone\\\",\\\"headphones\\\",\\\"lantern\\\",\\\"antenna mast\\\",\\\"rainy night\\\",\\\"rooftop platform\\\",\\\"cables\\\"],\\\"overall_confidence\\\":0.93,\\\"packet_frame_count\\\":15,\\\"packet_reference_count\\\":0,\\\"prop_only_frame_ids\\\":[],\\\"readable_text_frame_ids\\\":[],\\\"reference_assessments\\\":[],\\\"storyboard_id\\\":\\\"sbq_case_001\\\",\\\"style_assessment\\\":{\\\"first_half_frame_ids\\\":[\\\"frame_001\\\",\\\"frame_002\\\",\\\"frame_003\\\",\\\"frame_004\\\",\\\"frame_005\\\",\\\"frame_006\\\",\\\"frame_007\\\",\\\"frame_008\\\"],\\\"first_half_mediums\\\":[\\\"graphite or charcoal-style monochrome illustration\\\",\\\"dense crosshatching and pencil shading\\\",\\\"cinematic interior compositions with close-ups and medium shots\\\",\\\"detailed analog equipment and rain-lit windows\\\"],\\\"second_half_frame_ids\\\":[\\\"frame_009\\\",\\\"frame_010\\\",\\\"frame_011\\\",\\\"frame_012\\\",\\\"frame_013\\\",\\\"frame_014\\\",\\\"frame_015\\\"],\\\"second_half_mediums\\\":[\\\"graphite or charcoal-style monochrome illustration\\\",\\\"stormy exterior night scenes with strong contrast\\\",\\\"wind-swept rooftop/platform staging and technical close-ups\\\",\\\"detailed metal textures, cables, lantern glow, and city lights\\\"]},\\\"summary\\\":\\\"A stormy black-and-white sequence follows a small team working with radio and recording equipment inside a cramped control room, then moving onto a high exterior platform to set up communications gear. The recurring action centers on adjusting consoles, diagrams, antennas, lanterns, and cables while the weather remains rainy and windy.\\\"}\\n</Output>\\n<Rubric>\\nEvaluate this storyboard-sequence analysis against the reference below.\\n\\nReference analysis:\\n# Open Frequency scenes 001-002 \u2014 prompt-only storyboard identity\\n\\n- Source: `tests/fixtures/ingest_inputs/open_frequency_short.fountain`\\n- Source SHA-256: `81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95`\\n- Observable intent: A storm-night emergency-radio sequence moves from an old community studio on emergency power to a wind-lashed water-tower catwalk where two recurring technicians secure a portable antenna and react to a handheld receiver.\\n- Required visual cue groups:\\n  - radio_studio: radio studio, control room\\n  - radio_equipment: radio, mixer, console, tape reel\\n  - storm_night: storm, rain, wind, night\\n  - water_tower_catwalk: water tower, catwalk, tower platform\\n  - antenna_receiver: antenna, receiver\\n  - lantern: lantern\\n- Intended medium: monochrome/grayscale storyboard sketch.\\n- Recurring-subject slots: subject_001, subject_002.\\n- Supplied reference cards are transport-only and cannot establish realistic fidelity.\\n- Avoid readable text: yes\\n- Prop-only discipline is not scored until source-authored shot-role truth exists.\\n\\nGrade whether the analysis is internally precise and source-aligned,\\nnot whether its self-described status sounds positive. Check that\\nobservations cover the source-authored visual cues without copying\\ntarget prose, compare early/late medium and subject traits, require\\nopaque frame-bound evidence, and treat the abstract supplied cards as\\ntransport controls rather than realistic identity/location goldens.\\nPenalize unsupported story details, semantic names, invalid frame ids,\\nand confident reference-fidelity claims from weak evidence.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n# Open Frequency scenes 001-002 \u2014 prompt-only storyboard identity\n\n- Source: `tests/fixtures/ingest_inputs/open_frequency_short.fountain`\n- Source SHA-256: `81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95`\n- Observable intent: A storm-night emergency-radio sequence moves from an old community studio on emergency power to a wind-lashed water-tower catwalk where two recurring technicians secure a portable antenna and react to a handheld receiver.\n- Required visual cue groups:\n  - radio_studio: radio studio, control room\n  - radio_equipment: radio, mixer, console, tape reel\n  - storm_night: storm, rain, wind, night\n  - water_tower_catwalk: water tower, catwalk, tower platform\n  - antenna_receiver: antenna, receiver\n  - lantern: lantern\n- Intended medium: monochrome/grayscale storyboard sketch.\n- Recurring-subject slots: subject_001, subject_002.\n- Supplied reference cards are transport-only and cannot establish realistic fidelity.\n- Avoid readable text: yes\n- Prop-only discipline is not scored until source-authored shot-role truth exists.\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+              }
+            }
+          ]
+        },
+        "id": "39869d55-c5b4-4880-8159-0755c87e54a4",
+        "latencyMs": 12199,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's storyboard-packet observation analyst.\n\nInspect only the submitted images. You are not given the source title, scene\nnames, character names, shot labels, filenames, target answer, or transport\nmetrics. Do not invent them.\n\nReturn one strict JSON object with exactly these model-owned keys:\n- storyboard_id\n- summary\n- keywords\n- style_assessment\n- character_assessments\n- reference_assessments\n- readable_text_frame_ids\n- prop_only_frame_ids\n- evidence\n- overall_confidence\n\nThe provider adds `packet_frame_count` and `packet_reference_count` after your\nresponse. Do not return either provider-owned key.\n\nRules:\n- Copy the opaque `storyboard_id` from the packet header exactly.\n- Keep `summary` to two visually grounded sentences at most.\n- `keywords` must be short lowercase phrases visible in generated frames.\n- Split generated frames into an early half and a late half by ordinal.\n- `style_assessment` must contain exactly `first_half_mediums`,\n  `second_half_mediums`, `first_half_frame_ids`, and `second_half_frame_ids`.\n  Describe observed medium traits, not whether you think the result should pass.\n- Track the two most prominent human subjects that visibly recur across both\n  halves as `subject_001` and `subject_002`. Each `character_assessments` item\n  must contain exactly `name`, `first_half_traits`, `second_half_traits`,\n  `first_half_frame_ids`, and `second_half_frame_ids`. Give at least two visible\n  traits per half. Do not assign story character names.\n- Return one `reference_assessments` item for each supplied reference image, in\n  ordinal order. Each item must contain exactly `label`,\n  `observed_similarities`, and `generated_frame_ids`; use labels\n  `reference_001`, `reference_002`, and so on. An empty similarity list is the\n  honest answer when an abstract or weak reference cannot support a match.\n- `readable_text_frame_ids` lists only generated frames containing actually\n  readable words, letters, numerals, captions, labels, or speech bubbles.\n- `prop_only_frame_ids` lists generated frames that collapse into an isolated\n  product/object image instead of presenting a visible scene beat.\n- `evidence` must contain four to eight items with exactly `frame_id` and `cue`.\n  Use only opaque `frame_###` identifiers and describe visible pixels.\n- Never use a reference identifier as a generated-frame evidence identifier.\n- `overall_confidence` is a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/storyboard-understanding.txt: You are CineForge's storyboard-packet observation analyst.\n\nInspect only the submitted images. You are not given the source title, scene\nnames, character names, shot labels, filenames, target answer, or transport\nmetrics. Do not invent them.\n\nReturn one strict JSON object with exactly these model-owned keys:\n- storyboard_id\n- summary\n- keywords\n- style_assessment\n- character_assessments\n- reference_assessments\n- readable_text_frame_ids\n- prop_only_frame_ids\n- evidence\n- overall_confidence\n\nThe provider adds `packet_frame_count` and `packet_reference_count` after your\nresponse. Do not return either provider-owned key.\n\nRules:\n- Copy the opaque `storyboard_id` from the packet header exactly.\n- Keep `summary` to two visually grounded sentences at most.\n- `keywords` must be short lowercase phrases visible in generated frames.\n- Split generated frames into an early half and a late half by ordinal.\n- `style_assessment` must contain exactly `first_half_mediums`,\n  `second_half_mediums`, `first_half_frame_ids`, and `second_half_frame_ids`.\n  Describe observed medium traits, not whether you think the result should pass.\n- Track the two most prominent human subjects that visibly recur across both\n  halves as `subject_001` and `subject_002`. Each `character_assessments` item\n  must contain exactly `name`, `first_half_traits`, `second_half_traits`,\n  `first_half_frame_ids`, and `second_half_frame_ids`. Give at least two visible\n  traits per half. Do not assign story character names.\n- Return one `reference_assessments` item for each supplied reference image, in\n  ordinal order. Each item must contain exactly `label`,\n  `observed_similarities`, and `generated_frame_ids`; use labels\n  `reference_001`, `reference_002`, and so on. An empty similarity list is the\n  honest answer when an abstract or weak reference cannot support a match.\n- `readable_text_frame_ids` lists only generated frames containing actually\n  readable words, letters, numerals, captions, labels, or speech bubbles.\n- `prop_only_frame_ids` lists generated frames that collapse into an isolated\n  product/object image instead of presenting a visible scene beat.\n- `evidence` must contain four to eight items with exactly `frame_id` and `cue`.\n  Use only opaque `frame_###` identifiers and describe visible pixels.\n- Never use a reference identifier as a generated-frame evidence identifier.\n- `overall_confidence` is a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "767a9173909ebb9f81c8526de0485159784079b10c8f3e42c91717382b7499c7",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/storyboard_understanding_provider.py",
+          "label": "GPT Image 2 Storyboards"
+        },
+        "response": {
+          "output": "{\"character_assessments\":[{\"first_half_frame_ids\":[\"frame_005\",\"frame_006\",\"frame_008\"],\"first_half_traits\":[\"young adult woman with dark hair, often tied back or loose around face\",\"wears practical jacket or hoodie and works directly with equipment\"],\"name\":\"subject_001\",\"second_half_frame_ids\":[\"frame_009\",\"frame_010\",\"frame_013\",\"frame_014\",\"frame_015\"],\"second_half_traits\":[\"same dark-haired woman in outdoor utility clothing with backpack straps visible\",\"focused or urgent expression while handling lantern, radio handset, and cable connections\"]},{\"first_half_frame_ids\":[\"frame_001\",\"frame_002\",\"frame_003\"],\"first_half_traits\":[\"young adult man with short dark hair and light stubble\",\"wears casual jacket or sweater and headphones while operating audio console\"],\"name\":\"subject_002\",\"second_half_frame_ids\":[\"frame_008\",\"frame_009\",\"frame_011\",\"frame_012\",\"frame_013\"],\"second_half_traits\":[\"same short-haired man in outdoor jacket working on antenna hardware and radio box\",\"concentrated expression with hands on clamps, connectors, and mast components\"]}],\"evidence\":[{\"cue\":\"wide interior room with reel-to-reel deck, mixing board, lanterns, rain at skylights, and multiple people working\",\"frame_id\":\"frame_001\"},{\"cue\":\"older woman with hair in a bun draws looping lines and boxes on a whiteboard beside radio gear and a microphone\",\"frame_id\":\"frame_004\"},{\"cue\":\"dark-haired woman reaches to flip a wall switch above a console while a microphone stands in the foreground\",\"frame_id\":\"frame_006\"},{\"cue\":\"exterior high platform at night with city below; woman braces by railing while man adjusts a tall antenna mast\",\"frame_id\":\"frame_008\"},{\"cue\":\"close-up of woman kneeling on wet metal grating, positioning a glowing lantern near the railing\",\"frame_id\":\"frame_010\"},{\"cue\":\"man plugs a cable into a handheld radio box with rooftop railing and distant lights behind him\",\"frame_id\":\"frame_012\"},{\"cue\":\"woman grips a radio handset beside a tabletop unit while man steadies antenna pole, both looking outward\",\"frame_id\":\"frame_013\"},{\"cue\":\"woman smiles while tightening a connector on a mounted equipment panel with multiple cables attached\",\"frame_id\":\"frame_015\"}],\"keywords\":[\"radio equipment\",\"mixing console\",\"whiteboard diagrams\",\"microphone\",\"headphones\",\"lantern\",\"antenna mast\",\"rainy night\",\"rooftop platform\",\"cables\"],\"overall_confidence\":0.93,\"packet_frame_count\":15,\"packet_reference_count\":0,\"prop_only_frame_ids\":[],\"readable_text_frame_ids\":[],\"reference_assessments\":[],\"storyboard_id\":\"sbq_case_001\",\"style_assessment\":{\"first_half_frame_ids\":[\"frame_001\",\"frame_002\",\"frame_003\",\"frame_004\",\"frame_005\",\"frame_006\",\"frame_007\",\"frame_008\"],\"first_half_mediums\":[\"graphite or charcoal-style monochrome illustration\",\"dense crosshatching and pencil shading\",\"cinematic interior compositions with close-ups and medium shots\",\"detailed analog equipment and rain-lit windows\"],\"second_half_frame_ids\":[\"frame_009\",\"frame_010\",\"frame_011\",\"frame_012\",\"frame_013\",\"frame_014\",\"frame_015\"],\"second_half_mediums\":[\"graphite or charcoal-style monochrome illustration\",\"stormy exterior night scenes with strong contrast\",\"wind-swept rooftop/platform staging and technical close-ups\",\"detailed metal textures, cables, lantern glow, and city lights\"]},\"summary\":\"A stormy black-and-white sequence follows a small team working with radio and recording equipment inside a cramped control room, then moving onto a high exterior platform to set up communications gear. The recurring action centers on adjusting consoles, diagrams, antennas, lanterns, and cables while the weather remains rainy and windy.\"}",
+          "tokenUsage": {
+            "total": 29166,
+            "prompt": 28372,
+            "completion": 794,
+            "numRequests": 1
+          },
+          "cost": 0.08284,
+          "latencyMs": 12199,
+          "cached": false,
+          "metadata": {
+            "storyboard_id": "sbq_case_001",
+            "candidate_variant": "gpt_image_2_storyboards",
+            "prompt_version": "storyboard-understanding-v3",
+            "model": "gpt-5.4",
+            "requested_model": "gpt-5.4",
+            "returned_model": "gpt-5.4-2026-03-05",
+            "request_id": "chatcmpl-E4eWhmjkiyIyDONdyL9xLOiViFtBs",
+            "provider": "openai",
+            "dataset_manifest_sha256": "6bf488777cd23f374204ac273ba2dcd114eb18c9b24ee039f52da65909dceef6",
+            "asset_manifest_sha256": "ff083ef47231f04be8750b3431c92789e87d37bc900f1f8201a570241730b7f1"
+          },
+          "raw": {
+            "id": "chatcmpl-E4eWhmjkiyIyDONdyL9xLOiViFtBs",
+            "model": "gpt-5.4-2026-03-05",
+            "usage": {
+              "prompt_tokens": 28372,
+              "completion_tokens": 794,
+              "total_tokens": 29166,
+              "prompt_tokens_details": {
+                "cached_tokens": 0,
+                "audio_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "audio_tokens": 0,
+                "accepted_prediction_tokens": 0,
+                "rejected_prediction_tokens": 0
+              }
+            }
+          }
+        },
+        "score": 0.7192,
+        "success": false,
+        "testCase": {
+          "description": "sbq_case_001",
+          "vars": {
+            "storyboard_id": "sbq_case_001",
+            "target_path": "storyboard_generation_quality/targets/sbq_case_001/target.json",
+            "target_markdown": "file://../storyboard_generation_quality/targets/sbq_case_001/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/storyboard_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "storyboard_id": "sbq_case_001",
+          "target_path": "storyboard_generation_quality/targets/sbq_case_001/target.json",
+          "target_markdown": "file://../storyboard_generation_quality/targets/sbq_case_001/target.md"
+        },
+        "metadata": {
+          "storyboard_id": "sbq_case_001",
+          "candidate_variant": "gpt_image_2_storyboards",
+          "prompt_version": "storyboard-understanding-v3",
+          "model": "gpt-5.4",
+          "requested_model": "gpt-5.4",
+          "returned_model": "gpt-5.4-2026-03-05",
+          "request_id": "chatcmpl-E4eWhmjkiyIyDONdyL9xLOiViFtBs",
+          "provider": "openai",
+          "dataset_manifest_sha256": "6bf488777cd23f374204ac273ba2dcd114eb18c9b24ee039f52da65909dceef6",
+          "asset_manifest_sha256": "ff083ef47231f04be8750b3431c92789e87d37bc900f1f8201a570241730b7f1",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.0209275,
+        "error": "raw_score=0.6907 | overall=0.6907; hard_constraints=fail; story_specificity=0.67, style_consistency=0.70, identity_consistency=0.40, reference_fidelity=1.00, text_cleanliness=1.00, prop_discipline=1.00, evidence=1.00",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.73535,
+          "reason": "raw_score=0.6907 | overall=0.6907; hard_constraints=fail; story_specificity=0.67, style_consistency=0.70, identity_consistency=0.40, reference_fidelity=1.00, text_cleanliness=1.00, prop_discipline=1.00, evidence=1.00",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2528,
+            "prompt": 1563,
+            "completion": 965,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.6907,
+              "reason": "raw_score=0.6907 | overall=0.6907; hard_constraints=fail; story_specificity=0.67, style_consistency=0.70, identity_consistency=0.40, reference_fidelity=1.00, text_cleanliness=1.00, prop_discipline=1.00, evidence=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/storyboard_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+              },
+              "pass": true,
+              "score": 0.78,
+              "reason": "The analysis demonstrates strong internal precision and source alignment. It correctly identifies the medium as monochrome/grayscale, uses opaque subject names, provides frame-bound evidence, avoids confident reference-fidelity claims (empty reference_assessments), and covers most required visual cue groups. The early/late structural split is well-observed. Minor deductions: the storm/rain element is only partially captured (wind noted but not storm or rain explicitly), 'water tower' and 'catwalk' are not specifically named (described observationally as 'circular platform' and 'tower'), and the whiteboard detail may be unsupported by the source. No invalid frame IDs, no semantic names, no copied target prose.",
+              "tokensUsed": {
+                "total": 2528,
+                "prompt": 1563,
+                "completion": 965,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"character_assessments\\\":[{\\\"first_half_frame_ids\\\":[\\\"frame_001\\\",\\\"frame_003\\\"],\\\"first_half_traits\\\":[\\\"adult man with short dark hair\\\",\\\"seen operating audio/radio controls at a console\\\"],\\\"name\\\":\\\"subject_001\\\",\\\"second_half_frame_ids\\\":[\\\"frame_009\\\",\\\"frame_010\\\",\\\"frame_012\\\"],\\\"second_half_traits\\\":[\\\"adult man with short dark hair and collared jacket\\\",\\\"handles a boxy handheld radio and works beside tower equipment\\\"]},{\\\"first_half_frame_ids\\\":[\\\"frame_002\\\",\\\"frame_005\\\",\\\"frame_008\\\"],\\\"first_half_traits\\\":[\\\"adult woman with shoulder-length hair\\\",\\\"wears glasses while presenting near a whiteboard\\\"],\\\"name\\\":\\\"subject_002\\\",\\\"second_half_frame_ids\\\":[\\\"frame_009\\\",\\\"frame_010\\\",\\\"frame_012\\\",\\\"frame_013\\\",\\\"frame_014\\\"],\\\"second_half_traits\\\":[\\\"adult woman with hair pulled back or wind-swept\\\",\\\"wears a utility-style jacket and speaks into a radio handset\\\"]}],\\\"evidence\\\":[{\\\"cue\\\":\\\"Wide interior room with multiple operators, large console, window view, and a man entering through the doorway.\\\",\\\"frame_id\\\":\\\"frame_001\\\"},{\\\"cue\\\":\\\"Man holds a long handheld antenna with several cross elements, indicating radio or signal equipment.\\\",\\\"frame_id\\\":\\\"frame_004\\\"},{\\\"cue\\\":\\\"Woman in glasses stands at a whiteboard covered in faint diagram-like markings while holding a marker.\\\",\\\"frame_id\\\":\\\"frame_005\\\"},{\\\"cue\\\":\\\"Close-up of hands adjusting exposed tape or recording machinery with two large reels on a desk.\\\",\\\"frame_id\\\":\\\"frame_006\\\"},{\\\"cue\\\":\\\"Exterior circular platform at night with railing, lantern on the floor, woman observing, and man operating a wall-mounted box.\\\",\\\"frame_id\\\":\\\"frame_009\\\"},{\\\"cue\\\":\\\"Hands plug a cable into a small boxy radio device beside a glowing lantern; no people are visible.\\\",\\\"frame_id\\\":\\\"frame_011\\\"},{\\\"cue\\\":\\\"Close-up of the woman pressing a radio microphone to her mouth, with wind-blown hair and city lights behind her.\\\",\\\"frame_id\\\":\\\"frame_013\\\"},{\\\"cue\\\":\\\"Hands use a wrench on a clamp around a vertical metal pole, focusing only on hardware adjustment.\\\",\\\"frame_id\\\":\\\"frame_015\\\"}],\\\"keywords\\\":[\\\"radio control room\\\",\\\"antenna\\\",\\\"whiteboard diagrams\\\",\\\"mixing console\\\",\\\"reel-to-reel tape\\\",\\\"switch panel\\\",\\\"night rooftop\\\",\\\"lantern light\\\",\\\"handheld radio\\\",\\\"metal railing\\\",\\\"tower hardware\\\"],\\\"overall_confidence\\\":0.92,\\\"packet_frame_count\\\":15,\\\"packet_reference_count\\\":0,\\\"prop_only_frame_ids\\\":[\\\"frame_011\\\",\\\"frame_015\\\"],\\\"readable_text_frame_ids\\\":[],\\\"reference_assessments\\\":[],\\\"storyboard_id\\\":\\\"sbq_case_001\\\",\\\"style_assessment\\\":{\\\"first_half_frame_ids\\\":[\\\"frame_001\\\",\\\"frame_002\\\",\\\"frame_003\\\",\\\"frame_004\\\",\\\"frame_005\\\",\\\"frame_006\\\",\\\"frame_007\\\",\\\"frame_008\\\"],\\\"first_half_mediums\\\":[\\\"monochrome pencil/charcoal-style rendering\\\",\\\"interior technical workspace scenes\\\",\\\"mix of medium close-ups and equipment inserts\\\",\\\"dense crosshatching with realistic faces and machinery\\\"],\\\"second_half_frame_ids\\\":[\\\"frame_009\\\",\\\"frame_010\\\",\\\"frame_011\\\",\\\"frame_012\\\",\\\"frame_013\\\",\\\"frame_014\\\",\\\"frame_015\\\"],\\\"second_half_mediums\\\":[\\\"monochrome pencil/charcoal-style rendering\\\",\\\"night exterior rooftop/tower scenes\\\",\\\"alternation of two-shots, close character portraits, and hand-detail inserts\\\",\\\"strong lantern-lit contrast with wind-swept clothing and industrial fixtures\\\"]},\\\"summary\\\":\\\"A grayscale storyboard follows a small team working with radio and recording equipment in an indoor control room, including a man arriving with an antenna and a woman explaining at a whiteboard. The later frames shift to a nighttime rooftop or tower platform where a man and woman operate a field radio by lantern light and make adjustments to mounted hardware.\\\"}\\n</Output>\\n<Rubric>\\nEvaluate this storyboard-sequence analysis against the reference below.\\n\\nReference analysis:\\n# Open Frequency scenes 001-002 \u2014 prompt-only storyboard identity\\n\\n- Source: `tests/fixtures/ingest_inputs/open_frequency_short.fountain`\\n- Source SHA-256: `81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95`\\n- Observable intent: A storm-night emergency-radio sequence moves from an old community studio on emergency power to a wind-lashed water-tower catwalk where two recurring technicians secure a portable antenna and react to a handheld receiver.\\n- Required visual cue groups:\\n  - radio_studio: radio studio, control room\\n  - radio_equipment: radio, mixer, console, tape reel\\n  - storm_night: storm, rain, wind, night\\n  - water_tower_catwalk: water tower, catwalk, tower platform\\n  - antenna_receiver: antenna, receiver\\n  - lantern: lantern\\n- Intended medium: monochrome/grayscale storyboard sketch.\\n- Recurring-subject slots: subject_001, subject_002.\\n- Supplied reference cards are transport-only and cannot establish realistic fidelity.\\n- Avoid readable text: yes\\n- Prop-only discipline is not scored until source-authored shot-role truth exists.\\n\\nGrade whether the analysis is internally precise and source-aligned,\\nnot whether its self-described status sounds positive. Check that\\nobservations cover the source-authored visual cues without copying\\ntarget prose, compare early/late medium and subject traits, require\\nopaque frame-bound evidence, and treat the abstract supplied cards as\\ntransport controls rather than realistic identity/location goldens.\\nPenalize unsupported story details, semantic names, invalid frame ids,\\nand confident reference-fidelity claims from weak evidence.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n# Open Frequency scenes 001-002 \u2014 prompt-only storyboard identity\n\n- Source: `tests/fixtures/ingest_inputs/open_frequency_short.fountain`\n- Source SHA-256: `81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95`\n- Observable intent: A storm-night emergency-radio sequence moves from an old community studio on emergency power to a wind-lashed water-tower catwalk where two recurring technicians secure a portable antenna and react to a handheld receiver.\n- Required visual cue groups:\n  - radio_studio: radio studio, control room\n  - radio_equipment: radio, mixer, console, tape reel\n  - storm_night: storm, rain, wind, night\n  - water_tower_catwalk: water tower, catwalk, tower platform\n  - antenna_receiver: antenna, receiver\n  - lantern: lantern\n- Intended medium: monochrome/grayscale storyboard sketch.\n- Recurring-subject slots: subject_001, subject_002.\n- Supplied reference cards are transport-only and cannot establish realistic fidelity.\n- Avoid readable text: yes\n- Prop-only discipline is not scored until source-authored shot-role truth exists.\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+              }
+            }
+          ]
+        },
+        "id": "78a52475-7703-4cfa-96fc-78acf8fe9275",
+        "latencyMs": 10784,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's storyboard-packet observation analyst.\n\nInspect only the submitted images. You are not given the source title, scene\nnames, character names, shot labels, filenames, target answer, or transport\nmetrics. Do not invent them.\n\nReturn one strict JSON object with exactly these model-owned keys:\n- storyboard_id\n- summary\n- keywords\n- style_assessment\n- character_assessments\n- reference_assessments\n- readable_text_frame_ids\n- prop_only_frame_ids\n- evidence\n- overall_confidence\n\nThe provider adds `packet_frame_count` and `packet_reference_count` after your\nresponse. Do not return either provider-owned key.\n\nRules:\n- Copy the opaque `storyboard_id` from the packet header exactly.\n- Keep `summary` to two visually grounded sentences at most.\n- `keywords` must be short lowercase phrases visible in generated frames.\n- Split generated frames into an early half and a late half by ordinal.\n- `style_assessment` must contain exactly `first_half_mediums`,\n  `second_half_mediums`, `first_half_frame_ids`, and `second_half_frame_ids`.\n  Describe observed medium traits, not whether you think the result should pass.\n- Track the two most prominent human subjects that visibly recur across both\n  halves as `subject_001` and `subject_002`. Each `character_assessments` item\n  must contain exactly `name`, `first_half_traits`, `second_half_traits`,\n  `first_half_frame_ids`, and `second_half_frame_ids`. Give at least two visible\n  traits per half. Do not assign story character names.\n- Return one `reference_assessments` item for each supplied reference image, in\n  ordinal order. Each item must contain exactly `label`,\n  `observed_similarities`, and `generated_frame_ids`; use labels\n  `reference_001`, `reference_002`, and so on. An empty similarity list is the\n  honest answer when an abstract or weak reference cannot support a match.\n- `readable_text_frame_ids` lists only generated frames containing actually\n  readable words, letters, numerals, captions, labels, or speech bubbles.\n- `prop_only_frame_ids` lists generated frames that collapse into an isolated\n  product/object image instead of presenting a visible scene beat.\n- `evidence` must contain four to eight items with exactly `frame_id` and `cue`.\n  Use only opaque `frame_###` identifiers and describe visible pixels.\n- Never use a reference identifier as a generated-frame evidence identifier.\n- `overall_confidence` is a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/storyboard-understanding.txt: You are CineForge's storyboard-packet observation analyst.\n\nInspect only the submitted images. You are not given the source title, scene\nnames, character names, shot labels, filenames, target answer, or transport\nmetrics. Do not invent them.\n\nReturn one strict JSON object with exactly these model-owned keys:\n- storyboard_id\n- summary\n- keywords\n- style_assessment\n- character_assessments\n- reference_assessments\n- readable_text_frame_ids\n- prop_only_frame_ids\n- evidence\n- overall_confidence\n\nThe provider adds `packet_frame_count` and `packet_reference_count` after your\nresponse. Do not return either provider-owned key.\n\nRules:\n- Copy the opaque `storyboard_id` from the packet header exactly.\n- Keep `summary` to two visually grounded sentences at most.\n- `keywords` must be short lowercase phrases visible in generated frames.\n- Split generated frames into an early half and a late half by ordinal.\n- `style_assessment` must contain exactly `first_half_mediums`,\n  `second_half_mediums`, `first_half_frame_ids`, and `second_half_frame_ids`.\n  Describe observed medium traits, not whether you think the result should pass.\n- Track the two most prominent human subjects that visibly recur across both\n  halves as `subject_001` and `subject_002`. Each `character_assessments` item\n  must contain exactly `name`, `first_half_traits`, `second_half_traits`,\n  `first_half_frame_ids`, and `second_half_frame_ids`. Give at least two visible\n  traits per half. Do not assign story character names.\n- Return one `reference_assessments` item for each supplied reference image, in\n  ordinal order. Each item must contain exactly `label`,\n  `observed_similarities`, and `generated_frame_ids`; use labels\n  `reference_001`, `reference_002`, and so on. An empty similarity list is the\n  honest answer when an abstract or weak reference cannot support a match.\n- `readable_text_frame_ids` lists only generated frames containing actually\n  readable words, letters, numerals, captions, labels, or speech bubbles.\n- `prop_only_frame_ids` lists generated frames that collapse into an isolated\n  product/object image instead of presenting a visible scene beat.\n- `evidence` must contain four to eight items with exactly `frame_id` and `cue`.\n  Use only opaque `frame_###` identifiers and describe visible pixels.\n- Never use a reference identifier as a generated-frame evidence identifier.\n- `overall_confidence` is a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "767a9173909ebb9f81c8526de0485159784079b10c8f3e42c91717382b7499c7",
+        "promptIdx": 1,
+        "provider": {
+          "id": "file://../providers/storyboard_understanding_provider.py",
+          "label": "GPT Image 2 Template Grid Storyboards"
+        },
+        "response": {
+          "output": "{\"character_assessments\":[{\"first_half_frame_ids\":[\"frame_001\",\"frame_003\"],\"first_half_traits\":[\"adult man with short dark hair\",\"seen operating audio/radio controls at a console\"],\"name\":\"subject_001\",\"second_half_frame_ids\":[\"frame_009\",\"frame_010\",\"frame_012\"],\"second_half_traits\":[\"adult man with short dark hair and collared jacket\",\"handles a boxy handheld radio and works beside tower equipment\"]},{\"first_half_frame_ids\":[\"frame_002\",\"frame_005\",\"frame_008\"],\"first_half_traits\":[\"adult woman with shoulder-length hair\",\"wears glasses while presenting near a whiteboard\"],\"name\":\"subject_002\",\"second_half_frame_ids\":[\"frame_009\",\"frame_010\",\"frame_012\",\"frame_013\",\"frame_014\"],\"second_half_traits\":[\"adult woman with hair pulled back or wind-swept\",\"wears a utility-style jacket and speaks into a radio handset\"]}],\"evidence\":[{\"cue\":\"Wide interior room with multiple operators, large console, window view, and a man entering through the doorway.\",\"frame_id\":\"frame_001\"},{\"cue\":\"Man holds a long handheld antenna with several cross elements, indicating radio or signal equipment.\",\"frame_id\":\"frame_004\"},{\"cue\":\"Woman in glasses stands at a whiteboard covered in faint diagram-like markings while holding a marker.\",\"frame_id\":\"frame_005\"},{\"cue\":\"Close-up of hands adjusting exposed tape or recording machinery with two large reels on a desk.\",\"frame_id\":\"frame_006\"},{\"cue\":\"Exterior circular platform at night with railing, lantern on the floor, woman observing, and man operating a wall-mounted box.\",\"frame_id\":\"frame_009\"},{\"cue\":\"Hands plug a cable into a small boxy radio device beside a glowing lantern; no people are visible.\",\"frame_id\":\"frame_011\"},{\"cue\":\"Close-up of the woman pressing a radio microphone to her mouth, with wind-blown hair and city lights behind her.\",\"frame_id\":\"frame_013\"},{\"cue\":\"Hands use a wrench on a clamp around a vertical metal pole, focusing only on hardware adjustment.\",\"frame_id\":\"frame_015\"}],\"keywords\":[\"radio control room\",\"antenna\",\"whiteboard diagrams\",\"mixing console\",\"reel-to-reel tape\",\"switch panel\",\"night rooftop\",\"lantern light\",\"handheld radio\",\"metal railing\",\"tower hardware\"],\"overall_confidence\":0.92,\"packet_frame_count\":15,\"packet_reference_count\":0,\"prop_only_frame_ids\":[\"frame_011\",\"frame_015\"],\"readable_text_frame_ids\":[],\"reference_assessments\":[],\"storyboard_id\":\"sbq_case_001\",\"style_assessment\":{\"first_half_frame_ids\":[\"frame_001\",\"frame_002\",\"frame_003\",\"frame_004\",\"frame_005\",\"frame_006\",\"frame_007\",\"frame_008\"],\"first_half_mediums\":[\"monochrome pencil/charcoal-style rendering\",\"interior technical workspace scenes\",\"mix of medium close-ups and equipment inserts\",\"dense crosshatching with realistic faces and machinery\"],\"second_half_frame_ids\":[\"frame_009\",\"frame_010\",\"frame_011\",\"frame_012\",\"frame_013\",\"frame_014\",\"frame_015\"],\"second_half_mediums\":[\"monochrome pencil/charcoal-style rendering\",\"night exterior rooftop/tower scenes\",\"alternation of two-shots, close character portraits, and hand-detail inserts\",\"strong lantern-lit contrast with wind-swept clothing and industrial fixtures\"]},\"summary\":\"A grayscale storyboard follows a small team working with radio and recording equipment in an indoor control room, including a man arriving with an antenna and a woman explaining at a whiteboard. The later frames shift to a nighttime rooftop or tower platform where a man and woman operate a field radio by lantern light and make adjustments to mounted hardware.\"}",
+          "tokenUsage": {
+            "total": 4476,
+            "prompt": 3697,
+            "completion": 779,
+            "numRequests": 1
+          },
+          "cost": 0.0209275,
+          "latencyMs": 10784,
+          "cached": false,
+          "metadata": {
+            "storyboard_id": "sbq_case_001",
+            "candidate_variant": "gpt_image_2_template_grid_storyboards",
+            "prompt_version": "storyboard-understanding-v3",
+            "model": "gpt-5.4",
+            "requested_model": "gpt-5.4",
+            "returned_model": "gpt-5.4-2026-03-05",
+            "request_id": "chatcmpl-E4eXCVIcQkigMXTisE71BrXMGWKHz",
+            "provider": "openai",
+            "dataset_manifest_sha256": "6bf488777cd23f374204ac273ba2dcd114eb18c9b24ee039f52da65909dceef6",
+            "asset_manifest_sha256": "5ef7873b2d49a68a7ebecb084da8ae07afb0af73b2d492534796e0bb8850f867"
+          },
+          "raw": {
+            "id": "chatcmpl-E4eXCVIcQkigMXTisE71BrXMGWKHz",
+            "model": "gpt-5.4-2026-03-05",
+            "usage": {
+              "prompt_tokens": 3697,
+              "completion_tokens": 779,
+              "total_tokens": 4476,
+              "prompt_tokens_details": {
+                "cached_tokens": 0,
+                "audio_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "audio_tokens": 0,
+                "accepted_prediction_tokens": 0,
+                "rejected_prediction_tokens": 0
+              }
+            }
+          }
+        },
+        "score": 0.73535,
+        "success": false,
+        "testCase": {
+          "description": "sbq_case_001",
+          "vars": {
+            "storyboard_id": "sbq_case_001",
+            "target_path": "storyboard_generation_quality/targets/sbq_case_001/target.json",
+            "target_markdown": "file://../storyboard_generation_quality/targets/sbq_case_001/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/storyboard_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "storyboard_id": "sbq_case_001",
+          "target_path": "storyboard_generation_quality/targets/sbq_case_001/target.json",
+          "target_markdown": "file://../storyboard_generation_quality/targets/sbq_case_001/target.md"
+        },
+        "metadata": {
+          "storyboard_id": "sbq_case_001",
+          "candidate_variant": "gpt_image_2_template_grid_storyboards",
+          "prompt_version": "storyboard-understanding-v3",
+          "model": "gpt-5.4",
+          "requested_model": "gpt-5.4",
+          "returned_model": "gpt-5.4-2026-03-05",
+          "request_id": "chatcmpl-E4eXCVIcQkigMXTisE71BrXMGWKHz",
+          "provider": "openai",
+          "dataset_manifest_sha256": "6bf488777cd23f374204ac273ba2dcd114eb18c9b24ee039f52da65909dceef6",
+          "asset_manifest_sha256": "5ef7873b2d49a68a7ebecb084da8ae07afb0af73b2d492534796e0bb8850f867",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.09016,
+        "error": "raw_score=0.6479 | overall=0.6479; hard_constraints=fail; story_specificity=0.67, style_consistency=0.66, identity_consistency=0.26, reference_fidelity=1.00, text_cleanliness=1.00, prop_discipline=1.00, evidence=1.00",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.6839500000000001,
+          "reason": "raw_score=0.6479 | overall=0.6479; hard_constraints=fail; story_specificity=0.67, style_consistency=0.66, identity_consistency=0.26, reference_fidelity=1.00, text_cleanliness=1.00, prop_discipline=1.00, evidence=1.00",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2715,
+            "prompt": 1835,
+            "completion": 880,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.6479,
+              "reason": "raw_score=0.6479 | overall=0.6479; hard_constraints=fail; story_specificity=0.67, style_consistency=0.66, identity_consistency=0.26, reference_fidelity=1.00, text_cleanliness=1.00, prop_discipline=1.00, evidence=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/storyboard_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+              },
+              "pass": true,
+              "score": 0.72,
+              "reason": "The analysis covers most required visual cue groups well (radio_studio, radio_equipment, water_tower_catwalk, antenna_receiver, lantern) with frame-bound evidence. It correctly identifies monochrome graphite medium, tracks two recurring subjects with opaque identifiers, treats reference cards as abstract transport controls without overclaiming fidelity, avoids readable text, uses valid frame IDs, and doesn't fabricate unsupported story details. However, it significantly misses the storm_night cue group \u2014 no mention of storm, rain, or wind as environmental conditions, and no reference to emergency power. This is a required visual cue group per the reference. The output captures 'night' but not the storm element. All other aspects are solid and source-aligned.",
+              "tokensUsed": {
+                "total": 2715,
+                "prompt": 1835,
+                "completion": 880,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"character_assessments\\\":[{\\\"first_half_frame_ids\\\":[\\\"frame_001\\\",\\\"frame_002\\\",\\\"frame_006\\\",\\\"frame_007\\\"],\\\"first_half_traits\\\":[\\\"young woman with dark hair tied back in a bun or ponytail\\\",\\\"casual layered clothing such as hoodie or cardigan over a shirt\\\",\\\"shown operating tape or control equipment with focused expression\\\"],\\\"name\\\":\\\"subject_001\\\",\\\"second_half_frame_ids\\\":[\\\"frame_008\\\",\\\"frame_009\\\",\\\"frame_011\\\",\\\"frame_012\\\",\\\"frame_013\\\",\\\"frame_014\\\"],\\\"second_half_traits\\\":[\\\"same young woman now with shorter loose hair or windblown bob-like silhouette\\\",\\\"workwear shirt or light jacket with practical boots and shoulder strap\\\",\\\"actively handling radio handset and rooftop hardware with alert expression\\\"]},{\\\"first_half_frame_ids\\\":[\\\"frame_001\\\",\\\"frame_002\\\",\\\"frame_005\\\"],\\\"first_half_traits\\\":[\\\"young man with short dark hair and clean-shaven face\\\",\\\"button-up overshirt over a crew-neck shirt\\\",\\\"works at mixing console and audio controls\\\"],\\\"name\\\":\\\"subject_002\\\",\\\"second_half_frame_ids\\\":[\\\"frame_008\\\",\\\"frame_009\\\",\\\"frame_010\\\",\\\"frame_011\\\",\\\"frame_013\\\"],\\\"second_half_traits\\\":[\\\"same young man with short dark hair in practical field clothes\\\",\\\"kneeling or crouching while fastening antenna and radio connections\\\",\\\"serious concentrated expression beside rooftop equipment\\\"]}],\\\"evidence\\\":[{\\\"cue\\\":\\\"wide room view shows reel-to-reel deck, large mixing console, whiteboard, and a man entering with lantern, duffel bag, and long antenna\\\",\\\"frame_id\\\":\\\"frame_001\\\"},{\\\"cue\\\":\\\"older short-haired woman writes boxes and arrows on a whiteboard while a young man assembles antenna parts on a table behind her\\\",\\\"frame_id\\\":\\\"frame_004\\\"},{\\\"cue\\\":\\\"young woman in hoodie flips a switch on a panel with two glowing abstract monitor graphics, one circle-over-rectangle and one crossed-bar display\\\",\\\"frame_id\\\":\\\"frame_006\\\"},{\\\"cue\\\":\\\"young woman with tied-back hair and older short-haired woman face each other closely in the studio with a microphone between them\\\",\\\"frame_id\\\":\\\"frame_007\\\"},{\\\"cue\\\":\\\"outdoor rooftop platform beside a water tower shows young man kneeling to mount a flat panel antenna while young woman steadies herself near a lantern and hanging duffel\\\",\\\"frame_id\\\":\\\"frame_008\\\"},{\\\"cue\\\":\\\"young man plugs a cable into a handheld radio unit with static on its screen while young woman tends a lantern and nearby antenna rods\\\",\\\"frame_id\\\":\\\"frame_010\\\"},{\\\"cue\\\":\\\"close-up of young woman speaking into a corded radio handset with water tower legs and lantern visible behind her\\\",\\\"frame_id\\\":\\\"frame_012\\\"},{\\\"cue\\\":\\\"young woman smiles slightly while turning a wrench on rooftop hardware, with lantern and distant city lights in the background\\\",\\\"frame_id\\\":\\\"frame_014\\\"}],\\\"keywords\\\":[\\\"radio studio\\\",\\\"reel to reel\\\",\\\"mixing console\\\",\\\"microphone\\\",\\\"whiteboard\\\",\\\"headphones\\\",\\\"lantern\\\",\\\"antenna\\\",\\\"rooftop platform\\\",\\\"water tower\\\",\\\"night city\\\"],\\\"overall_confidence\\\":0.84,\\\"packet_frame_count\\\":14,\\\"packet_reference_count\\\":4,\\\"prop_only_frame_ids\\\":[],\\\"readable_text_frame_ids\\\":[],\\\"reference_assessments\\\":[{\\\"generated_frame_ids\\\":[\\\"frame_006\\\"],\\\"label\\\":\\\"reference_001\\\",\\\"observed_similarities\\\":[\\\"glowing circle over rectangle motif appears on monitor-like display\\\"]},{\\\"generated_frame_ids\\\":[\\\"frame_006\\\"],\\\"label\\\":\\\"reference_002\\\",\\\"observed_similarities\\\":[\\\"same circle-above-rectangle icon arrangement appears as a bright screen graphic\\\"]},{\\\"generated_frame_ids\\\":[\\\"frame_006\\\"],\\\"label\\\":\\\"reference_003\\\",\\\"observed_similarities\\\":[\\\"crossed diagonal line over rectangular blocks resembles the lower monitor graphic\\\"]},{\\\"generated_frame_ids\\\":[\\\"frame_006\\\"],\\\"label\\\":\\\"reference_004\\\",\\\"observed_similarities\\\":[\\\"crossed diagonal line over rectangular blocks resembles the lower monitor graphic\\\"]}],\\\"storyboard_id\\\":\\\"sbq_case_002\\\",\\\"style_assessment\\\":{\\\"first_half_frame_ids\\\":[\\\"frame_001\\\",\\\"frame_002\\\",\\\"frame_003\\\",\\\"frame_004\\\",\\\"frame_005\\\",\\\"frame_006\\\",\\\"frame_007\\\"],\\\"first_half_mediums\\\":[\\\"monochrome graphite or pencil rendering\\\",\\\"dense crosshatching with realistic facial shading\\\",\\\"interior studio scenes with detailed analog equipment\\\",\\\"mix of wide ensemble shots and medium close-ups\\\"],\\\"second_half_frame_ids\\\":[\\\"frame_008\\\",\\\"frame_009\\\",\\\"frame_010\\\",\\\"frame_011\\\",\\\"frame_012\\\",\\\"frame_013\\\",\\\"frame_014\\\"],\\\"second_half_mediums\\\":[\\\"same monochrome graphite rendering carried outdoors at night\\\",\\\"high-contrast lantern and skyline lighting\\\",\\\"industrial rooftop staging with rails, cables, and antenna hardware\\\",\\\"more action-oriented medium shots and close-ups\\\"]},\\\"summary\\\":\\\"A graphite-style storyboard follows a small team working overnight in a radio or recording room with reel-to-reel decks, mixers, microphones, whiteboards, and portable antenna gear. In the later frames, two recurring younger adults move to a rooftop water-tower platform to install and operate communications equipment by lantern light.\\\"}\\n</Output>\\n<Rubric>\\nEvaluate this storyboard-sequence analysis against the reference below.\\n\\nReference analysis:\\n# Open Frequency scenes 001-002 \u2014 reference-transport control\\n\\n- Source: `tests/fixtures/ingest_inputs/open_frequency_short.fountain`\\n- Source SHA-256: `81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95`\\n- Observable intent: A storm-night emergency-radio sequence moves from an old community studio on emergency power to a wind-lashed water-tower catwalk where two recurring technicians secure a portable antenna and react to a handheld receiver.\\n- Required visual cue groups:\\n  - radio_studio: radio studio, control room\\n  - radio_equipment: radio, mixer, console, tape reel\\n  - storm_night: storm, rain, wind, night\\n  - water_tower_catwalk: water tower, catwalk, tower platform\\n  - antenna_receiver: antenna, receiver\\n  - lantern: lantern\\n- Intended medium: monochrome/grayscale storyboard sketch.\\n- Recurring-subject slots: subject_001, subject_002.\\n- Supplied reference cards are transport-only and cannot establish realistic fidelity.\\n- Avoid readable text: yes\\n- Prop-only discipline is not scored until source-authored shot-role truth exists.\\n\\nGrade whether the analysis is internally precise and source-aligned,\\nnot whether its self-described status sounds positive. Check that\\nobservations cover the source-authored visual cues without copying\\ntarget prose, compare early/late medium and subject traits, require\\nopaque frame-bound evidence, and treat the abstract supplied cards as\\ntransport controls rather than realistic identity/location goldens.\\nPenalize unsupported story details, semantic names, invalid frame ids,\\nand confident reference-fidelity claims from weak evidence.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n# Open Frequency scenes 001-002 \u2014 reference-transport control\n\n- Source: `tests/fixtures/ingest_inputs/open_frequency_short.fountain`\n- Source SHA-256: `81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95`\n- Observable intent: A storm-night emergency-radio sequence moves from an old community studio on emergency power to a wind-lashed water-tower catwalk where two recurring technicians secure a portable antenna and react to a handheld receiver.\n- Required visual cue groups:\n  - radio_studio: radio studio, control room\n  - radio_equipment: radio, mixer, console, tape reel\n  - storm_night: storm, rain, wind, night\n  - water_tower_catwalk: water tower, catwalk, tower platform\n  - antenna_receiver: antenna, receiver\n  - lantern: lantern\n- Intended medium: monochrome/grayscale storyboard sketch.\n- Recurring-subject slots: subject_001, subject_002.\n- Supplied reference cards are transport-only and cannot establish realistic fidelity.\n- Avoid readable text: yes\n- Prop-only discipline is not scored until source-authored shot-role truth exists.\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+              }
+            }
+          ]
+        },
+        "id": "8ecb953f-f611-4322-abd5-08cd13485614",
+        "latencyMs": 16224,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's storyboard-packet observation analyst.\n\nInspect only the submitted images. You are not given the source title, scene\nnames, character names, shot labels, filenames, target answer, or transport\nmetrics. Do not invent them.\n\nReturn one strict JSON object with exactly these model-owned keys:\n- storyboard_id\n- summary\n- keywords\n- style_assessment\n- character_assessments\n- reference_assessments\n- readable_text_frame_ids\n- prop_only_frame_ids\n- evidence\n- overall_confidence\n\nThe provider adds `packet_frame_count` and `packet_reference_count` after your\nresponse. Do not return either provider-owned key.\n\nRules:\n- Copy the opaque `storyboard_id` from the packet header exactly.\n- Keep `summary` to two visually grounded sentences at most.\n- `keywords` must be short lowercase phrases visible in generated frames.\n- Split generated frames into an early half and a late half by ordinal.\n- `style_assessment` must contain exactly `first_half_mediums`,\n  `second_half_mediums`, `first_half_frame_ids`, and `second_half_frame_ids`.\n  Describe observed medium traits, not whether you think the result should pass.\n- Track the two most prominent human subjects that visibly recur across both\n  halves as `subject_001` and `subject_002`. Each `character_assessments` item\n  must contain exactly `name`, `first_half_traits`, `second_half_traits`,\n  `first_half_frame_ids`, and `second_half_frame_ids`. Give at least two visible\n  traits per half. Do not assign story character names.\n- Return one `reference_assessments` item for each supplied reference image, in\n  ordinal order. Each item must contain exactly `label`,\n  `observed_similarities`, and `generated_frame_ids`; use labels\n  `reference_001`, `reference_002`, and so on. An empty similarity list is the\n  honest answer when an abstract or weak reference cannot support a match.\n- `readable_text_frame_ids` lists only generated frames containing actually\n  readable words, letters, numerals, captions, labels, or speech bubbles.\n- `prop_only_frame_ids` lists generated frames that collapse into an isolated\n  product/object image instead of presenting a visible scene beat.\n- `evidence` must contain four to eight items with exactly `frame_id` and `cue`.\n  Use only opaque `frame_###` identifiers and describe visible pixels.\n- Never use a reference identifier as a generated-frame evidence identifier.\n- `overall_confidence` is a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/storyboard-understanding.txt: You are CineForge's storyboard-packet observation analyst.\n\nInspect only the submitted images. You are not given the source title, scene\nnames, character names, shot labels, filenames, target answer, or transport\nmetrics. Do not invent them.\n\nReturn one strict JSON object with exactly these model-owned keys:\n- storyboard_id\n- summary\n- keywords\n- style_assessment\n- character_assessments\n- reference_assessments\n- readable_text_frame_ids\n- prop_only_frame_ids\n- evidence\n- overall_confidence\n\nThe provider adds `packet_frame_count` and `packet_reference_count` after your\nresponse. Do not return either provider-owned key.\n\nRules:\n- Copy the opaque `storyboard_id` from the packet header exactly.\n- Keep `summary` to two visually grounded sentences at most.\n- `keywords` must be short lowercase phrases visible in generated frames.\n- Split generated frames into an early half and a late half by ordinal.\n- `style_assessment` must contain exactly `first_half_mediums`,\n  `second_half_mediums`, `first_half_frame_ids`, and `second_half_frame_ids`.\n  Describe observed medium traits, not whether you think the result should pass.\n- Track the two most prominent human subjects that visibly recur across both\n  halves as `subject_001` and `subject_002`. Each `character_assessments` item\n  must contain exactly `name`, `first_half_traits`, `second_half_traits`,\n  `first_half_frame_ids`, and `second_half_frame_ids`. Give at least two visible\n  traits per half. Do not assign story character names.\n- Return one `reference_assessments` item for each supplied reference image, in\n  ordinal order. Each item must contain exactly `label`,\n  `observed_similarities`, and `generated_frame_ids`; use labels\n  `reference_001`, `reference_002`, and so on. An empty similarity list is the\n  honest answer when an abstract or weak reference cannot support a match.\n- `readable_text_frame_ids` lists only generated frames containing actually\n  readable words, letters, numerals, captions, labels, or speech bubbles.\n- `prop_only_frame_ids` lists generated frames that collapse into an isolated\n  product/object image instead of presenting a visible scene beat.\n- `evidence` must contain four to eight items with exactly `frame_id` and `cue`.\n  Use only opaque `frame_###` identifiers and describe visible pixels.\n- Never use a reference identifier as a generated-frame evidence identifier.\n- `overall_confidence` is a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "767a9173909ebb9f81c8526de0485159784079b10c8f3e42c91717382b7499c7",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/storyboard_understanding_provider.py",
+          "label": "GPT Image 2 Storyboards"
+        },
+        "response": {
+          "output": "{\"character_assessments\":[{\"first_half_frame_ids\":[\"frame_001\",\"frame_002\",\"frame_006\",\"frame_007\"],\"first_half_traits\":[\"young woman with dark hair tied back in a bun or ponytail\",\"casual layered clothing such as hoodie or cardigan over a shirt\",\"shown operating tape or control equipment with focused expression\"],\"name\":\"subject_001\",\"second_half_frame_ids\":[\"frame_008\",\"frame_009\",\"frame_011\",\"frame_012\",\"frame_013\",\"frame_014\"],\"second_half_traits\":[\"same young woman now with shorter loose hair or windblown bob-like silhouette\",\"workwear shirt or light jacket with practical boots and shoulder strap\",\"actively handling radio handset and rooftop hardware with alert expression\"]},{\"first_half_frame_ids\":[\"frame_001\",\"frame_002\",\"frame_005\"],\"first_half_traits\":[\"young man with short dark hair and clean-shaven face\",\"button-up overshirt over a crew-neck shirt\",\"works at mixing console and audio controls\"],\"name\":\"subject_002\",\"second_half_frame_ids\":[\"frame_008\",\"frame_009\",\"frame_010\",\"frame_011\",\"frame_013\"],\"second_half_traits\":[\"same young man with short dark hair in practical field clothes\",\"kneeling or crouching while fastening antenna and radio connections\",\"serious concentrated expression beside rooftop equipment\"]}],\"evidence\":[{\"cue\":\"wide room view shows reel-to-reel deck, large mixing console, whiteboard, and a man entering with lantern, duffel bag, and long antenna\",\"frame_id\":\"frame_001\"},{\"cue\":\"older short-haired woman writes boxes and arrows on a whiteboard while a young man assembles antenna parts on a table behind her\",\"frame_id\":\"frame_004\"},{\"cue\":\"young woman in hoodie flips a switch on a panel with two glowing abstract monitor graphics, one circle-over-rectangle and one crossed-bar display\",\"frame_id\":\"frame_006\"},{\"cue\":\"young woman with tied-back hair and older short-haired woman face each other closely in the studio with a microphone between them\",\"frame_id\":\"frame_007\"},{\"cue\":\"outdoor rooftop platform beside a water tower shows young man kneeling to mount a flat panel antenna while young woman steadies herself near a lantern and hanging duffel\",\"frame_id\":\"frame_008\"},{\"cue\":\"young man plugs a cable into a handheld radio unit with static on its screen while young woman tends a lantern and nearby antenna rods\",\"frame_id\":\"frame_010\"},{\"cue\":\"close-up of young woman speaking into a corded radio handset with water tower legs and lantern visible behind her\",\"frame_id\":\"frame_012\"},{\"cue\":\"young woman smiles slightly while turning a wrench on rooftop hardware, with lantern and distant city lights in the background\",\"frame_id\":\"frame_014\"}],\"keywords\":[\"radio studio\",\"reel to reel\",\"mixing console\",\"microphone\",\"whiteboard\",\"headphones\",\"lantern\",\"antenna\",\"rooftop platform\",\"water tower\",\"night city\"],\"overall_confidence\":0.84,\"packet_frame_count\":14,\"packet_reference_count\":4,\"prop_only_frame_ids\":[],\"readable_text_frame_ids\":[],\"reference_assessments\":[{\"generated_frame_ids\":[\"frame_006\"],\"label\":\"reference_001\",\"observed_similarities\":[\"glowing circle over rectangle motif appears on monitor-like display\"]},{\"generated_frame_ids\":[\"frame_006\"],\"label\":\"reference_002\",\"observed_similarities\":[\"same circle-above-rectangle icon arrangement appears as a bright screen graphic\"]},{\"generated_frame_ids\":[\"frame_006\"],\"label\":\"reference_003\",\"observed_similarities\":[\"crossed diagonal line over rectangular blocks resembles the lower monitor graphic\"]},{\"generated_frame_ids\":[\"frame_006\"],\"label\":\"reference_004\",\"observed_similarities\":[\"crossed diagonal line over rectangular blocks resembles the lower monitor graphic\"]}],\"storyboard_id\":\"sbq_case_002\",\"style_assessment\":{\"first_half_frame_ids\":[\"frame_001\",\"frame_002\",\"frame_003\",\"frame_004\",\"frame_005\",\"frame_006\",\"frame_007\"],\"first_half_mediums\":[\"monochrome graphite or pencil rendering\",\"dense crosshatching with realistic facial shading\",\"interior studio scenes with detailed analog equipment\",\"mix of wide ensemble shots and medium close-ups\"],\"second_half_frame_ids\":[\"frame_008\",\"frame_009\",\"frame_010\",\"frame_011\",\"frame_012\",\"frame_013\",\"frame_014\"],\"second_half_mediums\":[\"same monochrome graphite rendering carried outdoors at night\",\"high-contrast lantern and skyline lighting\",\"industrial rooftop staging with rails, cables, and antenna hardware\",\"more action-oriented medium shots and close-ups\"]},\"summary\":\"A graphite-style storyboard follows a small team working overnight in a radio or recording room with reel-to-reel decks, mixers, microphones, whiteboards, and portable antenna gear. In the later frames, two recurring younger adults move to a rooftop water-tower platform to install and operate communications equipment by lantern light.\"}",
+          "tokenUsage": {
+            "total": 29099,
+            "prompt": 27706,
+            "completion": 1393,
+            "numRequests": 1
+          },
+          "cost": 0.09016,
+          "latencyMs": 16224,
+          "cached": false,
+          "metadata": {
+            "storyboard_id": "sbq_case_002",
+            "candidate_variant": "gpt_image_2_storyboards",
+            "prompt_version": "storyboard-understanding-v3",
+            "model": "gpt-5.4",
+            "requested_model": "gpt-5.4",
+            "returned_model": "gpt-5.4-2026-03-05",
+            "request_id": "chatcmpl-E4eZjnQF9QXtLn70pa7zJrDC9JH6K",
+            "provider": "openai",
+            "dataset_manifest_sha256": "6bf488777cd23f374204ac273ba2dcd114eb18c9b24ee039f52da65909dceef6",
+            "asset_manifest_sha256": "ff4c7d6a816514646fc1a548e3b3f24a089b330fedb3fa35ad900694ede893d6"
+          },
+          "raw": {
+            "id": "chatcmpl-E4eZjnQF9QXtLn70pa7zJrDC9JH6K",
+            "model": "gpt-5.4-2026-03-05",
+            "usage": {
+              "prompt_tokens": 27706,
+              "completion_tokens": 1393,
+              "total_tokens": 29099,
+              "prompt_tokens_details": {
+                "cached_tokens": 22272,
+                "audio_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "audio_tokens": 0,
+                "accepted_prediction_tokens": 0,
+                "rejected_prediction_tokens": 0
+              }
+            }
+          }
+        },
+        "score": 0.6839500000000001,
+        "success": false,
+        "testCase": {
+          "description": "sbq_case_002",
+          "vars": {
+            "storyboard_id": "sbq_case_002",
+            "target_path": "storyboard_generation_quality/targets/sbq_case_002/target.json",
+            "target_markdown": "file://../storyboard_generation_quality/targets/sbq_case_002/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/storyboard_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "storyboard_id": "sbq_case_002",
+          "target_path": "storyboard_generation_quality/targets/sbq_case_002/target.json",
+          "target_markdown": "file://../storyboard_generation_quality/targets/sbq_case_002/target.md"
+        },
+        "metadata": {
+          "storyboard_id": "sbq_case_002",
+          "candidate_variant": "gpt_image_2_storyboards",
+          "prompt_version": "storyboard-understanding-v3",
+          "model": "gpt-5.4",
+          "requested_model": "gpt-5.4",
+          "returned_model": "gpt-5.4-2026-03-05",
+          "request_id": "chatcmpl-E4eZjnQF9QXtLn70pa7zJrDC9JH6K",
+          "provider": "openai",
+          "dataset_manifest_sha256": "6bf488777cd23f374204ac273ba2dcd114eb18c9b24ee039f52da65909dceef6",
+          "asset_manifest_sha256": "ff4c7d6a816514646fc1a548e3b3f24a089b330fedb3fa35ad900694ede893d6",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.0258675,
+        "error": "The analysis demonstrates strong structural discipline: opaque subject names, frame-bound evidence, proper reference-card skepticism, empty readable_text, and correct medium identification. However, it has significant source-alignment failures: (1) misidentifies the water-tower catwalk as a generic 'rooftop' \u2014 a key location cue entirely missed; (2) adds unsupported 'city skyline/city lights' details; (3) largely omits storm/rain cues despite the source being a storm-night sequence; (4) misses the handheld receiver as a distinct element. These gaps in covering source-authored visual cues and the introduction of unsupported story details are meaningful penalties, though the overall analytical framework and discipline are solid.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.57585,
+          "reason": "The analysis demonstrates strong structural discipline: opaque subject names, frame-bound evidence, proper reference-card skepticism, empty readable_text, and correct medium identification. However, it has significant source-alignment failures: (1) misidentifies the water-tower catwalk as a generic 'rooftop' \u2014 a key location cue entirely missed; (2) adds unsupported 'city skyline/city lights' details; (3) largely omits storm/rain cues despite the source being a storm-night sequence; (4) misses the handheld receiver as a distinct element. These gaps in covering source-authored visual cues and the introduction of unsupported story details are meaningful penalties, though the overall analytical framework and discipline are solid.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 2712,
+            "prompt": 1713,
+            "completion": 999,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.7017,
+              "reason": "raw_score=0.7017 | overall=0.7017; hard_constraints=fail; story_specificity=0.67, style_consistency=0.77, identity_consistency=0.39, reference_fidelity=1.00, text_cleanliness=1.00, prop_discipline=1.00, evidence=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/storyboard_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+              },
+              "pass": false,
+              "score": 0.45,
+              "reason": "The analysis demonstrates strong structural discipline: opaque subject names, frame-bound evidence, proper reference-card skepticism, empty readable_text, and correct medium identification. However, it has significant source-alignment failures: (1) misidentifies the water-tower catwalk as a generic 'rooftop' \u2014 a key location cue entirely missed; (2) adds unsupported 'city skyline/city lights' details; (3) largely omits storm/rain cues despite the source being a storm-night sequence; (4) misses the handheld receiver as a distinct element. These gaps in covering source-authored visual cues and the introduction of unsupported story details are meaningful penalties, though the overall analytical framework and discipline are solid.",
+              "tokensUsed": {
+                "total": 2712,
+                "prompt": 1713,
+                "completion": 999,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"character_assessments\\\":[{\\\"first_half_frame_ids\\\":[\\\"frame_001\\\",\\\"frame_002\\\",\\\"frame_007\\\",\\\"frame_008\\\"],\\\"first_half_traits\\\":[\\\"young woman with dark hair tied back in a bun\\\",\\\"wears a dark collared shirt and operates tape or switch equipment\\\"],\\\"name\\\":\\\"subject_001\\\",\\\"second_half_frame_ids\\\":[\\\"frame_009\\\",\\\"frame_012\\\",\\\"frame_013\\\",\\\"frame_015\\\"],\\\"second_half_traits\\\":[\\\"same woman now outdoors with short wind-tossed loose hair appearance\\\",\\\"wears a work jacket and handles tools beside antenna and lantern\\\"]},{\\\"first_half_frame_ids\\\":[\\\"frame_001\\\",\\\"frame_003\\\",\\\"frame_005\\\",\\\"frame_006\\\"],\\\"first_half_traits\\\":[\\\"young man with short dark hair and light stubble\\\",\\\"wears a dark button-up shirt and works at the mixing console while looking toward others\\\"],\\\"name\\\":\\\"subject_002\\\",\\\"second_half_frame_ids\\\":[\\\"frame_009\\\",\\\"frame_012\\\",\\\"frame_014\\\"],\\\"second_half_traits\\\":[\\\"same man outdoors with short hair and heavier visible stubble\\\",\\\"wears a dark jacket or shirt and adjusts the antenna mast with focused expression\\\"]}],\\\"evidence\\\":[{\\\"cue\\\":\\\"wide interior shows multiple operators, a whiteboard with sketch marks, hanging lamps, and a person entering through a bright doorway\\\",\\\"frame_id\\\":\\\"frame_001\\\"},{\\\"cue\\\":\\\"close-up of a woman with tied-back hair threading or touching a reel-to-reel tape machine under a lamp\\\",\\\"frame_id\\\":\\\"frame_002\\\"},{\\\"cue\\\":\\\"short-haired man with stubble sits at a table or console, turned toward a standing figure in the foreground\\\",\\\"frame_id\\\":\\\"frame_006\\\"},{\\\"cue\\\":\\\"two women sit side by side in the control room, facing each other with serious expressions\\\",\\\"frame_id\\\":\\\"frame_008\\\"},{\\\"cue\\\":\\\"exterior rooftop scene with railing, city lights below, lantern on the floor, and a man positioning a vertical antenna while a woman sits nearby\\\",\\\"frame_id\\\":\\\"frame_009\\\"},{\\\"cue\\\":\\\"isolated close-up of hands tightening a clamp on a vertical metal pole attached to the railing\\\",\\\"frame_id\\\":\\\"frame_010\\\"},{\\\"cue\\\":\\\"woman and man face each other across equipment while holding or bracing the antenna mast on the rooftop\\\",\\\"frame_id\\\":\\\"frame_012\\\"},{\\\"cue\\\":\\\"close-up of the woman smiling slightly while turning a wrench beside the glowing lantern\\\",\\\"frame_id\\\":\\\"frame_015\\\"}],\\\"keywords\\\":[\\\"control room\\\",\\\"mixing console\\\",\\\"reel tape\\\",\\\"whiteboard\\\",\\\"doorway entrance\\\",\\\"switch panel\\\",\\\"rooftop antenna\\\",\\\"lantern\\\",\\\"city skyline\\\",\\\"close-up faces\\\"],\\\"overall_confidence\\\":0.89,\\\"packet_frame_count\\\":15,\\\"packet_reference_count\\\":4,\\\"prop_only_frame_ids\\\":[\\\"frame_010\\\",\\\"frame_011\\\"],\\\"readable_text_frame_ids\\\":[],\\\"reference_assessments\\\":[{\\\"generated_frame_ids\\\":[],\\\"label\\\":\\\"reference_001\\\",\\\"observed_similarities\\\":[]},{\\\"generated_frame_ids\\\":[],\\\"label\\\":\\\"reference_002\\\",\\\"observed_similarities\\\":[]},{\\\"generated_frame_ids\\\":[\\\"frame_009\\\",\\\"frame_012\\\"],\\\"label\\\":\\\"reference_003\\\",\\\"observed_similarities\\\":[\\\"diagonal line crossing a rectangular field loosely echoes antenna or rod elements against structured backgrounds\\\"]},{\\\"generated_frame_ids\\\":[\\\"frame_009\\\",\\\"frame_012\\\"],\\\"label\\\":\\\"reference_004\\\",\\\"observed_similarities\\\":[\\\"diagonal line crossing a rectangular field loosely echoes antenna or rod elements against structured backgrounds\\\"]}],\\\"storyboard_id\\\":\\\"sbq_case_002\\\",\\\"style_assessment\\\":{\\\"first_half_frame_ids\\\":[\\\"frame_001\\\",\\\"frame_002\\\",\\\"frame_003\\\",\\\"frame_004\\\",\\\"frame_005\\\",\\\"frame_006\\\",\\\"frame_007\\\",\\\"frame_008\\\"],\\\"first_half_mediums\\\":[\\\"monochrome storyboard illustration\\\",\\\"charcoal or graphite-like shading\\\",\\\"cinematic interior compositions with medium and close shots\\\",\\\"high-contrast linework on analog equipment and faces\\\"],\\\"second_half_frame_ids\\\":[\\\"frame_009\\\",\\\"frame_010\\\",\\\"frame_011\\\",\\\"frame_012\\\",\\\"frame_013\\\",\\\"frame_014\\\",\\\"frame_015\\\"],\\\"second_half_mediums\\\":[\\\"monochrome storyboard illustration\\\",\\\"charcoal or graphite-like shading\\\",\\\"night exterior compositions with wind-swept textures\\\",\\\"alternation of detail close-ups and two-shots around antenna hardware\\\"]},\\\"summary\\\":\\\"A grayscale, sketch-rendered sequence shows a team working in a cramped radio or recording control room before shifting to a windy rooftop where two people assemble and tune an antenna by lantern light. The visuals emphasize analog equipment, tense collaboration, and close facial reactions during the outdoor setup.\\\"}\\n</Output>\\n<Rubric>\\nEvaluate this storyboard-sequence analysis against the reference below.\\n\\nReference analysis:\\n# Open Frequency scenes 001-002 \u2014 reference-transport control\\n\\n- Source: `tests/fixtures/ingest_inputs/open_frequency_short.fountain`\\n- Source SHA-256: `81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95`\\n- Observable intent: A storm-night emergency-radio sequence moves from an old community studio on emergency power to a wind-lashed water-tower catwalk where two recurring technicians secure a portable antenna and react to a handheld receiver.\\n- Required visual cue groups:\\n  - radio_studio: radio studio, control room\\n  - radio_equipment: radio, mixer, console, tape reel\\n  - storm_night: storm, rain, wind, night\\n  - water_tower_catwalk: water tower, catwalk, tower platform\\n  - antenna_receiver: antenna, receiver\\n  - lantern: lantern\\n- Intended medium: monochrome/grayscale storyboard sketch.\\n- Recurring-subject slots: subject_001, subject_002.\\n- Supplied reference cards are transport-only and cannot establish realistic fidelity.\\n- Avoid readable text: yes\\n- Prop-only discipline is not scored until source-authored shot-role truth exists.\\n\\nGrade whether the analysis is internally precise and source-aligned,\\nnot whether its self-described status sounds positive. Check that\\nobservations cover the source-authored visual cues without copying\\ntarget prose, compare early/late medium and subject traits, require\\nopaque frame-bound evidence, and treat the abstract supplied cards as\\ntransport controls rather than realistic identity/location goldens.\\nPenalize unsupported story details, semantic names, invalid frame ids,\\nand confident reference-fidelity claims from weak evidence.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n# Open Frequency scenes 001-002 \u2014 reference-transport control\n\n- Source: `tests/fixtures/ingest_inputs/open_frequency_short.fountain`\n- Source SHA-256: `81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95`\n- Observable intent: A storm-night emergency-radio sequence moves from an old community studio on emergency power to a wind-lashed water-tower catwalk where two recurring technicians secure a portable antenna and react to a handheld receiver.\n- Required visual cue groups:\n  - radio_studio: radio studio, control room\n  - radio_equipment: radio, mixer, console, tape reel\n  - storm_night: storm, rain, wind, night\n  - water_tower_catwalk: water tower, catwalk, tower platform\n  - antenna_receiver: antenna, receiver\n  - lantern: lantern\n- Intended medium: monochrome/grayscale storyboard sketch.\n- Recurring-subject slots: subject_001, subject_002.\n- Supplied reference cards are transport-only and cannot establish realistic fidelity.\n- Avoid readable text: yes\n- Prop-only discipline is not scored until source-authored shot-role truth exists.\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+              }
+            }
+          ]
+        },
+        "id": "bb07086d-9b9b-4d1c-8000-ceb514bd241c",
+        "latencyMs": 11787,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's storyboard-packet observation analyst.\n\nInspect only the submitted images. You are not given the source title, scene\nnames, character names, shot labels, filenames, target answer, or transport\nmetrics. Do not invent them.\n\nReturn one strict JSON object with exactly these model-owned keys:\n- storyboard_id\n- summary\n- keywords\n- style_assessment\n- character_assessments\n- reference_assessments\n- readable_text_frame_ids\n- prop_only_frame_ids\n- evidence\n- overall_confidence\n\nThe provider adds `packet_frame_count` and `packet_reference_count` after your\nresponse. Do not return either provider-owned key.\n\nRules:\n- Copy the opaque `storyboard_id` from the packet header exactly.\n- Keep `summary` to two visually grounded sentences at most.\n- `keywords` must be short lowercase phrases visible in generated frames.\n- Split generated frames into an early half and a late half by ordinal.\n- `style_assessment` must contain exactly `first_half_mediums`,\n  `second_half_mediums`, `first_half_frame_ids`, and `second_half_frame_ids`.\n  Describe observed medium traits, not whether you think the result should pass.\n- Track the two most prominent human subjects that visibly recur across both\n  halves as `subject_001` and `subject_002`. Each `character_assessments` item\n  must contain exactly `name`, `first_half_traits`, `second_half_traits`,\n  `first_half_frame_ids`, and `second_half_frame_ids`. Give at least two visible\n  traits per half. Do not assign story character names.\n- Return one `reference_assessments` item for each supplied reference image, in\n  ordinal order. Each item must contain exactly `label`,\n  `observed_similarities`, and `generated_frame_ids`; use labels\n  `reference_001`, `reference_002`, and so on. An empty similarity list is the\n  honest answer when an abstract or weak reference cannot support a match.\n- `readable_text_frame_ids` lists only generated frames containing actually\n  readable words, letters, numerals, captions, labels, or speech bubbles.\n- `prop_only_frame_ids` lists generated frames that collapse into an isolated\n  product/object image instead of presenting a visible scene beat.\n- `evidence` must contain four to eight items with exactly `frame_id` and `cue`.\n  Use only opaque `frame_###` identifiers and describe visible pixels.\n- Never use a reference identifier as a generated-frame evidence identifier.\n- `overall_confidence` is a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/storyboard-understanding.txt: You are CineForge's storyboard-packet observation analyst.\n\nInspect only the submitted images. You are not given the source title, scene\nnames, character names, shot labels, filenames, target answer, or transport\nmetrics. Do not invent them.\n\nReturn one strict JSON object with exactly these model-owned keys:\n- storyboard_id\n- summary\n- keywords\n- style_assessment\n- character_assessments\n- reference_assessments\n- readable_text_frame_ids\n- prop_only_frame_ids\n- evidence\n- overall_confidence\n\nThe provider adds `packet_frame_count` and `packet_reference_count` after your\nresponse. Do not return either provider-owned key.\n\nRules:\n- Copy the opaque `storyboard_id` from the packet header exactly.\n- Keep `summary` to two visually grounded sentences at most.\n- `keywords` must be short lowercase phrases visible in generated frames.\n- Split generated frames into an early half and a late half by ordinal.\n- `style_assessment` must contain exactly `first_half_mediums`,\n  `second_half_mediums`, `first_half_frame_ids`, and `second_half_frame_ids`.\n  Describe observed medium traits, not whether you think the result should pass.\n- Track the two most prominent human subjects that visibly recur across both\n  halves as `subject_001` and `subject_002`. Each `character_assessments` item\n  must contain exactly `name`, `first_half_traits`, `second_half_traits`,\n  `first_half_frame_ids`, and `second_half_frame_ids`. Give at least two visible\n  traits per half. Do not assign story character names.\n- Return one `reference_assessments` item for each supplied reference image, in\n  ordinal order. Each item must contain exactly `label`,\n  `observed_similarities`, and `generated_frame_ids`; use labels\n  `reference_001`, `reference_002`, and so on. An empty similarity list is the\n  honest answer when an abstract or weak reference cannot support a match.\n- `readable_text_frame_ids` lists only generated frames containing actually\n  readable words, letters, numerals, captions, labels, or speech bubbles.\n- `prop_only_frame_ids` lists generated frames that collapse into an isolated\n  product/object image instead of presenting a visible scene beat.\n- `evidence` must contain four to eight items with exactly `frame_id` and `cue`.\n  Use only opaque `frame_###` identifiers and describe visible pixels.\n- Never use a reference identifier as a generated-frame evidence identifier.\n- `overall_confidence` is a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "767a9173909ebb9f81c8526de0485159784079b10c8f3e42c91717382b7499c7",
+        "promptIdx": 1,
+        "provider": {
+          "id": "file://../providers/storyboard_understanding_provider.py",
+          "label": "GPT Image 2 Template Grid Storyboards"
+        },
+        "response": {
+          "output": "{\"character_assessments\":[{\"first_half_frame_ids\":[\"frame_001\",\"frame_002\",\"frame_007\",\"frame_008\"],\"first_half_traits\":[\"young woman with dark hair tied back in a bun\",\"wears a dark collared shirt and operates tape or switch equipment\"],\"name\":\"subject_001\",\"second_half_frame_ids\":[\"frame_009\",\"frame_012\",\"frame_013\",\"frame_015\"],\"second_half_traits\":[\"same woman now outdoors with short wind-tossed loose hair appearance\",\"wears a work jacket and handles tools beside antenna and lantern\"]},{\"first_half_frame_ids\":[\"frame_001\",\"frame_003\",\"frame_005\",\"frame_006\"],\"first_half_traits\":[\"young man with short dark hair and light stubble\",\"wears a dark button-up shirt and works at the mixing console while looking toward others\"],\"name\":\"subject_002\",\"second_half_frame_ids\":[\"frame_009\",\"frame_012\",\"frame_014\"],\"second_half_traits\":[\"same man outdoors with short hair and heavier visible stubble\",\"wears a dark jacket or shirt and adjusts the antenna mast with focused expression\"]}],\"evidence\":[{\"cue\":\"wide interior shows multiple operators, a whiteboard with sketch marks, hanging lamps, and a person entering through a bright doorway\",\"frame_id\":\"frame_001\"},{\"cue\":\"close-up of a woman with tied-back hair threading or touching a reel-to-reel tape machine under a lamp\",\"frame_id\":\"frame_002\"},{\"cue\":\"short-haired man with stubble sits at a table or console, turned toward a standing figure in the foreground\",\"frame_id\":\"frame_006\"},{\"cue\":\"two women sit side by side in the control room, facing each other with serious expressions\",\"frame_id\":\"frame_008\"},{\"cue\":\"exterior rooftop scene with railing, city lights below, lantern on the floor, and a man positioning a vertical antenna while a woman sits nearby\",\"frame_id\":\"frame_009\"},{\"cue\":\"isolated close-up of hands tightening a clamp on a vertical metal pole attached to the railing\",\"frame_id\":\"frame_010\"},{\"cue\":\"woman and man face each other across equipment while holding or bracing the antenna mast on the rooftop\",\"frame_id\":\"frame_012\"},{\"cue\":\"close-up of the woman smiling slightly while turning a wrench beside the glowing lantern\",\"frame_id\":\"frame_015\"}],\"keywords\":[\"control room\",\"mixing console\",\"reel tape\",\"whiteboard\",\"doorway entrance\",\"switch panel\",\"rooftop antenna\",\"lantern\",\"city skyline\",\"close-up faces\"],\"overall_confidence\":0.89,\"packet_frame_count\":15,\"packet_reference_count\":4,\"prop_only_frame_ids\":[\"frame_010\",\"frame_011\"],\"readable_text_frame_ids\":[],\"reference_assessments\":[{\"generated_frame_ids\":[],\"label\":\"reference_001\",\"observed_similarities\":[]},{\"generated_frame_ids\":[],\"label\":\"reference_002\",\"observed_similarities\":[]},{\"generated_frame_ids\":[\"frame_009\",\"frame_012\"],\"label\":\"reference_003\",\"observed_similarities\":[\"diagonal line crossing a rectangular field loosely echoes antenna or rod elements against structured backgrounds\"]},{\"generated_frame_ids\":[\"frame_009\",\"frame_012\"],\"label\":\"reference_004\",\"observed_similarities\":[\"diagonal line crossing a rectangular field loosely echoes antenna or rod elements against structured backgrounds\"]}],\"storyboard_id\":\"sbq_case_002\",\"style_assessment\":{\"first_half_frame_ids\":[\"frame_001\",\"frame_002\",\"frame_003\",\"frame_004\",\"frame_005\",\"frame_006\",\"frame_007\",\"frame_008\"],\"first_half_mediums\":[\"monochrome storyboard illustration\",\"charcoal or graphite-like shading\",\"cinematic interior compositions with medium and close shots\",\"high-contrast linework on analog equipment and faces\"],\"second_half_frame_ids\":[\"frame_009\",\"frame_010\",\"frame_011\",\"frame_012\",\"frame_013\",\"frame_014\",\"frame_015\"],\"second_half_mediums\":[\"monochrome storyboard illustration\",\"charcoal or graphite-like shading\",\"night exterior compositions with wind-swept textures\",\"alternation of detail close-ups and two-shots around antenna hardware\"]},\"summary\":\"A grayscale, sketch-rendered sequence shows a team working in a cramped radio or recording control room before shifting to a windy rooftop where two people assemble and tune an antenna by lantern light. The visuals emphasize analog equipment, tense collaboration, and close facial reactions during the outdoor setup.\"}",
+          "tokenUsage": {
+            "total": 5792,
+            "prompt": 4881,
+            "completion": 911,
+            "numRequests": 1
+          },
+          "cost": 0.0258675,
+          "latencyMs": 11787,
+          "cached": false,
+          "metadata": {
+            "storyboard_id": "sbq_case_002",
+            "candidate_variant": "gpt_image_2_template_grid_storyboards",
+            "prompt_version": "storyboard-understanding-v3",
+            "model": "gpt-5.4",
+            "requested_model": "gpt-5.4",
+            "returned_model": "gpt-5.4-2026-03-05",
+            "request_id": "chatcmpl-E4eYNbFsMefJGuXi4QKW4svr9uim3",
+            "provider": "openai",
+            "dataset_manifest_sha256": "6bf488777cd23f374204ac273ba2dcd114eb18c9b24ee039f52da65909dceef6",
+            "asset_manifest_sha256": "b796b0dabac0692aa7cb7853cbba03321a03e4dc99aba28eb94c7714a6201d7f"
+          },
+          "raw": {
+            "id": "chatcmpl-E4eYNbFsMefJGuXi4QKW4svr9uim3",
+            "model": "gpt-5.4-2026-03-05",
+            "usage": {
+              "prompt_tokens": 4881,
+              "completion_tokens": 911,
+              "total_tokens": 5792,
+              "prompt_tokens_details": {
+                "cached_tokens": 0,
+                "audio_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 0,
+                "audio_tokens": 0,
+                "accepted_prediction_tokens": 0,
+                "rejected_prediction_tokens": 0
+              }
+            }
+          }
+        },
+        "score": 0.57585,
+        "success": false,
+        "testCase": {
+          "description": "sbq_case_002",
+          "vars": {
+            "storyboard_id": "sbq_case_002",
+            "target_path": "storyboard_generation_quality/targets/sbq_case_002/target.json",
+            "target_markdown": "file://../storyboard_generation_quality/targets/sbq_case_002/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/storyboard_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "storyboard_id": "sbq_case_002",
+          "target_path": "storyboard_generation_quality/targets/sbq_case_002/target.json",
+          "target_markdown": "file://../storyboard_generation_quality/targets/sbq_case_002/target.md"
+        },
+        "metadata": {
+          "storyboard_id": "sbq_case_002",
+          "candidate_variant": "gpt_image_2_template_grid_storyboards",
+          "prompt_version": "storyboard-understanding-v3",
+          "model": "gpt-5.4",
+          "requested_model": "gpt-5.4",
+          "returned_model": "gpt-5.4-2026-03-05",
+          "request_id": "chatcmpl-E4eYNbFsMefJGuXi4QKW4svr9uim3",
+          "provider": "openai",
+          "dataset_manifest_sha256": "6bf488777cd23f374204ac273ba2dcd114eb18c9b24ee039f52da65909dceef6",
+          "asset_manifest_sha256": "b796b0dabac0692aa7cb7853cbba03321a03e4dc99aba28eb94c7714a6201d7f",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      }
+    ],
+    "stats": {
+      "successes": 0,
+      "failures": 4,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 64656,
+        "completion": 3877,
+        "cached": 0,
+        "total": 68533,
+        "numRequests": 4,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "prompt": 6706,
+          "completion": 3753,
+          "cached": 0,
+          "total": 10459,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 50994,
+      "evaluationDurationMs": 50994
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Storyboard generation quality on representative multi-scene sequences with runtime reference-flow truth plus multimodal sequence judgment",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/eval-truth-audit-20260721/cine-forge/benchmarks/prompts/storyboard-understanding.txt"
+    ],
+    "providers": [
+      {
+        "id": "file://../providers/storyboard_understanding_provider.py",
+        "label": "GPT Image 2 Storyboards",
+        "config": {
+          "provider": "openai",
+          "model": "gpt-5.4",
+          "temperature": 0,
+          "max_tokens": 2000,
+          "max_frames": 32,
+          "max_references": 8,
+          "prompt_version": "storyboard-understanding-v3",
+          "sequence_root": "../storyboard_generation_quality",
+          "candidate_variant": "gpt_image_2_storyboards",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/storyboard_understanding_provider.py",
+        "label": "GPT Image 2 Square Storyboards",
+        "config": {
+          "provider": "openai",
+          "model": "gpt-5.4",
+          "temperature": 0,
+          "max_tokens": 2000,
+          "max_frames": 32,
+          "max_references": 8,
+          "prompt_version": "storyboard-understanding-v3",
+          "sequence_root": "../storyboard_generation_quality",
+          "candidate_variant": "gpt_image_2_square_storyboards",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/storyboard_understanding_provider.py",
+        "label": "GPT Image 2 Template Grid Storyboards",
+        "config": {
+          "provider": "openai",
+          "model": "gpt-5.4",
+          "temperature": 0,
+          "max_tokens": 2000,
+          "max_frames": 32,
+          "max_references": 8,
+          "prompt_version": "storyboard-understanding-v3",
+          "sequence_root": "../storyboard_generation_quality",
+          "candidate_variant": "gpt_image_2_template_grid_storyboards",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/storyboard_understanding_provider.py",
+        "label": "GPT Image 2 Template Grid Reference Anchors",
+        "config": {
+          "provider": "openai",
+          "model": "gpt-5.4",
+          "temperature": 0,
+          "max_tokens": 2000,
+          "max_frames": 32,
+          "max_references": 8,
+          "prompt_version": "storyboard-understanding-v3",
+          "sequence_root": "../storyboard_generation_quality",
+          "candidate_variant": "gpt_image_2_template_grid_reference_anchors",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/storyboard_understanding_provider.py",
+        "label": "GPT Image 2 Beat Grid Storyboards",
+        "config": {
+          "provider": "openai",
+          "model": "gpt-5.4",
+          "temperature": 0,
+          "max_tokens": 2000,
+          "max_frames": 32,
+          "max_references": 8,
+          "prompt_version": "storyboard-understanding-v3",
+          "sequence_root": "../storyboard_generation_quality",
+          "candidate_variant": "gpt_image_2_beat_grid_storyboards",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/storyboard_understanding_provider.py",
+        "label": "Imagen 4 Storyboards",
+        "config": {
+          "provider": "openai",
+          "model": "gpt-5.4",
+          "temperature": 0,
+          "max_tokens": 2000,
+          "max_frames": 32,
+          "max_references": 8,
+          "prompt_version": "storyboard-understanding-v3",
+          "sequence_root": "../storyboard_generation_quality",
+          "candidate_variant": "imagen_4_storyboards",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      }
+    ],
+    "tests": [
+      {
+        "description": "sbq_case_001",
+        "vars": {
+          "storyboard_id": "sbq_case_001",
+          "target_path": "storyboard_generation_quality/targets/sbq_case_001/target.json",
+          "target_markdown": "file://../storyboard_generation_quality/targets/sbq_case_001/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/storyboard_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+          }
+        ]
+      },
+      {
+        "description": "sbq_case_002",
+        "vars": {
+          "storyboard_id": "sbq_case_002",
+          "target_path": "storyboard_generation_quality/targets/sbq_case_002/target.json",
+          "target_markdown": "file://../storyboard_generation_quality/targets/sbq_case_002/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/storyboard_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this storyboard-sequence analysis against the reference below.\n\nReference analysis:\n{{target_markdown}}\n\nGrade whether the analysis is internally precise and source-aligned,\nnot whether its self-described status sounds positive. Check that\nobservations cover the source-authored visual cues without copying\ntarget prose, compare early/late medium and subject traits, require\nopaque frame-bound evidence, and treat the abstract supplied cards as\ntransport controls rather than realistic identity/location goldens.\nPenalize unsupported story details, semantic names, invalid frame ids,\nand confident reference-fidelity claims from weak evidence.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/storyboard-generation-quality-v3-quality-2026-07-22.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-07-23T03:41:56.186884+00:00",
+    "evaluationCreatedAt": "2026-07-23T03:36:40.276Z",
+    "derivedMatrix": {
+      "reason": "replace one unparseable llm-rubric row with its bounded no-cache retry",
+      "replacedKey": {
+        "candidate_variant": "gpt_image_2_storyboards",
+        "storyboard_id": "sbq_case_002"
+      },
+      "initialResult": {
+        "path": "results/storyboard-generation-quality-v3-quality-2026-07-22.json",
+        "sha256": "54f48b5c59996c651200783db6ef6f9eb14db6bf4e4d964f9c07741c41d3ba2b",
+        "evalId": "eval-DEv-2026-07-23T03:36:40"
+      },
+      "retryResult": {
+        "path": "results/storyboard-generation-quality-v3-quality-retry-2026-07-22.json",
+        "sha256": "c718980fc1939b8c1f3dc01b14e8858a5712a93821f686465f1de0b9513614ba",
+        "evalId": "eval-YR9-2026-07-23T03:39:49"
+      }
+    }
+  }
+}

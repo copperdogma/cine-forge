@@ -1,0 +1,725 @@
+{
+  "eval_id": "storyboard-generation-quality",
+  "measured_at": "2026-07-23T03:08:34.990827+00:00",
+  "fixture_manifest": "benchmarks/fixtures/storyboard_generation_quality_cases.json",
+  "candidate_variants": [
+    "gpt_image_2_template_grid_storyboards",
+    "gpt_image_2_storyboards"
+  ],
+  "summary": {
+    "candidates": [
+      {
+        "candidate_variant": "gpt_image_2_template_grid_storyboards",
+        "candidate_label": "GPT Image 2 Template Grid Storyboards",
+        "image_model": "gpt-image-2",
+        "total_cases": 2,
+        "successful_cases": 2,
+        "success_ratio": 1.0,
+        "mean_total_elapsed_ms": 366968.0,
+        "mean_storyboard_elapsed_ms": 203075.0,
+        "mean_storyboard_stage_elapsed_ms": 110761.5,
+        "mean_total_cost_usd": 0.272,
+        "mean_total_frames": 15.0,
+        "mean_available_reference_image_count": 2.0,
+        "mean_prompt_reference_frame_count": 7.5,
+        "mean_direct_reference_input_count": 16.5
+      },
+      {
+        "candidate_variant": "gpt_image_2_storyboards",
+        "candidate_label": "GPT Image 2 Storyboards",
+        "image_model": "gpt-image-2",
+        "total_cases": 2,
+        "successful_cases": 2,
+        "success_ratio": 1.0,
+        "mean_total_elapsed_ms": 645751.0,
+        "mean_storyboard_elapsed_ms": 483427.5,
+        "mean_storyboard_stage_elapsed_ms": 413651.0,
+        "mean_total_cost_usd": 0.42,
+        "mean_total_frames": 14.5,
+        "mean_available_reference_image_count": 2.0,
+        "mean_prompt_reference_frame_count": 7.0,
+        "mean_direct_reference_input_count": 16.5
+      }
+    ]
+  },
+  "runs": [
+    {
+      "case_id": "sbq_case_001",
+      "case_label": "Open Frequency scenes 001-002 \u2014 prompt-only storyboard identity",
+      "scene_ids": [
+        "scene_001",
+        "scene_002"
+      ],
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Prompt-only control for source-specific story coverage, medium consistency, and two recurring visual subjects.",
+      "candidate_variant": "gpt_image_2_template_grid_storyboards",
+      "candidate_label": "GPT Image 2 Template Grid Storyboards",
+      "image_model": "gpt-image-2",
+      "project_dir": "output/story-186-gpt_image_2_template_grid_storyboards-sbq_case_001-319c2f",
+      "success": true,
+      "error": null,
+      "preparation_elapsed_ms": 162201,
+      "storyboard_elapsed_ms": 201842,
+      "total_elapsed_ms": 364043,
+      "total_cost_usd": 0.2689188,
+      "storyboard_stage_elapsed_ms": 105810,
+      "storyboard_run": {
+        "run_id": "sbq_case_001-storyboard-2f9a",
+        "recipe_id": "storyboard_generation",
+        "elapsed_ms": 201842,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0784568,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "storyboards": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 6,
+          "tracks": 7,
+          "shot_planning": 95948,
+          "storyboards": 105810
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 2,
+          "storyboard": 2
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_002/v1.json",
+          "storyboard": "artifacts/storyboard/scene_001/v1.json"
+        }
+      },
+      "storyboard_artifact_paths": [
+        "artifacts/storyboard/scene_001/v1.json",
+        "artifacts/storyboard/scene_002/v1.json"
+      ],
+      "frames": [
+        {
+          "frame_id": "scene_001_frame_01",
+          "scene_id": "scene_001",
+          "shot_id": "001_MASTER_WIDE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_01_001_master_wide.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_02",
+          "scene_id": "scene_001",
+          "shot_id": "002_KELL_ENTRANCE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_02_002_kell_entrance.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_03",
+          "scene_id": "scene_001",
+          "shot_id": "003_NOAH_MIXER_REACTION",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_03_003_noah_mixer_reaction.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_04",
+          "scene_id": "scene_001",
+          "shot_id": "004_KELL_ANTENNA_JOKE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_04_004_kell_antenna_joke.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_05",
+          "scene_id": "scene_001",
+          "shot_id": "005_JUNE_WHITEBOARD",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_05_005_june_whiteboard.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_06",
+          "scene_id": "scene_001",
+          "shot_id": "006_ARIA_TAPE_REEL",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_06_006_aria_tape_reel.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_07",
+          "scene_id": "scene_001",
+          "shot_id": "007_ARIA_ON_AIR_SWITCH",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_07_007_aria_on_air_switch.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_08",
+          "scene_id": "scene_001",
+          "shot_id": "008_JUNE_RESPONSE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_08_008_june_response.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_01",
+          "scene_id": "scene_002",
+          "shot_id": "002_001",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_01_002_001.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_02",
+          "scene_id": "scene_002",
+          "shot_id": "002_002",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_02_002_002.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_03",
+          "scene_id": "scene_002",
+          "shot_id": "002_003",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_03_002_003.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_04",
+          "scene_id": "scene_002",
+          "shot_id": "002_004",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_04_002_004.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_05",
+          "scene_id": "scene_002",
+          "shot_id": "002_005",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_05_002_005.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_06",
+          "scene_id": "scene_002",
+          "shot_id": "002_006",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_06_002_006.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_07",
+          "scene_id": "scene_002",
+          "shot_id": "002_007",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_07_002_007.jpg"
+        }
+      ],
+      "reference_images": [],
+      "source_grids": [
+        {
+          "scene_id": "scene_001",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/grid_01_full.jpg"
+        },
+        {
+          "scene_id": "scene_002",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/grid_01_full.jpg"
+        }
+      ],
+      "total_frames": 15,
+      "available_reference_image_count": 0,
+      "prompt_reference_frame_count": 0,
+      "direct_reference_input_count": 0,
+      "reference_transport_supported": false
+    },
+    {
+      "case_id": "sbq_case_001",
+      "case_label": "Open Frequency scenes 001-002 \u2014 prompt-only storyboard identity",
+      "scene_ids": [
+        "scene_001",
+        "scene_002"
+      ],
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Prompt-only control for source-specific story coverage, medium consistency, and two recurring visual subjects.",
+      "candidate_variant": "gpt_image_2_storyboards",
+      "candidate_label": "GPT Image 2 Storyboards",
+      "image_model": "gpt-image-2",
+      "project_dir": "output/story-186-gpt_image_2_storyboards-sbq_case_001-aefe4f",
+      "success": true,
+      "error": null,
+      "preparation_elapsed_ms": 165560,
+      "storyboard_elapsed_ms": 405911,
+      "total_elapsed_ms": 571471,
+      "total_cost_usd": 0.4299322,
+      "storyboard_stage_elapsed_ms": 359962,
+      "storyboard_run": {
+        "run_id": "sbq_case_001-storyboard-9cf3",
+        "recipe_id": "storyboard_generation",
+        "elapsed_ms": 405911,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.2333944,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "storyboards": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 5,
+          "tracks": 7,
+          "shot_planning": 45867,
+          "storyboards": 359962
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 2,
+          "storyboard": 2
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_001/v1.json",
+          "storyboard": "artifacts/storyboard/scene_001/v1.json"
+        }
+      },
+      "storyboard_artifact_paths": [
+        "artifacts/storyboard/scene_001/v1.json",
+        "artifacts/storyboard/scene_002/v1.json"
+      ],
+      "frames": [
+        {
+          "frame_id": "scene_001_frame_01",
+          "scene_id": "scene_001",
+          "shot_id": "001_MASTER_WIDE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_01_001_master_wide.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_02",
+          "scene_id": "scene_001",
+          "shot_id": "002_KELL_ENTRANCE_CLOSE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_02_002_kell_entrance_close.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_03",
+          "scene_id": "scene_001",
+          "shot_id": "003_NOAH_MIXER_REACTION",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_03_003_noah_mixer_reaction.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_04",
+          "scene_id": "scene_001",
+          "shot_id": "004_JUNE_WHITEBOARD_REACTION",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_04_004_june_whiteboard_reaction.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_05",
+          "scene_id": "scene_001",
+          "shot_id": "005_ARIA_TAPE_REEL_CLOSE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_05_005_aria_tape_reel_close.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_06",
+          "scene_id": "scene_001",
+          "shot_id": "006_ARIA_SWITCH_FLIP_AND_FAILURE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_06_006_aria_switch_flip_and_failure.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_07",
+          "scene_id": "scene_001",
+          "shot_id": "007_JUNE_RESPONSE_CLOSE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_07_007_june_response_close.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_01",
+          "scene_id": "scene_002",
+          "shot_id": "002_001",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_01_002_001.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_02",
+          "scene_id": "scene_002",
+          "shot_id": "002_002",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_02_002_002.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_03",
+          "scene_id": "scene_002",
+          "shot_id": "002_003",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_03_002_003.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_04",
+          "scene_id": "scene_002",
+          "shot_id": "002_004",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_04_002_004.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_05",
+          "scene_id": "scene_002",
+          "shot_id": "002_005",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_05_002_005.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_06",
+          "scene_id": "scene_002",
+          "shot_id": "002_006",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_06_002_006.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_07",
+          "scene_id": "scene_002",
+          "shot_id": "002_007",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_07_002_007.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_08",
+          "scene_id": "scene_002",
+          "shot_id": "002_008",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_08_002_008.jpg"
+        }
+      ],
+      "reference_images": [],
+      "source_grids": [],
+      "total_frames": 15,
+      "available_reference_image_count": 0,
+      "prompt_reference_frame_count": 0,
+      "direct_reference_input_count": 0,
+      "reference_transport_supported": false
+    },
+    {
+      "case_id": "sbq_case_002",
+      "case_label": "Open Frequency scenes 001-002 \u2014 reference-transport control",
+      "scene_ids": [
+        "scene_001",
+        "scene_002"
+      ],
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Same source sequence with four abstract transport-only reference cards. The cards prove transport mechanics, not realistic identity or location fidelity.",
+      "candidate_variant": "gpt_image_2_template_grid_storyboards",
+      "candidate_label": "GPT Image 2 Template Grid Storyboards",
+      "image_model": "gpt-image-2",
+      "project_dir": "output/story-186-gpt_image_2_template_grid_storyboards-sbq_case_002-f26273",
+      "success": true,
+      "error": null,
+      "preparation_elapsed_ms": 165585,
+      "storyboard_elapsed_ms": 204308,
+      "total_elapsed_ms": 369893,
+      "total_cost_usd": 0.2745942,
+      "storyboard_stage_elapsed_ms": 115713,
+      "storyboard_run": {
+        "run_id": "sbq_case_002-storyboard-9ff3",
+        "recipe_id": "storyboard_generation",
+        "elapsed_ms": 204308,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.0751488,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "storyboards": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 7,
+          "tracks": 6,
+          "shot_planning": 88478,
+          "storyboards": 115713
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 2,
+          "storyboard": 2
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_002/v1.json",
+          "storyboard": "artifacts/storyboard/scene_001/v1.json"
+        }
+      },
+      "storyboard_artifact_paths": [
+        "artifacts/storyboard/scene_001/v1.json",
+        "artifacts/storyboard/scene_002/v1.json"
+      ],
+      "frames": [
+        {
+          "frame_id": "scene_001_frame_01",
+          "scene_id": "scene_001",
+          "shot_id": "001_MASTER_WIDE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_01_001_master_wide.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_02",
+          "scene_id": "scene_001",
+          "shot_id": "002_CU_ARIA_TAPE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_02_002_cu_aria_tape.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_03",
+          "scene_id": "scene_001",
+          "shot_id": "003_CU_NOAH_MIXER",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_03_003_cu_noah_mixer.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_04",
+          "scene_id": "scene_001",
+          "shot_id": "004_MEDIUM_JUNE_WHITEBOARD",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_04_004_medium_june_whiteboard.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_05",
+          "scene_id": "scene_001",
+          "shot_id": "005_WIDE_KELL_ENTRANCE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_05_005_wide_kell_entrance.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_06",
+          "scene_id": "scene_001",
+          "shot_id": "006_OTS_KELL_NOAH",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_06_006_ots_kell_noah.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_07",
+          "scene_id": "scene_001",
+          "shot_id": "007_CU_ARIA_SWITCH_ONAIR",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_07_007_cu_aria_switch_onair.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_08",
+          "scene_id": "scene_001",
+          "shot_id": "008_MEDIUM_ARIA_JUNE_FINAL",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_08_008_medium_aria_june_final.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_01",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_001",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_01_wtc_001.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_02",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_002",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_02_wtc_002.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_03",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_003",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_03_wtc_003.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_04",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_004",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_04_wtc_004.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_05",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_005",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_05_wtc_005.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_06",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_006",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_06_wtc_006.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_07",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_007",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_07_wtc_007.jpg"
+        }
+      ],
+      "reference_images": [
+        {
+          "label": "Aria character transport card",
+          "entity_name": "ARIA",
+          "relative_path": "artifacts/bibles/character_aria/aria_reference.jpg"
+        },
+        {
+          "label": "Noah character transport card",
+          "entity_name": "NOAH",
+          "relative_path": "artifacts/bibles/character_noah/noah_reference.jpg"
+        },
+        {
+          "label": "Radio studio transport card",
+          "entity_name": "COMMUNITY RADIO STUDIO",
+          "relative_path": "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        },
+        {
+          "label": "Water tower transport card",
+          "entity_name": "WATER TOWER CATWALK",
+          "relative_path": "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        }
+      ],
+      "source_grids": [
+        {
+          "scene_id": "scene_001",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/grid_01_full.jpg"
+        },
+        {
+          "scene_id": "scene_002",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/grid_01_full.jpg"
+        }
+      ],
+      "total_frames": 15,
+      "available_reference_image_count": 4,
+      "prompt_reference_frame_count": 15,
+      "direct_reference_input_count": 33,
+      "reference_transport_supported": true
+    },
+    {
+      "case_id": "sbq_case_002",
+      "case_label": "Open Frequency scenes 001-002 \u2014 reference-transport control",
+      "scene_ids": [
+        "scene_001",
+        "scene_002"
+      ],
+      "input_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "notes": "Same source sequence with four abstract transport-only reference cards. The cards prove transport mechanics, not realistic identity or location fidelity.",
+      "candidate_variant": "gpt_image_2_storyboards",
+      "candidate_label": "GPT Image 2 Storyboards",
+      "image_model": "gpt-image-2",
+      "project_dir": "output/story-186-gpt_image_2_storyboards-sbq_case_002-d51127",
+      "success": true,
+      "error": null,
+      "preparation_elapsed_ms": 159087,
+      "storyboard_elapsed_ms": 560944,
+      "total_elapsed_ms": 720031,
+      "total_cost_usd": 0.4091194,
+      "storyboard_stage_elapsed_ms": 467340,
+      "storyboard_run": {
+        "run_id": "sbq_case_002-storyboard-ece5",
+        "recipe_id": "storyboard_generation",
+        "elapsed_ms": 560944,
+        "success": true,
+        "error": null,
+        "total_cost_usd": 0.2173604,
+        "stage_statuses": {
+          "timeline": "done",
+          "tracks": "done",
+          "shot_planning": "done",
+          "storyboards": "done"
+        },
+        "stage_durations_ms": {
+          "timeline": 6,
+          "tracks": 6,
+          "shot_planning": 93516,
+          "storyboards": 467340
+        },
+        "artifact_counts": {
+          "timeline": 2,
+          "track_manifest": 3,
+          "shot_plan": 2,
+          "storyboard": 2
+        },
+        "artifact_paths": {
+          "timeline": "artifacts/timeline/project/v1.json",
+          "track_manifest": "artifacts/track_manifest/project/v1.json",
+          "shot_plan": "artifacts/shot_plan/scene_002/v1.json",
+          "storyboard": "artifacts/storyboard/scene_001/v1.json"
+        }
+      },
+      "storyboard_artifact_paths": [
+        "artifacts/storyboard/scene_001/v1.json",
+        "artifacts/storyboard/scene_002/v1.json"
+      ],
+      "frames": [
+        {
+          "frame_id": "scene_001_frame_01",
+          "scene_id": "scene_001",
+          "shot_id": "001_MASTER_WIDE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_01_001_master_wide.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_02",
+          "scene_id": "scene_001",
+          "shot_id": "002_TWO_SHOT_ARIA_NOAH",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_02_002_two_shot_aria_noah.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_03",
+          "scene_id": "scene_001",
+          "shot_id": "003_KELL_ENTRANCE_CLOSE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_03_003_kell_entrance_close.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_04",
+          "scene_id": "scene_001",
+          "shot_id": "004_JUNE_WHITEBOARD_MEDIUM",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_04_004_june_whiteboard_medium.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_05",
+          "scene_id": "scene_001",
+          "shot_id": "005_NOAH_REACTION_CLOSE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_05_005_noah_reaction_close.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_06",
+          "scene_id": "scene_001",
+          "shot_id": "006_ARIA_SWITCH_FAILURE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_06_006_aria_switch_failure.jpg"
+        },
+        {
+          "frame_id": "scene_001_frame_07",
+          "scene_id": "scene_001",
+          "shot_id": "007_ARIA_JUNE_FINAL_EXCHANGE",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_07_007_aria_june_final_exchange.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_01",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_001",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_01_wtc_001.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_02",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_002",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_02_wtc_002.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_03",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_003",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_03_wtc_003.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_04",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_004",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_04_wtc_004.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_05",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_005",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_05_wtc_005.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_06",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_006",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_06_wtc_006.jpg"
+        },
+        {
+          "frame_id": "scene_002_frame_07",
+          "scene_id": "scene_002",
+          "shot_id": "WTC_007",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_07_wtc_007.jpg"
+        }
+      ],
+      "reference_images": [
+        {
+          "label": "Aria character transport card",
+          "entity_name": "ARIA",
+          "relative_path": "artifacts/bibles/character_aria/aria_reference.jpg"
+        },
+        {
+          "label": "Noah character transport card",
+          "entity_name": "NOAH",
+          "relative_path": "artifacts/bibles/character_noah/noah_reference.jpg"
+        },
+        {
+          "label": "Radio studio transport card",
+          "entity_name": "COMMUNITY RADIO STUDIO",
+          "relative_path": "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        },
+        {
+          "label": "Water tower transport card",
+          "entity_name": "WATER TOWER CATWALK",
+          "relative_path": "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        }
+      ],
+      "source_grids": [],
+      "total_frames": 14,
+      "available_reference_image_count": 4,
+      "prompt_reference_frame_count": 14,
+      "direct_reference_input_count": 33,
+      "reference_transport_supported": true
+    }
+  ]
+}

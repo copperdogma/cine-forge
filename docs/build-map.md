@@ -128,6 +128,7 @@
 
 - Shot planning, storyboard generation, deterministic previz baseline, and the operator-facing AI-previz surface now exist as real substrate.
 - This category stays in climb because deterministic previz is still only fallback/control while fast useful AI previz remains unfinished.
+- Story 208's fresh retained storyboard matrix keeps template-grid as the value default without a quality promotion: it is faster, cheaper, and more identity-consistent than per-frame generation, but both candidates fail the repaired hard quality floor.
 
 ## spec:7 — Generation & Export
 
@@ -171,7 +172,7 @@
 
 - Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.
 - Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks.
-- Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Fresh repaired QA and ordered-frame challenger rows reject Gemini 3.6 Flash and Gemini 3.5 Flash-Lite, while configured defaults and other lanes remain provisional until their own fresh repaired-contract evidence exists.
+- Story 208 invalidated legacy default-driving scores after source, scorer, rubric, modality, runtime-shape, and provenance repairs. Fresh repaired QA and ordered-frame challenger rows reject Gemini 3.6 Flash and Gemini 3.5 Flash-Lite. The fresh retained storyboard comparison also rejects both current candidates at the hard quality floor and holds the faster, cheaper template-grid value default without claiming a quality pass; other lanes remain provisional until their own fresh repaired-contract evidence exists.
 
 ### Compromise Progress
 
@@ -186,7 +187,7 @@
 - **C3: Tiered Model Strategy** — **hold**
   - Current: Value-optimized model selection remains justified because no single model dominates CineForge's full task surface.
   - Converge signal: One model meets all current default-driving quality bars at acceptable latency and cost.
-  - Evidence: Story 208 invalidated the legacy cross-task scores. `compromise-C3-tiered-models` has no current decision-grade matrix proving one model clears every repaired quality, latency, and cost bar.
+  - Evidence: Story 208 invalidated the legacy cross-task scores. Its fresh retained storyboard matrix also finds no candidate that clears the repaired hard quality floor, so `compromise-C3-tiered-models` still has no current decision-grade matrix proving one model clears every repaired quality, latency, and cost bar.
 
 ## spec:9 — Memory & Collaboration
 

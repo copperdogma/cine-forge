@@ -239,6 +239,38 @@ def test_generator_rejects_reference_metadata_contradictions(tmp_path: Path) -> 
 
 
 @pytest.mark.unit
+def test_generator_accepts_per_frame_candidate_without_source_grids(
+    tmp_path: Path,
+) -> None:
+    runtime = _fake_runtime(tmp_path)
+    variant = "gpt_image_2_storyboards"
+    runtime["candidate_variants"] = [variant]
+    for run in runtime["runs"]:
+        run["candidate_variant"] = variant
+        run["candidate_label"] = "GPT Image 2 Storyboards"
+        run["source_grids"] = []
+    runtime_path = tmp_path / "runtime.json"
+    runtime_path.write_text(json.dumps(runtime), encoding="utf-8")
+    dataset_root = tmp_path / "dataset"
+    runs = generator._validated_complete_runs(
+        runtime_payload=runtime,
+        manifest=_manifest(),
+    )
+
+    generator._materialize_dataset(
+        dataset_root=dataset_root,
+        runtime_path=runtime_path,
+        fixture_path=generator.DEFAULT_MANIFEST,
+        manifest=_manifest(),
+        runs=runs,
+    )
+
+    retained = json.loads((dataset_root / "manifest.json").read_text(encoding="utf-8"))
+    assert len(retained["sequences"]) == 2
+    assert all(row["source_grid_count"] == 0 for row in retained["sequences"])
+
+
+@pytest.mark.unit
 def test_generator_preserves_bytes_and_records_hash_provenance(tmp_path: Path) -> None:
     runtime, dataset_root = _materialized_eval(tmp_path)
     manifest = json.loads((dataset_root / "manifest.json").read_text(encoding="utf-8"))

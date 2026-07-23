@@ -244,7 +244,8 @@ def _write_sequence(
     ):
         raise ValueError(f"prompt-only case reports unexpected reference use: {case.case_id}")
     candidate = CANDIDATE_SPECS[str(run["candidate_variant"])]
-    if candidate.runtime_params.get("storyboard_grid_mode") and source_grid_count == 0:
+    grid_mode = candidate.runtime_params.get("storyboard_grid_mode")
+    if grid_mode not in {None, "off"} and source_grid_count == 0:
         raise ValueError(f"grid candidate is missing retained source grids: {case.case_id}")
     if artifact_count != len(case.scene_ids):
         raise ValueError(

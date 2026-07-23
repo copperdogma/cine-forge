@@ -1,0 +1,39 @@
+{
+  "assets_sha256_file": "assets.sha256.json",
+  "available_reference_image_count": 4,
+  "candidate_label": "GPT Image 2 Template Grid Storyboards",
+  "candidate_variant": "gpt_image_2_template_grid_storyboards",
+  "direct_reference_input_count": 33,
+  "frame_count": 15,
+  "image_model": "gpt-image-2",
+  "prompt_reference_frame_count": 15,
+  "reference_images": [
+    {
+      "label": "reference_001",
+      "relative_path": "references/001.jpg"
+    },
+    {
+      "label": "reference_002",
+      "relative_path": "references/002.jpg"
+    },
+    {
+      "label": "reference_003",
+      "relative_path": "references/003.jpg"
+    },
+    {
+      "label": "reference_004",
+      "relative_path": "references/004.jpg"
+    }
+  ],
+  "reference_transport_supported": true,
+  "scene_ids": [
+    "scene_001",
+    "scene_002"
+  ],
+  "source_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+  "source_grid_count": 2,
+  "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+  "storyboard_artifact_count": 2,
+  "storyboard_id": "sbq_case_002",
+  "title": "Open Frequency scenes 001-002 \u2014 reference-transport control"
+}

@@ -1,0 +1,113 @@
+{
+  "storyboard_id": "sbq_case_001",
+  "title": "Open Frequency scenes 001-002 — prompt-only storyboard identity",
+  "source_type": "project_owned_internal",
+  "source_description": "Source-authored visual intent for the first two scenes of the project-owned Open Frequency fixture.",
+  "source_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+  "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+  "rights": "Project-owned internal benchmark fixture",
+  "scene_ids": [
+    "scene_001",
+    "scene_002"
+  ],
+  "summary_reference": "A storm-night emergency-radio sequence moves from an old community studio on emergency power to a wind-lashed water-tower catwalk where two recurring technicians secure a portable antenna and react to a handheld receiver.",
+  "forbidden_output_terms": [
+    "Open Frequency",
+    "ARIA",
+    "NOAH",
+    "JUNE",
+    "KELL",
+    "scene_001",
+    "scene_002"
+  ],
+  "required_visual_cues": [
+    {
+      "cue_id": "radio_studio",
+      "keywords": [
+        "radio studio",
+        "control room"
+      ]
+    },
+    {
+      "cue_id": "radio_equipment",
+      "keywords": [
+        "radio",
+        "mixer",
+        "console",
+        "tape reel"
+      ]
+    },
+    {
+      "cue_id": "storm_night",
+      "keywords": [
+        "storm",
+        "rain",
+        "wind",
+        "night"
+      ]
+    },
+    {
+      "cue_id": "water_tower_catwalk",
+      "keywords": [
+        "water tower",
+        "catwalk",
+        "tower platform"
+      ]
+    },
+    {
+      "cue_id": "antenna_receiver",
+      "keywords": [
+        "antenna",
+        "receiver"
+      ]
+    },
+    {
+      "cue_id": "lantern",
+      "keywords": [
+        "lantern"
+      ]
+    }
+  ],
+  "expected_style_keyword_groups": [
+    [
+      "monochrome",
+      "grayscale",
+      "black and white"
+    ],
+    [
+      "storyboard",
+      "sketch",
+      "pencil",
+      "charcoal",
+      "line drawing"
+    ]
+  ],
+  "recurring_characters": [
+    {
+      "name": "subject_001",
+      "descriptor_keywords": []
+    },
+    {
+      "name": "subject_002",
+      "descriptor_keywords": []
+    }
+  ],
+  "reference_expectations": [],
+  "expected_frame_min": 8,
+  "expected_frame_max": 32,
+  "expected_available_reference_min": 0,
+  "expected_prompt_reference_min": 0,
+  "expected_direct_reference_min": 0,
+  "should_avoid_readable_text": true,
+  "reference_quality_evaluable": false,
+  "prop_discipline_evaluable": false,
+  "weights": {
+    "story_specificity": 0.3,
+    "style_consistency": 0.2,
+    "identity_consistency": 0.25,
+    "reference_fidelity": 0.0,
+    "text_cleanliness": 0.15,
+    "prop_discipline": 0.0,
+    "evidence": 0.1
+  }
+}

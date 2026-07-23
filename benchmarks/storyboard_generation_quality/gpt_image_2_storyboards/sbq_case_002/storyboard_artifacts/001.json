@@ -1,0 +1,583 @@
+{
+  "data": {
+    "aspect_ratio": "16:9",
+    "character_identity_locks": [
+      {
+        "appearance_summary": "Aria is a skilled technician in her late 20s to early 30s with a capable, focused demeanor. She has a lean to average build suited to technical work. Her hair is practical and low-maintenance, pulled back or short. She has minimal to no facial hair. Her overall appearance conveys competence and dedication to her work.",
+        "character_id": "aria",
+        "distinguishing_features": [
+          "Focused, alert eyes that suggest technical expertise",
+          "Practical hairstyle (pulled back or short length)",
+          "Lean to average build",
+          "Hands that show familiarity with equipment and controls"
+        ],
+        "name": "ARIA",
+        "source": "llm",
+        "wardrobe_summary": "Functional, layered clothing suitable for a radio station environment\u2014fitted jeans or work pants, a long-sleeve shirt or fitted top, possibly a cardigan or light jacket. Practical footwear. No excessive jewelry. The silhouette reads as someone who prioritizes function and movement over fashion."
+      },
+      {
+        "appearance_summary": "Noah is a technical operator in his late 20s to early 30s with an alert, capable demeanor. He has a lean to average build suited to extended periods at a control console. His hair is short and practical, dark in tone. He is clean-shaven or has minimal facial hair. His overall appearance is professional but approachable, reflecting someone comfortable in a technical environment.",
+        "character_id": "noah",
+        "distinguishing_features": [
+          "Alert, focused eyes that suggest technical competence",
+          "Short, dark, practical hair",
+          "Clean-shaven or minimal facial hair",
+          "Lean to average build"
+        ],
+        "name": "NOAH",
+        "source": "llm",
+        "wardrobe_summary": "Noah wears functional, layered clothing suitable for a radio station control room\u2014typically a long-sleeve shirt or casual button-up in neutral tones (gray, blue, or black), sometimes with a light sweater or hoodie. His style is understated and practical, prioritizing comfort and movement during technical work. No flashy accessories; watch or simple jewelry only."
+      },
+      {
+        "appearance_summary": "June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a broadcast booth. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair. Face shows competence and calm under pressure\u2014the look of someone accustomed to managing crises through clear communication.",
+        "character_id": "june",
+        "distinguishing_features": [
+          "Alert, focused eyes that suggest active listening and quick decision-making",
+          "Practical hairstyle that stays out of the way during work",
+          "Calm, composed facial expression even under stress",
+          "Hands-on posture typical of someone working equipment and taking notes simultaneously"
+        ],
+        "name": "JUNE",
+        "source": "llm",
+        "wardrobe_summary": "Functional work clothing\u2014comfortable layers suitable for extended shifts. Practical fabrics, neutral or muted tones. May include a cardigan, button-up shirt, or simple sweater. Minimal jewelry. Clothing that allows freedom of movement and doesn't distract from the work of coordinating emergency communications."
+      },
+      {
+        "appearance_summary": "Practical, resourceful adult in their 30s\u201340s with an alert, capable presence. Medium build. Short, low-maintenance hair. Clean-shaven or light stubble. Direct, focused expression suited to technical work.",
+        "character_id": "kell",
+        "distinguishing_features": [
+          "Alert, focused eyes",
+          "Composed, no-nonsense demeanor",
+          "Practical posture and movement"
+        ],
+        "name": "KELL",
+        "source": "llm",
+        "wardrobe_summary": "Functional, layered clothing suitable for extended indoor work\u2014long-sleeve shirt or sweater, possibly with a vest or jacket. Neutral earth tones or muted colors. No ornament; all pieces serve utility."
+      }
+    ],
+    "frames": [
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 8.0,
+        "frame_id": "scene_001_frame_01",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_01_001_master_wide.jpg"
+        },
+        "notes": "Rain rattles skylight. Old consoles hum under emergency power. Aria threads a tape reel while Noah coaxes a signal out of a battered mixer. June covers a whiteboard with road closures, shelter names, and call signs. Kell rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag. The studio is dimly lit by emergency power and practical work lights.",
+        "overlay": {
+          "blocking_indicator": "Aria at tape reel station (stage left), Noah at mixer console (stage center-left), June at whiteboard (stage right), Kell entering from upstage with antenna, lantern, and tool bag. Camera positioned to see all four stations and their spatial relationships.",
+          "camera_angle": "Neutral/Level",
+          "camera_indicator": "Neutral/Level; movement=Static; lens=24-28mm (wide, establishing)",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria",
+            "Noah",
+            "June",
+            "Kell"
+          ],
+          "edit_intent": "Establish the full scope of the emergency response operation, introduce all four characters and their roles, set the tone of urgent but controlled activity. This shot anchors the viewer in the space and allows the editor to cut to closer coverage once the geography is clear.",
+          "shot_ids": [
+            "001_MASTER_WIDE"
+          ],
+          "shot_size": "Wide"
+        },
+        "primary_shot_id": "001_MASTER_WIDE",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: int Community Radio Studio night.\n- Shot framing: size=Wide; angle=Neutral/Level; movement=Static; lens feel=wide lens perspective.\n- Coverage role: Master establishing shot.\n- Blocking: Aria at tape reel station (stage left), Noah at mixer console (stage center-left), June at whiteboard with blank diagrams and illegible sketch marks. Camera positioned to see all four stations and their spatial relationships.\n- Action: Rain rattles skylight. Old consoles hum under emergency power. Aria threads a tape reel while Noah coaxes a signal out of a battered mixer. June covers a whiteboard with blank diagrams and illegible sketch marks. Kell rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag. The studio is dimly lit by emergency power and practical work lights.\n- Edit intent: Establish the full scope of the emergency response operation, introduce all four characters and their roles, set the tone of urgent but controlled activity. This shot anchors the viewer in the space and allows the editor to cut to closer coverage once the geography is clear.\n- Scene coverage intent: Multi-station ensemble coverage capturing four simultaneous work stations (tape threading, mixer troubleshooting, whiteboard briefing, equipment arrival) with interlocking master and close-ups that allow editorial flexibility to cut between urgent parallel tasks and group moments of coordination.\n\nProject context:\n- Genre context: drama, community story.\n- Tone context: warm, hopeful, tense, dry humor.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: ARIA, NOAH, JUNE, KELL.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- ARIA: Aria is a skilled technician in her late 20s to early 30s with a capable, focused demeanor. She has a lean to average build suited to technical work. Her hair is practical and low-maintenance, pulled back or short. She has minimal to no facial hair. Her overall appearance conveys competence and dedication to her work. Distinctive visual anchors: Focused, alert eyes that suggest technical expertise; Practical hairstyle (pulled back or short length); Lean to average build; Hands that show familiarity with equipment and controls. Wardrobe anchor: Functional, layered clothing suitable for a radio station environment\u2014fitted jeans or work pants, a long-sleeve shirt or fitted top, possibly a cardigan or light jacket. Practical footwear. No excessive jewelry. The silhouette reads as someone who prioritizes function and movement over fashion. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- NOAH: Noah is a technical operator in his late 20s to early 30s with an alert, capable demeanor. He has a lean to average build suited to extended periods at a control console. His hair is short and practical, dark in tone. He is clean-shaven or has minimal facial hair. His overall appearance is professional but approachable, reflecting someone comfortable in a technical environment. Distinctive visual anchors: Alert, focused eyes that suggest technical competence; Short, dark, practical hair; Clean-shaven or minimal facial hair; Lean to average build. Wardrobe anchor: Noah wears functional, layered clothing suitable for a radio station control room\u2014typically a long-sleeve shirt or casual button-up in neutral tones (gray, blue, or black), sometimes with a light sweater or hoodie. His style is understated and practical, prioritizing comfort and movement during technical work. No flashy accessories; watch or simple jewelry only. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a broadcast booth. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair. Face shows competence and calm under pressure\u2014the look of someone accustomed to managing crises through clear communication. Distinctive visual anchors: Alert, focused eyes that suggest active listening and quick decision-making; Practical hairstyle that stays out of the way during work; Calm, composed facial expression even under stress; Hands-on posture typical of someone working equipment and taking notes simultaneously. Wardrobe anchor: Functional work clothing\u2014comfortable layers suitable for extended shifts. Practical fabrics, neutral or muted tones. May include a cardigan, button-up shirt, or simple sweater. Minimal jewelry. Clothing that allows freedom of movement and doesn't distract from the work of coordinating emergency communications. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- KELL: Practical, resourceful adult in their 30s\u201340s with an alert, capable presence. Medium build. Short, low-maintenance hair. Clean-shaven or light stubble. Direct, focused expression suited to technical work. Distinctive visual anchors: Alert, focused eyes; Composed, no-nonsense demeanor; Practical posture and movement. Wardrobe anchor: Functional, layered clothing suitable for extended indoor work\u2014long-sleeve shirt or sweater, possibly with a vest or jacket. Neutral earth tones or muted colors. No ornament; all pieces serve utility. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- Scene-relevant character context for ARIA: Aria is resourceful and capable, able to troubleshoot equipment under pressure and coordinate with her team to establish critical communication infrastructure during a natural disaster.\n- Scene-relevant character context for NOAH: A technical operator at the community radio station who assists with emergency broadcast operations during a natural disaster.\n- Scene-relevant character context for JUNE: A radio operator and coordinator at the community radio station during an emergency disaster.\n- Scene-relevant character context for KELL: A practical, resourceful member of the emergency radio broadcast team.\n\nLocation anchor:\n- A functional radio broadcast facility equipped with old consoles, a battered mixer, a microphone, brass-heavy cassette cue equipment, and an ON AIR sign.\n\nReference-image constraints:\n- Use the supplied reference images as hard anchors for recurring character identity, wardrobe, silhouette, and location design.\n- Preserve those reference cues unless the literal shot description explicitly requires a visible change.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "001_MASTER_WIDE"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 6.0,
+        "frame_id": "scene_001_frame_02",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_02_002_two_shot_aria_noah.jpg"
+        },
+        "notes": "Aria threads a tape reel with focused precision. Noah leans over the mixer, adjusting dials and listening intently. Both are concentrating on their technical work, occasionally glancing at each other or toward the rest of the team. The mixer hums and crackles.",
+        "overlay": {
+          "blocking_indicator": "Aria at tape reel station, Noah at mixer console. Camera positioned to see both characters in profile or three-quarter view, with sight lines between them. Aria's hands visible on the tape reel; Noah's hands visible on the mixer.",
+          "camera_angle": "Neutral/Level",
+          "camera_indicator": "Neutral/Level; movement=Slight push-in during dialogue; lens=35-40mm",
+          "camera_movement": "Slight push-in during dialogue",
+          "character_labels": [
+            "Aria",
+            "Noah"
+          ],
+          "edit_intent": "Capture the technical competence and focus of Aria and Noah. Allow the editor to cut between their individual work and their awareness of the larger team effort. The slight push-in builds intimacy and tension as they work under pressure.",
+          "shot_ids": [
+            "002_TWO_SHOT_ARIA_NOAH"
+          ],
+          "shot_size": "Medium"
+        },
+        "primary_shot_id": "002_TWO_SHOT_ARIA_NOAH",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: int Community Radio Studio night.\n- Shot framing: size=Medium; angle=Neutral/Level; movement=Slight push-in during dialogue; lens feel=wide lens perspective.\n- Coverage role: Primary dialogue and action coverage for Aria and Noah.\n- Blocking: Aria at tape reel station, Noah at mixer console. Camera positioned to see both characters in profile or three-quarter view, with sight lines between them. Aria's hands visible on the tape reel; Noah's hands visible on the mixer.\n- Action: Aria threads a tape reel with focused precision. Noah leans over the mixer, adjusting dials and listening intently. Both are concentrating on their technical work, occasionally glancing at each other or toward the rest of the team. The mixer hums and crackles.\n- Edit intent: Capture the technical competence and focus of Aria and Noah. Allow the editor to cut between their individual work and their awareness of the larger team effort. The slight push-in builds intimacy and tension as they work under pressure.\n- Scene coverage intent: Multi-station ensemble coverage capturing four simultaneous work stations (tape threading, mixer troubleshooting, whiteboard briefing, equipment arrival) with interlocking master and close-ups that allow editorial flexibility to cut between urgent parallel tasks and group moments of coordination.\n\nProject context:\n- Genre context: drama, community story.\n- Tone context: warm, hopeful, tense, dry humor.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: ARIA, NOAH.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- ARIA: Aria is a skilled technician in her late 20s to early 30s with a capable, focused demeanor. She has a lean to average build suited to technical work. Her hair is practical and low-maintenance, pulled back or short. She has minimal to no facial hair. Her overall appearance conveys competence and dedication to her work. Distinctive visual anchors: Focused, alert eyes that suggest technical expertise; Practical hairstyle (pulled back or short length); Lean to average build; Hands that show familiarity with equipment and controls. Wardrobe anchor: Functional, layered clothing suitable for a radio station environment\u2014fitted jeans or work pants, a long-sleeve shirt or fitted top, possibly a cardigan or light jacket. Practical footwear. No excessive jewelry. The silhouette reads as someone who prioritizes function and movement over fashion. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- NOAH: Noah is a technical operator in his late 20s to early 30s with an alert, capable demeanor. He has a lean to average build suited to extended periods at a control console. His hair is short and practical, dark in tone. He is clean-shaven or has minimal facial hair. His overall appearance is professional but approachable, reflecting someone comfortable in a technical environment. Distinctive visual anchors: Alert, focused eyes that suggest technical competence; Short, dark, practical hair; Clean-shaven or minimal facial hair; Lean to average build. Wardrobe anchor: Noah wears functional, layered clothing suitable for a radio station control room\u2014typically a long-sleeve shirt or casual button-up in neutral tones (gray, blue, or black), sometimes with a light sweater or hoodie. His style is understated and practical, prioritizing comfort and movement during technical work. No flashy accessories; watch or simple jewelry only. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- Scene-relevant character context for ARIA: Aria is resourceful and capable, able to troubleshoot equipment under pressure and coordinate with her team to establish critical communication infrastructure during a natural disaster.\n- Scene-relevant character context for NOAH: A technical operator at the community radio station who assists with emergency broadcast operations during a natural disaster.\n\nLocation anchor:\n- A functional radio broadcast facility equipped with old consoles, a battered mixer, a microphone, brass-heavy cassette cue equipment, and an ON AIR sign.\n\nReference-image constraints:\n- Use the supplied reference images as hard anchors for recurring character identity, wardrobe, silhouette, and location design.\n- Preserve those reference cues unless the literal shot description explicitly requires a visible change.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "002_TWO_SHOT_ARIA_NOAH"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 4.0,
+        "frame_id": "scene_001_frame_03",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_03_003_kell_entrance_close.jpg"
+        },
+        "notes": "Kell rushes in carrying a portable antenna (dented, weathered), a dented lantern, and a canvas tool bag. The antenna is held carefully but with urgency. Kell's energy is high but focused. June turns from the whiteboard to acknowledge the arrival and the critical equipment.",
+        "overlay": {
+          "blocking_indicator": "Kell enters upstage with antenna, lantern, and tool bag. Camera positioned to see Kell's arrival and the equipment clearly. June is visible at the whiteboard, turning to acknowledge Kell's entrance.",
+          "camera_angle": "Slightly high (looking down at equipment)",
+          "camera_indicator": "Slightly high (looking down at equipment); movement=Static, then slight pan to follow Kell's movement toward June; lens=35mm",
+          "camera_movement": "Static, then slight pan to follow Kell's movement toward June",
+          "character_labels": [
+            "Kell",
+            "June"
+          ],
+          "edit_intent": "Emphasize the arrival of the critical antenna and Kell's energy. The close framing on the equipment reinforces its importance to the mission. This shot can cut directly to Noah's reaction or to the two-shot of Kell and June.",
+          "shot_ids": [
+            "003_KELL_ENTRANCE_CLOSE"
+          ],
+          "shot_size": "Medium-Close"
+        },
+        "primary_shot_id": "003_KELL_ENTRANCE_CLOSE",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: int Community Radio Studio night.\n- Shot framing: size=Medium-Close; angle=Slightly high (looking down at equipment); movement=Static, then slight pan to follow Kell's movement toward June; lens feel=wide lens perspective.\n- Coverage role: Kell's entrance and equipment handoff.\n- Blocking: Kell enters upstage with antenna, lantern, and tool bag. Camera positioned to see Kell's arrival and the equipment clearly. June is visible at the whiteboard with blank diagrams and illegible sketch marks.\n- Action: Kell rushes in carrying a portable antenna (dented, weathered), a dented lantern, and a canvas tool bag. The antenna is held carefully but with urgency. Kell's energy is high but focused. June turns from the whiteboard with blank diagrams and illegible sketch marks.\n- Edit intent: Emphasize the arrival of the critical antenna and Kell's energy. The close framing on the equipment reinforces its importance to the mission. This shot can cut directly to Noah's reaction or to the two-shot of Kell and June.\n- Scene coverage intent: Multi-station ensemble coverage capturing four simultaneous work stations (tape threading, mixer troubleshooting, whiteboard briefing, equipment arrival) with interlocking master and close-ups that allow editorial flexibility to cut between urgent parallel tasks and group moments of coordination.\n\nProject context:\n- Genre context: drama, community story.\n- Tone context: warm, hopeful, tense, dry humor.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: KELL, JUNE.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- KELL: Practical, resourceful adult in their 30s\u201340s with an alert, capable presence. Medium build. Short, low-maintenance hair. Clean-shaven or light stubble. Direct, focused expression suited to technical work. Distinctive visual anchors: Alert, focused eyes; Composed, no-nonsense demeanor; Practical posture and movement. Wardrobe anchor: Functional, layered clothing suitable for extended indoor work\u2014long-sleeve shirt or sweater, possibly with a vest or jacket. Neutral earth tones or muted colors. No ornament; all pieces serve utility. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a broadcast booth. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair. Face shows competence and calm under pressure\u2014the look of someone accustomed to managing crises through clear communication. Distinctive visual anchors: Alert, focused eyes that suggest active listening and quick decision-making; Practical hairstyle that stays out of the way during work; Calm, composed facial expression even under stress; Hands-on posture typical of someone working equipment and taking notes simultaneously. Wardrobe anchor: Functional work clothing\u2014comfortable layers suitable for extended shifts. Practical fabrics, neutral or muted tones. May include a cardigan, button-up shirt, or simple sweater. Minimal jewelry. Clothing that allows freedom of movement and doesn't distract from the work of coordinating emergency communications. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- Scene-relevant character context for KELL: A practical, resourceful member of the emergency radio broadcast team.\n- Scene-relevant character context for JUNE: A radio operator and coordinator at the community radio station during an emergency disaster.\n\nLocation anchor:\n- A functional radio broadcast facility equipped with old consoles, a battered mixer, a microphone, brass-heavy cassette cue equipment, and an ON AIR sign.\n\nReference-image constraints:\n- Use the supplied reference images as hard anchors for recurring character identity, wardrobe, silhouette, and location design.\n- Preserve those reference cues unless the literal shot description explicitly requires a visible change.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "003_KELL_ENTRANCE_CLOSE"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 5.0,
+        "frame_id": "scene_001_frame_04",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_04_004_june_whiteboard_medium.jpg"
+        },
+        "notes": "June covers a whiteboard with road closures, shelter names, and call signs. Her writing is clear and organized. She is focused on the information flow and the critical data that will be broadcast. Kell moves in the background, setting down the antenna and equipment.",
+        "overlay": {
+          "blocking_indicator": "June at whiteboard, writing or pointing to information. Kell visible in the background or mid-ground, setting down equipment. Camera positioned to see June's face and the whiteboard content (road closures, shelter names, call signs) in the frame.",
+          "camera_angle": "Neutral/Level",
+          "camera_indicator": "Neutral/Level; movement=Static; lens=35-40mm",
+          "camera_movement": "Static",
+          "character_labels": [
+            "June",
+            "Kell"
+          ],
+          "edit_intent": "Establish June's role as the information coordinator and strategic leader. The whiteboard content should be legible enough for the viewer to understand the scope of the emergency. This shot can cut to a close-up of the whiteboard or to a reaction shot of the group.",
+          "shot_ids": [
+            "004_JUNE_WHITEBOARD_MEDIUM"
+          ],
+          "shot_size": "Medium"
+        },
+        "primary_shot_id": "004_JUNE_WHITEBOARD_MEDIUM",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: int Community Radio Studio night.\n- Shot framing: size=Medium; angle=Neutral/Level; movement=Static; lens feel=wide lens perspective.\n- Coverage role: June's leadership and strategic role.\n- Blocking: June at whiteboard with blank diagrams and illegible sketch marks. Kell visible in the background or mid-ground, setting down equipment. Camera positioned to see June's face and the whiteboard with blank diagrams and illegible sketch marks.\n- Action: June covers a whiteboard with blank diagrams and illegible sketch marks. Her writing is clear and organized. She is focused on the information flow and the critical data that will be broadcast. Kell moves in the background, setting down the antenna and equipment.\n- Edit intent: Establish June's role as the information coordinator and strategic leader. The whiteboard with blank diagrams and illegible sketch marks. This shot can cut to a close-up of the whiteboard with blank diagrams and illegible sketch marks.\n- Scene coverage intent: Multi-station ensemble coverage capturing four simultaneous work stations (tape threading, mixer troubleshooting, whiteboard briefing, equipment arrival) with interlocking master and close-ups that allow editorial flexibility to cut between urgent parallel tasks and group moments of coordination.\n\nProject context:\n- Genre context: drama, community story.\n- Tone context: warm, hopeful, tense, dry humor.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: JUNE, KELL.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a broadcast booth. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair. Face shows competence and calm under pressure\u2014the look of someone accustomed to managing crises through clear communication. Distinctive visual anchors: Alert, focused eyes that suggest active listening and quick decision-making; Practical hairstyle that stays out of the way during work; Calm, composed facial expression even under stress; Hands-on posture typical of someone working equipment and taking notes simultaneously. Wardrobe anchor: Functional work clothing\u2014comfortable layers suitable for extended shifts. Practical fabrics, neutral or muted tones. May include a cardigan, button-up shirt, or simple sweater. Minimal jewelry. Clothing that allows freedom of movement and doesn't distract from the work of coordinating emergency communications. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- KELL: Practical, resourceful adult in their 30s\u201340s with an alert, capable presence. Medium build. Short, low-maintenance hair. Clean-shaven or light stubble. Direct, focused expression suited to technical work. Distinctive visual anchors: Alert, focused eyes; Composed, no-nonsense demeanor; Practical posture and movement. Wardrobe anchor: Functional, layered clothing suitable for extended indoor work\u2014long-sleeve shirt or sweater, possibly with a vest or jacket. Neutral earth tones or muted colors. No ornament; all pieces serve utility. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- Scene-relevant character context for JUNE: A radio operator and coordinator at the community radio station during an emergency disaster.\n- Scene-relevant character context for KELL: A practical, resourceful member of the emergency radio broadcast team.\n\nLocation anchor:\n- A functional radio broadcast facility equipped with old consoles, a battered mixer, a microphone, brass-heavy cassette cue equipment, and an ON AIR sign.\n\nReference-image constraints:\n- Use the supplied reference images as hard anchors for recurring character identity, wardrobe, silhouette, and location design.\n- Preserve those reference cues unless the literal shot description explicitly requires a visible change.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "004_JUNE_WHITEBOARD_MEDIUM"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 3.0,
+        "frame_id": "scene_001_frame_05",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_05_005_noah_reaction_close.jpg"
+        },
+        "notes": "Noah coaxes a signal out of a battered mixer, his expression shifting from concentration to wry amusement as he delivers his line about the antenna. His hands are visible on the mixer dials. The mixer hums and crackles in response to his adjustments.",
+        "overlay": {
+          "blocking_indicator": "Noah at the mixer console, leaning back slightly with a wry expression. Camera positioned to see his face clearly and his hands on the mixer in the lower frame.",
+          "camera_angle": "Neutral/Level",
+          "camera_indicator": "Neutral/Level; movement=Static; lens=50-85mm (close-up)",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Noah"
+          ],
+          "edit_intent": "Capture Noah's personality and his use of humor to manage stress. This close-up allows the editor to emphasize his reaction to Kell's comment about the antenna. It can cut from the two-shot of Aria and Noah or from the master.",
+          "shot_ids": [
+            "005_NOAH_REACTION_CLOSE"
+          ],
+          "shot_size": "Close-Up"
+        },
+        "primary_shot_id": "005_NOAH_REACTION_CLOSE",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: int Community Radio Studio night.\n- Shot framing: size=Close-Up; angle=Neutral/Level; movement=Static; lens feel=telephoto compression.\n- Coverage role: Noah's reaction and humor.\n- Blocking: Noah at the mixer console, leaning back slightly with a wry expression. Camera positioned to see his face clearly and his hands on the mixer in the lower frame.\n- Action: Noah coaxes a signal out of a battered mixer, his expression shifting from concentration to wry amusement as he delivers his line about the antenna. His hands are visible on the mixer dials. The mixer hums and crackles in response to his adjustments.\n- Edit intent: Capture Noah's personality and his use of humor to manage stress. This close-up allows the editor to emphasize his reaction to Kell's comment about the antenna. It can cut from the two-shot of Aria and Noah or from the master.\n- Scene coverage intent: Multi-station ensemble coverage capturing four simultaneous work stations (tape threading, mixer troubleshooting, whiteboard briefing, equipment arrival) with interlocking master and close-ups that allow editorial flexibility to cut between urgent parallel tasks and group moments of coordination.\n\nProject context:\n- Genre context: drama, community story.\n- Tone context: warm, hopeful, tense, dry humor.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: NOAH.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- NOAH: Noah is a technical operator in his late 20s to early 30s with an alert, capable demeanor. He has a lean to average build suited to extended periods at a control console. His hair is short and practical, dark in tone. He is clean-shaven or has minimal facial hair. His overall appearance is professional but approachable, reflecting someone comfortable in a technical environment. Distinctive visual anchors: Alert, focused eyes that suggest technical competence; Short, dark, practical hair; Clean-shaven or minimal facial hair; Lean to average build. Wardrobe anchor: Noah wears functional, layered clothing suitable for a radio station control room\u2014typically a long-sleeve shirt or casual button-up in neutral tones (gray, blue, or black), sometimes with a light sweater or hoodie. His style is understated and practical, prioritizing comfort and movement during technical work. No flashy accessories; watch or simple jewelry only. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene.\n- Scene-relevant character context for NOAH: A technical operator at the community radio station who assists with emergency broadcast operations during a natural disaster.\n\nLocation anchor:\n- A functional radio broadcast facility equipped with old consoles, a battered mixer, a microphone, brass-heavy cassette cue equipment, and an ON AIR sign.\n\nReference-image constraints:\n- Use the supplied reference images as hard anchors for recurring character identity, wardrobe, silhouette, and location design.\n- Preserve those reference cues unless the literal shot description explicitly requires a visible change.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "005_NOAH_REACTION_CLOSE"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 4.0,
+        "frame_id": "scene_001_frame_06",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_06_006_aria_switch_failure.jpg"
+        },
+        "notes": "Aria flips a switch with deliberate focus. The ON AIR sign flickers, then dies again. Her expression shifts from hope to determination. The sign's failure is the moment of truth\u2014the team's first setback. Aria's jaw tightens; she is already problem-solving.",
+        "overlay": {
+          "blocking_indicator": "Aria at the switch, her hand on the control. The ON AIR sign is visible in the frame, positioned above or to the side of Aria. Camera positioned to see both Aria's face and the sign's response to her action.",
+          "camera_angle": "Neutral/Level, then slight tilt down",
+          "camera_indicator": "Neutral/Level, then slight tilt down; movement=Static, then slight push-in on the ON AIR sign; lens=50-85mm (close-up)",
+          "camera_movement": "Static, then slight push-in on the ON AIR sign",
+          "character_labels": [
+            "Aria"
+          ],
+          "edit_intent": "Emphasize the technical failure and Aria's immediate response. The close-up on the sign's failure is the visual anchor for the emotional beat. Cut from Aria's face to the sign's failure, then back to her determination. This is the moment the team's challenge becomes concrete.",
+          "shot_ids": [
+            "006_ARIA_SWITCH_FAILURE"
+          ],
+          "shot_size": "Close-Up"
+        },
+        "primary_shot_id": "006_ARIA_SWITCH_FAILURE",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: int Community Radio Studio night.\n- Shot framing: size=Close-Up; angle=Neutral/Level, then slight tilt down; movement=Static, then slight push-in on the ON AIR sign; lens feel=telephoto compression.\n- Coverage role: The ON AIR sign failure\u2014emotional peak.\n- Blocking: Aria at the switch, her hand on the control. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Camera positioned to see both Aria's face and the text-bearing surface rendered as blank shapes or illegible marks.\n- Action: Aria flips a switch with deliberate focus. The an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. Her expression shifts from hope to determination. The text-bearing surface rendered as blank shapes or illegible marks. Aria's jaw tightens; she is already problem-solving.\n- Edit intent: Emphasize the technical failure and Aria's immediate response. The close-up on the text-bearing surface rendered as blank shapes or illegible marks. Cut from Aria's face to the text-bearing surface rendered as blank shapes or illegible marks. This is the moment the team's challenge becomes concrete.\n- Scene coverage intent: Multi-station ensemble coverage capturing four simultaneous work stations (tape threading, mixer troubleshooting, whiteboard briefing, equipment arrival) with interlocking master and close-ups that allow editorial flexibility to cut between urgent parallel tasks and group moments of coordination.\n\nProject context:\n- Genre context: drama, community story.\n- Tone context: warm, hopeful, tense, dry humor.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: ARIA.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- ARIA: Aria is a skilled technician in her late 20s to early 30s with a capable, focused demeanor. She has a lean to average build suited to technical work. Her hair is practical and low-maintenance, pulled back or short. She has minimal to no facial hair. Her overall appearance conveys competence and dedication to her work. Distinctive visual anchors: Focused, alert eyes that suggest technical expertise; Practical hairstyle (pulled back or short length); Lean to average build; Hands that show familiarity with equipment and controls. Wardrobe anchor: Functional, layered clothing suitable for a radio station environment\u2014fitted jeans or work pants, a long-sleeve shirt or fitted top, possibly a cardigan or light jacket. Practical footwear. No excessive jewelry. The silhouette reads as someone who prioritizes function and movement over fashion. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene.\n- Scene-relevant character context for ARIA: Aria is resourceful and capable, able to troubleshoot equipment under pressure and coordinate with her team to establish critical communication infrastructure during a natural disaster.\n\nLocation anchor:\n- A functional radio broadcast facility equipped with old consoles, a battered mixer, a microphone, brass-heavy cassette cue equipment, and an ON AIR sign.\n\nReference-image constraints:\n- Use the supplied reference images as hard anchors for recurring character identity, wardrobe, silhouette, and location design.\n- Preserve those reference cues unless the literal shot description explicitly requires a visible change.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "006_ARIA_SWITCH_FAILURE"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ],
+        "duration_estimate_seconds": 4.0,
+        "frame_id": "scene_001_frame_07",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_001/v1/frame_07_007_aria_june_final_exchange.jpg"
+        },
+        "notes": "Aria and June face each other. Aria is committed and focused; June is calm and supportive. Their exchange is brief but carries the weight of trust and shared mission. June's response\u2014'Take fifteen. Keep the miracle.'\u2014is a moment of leadership and emotional support. The background hums with emergency power and equipment.",
+        "overlay": {
+          "blocking_indicator": "Aria and June positioned close together, eye contact or near-contact. Camera positioned to see both faces clearly, with the failed ON AIR sign or the studio environment visible in the background. The framing should feel intimate despite the emergency context.",
+          "camera_angle": "Neutral/Level",
+          "camera_indicator": "Neutral/Level; movement=Static, slight push-in during dialogue; lens=40-50mm",
+          "camera_movement": "Static, slight push-in during dialogue",
+          "character_labels": [
+            "Aria",
+            "June"
+          ],
+          "edit_intent": "Anchor the scene emotionally on the relationship between Aria and June. This two-shot is the final moment before the CUT TO, and it should feel like a moment of commitment and trust. The slight push-in builds intimacy. This shot can hold through the dialogue and into a beat of silence before the cut.",
+          "shot_ids": [
+            "007_ARIA_JUNE_FINAL_EXCHANGE"
+          ],
+          "shot_size": "Medium-Close"
+        },
+        "primary_shot_id": "007_ARIA_JUNE_FINAL_EXCHANGE",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: int Community Radio Studio night.\n- Shot framing: size=Medium-Close; angle=Neutral/Level; movement=Static, slight push-in during dialogue; lens feel=natural perspective.\n- Coverage role: Aria and June's final exchange\u2014emotional anchor.\n- Blocking: Aria and June positioned close together, eye contact or near-contact. Camera positioned to see both faces clearly, with the failed an unlettered illuminated studio status text-bearing surface rendered as blank shapes or illegible marks. The framing should feel intimate despite the emergency context.\n- Action: Aria and June face each other. Aria is committed and focused; June is calm and supportive. Their exchange is brief but carries the weight of trust and shared mission. June's response\u2014the spoken line\u2014is a moment of leadership and emotional support. The background hums with emergency power and equipment.\n- Edit intent: Anchor the scene emotionally on the relationship between Aria and June. This two-shot is the final moment before the CUT TO, and it should feel like a moment of commitment and trust. The slight push-in builds intimacy. This shot can hold through the dialogue and into a beat of silence before the cut.\n- Scene coverage intent: Multi-station ensemble coverage capturing four simultaneous work stations (tape threading, mixer troubleshooting, whiteboard briefing, equipment arrival) with interlocking master and close-ups that allow editorial flexibility to cut between urgent parallel tasks and group moments of coordination.\n\nProject context:\n- Genre context: drama, community story.\n- Tone context: warm, hopeful, tense, dry humor.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: ARIA, JUNE.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- ARIA: Aria is a skilled technician in her late 20s to early 30s with a capable, focused demeanor. She has a lean to average build suited to technical work. Her hair is practical and low-maintenance, pulled back or short. She has minimal to no facial hair. Her overall appearance conveys competence and dedication to her work. Distinctive visual anchors: Focused, alert eyes that suggest technical expertise; Practical hairstyle (pulled back or short length); Lean to average build; Hands that show familiarity with equipment and controls. Wardrobe anchor: Functional, layered clothing suitable for a radio station environment\u2014fitted jeans or work pants, a long-sleeve shirt or fitted top, possibly a cardigan or light jacket. Practical footwear. No excessive jewelry. The silhouette reads as someone who prioritizes function and movement over fashion. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- JUNE: June is a middle-aged radio operator with a practical, no-nonsense appearance suited to long shifts in a broadcast booth. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair. Face shows competence and calm under pressure\u2014the look of someone accustomed to managing crises through clear communication. Distinctive visual anchors: Alert, focused eyes that suggest active listening and quick decision-making; Practical hairstyle that stays out of the way during work; Calm, composed facial expression even under stress; Hands-on posture typical of someone working equipment and taking notes simultaneously. Wardrobe anchor: Functional work clothing\u2014comfortable layers suitable for extended shifts. Practical fabrics, neutral or muted tones. May include a cardigan, button-up shirt, or simple sweater. Minimal jewelry. Clothing that allows freedom of movement and doesn't distract from the work of coordinating emergency communications. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- Scene-relevant character context for ARIA: Aria is resourceful and capable, able to troubleshoot equipment under pressure and coordinate with her team to establish critical communication infrastructure during a natural disaster.\n- Scene-relevant character context for JUNE: A radio operator and coordinator at the community radio station during an emergency disaster.\n\nLocation anchor:\n- A functional radio broadcast facility equipped with old consoles, a battered mixer, a microphone, brass-heavy cassette cue equipment, and an ON AIR sign.\n\nReference-image constraints:\n- Use the supplied reference images as hard anchors for recurring character identity, wardrobe, silhouette, and location design.\n- Preserve those reference cues unless the literal shot description explicitly requires a visible change.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "007_ARIA_JUNE_FINAL_EXCHANGE"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_community_radio_studio/radio_studio_reference.jpg"
+        ]
+      }
+    ],
+    "scene_heading": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+    "scene_id": "scene_001",
+    "scene_number": 1,
+    "scene_ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "path": "artifacts/scene/scene_001/v2.json",
+      "version": 2
+    },
+    "shot_plan_ref": {
+      "artifact_type": "shot_plan",
+      "entity_id": "scene_001",
+      "path": "artifacts/shot_plan/scene_001/v1.json",
+      "version": 1
+    },
+    "style": "sketch",
+    "total_estimated_cost_usd": 0.0891408
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "final_stage_model_used": "claude-haiku-4-5-20251001+gpt-image-2",
+      "final_stage_provider_used": "anthropic",
+      "frame_count": 7,
+      "grid_max_panels": 8,
+      "grid_mode": "off",
+      "grid_reference_anchors": false,
+      "identity_model": "claude-haiku-4-5-20251001",
+      "image_model": "gpt-image-2",
+      "image_size": null,
+      "style": "sketch"
+    },
+    "confidence": 0.91,
+    "cost_data": {
+      "estimated_cost_usd": 0.1756176,
+      "input_tokens": 2807,
+      "latency_seconds": null,
+      "model": "claude-haiku-4-5-20251001+gpt-image-2",
+      "output_tokens": 1343,
+      "request_id": null
+    },
+    "created_at": "2026-07-23T03:08:34.967931Z",
+    "health": "valid",
+    "intent": "Scene-level storyboard frames for composition and blocking review.",
+    "lineage": [
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_001",
+        "path": "artifacts/scene/scene_001/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "shot_plan",
+        "entity_id": "scene_001",
+        "path": "artifacts/shot_plan/scene_001/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "project_config",
+        "entity_id": "project",
+        "path": "artifacts/project_config/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "aria",
+        "path": "artifacts/character_bible/aria/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_aria",
+        "path": "artifacts/bibles/character_aria/manifest_v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "noah",
+        "path": "artifacts/character_bible/noah/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_noah",
+        "path": "artifacts/bibles/character_noah/manifest_v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "june",
+        "path": "artifacts/character_bible/june/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_june",
+        "path": "artifacts/bibles/character_june/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "kell",
+        "path": "artifacts/character_bible/kell/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_kell",
+        "path": "artifacts/bibles/character_kell/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "community_radio_studio",
+        "path": "artifacts/location_bible/community_radio_studio/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_community_radio_studio",
+        "path": "artifacts/bibles/location_community_radio_studio/manifest_v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "track_manifest",
+        "entity_id": "project",
+        "path": "artifacts/track_manifest/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "shot_plan",
+        "entity_id": "scene_002",
+        "path": "artifacts/shot_plan/scene_002/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "maya",
+        "path": "artifacts/character_bible/maya/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "water_tower_catwalk",
+        "path": "artifacts/location_bible/water_tower_catwalk/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "storyboard_v1",
+    "producing_role": null,
+    "rationale": "Storyboard generation converts shot-planning intent into a cheap visual fallback lane before animatics or final renders exist.",
+    "ref": {
+      "artifact_type": "storyboard",
+      "entity_id": "scene_001",
+      "path": "artifacts/storyboard/scene_001/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "hybrid"
+  }
+}

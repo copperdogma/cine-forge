@@ -1,0 +1,559 @@
+{
+  "data": {
+    "aspect_ratio": "16:9",
+    "character_identity_locks": [
+      {
+        "appearance_summary": "Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.",
+        "character_id": "aria",
+        "distinguishing_features": [
+          "Alert, focused eyes suggesting technical competence",
+          "Practical hairstyle that won't obstruct work",
+          "Hands-on worker bearing\u2014confident physical presence",
+          "No excessive jewelry or accessories"
+        ],
+        "name": "ARIA",
+        "source": "llm",
+        "wardrobe_summary": "Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative."
+      },
+      {
+        "appearance_summary": "Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.",
+        "character_id": "noah",
+        "distinguishing_features": [
+          "Short dark hair, neatly maintained",
+          "Light stubble or sparse facial hair",
+          "Lean, athletic build",
+          "Alert, focused expression"
+        ],
+        "name": "NOAH",
+        "source": "llm",
+        "wardrobe_summary": "Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt."
+      }
+    ],
+    "frames": [
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00174857,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ],
+        "duration_estimate_seconds": 12.0,
+        "frame_id": "scene_002_frame_01",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_01_wtc_001.jpg"
+        },
+        "notes": "Wind lashes the catwalk. The lantern flickers. The tool bag swings. Noah works methodically on the antenna clamp. Aria steadies the lantern. A siren rises in the distance and cuts out.",
+        "overlay": {
+          "blocking_indicator": "Aria braces the lantern with her boot in the foreground. Noah stands at the rail, clamping the portable antenna to the rusted metal. The canvas tool bag swings in the wind between them. The town below is visible in the background\u2014high school gym lit, gas station canopy lit, rest of town dark.",
+          "camera_angle": "Level",
+          "camera_indicator": "Level; movement=Static; lens=35mm",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria",
+            "Noah"
+          ],
+          "edit_intent": "Establish the dangerous, isolated setting and the two-person teamwork. Introduce the environmental pressure (wind, darkness, siren). Dialogue exchange shows their dynamic\u2014Noah's dry humor, Aria's focus. The siren punctuates the moment and raises stakes.",
+          "shot_ids": [
+            "WTC_001"
+          ],
+          "shot_size": "Wide"
+        },
+        "primary_shot_id": "WTC_001",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 7 active panels, filled left-to-right then top-to-bottom.\nScene: EXT. WATER TOWER CATWALK - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot WTC_001:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Wide, Level, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt.\n\nPanel 2 / shot WTC_002:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Top-down, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's hands work the antenna clamp against the rusted rail. The clamp tightens. His fingers are steady despite the wind. Action: Noah's hands clamp the portable antenna to the rusted rail. The clamp mechanism tightens. His hands are steady and practiced. Wind buffets the frame slightly. Edit intent: Isolate the technical precision of the antenna installation. Show Noah's competence and focus. The close-up emphasizes the importance of the work and the care required. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 3 / shot WTC_003:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Side, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's boot braces the lantern against the catwalk floor. Her hands are free to work. The lantern flickers in the wind. Action: Aria braces the lantern with her boot, keeping it steady against the wind. The light flickers but holds. Her posture is efficient and practiced. Edit intent: Isolate Aria's practical problem-solving. Show her resourcefulness and calm under pressure. The lantern is a lifeline\u2014she protects it. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 4 / shot WTC_004:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Two-shot, Profile, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night.\n\nPanel 5 / shot WTC_005:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's face in close-up. Her eyes focused on the receiver. Her expression shifts from concentration to recognition of the urgency. Action: Aria hears the unknown voice requesting insulin and blankets. Her expression tightens with focus and purpose. She recognizes the weight of what they're doing. Edit intent: Isolate Aria's emotional reaction to the message. Show her recognition of the stakes. This is the moment she understands the real-world impact of their work. Written-surface rule: signs, screens.\n\nPanel 6 / shot WTC_006:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's face in close-up. His eyes on the receiver. His expression shifts from concentration to recognition of the urgency. Action: Noah hears the unknown voice requesting insulin and blankets. His expression tightens with focus and purpose. He recognizes the weight of what they're doing. Edit intent: Isolate Noah's emotional reaction to the message. Show his recognition of the stakes. This mirrors Aria's reaction and reinforces the shared moment of purpose. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 7 / shot WTC_007:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's hands tighten the last bolt. Her face is visible in the frame, focused and determined. The lantern light catches her expression. Action: Aria responds to June's radio confirmation. She tightens the last bolt with precision and purpose. Her smile emerges\u2014the first genuine smile of the night. The moment is earned and resolves the emotional arc. Edit intent: Capture the final technical action and the emotional resolution. Aria's smile is the payoff\u2014the moment of hope and purpose.",
+        "shot_ids": [
+          "WTC_001"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00174857,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ],
+        "duration_estimate_seconds": 4.0,
+        "frame_id": "scene_002_frame_02",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_02_wtc_002.jpg"
+        },
+        "notes": "Noah's hands clamp the portable antenna to the rusted rail. The clamp mechanism tightens. His hands are steady and practiced. Wind buffets the frame slightly.",
+        "overlay": {
+          "blocking_indicator": "Noah's hands work the antenna clamp against the rusted rail. The clamp tightens. His fingers are steady despite the wind.",
+          "camera_angle": "Top-down",
+          "camera_indicator": "Top-down; movement=Static; lens=50mm",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Noah"
+          ],
+          "edit_intent": "Isolate the technical precision of the antenna installation. Show Noah's competence and focus. The close-up emphasizes the importance of the work and the care required.",
+          "shot_ids": [
+            "WTC_002"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "WTC_002",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 7 active panels, filled left-to-right then top-to-bottom.\nScene: EXT. WATER TOWER CATWALK - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot WTC_001:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Wide, Level, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt.\n\nPanel 2 / shot WTC_002:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Top-down, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's hands work the antenna clamp against the rusted rail. The clamp tightens. His fingers are steady despite the wind. Action: Noah's hands clamp the portable antenna to the rusted rail. The clamp mechanism tightens. His hands are steady and practiced. Wind buffets the frame slightly. Edit intent: Isolate the technical precision of the antenna installation. Show Noah's competence and focus. The close-up emphasizes the importance of the work and the care required. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 3 / shot WTC_003:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Side, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's boot braces the lantern against the catwalk floor. Her hands are free to work. The lantern flickers in the wind. Action: Aria braces the lantern with her boot, keeping it steady against the wind. The light flickers but holds. Her posture is efficient and practiced. Edit intent: Isolate Aria's practical problem-solving. Show her resourcefulness and calm under pressure. The lantern is a lifeline\u2014she protects it. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 4 / shot WTC_004:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Two-shot, Profile, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night.\n\nPanel 5 / shot WTC_005:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's face in close-up. Her eyes focused on the receiver. Her expression shifts from concentration to recognition of the urgency. Action: Aria hears the unknown voice requesting insulin and blankets. Her expression tightens with focus and purpose. She recognizes the weight of what they're doing. Edit intent: Isolate Aria's emotional reaction to the message. Show her recognition of the stakes. This is the moment she understands the real-world impact of their work. Written-surface rule: signs, screens.\n\nPanel 6 / shot WTC_006:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's face in close-up. His eyes on the receiver. His expression shifts from concentration to recognition of the urgency. Action: Noah hears the unknown voice requesting insulin and blankets. His expression tightens with focus and purpose. He recognizes the weight of what they're doing. Edit intent: Isolate Noah's emotional reaction to the message. Show his recognition of the stakes. This mirrors Aria's reaction and reinforces the shared moment of purpose. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 7 / shot WTC_007:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's hands tighten the last bolt. Her face is visible in the frame, focused and determined. The lantern light catches her expression. Action: Aria responds to June's radio confirmation. She tightens the last bolt with precision and purpose. Her smile emerges\u2014the first genuine smile of the night. The moment is earned and resolves the emotional arc. Edit intent: Capture the final technical action and the emotional resolution. Aria's smile is the payoff\u2014the moment of hope and purpose.",
+        "shot_ids": [
+          "WTC_002"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00174857,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ],
+        "duration_estimate_seconds": 3.0,
+        "frame_id": "scene_002_frame_03",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_03_wtc_003.jpg"
+        },
+        "notes": "Aria braces the lantern with her boot, keeping it steady against the wind. The light flickers but holds. Her posture is efficient and practiced.",
+        "overlay": {
+          "blocking_indicator": "Aria's boot braces the lantern against the catwalk floor. Her hands are free to work. The lantern flickers in the wind.",
+          "camera_angle": "Side",
+          "camera_indicator": "Side; movement=Static; lens=50mm",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria"
+          ],
+          "edit_intent": "Isolate Aria's practical problem-solving. Show her resourcefulness and calm under pressure. The lantern is a lifeline\u2014she protects it.",
+          "shot_ids": [
+            "WTC_003"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "WTC_003",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 7 active panels, filled left-to-right then top-to-bottom.\nScene: EXT. WATER TOWER CATWALK - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot WTC_001:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Wide, Level, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt.\n\nPanel 2 / shot WTC_002:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Top-down, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's hands work the antenna clamp against the rusted rail. The clamp tightens. His fingers are steady despite the wind. Action: Noah's hands clamp the portable antenna to the rusted rail. The clamp mechanism tightens. His hands are steady and practiced. Wind buffets the frame slightly. Edit intent: Isolate the technical precision of the antenna installation. Show Noah's competence and focus. The close-up emphasizes the importance of the work and the care required. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 3 / shot WTC_003:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Side, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's boot braces the lantern against the catwalk floor. Her hands are free to work. The lantern flickers in the wind. Action: Aria braces the lantern with her boot, keeping it steady against the wind. The light flickers but holds. Her posture is efficient and practiced. Edit intent: Isolate Aria's practical problem-solving. Show her resourcefulness and calm under pressure. The lantern is a lifeline\u2014she protects it. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 4 / shot WTC_004:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Two-shot, Profile, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night.\n\nPanel 5 / shot WTC_005:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's face in close-up. Her eyes focused on the receiver. Her expression shifts from concentration to recognition of the urgency. Action: Aria hears the unknown voice requesting insulin and blankets. Her expression tightens with focus and purpose. She recognizes the weight of what they're doing. Edit intent: Isolate Aria's emotional reaction to the message. Show her recognition of the stakes. This is the moment she understands the real-world impact of their work. Written-surface rule: signs, screens.\n\nPanel 6 / shot WTC_006:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's face in close-up. His eyes on the receiver. His expression shifts from concentration to recognition of the urgency. Action: Noah hears the unknown voice requesting insulin and blankets. His expression tightens with focus and purpose. He recognizes the weight of what they're doing. Edit intent: Isolate Noah's emotional reaction to the message. Show his recognition of the stakes. This mirrors Aria's reaction and reinforces the shared moment of purpose. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 7 / shot WTC_007:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's hands tighten the last bolt. Her face is visible in the frame, focused and determined. The lantern light catches her expression. Action: Aria responds to June's radio confirmation. She tightens the last bolt with precision and purpose. Her smile emerges\u2014the first genuine smile of the night. The moment is earned and resolves the emotional arc. Edit intent: Capture the final technical action and the emotional resolution. Aria's smile is the payoff\u2014the moment of hope and purpose.",
+        "shot_ids": [
+          "WTC_003"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00174857,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ],
+        "duration_estimate_seconds": 6.0,
+        "frame_id": "scene_002_frame_04",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_04_wtc_004.jpg"
+        },
+        "notes": "Noah plugs the cable into the handheld receiver. Static spits from the speaker. Both characters freeze, listening. The static settles into a thin human voice.",
+        "overlay": {
+          "blocking_indicator": "Aria and Noah are in profile, side by side on the catwalk. Noah holds the handheld receiver. Aria stands close, watching. Wind-driven. Focused.",
+          "camera_angle": "Profile",
+          "camera_indicator": "Profile; movement=Static; lens=35mm",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria",
+            "Noah"
+          ],
+          "edit_intent": "Capture the moment of breakthrough\u2014the radio contact. The freeze moment is critical. Both characters' focus and attention shift from technical work to the message. The unknown voice is the turning point of the scene.",
+          "shot_ids": [
+            "WTC_004"
+          ],
+          "shot_size": "Two-shot"
+        },
+        "primary_shot_id": "WTC_004",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 7 active panels, filled left-to-right then top-to-bottom.\nScene: EXT. WATER TOWER CATWALK - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot WTC_001:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Wide, Level, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt.\n\nPanel 2 / shot WTC_002:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Top-down, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's hands work the antenna clamp against the rusted rail. The clamp tightens. His fingers are steady despite the wind. Action: Noah's hands clamp the portable antenna to the rusted rail. The clamp mechanism tightens. His hands are steady and practiced. Wind buffets the frame slightly. Edit intent: Isolate the technical precision of the antenna installation. Show Noah's competence and focus. The close-up emphasizes the importance of the work and the care required. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 3 / shot WTC_003:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Side, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's boot braces the lantern against the catwalk floor. Her hands are free to work. The lantern flickers in the wind. Action: Aria braces the lantern with her boot, keeping it steady against the wind. The light flickers but holds. Her posture is efficient and practiced. Edit intent: Isolate Aria's practical problem-solving. Show her resourcefulness and calm under pressure. The lantern is a lifeline\u2014she protects it. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 4 / shot WTC_004:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Two-shot, Profile, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night.\n\nPanel 5 / shot WTC_005:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's face in close-up. Her eyes focused on the receiver. Her expression shifts from concentration to recognition of the urgency. Action: Aria hears the unknown voice requesting insulin and blankets. Her expression tightens with focus and purpose. She recognizes the weight of what they're doing. Edit intent: Isolate Aria's emotional reaction to the message. Show her recognition of the stakes. This is the moment she understands the real-world impact of their work. Written-surface rule: signs, screens.\n\nPanel 6 / shot WTC_006:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's face in close-up. His eyes on the receiver. His expression shifts from concentration to recognition of the urgency. Action: Noah hears the unknown voice requesting insulin and blankets. His expression tightens with focus and purpose. He recognizes the weight of what they're doing. Edit intent: Isolate Noah's emotional reaction to the message. Show his recognition of the stakes. This mirrors Aria's reaction and reinforces the shared moment of purpose. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 7 / shot WTC_007:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's hands tighten the last bolt. Her face is visible in the frame, focused and determined. The lantern light catches her expression. Action: Aria responds to June's radio confirmation. She tightens the last bolt with precision and purpose. Her smile emerges\u2014the first genuine smile of the night. The moment is earned and resolves the emotional arc. Edit intent: Capture the final technical action and the emotional resolution. Aria's smile is the payoff\u2014the moment of hope and purpose.",
+        "shot_ids": [
+          "WTC_004"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00174857,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ],
+        "duration_estimate_seconds": 2.0,
+        "frame_id": "scene_002_frame_05",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_05_wtc_005.jpg"
+        },
+        "notes": "Aria hears the unknown voice requesting insulin and blankets. Her expression tightens with focus and purpose. She recognizes the weight of what they're doing.",
+        "overlay": {
+          "blocking_indicator": "Aria's face in close-up. Her eyes focused on the receiver. Her expression shifts from concentration to recognition of the urgency.",
+          "camera_angle": "Front",
+          "camera_indicator": "Front; movement=Static; lens=50mm",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria"
+          ],
+          "edit_intent": "Isolate Aria's emotional reaction to the message. Show her recognition of the stakes. This is the moment she understands the real-world impact of their work.",
+          "shot_ids": [
+            "WTC_005"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "WTC_005",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 7 active panels, filled left-to-right then top-to-bottom.\nScene: EXT. WATER TOWER CATWALK - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot WTC_001:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Wide, Level, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt.\n\nPanel 2 / shot WTC_002:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Top-down, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's hands work the antenna clamp against the rusted rail. The clamp tightens. His fingers are steady despite the wind. Action: Noah's hands clamp the portable antenna to the rusted rail. The clamp mechanism tightens. His hands are steady and practiced. Wind buffets the frame slightly. Edit intent: Isolate the technical precision of the antenna installation. Show Noah's competence and focus. The close-up emphasizes the importance of the work and the care required. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 3 / shot WTC_003:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Side, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's boot braces the lantern against the catwalk floor. Her hands are free to work. The lantern flickers in the wind. Action: Aria braces the lantern with her boot, keeping it steady against the wind. The light flickers but holds. Her posture is efficient and practiced. Edit intent: Isolate Aria's practical problem-solving. Show her resourcefulness and calm under pressure. The lantern is a lifeline\u2014she protects it. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 4 / shot WTC_004:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Two-shot, Profile, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night.\n\nPanel 5 / shot WTC_005:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's face in close-up. Her eyes focused on the receiver. Her expression shifts from concentration to recognition of the urgency. Action: Aria hears the unknown voice requesting insulin and blankets. Her expression tightens with focus and purpose. She recognizes the weight of what they're doing. Edit intent: Isolate Aria's emotional reaction to the message. Show her recognition of the stakes. This is the moment she understands the real-world impact of their work. Written-surface rule: signs, screens.\n\nPanel 6 / shot WTC_006:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's face in close-up. His eyes on the receiver. His expression shifts from concentration to recognition of the urgency. Action: Noah hears the unknown voice requesting insulin and blankets. His expression tightens with focus and purpose. He recognizes the weight of what they're doing. Edit intent: Isolate Noah's emotional reaction to the message. Show his recognition of the stakes. This mirrors Aria's reaction and reinforces the shared moment of purpose. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 7 / shot WTC_007:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's hands tighten the last bolt. Her face is visible in the frame, focused and determined. The lantern light catches her expression. Action: Aria responds to June's radio confirmation. She tightens the last bolt with precision and purpose. Her smile emerges\u2014the first genuine smile of the night. The moment is earned and resolves the emotional arc. Edit intent: Capture the final technical action and the emotional resolution. Aria's smile is the payoff\u2014the moment of hope and purpose.",
+        "shot_ids": [
+          "WTC_005"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00174857,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ],
+        "duration_estimate_seconds": 2.0,
+        "frame_id": "scene_002_frame_06",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_06_wtc_006.jpg"
+        },
+        "notes": "Noah hears the unknown voice requesting insulin and blankets. His expression tightens with focus and purpose. He recognizes the weight of what they're doing.",
+        "overlay": {
+          "blocking_indicator": "Noah's face in close-up. His eyes on the receiver. His expression shifts from concentration to recognition of the urgency.",
+          "camera_angle": "Front",
+          "camera_indicator": "Front; movement=Static; lens=50mm",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Noah"
+          ],
+          "edit_intent": "Isolate Noah's emotional reaction to the message. Show his recognition of the stakes. This mirrors Aria's reaction and reinforces the shared moment of purpose.",
+          "shot_ids": [
+            "WTC_006"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "WTC_006",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 7 active panels, filled left-to-right then top-to-bottom.\nScene: EXT. WATER TOWER CATWALK - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot WTC_001:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Wide, Level, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt.\n\nPanel 2 / shot WTC_002:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Top-down, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's hands work the antenna clamp against the rusted rail. The clamp tightens. His fingers are steady despite the wind. Action: Noah's hands clamp the portable antenna to the rusted rail. The clamp mechanism tightens. His hands are steady and practiced. Wind buffets the frame slightly. Edit intent: Isolate the technical precision of the antenna installation. Show Noah's competence and focus. The close-up emphasizes the importance of the work and the care required. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 3 / shot WTC_003:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Side, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's boot braces the lantern against the catwalk floor. Her hands are free to work. The lantern flickers in the wind. Action: Aria braces the lantern with her boot, keeping it steady against the wind. The light flickers but holds. Her posture is efficient and practiced. Edit intent: Isolate Aria's practical problem-solving. Show her resourcefulness and calm under pressure. The lantern is a lifeline\u2014she protects it. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 4 / shot WTC_004:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Two-shot, Profile, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night.\n\nPanel 5 / shot WTC_005:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's face in close-up. Her eyes focused on the receiver. Her expression shifts from concentration to recognition of the urgency. Action: Aria hears the unknown voice requesting insulin and blankets. Her expression tightens with focus and purpose. She recognizes the weight of what they're doing. Edit intent: Isolate Aria's emotional reaction to the message. Show her recognition of the stakes. This is the moment she understands the real-world impact of their work. Written-surface rule: signs, screens.\n\nPanel 6 / shot WTC_006:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's face in close-up. His eyes on the receiver. His expression shifts from concentration to recognition of the urgency. Action: Noah hears the unknown voice requesting insulin and blankets. His expression tightens with focus and purpose. He recognizes the weight of what they're doing. Edit intent: Isolate Noah's emotional reaction to the message. Show his recognition of the stakes. This mirrors Aria's reaction and reinforces the shared moment of purpose. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 7 / shot WTC_007:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's hands tighten the last bolt. Her face is visible in the frame, focused and determined. The lantern light catches her expression. Action: Aria responds to June's radio confirmation. She tightens the last bolt with precision and purpose. Her smile emerges\u2014the first genuine smile of the night. The moment is earned and resolves the emotional arc. Edit intent: Capture the final technical action and the emotional resolution. Aria's smile is the payoff\u2014the moment of hope and purpose.",
+        "shot_ids": [
+          "WTC_006"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_noah/noah_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ]
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.00174857,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ],
+        "duration_estimate_seconds": 5.0,
+        "frame_id": "scene_002_frame_07",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_07_wtc_007.jpg"
+        },
+        "notes": "Aria responds to June's radio confirmation. She tightens the last bolt with precision and purpose. Her smile emerges\u2014the first genuine smile of the night. The moment is earned and resolves the emotional arc.",
+        "overlay": {
+          "blocking_indicator": "Aria's hands tighten the last bolt. Her face is visible in the frame, focused and determined. The lantern light catches her expression.",
+          "camera_angle": "Front",
+          "camera_indicator": "Front; movement=Static; lens=50mm",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria"
+          ],
+          "edit_intent": "Capture the final technical action and the emotional resolution. Aria's smile is the payoff\u2014the moment of hope and purpose. The dialogue exchange with June confirms the connection and the mission. This shot ends the scene on a note of forward momentum and determination.",
+          "shot_ids": [
+            "WTC_007"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "WTC_007",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "reference_images",
+          "storyboard_grid",
+          "grid_template"
+        ],
+        "prompt_used": "Render one multi-panel storyboard grid image for a single film scene. Use the supplied blank storyboard grid image as the exact panel layout.\nGrid layout: 2 columns x 4 rows, 7 active panels, filled left-to-right then top-to-bottom.\nScene: EXT. WATER TOWER CATWALK - NIGHT. Style: sketch.\nVisual style instruction: Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\nPreserve the same character faces, age bands, wardrobe silhouettes, line treatment, and grayscale storyboard medium across every panel.\nPrioritize location and environment specificity: do not replace named locations with generic rooms, rooftops, streets, or landscapes. If the briefs mention catwalks, towers, antennas, radios, lanterns, storm, wind, rain, emergency lights, or dark town scale, make those cues plainly visible as visual objects and weather, not written labels.\nDo not add panel numbers, captions, speech bubbles, subtitles, labels, slates, UI, watermarks, or any readable text inside the panels.\nIf a panel brief mentions a sign, radio call sign, whiteboard, note, map, screen, label, or other written surface, translate it into blank shapes, lights, diagrams, or illegible scribbles. Never copy words, letters, numerals, or call signs from the brief into the image.\nKeep each panel as a clean full-bleed storyboard drawing inside its own box. Do not merge panels, skip panels, add extra panels, or create a comic page with typography.\n\nPanel briefs:\n\nPanel 1 / shot WTC_001:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Wide, Level, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt.\n\nPanel 2 / shot WTC_002:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Top-down, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's hands work the antenna clamp against the rusted rail. The clamp tightens. His fingers are steady despite the wind. Action: Noah's hands clamp the portable antenna to the rusted rail. The clamp mechanism tightens. His hands are steady and practiced. Wind buffets the frame slightly. Edit intent: Isolate the technical precision of the antenna installation. Show Noah's competence and focus. The close-up emphasizes the importance of the work and the care required. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 3 / shot WTC_003:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Side, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's boot braces the lantern against the catwalk floor. Her hands are free to work. The lantern flickers in the wind. Action: Aria braces the lantern with her boot, keeping it steady against the wind. The light flickers but holds. Her posture is efficient and practiced. Edit intent: Isolate Aria's practical problem-solving. Show her resourcefulness and calm under pressure. The lantern is a lifeline\u2014she protects it. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 4 / shot WTC_004:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Two-shot, Profile, movement Static, lens 35mm. Characters: Aria, Noah. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. | NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night.\n\nPanel 5 / shot WTC_005:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's face in close-up. Her eyes focused on the receiver. Her expression shifts from concentration to recognition of the urgency. Action: Aria hears the unknown voice requesting insulin and blankets. Her expression tightens with focus and purpose. She recognizes the weight of what they're doing. Edit intent: Isolate Aria's emotional reaction to the message. Show her recognition of the stakes. This is the moment she understands the real-world impact of their work. Written-surface rule: signs, screens.\n\nPanel 6 / shot WTC_006:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Noah. NOAH: Noah is a technical operator in his late 20s to early 30s with an athletic, lean build. He has short, dark hair and light facial hair (stubble or light beard). His face is angular with an alert, focused expression suited to technical work.; wardrobe Practical work clothing: fitted dark jeans, long-sleeve button-up shirt or technical jacket in neutral tones (gray, navy, or black), sturdy work boots. Layers suitable for outdoor technical work at night. Minimal accessories\u2014possibly a watch or utility belt. Blocking: Noah's face in close-up. His eyes on the receiver. His expression shifts from concentration to recognition of the urgency. Action: Noah hears the unknown voice requesting insulin and blankets. His expression tightens with focus and purpose. He recognizes the weight of what they're doing. Edit intent: Isolate Noah's emotional reaction to the message. Show his recognition of the stakes. This mirrors Aria's reaction and reinforces the shared moment of purpose. Written-surface rule: signs, screens, whiteboards, notes, maps, slates.\n\nPanel 7 / shot WTC_007:\nSetting: EXT. WATER TOWER CATWALK - NIGHT. Framing: Close-up, Front, movement Static, lens 50mm. Characters: Aria. ARIA: Aria is a capable technician in her late 20s to early 30s with a practical, no-nonsense appearance. Medium build, alert posture. Hair is shoulder-length or shorter, styled for functionality rather than fashion. Minimal or no facial hair.; wardrobe Functional work clothing suited to technical labor and outdoor night work: fitted jeans or work pants, long-sleeve shirt or light jacket, sturdy footwear. Layers appropriate for nighttime outdoor conditions. Possibly tool belt or utility pockets. Silhouette reads as practical and mobile rather than decorative. Blocking: Aria's hands tighten the last bolt. Her face is visible in the frame, focused and determined. The lantern light catches her expression. Action: Aria responds to June's radio confirmation. She tightens the last bolt with precision and purpose. Her smile emerges\u2014the first genuine smile of the night. The moment is earned and resolves the emotional arc. Edit intent: Capture the final technical action and the emotional resolution. Aria's smile is the payoff\u2014the moment of hope and purpose.",
+        "shot_ids": [
+          "WTC_007"
+        ],
+        "visual_reference_images": [
+          "artifacts/bibles/character_aria/aria_reference.jpg",
+          "artifacts/bibles/location_water_tower_catwalk/catwalk_reference.jpg"
+        ]
+      }
+    ],
+    "scene_heading": "EXT. WATER TOWER CATWALK - NIGHT",
+    "scene_id": "scene_002",
+    "scene_number": 2,
+    "scene_ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_002",
+      "path": "artifacts/scene/scene_002/v2.json",
+      "version": 2
+    },
+    "shot_plan_ref": {
+      "artifact_type": "shot_plan",
+      "entity_id": "scene_002",
+      "path": "artifacts/shot_plan/scene_002/v1.json",
+      "version": 1
+    },
+    "style": "sketch",
+    "total_estimated_cost_usd": 0.01465279
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "final_stage_model_used": "claude-haiku-4-5-20251001+gpt-image-2",
+      "final_stage_provider_used": "anthropic",
+      "frame_count": 7,
+      "grid_max_panels": 8,
+      "grid_mode": "template",
+      "grid_reference_anchors": false,
+      "identity_model": "claude-haiku-4-5-20251001",
+      "image_model": "gpt-image-2",
+      "image_size": null,
+      "style": "sketch"
+    },
+    "confidence": 0.8725,
+    "cost_data": {
+      "estimated_cost_usd": 0.0319656,
+      "input_tokens": 2807,
+      "latency_seconds": null,
+      "model": "claude-haiku-4-5-20251001+gpt-image-2",
+      "output_tokens": 1310,
+      "request_id": null
+    },
+    "created_at": "2026-07-23T02:56:34.867326Z",
+    "health": "valid",
+    "intent": "Scene-level storyboard frames for composition and blocking review.",
+    "lineage": [
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_002",
+        "path": "artifacts/scene/scene_002/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "shot_plan",
+        "entity_id": "scene_002",
+        "path": "artifacts/shot_plan/scene_002/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "project_config",
+        "entity_id": "project",
+        "path": "artifacts/project_config/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "aria",
+        "path": "artifacts/character_bible/aria/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_aria",
+        "path": "artifacts/bibles/character_aria/manifest_v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "noah",
+        "path": "artifacts/character_bible/noah/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_noah",
+        "path": "artifacts/bibles/character_noah/manifest_v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "water_tower_catwalk",
+        "path": "artifacts/location_bible/water_tower_catwalk/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_water_tower_catwalk",
+        "path": "artifacts/bibles/location_water_tower_catwalk/manifest_v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "track_manifest",
+        "entity_id": "project",
+        "path": "artifacts/track_manifest/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "shot_plan",
+        "entity_id": "scene_001",
+        "path": "artifacts/shot_plan/scene_001/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "maya",
+        "path": "artifacts/character_bible/maya/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "kell",
+        "path": "artifacts/character_bible/kell/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "june",
+        "path": "artifacts/character_bible/june/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "community_radio_studio",
+        "path": "artifacts/location_bible/community_radio_studio/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "storyboard_v1",
+    "producing_role": null,
+    "rationale": "Storyboard generation converts shot-planning intent into a cheap visual fallback lane before animatics or final renders exist.",
+    "ref": {
+      "artifact_type": "storyboard",
+      "entity_id": "scene_002",
+      "path": "artifacts/storyboard/scene_002/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "hybrid"
+  }
+}

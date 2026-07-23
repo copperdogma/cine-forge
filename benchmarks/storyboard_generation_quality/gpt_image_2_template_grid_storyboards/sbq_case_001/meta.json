@@ -1,0 +1,22 @@
+{
+  "assets_sha256_file": "assets.sha256.json",
+  "available_reference_image_count": 0,
+  "candidate_label": "GPT Image 2 Template Grid Storyboards",
+  "candidate_variant": "gpt_image_2_template_grid_storyboards",
+  "direct_reference_input_count": 0,
+  "frame_count": 15,
+  "image_model": "gpt-image-2",
+  "prompt_reference_frame_count": 0,
+  "reference_images": [],
+  "reference_transport_supported": false,
+  "scene_ids": [
+    "scene_001",
+    "scene_002"
+  ],
+  "source_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+  "source_grid_count": 2,
+  "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+  "storyboard_artifact_count": 2,
+  "storyboard_id": "sbq_case_001",
+  "title": "Open Frequency scenes 001-002 \u2014 prompt-only storyboard identity"
+}

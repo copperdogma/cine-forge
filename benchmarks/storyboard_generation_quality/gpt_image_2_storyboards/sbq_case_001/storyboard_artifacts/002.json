@@ -1,0 +1,563 @@
+{
+  "data": {
+    "aspect_ratio": "16:9",
+    "character_identity_locks": [
+      {
+        "appearance_summary": "Aria is a capable technical operator in her early-to-mid 30s with a practical, no-nonsense appearance. Medium build, alert posture. Dark hair worn in a functional style (pulled back or short). Minimal facial hair. Clear-eyed, focused expression suited to problem-solving under pressure.",
+        "character_id": "aria",
+        "distinguishing_features": [
+          "Early-to-mid 30s age band",
+          "Dark hair in practical style",
+          "Medium build",
+          "Alert, focused expression"
+        ],
+        "name": "ARIA",
+        "source": "llm",
+        "wardrobe_summary": "Functional work clothing: fitted jeans or work pants, long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Possibly a tool belt or utility vest. Silhouette emphasizes mobility and readiness for hands-on repair work."
+      },
+      {
+        "appearance_summary": "Noah is a technical operator in his early-to-mid 30s with an athletic, lean build. He has dark hair, short and practical. Clean-shaven or with light stubble. Alert, capable bearing suited to hands-on technical work.",
+        "character_id": "noah",
+        "distinguishing_features": [
+          "Early-to-mid 30s age band",
+          "Lean, athletic build",
+          "Dark, short hair",
+          "Clean-shaven or light stubble"
+        ],
+        "name": "NOAH",
+        "source": "llm",
+        "wardrobe_summary": "Functional work clothes: fitted jeans or work pants, layered with a long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Minimal accessories except possibly a watch or utility belt. Silhouette emphasizes mobility and readiness for hands-on operations."
+      }
+    ],
+    "frames": [
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [],
+        "duration_estimate_seconds": 3.0,
+        "frame_id": "scene_002_frame_01",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_01_002_001.jpg"
+        },
+        "notes": "The camera establishes the water tower catwalk at night. Wind lashes across the frame. The town below is mostly dark except for the high school gym and a gas station canopy. Aria and Noah are positioned on the catwalk, preparing to work. The canvas tool bag swings in the gusts.",
+        "overlay": {
+          "blocking_indicator": "Aria and Noah are on the catwalk, visible against the dark town below. The gym and gas station lights are visible in the background. Wind is evident in their postures and the movement of the canvas tool bag.",
+          "camera_angle": "Level, slightly low to emphasize the height and exposure of the catwalk",
+          "camera_indicator": "Level, slightly low to emphasize the height and exposure of the catwalk; movement=Static or very slow push-in to establish the location and scale; lens=35mm equivalent",
+          "camera_movement": "Static or very slow push-in to establish the location and scale",
+          "character_labels": [
+            "Aria",
+            "Noah"
+          ],
+          "edit_intent": "Establish the location, scale, and environmental challenge. Set the tone of isolation and urgency. Transition into the work sequence.",
+          "shot_ids": [
+            "002_001"
+          ],
+          "shot_size": "Wide"
+        },
+        "primary_shot_id": "002_001",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "continuity_state"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: ext Water Tower Catwalk night.\n- Shot framing: size=Wide; angle=Level, slightly low to emphasize the height and exposure of the catwalk; movement=Static or very slow push-in to establish the location and scale; lens feel=wide lens perspective.\n- Coverage role: Establishing shot.\n- Blocking: Aria and Noah are on the catwalk, visible against the dark town below. The gym and gas station lights are visible in the background. Wind is evident in their postures and the movement of the canvas tool bag.\n- Action: The camera establishes the water tower catwalk at night. Wind lashes across the frame. The town below is mostly dark except for the high school gym and a gas station canopy. Aria and Noah are positioned on the catwalk, preparing to work. The canvas tool bag swings in the gusts.\n- Edit intent: Establish the location, scale, and environmental challenge. Set the tone of isolation and urgency. Transition into the work sequence.\n- Scene coverage intent: Multi-station coverage capturing the technical emergency broadcast operation across two locations: the water tower catwalk (Aria and Noah) and the radio station (June).\n\nProject context:\n- Genre context: Drama, Disaster, Community.\n- Tone context: Tense, Hopeful, Dry Humor, Warmly Triumphant.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: ARIA, NOAH.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- ARIA: Aria is a capable technical operator in her early-to-mid 30s with a practical, no-nonsense appearance. Medium build, alert posture. Dark hair worn in a functional style (pulled back or short). Minimal facial hair. Clear-eyed, focused expression suited to problem-solving under pressure. Distinctive visual anchors: Early-to-mid 30s age band; Dark hair in practical style; Medium build; Alert, focused expression. Wardrobe anchor: Functional work clothing: fitted jeans or work pants, long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Possibly a tool belt or utility vest. Silhouette emphasizes mobility and readiness for hands-on repair work. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- NOAH: Noah is a technical operator in his early-to-mid 30s with an athletic, lean build. He has dark hair, short and practical. Clean-shaven or with light stubble. Alert, capable bearing suited to hands-on technical work. Distinctive visual anchors: Early-to-mid 30s age band; Lean, athletic build; Dark, short hair; Clean-shaven or light stubble. Wardrobe anchor: Functional work clothes: fitted jeans or work pants, layered with a long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Minimal accessories except possibly a watch or utility belt. Silhouette emphasizes mobility and readiness for hands-on operations. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- Scene-relevant character context for ARIA: A technical operator at the community radio station who works to restore broadcast capability during an emergency.\n- Scene-relevant character context for NOAH: A technical operator at the community radio station who assists with emergency broadcast operations during a natural disaster.\n\nLocation anchor:\n- An elevated catwalk structure atop a water tower.\n\nContinuity anchors:\n- aria -> physical_condition: Active, operating equipment on catwalk in wind, emotional_state: Focused, then relieved; smiles for first time, activity: Bracing lantern, tightening bolts, operating radio, props_carried: None explicitly mentioned.\n- noah -> physical_condition: Active, working with antenna and receiver equipment, emotional_state: Reflective, nostalgic for simpler times, activity: Clamping portable antenna to rail, plugging cable into receiver, props_carried: None explicitly mentioned.\n- water_tower_catwalk -> time_of_day: Night, weather: Windy, gusting conditions, lighting: Dark, town below mostly dark except gym and gas station, damage_or_changes: Rusted rail, worn equipment, atmosphere: Emergency response setting, tense but operational.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "002_001"
+        ],
+        "visual_reference_images": []
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [],
+        "duration_estimate_seconds": 6.0,
+        "frame_id": "scene_002_frame_02",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_02_002_002.jpg"
+        },
+        "notes": "Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail. The wind continues to gust around them. Their movements are coordinated and efficient, showing familiarity with the work.",
+        "overlay": {
+          "blocking_indicator": "Aria is in the foreground, bracing the lantern with her boot against the catwalk floor. Noah is slightly behind and to the side, clamping the portable antenna to the rusted rail. Both are focused on their tasks, moving with purpose despite the wind.",
+          "camera_angle": "Level, favoring Aria slightly",
+          "camera_indicator": "Level, favoring Aria slightly; movement=Static; lens=50mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria",
+            "Noah"
+          ],
+          "edit_intent": "Establish the collaborative work dynamic and character relationship. Convey the technical challenge through blocking and action. The dialogue reveals character and provides a moment of levity before the critical transmission.",
+          "shot_ids": [
+            "002_002"
+          ],
+          "shot_size": "Two-shot"
+        },
+        "primary_shot_id": "002_002",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "continuity_state"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: ext Water Tower Catwalk night.\n- Shot framing: size=Two-shot; angle=Level, favoring Aria slightly; movement=Static; lens feel=natural perspective.\n- Coverage role: Primary action coverage.\n- Blocking: Aria is in the foreground, bracing the lantern with her boot against the catwalk floor. Noah is slightly behind and to the side, clamping the portable antenna to the rusted rail. Both are focused on their tasks, moving with purpose despite the wind.\n- Action: Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail. The wind continues to gust around them. Their movements are coordinated and efficient, showing familiarity with the work.\n- Edit intent: Establish the collaborative work dynamic and character relationship. Convey the technical challenge through blocking and action. The dialogue reveals character and provides a moment of levity before the critical transmission.\n- Scene coverage intent: Multi-station coverage capturing the technical emergency broadcast operation across two locations: the water tower catwalk (Aria and Noah) and the radio station (June).\n\nProject context:\n- Genre context: Drama, Disaster, Community.\n- Tone context: Tense, Hopeful, Dry Humor, Warmly Triumphant.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: ARIA, NOAH.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- ARIA: Aria is a capable technical operator in her early-to-mid 30s with a practical, no-nonsense appearance. Medium build, alert posture. Dark hair worn in a functional style (pulled back or short). Minimal facial hair. Clear-eyed, focused expression suited to problem-solving under pressure. Distinctive visual anchors: Early-to-mid 30s age band; Dark hair in practical style; Medium build; Alert, focused expression. Wardrobe anchor: Functional work clothing: fitted jeans or work pants, long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Possibly a tool belt or utility vest. Silhouette emphasizes mobility and readiness for hands-on repair work. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- NOAH: Noah is a technical operator in his early-to-mid 30s with an athletic, lean build. He has dark hair, short and practical. Clean-shaven or with light stubble. Alert, capable bearing suited to hands-on technical work. Distinctive visual anchors: Early-to-mid 30s age band; Lean, athletic build; Dark, short hair; Clean-shaven or light stubble. Wardrobe anchor: Functional work clothes: fitted jeans or work pants, layered with a long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Minimal accessories except possibly a watch or utility belt. Silhouette emphasizes mobility and readiness for hands-on operations. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- Scene-relevant character context for ARIA: A technical operator at the community radio station who works to restore broadcast capability during an emergency.\n- Scene-relevant character context for NOAH: A technical operator at the community radio station who assists with emergency broadcast operations during a natural disaster.\n\nLocation anchor:\n- An elevated catwalk structure atop a water tower.\n\nContinuity anchors:\n- aria -> physical_condition: Active, operating equipment on catwalk in wind, emotional_state: Focused, then relieved; smiles for first time, activity: Bracing lantern, tightening bolts, operating radio, props_carried: None explicitly mentioned.\n- noah -> physical_condition: Active, working with antenna and receiver equipment, emotional_state: Reflective, nostalgic for simpler times, activity: Clamping portable antenna to rail, plugging cable into receiver, props_carried: None explicitly mentioned.\n- water_tower_catwalk -> time_of_day: Night, weather: Windy, gusting conditions, lighting: Dark, town below mostly dark except gym and gas station, damage_or_changes: Rusted rail, worn equipment, atmosphere: Emergency response setting, tense but operational.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "002_002"
+        ],
+        "visual_reference_images": []
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [],
+        "duration_estimate_seconds": 2.0,
+        "frame_id": "scene_002_frame_03",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_03_002_003.jpg"
+        },
+        "notes": "Close-up of Aria bracing the lantern with her boot. The lantern is held steady against the wind. This is a practical, resourceful action that reveals her problem-solving approach.",
+        "overlay": {
+          "blocking_indicator": "Aria's boot is bracing the lantern against the catwalk floor. Her hands are visible, ready to move to the next task. The lantern is practical and worn, showing use.",
+          "camera_angle": "Slightly overhead, looking down at the lantern and Aria's boot",
+          "camera_indicator": "Slightly overhead, looking down at the lantern and Aria's boot; movement=Static; lens=85mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria"
+          ],
+          "edit_intent": "Emphasize Aria's pragmatism and resourcefulness. The close-up makes the simple action significant and shows her focus and competence.",
+          "shot_ids": [
+            "002_003"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "002_003",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "continuity_state"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: ext Water Tower Catwalk night.\n- Shot framing: size=Close-up; angle=Slightly overhead, looking down at the lantern and Aria's boot; movement=Static; lens feel=telephoto compression.\n- Coverage role: Technical detail and character action.\n- Blocking: Aria's boot is bracing the lantern against the catwalk floor. Her hands are visible, ready to move to the next task. The lantern is practical and worn, showing use.\n- Action: Close-up of Aria bracing the lantern with her boot. The lantern is held steady against the wind. This is a practical, resourceful action that reveals her problem-solving approach.\n- Edit intent: Emphasize Aria's pragmatism and resourcefulness. The close-up makes the simple action significant and shows her focus and competence.\n- Scene coverage intent: Multi-station coverage capturing the technical emergency broadcast operation across two locations: the water tower catwalk (Aria and Noah) and the radio station (June).\n\nProject context:\n- Genre context: Drama, Disaster, Community.\n- Tone context: Tense, Hopeful, Dry Humor, Warmly Triumphant.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: ARIA.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- ARIA: Aria is a capable technical operator in her early-to-mid 30s with a practical, no-nonsense appearance. Medium build, alert posture. Dark hair worn in a functional style (pulled back or short). Minimal facial hair. Clear-eyed, focused expression suited to problem-solving under pressure. Distinctive visual anchors: Early-to-mid 30s age band; Dark hair in practical style; Medium build; Alert, focused expression. Wardrobe anchor: Functional work clothing: fitted jeans or work pants, long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Possibly a tool belt or utility vest. Silhouette emphasizes mobility and readiness for hands-on repair work. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene.\n- Scene-relevant character context for ARIA: A technical operator at the community radio station who works to restore broadcast capability during an emergency.\n\nLocation anchor:\n- An elevated catwalk structure atop a water tower.\n\nContinuity anchors:\n- aria -> physical_condition: Active, operating equipment on catwalk in wind, emotional_state: Focused, then relieved; smiles for first time, activity: Bracing lantern, tightening bolts, operating radio, props_carried: None explicitly mentioned.\n- water_tower_catwalk -> time_of_day: Night, weather: Windy, gusting conditions, lighting: Dark, town below mostly dark except gym and gas station, damage_or_changes: Rusted rail, worn equipment, atmosphere: Emergency response setting, tense but operational.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "002_003"
+        ],
+        "visual_reference_images": []
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [],
+        "duration_estimate_seconds": 2.5,
+        "frame_id": "scene_002_frame_04",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_04_002_004.jpg"
+        },
+        "notes": "Close-up of Noah clamping the portable antenna to the rusted rail. His hands work with precision, securing the antenna against the wind. The rusted rail is visible, showing the age and wear of the equipment.",
+        "overlay": {
+          "blocking_indicator": "Noah's hands are visible, clamping the portable antenna to the rusted rail. His movements are deliberate and careful. The antenna is a practical piece of equipment, worn but functional.",
+          "camera_angle": "Level, focused on Noah's hands and the antenna",
+          "camera_indicator": "Level, focused on Noah's hands and the antenna; movement=Static; lens=85mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Noah"
+          ],
+          "edit_intent": "Emphasize the technical challenge and Noah's focus. The close-up shows the detail of the work and the condition of the equipment. This shot builds tension toward the transmission moment.",
+          "shot_ids": [
+            "002_004"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "002_004",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "continuity_state"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: ext Water Tower Catwalk night.\n- Shot framing: size=Close-up; angle=Level, focused on Noah's hands and the antenna; movement=Static; lens feel=telephoto compression.\n- Coverage role: Technical detail and character action.\n- Blocking: Noah's hands are visible, clamping the portable antenna to the rusted rail. His movements are deliberate and careful. The antenna is a practical piece of equipment, worn but functional.\n- Action: Close-up of Noah clamping the portable antenna to the rusted rail. His hands work with precision, securing the antenna against the wind. The rusted rail is visible, showing the age and wear of the equipment.\n- Edit intent: Emphasize the technical challenge and Noah's focus. The close-up shows the detail of the work and the condition of the equipment. This shot builds tension toward the transmission moment.\n- Scene coverage intent: Multi-station coverage capturing the technical emergency broadcast operation across two locations: the water tower catwalk (Aria and Noah) and the radio station (June).\n\nProject context:\n- Genre context: Drama, Disaster, Community.\n- Tone context: Tense, Hopeful, Dry Humor, Warmly Triumphant.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: NOAH.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- NOAH: Noah is a technical operator in his early-to-mid 30s with an athletic, lean build. He has dark hair, short and practical. Clean-shaven or with light stubble. Alert, capable bearing suited to hands-on technical work. Distinctive visual anchors: Early-to-mid 30s age band; Lean, athletic build; Dark, short hair; Clean-shaven or light stubble. Wardrobe anchor: Functional work clothes: fitted jeans or work pants, layered with a long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Minimal accessories except possibly a watch or utility belt. Silhouette emphasizes mobility and readiness for hands-on operations. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene.\n- Scene-relevant character context for NOAH: A technical operator at the community radio station who assists with emergency broadcast operations during a natural disaster.\n\nLocation anchor:\n- An elevated catwalk structure atop a water tower.\n\nContinuity anchors:\n- noah -> physical_condition: Active, working with antenna and receiver equipment, emotional_state: Reflective, nostalgic for simpler times, activity: Clamping portable antenna to rail, plugging cable into receiver, props_carried: None explicitly mentioned.\n- water_tower_catwalk -> time_of_day: Night, weather: Windy, gusting conditions, lighting: Dark, town below mostly dark except gym and gas station, damage_or_changes: Rusted rail, worn equipment, atmosphere: Emergency response setting, tense but operational.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "002_004"
+        ],
+        "visual_reference_images": []
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [],
+        "duration_estimate_seconds": 2.0,
+        "frame_id": "scene_002_frame_05",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_05_002_005.jpg"
+        },
+        "notes": "Close-up of Noah plugging the cable into the handheld receiver. The cable connects with a slight click. Static spits from the receiver, then settles into a thin human voice.",
+        "overlay": {
+          "blocking_indicator": "Noah's hands are visible, plugging the cable into the handheld receiver. His movements are careful and deliberate. The receiver is a practical piece of equipment, showing wear.",
+          "camera_angle": "Level, focused on Noah's hands and the receiver",
+          "camera_indicator": "Level, focused on Noah's hands and the receiver; movement=Static; lens=85mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Noah"
+          ],
+          "edit_intent": "The moment before contact. The close-up emphasizes the technical action and the transition from silence to the incoming transmission. Sound design is critical here: the static and the unknown voice.",
+          "shot_ids": [
+            "002_005"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "002_005",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "continuity_state"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: ext Water Tower Catwalk night.\n- Shot framing: size=Close-up; angle=Level, focused on Noah's hands and the receiver; movement=Static; lens feel=telephoto compression.\n- Coverage role: Technical detail and transition to transmission.\n- Blocking: Noah's hands are visible, plugging the cable into the handheld receiver. His movements are careful and deliberate. The receiver is a practical piece of equipment, showing wear.\n- Action: Close-up of Noah plugging the cable into the handheld receiver. The cable connects with a slight click. Static spits from the receiver, then settles into a thin human voice.\n- Edit intent: The moment before contact. The close-up emphasizes the technical action and the transition from silence to the incoming transmission. Sound design is critical here: the static and the unknown voice.\n- Scene coverage intent: Multi-station coverage capturing the technical emergency broadcast operation across two locations: the water tower catwalk (Aria and Noah) and the radio station (June).\n\nProject context:\n- Genre context: Drama, Disaster, Community.\n- Tone context: Tense, Hopeful, Dry Humor, Warmly Triumphant.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: NOAH.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- NOAH: Noah is a technical operator in his early-to-mid 30s with an athletic, lean build. He has dark hair, short and practical. Clean-shaven or with light stubble. Alert, capable bearing suited to hands-on technical work. Distinctive visual anchors: Early-to-mid 30s age band; Lean, athletic build; Dark, short hair; Clean-shaven or light stubble. Wardrobe anchor: Functional work clothes: fitted jeans or work pants, layered with a long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Minimal accessories except possibly a watch or utility belt. Silhouette emphasizes mobility and readiness for hands-on operations. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene.\n- Scene-relevant character context for NOAH: A technical operator at the community radio station who assists with emergency broadcast operations during a natural disaster.\n\nLocation anchor:\n- An elevated catwalk structure atop a water tower.\n\nContinuity anchors:\n- noah -> physical_condition: Active, working with antenna and receiver equipment, emotional_state: Reflective, nostalgic for simpler times, activity: Clamping portable antenna to rail, plugging cable into receiver, props_carried: None explicitly mentioned.\n- water_tower_catwalk -> time_of_day: Night, weather: Windy, gusting conditions, lighting: Dark, town below mostly dark except gym and gas station, damage_or_changes: Rusted rail, worn equipment, atmosphere: Emergency response setting, tense but operational.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "002_005"
+        ],
+        "visual_reference_images": []
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [],
+        "duration_estimate_seconds": 4.0,
+        "frame_id": "scene_002_frame_06",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_06_002_006.jpg"
+        },
+        "notes": "Aria and Noah freeze as the unknown voice comes through the receiver, reporting that the north shelter needs insulin and dry blankets. Their expressions shift from concentration to concern and urgency. The moment is significant\u2014they have made contact with an isolated area.",
+        "overlay": {
+          "blocking_indicator": "Aria and Noah are frozen, listening to the incoming transmission. Their faces show focus and concern. The wind continues around them, but they are still, processing the distress call.",
+          "camera_angle": "Level, favoring Aria slightly",
+          "camera_indicator": "Level, favoring Aria slightly; movement=Static; lens=50mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria",
+            "Noah"
+          ],
+          "edit_intent": "Capture the reaction to the incoming transmission. The dialogue is heard over this shot, and the visual shows the emotional and professional response of Aria and Noah. This is the turning point of the scene.",
+          "shot_ids": [
+            "002_006"
+          ],
+          "shot_size": "Two-shot"
+        },
+        "primary_shot_id": "002_006",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "continuity_state"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: ext Water Tower Catwalk night.\n- Shot framing: size=Two-shot; angle=Level, favoring Aria slightly; movement=Static; lens feel=natural perspective.\n- Coverage role: Reaction and dialogue coverage.\n- Blocking: Aria and Noah are frozen, listening to the incoming transmission. Their faces show focus and concern. The wind continues around them, but they are still, processing the distress call.\n- Action: Aria and Noah freeze as the unknown voice comes through the receiver, reporting that the north shelter needs insulin and dry blankets. Their expressions shift from concentration to concern and urgency. The moment is significant\u2014they have made contact with an isolated area.\n- Edit intent: Capture the reaction to the incoming transmission. The dialogue is heard over this shot, and the visual shows the emotional and professional response of Aria and Noah. This is the turning point of the scene.\n- Scene coverage intent: Multi-station coverage capturing the technical emergency broadcast operation across two locations: the water tower catwalk (Aria and Noah) and the radio station (June).\n\nProject context:\n- Genre context: Drama, Disaster, Community.\n- Tone context: Tense, Hopeful, Dry Humor, Warmly Triumphant.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: ARIA, NOAH.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- ARIA: Aria is a capable technical operator in her early-to-mid 30s with a practical, no-nonsense appearance. Medium build, alert posture. Dark hair worn in a functional style (pulled back or short). Minimal facial hair. Clear-eyed, focused expression suited to problem-solving under pressure. Distinctive visual anchors: Early-to-mid 30s age band; Dark hair in practical style; Medium build; Alert, focused expression. Wardrobe anchor: Functional work clothing: fitted jeans or work pants, long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Possibly a tool belt or utility vest. Silhouette emphasizes mobility and readiness for hands-on repair work. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- NOAH: Noah is a technical operator in his early-to-mid 30s with an athletic, lean build. He has dark hair, short and practical. Clean-shaven or with light stubble. Alert, capable bearing suited to hands-on technical work. Distinctive visual anchors: Early-to-mid 30s age band; Lean, athletic build; Dark, short hair; Clean-shaven or light stubble. Wardrobe anchor: Functional work clothes: fitted jeans or work pants, layered with a long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Minimal accessories except possibly a watch or utility belt. Silhouette emphasizes mobility and readiness for hands-on operations. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene. Keep this character visually distinct from the other named characters in the scene.\n- Scene-relevant character context for ARIA: A technical operator at the community radio station who works to restore broadcast capability during an emergency.\n- Scene-relevant character context for NOAH: A technical operator at the community radio station who assists with emergency broadcast operations during a natural disaster.\n\nLocation anchor:\n- An elevated catwalk structure atop a water tower.\n\nContinuity anchors:\n- aria -> physical_condition: Active, operating equipment on catwalk in wind, emotional_state: Focused, then relieved; smiles for first time, activity: Bracing lantern, tightening bolts, operating radio, props_carried: None explicitly mentioned.\n- noah -> physical_condition: Active, working with antenna and receiver equipment, emotional_state: Reflective, nostalgic for simpler times, activity: Clamping portable antenna to rail, plugging cable into receiver, props_carried: None explicitly mentioned.\n- water_tower_catwalk -> time_of_day: Night, weather: Windy, gusting conditions, lighting: Dark, town below mostly dark except gym and gas station, damage_or_changes: Rusted rail, worn equipment, atmosphere: Emergency response setting, tense but operational.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "002_006"
+        ],
+        "visual_reference_images": []
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [],
+        "duration_estimate_seconds": 2.0,
+        "frame_id": "scene_002_frame_07",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_07_002_007.jpg"
+        },
+        "notes": "Close-up of Aria's face as she processes the distress call and prepares to respond. Her expression shows concern and determination. She speaks into the radio to contact June.",
+        "overlay": {
+          "blocking_indicator": "Aria is looking toward the receiver, her expression focused and professional. She is about to speak into the radio to contact June.",
+          "camera_angle": "Level, focused on Aria's face",
+          "camera_indicator": "Level, focused on Aria's face; movement=Static; lens=85mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria"
+          ],
+          "edit_intent": "Isolate Aria's response and establish her as the primary communicator in this moment. The close-up emphasizes her focus and professionalism. This shot sets up the intercut with June at the station.",
+          "shot_ids": [
+            "002_007"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "002_007",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "continuity_state"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: ext Water Tower Catwalk night.\n- Shot framing: size=Close-up; angle=Level, focused on Aria's face; movement=Static; lens feel=telephoto compression.\n- Coverage role: Character response and dialogue.\n- Blocking: Aria is looking toward the receiver, her expression focused and professional. She is about to speak into the radio to contact June.\n- Action: Close-up of Aria's face as she processes the distress call and prepares to respond. Her expression shows concern and determination. She speaks into the radio to contact June.\n- Edit intent: Isolate Aria's response and establish her as the primary communicator in this moment. The close-up emphasizes her focus and professionalism. This shot sets up the intercut with June at the station.\n- Scene coverage intent: Multi-station coverage capturing the technical emergency broadcast operation across two locations: the water tower catwalk (Aria and Noah) and the radio station (June).\n\nProject context:\n- Genre context: Drama, Disaster, Community.\n- Tone context: Tense, Hopeful, Dry Humor, Warmly Triumphant.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: ARIA.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- ARIA: Aria is a capable technical operator in her early-to-mid 30s with a practical, no-nonsense appearance. Medium build, alert posture. Dark hair worn in a functional style (pulled back or short). Minimal facial hair. Clear-eyed, focused expression suited to problem-solving under pressure. Distinctive visual anchors: Early-to-mid 30s age band; Dark hair in practical style; Medium build; Alert, focused expression. Wardrobe anchor: Functional work clothing: fitted jeans or work pants, long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Possibly a tool belt or utility vest. Silhouette emphasizes mobility and readiness for hands-on repair work. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene.\n- Scene-relevant character context for ARIA: A technical operator at the community radio station who works to restore broadcast capability during an emergency.\n\nLocation anchor:\n- An elevated catwalk structure atop a water tower.\n\nContinuity anchors:\n- aria -> physical_condition: Active, operating equipment on catwalk in wind, emotional_state: Focused, then relieved; smiles for first time, activity: Bracing lantern, tightening bolts, operating radio, props_carried: None explicitly mentioned.\n- water_tower_catwalk -> time_of_day: Night, weather: Windy, gusting conditions, lighting: Dark, town below mostly dark except gym and gas station, damage_or_changes: Rusted rail, worn equipment, atmosphere: Emergency response setting, tense but operational.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "002_007"
+        ],
+        "visual_reference_images": []
+      },
+      {
+        "cost": {
+          "estimated_cost_usd": 0.012,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "gpt-image-2",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "direct_reference_images": [],
+        "duration_estimate_seconds": 2.5,
+        "frame_id": "scene_002_frame_08",
+        "image": {
+          "media_type": "image/jpeg",
+          "relative_path": "artifacts/storyboard_frames/scene_002/v1/frame_08_002_008.jpg"
+        },
+        "notes": "Close-up of Aria's face as she smiles for the first time all night. Her hands are visible, tightening the last bolt on the equipment. The smile is earned and significant, marking a turning point in her emotional state from focused to relieved.",
+        "overlay": {
+          "blocking_indicator": "Aria is smiling for the first time in the scene. Her hands are visible, tightening the last bolt on the equipment. Her expression shows relief and satisfaction.",
+          "camera_angle": "Level, focused on Aria's face and hands",
+          "camera_indicator": "Level, focused on Aria's face and hands; movement=Static; lens=85mm equivalent",
+          "camera_movement": "Static",
+          "character_labels": [
+            "Aria"
+          ],
+          "edit_intent": "Capture the emotional payoff of the scene. Aria's smile is the culmination of her focused work and the successful contact with the isolated shelter. The close-up emphasizes the significance of this moment and provides a satisfying visual closure to the sequence.",
+          "shot_ids": [
+            "002_008"
+          ],
+          "shot_size": "Close-up"
+        },
+        "primary_shot_id": "002_008",
+        "prompt_sources_used": [
+          "shot_plan",
+          "project_config",
+          "character_bible",
+          "location_bible",
+          "continuity_state"
+        ],
+        "prompt_used": "Render as a single full-bleed monochrome storyboard frame, not a storyboard page. Use rough pencil linework, readable silhouettes, cinematic blocking, restrained grayscale shading, and low-detail backgrounds.\n\nLiteral shot requirements:\n- Scene setting: ext Water Tower Catwalk night.\n- Shot framing: size=Close-up; angle=Level, focused on Aria's face and hands; movement=Static; lens feel=telephoto compression.\n- Coverage role: Character payoff and action closure.\n- Blocking: Aria is smiling for the first time in the scene. Her hands are visible, tightening the last bolt on the equipment. Her expression shows relief and satisfaction.\n- Action: Close-up of Aria's face as she smiles for the first time all night. Her hands are visible, tightening the last bolt on the equipment. The smile is earned and significant, marking a turning point in her emotional state from focused to relieved.\n- Edit intent: Capture the emotional payoff of the scene. Aria's smile is the culmination of her focused work and the successful contact with the isolated shelter. The close-up emphasizes the significance of this moment and provides a satisfying visual closure to the sequence.\n- Scene coverage intent: Multi-station coverage capturing the technical emergency broadcast operation across two locations: the water tower catwalk (Aria and Noah) and the radio station (June).\n\nProject context:\n- Genre context: Drama, Disaster, Community.\n- Tone context: Tense, Hopeful, Dry Humor, Warmly Triumphant.\n\nVisible subjects:\n- Keep these named subjects physically present in frame as described: ARIA.\n\nScene style lock:\n- Keep one consistent visual medium for the entire scene sequence.\n- Never output a storyboard sheet, comic page, script page, contact sheet, or frame with embedded labels.\n- Render as monochrome hand-drawn pencil storyboard art with rough graphite linework and restrained grayscale shading.\n- Do not render live-action photography, painted concept art, glossy illustration, or mixed-media collage.\n\nCharacter identity locks:\n- ARIA: Aria is a capable technical operator in her early-to-mid 30s with a practical, no-nonsense appearance. Medium build, alert posture. Dark hair worn in a functional style (pulled back or short). Minimal facial hair. Clear-eyed, focused expression suited to problem-solving under pressure. Distinctive visual anchors: Early-to-mid 30s age band; Dark hair in practical style; Medium build; Alert, focused expression. Wardrobe anchor: Functional work clothing: fitted jeans or work pants, long-sleeve shirt or lightweight jacket suitable for outdoor technical work. Practical footwear. Possibly a tool belt or utility vest. Silhouette emphasizes mobility and readiness for hands-on repair work. Keep the exact same face structure, age band, build, hair, facial hair status, and wardrobe silhouette across every storyboard frame in this scene.\n- Scene-relevant character context for ARIA: A technical operator at the community radio station who works to restore broadcast capability during an emergency.\n\nLocation anchor:\n- An elevated catwalk structure atop a water tower.\n\nContinuity anchors:\n- aria -> physical_condition: Active, operating equipment on catwalk in wind, emotional_state: Focused, then relieved; smiles for first time, activity: Bracing lantern, tightening bolts, operating radio, props_carried: None explicitly mentioned.\n- water_tower_catwalk -> time_of_day: Night, weather: Windy, gusting conditions, lighting: Dark, town below mostly dark except gym and gas station, damage_or_changes: Rusted rail, worn equipment, atmosphere: Emergency response setting, tense but operational.\n\nHard constraints:\n- Show the literal present-moment shot described above.\n- Do not render dialogue, captions, speech bubbles, subtitles, labels, slates, UI, or any readable text.\n- Generate the image area only, not a storyboard page layout: no panel borders, headers, shot numbers, lens labels, or editorial annotations.\n- Keep the exact same rendering medium, line treatment, finish, and overall illustration discipline across every frame in this scene.\n- Do not invent flashbacks, future events, police-uniform hero shots, symbolic metaphors, or montage imagery unless the shot explicitly asks for them.\n- If the screenplay leaves appearance under-specified, choose one grounded version and keep age band, face, ethnicity, build, hair, facial hair, and wardrobe silhouette fixed across every frame in this scene.\n- This is not a prop-only cutaway. Keep the named character subjects visible and do not replace them with isolated shoes, bottles, hands, or product-photo compositions.\n- Single storyboard frame only.",
+        "shot_ids": [
+          "002_008"
+        ],
+        "visual_reference_images": []
+      }
+    ],
+    "scene_heading": "EXT. WATER TOWER CATWALK - NIGHT",
+    "scene_id": "scene_002",
+    "scene_number": 2,
+    "scene_ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_002",
+      "path": "artifacts/scene/scene_002/v2.json",
+      "version": 2
+    },
+    "shot_plan_ref": {
+      "artifact_type": "shot_plan",
+      "entity_id": "scene_002",
+      "path": "artifacts/shot_plan/scene_002/v1.json",
+      "version": 1
+    },
+    "style": "sketch",
+    "total_estimated_cost_usd": 0.0984912
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "final_stage_model_used": "claude-haiku-4-5-20251001+gpt-image-2",
+      "final_stage_provider_used": "anthropic",
+      "frame_count": 8,
+      "grid_max_panels": 8,
+      "grid_mode": "off",
+      "grid_reference_anchors": false,
+      "identity_model": "claude-haiku-4-5-20251001",
+      "image_model": "gpt-image-2",
+      "image_size": null,
+      "style": "sketch"
+    },
+    "confidence": 0.9233333333333333,
+    "cost_data": {
+      "estimated_cost_usd": 0.1873944,
+      "input_tokens": 2888,
+      "latency_seconds": null,
+      "model": "claude-haiku-4-5-20251001+gpt-image-2",
+      "output_tokens": 1271,
+      "request_id": null
+    },
+    "created_at": "2026-07-23T02:50:24.921587Z",
+    "health": "valid",
+    "intent": "Scene-level storyboard frames for composition and blocking review.",
+    "lineage": [
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_002",
+        "path": "artifacts/scene/scene_002/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "shot_plan",
+        "entity_id": "scene_002",
+        "path": "artifacts/shot_plan/scene_002/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "project_config",
+        "entity_id": "project",
+        "path": "artifacts/project_config/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_aria_scene_002",
+        "path": "artifacts/continuity_state/character_aria_scene_002/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_noah_scene_002",
+        "path": "artifacts/continuity_state/character_noah_scene_002/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_water_tower_catwalk_scene_002",
+        "path": "artifacts/continuity_state/location_water_tower_catwalk_scene_002/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "aria",
+        "path": "artifacts/character_bible/aria/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_aria",
+        "path": "artifacts/bibles/character_aria/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "noah",
+        "path": "artifacts/character_bible/noah/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_noah",
+        "path": "artifacts/bibles/character_noah/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "water_tower_catwalk",
+        "path": "artifacts/location_bible/water_tower_catwalk/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_water_tower_catwalk",
+        "path": "artifacts/bibles/location_water_tower_catwalk/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "track_manifest",
+        "entity_id": "project",
+        "path": "artifacts/track_manifest/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "shot_plan",
+        "entity_id": "scene_001",
+        "path": "artifacts/shot_plan/scene_001/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "maya",
+        "path": "artifacts/character_bible/maya/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "kell",
+        "path": "artifacts/character_bible/kell/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "june",
+        "path": "artifacts/character_bible/june/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "community_radio_studio",
+        "path": "artifacts/location_bible/community_radio_studio/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "storyboard_v1",
+    "producing_role": null,
+    "rationale": "Storyboard generation converts shot-planning intent into a cheap visual fallback lane before animatics or final renders exist.",
+    "ref": {
+      "artifact_type": "storyboard",
+      "entity_id": "scene_002",
+      "path": "artifacts/storyboard/scene_002/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "hybrid"
+  }
+}

@@ -276,7 +276,12 @@ scorer, and modality defects, so the whole historical packet remains
 quarantined. A future decision-grade run must use the repaired v3 contract and
 check in its exact panels, grids, references, storyboard artifacts, raw results,
 and hash manifest. The configured template-grid runtime default remains
-provisional; these rows no longer justify a model/default decision.
+provisional; these rows no longer justify a model/default decision. Story 208
+later completed that fresh v3 run and retained its exact candidate packet under
+`benchmarks/storyboard_generation_quality/`. Both fresh candidates fail the
+repaired hard quality floor, so template-grid remains only the faster, cheaper,
+more identity-consistent value hold—not a promotion from this historical
+evidence.
 
 20260422-2315 — story bootstrap: created Story 186 after reviewing the active methodology state, the existing previz/render eval registry, and ADR-002 / ADR-003. Result: this is a genuine new eval story, not Story 181 scope creep, because no existing eval measures storyboard reference flow plus sequence quality. Next step: scaffold typed contracts and the benchmark surface.
 20260422-2358 — scaffold + validation: added schema-first storyboard-analysis contracts, a real runtime harness (`storyboard_generation_quality_eval.py`), packet materializer, promptfoo task/provider/scorer/report, representative Open Frequency cases, and the registry entry for `storyboard-generation-quality`. Focused unit coverage passed (`tests/unit/test_storyboard_understanding_benchmark.py`, `tests/unit/test_storyboard_generation_quality_support.py`), targeted Ruff passed on all new files, full unit tests passed (`790 passed, 179 deselected`), and methodology compile/check is current after refreshing the generation-and-visualization audit bookkeeping in `docs/methodology/state.yaml`. Honest gap: I did not run the expensive live storyboard eval yet, so the registry still has no measured score rows and the story stays open for the first real run plus mismatch classification.
