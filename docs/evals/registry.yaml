@@ -2560,6 +2560,76 @@ evals:
       note: "The shipped storyboard lane should preserve source-specific visual cues, a coherent storyboard medium, and recognizable recurring subjects across a complete frame packet; avoid readable text; and prove that supplied references survive prompt and provider transport. Realistic reference fidelity and prop-only discipline remain unscored until the fixtures can support them."
 
     scores:
+      - model: "GPT Image 2 Template Grid Storyboards"
+        evidence_status: decision-grade
+        metrics:
+          overall: null
+          python: 0.6962
+          rubric: 0.615
+          story_specificity: 0.6667
+          style_consistency: 0.7345
+          identity_consistency: 0.3972
+          reference_fidelity: 1.0
+          text_cleanliness: 1.0
+          prop_discipline: 1.0
+          evidence: 1.0
+          success_ratio: 1.0
+          prompt_ref_frames: 7.5
+          direct_refs: 16.5
+          total_frames: 15.0
+          hard_constraints_passed: false
+          hard_constraint_failures:
+            - identity_consistency
+            - story_specificity
+          quality_gates_passed: false
+          runtime_contract_passed: true
+          analysis_cost_usd: 0.023398
+          analysis_latency_ms: 11285.5
+          storyboard_stage_latency_ms: 110761.5
+        latency_ms: 366968
+        cost_usd: 0.272
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "ad7ad9d482382c9d2fc24f940594edf8cc40d20f"
+        result_file: benchmarks/results/storyboard-generation-quality-decision-correction-v1-2026-07-22.json
+        retained_media_manifest: benchmarks/storyboard_generation_quality/manifest.json
+        retained_media_manifest_sha256: 6bf488777cd23f374204ac273ba2dcd114eb18c9b24ee039f52da65909dceef6
+        note: "Fresh repaired-v3 media packet with an immutable decision-correction addendum and exact retained bytes. Both cases completed the runtime contract and scored `evidence=1.0`; `overall` is correctly withheld because packet analysis failed the maintained story-specificity and identity-consistency hard dimensions. Manual media inspection found broad cue coverage and comparatively coherent template-grid identities, so the red analysis combines image-generation misses (subdued storm cues and unclear receiver/lantern/boot staging) with GPT-5.4 under-reading of visible tower/catwalk and recurring-identity evidence. Both mismatch classes are model-wrong and non-runtime-blocking, but they belong to different models and are not presented as pure image-model quality. Abstract reference-card appearance is transport evidence, not a quality golden. No quality promotion or default change follows; template-grid remains only the faster, cheaper value hold."
+      - model: "GPT Image 2 Storyboards"
+        evidence_status: decision-grade
+        metrics:
+          overall: null
+          python: 0.6331
+          rubric: 0.770
+          story_specificity: 0.6667
+          style_consistency: 0.6818
+          identity_consistency: 0.1871
+          reference_fidelity: 1.0
+          text_cleanliness: 1.0
+          prop_discipline: 1.0
+          evidence: 1.0
+          success_ratio: 1.0
+          prompt_ref_frames: 7.0
+          direct_refs: 16.5
+          total_frames: 14.5
+          hard_constraints_passed: false
+          hard_constraint_failures:
+            - identity_consistency
+            - story_specificity
+          quality_gates_passed: false
+          runtime_contract_passed: true
+          analysis_cost_usd: 0.0865
+          analysis_latency_ms: 14211.5
+          storyboard_stage_latency_ms: 413651
+        latency_ms: 645751
+        cost_usd: 0.420
+        cost_estimated: true
+        measured: 2026-07-22
+        git_sha: "ad7ad9d482382c9d2fc24f940594edf8cc40d20f"
+        result_file: benchmarks/results/storyboard-generation-quality-decision-correction-v1-2026-07-22.json
+        retained_media_manifest: benchmarks/storyboard_generation_quality/manifest.json
+        retained_media_manifest_sha256: 6bf488777cd23f374204ac273ba2dcd114eb18c9b24ee039f52da65909dceef6
+        note: "Fresh repaired-v3 media packet with an immutable decision-correction addendum and exact retained bytes. Both cases completed the runtime contract and scored `evidence=1.0`; `overall` is correctly withheld because packet analysis failed the maintained story-specificity and identity-consistency hard dimensions. Manual inspection confirms material image-generation identity drift in the per-frame conditioned case plus unclear lantern/boot staging and subdued storm cues; GPT-5.4 also under-read some visible location and receiver evidence. These generator-model and analysis-model mismatches are separately model-wrong and non-runtime-blocking. Per-frame generation is slower, more expensive, and less identity-consistent than template-grid; it is rejected and does not change the default."
       - model: "GPT Image 2 Storyboards"
         evidence_status: contaminated-non-decision-grade
         metrics:
@@ -2793,19 +2863,19 @@ evals:
         approach: "Retain and hash every exact visual input, bind its packet identity through provider/report evidence, and reject decision-grade registry rows whose media cannot be resolved from a clean checkout."
         worker_model: "GPT-5.6"
         worker_model_date: 2026-07-22
-        subject_model: "none"
+        subject_model: "GPT Image 2 template-grid and per-frame generation; GPT-5.4 packet analysis; Claude Opus 4.6 rubric"
         score_before: null
         score_after: null
         latency_before: null
-        latency_after: null
-        cost_before: 0.0
-        cost_after: 0.0
-        git_sha: "working-tree"
-        retry_status: open
-        note: "The two accidentally overwritten Story 186 JPEGs were restored locally from Backblaze and match their recorded original hashes. Historical v2 pixels and scores remain contaminated, non-durable, and non-decision-grade for independent leakage, sampling, scorer, modality, and retention-contract defects. The next actionable evidence is one fresh exact v3 default-versus-ceiling packet whose panels, source grids, references, storyboard artifacts, raw results, and hashes are manually reviewed and checked in. Promotion requires an explicit decision-grade classification, a real commit SHA, and proof that every evidence file is tracked and unchanged from that commit; no score or default may be promoted before that durable-media gate passes."
+        latency_after: 366968
+        cost_before: null
+        cost_after: 1.6858146
+        git_sha: "ad7ad9d482382c9d2fc24f940594edf8cc40d20f"
+        retry_status: closed
+        note: "Succeeded. The fresh retained run used GPT Image 2 for template-grid and per-frame generation, GPT-5.4 for packet analysis, and Claude Opus 4.6 for the rubric. No aggregate score is recorded because both candidates failed hard analysis dimensions. `latency_after` is the shipped template-grid mean total (`366,968ms`); per-frame measured `645,751ms`. The successful runtime plus initial quality pass and bounded judge retry cost `$1.6858146`; total spend was `$1.8294768` including the earlier `$0.1436622` prerequisite-only abort. The immutable correction addendum distinguishes story/identity failures and analyzer under-reading from packet/evidence truth. Commit `ad7ad9d482382c9d2fc24f940594edf8cc40d20f` binds that addendum plus the exact retained packet, and the promotion gate proves every evidence byte is tracked and unchanged from that commit."
         retry_when:
           - condition: architecture-change
-            note: "Run only after the repaired Story 208 contract and retained-media promotion guard are committed."
+            note: "Closed by the committed Story 208 v3 packet and retained-media promotion guard; reopen only if the evidence storage or provenance architecture changes."
 
   - id: runtime-media-validation
     name: Runtime Media Validation

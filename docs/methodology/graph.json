@@ -1591,16 +1591,18 @@
           "compromise-C2-qa-validation"
         ],
         "actionability": {
-          "sourceKind": "story",
-          "sourceId": "208",
-          "sourcePath": "docs/stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md",
-          "recommendedNow": true,
-          "posture": "in-progress",
+          "sourceKind": "eval",
+          "sourceId": "compromise-C2-qa-validation",
+          "sourcePath": "docs/evals/registry.yaml",
+          "recommendedNow": false,
+          "posture": "no-trigger-recorded",
           "whyNow": "",
+          "retryTriggerStatus": "none",
+          "retryWhen": [],
           "lastRelevantAction": {
             "date": null,
-            "sourceType": "story-status",
-            "source": "docs/stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md",
+            "sourceType": "eval-score",
+            "source": "docs/evals/registry.yaml",
             "summary": ""
           },
           "storyIds": [
@@ -1660,17 +1662,22 @@
           "storyboard-generation-quality"
         ],
         "actionability": {
-          "sourceKind": "story",
-          "sourceId": "208",
-          "sourcePath": "docs/stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md",
-          "recommendedNow": true,
-          "posture": "in-progress",
-          "whyNow": "",
+          "sourceKind": "eval",
+          "sourceId": "storyboard-generation-quality",
+          "sourcePath": "docs/evals/registry.yaml",
+          "recommendedNow": false,
+          "posture": "wait-for-trigger",
+          "whyNow": "Succeeded. The fresh retained run used GPT Image 2 for template-grid and per-frame generation, GPT-5.4 for packet analysis, and Claude Opus 4.6 for the rubric. No aggregate score is recorded because both candidates failed hard analysis dimensions. `latency_after` is the shipped template-grid mean total (`366,968ms`); per-frame measured `645,751ms`. The successful runtime plus initial quality pass…",
+          "retryTriggerStatus": "waiting",
+          "retryWhen": [
+            "architecture-change"
+          ],
           "lastRelevantAction": {
-            "date": null,
-            "sourceType": "story-status",
-            "source": "docs/stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md",
-            "summary": ""
+            "date": "2026-07-22",
+            "sourceType": "eval-attempt",
+            "source": "docs/evals/registry.yaml",
+            "sourceId": "017",
+            "summary": "Succeeded. The fresh retained run used GPT Image 2 for template-grid and per-frame generation, GPT-5.4 for packet analysis, and Claude Opus 4.6 for the rubric. No aggregate score is recorded because both candidates failed hard analysis dimensions. `latency_after` is the shipped template-grid mean total (`366,968ms`); per-frame measured `645,751ms`. The successful runtime plus initial quality pass…"
           },
           "storyIds": [
             "155",
@@ -1780,16 +1787,18 @@
           "compromise-C5-role-modality"
         ],
         "actionability": {
-          "sourceKind": "story",
-          "sourceId": "208",
-          "sourcePath": "docs/stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md",
-          "recommendedNow": true,
-          "posture": "in-progress",
+          "sourceKind": "eval",
+          "sourceId": "compromise-C5-role-modality",
+          "sourcePath": "docs/evals/registry.yaml",
+          "recommendedNow": false,
+          "posture": "no-trigger-recorded",
           "whyNow": "",
+          "retryTriggerStatus": "none",
+          "retryWhen": [],
           "lastRelevantAction": {
             "date": null,
-            "sourceType": "story-status",
-            "source": "docs/stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md",
+            "sourceType": "eval-score",
+            "source": "docs/evals/registry.yaml",
             "summary": ""
           },
           "storyIds": [
@@ -13642,7 +13651,7 @@
       "id": "208",
       "title": "Gemini Model Refresh and Repository Eval Truth Audit",
       "path": "docs/stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md",
-      "status": "In Progress",
+      "status": "Done",
       "priority": "High",
       "idealRefs": [
         "R1 (story understanding)",
@@ -13701,8 +13710,8 @@
         "sourceKind": "story",
         "sourceId": "208",
         "sourcePath": "docs/stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md",
-        "recommendedNow": true,
-        "posture": "in-progress",
+        "recommendedNow": false,
+        "posture": "completed",
         "whyNow": "",
         "lastRelevantAction": {
           "date": null,
@@ -15471,14 +15480,22 @@
           "id": "017",
           "date": "2026-07-22",
           "approach": "Retain and hash every exact visual input, bind its packet identity through provider/report evidence, and reject decision-grade registry rows whose media cannot be resolved from a clean checkout.",
-          "note": "The two accidentally overwritten Story 186 JPEGs were restored locally from Backblaze and match their recorded original hashes. Historical v2 pixels and scores remain contaminated, non-durable, and non-decision-grade for independent leakage, sampling, scorer, modality, and retention-contract defects. The next actionable evidence is one fresh exact v3 default-versus-ceiling packet whose panels, so…",
-          "retryStatus": "open",
+          "note": "Succeeded. The fresh retained run used GPT Image 2 for template-grid and per-frame generation, GPT-5.4 for packet analysis, and Claude Opus 4.6 for the rubric. No aggregate score is recorded because both candidates failed hard analysis dimensions. `latency_after` is the shipped template-grid mean total (`366,968ms`); per-frame measured `645,751ms`. The successful runtime plus initial quality pass…",
+          "retryStatus": "closed",
           "retryWhen": [
             "architecture-change"
           ]
         }
       ],
-      "latestScore": null,
+      "latestScore": {
+        "model": "GPT Image 2 Template Grid Storyboards",
+        "measured": "2026-07-22",
+        "metrics": {
+          "overall": null
+        },
+        "evidenceStatus": "decision-grade",
+        "note": "Fresh repaired-v3 media packet with an immutable decision-correction addendum and exact retained bytes. Both cases completed the runtime contract and scored `evidence=1.0`; `overall` is correctly withheld because packet analysis failed the maintained story-specificity and identity-consistency hard dimensions. Manual media inspection found broad cue coverage and comparatively coherent template-gri…"
+      },
       "historicalEvidenceStatus": "contaminated-non-decision-grade",
       "excludedScoreCount": 7,
       "declaredSpecRefs": [
@@ -15519,7 +15536,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "wait-for-trigger",
-        "whyNow": "The two accidentally overwritten Story 186 JPEGs were restored locally from Backblaze and match their recorded original hashes. Historical v2 pixels and scores remain contaminated, non-durable, and non-decision-grade for independent leakage, sampling, scorer, modality, and retention-contract defects. The next actionable evidence is one fresh exact v3 default-versus-ceiling packet whose panels, so…",
+        "whyNow": "Succeeded. The fresh retained run used GPT Image 2 for template-grid and per-frame generation, GPT-5.4 for packet analysis, and Claude Opus 4.6 for the rubric. No aggregate score is recorded because both candidates failed hard analysis dimensions. `latency_after` is the shipped template-grid mean total (`366,968ms`); per-frame measured `645,751ms`. The successful runtime plus initial quality pass…",
         "retryTriggerStatus": "waiting",
         "retryWhen": [
           "architecture-change"
@@ -15529,7 +15546,7 @@
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
           "sourceId": "017",
-          "summary": "The two accidentally overwritten Story 186 JPEGs were restored locally from Backblaze and match their recorded original hashes. Historical v2 pixels and scores remain contaminated, non-durable, and non-decision-grade for independent leakage, sampling, scorer, modality, and retention-contract defects. The next actionable evidence is one fresh exact v3 default-versus-ceiling packet whose panels, so…"
+          "summary": "Succeeded. The fresh retained run used GPT Image 2 for template-grid and per-frame generation, GPT-5.4 for packet analysis, and Claude Opus 4.6 for the rubric. No aggregate score is recorded because both candidates failed hard analysis dimensions. `latency_after` is the shipped template-grid mean total (`366,968ms`); per-frame measured `645,751ms`. The successful runtime plus initial quality pass…"
         }
       }
     },

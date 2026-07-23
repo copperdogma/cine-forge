@@ -28,6 +28,7 @@
 - Reverified and repaired textual goldens, prompts, rubrics, visual targets, frame packets, scorer semantics, and custom eval reports; historical results whose contracts changed are retained only as contaminated diagnostic context.
 - Reclassified visual lanes around the modalities they actually expose, with clean frame-only packets and explicit deferrals for native video, audio, realistic-reference fidelity, and unretained runtime roots.
 - Updated Story 208, the registry, and audit records after Backblaze restored the two accidentally overwritten ignored Story 186 JPEGs to their original hashes; the historical v2 scores remain non-decision-grade for independent defects.
+- Closed the audit with fresh decision-grade QA, ordered-frame, and Git-retained storyboard evidence: both Gemini challengers remain rejected, both storyboard candidates fail the repaired hard quality floor, template-grid remains only the faster, cheaper value default rather than a quality promotion, and the final addendum distinguishes image-generator misses from packet-analyzer under-reading.
 
 ### Fixed
 - Fixed false-green unit-test selection, live-provider leakage from ordinary tests, source-wrong fixtures, golden-derived acceptance input, exploitable scorer shortcuts, partial-matrix aggregation, duplicate-key result parsing, and stale methodology score propagation.
