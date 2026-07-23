@@ -55,7 +55,9 @@ _resolve_relative = _transport.resolve_relative
 
 _provider_support = importlib.import_module("video_understanding_provider_support")
 _build_promptfoo_response = _provider_support.build_promptfoo_response
+_completion_tokens_for_cost = _provider_support.completion_tokens_for_cost
 _prepare_subject_request = _provider_support.prepare_subject_request
+_response_cost = _provider_support.response_cost
 
 _subject_contract = importlib.import_module("final_render_provider_floor_subject_contract")
 _final_render_prompt_version = _subject_contract.FINAL_RENDER_PROMPT_VERSION
@@ -109,19 +111,6 @@ def _dispatch_subject_request(request: dict[str, Any]) -> dict[str, Any]:
     if provider == "google":
         return _call_gemini(**common)
     raise RuntimeError(f"Unsupported provider: {provider}")
-
-
-def _response_cost(request: dict[str, Any], response: dict[str, Any]) -> float | None:
-    token_usage = response.get("token_usage")
-    if not isinstance(token_usage, dict):
-        return None
-    if token_usage.get("prompt") is None or token_usage.get("completion") is None:
-        return None
-    return estimate_cost_usd(
-        request["model"],
-        int(token_usage["prompt"]),
-        _completion_tokens_for_cost(request["provider"], token_usage),
-    )
 
 
 def _current_subject_contract(request: dict[str, Any]) -> str | None:
@@ -355,41 +344,6 @@ def _openai_compatible_result(
             "usage": usage,
         },
     }
-
-
-def _completion_tokens_for_cost(provider: str, token_usage: dict[str, Any]) -> int:
-    """Return billable output while leaving visible completion telemetry intact."""
-    if provider == "google":
-        optional_usage: dict[str, object] = {}
-        if "total" in token_usage:
-            optional_usage["total_tokens"] = token_usage["total"]
-        if "billed_completion" in token_usage:
-            optional_usage["billed_completion_tokens"] = token_usage[
-                "billed_completion"
-            ]
-        if "reasoning_completion" in token_usage:
-            optional_usage["reasoning_completion_tokens"] = token_usage[
-                "reasoning_completion"
-            ]
-        return validate_gemini_token_usage(
-            prompt_tokens=token_usage.get("prompt"),
-            visible_completion_tokens=token_usage.get("completion"),
-            **optional_usage,
-        ).billed_completion
-
-    visible_completion = int(token_usage.get("completion", 0) or 0)
-    billed_completion = int(
-        token_usage.get("billed_completion", visible_completion) or 0
-    )
-    if provider == "xai":
-        prompt_tokens = int(token_usage.get("prompt", 0) or 0)
-        total_tokens = int(token_usage.get("total", 0) or 0)
-        billed_completion = max(
-            billed_completion,
-            visible_completion,
-            total_tokens - prompt_tokens,
-        )
-    return billed_completion
 
 
 def _request_json(url: str, *, headers: dict[str, str], body: dict[str, Any]) -> dict[str, Any]:

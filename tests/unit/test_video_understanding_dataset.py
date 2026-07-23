@@ -129,9 +129,28 @@ def test_registry_declares_active_policy_and_quarantines_historical_scores() -> 
     assert policy["case_ids"] == ACTIVE_IDS
     assert "filter-first-n" not in entry["command"]
     assert entry["scores"]
+    decision_rows = [
+        score
+        for score in entry["scores"]
+        if score["evidence_status"] == "decision-grade"
+    ]
+    assert {
+        (score["model"], score["result_file"])
+        for score in decision_rows
+    } == {
+        (
+            "Gemini 3.6 Flash",
+            "benchmarks/results/video-understanding-story-208-post-repair-v3-2026-07-22.json",
+        ),
+        (
+            "Gemini 3.5 Flash-Lite",
+            "benchmarks/results/video-understanding-story-208-post-repair-v3-2026-07-22.json",
+        ),
+    }
     assert all(
         score["evidence_status"] == "contaminated-non-decision-grade"
         for score in entry["scores"]
+        if score not in decision_rows
     )
 
 

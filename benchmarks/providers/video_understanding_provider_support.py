@@ -7,8 +7,59 @@ import math
 from pathlib import Path
 from typing import Any
 
+from cine_forge.ai.llm import estimate_cost_usd
+from cine_forge.ai.token_usage import validate_gemini_token_usage
+
 _transport = importlib.import_module("video_understanding_transport")
 _subject_contract = importlib.import_module("final_render_provider_floor_subject_contract")
+
+
+def response_cost(request: dict[str, Any], response: dict[str, Any]) -> float | None:
+    token_usage = response.get("token_usage")
+    if not isinstance(token_usage, dict):
+        return None
+    if token_usage.get("prompt") is None or token_usage.get("completion") is None:
+        return None
+    return estimate_cost_usd(
+        request["model"],
+        int(token_usage["prompt"]),
+        completion_tokens_for_cost(request["provider"], token_usage),
+    )
+
+
+def completion_tokens_for_cost(provider: str, token_usage: dict[str, Any]) -> int:
+    """Return billable output while leaving visible completion telemetry intact."""
+    if provider == "google":
+        optional_usage: dict[str, object] = {}
+        if "total" in token_usage:
+            optional_usage["total_tokens"] = token_usage["total"]
+        if "billed_completion" in token_usage:
+            optional_usage["billed_completion_tokens"] = token_usage[
+                "billed_completion"
+            ]
+        if "reasoning_completion" in token_usage:
+            optional_usage["reasoning_completion_tokens"] = token_usage[
+                "reasoning_completion"
+            ]
+        return validate_gemini_token_usage(
+            prompt_tokens=token_usage.get("prompt"),
+            visible_completion_tokens=token_usage.get("completion"),
+            **optional_usage,
+        ).billed_completion
+
+    visible_completion = int(token_usage.get("completion", 0) or 0)
+    billed_completion = int(
+        token_usage.get("billed_completion", visible_completion) or 0
+    )
+    if provider == "xai":
+        prompt_tokens = int(token_usage.get("prompt", 0) or 0)
+        total_tokens = int(token_usage.get("total", 0) or 0)
+        billed_completion = max(
+            billed_completion,
+            visible_completion,
+            total_tokens - prompt_tokens,
+        )
+    return billed_completion
 
 
 def prepare_subject_request(prompt: str, options: object, context: object) -> dict[str, Any]:
