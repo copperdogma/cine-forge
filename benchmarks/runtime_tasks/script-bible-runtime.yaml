@@ -1,0 +1,101 @@
+# Runtime-shaped Script Bible Benchmark
+# The custom provider ignores the marker prompt and imports the production
+# script_bible_v1 prompt, defaults, and ScriptBible Pydantic schema directly.
+
+description: "Exact runtime script-bible extraction from The Mariner and Open Frequency"
+
+defaultTest:
+  options:
+    provider:
+      id: anthropic:messages:claude-opus-4-6
+      config:
+        max_tokens: 4096
+
+prompts:
+  - file://../prompts/script-bible-runtime-marker.txt
+
+providers:
+  - id: file://../providers/script_bible_runtime_provider.py
+    label: "Claude Opus 5"
+    config:
+      model: claude-opus-5
+      max_tokens: 65536
+      max_retries: 1
+      request_timeout_seconds: 600
+
+  - id: file://../providers/script_bible_runtime_provider.py
+    label: "Gemini 3.5 Flash-Lite"
+    config:
+      model: gemini-3.5-flash-lite
+      max_tokens: 65536
+      max_retries: 1
+      request_timeout_seconds: 600
+      thinking_level: minimal
+
+tests:
+  - vars:
+      screenplay: file://../input/the-mariner.md
+      golden_path: golden/the-mariner-script-bible.json
+      golden_sha256: "e922269fc7492bf91305cb6bf36615358476a37d11ae1bae551e96870434a9c2"
+      ending_contract: >-
+        Rose affirms that Mariner became a real hero and never backs down;
+        Mariner smiles and clenches his hands into fists; the screenplay cuts
+        to black without resolving the confrontation.
+    assert: &script_bible_assertions
+      - type: python
+        value: file://../scorers/script_bible_scorer.py
+      - type: llm-rubric
+        value: |
+          Evaluate the candidate script bible only against the supplied screenplay.
+          Do not rely on outside knowledge or reward a claim simply because it
+          resembles a conventional story beat.
+
+          SOURCE SCREENPLAY
+          =================
+          {{screenplay}}
+          =================
+
+          Grade all of these dimensions:
+          1. Fidelity and completeness: the logline, synopsis, narrative arc,
+             protagonist journey, conflict, and setting cover the material the
+             screenplay actually presents, with no material contradiction or
+             omission.
+          2. Ending discipline: distinguish the last written beat from an implied
+             next action. If the source cuts away before the external conflict is
+             resolved, the bible must preserve that uncertainty and must not
+             invent a fight, victory, escape, death, or other outcome.
+             The required terminal beats for this case are:
+             {{ending_contract}}
+             Omitting any named terminal beat is a material completeness failure.
+          3. Act structure: boundaries correspond to actual source headings or
+             clearly identified beats; every act summary and turning point is
+             supported by the screenplay.
+          4. Themes and evidence: themes are specific to this screenplay, and
+             every quotation or scene reference is faithful to the source rather
+             than fabricated or generic.
+          5. Genre and tone: labels reflect all materially present modes. Hybrid
+             labels are valid when supported; do not reject a source-supported
+             tonal component merely because another mode is more prominent.
+          6. Production usefulness: all required fields are substantive,
+             internally consistent, and specific enough to guide later work.
+          7. Exact schema: the root object contains exactly title, logline,
+             synopsis, act_structure, themes, narrative_arc, genre, tone,
+             protagonist_journey, central_conflict, setting_overview, and
+             confidence. Every act contains exactly act_number, title,
+             start_scene, end_scene, summary, and turning_points. Every theme
+             contains exactly theme, description, and evidence. Extra keys at
+             any of these levels are a hard failure.
+
+          A schema-only, generic, padded, or hallucinated bible must fail. Score
+          0.80 or higher, and pass, only if this could serve as a trustworthy
+          production reference for the supplied screenplay. Any invented ending
+          or materially source-contradictory claim is a hard failure.
+
+  - vars:
+      screenplay: file://../../tests/fixtures/ingest_inputs/open_frequency_short.fountain
+      golden_path: golden/open-frequency-script-bible.json
+      golden_sha256: "2e70cd6255c04b1cf9e7ef94d13b9a3935be3c026d12afbfaf21e4595cd83d5b"
+      ending_contract: >-
+        Maya's missing-dog plea leads to Comet's morning return; the ON AIR
+        sign steadies and the radio team settles back to work.
+    assert: *script_bible_assertions

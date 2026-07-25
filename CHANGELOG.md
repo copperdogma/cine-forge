@@ -1,5 +1,23 @@
 # Changelog
 
+## [2026-07-25-01] — Evaluate Opus 5 for script bible (Story 210)
+
+### Added
+- Added a bounded, runtime-shaped Opus 5 script-bible lane with strict
+  structured-output transport, replayable provider identity and usage, raw
+  results, a hash manifest, and focused transport tests.
+- Added Story 210, Attempt 020, registry history, and truth-ledger inventory for
+  the one-screenplay progressive-stop evaluation.
+
+### Changed
+- Recorded Opus 5 pricing and a script-bible-only do-not-adopt decision after
+  the valid call missed the maintained latency and cost gates; production
+  transport and the Gemini 3.5 Flash-Lite default remain unchanged.
+
+### Fixed
+- Kept the experimental Opus 5 transport isolated from production and preserved
+  Story 208's immutable shared-runtime contract hashes.
+
 ## [Unreleased] — Add evidence-first model evaluation workflow (Story 209)
 
 ### Added

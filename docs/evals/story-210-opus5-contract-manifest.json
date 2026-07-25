@@ -1,0 +1,22 @@
+{
+  "story": "210",
+  "base_git_sha": "aacf185829d8616aa577c903e2a73f69554ff6f4",
+  "generated_at": "2026-07-24T18:05:00Z",
+  "evidence_status": "dirty-contract-hash-complete",
+  "files": {
+    "src/cine_forge/ai/llm.py": "aa32cb0a294de271f2fade3e17b528055c737a84f7baef314f9de6c4ae5e4f47",
+    "src/cine_forge/evals/cost_metrics.py": "d99c2dd35978cef52101a16ec5c26d8b2d4390d07cfd2ca88778cc239d321a86",
+    "benchmarks/providers/script_bible_runtime_provider.py": "2885ed3a48057237906a4ef908a87de33004df5d04ac10f6bd6ea01e841f1343",
+    "benchmarks/prompts/script-bible-runtime-marker.txt": "636a2e3031b731546a6deccc15ff98acd6f360765a77112976f74384abd30e19",
+    "benchmarks/runtime_tasks/script-bible-runtime.yaml": "7b035e222222e495dc5d7d4ecbe1e178963f28673a3751b2fc0c79381861011b",
+    "tests/unit/test_ai_llm.py": "e9bcf109c4bcab39676d69651cfdad21d2ca2a1f633fec0468aec5194eb3c831",
+    "tests/unit/test_eval_text_providers.py": "b7a2e75e834000db551af4aa2e541e464f152b914795321ceee47e6ecf555c01",
+    "benchmarks/results/script-bible-runtime-opus5-parity-2026-07-24.json": "1b9c37231ef5d078aae587ed02182003bfde29800ea5ad46bfc95ffe64be271a",
+    "benchmarks/results/script-bible-runtime-opus5-parity-v2-2026-07-24.json": "66cbdc8dc9a6c50bdb3fa7b819a82c9de0374bda802712f12e4450aa686d0f73",
+    "benchmarks/results/script-bible-runtime-opus5-parity-v3-2026-07-24.json": "d465266b7a06aea47aa66a53d9f625fc4a3a44cb505dc07ab447ef135df161cb"
+  },
+  "commands": {
+    "parity": "promptfoo eval -c runtime_tasks/script-bible-runtime.yaml --no-cache --filter-providers 'Claude Opus 5' --filter-first-n 1 -j 1",
+    "metrics": "PYTHONPATH=src <cineforge-python> scripts/extract-eval-metrics.py --result-file benchmarks/results/script-bible-runtime-opus5-parity-v3-2026-07-24.json"
+  }
+}

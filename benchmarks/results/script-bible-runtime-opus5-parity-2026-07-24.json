@@ -1,0 +1,260 @@
+{
+  "evalId": "eval-6XD-2026-07-24T17:43:46",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-07-24T17:43:46.819Z",
+    "prompts": [
+      {
+        "raw": "The configured provider must run the supplied screenplay through the exact\nproduction script_bible_v1 prompt and ScriptBible schema boundary.",
+        "label": "prompts/script-bible-runtime-marker.txt: The configured provider must run the supplied screenplay through the exact\nproduction script_bible_v1 prompt and ScriptBible schema boundary.",
+        "id": "ee4b360eb041c4cad35c5314ca9a3a2e3d4734127b81a9e604a0883f08dd8163",
+        "provider": "Claude Opus 5",
+        "metrics": {
+          "score": 0,
+          "testPassCount": 0,
+          "testFailCount": 0,
+          "testErrorCount": 1,
+          "assertPassCount": 0,
+          "assertFailCount": 0,
+          "totalLatencyMs": 288,
+          "tokenUsage": {
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "total": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "error": "Anthropic HTTP error 400: {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"output_config.format.schema: For 'integer' type, property 'minimum' is not supported\"},\"request_id\":\"req_011CdMJBx5gAdgJxNE4XveGu\"}",
+        "gradingResult": null,
+        "id": "a3b6b4a5-53d5-44f8-9bcf-55a37114f9f1",
+        "latencyMs": 288,
+        "namedScores": {},
+        "prompt": {
+          "raw": "The configured provider must run the supplied screenplay through the exact\nproduction script_bible_v1 prompt and ScriptBible schema boundary.",
+          "label": "prompts/script-bible-runtime-marker.txt: The configured provider must run the supplied screenplay through the exact\nproduction script_bible_v1 prompt and ScriptBible schema boundary.",
+          "config": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          }
+        },
+        "promptId": "ee4b360eb041c4cad35c5314ca9a3a2e3d4734127b81a9e604a0883f08dd8163",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/script_bible_runtime_provider.py",
+          "label": "Claude Opus 5"
+        },
+        "response": {
+          "output": "",
+          "error": "Anthropic HTTP error 400: {\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"output_config.format.schema: For 'integer' type, property 'minimum' is not supported\"},\"request_id\":\"req_011CdMJBx5gAdgJxNE4XveGu\"}",
+          "latencyMs": 288,
+          "metadata": {
+            "provider": "runtime-script-bible",
+            "requested_model": "claude-opus-5"
+          },
+          "cached": false
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-script-bible.json",
+            "golden_sha256": "e922269fc7492bf91305cb6bf36615358476a37d11ae1bae551e96870434a9c2",
+            "ending_contract": "Rose affirms that Mariner became a real hero and never backs down; Mariner smiles and clenches his hands into fists; the screenplay cuts to black without resolving the confrontation."
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/script_bible_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-script-bible.json",
+          "golden_sha256": "e922269fc7492bf91305cb6bf36615358476a37d11ae1bae551e96870434a9c2",
+          "ending_contract": "Rose affirms that Mariner became a real hero and never backs down; Mariner smiles and clenches his hands into fists; the screenplay cuts to black without resolving the confrontation."
+        },
+        "metadata": {
+          "provider": "runtime-script-bible",
+          "requested_model": "claude-opus-5",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 2
+      }
+    ],
+    "stats": {
+      "successes": 0,
+      "failures": 0,
+      "errors": 1,
+      "tokenUsage": {
+        "prompt": 0,
+        "completion": 0,
+        "cached": 0,
+        "total": 0,
+        "numRequests": 1,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 717,
+      "evaluationDurationMs": 717
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Exact runtime script-bible extraction from The Mariner and Open Frequency",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/opus5-eval-20260724/cine-forge/benchmarks/prompts/script-bible-runtime-marker.txt"
+    ],
+    "providers": [
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Claude Opus 5",
+        "config": {
+          "model": "claude-opus-5",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 600
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Gemini 3.5 Flash-Lite",
+        "config": {
+          "model": "gemini-3.5-flash-lite",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 600,
+          "thinking_level": "minimal"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-script-bible.json",
+          "golden_sha256": "[REDACTED]",
+          "ending_contract": "Rose affirms that Mariner became a real hero and never backs down; Mariner smiles and clenches his hands into fists; the screenplay cuts to black without resolving the confrontation."
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/script_bible_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "screenplay": "file://../../tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+          "golden_path": "golden/open-frequency-script-bible.json",
+          "golden_sha256": "[REDACTED]",
+          "ending_contract": "Maya's missing-dog plea leads to Comet's morning return; the ON AIR sign steadies and the radio team settles back to work."
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/script_bible_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": {
+          "id": "anthropic:messages:claude-opus-4-6",
+          "config": {
+            "max_tokens": 4096
+          }
+        }
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/script-bible-runtime-opus5-parity-2026-07-24.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-07-24T17:43:47.609Z",
+    "evaluationCreatedAt": "2026-07-24T17:43:46.819Z"
+  }
+}

@@ -38,6 +38,14 @@ def openai_provider():
     )
 
 
+@pytest.fixture
+def script_bible_runtime_provider():
+    return _load(
+        REPO_ROOT / "benchmarks/providers/script_bible_runtime_provider.py",
+        "script_bible_runtime_provider_contract",
+    )
+
+
 def test_anthropic_provider_preserves_request_and_usage_contract(
     anthropic_provider,
     monkeypatch: pytest.MonkeyPatch,
@@ -92,6 +100,144 @@ def test_anthropic_provider_preserves_request_and_usage_contract(
     assert result["metadata"]["returned_model"] == "claude-sonnet-4-6"
     assert result["raw"]["model"] == "claude-sonnet-4-6"
     assert result["raw"]["id"] == "req-1"
+
+
+def test_script_bible_runtime_provider_uses_exact_prompt_and_schema(
+    script_bible_runtime_provider,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seen = {}
+
+    def fake_call(**kwargs):
+        seen.update(kwargs)
+        return script_bible_runtime_provider.ScriptBible(
+            title="Open Frequency",
+            logline="A radio team helps its town.",
+            synopsis="The team stays on air and helps reunite a missing dog.",
+            act_structure=[
+                {
+                    "act_number": 1,
+                    "title": "Broadcast",
+                    "start_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+                    "end_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+                    "summary": "The team keeps broadcasting.",
+                    "turning_points": ["Comet returns."],
+                }
+            ],
+            themes=[
+                {
+                    "theme": "Service",
+                    "description": "The station serves its community.",
+                    "evidence": ["Maya's plea and Comet's return."],
+                }
+            ],
+            narrative_arc="A worried plea resolves in communal relief.",
+            genre="Drama",
+            tone="Hopeful",
+            protagonist_journey="The ensemble recommits to service.",
+            central_conflict="Keeping the community connected.",
+            setting_overview="A community radio station.",
+            confidence=0.9,
+        ), {
+            "returned_model": "gemini-3.5-flash-lite",
+            "input_tokens": 100,
+            "output_tokens": 50,
+            "estimated_cost_usd": 0.00175,
+            "latency_seconds": 1.5,
+            "request_id": "gemini-runtime",
+            "finish_reason": "end_turn",
+        }
+
+    monkeypatch.setattr(script_bible_runtime_provider, "call_llm", fake_call)
+    result = script_bible_runtime_provider.call_api(
+        "marker",
+        {
+            "config": {
+                "model": "gemini-3.5-flash-lite",
+                "max_tokens": 65536,
+                "max_retries": 1,
+            }
+        },
+        {"vars": {"screenplay": "INT. STUDIO - NIGHT\nARIA broadcasts."}},
+    )
+
+    assert seen["prompt"] == script_bible_runtime_provider.EXTRACTION_PROMPT.format(
+        script_text="INT. STUDIO - NIGHT\nARIA broadcasts."
+    )
+    assert seen["model"] == "gemini-3.5-flash-lite"
+    assert seen["response_schema"] is script_bible_runtime_provider.ScriptBible
+    assert seen["fail_on_truncation"] is True
+    assert seen["thinking_level"] == "minimal"
+    assert result["metadata"]["requested_model"] == "gemini-3.5-flash-lite"
+    assert result["metadata"]["returned_model"] == "gemini-3.5-flash-lite"
+    assert result["metadata"]["runtime_prompt"] == "script_bible_v1.EXTRACTION_PROMPT"
+    assert result["metadata"]["runtime_schema"] == "cine_forge.schemas.ScriptBible"
+    assert result["raw"]["id"] == "gemini-runtime"
+
+
+def test_script_bible_runtime_provider_enforces_opus_5_schema(
+    script_bible_runtime_provider,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    bible = script_bible_runtime_provider.ScriptBible(
+        title="Open Frequency",
+        logline="A radio team helps its town.",
+        synopsis="The team stays on air and helps reunite a missing dog.",
+        act_structure=[
+            {
+                "act_number": 1,
+                "title": "Broadcast",
+                "start_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+                "end_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+                "summary": "The team keeps broadcasting.",
+                "turning_points": ["Comet returns."],
+            }
+        ],
+        themes=[
+            {
+                "theme": "Service",
+                "description": "The station serves its community.",
+                "evidence": ["Maya's plea and Comet's return."],
+            }
+        ],
+        narrative_arc="A worried plea resolves in communal relief.",
+        genre="Drama",
+        tone="Hopeful",
+        protagonist_journey="The ensemble recommits to service.",
+        central_conflict="Keeping the community connected.",
+        setting_overview="A community radio station.",
+        confidence=0.9,
+    )
+    seen = {}
+
+    def fake_request(payload: dict, *, timeout_seconds: float):
+        seen.update(payload=payload, timeout_seconds=timeout_seconds)
+        return {
+            "id": "msg-opus5",
+            "model": "claude-opus-5",
+            "stop_reason": "end_turn",
+            "content": [{"type": "text", "text": bible.model_dump_json()}],
+            "usage": {"input_tokens": 100, "output_tokens": 50},
+        }
+
+    monkeypatch.setattr(script_bible_runtime_provider, "_request_json", fake_request)
+    output, metadata = script_bible_runtime_provider._call_opus_5(
+        prompt="SCREENPLAY:\nsource",
+        max_tokens=200_000,
+        timeout_seconds=12,
+    )
+
+    assert output == bible
+    assert seen["payload"]["model"] == "claude-opus-5"
+    assert seen["payload"]["max_tokens"] == 128_000
+    assert "temperature" not in seen["payload"]
+    schema = seen["payload"]["output_config"]["format"]["schema"]
+    assert "'minimum':" not in str(schema)
+    assert "'maximum':" not in str(schema)
+    assert "minimum: 0.0" in schema["properties"]["confidence"]["description"]
+    assert metadata["requested_model"] == "claude-opus-5"
+    assert metadata["returned_model"] == "claude-opus-5"
+    assert metadata["estimated_cost_usd"] == 0.00175
 
 
 def test_anthropic_provider_reports_empty_or_failed_transport_as_error(

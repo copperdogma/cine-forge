@@ -289,7 +289,8 @@
           "205",
           "206",
           "207",
-          "208"
+          "208",
+          "210"
         ],
         "adrIds": [
           "ADR-003"
@@ -1083,7 +1084,8 @@
           "206",
           "207",
           "208",
-          "209"
+          "209",
+          "210"
         ],
         "adrIds": [
           "ADR-001",
@@ -1653,7 +1655,8 @@
           "205",
           "206",
           "207",
-          "208"
+          "208",
+          "210"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1702,7 +1705,8 @@
             "205",
             "206",
             "207",
-            "208"
+            "208",
+            "210"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -13780,6 +13784,74 @@
           "summary": "independent-hardening-and-validation: findings-first review"
         }
       }
+    },
+    {
+      "id": "210",
+      "title": "Opus 5 Bounded Script-Bible Eval",
+      "path": "docs/stories/story-210-opus-5-bounded-script-bible-eval.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "dependsOn": [
+        "035",
+        "208",
+        "209"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "anthropic",
+        "evals",
+        "model-refresh",
+        "opus-5"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260724-1215",
+        "date": "2026-07-24",
+        "summary": "validation-and-closeout: retained the final v3 isolated-provider"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "210",
+        "sourcePath": "docs/stories/story-210-opus-5-bounded-script-bible-eval.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "validation-and-closeout: retained the final v3 isolated-provider",
+        "lastRelevantAction": {
+          "date": "2026-07-24",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-210-opus-5-bounded-script-bible-eval.md",
+          "summary": "validation-and-closeout: retained the final v3 isolated-provider"
+        }
+      }
     }
   ],
   "adrs": [
@@ -15368,7 +15440,8 @@
         "spec:8"
       ],
       "storyIds": [
-        "208"
+        "208",
+        "210"
       ],
       "categoryRefs": [
         "spec:2",
@@ -15376,16 +15449,30 @@
       ],
       "compromiseIds": [],
       "retryWhen": [],
-      "attempts": [],
+      "attempts": [
+        {
+          "id": "020",
+          "date": "2026-07-24",
+          "approach": "Qualified Opus 5 strict structured output, repaired one documented schema-subset transport defect, then stopped after one exact-runtime full-script case failed absolute latency and cost gates.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "cheaper-subject-model",
+            "faster-subject-model",
+            "golden-fix"
+          ]
+        }
+      ],
       "latestScore": null,
       "historicalEvidenceStatus": "pre-open-frequency-corpus-non-decision-grade",
-      "excludedScoreCount": 21,
+      "excludedScoreCount": 22,
       "declaredSpecRefs": [
         "spec:2",
         "spec:8"
       ],
       "declaredStoryIds": [
-        "208"
+        "208",
+        "210"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -15402,15 +15489,20 @@
         "sourceId": "script-bible",
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
-        "posture": "no-trigger-recorded",
+        "posture": "trigger-exhausted",
         "whyNow": "",
-        "retryTriggerStatus": "none",
-        "retryWhen": [],
+        "retryTriggerStatus": "exhausted",
+        "retryWhen": [
+          "cheaper-subject-model",
+          "faster-subject-model",
+          "golden-fix"
+        ],
         "lastRelevantAction": {
-          "date": null,
-          "sourceType": "eval-score",
+          "date": "2026-07-24",
+          "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "summary": ""
+          "sourceId": "020",
+          "summary": "Qualified Opus 5 strict structured output, repaired one documented schema-subset transport defect, then stopped after one exact-runtime full-script case failed absolute latency and cost gates."
         }
       }
     },
@@ -16126,9 +16218,10 @@
             "147",
             "154",
             "172",
-            "209"
+            "209",
+            "210"
           ],
-          "stories_since_audit": 1,
+          "stories_since_audit": 2,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16159,9 +16252,10 @@
             "169",
             "183",
             "187",
-            "202"
+            "202",
+            "210"
           ],
-          "stories_since_audit": 3,
+          "stories_since_audit": 4,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16245,7 +16339,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 102 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 104 days old against a 14-day cadence"
     ]
   }
 }

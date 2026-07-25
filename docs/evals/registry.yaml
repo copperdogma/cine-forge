@@ -3859,6 +3859,7 @@ evals:
       - spec:8
     story_refs:
       - "208"
+      - "210"
     category_refs:
       - spec:2
       - spec:8
@@ -3873,6 +3874,7 @@ evals:
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/script-bible.yaml --no-cache -j 3"
     config: benchmarks/tasks/script-bible.yaml
+    runtime_variant_config: benchmarks/runtime_tasks/script-bible-runtime.yaml
     scorer: benchmarks/scorers/script_bible_scorer.py
     golden: benchmarks/golden/the-mariner-script-bible.json
     additional_goldens:
@@ -3904,6 +3906,20 @@ evals:
       cost_usd_max: 0.01
 
     scores:
+      - model: "Opus 5"
+        evidence_status: bounded-stop-non-decision-grade
+        metrics:
+          overall: 0.78995
+          deterministic: 0.6999
+          rubric: 0.88
+        latency_ms: 64961
+        cost_usd: 0.1485
+        cost_estimated: true
+        measured: 2026-07-24
+        git_sha: "aacf185+story210-hash-manifest"
+        result_file: benchmarks/results/script-bible-runtime-opus5-parity-v3-2026-07-24.json
+        contract_manifest: docs/evals/story-210-opus5-contract-manifest.json
+        note: "Attempt 020 exact-runtime The Mariner progressive stop. The final isolated benchmark provider qualified strict schema, exact served identity, usage, and terminal completion without changing production transport. The maintained Opus judge passed at 0.88, but the deterministic 0.6999 result materially under-read source-present events while the answer also moved a bullet wound from back to leg and said two merely dropped thugs were killed. The one-case aggregate is not a fine-grained capability rank. Opus 5 nevertheless misses the 30s latency gate by 2.17x and the $0.01 cost gate by 14.85x. Open Frequency and the fresh default comparator were not run because those absolute value failures already make Opus 5 ineligible. Do not adopt for script bible at current price/latency; production transport and default remain unchanged."
       - model: "Gemini 3.6 Flash"
         metrics:
           overall: 0.8850
@@ -4103,7 +4119,29 @@ evals:
         result_file: benchmarks/results/script-bible-verify-2026-03-13-v2.json
         note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
-    attempts: []
+    attempts:
+      - id: "020"
+        story: attempts/020-script-bible-opus-5-runtime-comparison.md
+        date: 2026-07-24
+        status: failed
+        approach: "Qualified Opus 5 strict structured output, repaired one documented schema-subset transport defect, then stopped after one exact-runtime full-script case failed absolute latency and cost gates."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-07-24
+        subject_model: "Claude Opus 5"
+        score_before: null
+        score_after: 0.78995
+        latency_before: null
+        latency_after: 64961
+        cost_before: null
+        cost_after: 0.1485
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: cheaper-subject-model
+            note: "Retry only if the exact full-script call can plausibly clear the $0.01 gate."
+          - condition: faster-subject-model
+            note: "Retry only if the same contract can plausibly clear 30 seconds."
+          - condition: golden-fix
+            note: "Regrade frozen output after an independently verified structural scorer repair; do not spend on a fresh subject call unless value gates also become plausible."
 
   # ── Compromise Evals ──────────────────────────────────────────────────────
   # Populated by /bootstrap-compromise-evals from docs/spec.md.
