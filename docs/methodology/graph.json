@@ -290,7 +290,8 @@
           "206",
           "207",
           "208",
-          "210"
+          "210",
+          "211"
         ],
         "adrIds": [
           "ADR-003"
@@ -1085,7 +1086,8 @@
           "207",
           "208",
           "209",
-          "210"
+          "210",
+          "211"
         ],
         "adrIds": [
           "ADR-001",
@@ -1656,7 +1658,8 @@
           "206",
           "207",
           "208",
-          "210"
+          "210",
+          "211"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1706,7 +1709,8 @@
             "206",
             "207",
             "208",
-            "210"
+            "210",
+            "211"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -13852,6 +13856,75 @@
           "summary": "validation-and-closeout: retained the final v3 isolated-provider"
         }
       }
+    },
+    {
+      "id": "211",
+      "title": "Qwen3.8 OpenRouter Bounded Script-Bible Eval",
+      "path": "docs/stories/story-211-qwen38-openrouter-bounded-script-bible-eval.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "dependsOn": [
+        "035",
+        "208",
+        "209",
+        "210"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "model-refresh",
+        "openrouter",
+        "qwen3.8"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260803-1430",
+        "date": "2026-08-03",
+        "summary": "mismatch-and-validation: source inspection classified exact"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "211",
+        "sourcePath": "docs/stories/story-211-qwen38-openrouter-bounded-script-bible-eval.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "mismatch-and-validation: source inspection classified exact",
+        "lastRelevantAction": {
+          "date": "2026-08-03",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-211-qwen38-openrouter-bounded-script-bible-eval.md",
+          "summary": "mismatch-and-validation: source inspection classified exact"
+        }
+      }
     }
   ],
   "adrs": [
@@ -15441,7 +15514,8 @@
       ],
       "storyIds": [
         "208",
-        "210"
+        "210",
+        "211"
       ],
       "categoryRefs": [
         "spec:2",
@@ -15450,6 +15524,18 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "021",
+          "date": "2026-08-03",
+          "approach": "Qualified exact Qwen3.8 OpenRouter/Alibaba strict structured output, then stopped after one exact-runtime synthetic case failed absolute latency and cost gates.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "cheaper-subject-model",
+            "faster-subject-model",
+            "scorer-fix"
+          ]
+        },
         {
           "id": "020",
           "date": "2026-07-24",
@@ -15465,14 +15551,15 @@
       ],
       "latestScore": null,
       "historicalEvidenceStatus": "pre-open-frequency-corpus-non-decision-grade",
-      "excludedScoreCount": 22,
+      "excludedScoreCount": 23,
       "declaredSpecRefs": [
         "spec:2",
         "spec:8"
       ],
       "declaredStoryIds": [
         "208",
-        "210"
+        "210",
+        "211"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -15495,14 +15582,14 @@
         "retryWhen": [
           "cheaper-subject-model",
           "faster-subject-model",
-          "golden-fix"
+          "scorer-fix"
         ],
         "lastRelevantAction": {
-          "date": "2026-07-24",
+          "date": "2026-08-03",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "020",
-          "summary": "Qualified Opus 5 strict structured output, repaired one documented schema-subset transport defect, then stopped after one exact-runtime full-script case failed absolute latency and cost gates."
+          "sourceId": "021",
+          "summary": "Qualified exact Qwen3.8 OpenRouter/Alibaba strict structured output, then stopped after one exact-runtime synthetic case failed absolute latency and cost gates."
         }
       }
     },
@@ -16219,9 +16306,10 @@
             "154",
             "172",
             "209",
-            "210"
+            "210",
+            "211"
           ],
-          "stories_since_audit": 2,
+          "stories_since_audit": 3,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16253,9 +16341,10 @@
             "183",
             "187",
             "202",
-            "210"
+            "210",
+            "211"
           ],
-          "stories_since_audit": 4,
+          "stories_since_audit": 5,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16339,7 +16428,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 104 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 113 days old against a 14-day cadence"
     ]
   }
 }

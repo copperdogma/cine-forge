@@ -1,5 +1,22 @@
 # Changelog
 
+## [2026-08-03-01] — Evaluate Qwen3.8 for script bible (Story 211)
+
+### Added
+- Added a bounded OpenRouter/Alibaba Qwen3.8 script-bible lane with pinned
+  no-fallback routing, strict structured output, exact identity and usage
+  evidence, focused tests, retained results, and a contract hash manifest.
+- Added Story 211, Attempt 021, registry history, and truth-ledger inventory for
+  the synthetic one-screenplay progressive-stop evaluation.
+
+### Changed
+- Recorded a script-bible-only do-not-adopt decision after Qwen3.8 missed the
+  maintained latency and cost gates; production transport and the Gemini 3.5
+  Flash-Lite default remain unchanged.
+- Allowed retained raw reasoning-token evidence to supplement normalized
+  Promptfoo usage when Promptfoo strips only the reasoning detail while all
+  billable counters still reconcile exactly.
+
 ## [2026-07-25-01] — Evaluate Opus 5 for script bible (Story 210)
 
 ### Added

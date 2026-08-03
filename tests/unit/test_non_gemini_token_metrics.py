@@ -41,6 +41,22 @@ def test_openai_normalized_and_raw_reasoning_breakdown_reconcile() -> None:
     assert result == 20
 
 
+def test_raw_reasoning_breakdown_can_supply_stripped_normalized_detail() -> None:
+    result = completion_tokens_for_cost(
+        "file://../providers/script_bible_runtime_provider.py",
+        {"prompt": 100, "completion": 20, "total": 120},
+        model_slug="qwen/qwen3.8-max",
+        raw_usage={
+            "prompt_tokens": 100,
+            "completion_tokens": 20,
+            "total_tokens": 120,
+            "completion_tokens_details": {"reasoning_tokens": 8},
+        },
+    )
+
+    assert result == 20
+
+
 def test_openai_raw_reasoning_breakdown_mismatch_is_rejected() -> None:
     with pytest.raises(ValueError, match="raw provider usage does not match"):
         completion_tokens_for_cost(

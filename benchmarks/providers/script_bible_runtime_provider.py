@@ -36,9 +36,12 @@ _parse_provider = _llm._parse_provider
 _to_openai_strict_schema = _llm._to_openai_strict_schema
 
 ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages"
+OPENROUTER_CHAT_URL = "https://openrouter.ai/api/v1/chat/completions"
 OPUS_5_MODEL = "claude-opus-5"
 OPUS_5_INPUT_PER_M = 5.0
 OPUS_5_OUTPUT_PER_M = 25.0
+QWEN38_OPENROUTER_MODEL = "qwen/qwen3.8-max"
+QWEN38_OPENROUTER_PROVIDER = "Alibaba"
 
 
 def call_api(prompt: str, options: dict, context: dict) -> dict:
@@ -53,7 +56,10 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
         screenplay = _screenplay(context)
         max_tokens = int(config.get("max_tokens") or DEFAULT_MAX_TOKENS)
         max_retries = int(config.get("max_retries") or 1)
-        provider, bare_model = _parse_provider(model)
+        if model == QWEN38_OPENROUTER_MODEL:
+            provider, bare_model = "openrouter", model
+        else:
+            provider, bare_model = _parse_provider(model)
         call_options = {
             "prompt": EXTRACTION_PROMPT.format(script_text=screenplay),
             "model": model,
@@ -67,7 +73,14 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
             call_options["thinking_level"] = str(
                 config.get("thinking_level") or DEFAULT_THINKING_LEVEL
             )
-        if bare_model == OPUS_5_MODEL:
+        if bare_model == QWEN38_OPENROUTER_MODEL:
+            output, metadata = _call_qwen38_openrouter(
+                prompt=call_options["prompt"],
+                max_tokens=max_tokens,
+                timeout_seconds=call_options["request_timeout_seconds"],
+                reasoning_effort=str(config.get("reasoning_effort") or "low"),
+            )
+        elif bare_model == OPUS_5_MODEL:
             output, metadata = _call_opus_5(
                 prompt=call_options["prompt"],
                 max_tokens=max_tokens,
@@ -97,7 +110,17 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
 
     prompt_tokens = int(metadata.get("input_tokens") or 0)
     completion_tokens = int(metadata.get("output_tokens") or 0)
-    cost = float(metadata.get("estimated_cost_usd") or 0.0)
+    cost = float(
+        metadata.get("reported_cost_usd")
+        if metadata.get("reported_cost_usd") is not None
+        else metadata.get("estimated_cost_usd") or 0.0
+    )
+    raw_usage = metadata.get("raw_usage")
+    if not isinstance(raw_usage, dict):
+        raw_usage = {
+            "input_tokens": prompt_tokens,
+            "output_tokens": completion_tokens,
+        }
     return {
         "output": output.model_dump_json(),
         "tokenUsage": {
@@ -115,17 +138,18 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
             "returned_model": identity.returned_model,
             "request_id": identity.request_id,
             "finish_reason": metadata.get("finish_reason"),
-            "cost_estimated": True,
+            "cost_estimated": bool(metadata.get("cost_estimated", True)),
             "runtime_prompt": "script_bible_v1.EXTRACTION_PROMPT",
             "runtime_schema": "cine_forge.schemas.ScriptBible",
+            "upstream_provider": metadata.get("upstream_provider"),
+            "reasoning_effort": metadata.get("reasoning_effort"),
+            "allow_fallbacks": metadata.get("allow_fallbacks"),
         },
         "raw": {
             "id": identity.request_id,
             "model": identity.returned_model,
-            "usage": {
-                "input_tokens": prompt_tokens,
-                "output_tokens": completion_tokens,
-            },
+            "provider": metadata.get("upstream_provider"),
+            "usage": raw_usage,
         },
     }
 
@@ -222,6 +246,100 @@ def _call_opus_5(
     }
 
 
+def _call_qwen38_openrouter(
+    *,
+    prompt: str,
+    max_tokens: int,
+    timeout_seconds: float,
+    reasoning_effort: str,
+) -> tuple[ScriptBible, dict[str, Any]]:
+    """Call Qwen3.8 through one pinned OpenRouter provider with strict JSON."""
+    payload = {
+        "model": QWEN38_OPENROUTER_MODEL,
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": min(max_tokens, 131_072),
+        "reasoning": {"effort": reasoning_effort, "exclude": True},
+        "provider": {
+            "order": [QWEN38_OPENROUTER_PROVIDER],
+            "allow_fallbacks": False,
+            "require_parameters": True,
+        },
+        "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+                "name": "script_bible",
+                "strict": True,
+                "schema": _to_openai_strict_schema(ScriptBible.model_json_schema()),
+            },
+        },
+    }
+    started = time.perf_counter()
+    raw = _request_openrouter_json(payload, timeout_seconds=timeout_seconds)
+    latency_seconds = time.perf_counter() - started
+    identity = validate_provider_response_identity(
+        provider="openrouter",
+        requested_model=QWEN38_OPENROUTER_MODEL,
+        returned_model=raw.get("model"),
+        request_id=raw.get("id"),
+        require_returned=True,
+    )
+    upstream_provider = raw.get("provider")
+    if upstream_provider != QWEN38_OPENROUTER_PROVIDER:
+        raise RuntimeError(
+            "OpenRouter response provider does not match pinned provider: "
+            f"expected {QWEN38_OPENROUTER_PROVIDER}, received {upstream_provider!r}"
+        )
+    choices = raw.get("choices")
+    if not isinstance(choices, list) or len(choices) != 1:
+        raise RuntimeError("OpenRouter response must contain exactly one choice")
+    choice = choices[0]
+    if not isinstance(choice, dict):
+        raise RuntimeError("OpenRouter response choice must be a mapping")
+    finish_reason = choice.get("finish_reason")
+    if finish_reason != "stop":
+        raise RuntimeError(f"OpenRouter response did not complete: {finish_reason!r}")
+    message = choice.get("message")
+    if not isinstance(message, dict):
+        raise RuntimeError("OpenRouter response message must be a mapping")
+    content = message.get("content")
+    if not isinstance(content, str) or not content.strip():
+        raise RuntimeError("OpenRouter transport returned no output text")
+    output = ScriptBible.model_validate_json(content)
+
+    usage = raw.get("usage")
+    if not isinstance(usage, dict):
+        raise RuntimeError("OpenRouter response usage must be a mapping")
+    prompt_tokens = _token_count(usage.get("prompt_tokens"), "prompt_tokens")
+    completion_tokens = _token_count(
+        usage.get("completion_tokens"), "completion_tokens"
+    )
+    total_tokens = _token_count(usage.get("total_tokens"), "total_tokens")
+    if total_tokens != prompt_tokens + completion_tokens:
+        raise RuntimeError("OpenRouter total_tokens does not reconcile")
+    reported_cost = usage.get("cost")
+    if (
+        isinstance(reported_cost, bool)
+        or not isinstance(reported_cost, (int, float))
+        or reported_cost < 0
+    ):
+        raise RuntimeError("OpenRouter usage.cost must be a nonnegative number")
+    return output, {
+        "requested_model": identity.requested_model,
+        "returned_model": identity.returned_model,
+        "request_id": identity.request_id,
+        "finish_reason": finish_reason,
+        "input_tokens": prompt_tokens,
+        "output_tokens": completion_tokens,
+        "reported_cost_usd": float(reported_cost),
+        "cost_estimated": False,
+        "latency_seconds": latency_seconds,
+        "upstream_provider": upstream_provider,
+        "reasoning_effort": reasoning_effort,
+        "allow_fallbacks": False,
+        "raw_usage": usage,
+    }
+
+
 def _anthropic_schema(schema: dict[str, Any]) -> dict[str, Any]:
     """Match Anthropic SDK schema simplification while preserving post-validation."""
     normalized = _to_openai_strict_schema(schema)
@@ -275,7 +393,30 @@ def _request_json(payload: dict, *, timeout_seconds: float) -> dict:
     return raw
 
 
+def _request_openrouter_json(payload: dict, *, timeout_seconds: float) -> dict:
+    request = urllib.request.Request(
+        OPENROUTER_CHAT_URL,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {require_env('OPENROUTER_API_KEY')}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=timeout_seconds) as response:  # noqa: S310
+            raw = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"OpenRouter HTTP error {exc.code}: {detail}") from exc
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"OpenRouter request failed: {exc.reason}") from exc
+    if not isinstance(raw, dict):
+        raise RuntimeError("OpenRouter response must be a mapping")
+    return raw
+
+
 def _token_count(value: object, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value < 0:
-        raise RuntimeError(f"Anthropic {name} must be a nonnegative integer")
+        raise RuntimeError(f"Provider {name} must be a nonnegative integer")
     return value

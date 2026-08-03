@@ -3860,6 +3860,7 @@ evals:
     story_refs:
       - "208"
       - "210"
+      - "211"
     category_refs:
       - spec:2
       - spec:8
@@ -3906,6 +3907,20 @@ evals:
       cost_usd_max: 0.01
 
     scores:
+      - model: "Qwen3.8 Max via OpenRouter"
+        evidence_status: bounded-stop-non-decision-grade
+        metrics:
+          overall: 0.82495
+          deterministic: 0.6999
+          rubric: 0.95
+        latency_ms: 64608
+        cost_usd: 0.021418
+        cost_estimated: false
+        measured: 2026-08-03
+        git_sha: "f01e865+story211-hash-manifest"
+        result_file: benchmarks/results/script-bible-qwen38-openrouter-open-frequency-2026-08-03.json
+        contract_manifest: docs/evals/story-211-qwen38-contract-manifest.json
+        note: "Attempt 021 exact-runtime Open Frequency progressive stop. The exact qwen/qwen3.8-max route through Alibaba qualified no-fallback strict schema, terminal completion, identity, and raw usage. The Opus rubric passed at 0.95, while deterministic 0.6999 failures were source-inspected as scorer/contract defects plus minor model overstatement. Qwen nevertheless misses the 30s latency gate by 2.15x and the $0.01 cost gate by 2.14x. The second corpus, xhigh diagnostic, and fresh default comparator were not run. Do not adopt for script bible at current price/latency; production transport and default remain unchanged."
       - model: "Opus 5"
         evidence_status: bounded-stop-non-decision-grade
         metrics:
@@ -4120,6 +4135,28 @@ evals:
         note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
     attempts:
+      - id: "021"
+        story: attempts/021-script-bible-qwen38-openrouter.md
+        date: 2026-08-03
+        status: failed
+        approach: "Qualified exact Qwen3.8 OpenRouter/Alibaba strict structured output, then stopped after one exact-runtime synthetic case failed absolute latency and cost gates."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-03
+        subject_model: "Qwen3.8 Max via OpenRouter"
+        score_before: null
+        score_after: 0.82495
+        latency_before: null
+        latency_after: 64608
+        cost_before: null
+        cost_after: 0.021418
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: cheaper-subject-model
+            note: "Retry only if the exact full-script call can plausibly clear the $0.01 gate."
+          - condition: faster-subject-model
+            note: "Retry only if the same contract can plausibly clear 30 seconds."
+          - condition: scorer-fix
+            note: "Regrade the frozen output after an independently verified structural scorer repair; do not spend on a fresh subject call unless value gates also become plausible."
       - id: "020"
         story: attempts/020-script-bible-opus-5-runtime-comparison.md
         date: 2026-07-24

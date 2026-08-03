@@ -52,9 +52,32 @@ def reconcile_standard_usage(
         raw_usage,
         allow_total_derived_hidden=allow_total_derived_hidden,
     )
-    if raw != normalized:
+    normalized_core = (
+        normalized.prompt,
+        normalized.visible_completion,
+        normalized.hidden_completion,
+        normalized.total,
+        normalized.billed_completion,
+    )
+    raw_core = (
+        raw.prompt,
+        raw.visible_completion,
+        raw.hidden_completion,
+        raw.total,
+        raw.billed_completion,
+    )
+    reasoning_mismatch = (
+        normalized.reported_reasoning_completion is not None
+        and raw.reported_reasoning_completion
+        != normalized.reported_reasoning_completion
+    )
+    if raw_core != normalized_core or reasoning_mismatch:
         raise ValueError("raw provider usage does not match normalized tokenUsage")
-    return normalized
+    # Promptfoo may strip completionDetails from a custom provider's normalized
+    # tokenUsage while retaining the provider-owned raw response. In that case
+    # the raw reasoning count is strictly stronger replay evidence, provided all
+    # billable counters still reconcile exactly.
+    return raw
 
 
 def reconcile_gemini_usage(

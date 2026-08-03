@@ -104,7 +104,7 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:6`, `spec:7`
-- UI scout freshness: attention needed — last run 2026-04-12 is 104 days old against a 14-day cadence
+- UI scout freshness: attention needed — last run 2026-04-12 is 113 days old against a 14-day cadence
 - Sequencing bias: `scene-generation-completion` — Keep `spec:6` / `spec:7` as the active product lane even after Story 164 closed the first surfaced real-scene render route. The next slice should deepen scene-generation completeness from that honest operator path instead of retreating to throughput-only or eval-polish work.
 - Sequencing bias: `pipeline-throughput-efficiency` — Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
@@ -155,6 +155,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 207 | Grok 4.5 Model-Slot Eval Refresh | High | Done | — | spec:2, spec:7, spec:8 | 035, 200 | [story-207](stories/story-207-grok-45-model-slot-eval-refresh.md) |
 | 208 | Gemini Model Refresh and Repository Eval Truth Audit | High | Done | — | spec:2, spec:3, spec:7, spec:8 | 035, 204 | [story-208](stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md) |
 | 210 | Opus 5 Bounded Script-Bible Eval | High | Done | — | spec:2, spec:8 | 035, 208, 209 | [story-210](stories/story-210-opus-5-bounded-script-bible-eval.md) |
+| 211 | Qwen3.8 OpenRouter Bounded Script-Bible Eval | High | Done | — | spec:2, spec:8 | 035, 208, 209, 210 | [story-211](stories/story-211-qwen38-openrouter-bounded-script-bible-eval.md) |
 | 064 | Screenplay Format Round-Trip: Converter Upgrade + Fidelity Test Suite | Medium | Done | — | spec:2 | — | [story-064](stories/story-064-screenplay-format-round-trip.md) |
 | 070 | Script View Scene Dividers & Entity Hotlinks | Medium | Done | — | spec:2, spec:3, spec:5 | 045 | [story-070](stories/story-070-script-view-scene-dividers-and-hotlinks.md) |
 | 072 | Live Entity Discovery Feedback | Medium | Done | — | spec:2, spec:5 | 062 | [story-072](stories/story-072-live-entity-discovery-feedback.md) |

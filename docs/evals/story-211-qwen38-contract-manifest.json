@@ -1,0 +1,26 @@
+{
+  "story": "211",
+  "base_git_sha": "f01e86567a7466b234e45fdcbda45efbaf9edf19",
+  "generated_at": "2026-08-03T20:10:00Z",
+  "evidence_status": "dirty-contract-hash-complete",
+  "files": {
+    "benchmarks/providers/script_bible_runtime_provider.py": "8eb728c992cea912a166c479370ff1012277261342069297dc2968ec14925441",
+    "benchmarks/runtime_tasks/script-bible-runtime.yaml": "614d49fb16bac2f0485ebd5a1f3548ee1e18f7bcc5b6592e024c18c5268dc0b4",
+    "benchmarks/prompts/script-bible-runtime-marker.txt": "636a2e3031b731546a6deccc15ff98acd6f360765a77112976f74384abd30e19",
+    "src/cine_forge/modules/ingest/script_bible_v1/main.py": "7361da008a1d058fcae7e9e8733128a60e459d4677612a7f11681bdeda54376d",
+    "src/cine_forge/schemas/script_bible.py": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb",
+    "src/cine_forge/evals/token_metrics.py": "5f165a3ac874e103d62c3651a25cca04b2ffa4b71dd19bbbcbe5f3f781e00e0e",
+    "benchmarks/scorers/script_bible_scorer.py": "d7600e8b652d18c32127bcbdec7dcffa340feccf2d500f00b62b4e7ae335b086",
+    "benchmarks/golden/open-frequency-script-bible.json": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
+    "tests/fixtures/ingest_inputs/open_frequency_short.fountain": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "tests/unit/test_openrouter_script_bible_provider.py": "4da56256741ea0bf1c7472ec42697a5c0835210f238aa8443a82c4822f532d2b",
+    "tests/unit/test_non_gemini_token_metrics.py": "9404d16019764daa5c6bb193a902c6bdd3f34f79ff0d9122560f76249694b607",
+    "benchmarks/results/qwen38-openrouter-native-strict-probe-2026-08-03.json": "470c77a02290959f287ee3fa564a46063109bf88eaa86a1b0be0ee0fbe210033",
+    "benchmarks/results/script-bible-qwen38-openrouter-open-frequency-2026-08-03.json": "0966d3d22084e1a552e599c0e64b795116c1d20101b7c432ccd57d95f571c326"
+  },
+  "commands": {
+    "native_probe": "OpenRouter Chat Completions with exact qwen/qwen3.8-max, Alibaba-only routing, strict JSON Schema, and low reasoning",
+    "bounded_eval": "promptfoo eval -c runtime_tasks/script-bible-runtime.yaml --no-cache --filter-providers '^Qwen3.8 Max via OpenRouter$' --filter-pattern 'Open Frequency' -j 1",
+    "metrics": "PYTHONPATH=src <cineforge-python> scripts/extract-eval-metrics.py --result-file benchmarks/results/script-bible-qwen38-openrouter-open-frequency-2026-08-03.json"
+  }
+}
