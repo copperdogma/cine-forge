@@ -1,6 +1,6 @@
 ---
 id: "211"
-title: "Qwen3.8 OpenRouter Bounded Script-Bible Eval"
+title: "OpenRouter Bounded Script-Bible Challenger Evals"
 status: "Done"
 priority: "High"
 ideal_refs:
@@ -32,10 +32,11 @@ roadmap_tags:
   - "model-refresh"
   - "openrouter"
   - "qwen3.8"
+  - "deepseek-v4-flash"
 legacy_system: "Cross-Cutting"
 ---
 
-# Story 211 — Qwen3.8 OpenRouter Bounded Script-Bible Eval
+# Story 211 — OpenRouter Bounded Script-Bible Challenger Evals
 
 **Priority**: High
 **Status**: Done
@@ -46,12 +47,13 @@ legacy_system: "Cross-Cutting"
 
 ## Goal
 
-Qualify OpenRouter's exact `qwen/qwen3.8-max` route and run the smallest
-source-backed script-bible comparison that can change CineForge's ingest-model
-decision. Keep access, transport, reliability, conditional semantic quality,
-and adoption separate; preserve exact identity, usage, pricing, privacy, and
-failure evidence; and do not change the production default without a later
-explicit user decision.
+Qualify one OpenRouter challenger at a time and run the smallest source-backed
+script-bible comparison that can change CineForge's ingest-model decision. Keep
+access, transport, reliability, conditional semantic quality, and adoption
+separate; preserve exact identity, usage, pricing, privacy, and failure
+evidence; and do not change the production default without a later explicit
+user decision. Qwen3.8 completed the first bounded arm; DeepSeek V4 Flash
+completed a second bounded attempt on the same decision surface.
 
 ## Eval Ladder Context
 
@@ -70,8 +72,15 @@ explicit user decision.
   runtime-shaped Open Frequency case at concurrency one. Advance to broader
   corpus/comparator evidence only if absolute quality, latency, cost,
   reliability, and privacy gates remain viable.
+- **Current trigger**: OpenRouter now exposes the immutable
+  `deepseek/deepseek-v4-flash-0731` snapshot (canonical
+  `deepseek/deepseek-v4-flash-20260731`) with strict structured-output and ZDR
+  routes. The user requested one repaired, full-screenplay `script_bible_v1`
+  comparison, explicitly excluding a five-slot sweep.
 
 ## Decision Contract
+
+### Completed Qwen3.8 arm
 
 - **Candidate/access path**: `qwen/qwen3.8-max` through OpenRouter Chat
   Completions, pinned to provider `Alibaba`, `allow_fallbacks=false`, and
@@ -107,6 +116,46 @@ explicit user decision.
   cost failure stops expansion. A one-case pass remains provisional and cannot
   support adoption without the second corpus and a fresh default comparator.
 
+### DeepSeek V4 Flash extension
+
+- **Candidate/access path**: immutable OpenRouter model
+  `deepseek/deepseek-v4-flash-0731`, canonical snapshot
+  `deepseek/deepseek-v4-flash-20260731`, through Chat Completions. Pin one
+  provider that supports strict structured output and ZDR, set
+  `allow_fallbacks=false`, `require_parameters=true`, `data_collection=deny`,
+  and `zdr=true`. Returned model, response ID, upstream provider, finish reason,
+  and reconciled token/cost counters are mandatory.
+- **Candidate arm**: low reasoning, excluded from the visible strict-JSON
+  response. No second DeepSeek configuration arm is planned.
+- **Comparison**: fresh DeepSeek V4 Flash versus fresh executable incumbent
+  `gemini-3.5-flash-lite` with minimal thinking on the same complete synthetic
+  Open Frequency screenplay. This is one slot, one fixture, and two subject
+  arms—not a historical-row comparison and not a five-slot sweep.
+- **Selected slot/eval**: `script_bible_v1` / maintained `script-bible`.
+- **Frozen semantic contract**: production `EXTRACTION_PROMPT`, `ScriptBible`
+  Pydantic schema, maintained Opus 4.6 rubric, source-linked Open Frequency
+  golden, and exact base SHA `9d878a8e68d17175a40f155239c29baed6783235`.
+- **Scorer repair boundary**: repair only the three source-proven defects from
+  Attempt 021 before paid comparison calls: schema-permitted descriptive act
+  boundaries, source-faithful annotated theme evidence, and the `Kell ... cell
+  towers are dead` false-positive death regex. Add regression fixtures first.
+  Do not change the golden, semantic prompt, rubric, thresholds, or genuine
+  hallucination penalties.
+- **Absolute gates**: overall `>=0.90`, latency `<=30,000 ms`, cost
+  `<=$0.01` per subject call, terminal strict-schema success, exact identity,
+  sane usage, no fallback, and no policy/safety refusal.
+- **Budget**: aggregate paid-call cap `$5`. Native access/schema probe plus the
+  two one-case subjects and their maintained judges must remain conservatively
+  below the cap. Stop before any unbounded stage.
+- **Privacy**: only the repo-authored synthetic Open Frequency screenplay may
+  leave the repo, and only through a pinned ZDR endpoint. The Mariner remains
+  excluded.
+- **Cache/concurrency/retries**: `--no-cache`, `-j 1`, one capacity/transport
+  retry at most, and no semantic retry after a valid completed response.
+- **Progressive stop**: a pre-response access or transport block ends the run
+  with capability not measured. Otherwise complete the requested two-arm
+  comparison, then stop; do not advance into any other slot or corpus.
+
 ## Acceptance Criteria
 
 - [x] Exact catalog, authenticated access, native served identity, provider
@@ -122,6 +171,21 @@ explicit user decision.
   provenance are complete and replayable.
 - [x] A scoped adopt / conditional-adopt / do-not-adopt / defer decision is
   stated for script bible only; production defaults remain unchanged.
+
+### DeepSeek V4 Flash extension
+
+- [x] The three source-proven scorer defects have regression coverage and are
+  repaired without weakening real hallucination detection.
+- [x] Exact authenticated model/provider identity, ZDR/no-fallback routing,
+  strict schema, usage, finish reason, and current pricing are qualified.
+- [x] The fresh DeepSeek/Gemini Open Frequency comparison was attempted at
+  `--no-cache -j 1`; Gemini's valid cell was structurally and semantically
+  scored, while DeepSeek's timeout and one rate-limited retry are retained as
+  pre-response transport evidence rather than fabricated quality scores.
+- [x] Every significant mismatch is source-inspected and classified as
+  model-wrong, golden-wrong, or ambiguous, with runtime significance.
+- [x] Result, attempt, registry, truth ledger, story, and spend evidence are
+  complete and replayable; no default, commit, push, or deployment occurs.
 
 ## Out of Scope
 
@@ -153,6 +217,8 @@ explicit user decision.
 
 ## Tasks
 
+### Completed Qwen3.8 arm
+
 - [x] Qualify catalog, endpoint, authentication, privacy, native strict schema,
   exact identity, usage, price, and reasoning contract.
 - [x] Add a narrowly tested OpenRouter branch to the existing exact-runtime
@@ -178,6 +244,20 @@ explicit user decision.
   - [x] **T3 — Fewer Files:** reuse maintained eval/provider seams.
   - [x] **T4 — Verbose Artifacts:** preserve raw evidence and a live cost ledger.
   - [x] **T5 — Ideal vs Today:** do not add scaffolding beyond the measured transport need.
+
+### DeepSeek V4 Flash extension
+
+- [x] Add failing regression tests for the three source-proven scorer defects,
+  then make the smallest scorer repair.
+- [x] Generalize the existing isolated OpenRouter strict-schema seam for the
+  immutable DeepSeek snapshot without changing production transport.
+- [x] Qualify one pinned ZDR route and run the fresh two-arm Open Frequency
+  comparison at `--no-cache -j 1`.
+- [x] Inspect source/output/scorer/rubric evidence and classify every mismatch.
+- [x] Record Attempt 022, registry row/history, truth ledger, work log, contract
+  hashes, and spend; regenerate methodology surfaces.
+- [x] Run focused tests/lint, `make test-unit`, registry/truth checks,
+  `pnpm methodology:compile`, and `pnpm methodology:check`.
 
 ## Workflow Gates
 
@@ -214,6 +294,11 @@ N/A
   `spec:8` hold phase, ADR-001, ADR-003, Stories 208-210, the maintained eval,
   task, scorer, goldens, and Promptfoo runbook. No new ADR is needed because
   this is an isolated provider qualification and model measurement.
+- **DeepSeek extension**: reuse Story 211 because this is the same subsystem,
+  validation boundary, and success surface. The 422-line benchmark provider is
+  above the 400-line planning watchpoint; generalize its existing OpenRouter
+  branch instead of adding a parallel transport, and do not add production
+  responsibilities to it.
 
 ## Files to Modify
 
@@ -231,6 +316,15 @@ N/A
   decision contract, spend ledger, work log, and validation.
 - `docs/stories.md`, `docs/build-map.md`, `docs/methodology/graph.json` —
   regenerated views.
+- `benchmarks/scorers/script_bible_scorer.py` and focused scorer tests — repair
+  the three source-proven Attempt 021 defects without changing the golden.
+- `benchmarks/providers/script_bible_runtime_provider.py` and
+  `tests/unit/test_openrouter_script_bible_provider.py` — generalize the
+  isolated OpenRouter strict-schema path for the DeepSeek snapshot.
+- `benchmarks/runtime_tasks/script-bible-runtime.yaml` — one DeepSeek arm plus
+  the maintained Gemini comparator.
+- `docs/evals/attempts/022-script-bible-deepseek-v4-flash.md` — predeclared
+  matrix, spend ledger, metrics, classifications, and conclusion.
 
 ## Redundancy / Removal Targets
 
@@ -245,7 +339,7 @@ N/A
 - The OpenRouter credential remains only in ignored local `.env`; its value is
   never printed, copied into tracked files, or recorded in evidence.
 
-## Plan
+## Completed Qwen3.8 Plan
 
 1. Qualify the exact route with authenticated metadata and a tiny synthetic
    strict-schema call under the initial `$0.02` ledger.
@@ -257,6 +351,19 @@ N/A
    predeclared; do not change prompts, scorers, goldens, or defaults.
 5. Record immutable evidence, validate the touched scope, and close with a
    per-slot adoption verdict.
+
+## DeepSeek V4 Flash Extension Plan
+
+1. Lock the immutable candidate, fresh incumbent, one complete synthetic
+   screenplay, low/minimal reasoning settings, budget, privacy, and stop gates.
+2. Add regression tests for the three known scorer defects, repair only those
+   defects, and verify existing negative controls still fail.
+3. Generalize the isolated OpenRouter strict-schema seam, qualify exact
+   authenticated ZDR/no-fallback transport, and preserve raw identity/usage.
+4. Run DeepSeek and Gemini together through the exact runtime task at
+   `--no-cache -j 1`; inspect both structural details and rubric evidence.
+5. Classify all mismatches, record immutable evidence and the scoped adoption
+   verdict, regenerate methodology surfaces, and run the full required checks.
 
 ## Work Log
 
@@ -290,7 +397,60 @@ focused provider/metric tests, Ruff, diff hygiene, and all `2,049` unit tests
 passed. Methodology generated views were refreshed and checked. No private
 fixture, production transport, model default, commit, or push was involved.
 
-## Result
+20260803-2127 — deepseek-decision-contract: reopened Story 211 instead of
+fragmenting the same exact-runtime decision surface into another model-specific
+story. Live DeepSeek and OpenRouter docs resolve the candidate to immutable
+`deepseek/deepseek-v4-flash-0731`; the repo has OpenRouter but no native
+DeepSeek credential. Predeclared one complete synthetic Open Frequency
+comparison against fresh Gemini 3.5 Flash-Lite, low/minimal reasoning,
+`--no-cache -j 1`, ZDR/no-fallback routing, `$5` aggregate cap, and the existing
+quality/latency/cost gates. The three Attempt 021 scorer defects will be repaired
+with regression coverage before any paid comparison call; prompt, schema,
+golden, rubric, thresholds, production transport, and defaults remain frozen.
+Next: implement and validate the scorer/provider repairs, then run the bounded
+two-arm comparison.
+
+20260803-2143 — deepseek-qualification: the three source-proven scorer defects
+were repaired with direct positive/negative controls. Frozen Qwen output now
+passes the current scorer at `0.9533`, while its prior latency/cost rejection
+remains intact. A tiny exact DeepSeek/Phala probe qualified strict `ScriptBible`,
+low reasoning, terminal identity/usage/cost evidence, ZDR, denied collection,
+and no fallbacks, but took `133,706 ms`—already beyond the slot's `30,000 ms`
+latency limit. Operator impact: the route is real and privacy-eligible for the
+synthetic fixture, but even the tiny request is too slow for this default slot.
+Next: run the one frozen full-script comparison and retain any pre-response
+failure without assigning a quality score.
+
+20260803-2156 — deepseek-bounded-result: the full-script two-arm run returned a
+valid fresh Gemini result but Promptfoo's independent five-minute Python-worker
+watchdog killed DeepSeek before it returned. After raising only that watchdog,
+the single allowed DeepSeek-only retry exhausted the pinned route's rate limits
+after `182,003 ms`; no alternative endpoint, fallback, semantic retry, second
+fixture, or other slot ran. Gemini scored `0.78995` overall (`0.6999`
+deterministic fail, `0.88` rubric pass), with `4,128 ms` latency and estimated
+`$0.0028251` subject cost. Its acts overlap the final morning scene and its
+north-shelter relay account is incomplete, so the repaired hard gate correctly
+rejects it despite the rubric pass. Known spend is about `$0.1254471`; even a
+conservative maximum charge for the unreconciled timed-out DeepSeek request
+keeps the run below the `$5` cap. Operator impact: do not adopt DeepSeek from
+this evidence; its full-script quality is unmeasured and its observed access is
+far too slow/unreliable. The configured Gemini default remains unchanged but
+is still provisional, now with a fresh one-case maintenance signal. Next:
+validate and close the evidence-only branch without committing or pushing.
+
+20260803-2201 — validation-closeout: `88` focused scorer/provider/contract
+tests, focused Ruff, JSON/YAML parsing, eval-registry consistency, truth-ledger
+consistency, and methodology compile/check all passed. The first full unit run
+found one registry-ordering regression because a test deliberately selects the
+historical adopted Gemini row by first match; the new current-contract rejection
+was moved after that immutable adoption-history row without changing either
+result. The targeted regression then passed and the complete rerun finished
+with `2,058 passed`; a final rerun after strengthening explicit-death negative
+controls finished with `2,062 passed`. `make check-size` reported only existing large files; no
+production or UI file was touched, so browser verification is not applicable.
+No default, production transport, secret, commit, push, or deployment changed.
+
+## Prior Result — Qwen3.8
 
 **Do not adopt Qwen3.8 Max for `script_bible_v1` at current OpenRouter
 price/latency.** Access and conditional semantic quality qualify, but the
@@ -302,3 +462,18 @@ single successful observation, and broader evidence was correctly stopped.
 for the frozen response/grades and
 `docs/evals/attempts/021-script-bible-qwen38-openrouter.md` for the decision
 ledger and mismatch evidence.
+
+## Current Result — DeepSeek V4 Flash
+
+**Do not adopt DeepSeek V4 Flash for `script_bible_v1` from this run.** The
+exact pinned strict-schema route qualified on a tiny probe, but no full-script
+completion survived the bounded comparison: the first exceeded five minutes
+and the one repaired retry exhausted rate limits. Quality is unmeasured, and
+the latency/reliability gates already fail. Fresh Gemini is not a clean
+current-contract pass either (`0.78995` overall), so this attempt makes no
+production default change.
+
+**Where to verify:** inspect
+`benchmarks/results/script-bible-deepseek-v4-flash-vs-gemini35flashlite-open-frequency-2026-08-03.json`,
+`benchmarks/results/script-bible-deepseek-v4-flash-open-frequency-retry-2026-08-03.json`,
+and `docs/evals/attempts/022-script-bible-deepseek-v4-flash.md`.

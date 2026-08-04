@@ -1,0 +1,30 @@
+{
+  "story": "211",
+  "attempt": "022",
+  "base_git_sha": "9d878a8e68d17175a40f155239c29baed6783235",
+  "generated_at": "2026-08-04T03:56:14Z",
+  "evidence_status": "dirty-contract-hash-complete",
+  "files": {
+    "benchmarks/providers/script_bible_runtime_provider.py": "2ece7ec4d91313a44d654eaeb9306213dfa4bf426a33019bd3dc401ec4f1fd89",
+    "benchmarks/runtime_tasks/script-bible-runtime.yaml": "cfe62a96048d14b5bb9f12d1de729072253af8bc1a1427e3f3b91d88b360852c",
+    "benchmarks/prompts/script-bible-runtime-marker.txt": "636a2e3031b731546a6deccc15ff98acd6f360765a77112976f74384abd30e19",
+    "src/cine_forge/modules/ingest/script_bible_v1/main.py": "7361da008a1d058fcae7e9e8733128a60e459d4677612a7f11681bdeda54376d",
+    "src/cine_forge/schemas/script_bible.py": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb",
+    "src/cine_forge/evals/token_metrics.py": "5f165a3ac874e103d62c3651a25cca04b2ffa4b71dd19bbbcbe5f3f781e00e0e",
+    "benchmarks/scorers/script_bible_scorer.py": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+    "benchmarks/golden/open-frequency-script-bible.json": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
+    "tests/fixtures/ingest_inputs/open_frequency_short.fountain": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "tests/unit/test_openrouter_script_bible_provider.py": "c0ebaa542de6dfffdd725f3061c5fd55e99872f3a3a01899ff211ca52402469d",
+    "tests/unit/test_script_bible_scorer.py": "7579922707eb712548019c672e78fe95754fcb8dadbbbea4c0712b270eaee732",
+    "benchmarks/results/deepseek-v4-flash-openrouter-native-strict-probe-2026-08-03.json": "6fcf36d98404cb97ad1a332493c68e4756a93ef0fc8c08593adc396a8982046a",
+    "benchmarks/results/script-bible-qwen38-open-frequency-regrade-2026-08-03.json": "5daa0b0d8d4dc9b85cf71bb03342d9f6dee4554e4035f6a9407773bc17f5461f",
+    "benchmarks/results/script-bible-deepseek-v4-flash-vs-gemini35flashlite-open-frequency-2026-08-03.json": "2ce6fc3ca6562d0ce14716b939a9c79bc90682d37f8b2f32044a832af68e8d84",
+    "benchmarks/results/script-bible-deepseek-v4-flash-open-frequency-retry-2026-08-03.json": "1f8349a084a9577cc2515d20b92e260e41f80fd36e8a29575034c51d84f83e75"
+  },
+  "commands": {
+    "native_probe": "OpenRouter Chat Completions with exact deepseek/deepseek-v4-flash-0731, Phala-only routing, fallbacks disabled, strict JSON Schema, low reasoning, data_collection=deny, and zdr=true",
+    "comparison": "promptfoo eval -c runtime_tasks/script-bible-runtime.yaml --no-cache --filter-providers 'DeepSeek V4 Flash 0731 via OpenRouter|Gemini 3.5 Flash-Lite' --filter-pattern 'Open Frequency exact-runtime script bible' -j 1",
+    "bounded_retry": "promptfoo eval -c runtime_tasks/script-bible-runtime.yaml --no-cache --filter-providers 'DeepSeek V4 Flash 0731 via OpenRouter' --filter-pattern 'Open Frequency exact-runtime script bible' -j 1",
+    "frozen_qwen_regrade": "PYTHONPATH=src <cineforge-python> -m pytest tests/unit/test_script_bible_scorer.py -m unit"
+  }
+}

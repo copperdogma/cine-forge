@@ -1,5 +1,27 @@
 # Changelog
 
+## [2026-08-03-02] — Evaluate DeepSeek V4 Flash for script bible (Story 211)
+
+### Added
+- Added a bounded OpenRouter/Phala DeepSeek V4 Flash 0731 script-bible lane
+  with pinned ZDR/no-fallback routing, strict structured output, exact identity,
+  usage and cost evidence, focused tests, retained results, and contract hashes.
+- Added Attempt 022 plus fresh exact-runtime Open Frequency evidence for the
+  DeepSeek challenger and Gemini 3.5 Flash-Lite incumbent.
+
+### Changed
+- Recorded a script-bible-only do-not-adopt decision after DeepSeek's
+  full-script call exceeded five minutes and its one repaired retry exhausted
+  rate limits; the production transport and Gemini default remain unchanged.
+- Recorded the fresh Gemini comparator as a current-contract quality rejection
+  after overlapping act boundaries and incomplete tower-relay coverage failed
+  the deterministic hard gate.
+
+### Fixed
+- Repaired script-bible scoring for source-grounded descriptive act boundaries,
+  annotated source evidence, and character-death matching without weakening
+  explicit death or overlapping-act negative controls.
+
 ## [2026-08-03-01] — Evaluate Qwen3.8 for script bible (Story 211)
 
 ### Added

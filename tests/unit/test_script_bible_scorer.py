@@ -19,6 +19,9 @@ OPEN_FREQUENCY_GOLDEN = REPO_ROOT / "benchmarks" / "golden" / (
 OPEN_FREQUENCY_SOURCE = REPO_ROOT / "tests" / "fixtures" / "ingest_inputs" / (
     "open_frequency_short.fountain"
 )
+QWEN38_RESULT = REPO_ROOT / "benchmarks" / "results" / (
+    "script-bible-qwen38-openrouter-open-frequency-2026-08-03.json"
+)
 
 REQUIRED_FIELDS = [
     "title",
@@ -292,6 +295,34 @@ def test_script_bible_requires_exact_source_act_boundaries() -> None:
 
 
 @pytest.mark.unit
+def test_script_bible_accepts_source_grounded_descriptive_act_boundaries() -> None:
+    candidate = _open_frequency_control()
+    headings = json.loads(OPEN_FREQUENCY_GOLDEN.read_text())["source_headings"]
+    candidate["act_structure"] = [
+        _open_act(
+            1,
+            headings[0],
+            "The ON AIR sign flickers, then dies again. Aria asks for ten minutes and one miracle.",
+        ),
+        _open_act(
+            2,
+            headings[1],
+            "Aria smiles for the first time all night and tightens the last bolt.",
+        ),
+        _open_act(
+            3,
+            headings[2],
+            "The ON AIR sign steadies into a solid red glow as the four settle back to work.",
+        ),
+    ]
+
+    result = scorer.get_assert(json.dumps(candidate), _open_frequency_context())
+
+    assert result["pass"] is True
+    assert "act_boundary_grounding=1.00" in result["reason"]
+
+
+@pytest.mark.unit
 def test_script_bible_requires_source_grounded_theme_evidence() -> None:
     candidate = _open_frequency_control()
     for index, theme in enumerate(candidate["themes"], start=1):
@@ -306,10 +337,75 @@ def test_script_bible_requires_source_grounded_theme_evidence() -> None:
 
 
 @pytest.mark.unit
+def test_script_bible_accepts_source_grounded_annotated_theme_evidence() -> None:
+    candidate = _open_frequency_control()
+    candidate["themes"][0]["evidence"] = [
+        "'north shelter needs insulin and dry blankets' — the radio carries urgent aid requests",
+        "June tapes 'OPEN FREQUENCY' over the door — the station becomes a public commons",
+    ]
+    candidate["themes"][1]["evidence"] = [
+        "'It only tried to kill me once' — Kell makes do with the damaged antenna",
+        (
+            "Aria braces the lantern with her boot while Noah clamps the portable "
+            "antenna — improvisation under pressure"
+        ),
+    ]
+    candidate["themes"][2]["evidence"] = [
+        "The ON AIR sign flickers, then dies again — the team initially loses its voice",
+        "The ON AIR sign steadies into a solid red glow — the broadcast is restored",
+    ]
+
+    result = scorer.get_assert(json.dumps(candidate), _open_frequency_context())
+
+    assert result["pass"] is True
+    assert "theme_evidence_grounding=1.00" in result["reason"]
+
+
+@pytest.mark.unit
+def test_script_bible_does_not_treat_dead_cell_towers_as_kells_death() -> None:
+    candidate = _open_frequency_control()
+    candidate["act_structure"][0]["summary"] += (
+        " Kell reports the bridge closed; cell towers are dead."
+    )
+
+    result = scorer.get_assert(json.dumps(candidate), _open_frequency_context())
+
+    assert result["pass"] is True
+    assert "unsupported_claims=1.00" in result["reason"]
+
+
+@pytest.mark.unit
+def test_script_bible_repaired_contract_regrades_frozen_qwen_output() -> None:
+    retained = json.loads(QWEN38_RESULT.read_text())
+    outputs = [
+        row["response"]["output"]
+        for row in retained["results"]["results"]
+        if row.get("response", {}).get("output")
+    ]
+
+    assert len(outputs) == 1
+    result = scorer.get_assert(outputs[0], _open_frequency_context())
+
+    assert result["pass"] is True
+    assert result["score"] == 0.9533
+    assert "act_boundary_grounding=1.00" in result["reason"]
+    assert "theme_evidence_grounding=1.00" in result["reason"]
+    assert "unsupported_claims=1.00" in result["reason"]
+
+
+@pytest.mark.unit
 @pytest.mark.parametrize(
     "unsupported_claim",
     [
         "Maya dies after the broadcast.",
+        "Kell is dead by morning.",
+        "Kell was killed during the storm.",
+        "Kell lay dead beside the transmitter.",
+        "Maya was brutally killed during the storm.",
+        "Aria had died before the morning bulletin.",
+        "They found dead Noah at the water tower.",
+        "Kell's death silences the room.",
+        "The death of Kell ends the broadcast.",
         "Aria begins a romantic relationship with Noah.",
         "The storm is revealed to be a tornado.",
         "Red Creek completely recovered by sunrise.",

@@ -42,6 +42,20 @@ OPUS_5_INPUT_PER_M = 5.0
 OPUS_5_OUTPUT_PER_M = 25.0
 QWEN38_OPENROUTER_MODEL = "qwen/qwen3.8-max"
 QWEN38_OPENROUTER_PROVIDER = "Alibaba"
+DEEPSEEK_V4_FLASH_OPENROUTER_MODEL = "deepseek/deepseek-v4-flash-0731"
+DEEPSEEK_V4_FLASH_OPENROUTER_PROVIDER = "Phala"
+OPENROUTER_MODEL_CONFIGS = {
+    QWEN38_OPENROUTER_MODEL: {
+        "provider": QWEN38_OPENROUTER_PROVIDER,
+        "max_tokens": 131_072,
+        "zdr": False,
+    },
+    DEEPSEEK_V4_FLASH_OPENROUTER_MODEL: {
+        "provider": DEEPSEEK_V4_FLASH_OPENROUTER_PROVIDER,
+        "max_tokens": 393_216,
+        "zdr": True,
+    },
+}
 
 
 def call_api(prompt: str, options: dict, context: dict) -> dict:
@@ -56,7 +70,7 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
         screenplay = _screenplay(context)
         max_tokens = int(config.get("max_tokens") or DEFAULT_MAX_TOKENS)
         max_retries = int(config.get("max_retries") or 1)
-        if model == QWEN38_OPENROUTER_MODEL:
+        if model in OPENROUTER_MODEL_CONFIGS:
             provider, bare_model = "openrouter", model
         else:
             provider, bare_model = _parse_provider(model)
@@ -73,12 +87,16 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
             call_options["thinking_level"] = str(
                 config.get("thinking_level") or DEFAULT_THINKING_LEVEL
             )
-        if bare_model == QWEN38_OPENROUTER_MODEL:
-            output, metadata = _call_qwen38_openrouter(
+        if bare_model in OPENROUTER_MODEL_CONFIGS:
+            openrouter_config = OPENROUTER_MODEL_CONFIGS[bare_model]
+            output, metadata = _call_openrouter_strict(
                 prompt=call_options["prompt"],
-                max_tokens=max_tokens,
+                model=bare_model,
+                upstream_provider=str(openrouter_config["provider"]),
+                max_tokens=min(max_tokens, int(openrouter_config["max_tokens"])),
                 timeout_seconds=call_options["request_timeout_seconds"],
                 reasoning_effort=str(config.get("reasoning_effort") or "low"),
+                zdr=bool(openrouter_config["zdr"]),
             )
         elif bare_model == OPUS_5_MODEL:
             output, metadata = _call_opus_5(
@@ -144,6 +162,8 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
             "upstream_provider": metadata.get("upstream_provider"),
             "reasoning_effort": metadata.get("reasoning_effort"),
             "allow_fallbacks": metadata.get("allow_fallbacks"),
+            "data_collection": metadata.get("data_collection"),
+            "zdr": metadata.get("zdr"),
         },
         "raw": {
             "id": identity.request_id,
@@ -246,24 +266,35 @@ def _call_opus_5(
     }
 
 
-def _call_qwen38_openrouter(
+def _call_openrouter_strict(
     *,
     prompt: str,
+    model: str,
+    upstream_provider: str,
     max_tokens: int,
     timeout_seconds: float,
     reasoning_effort: str,
+    zdr: bool,
 ) -> tuple[ScriptBible, dict[str, Any]]:
-    """Call Qwen3.8 through one pinned OpenRouter provider with strict JSON."""
+    """Call one pinned OpenRouter model/provider pair with strict JSON."""
+    provider_preferences: dict[str, Any] = {
+        "order": [upstream_provider],
+        "allow_fallbacks": False,
+        "require_parameters": True,
+    }
+    if zdr:
+        provider_preferences.update(
+            {
+                "data_collection": "deny",
+                "zdr": True,
+            }
+        )
     payload = {
-        "model": QWEN38_OPENROUTER_MODEL,
+        "model": model,
         "messages": [{"role": "user", "content": prompt}],
-        "max_tokens": min(max_tokens, 131_072),
+        "max_tokens": max_tokens,
         "reasoning": {"effort": reasoning_effort, "exclude": True},
-        "provider": {
-            "order": [QWEN38_OPENROUTER_PROVIDER],
-            "allow_fallbacks": False,
-            "require_parameters": True,
-        },
+        "provider": provider_preferences,
         "response_format": {
             "type": "json_schema",
             "json_schema": {
@@ -278,16 +309,16 @@ def _call_qwen38_openrouter(
     latency_seconds = time.perf_counter() - started
     identity = validate_provider_response_identity(
         provider="openrouter",
-        requested_model=QWEN38_OPENROUTER_MODEL,
+        requested_model=model,
         returned_model=raw.get("model"),
         request_id=raw.get("id"),
         require_returned=True,
     )
-    upstream_provider = raw.get("provider")
-    if upstream_provider != QWEN38_OPENROUTER_PROVIDER:
+    returned_provider = raw.get("provider")
+    if returned_provider != upstream_provider:
         raise RuntimeError(
             "OpenRouter response provider does not match pinned provider: "
-            f"expected {QWEN38_OPENROUTER_PROVIDER}, received {upstream_provider!r}"
+            f"expected {upstream_provider}, received {returned_provider!r}"
         )
     choices = raw.get("choices")
     if not isinstance(choices, list) or len(choices) != 1:
@@ -333,9 +364,11 @@ def _call_qwen38_openrouter(
         "reported_cost_usd": float(reported_cost),
         "cost_estimated": False,
         "latency_seconds": latency_seconds,
-        "upstream_provider": upstream_provider,
+        "upstream_provider": returned_provider,
         "reasoning_effort": reasoning_effort,
         "allow_fallbacks": False,
+        "data_collection": "deny" if zdr else None,
+        "zdr": zdr,
         "raw_usage": usage,
     }
 

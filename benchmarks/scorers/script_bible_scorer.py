@@ -61,6 +61,45 @@ def _tokens(value: object) -> list[str]:
     return re.findall(r"[a-z0-9]+", str(value or "").lower())
 
 
+def _grounding_tokens(value: object) -> list[str]:
+    normalized = []
+    for token in _tokens(value):
+        if token in {"died", "dies", "dying"}:
+            normalized.append("die")
+        elif len(token) > 4 and token.endswith("ies"):
+            normalized.append(f"{token[:-3]}y")
+        elif len(token) > 5 and token.endswith("ing"):
+            normalized.append(token[:-3])
+        elif len(token) > 4 and token.endswith("s"):
+            normalized.append(token[:-1])
+        else:
+            normalized.append(token)
+    return normalized
+
+
+def _contains_token_run(haystack: list[str], needle: list[str], minimum: int = 3) -> bool:
+    maximum = min(len(needle), len(haystack))
+    for length in range(maximum, minimum - 1, -1):
+        for index in range(len(needle) - length + 1):
+            candidate = needle[index : index + length]
+            if any(
+                haystack[offset : offset + length] == candidate
+                for offset in range(len(haystack) - length + 1)
+            ):
+                return True
+    return False
+
+
+def _source_fragment_grounded(value: object, source: str) -> bool:
+    fragment = _grounding_tokens(value)
+    source_tokens = _grounding_tokens(source)
+    if len(fragment) < 4 or not source_tokens:
+        return False
+    source_vocabulary = set(source_tokens)
+    coverage = sum(token in source_vocabulary for token in fragment) / len(fragment)
+    return coverage >= 0.8 and _contains_token_run(source_tokens, fragment)
+
+
 def _contains_phrase(value: object, phrase: object) -> bool:
     haystack = _tokens(value)
     needle = _tokens(phrase)
@@ -238,24 +277,90 @@ def _story_event_contract(result: dict, golden: dict) -> tuple[float, bool, list
     return sum(valid_events) / len(valid_events), all(valid_events), missing
 
 
-def _act_boundary_contract(result: dict, golden: dict) -> tuple[float, bool]:
+def _source_scene_sections(headings: list[object], screenplay: str) -> list[str] | None:
+    lines = screenplay.splitlines(keepends=True)
+    starts: list[int] = []
+    cursor = 0
+    offset = 0
+    for heading in headings:
+        target = tuple(_tokens(heading))
+        match_index = next(
+            (
+                index
+                for index in range(cursor, len(lines))
+                if tuple(_tokens(lines[index])) == target
+            ),
+            None,
+        )
+        if match_index is None:
+            return None
+        offset += sum(len(line) for line in lines[cursor:match_index])
+        starts.append(offset)
+        cursor = match_index
+    return [
+        screenplay[start : starts[index + 1] if index + 1 < len(starts) else None]
+        for index, start in enumerate(starts)
+    ]
+
+
+def _boundary_start_index(
+    value: object,
+    normalized_headings: list[tuple[str, ...]],
+    sections: list[str],
+) -> int | None:
+    boundary = tuple(_tokens(value))
+    if boundary in normalized_headings:
+        return normalized_headings.index(boundary)
+    matches = [
+        index
+        for index, section in enumerate(sections)
+        if _source_fragment_grounded(value, section)
+    ]
+    return matches[0] if len(matches) == 1 else None
+
+
+def _act_boundary_contract(
+    result: dict,
+    golden: dict,
+    screenplay: str,
+) -> tuple[float, bool]:
     headings = golden.get("source_headings", [])
     if not headings:
         return 1.0, True
     acts = result.get("act_structure", [])
-    if not isinstance(acts, list) or not acts:
+    sections = _source_scene_sections(headings, screenplay)
+    if not isinstance(acts, list) or not acts or sections is None:
         return 0.0, False
     normalized = [tuple(_tokens(heading)) for heading in headings]
-    positions = {heading: index for index, heading in enumerate(normalized)}
+    starts = [
+        _boundary_start_index(act.get("start_scene"), normalized, sections)
+        if isinstance(act, dict)
+        else None
+        for act in acts
+    ]
+    if (
+        any(start is None for start in starts)
+        or starts[0] != 0
+        or any(
+            current <= previous
+            for previous, current in zip(starts, starts[1:], strict=False)
+        )
+    ):
+        return 0.0, False
+
     boundaries: list[tuple[int, int]] = []
-    for act in acts:
-        if not isinstance(act, dict):
+    for index, (act, start) in enumerate(zip(acts, starts, strict=True)):
+        assert isinstance(act, dict) and start is not None
+        expected_end = starts[index + 1] - 1 if index + 1 < len(starts) else len(headings) - 1
+        end_tokens = tuple(_tokens(act.get("end_scene")))
+        exact_end = expected_end if end_tokens == normalized[expected_end] else None
+        description_grounded = exact_end is None and any(
+            _source_fragment_grounded(act.get("end_scene"), sections[scene_index])
+            for scene_index in range(start, expected_end + 1)
+        )
+        if exact_end != expected_end and not description_grounded:
             return 0.0, False
-        start = positions.get(tuple(_tokens(act.get("start_scene"))))
-        end = positions.get(tuple(_tokens(act.get("end_scene"))))
-        if start is None or end is None or start > end:
-            return 0.0, False
-        boundaries.append((start, end))
+        boundaries.append((start, expected_end))
     valid = (
         boundaries[0][0] == 0
         and boundaries[-1][1] == len(headings) - 1
@@ -272,15 +377,10 @@ def _act_boundary_contract(result: dict, golden: dict) -> tuple[float, bool]:
 def _evidence_grounded(evidence: object, screenplay: str) -> bool:
     if _contains_phrase(screenplay, evidence):
         return True
-    evidence_tokens = set(_tokens(evidence))
-    line_overlap = max(
-        (
-            len(evidence_tokens & set(_tokens(line))) / max(1, len(evidence_tokens))
-            for line in screenplay.splitlines()
-        ),
-        default=0.0,
-    )
-    return len(evidence_tokens) >= 4 and line_overlap >= 0.8
+    citation = re.split(r"\s+[—–-]\s+", str(evidence or ""), maxsplit=1)[0]
+    if _contains_phrase(screenplay, citation):
+        return True
+    return _source_fragment_grounded(citation, screenplay)
 
 
 def _theme_evidence_contract(
@@ -304,13 +404,43 @@ def _theme_evidence_contract(
     return sum(grounded) / len(grounded), all(grounded)
 
 
+def _character_death_names(pattern: str) -> list[str]:
+    death_terms = {"dead", "death", "died", "dies", "killed"}
+    groups = [group.split("|") for group in re.findall(r"\(\?:([a-z|]+)\)", pattern.lower())]
+    if not any(death_terms.intersection(group) for group in groups):
+        return []
+    for terms in groups:
+        if terms and not death_terms.intersection(terms):
+            return terms
+    return []
+
+
+def _has_grammatical_character_death(value: str, names: list[str]) -> bool:
+    if not names:
+        return False
+    character = rf"(?:{'|'.join(re.escape(name) for name in names)})"
+    patterns = (
+        rf"(?i)\b{character}\b\s+(?:is|was|gets|got|becomes|became|lies|lay|lays|remains|remained)\s+(?:\w+\s+){{0,2}}(?:dead|killed)\b",
+        rf"(?i)\b{character}\b\s+(?:has|had)\s+(?:been\s+)?(?:died|killed)\b",
+        rf"(?i)\b{character}\b\s+(?:dies|died)\b",
+        rf"(?i)\b{character}(?:'s|’s)\s+(?:death|killing)\b",
+        rf"(?i)\b(?:death|killing)\s+of\s+{character}\b",
+        rf"(?i)\b(?:dead|killed)\s+{character}\b",
+        rf"(?i)\b{character}\b\s*[,—–-]\s*(?:dead|killed)\b",
+    )
+    return any(regex_has_affirmed_match(pattern, value) for pattern in patterns)
+
+
 def _exclusion_contract(result: dict, golden: dict) -> tuple[float, bool, list[str]]:
     serialized = json.dumps(result)
-    matches = [
-        pattern
-        for pattern in golden.get("forbidden_claim_patterns", [])
-        if regex_has_affirmed_match(pattern, serialized)
-    ]
+    matches = []
+    for pattern in golden.get("forbidden_claim_patterns", []):
+        if not regex_has_affirmed_match(pattern, serialized):
+            continue
+        death_names = _character_death_names(pattern)
+        if death_names and not _has_grammatical_character_death(serialized, death_names):
+            continue
+        matches.append(pattern)
     return (0.0 if matches else 1.0), not matches, matches
 
 
@@ -334,11 +464,16 @@ def get_assert(output: str, context: dict) -> dict:
     synopsis_score, synopsis_valid = _synopsis_score(result, golden)
     confidence_score, confidence_valid = _confidence_score(result)
     event_score, events_valid, missing_events = _story_event_contract(result, golden)
-    boundary_score, boundaries_valid = _act_boundary_contract(result, golden)
+    screenplay = str(context.get("vars", {}).get("screenplay", ""))
+    boundary_score, boundaries_valid = _act_boundary_contract(
+        result,
+        golden,
+        screenplay,
+    )
     evidence_score, evidence_valid = _theme_evidence_contract(
         result,
         golden,
-        str(context.get("vars", {}).get("screenplay", "")),
+        screenplay,
     )
     exclusion_score, exclusions_valid, exclusion_matches = _exclusion_contract(
         result, golden

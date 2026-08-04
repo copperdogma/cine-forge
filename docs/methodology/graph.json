@@ -13859,7 +13859,7 @@
     },
     {
       "id": "211",
-      "title": "Qwen3.8 OpenRouter Bounded Script-Bible Eval",
+      "title": "OpenRouter Bounded Script-Bible Challenger Evals",
       "path": "docs/stories/story-211-qwen38-openrouter-bounded-script-bible-eval.md",
       "status": "Done",
       "priority": "High",
@@ -13895,6 +13895,7 @@
         "methodology_tooling"
       ],
       "roadmapTags": [
+        "deepseek-v4-flash",
         "evals",
         "model-refresh",
         "openrouter",
@@ -13905,9 +13906,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260803-1430",
+        "timestamp": "20260803-2201",
         "date": "2026-08-03",
-        "summary": "mismatch-and-validation: source inspection classified exact"
+        "summary": "validation-closeout: `88` focused scorer/provider/contract"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -13917,12 +13918,12 @@
         "sourcePath": "docs/stories/story-211-qwen38-openrouter-bounded-script-bible-eval.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "mismatch-and-validation: source inspection classified exact",
+        "whyNow": "validation-closeout: `88` focused scorer/provider/contract",
         "lastRelevantAction": {
           "date": "2026-08-03",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-211-qwen38-openrouter-bounded-script-bible-eval.md",
-          "summary": "mismatch-and-validation: source inspection classified exact"
+          "summary": "validation-closeout: `88` focused scorer/provider/contract"
         }
       }
     }
@@ -15525,6 +15526,17 @@
       "retryWhen": [],
       "attempts": [
         {
+          "id": "022",
+          "date": "2026-08-03",
+          "approach": "Repaired three source-proven scorer defects, qualified exact DeepSeek V4 Flash 0731 through pinned Phala ZDR strict output, then ran one no-cache full-script comparison against fresh Gemini and exhausted one DeepSeek-only transport retry.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "native-deepseek-access",
+            "stable-fast-zdr-route"
+          ]
+        },
+        {
           "id": "021",
           "date": "2026-08-03",
           "approach": "Qualified exact Qwen3.8 OpenRouter/Alibaba strict structured output, then stopped after one exact-runtime synthetic case failed absolute latency and cost gates.",
@@ -15549,7 +15561,15 @@
           ]
         }
       ],
-      "latestScore": null,
+      "latestScore": {
+        "model": "Gemini 3.5 Flash-Lite",
+        "measured": "2026-08-03",
+        "metrics": {
+          "overall": 0.78995
+        },
+        "evidenceStatus": "bounded-one-case-decision-grade-rejection",
+        "note": "Attempt 022 fresh exact-runtime Open Frequency comparator. Gemini returned exact strict ScriptBible JSON in 4,128 ms for an estimated $0.0028251 and the maintained Opus rubric passed at 0.88. The repaired deterministic scorer correctly hard-failed at 0.6999 because acts two and three overlap the final source heading rather than partitioning all four scenes, and the output under-specifies the nort…"
+      },
       "historicalEvidenceStatus": "pre-open-frequency-corpus-non-decision-grade",
       "excludedScoreCount": 23,
       "declaredSpecRefs": [
@@ -15577,19 +15597,18 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "trigger-exhausted",
-        "whyNow": "",
+        "whyNow": "Attempt 022 fresh exact-runtime Open Frequency comparator. Gemini returned exact strict ScriptBible JSON in 4,128 ms for an estimated $0.0028251 and the maintained Opus rubric passed at 0.88. The repaired deterministic scorer correctly hard-failed at 0.6999 because acts two and three overlap the final source heading rather than partitioning all four scenes, and the output under-specifies the nort…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
-          "cheaper-subject-model",
-          "faster-subject-model",
-          "scorer-fix"
+          "native-deepseek-access",
+          "stable-fast-zdr-route"
         ],
         "lastRelevantAction": {
           "date": "2026-08-03",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "021",
-          "summary": "Qualified exact Qwen3.8 OpenRouter/Alibaba strict structured output, then stopped after one exact-runtime synthetic case failed absolute latency and cost gates."
+          "sourceId": "022",
+          "summary": "Repaired three source-proven scorer defects, qualified exact DeepSeek V4 Flash 0731 through pinned Phala ZDR strict output, then ran one no-cache full-script comparison against fresh Gemini and exhausted one DeepSeek-only transport retry."
         }
       }
     },
@@ -16428,7 +16447,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 113 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 114 days old against a 14-day cadence"
     ]
   }
 }

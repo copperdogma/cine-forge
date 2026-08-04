@@ -1,0 +1,30 @@
+{
+  "evidence_status": "frozen-output-current-scorer-regrade",
+  "source_result": "benchmarks/results/script-bible-qwen38-openrouter-open-frequency-2026-08-03.json",
+  "source_result_sha256": "0966d3d22084e1a552e599c0e64b795116c1d20101b7c432ccd57d95f571c326",
+  "scorer": "benchmarks/scorers/script_bible_scorer.py",
+  "scorer_sha256": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+  "deterministic": {
+    "pass": true,
+    "score": 0.9533,
+    "components": {
+      "act_boundary_grounding": 1.0,
+      "theme_evidence_grounding": 1.0,
+      "unsupported_claims": 1.0,
+      "journey_grounding": 0.5,
+      "logline_grounding": 0.67
+    }
+  },
+  "retained_rubric": {
+    "pass": true,
+    "score": 0.95
+  },
+  "paired_overall": 0.95165,
+  "value_gates_unchanged": {
+    "latency_ms": 64608,
+    "cost_usd": 0.021418,
+    "latency_pass": false,
+    "cost_pass": false
+  },
+  "note": "The scorer repair clears the three source-proven false negatives without changing the frozen Qwen output, golden, prompt, schema, rubric, or thresholds. Qwen remains ineligible on its original latency and cost evidence."
+}

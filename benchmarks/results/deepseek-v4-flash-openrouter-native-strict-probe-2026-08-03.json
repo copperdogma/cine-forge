@@ -1,0 +1,23 @@
+{
+  "evidence_status": "live-transport-qualified",
+  "requested_model": "deepseek/deepseek-v4-flash-0731",
+  "returned_model": "deepseek/deepseek-v4-flash-0731",
+  "provider": "Phala",
+  "request_id": "gen-1785814691-pYoONuTr6H8Vu89qhXvy",
+  "finish_reason": "stop",
+  "reasoning_effort": "low",
+  "strict_schema_valid": true,
+  "fallbacks_allowed": false,
+  "data_collection": "deny",
+  "zdr": true,
+  "usage": {
+    "prompt_tokens": 47,
+    "completion_tokens": 3269,
+    "reasoning_tokens": 2521,
+    "total_tokens": 3316
+  },
+  "latency_ms": 133706,
+  "cost_usd": 0.001317,
+  "content_retained": false,
+  "note": "Tiny synthetic ScriptBible probe only. It proves exact authenticated route, strict-schema completion, privacy controls, identity, usage, and cost; it is not semantic evidence for the full-script lane."
+}

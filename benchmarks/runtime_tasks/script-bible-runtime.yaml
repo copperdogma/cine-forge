@@ -16,6 +16,19 @@ prompts:
 
 providers:
   - id: file://../providers/script_bible_runtime_provider.py
+    label: "DeepSeek V4 Flash 0731 via OpenRouter"
+    config:
+      model: deepseek/deepseek-v4-flash-0731
+      provider: openrouter
+      max_tokens: 65536
+      max_retries: 1
+      request_timeout_seconds: 600
+      # Promptfoo's Python-worker watchdog defaults to 300 seconds and must
+      # exceed the provider's 600-second request ceiling for this slow model.
+      timeout: 660000
+      reasoning_effort: low
+
+  - id: file://../providers/script_bible_runtime_provider.py
     label: "Qwen3.8 Max via OpenRouter"
     config:
       model: qwen/qwen3.8-max
