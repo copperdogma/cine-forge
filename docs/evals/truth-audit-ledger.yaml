@@ -1485,7 +1485,7 @@ surfaces:
       - "src/cine_forge/evals/token_metrics.py"
     decision_impact:
       default_driving: false
-      scope: "Isolated Opus 5, Qwen3.8/OpenRouter, DeepSeek V4 Flash/OpenRouter, and Gemini runtime-shaped script-bible parity transport."
+      scope: "Isolated Opus 5, Qwen3.8/OpenRouter, DeepSeek V4 Flash/OpenRouter, Grok 4.6/direct xAI Responses, and Gemini runtime-shaped script-bible parity transport."
     audit_status: "documented limitation"
     evidence:
       - "docs/stories/story-210-opus-5-bounded-script-bible-eval.md"
@@ -1505,8 +1505,16 @@ surfaces:
       - "benchmarks/results/script-bible-deepseek-v4-flash-vs-gemini35flashlite-open-frequency-2026-08-03.json"
       - "benchmarks/results/script-bible-deepseek-v4-flash-open-frequency-retry-2026-08-03.json"
       - "docs/evals/story-211-deepseek-v4-flash-contract-manifest.json"
-    notes: "The isolated provider imports the production prompt and schema, applies provider-specific strict-schema transformations, post-validates the original Pydantic schema, and qualified exact Opus 5 plus exact Qwen3.8/OpenRouter/Alibaba identity and usage live without changing production transport. Attempt 022 also qualified exact DeepSeek V4 Flash 0731 on Phala with fallbacks disabled, required parameters, data collection denied, ZDR required, terminal strict output, exact identity, and reconciled usage/cost. The Python-worker watchdog is now explicitly longer than the provider request ceiling."
-    limitations: "Production Opus 5 and OpenRouter transports remain deliberately unimplemented. DeepSeek's tiny probe is transport evidence only: the first full-script call exceeded five minutes without returning and the one repaired retry exhausted provider rate limits, so full-script quality, usage, and reliability remain unqualified."
+      - "docs/stories/story-212-grok-46-bounded-script-bible-eval.md"
+      - "tests/unit/test_xai_script_bible_provider.py"
+      - "docs/evals/attempts/023-script-bible-grok-46.md"
+      - "benchmarks/results/grok46-xai-native-access-probe-2026-08-12.json"
+      - "benchmarks/results/grok46-xai-script-bible-contract-probe-2026-08-12.json"
+      - "benchmarks/results/script-bible-grok46-open-frequency-2026-08-12.json"
+      - "benchmarks/results/script-bible-grok46-open-frequency-accounting-repair-2026-08-12.json"
+      - "docs/evals/story-212-grok46-contract-manifest.json"
+    notes: "The isolated provider imports the production prompt and schema, applies provider-specific strict-schema transformations, post-validates the original Pydantic schema, and qualified exact Opus 5 plus exact Qwen3.8/OpenRouter/Alibaba identity and usage live without changing production transport. Attempt 022 also qualified exact DeepSeek V4 Flash 0731 on Phala with fallbacks disabled, required parameters, data collection denied, ZDR required, terminal strict output, exact identity, and reconciled usage/cost. Attempt 023 qualified exact direct Grok 4.6 Responses identity, strict schema, low reasoning, store=false, live ZDR header, inclusive reasoning usage, cached-input pricing, and one full synthetic screenplay. The Python-worker watchdog is explicitly longer than the provider request ceiling."
+    limitations: "Production Opus 5, OpenRouter, and Grok 4.6 Responses transports remain deliberately unimplemented. DeepSeek full-script quality remains unmeasured after timeout/rate-limit failures. Grok 4.6 passed one synthetic quality/latency case but missed the hard cost gate, and live ZDR was false, so no second corpus or incumbent comparison ran."
   - id: "transport-openai-responses-provider"
     kind: "eval_transport"
     owner: "OpenAI benchmark transport owner"

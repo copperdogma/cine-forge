@@ -1,5 +1,24 @@
 # Changelog
 
+## [2026-08-12-01] — Evaluate Grok 4.6 for script bible (Story 212)
+
+### Added
+- Added a bounded direct xAI Responses Grok 4.6 script-bible lane with strict
+  production-schema output, exact identity, live retention evidence, cached and
+  reasoning token accounting, focused tests, retained probes/results, and a
+  hash-complete contract manifest.
+- Added Story 212, Attempt 023, registry history, and truth-ledger evidence for
+  the synthetic Open Frequency progressive-stop evaluation.
+
+### Changed
+- Recorded a script-bible-only do-not-adopt decision after Grok 4.6 cleared
+  maintained quality and latency but missed the hard per-subject cost gate;
+  production transport and the Gemini default remain unchanged.
+
+### Fixed
+- Normalized xAI Responses' reasoning-inclusive output-token counters and
+  cached-input pricing without changing the frozen subject output or score.
+
 ## [2026-08-03-02] — Evaluate DeepSeek V4 Flash for script bible (Story 211)
 
 ### Added

@@ -87,6 +87,21 @@ def filename_to_eval_id(filename: str) -> str | None:
     return None
 
 
+def _cached_input_tokens(raw_usage: dict | None) -> int:
+    """Return provider-owned cached-input evidence when available."""
+    if raw_usage is None:
+        return 0
+    details = raw_usage.get("input_tokens_details")
+    if details is None:
+        return 0
+    if not isinstance(details, dict):
+        raise ValueError("raw input_tokens_details must be a mapping")
+    value = details.get("cached_tokens", 0)
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise ValueError("raw cached_tokens must be a nonnegative integer")
+    return value
+
+
 # ── Metrics extraction ────────────────────────────────────────────────────────
 
 
@@ -136,23 +151,29 @@ def extract_from_file(path: Path) -> dict[str, dict]:
             response,
             required=is_gemini_provider(provider_id, model_slug=model_slug),
         )
+        retained_raw_usage = (
+            None
+            if raw_usage_metadata is not None
+            else raw_standard_usage(response)
+        )
         completion_tok = completion_tokens_for_cost(
             provider_id,
             token_usage,
             model_slug=model_slug,
             raw_usage_metadata=raw_usage_metadata,
-            raw_usage=(
-                None
-                if raw_usage_metadata is not None
-                else raw_standard_usage(response)
-            ),
+            raw_usage=retained_raw_usage,
         )
         prompt_tok = _required_nonnegative_integer(
             token_usage.get("prompt"),
             "tokenUsage.prompt",
         )
         derived_cost = (
-            estimate_model_cost(model_slug, prompt_tok, completion_tok)
+            estimate_model_cost(
+                model_slug,
+                prompt_tok,
+                completion_tok,
+                cached_input_tokens=_cached_input_tokens(retained_raw_usage),
+            )
             if model_slug is not None
             else estimate_cost(provider_id, prompt_tok, completion_tok)
         )

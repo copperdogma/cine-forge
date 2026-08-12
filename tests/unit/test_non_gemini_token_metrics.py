@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import pytest
 
+from cine_forge.evals.cost_metrics import estimate_model_cost
 from cine_forge.evals.token_metrics import completion_tokens_for_cost
 
 pytestmark = pytest.mark.unit
@@ -156,6 +157,38 @@ def test_custom_provider_grok_slug_uses_xai_reasoning_accounting() -> None:
     )
 
     assert result == 1020
+
+
+def test_xai_responses_output_total_normalizes_to_visible_plus_reasoning() -> None:
+    result = completion_tokens_for_cost(
+        "file://../providers/script_bible_runtime_provider.py",
+        {
+            "prompt": 100,
+            "completion": 20,
+            "total": 160,
+            "completionDetails": {"reasoning": 40},
+        },
+        model_slug="grok-4.6",
+        raw_usage={
+            "input_tokens": 100,
+            "output_tokens": 60,
+            "total_tokens": 160,
+            "output_tokens_details": {"reasoning_tokens": 40},
+        },
+    )
+
+    assert result == 60
+
+
+def test_grok46_cost_uses_provider_cached_input_rate() -> None:
+    result = estimate_model_cost(
+        "grok-4.6",
+        2330,
+        1180,
+        cached_input_tokens=128,
+    )
+
+    assert result == pytest.approx(0.011548)
 
 
 def test_raw_non_gemini_usage_mismatch_is_rejected() -> None:

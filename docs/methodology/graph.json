@@ -291,7 +291,8 @@
           "207",
           "208",
           "210",
-          "211"
+          "211",
+          "212"
         ],
         "adrIds": [
           "ADR-003"
@@ -1087,7 +1088,8 @@
           "208",
           "209",
           "210",
-          "211"
+          "211",
+          "212"
         ],
         "adrIds": [
           "ADR-001",
@@ -1659,7 +1661,8 @@
           "207",
           "208",
           "210",
-          "211"
+          "211",
+          "212"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1710,7 +1713,8 @@
             "207",
             "208",
             "210",
-            "211"
+            "211",
+            "212"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -13926,6 +13930,76 @@
           "summary": "validation-closeout: `88` focused scorer/provider/contract"
         }
       }
+    },
+    {
+      "id": "212",
+      "title": "Grok 4.6 Bounded Script-Bible Eval",
+      "path": "docs/stories/story-212-grok-46-bounded-script-bible-eval.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "dependsOn": [
+        "207",
+        "208",
+        "209",
+        "210",
+        "211"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "grok-4.6",
+        "model-refresh",
+        "xai"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260812-2255",
+        "date": "2026-08-12",
+        "summary": "completion: exact direct Grok 4.6 access, strict production"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "212",
+        "sourcePath": "docs/stories/story-212-grok-46-bounded-script-bible-eval.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "completion: exact direct Grok 4.6 access, strict production",
+        "lastRelevantAction": {
+          "date": "2026-08-12",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-212-grok-46-bounded-script-bible-eval.md",
+          "summary": "completion: exact direct Grok 4.6 access, strict production"
+        }
+      }
     }
   ],
   "adrs": [
@@ -15516,7 +15590,8 @@
       "storyIds": [
         "208",
         "210",
-        "211"
+        "211",
+        "212"
       ],
       "categoryRefs": [
         "spec:2",
@@ -15525,6 +15600,17 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "023",
+          "date": "2026-08-12",
+          "approach": "Qualified direct Grok 4.6 Responses strict output and ran one frozen low-reasoning exact-runtime Open Frequency case before stopping on the hard subject-cost gate.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "cheaper-subject-model",
+            "stable-fast-zdr-route"
+          ]
+        },
         {
           "id": "022",
           "date": "2026-08-03",
@@ -15562,13 +15648,13 @@
         }
       ],
       "latestScore": {
-        "model": "Gemini 3.5 Flash-Lite",
-        "measured": "2026-08-03",
+        "model": "Grok 4.6",
+        "measured": "2026-08-12",
         "metrics": {
-          "overall": 0.78995
+          "overall": 0.92665
         },
         "evidenceStatus": "bounded-one-case-decision-grade-rejection",
-        "note": "Attempt 022 fresh exact-runtime Open Frequency comparator. Gemini returned exact strict ScriptBible JSON in 4,128 ms for an estimated $0.0028251 and the maintained Opus rubric passed at 0.88. The repaired deterministic scorer correctly hard-failed at 0.6999 because acts two and three overlap the final source heading rather than partitioning all four scenes, and the output under-specifies the nort…"
+        "note": "Attempt 023 exact-runtime Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.6 identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, raw usage, and provider-reported cached-token-aware cost. All maintained assertions passed: 0.9333 deterministic, 0.92 cross-provider Opus rubric, and 0.92665 aggregate in 23,699 ms. The subject cost was $…"
       },
       "historicalEvidenceStatus": "pre-open-frequency-corpus-non-decision-grade",
       "excludedScoreCount": 23,
@@ -15579,7 +15665,8 @@
       "declaredStoryIds": [
         "208",
         "210",
-        "211"
+        "211",
+        "212"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -15597,18 +15684,18 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "trigger-exhausted",
-        "whyNow": "Attempt 022 fresh exact-runtime Open Frequency comparator. Gemini returned exact strict ScriptBible JSON in 4,128 ms for an estimated $0.0028251 and the maintained Opus rubric passed at 0.88. The repaired deterministic scorer correctly hard-failed at 0.6999 because acts two and three overlap the final source heading rather than partitioning all four scenes, and the output under-specifies the nort…",
+        "whyNow": "Attempt 023 exact-runtime Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.6 identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, raw usage, and provider-reported cached-token-aware cost. All maintained assertions passed: 0.9333 deterministic, 0.92 cross-provider Opus rubric, and 0.92665 aggregate in 23,699 ms. The subject cost was $…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
-          "native-deepseek-access",
+          "cheaper-subject-model",
           "stable-fast-zdr-route"
         ],
         "lastRelevantAction": {
-          "date": "2026-08-03",
+          "date": "2026-08-12",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "022",
-          "summary": "Repaired three source-proven scorer defects, qualified exact DeepSeek V4 Flash 0731 through pinned Phala ZDR strict output, then ran one no-cache full-script comparison against fresh Gemini and exhausted one DeepSeek-only transport retry."
+          "sourceId": "023",
+          "summary": "Qualified direct Grok 4.6 Responses strict output and ran one frozen low-reasoning exact-runtime Open Frequency case before stopping on the hard subject-cost gate."
         }
       }
     },
@@ -16326,9 +16413,10 @@
             "172",
             "209",
             "210",
-            "211"
+            "211",
+            "212"
           ],
-          "stories_since_audit": 3,
+          "stories_since_audit": 4,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16361,9 +16449,10 @@
             "187",
             "202",
             "210",
-            "211"
+            "211",
+            "212"
           ],
-          "stories_since_audit": 5,
+          "stories_since_audit": 6,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16447,7 +16536,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 114 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 122 days old against a 14-day cadence"
     ]
   }
 }

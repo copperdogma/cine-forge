@@ -1,0 +1,37 @@
+{
+  "story": "212",
+  "attempt": "023",
+  "base_git_sha": "3832dee7f397978d441f4914edd8df5e7eb2e6ed",
+  "generated_at": "2026-08-12T22:45:00Z",
+  "evidence_status": "dirty-contract-hash-complete",
+  "files": {
+    "benchmarks/providers/script_bible_runtime_provider.py": "c3bc6ff45b8a4f0af34388e7a199134feed7717e4cfa1d63e13cc1fa2ab4f2d9",
+    "benchmarks/runtime_tasks/script-bible-runtime.yaml": "440eae0fb8c2b77d956b9ec7cb97f6bd5722fd17cc1032f68167dcf3c90052c0",
+    "benchmarks/prompts/script-bible-runtime-marker.txt": "636a2e3031b731546a6deccc15ff98acd6f360765a77112976f74384abd30e19",
+    "src/cine_forge/modules/ingest/script_bible_v1/main.py": "7361da008a1d058fcae7e9e8733128a60e459d4677612a7f11681bdeda54376d",
+    "src/cine_forge/schemas/script_bible.py": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb",
+    "src/cine_forge/evals/token_metrics.py": "eff4b3a1fd5f4c5e434ac8cd4aa3ec9f4cb919b252071d3de746b2ebab5bf4a6",
+    "src/cine_forge/evals/cost_metrics.py": "69e830053354a8dc59d19c8ba5e0e1551fc481080b50820055a545c149d2ae97",
+    "scripts/extract-eval-metrics.py": "8f46da20981eb9eea1a350a300dd6638d0c0cf16dceac29d758a1b42012b2613",
+    "benchmarks/scorers/script_bible_scorer.py": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+    "benchmarks/golden/open-frequency-script-bible.json": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
+    "tests/fixtures/ingest_inputs/open_frequency_short.fountain": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "tests/unit/test_xai_script_bible_provider.py": "d5cc34eb7acb89eaaa18d2db0303216c054780554cd7ee2e6c985d78aa446b09",
+    "tests/unit/test_non_gemini_token_metrics.py": "ff5814c6fee915a07693b4ed0d6869eb174727d7384f083e1b8e36a245f356c8",
+    "benchmarks/results/grok46-xai-native-access-probe-2026-08-12.json": "4e11210eb66e7522398fabaa610d875a1b302202c0c56a31f598cd04094056fe",
+    "benchmarks/results/grok46-xai-script-bible-contract-probe-2026-08-12.json": "44cbc3c578c3b797ee9dabe0c5652e972bcfd9b625064e2a4980677bf1037943",
+    "benchmarks/results/script-bible-grok46-open-frequency-2026-08-12.json": "6a6b430640eabdce8c7ce5a19f7114e1267357ef4af0c564e33b2fcb141ee176",
+    "benchmarks/results/script-bible-grok46-open-frequency-accounting-repair-2026-08-12.json": "1d8020e92ff462237de5613ba5a62758503a4f2882f3ca7f0dc1304556f60678"
+  },
+  "commands": {
+    "native_access_probe": "xAI Responses with exact grok-4.6, low reasoning, store=false, 256 output tokens, and strict API_OK JSON Schema",
+    "contract_probe": "script_bible_runtime_provider.call_api with exact grok-4.6, low reasoning, store=false, 2048 output tokens, production prompt, and strict ScriptBible schema",
+    "bounded_eval": "promptfoo eval -c runtime_tasks/script-bible-runtime.yaml --no-cache --filter-providers '^Grok 4.6$' --filter-pattern 'Open Frequency' -j 1",
+    "metrics": "PYTHONPATH=src <cineforge-python> scripts/extract-eval-metrics.py --result-file benchmarks/results/script-bible-grok46-open-frequency-accounting-repair-2026-08-12.json"
+  },
+  "accounting_repair": {
+    "original_result_sha256": "6a6b430640eabdce8c7ce5a19f7114e1267357ef4af0c564e33b2fcb141ee176",
+    "repaired_result_sha256": "1d8020e92ff462237de5613ba5a62758503a4f2882f3ca7f0dc1304556f60678",
+    "change": "Normalize Promptfoo tokenUsage.completion to visible output and retain reasoning separately from provider-owned xAI Responses inclusive output_tokens. Subject output, score, latency, raw usage, and reported cost are unchanged."
+  }
+}

@@ -26,7 +26,12 @@ PRICING: dict[str, tuple[float, float]] = {
     "gemini-3.6-flash": (1.50, 7.50),
     "grok-4.3": (1.25, 2.50),
     "grok-4.5": (2.0, 6.0),
+    "grok-4.6": (2.0, 6.0),
     "kimi-k2.6": (0.95, 4.0),
+}
+
+CACHED_INPUT_PRICING_PER_M: dict[str, float] = {
+    "grok-4.6": 0.50,
 }
 
 # Providers commonly round reported costs. Accept the larger of one micro-dollar
@@ -50,13 +55,23 @@ def estimate_model_cost(
     model_id: str,
     prompt_tokens: int,
     completion_tokens: int,
+    *,
+    cached_input_tokens: int = 0,
 ) -> float | None:
     """Estimate cost for one resolved model slug."""
     pricing = PRICING.get(model_id)
     if not pricing:
         return None
     input_price, output_price = pricing
-    return (prompt_tokens * input_price + completion_tokens * output_price) / 1_000_000
+    if cached_input_tokens < 0 or cached_input_tokens > prompt_tokens:
+        raise ValueError("cached_input_tokens must be between zero and prompt_tokens")
+    cached_price = CACHED_INPUT_PRICING_PER_M.get(model_id, input_price)
+    uncached_input_tokens = prompt_tokens - cached_input_tokens
+    return (
+        uncached_input_tokens * input_price
+        + cached_input_tokens * cached_price
+        + completion_tokens * output_price
+    ) / 1_000_000
 
 
 def validate_reported_cost(

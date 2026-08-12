@@ -3861,6 +3861,7 @@ evals:
       - "208"
       - "210"
       - "211"
+      - "212"
     category_refs:
       - spec:2
       - spec:8
@@ -3907,6 +3908,21 @@ evals:
       cost_usd_max: 0.01
 
     scores:
+      - model: "Grok 4.6"
+        evidence_status: bounded-one-case-decision-grade-rejection
+        metrics:
+          overall: 0.92665
+          deterministic: 0.9333
+          rubric: 0.92
+        latency_ms: 23699
+        cost_usd: 0.011548
+        cost_estimated: false
+        measured: 2026-08-12
+        git_sha: "3832dee+story212-hash-manifest"
+        result_file: benchmarks/results/script-bible-grok46-open-frequency-accounting-repair-2026-08-12.json
+        original_result_file: benchmarks/results/script-bible-grok46-open-frequency-2026-08-12.json
+        contract_manifest: docs/evals/story-212-grok46-contract-manifest.json
+        note: "Attempt 023 exact-runtime Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.6 identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, raw usage, and provider-reported cached-token-aware cost. All maintained assertions passed: 0.9333 deterministic, 0.92 cross-provider Opus rubric, and 0.92665 aggregate in 23,699 ms. The subject cost was $0.011548, 15.5% above the hard $0.01 gate. Live x-zero-data-retention was false, so only synthetic Open Frequency was eligible. The output's only source-inspected defect was the minor claim that the portable antenna was battered when that adjective describes the mixer. Classification: model-wrong/non-runtime-blocking nuance; cost is runtime-blocking for this value slot. Do not adopt; no incumbent, second corpus, or other slot was run."
       - model: "Qwen3.8 Max via OpenRouter"
         evidence_status: bounded-stop-non-decision-grade
         metrics:
@@ -4155,6 +4171,26 @@ evals:
         note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
     attempts:
+      - id: "023"
+        story: attempts/023-script-bible-grok-46.md
+        date: 2026-08-12
+        status: failed
+        approach: "Qualified direct Grok 4.6 Responses strict output and ran one frozen low-reasoning exact-runtime Open Frequency case before stopping on the hard subject-cost gate."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-12
+        subject_model: "Grok 4.6"
+        score_before: null
+        score_after: 0.92665
+        latency_before: null
+        latency_after: 23699
+        cost_before: null
+        cost_after: 0.011548
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: cheaper-subject-model
+            note: "Retry only after xAI pricing or a documented exact-model mode makes this frozen full-script call plausibly clear $0.01."
+          - condition: stable-fast-zdr-route
+            note: "A broader corpus remains ineligible until live direct xAI ZDR is true or the user explicitly approves the payload."
       - id: "022"
         story: attempts/022-script-bible-deepseek-v4-flash.md
         date: 2026-08-03

@@ -1,0 +1,406 @@
+{
+  "evalId": "eval-oDF-2026-08-12T22:33:55",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-08-12T22:33:55.308Z",
+    "prompts": [
+      {
+        "raw": "The configured provider must run the supplied screenplay through the exact\nproduction script_bible_v1 prompt and ScriptBible schema boundary.",
+        "label": "prompts/script-bible-runtime-marker.txt: The configured provider must run the supplied screenplay through the exact\nproduction script_bible_v1 prompt and ScriptBible schema boundary.",
+        "id": "ee4b360eb041c4cad35c5314ca9a3a2e3d4734127b81a9e604a0883f08dd8163",
+        "provider": "Grok 4.6",
+        "metrics": {
+          "score": 0.92665,
+          "testPassCount": 1,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 2,
+          "assertFailCount": 0,
+          "totalLatencyMs": 23699,
+          "tokenUsage": {
+            "prompt": 2330,
+            "completion": 1180,
+            "cached": 0,
+            "total": 3510,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 4169,
+              "prompt": 2969,
+              "completion": 1200,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.011548
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0.011548,
+        "gradingResult": {
+          "pass": true,
+          "score": 0.92665,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 4169,
+            "prompt": 2969,
+            "completion": 1200,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 0.9333,
+              "reason": "act_boundary_grounding=1.00 | act_structure=1.00 | confidence_quality=1.00 | conflict_grounding=0.50 | field_completeness=1.00 | full_source_coverage=1.00 | genre_tone_grounding=1.00 | journey_grounding=0.50 | json_valid=1.00 | logline_grounding=0.67 | setting_grounding=1.00 | synopsis_grounding=1.00 | theme_evidence_grounding=1.00 | themes=1.00 | title_correct=1.00 | unsupported_claims=1.00",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/script_bible_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+              },
+              "pass": true,
+              "score": 0.92,
+              "reason": "The bible is highly faithful to the screenplay across all dimensions. All terminal beats (Comet's return, ON AIR steadying, crew settling back to work) are captured. Act boundaries align with screenplay scene headings. All quoted evidence is accurate or very close paraphrases. Themes are specific and well-supported. Schema is exactly correct with no extra keys. Genre and tone labels are appropriate. One very minor inaccuracy: the antenna is described as 'battered' in the synopsis when the screenplay applies 'battered' to the mixer, not the antenna—but this is trivial. No invented outcomes or material contradictions.",
+              "tokensUsed": {
+                "total": 4169,
+                "prompt": 2969,
+                "completion": 1200,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"title\\\":\\\"Open Frequency\\\",\\\"logline\\\":\\\"When a storm knocks out phones and power, a ragtag community radio crew races to restore a hill relay so Red Creek can still hear shelter needs, road updates, and even a missing dog named Comet.\\\",\\\"synopsis\\\":\\\"A night storm has closed the bridge, killed cell towers, and left Red Creek on emergency power. In the community radio studio, Aria, Noah, June, and Kell scramble to get on air: Kell brings a battered portable antenna, June maps closures and shelters, and Aria fights dying consoles while Noah works a mixer. They climb a water-tower catwalk in the wind, clamp the antenna, and catch a plea from the north shelter for insulin and dry blankets—proof the relay works.\\\\n\\\\nPre-dawn at the high-school gym, they turn information into care: June logs updates, Kell sorts batteries, and teenager Maya asks them to announce her missing dog Comet. Noah radios that the east road is open one lane. By morning the storm has eased; wet coats dry in the studio, a hand-drawn map goes up, and June tapes OPEN FREQUENCY over the door. Maya returns with muddy Comet from under a vending machine. June’s bulletin names open roads, stocked shelters, and a recovered dog; music cues once—joy, not branding—as the ON AIR sign holds a solid red glow and the crew keeps working.\\\",\\\"act_structure\\\":[{\\\"act_number\\\":1,\\\"title\\\":\\\"Setup\\\",\\\"start_scene\\\":\\\"INT. COMMUNITY RADIO STUDIO - NIGHT\\\",\\\"end_scene\\\":\\\"INT. COMMUNITY RADIO STUDIO - NIGHT (ON AIR sign dies)\\\",\\\"summary\\\":\\\"Storm isolation is established and the crew commits to the hill relay as their only comms path.\\\",\\\"turning_points\\\":[\\\"Bridge closed, cell towers dead; hill relay is the only shot.\\\",\\\"Kell arrives with portable antenna, lantern, and tools.\\\",\\\"ON AIR sign flickers and dies; Aria asks for ten minutes and a miracle.\\\"]},{\\\"act_number\\\":2,\\\"title\\\":\\\"Confrontation\\\",\\\"start_scene\\\":\\\"EXT. WATER TOWER CATWALK - NIGHT\\\",\\\"end_scene\\\":\\\"INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\\\",\\\"summary\\\":\\\"They install the antenna, receive a life-or-death shelter call, and expand the station’s mission from infrastructure to human needs including a missing dog.\\\",\\\"turning_points\\\":[\\\"Antenna clamped on the water-tower catwalk in high wind.\\\",\\\"Unknown voice: north shelter needs insulin and dry blankets.\\\",\\\"June copies; Aria smiles and finishes the bolt.\\\",\\\"Maya asks to announce Comet; June agrees if they can name roads and insulin.\\\",\\\"Noah reports east road open one lane.\\\"]},{\\\"act_number\\\":3,\\\"title\\\":\\\"Resolution\\\",\\\"start_scene\\\":\\\"INT. COMMUNITY RADIO STUDIO - MORNING\\\",\\\"end_scene\\\":\\\"INT. COMMUNITY RADIO STUDIO - MORNING (ON AIR sign steadies)\\\",\\\"summary\\\":\\\"Day two: the frequency is formally open, Comet is found, and a morning bulletin plus one burst of music restores communal connection.\\\",\\\"turning_points\\\":[\\\"June tapes OPEN FREQUENCY over the door.\\\",\\\"Maya brings Comet from the band-room vending machine.\\\",\\\"Morning bulletin: roads, shelter stock, recovered dog.\\\",\\\"Noah cues music once; ON AIR glows solid red.\\\"]}],\\\"themes\\\":[{\\\"theme\\\":\\\"Community as infrastructure\\\",\\\"description\\\":\\\"When official networks fail, neighbors become the grid—maps, batteries, antennas, and voice.\\\",\\\"evidence\\\":[\\\"Hill relay is our only shot.\\\",\\\"June’s whiteboard of closures, shelters, and call signs.\\\",\\\"East road is open one lane.\\\"]},{\\\"theme\\\":\\\"Voice as care\\\",\\\"description\\\":\\\"Broadcasting is not branding but naming what people need—medicine, roads, even a dog.\\\",\\\"evidence\\\":[\\\"If we're naming roads and insulin drops, we can name dogs.\\\",\\\"Once is joy. Twice is branding.\\\",\\\"Red Creek, morning bulletin...\\\"]},{\\\"theme\\\":\\\"Found family under pressure\\\",\\\"description\\\":\\\"The crew and Maya treat work, humor, and a muddy dog as kinship after evacuation.\\\",\\\"evidence\\\":[\\\"He stole my grilled cheese... He's family.\\\",\\\"Smart dog. Dry floor, free snacks.\\\",\\\"The four of them settle back to work.\\\"]}],\\\"narrative_arc\\\":\\\"Compressed three-beat night-to-morning arc: isolation and technical crisis, perilous restore-and-listen, then communal morning resolution. Tension rises from dead air to a received SOS, then eases into service and one unrepeatable moment of joy.\\\",\\\"genre\\\":\\\"Drama\\\",\\\"tone\\\":\\\"Warm, urgent, and quietly hopeful\\\",\\\"protagonist_journey\\\":\\\"The ensemble—especially Aria (technical will) and June (editorial heart)—moves from scrambling against dead systems to claiming an open frequency that treats insulin, roads, and Comet as equally worth saying out loud. Aria’s first smile marks the shift from grim competence to belief that the signal can hold people together.\\\",\\\"central_conflict\\\":\\\"Restore and keep a community radio link through storm damage so isolated people can request aid and share news before official systems return.\\\",\\\"setting_overview\\\":\\\"Contemporary small town Red Creek during and just after a severe night storm: community radio studio on emergency power, water-tower catwalk above a mostly dark town, high-school gym shelter with cots and handwritten signs. Analog tools—tape reels, mixers, portable antenna, whiteboard, cassette cue.\\\",\\\"confidence\\\":0.86}\\n</Output>\\n<Rubric>\\nEvaluate the candidate script bible only against the supplied screenplay.\\nDo not rely on outside knowledge or reward a claim simply because it\\nresembles a conventional story beat.\\n\\nSOURCE SCREENPLAY\\n=================\\nTitle: Open Frequency\\nCredit: Written for CineForge UI manual acceptance\\nAuthor: CineForge\\n\\nINT. COMMUNITY RADIO STUDIO - NIGHT\\n\\nRain rattles the skylight. Old consoles hum under emergency power.\\nARIA threads a tape reel while NOAH coaxes a signal out of a battered mixer.\\nJUNE covers a whiteboard with road closures, shelter names, and call signs.\\nKELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag.\\n\\nKELL\\nBridge is closed. Cell towers are dead. The hill relay is our only shot.\\n\\nNOAH\\nPlease tell me that antenna is less cursed than it looks.\\n\\nKELL\\nIt only tried to kill me once.\\n\\nJUNE\\nGood. Tonight we don't have time for a second opinion.\\n\\nAria flips a switch. The ON AIR sign flickers, then dies again.\\n\\nARIA\\nGive me ten minutes and one miracle.\\n\\nJUNE\\nTake fifteen. Keep the miracle.\\n\\nCUT TO:\\n\\nEXT. WATER TOWER CATWALK - NIGHT\\n\\nWind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy.\\nAria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.\\nThe canvas tool bag swings in the gusts. Somewhere in the valley, a siren rises and cuts out.\\n\\nNOAH\\nI miss boring weather.\\n\\nARIA\\nYou miss boring jobs.\\n\\nNoah plugs the cable into a handheld receiver. Static spits, then settles into a thin human voice.\\n\\nUNKNOWN VOICE (RADIO)\\nRed Creek station... if anyone hears this... north shelter needs insulin and dry blankets.\\n\\nAria and Noah freeze.\\n\\nARIA\\nJune, do you copy?\\n\\nJUNE (RADIO)\\nLoud enough to make me useful.\\n\\nAria smiles for the first time all night and tightens the last bolt.\\n\\nCUT TO:\\n\\nINT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\\n\\nCots line the basketball court. Handwritten signs point toward MEDICINE, MEALS, and MESSAGES.\\nJune records updates at a folding table while Kell sorts flashlight batteries into a tackle box.\\nMAYA, a teenager in a soaked marching-band jacket, approaches with a flyer for a missing dog named COMET.\\n\\nMAYA\\nCan the station announce this too?\\n\\nJUNE\\nIf we're naming roads and insulin drops, we can name dogs.\\n\\nKELL\\nComet better be worth interrupting the weather report.\\n\\nMAYA\\nHe stole my grilled cheese and slept through the evacuation. He's family.\\n\\nNoah's voice crackles over a tabletop radio.\\n\\nNOAH (RADIO)\\nEast road is open one lane. Bridge crew wants no heavy trucks till daylight.\\n\\nJune writes the update beneath NORTH SHELTER on the whiteboard, then takes Maya's flyer.\\n\\nJUNE\\nSpell his name for the broadcast.\\n\\nMAYA\\nC-O-M-E-T. Like the fast kind of star.\\n\\nCUT TO:\\n\\nINT. COMMUNITY RADIO STUDIO - MORNING\\n\\nWet coats hang from every chair. Pale sunlight cuts through the storm residue on the windows.\\nAria pins a hand-drawn map beside the console. Noah labels a notebook DAY TWO.\\nJune tapes a new sign over the door: OPEN FREQUENCY.\\nKell enters with a loaf of warm bread wrapped in foil. Maya follows close behind with a muddy, sleepy COMET in her arms.\\n\\nMAYA\\nHe was under the vending machine in the band room.\\n\\nKELL\\nSmart dog. Dry floor, free snacks.\\n\\nJune laughs, reaches for the microphone, and nods at Aria.\\n\\nJUNE\\nRed Creek, morning bulletin. East road is open, north shelter is stocked, and one missing dog has been recovered with zero remorse.\\n\\nNoah pushes up a brass-heavy cassette cue. The room brightens with music.\\n\\nARIA\\nPut that on repeat between updates.\\n\\nJUNE\\nNo. Once is joy. Twice is branding.\\n\\nThe ON AIR sign steadies into a solid red glow as the four of them settle back to work.\\n=================\\n\\nGrade all of these dimensions:\\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\\n   protagonist journey, conflict, and setting cover the material the\\n   screenplay actually presents, with no material contradiction or\\n   omission.\\n2. Ending discipline: distinguish the last written beat from an implied\\n   next action. If the source cuts away before the external conflict is\\n   resolved, the bible must preserve that uncertainty and must not\\n   invent a fight, victory, escape, death, or other outcome.\\n   The required terminal beats for this case are:\\n   Maya's missing-dog plea leads to Comet's morning return; the ON AIR sign steadies and the radio team settles back to work.\\n   Omitting any named terminal beat is a material completeness failure.\\n3. Act structure: boundaries correspond to actual source headings or\\n   clearly identified beats; every act summary and turning point is\\n   supported by the screenplay.\\n4. Themes and evidence: themes are specific to this screenplay, and\\n   every quotation or scene reference is faithful to the source rather\\n   than fabricated or generic.\\n5. Genre and tone: labels reflect all materially present modes. Hybrid\\n   labels are valid when supported; do not reject a source-supported\\n   tonal component merely because another mode is more prominent.\\n6. Production usefulness: all required fields are substantive,\\n   internally consistent, and specific enough to guide later work.\\n7. Exact schema: the root object contains exactly title, logline,\\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\\n   protagonist_journey, central_conflict, setting_overview, and\\n   confidence. Every act contains exactly act_number, title,\\n   start_scene, end_scene, summary, and turning_points. Every theme\\n   contains exactly theme, description, and evidence. Extra keys at\\n   any of these levels are a hard failure.\\n\\nA schema-only, generic, padded, or hallucinated bible must fail. Score\\n0.80 or higher, and pass, only if this could serve as a trustworthy\\nproduction reference for the supplied screenplay. Any invented ending\\nor materially source-contradictory claim is a hard failure.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\nTitle: Open Frequency\nCredit: Written for CineForge UI manual acceptance\nAuthor: CineForge\n\nINT. COMMUNITY RADIO STUDIO - NIGHT\n\nRain rattles the skylight. Old consoles hum under emergency power.\nARIA threads a tape reel while NOAH coaxes a signal out of a battered mixer.\nJUNE covers a whiteboard with road closures, shelter names, and call signs.\nKELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag.\n\nKELL\nBridge is closed. Cell towers are dead. The hill relay is our only shot.\n\nNOAH\nPlease tell me that antenna is less cursed than it looks.\n\nKELL\nIt only tried to kill me once.\n\nJUNE\nGood. Tonight we don't have time for a second opinion.\n\nAria flips a switch. The ON AIR sign flickers, then dies again.\n\nARIA\nGive me ten minutes and one miracle.\n\nJUNE\nTake fifteen. Keep the miracle.\n\nCUT TO:\n\nEXT. WATER TOWER CATWALK - NIGHT\n\nWind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy.\nAria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.\nThe canvas tool bag swings in the gusts. Somewhere in the valley, a siren rises and cuts out.\n\nNOAH\nI miss boring weather.\n\nARIA\nYou miss boring jobs.\n\nNoah plugs the cable into a handheld receiver. Static spits, then settles into a thin human voice.\n\nUNKNOWN VOICE (RADIO)\nRed Creek station... if anyone hears this... north shelter needs insulin and dry blankets.\n\nAria and Noah freeze.\n\nARIA\nJune, do you copy?\n\nJUNE (RADIO)\nLoud enough to make me useful.\n\nAria smiles for the first time all night and tightens the last bolt.\n\nCUT TO:\n\nINT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\n\nCots line the basketball court. Handwritten signs point toward MEDICINE, MEALS, and MESSAGES.\nJune records updates at a folding table while Kell sorts flashlight batteries into a tackle box.\nMAYA, a teenager in a soaked marching-band jacket, approaches with a flyer for a missing dog named COMET.\n\nMAYA\nCan the station announce this too?\n\nJUNE\nIf we're naming roads and insulin drops, we can name dogs.\n\nKELL\nComet better be worth interrupting the weather report.\n\nMAYA\nHe stole my grilled cheese and slept through the evacuation. He's family.\n\nNoah's voice crackles over a tabletop radio.\n\nNOAH (RADIO)\nEast road is open one lane. Bridge crew wants no heavy trucks till daylight.\n\nJune writes the update beneath NORTH SHELTER on the whiteboard, then takes Maya's flyer.\n\nJUNE\nSpell his name for the broadcast.\n\nMAYA\nC-O-M-E-T. Like the fast kind of star.\n\nCUT TO:\n\nINT. COMMUNITY RADIO STUDIO - MORNING\n\nWet coats hang from every chair. Pale sunlight cuts through the storm residue on the windows.\nAria pins a hand-drawn map beside the console. Noah labels a notebook DAY TWO.\nJune tapes a new sign over the door: OPEN FREQUENCY.\nKell enters with a loaf of warm bread wrapped in foil. Maya follows close behind with a muddy, sleepy COMET in her arms.\n\nMAYA\nHe was under the vending machine in the band room.\n\nKELL\nSmart dog. Dry floor, free snacks.\n\nJune laughs, reaches for the microphone, and nods at Aria.\n\nJUNE\nRed Creek, morning bulletin. East road is open, north shelter is stocked, and one missing dog has been recovered with zero remorse.\n\nNoah pushes up a brass-heavy cassette cue. The room brightens with music.\n\nARIA\nPut that on repeat between updates.\n\nJUNE\nNo. Once is joy. Twice is branding.\n\nThe ON AIR sign steadies into a solid red glow as the four of them settle back to work.\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   Maya's missing-dog plea leads to Comet's morning return; the ON AIR sign steadies and the radio team settles back to work.\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+              }
+            }
+          ]
+        },
+        "id": "81f120ca-5024-4c0e-bbb1-122717124611",
+        "latencyMs": 23699,
+        "namedScores": {},
+        "prompt": {
+          "raw": "The configured provider must run the supplied screenplay through the exact\nproduction script_bible_v1 prompt and ScriptBible schema boundary.",
+          "label": "prompts/script-bible-runtime-marker.txt: The configured provider must run the supplied screenplay through the exact\nproduction script_bible_v1 prompt and ScriptBible schema boundary.",
+          "config": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          }
+        },
+        "promptId": "ee4b360eb041c4cad35c5314ca9a3a2e3d4734127b81a9e604a0883f08dd8163",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/script_bible_runtime_provider.py",
+          "label": "Grok 4.6"
+        },
+        "response": {
+          "output": "{\"title\":\"Open Frequency\",\"logline\":\"When a storm knocks out phones and power, a ragtag community radio crew races to restore a hill relay so Red Creek can still hear shelter needs, road updates, and even a missing dog named Comet.\",\"synopsis\":\"A night storm has closed the bridge, killed cell towers, and left Red Creek on emergency power. In the community radio studio, Aria, Noah, June, and Kell scramble to get on air: Kell brings a battered portable antenna, June maps closures and shelters, and Aria fights dying consoles while Noah works a mixer. They climb a water-tower catwalk in the wind, clamp the antenna, and catch a plea from the north shelter for insulin and dry blankets—proof the relay works.\\n\\nPre-dawn at the high-school gym, they turn information into care: June logs updates, Kell sorts batteries, and teenager Maya asks them to announce her missing dog Comet. Noah radios that the east road is open one lane. By morning the storm has eased; wet coats dry in the studio, a hand-drawn map goes up, and June tapes OPEN FREQUENCY over the door. Maya returns with muddy Comet from under a vending machine. June’s bulletin names open roads, stocked shelters, and a recovered dog; music cues once—joy, not branding—as the ON AIR sign holds a solid red glow and the crew keeps working.\",\"act_structure\":[{\"act_number\":1,\"title\":\"Setup\",\"start_scene\":\"INT. COMMUNITY RADIO STUDIO - NIGHT\",\"end_scene\":\"INT. COMMUNITY RADIO STUDIO - NIGHT (ON AIR sign dies)\",\"summary\":\"Storm isolation is established and the crew commits to the hill relay as their only comms path.\",\"turning_points\":[\"Bridge closed, cell towers dead; hill relay is the only shot.\",\"Kell arrives with portable antenna, lantern, and tools.\",\"ON AIR sign flickers and dies; Aria asks for ten minutes and a miracle.\"]},{\"act_number\":2,\"title\":\"Confrontation\",\"start_scene\":\"EXT. WATER TOWER CATWALK - NIGHT\",\"end_scene\":\"INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\",\"summary\":\"They install the antenna, receive a life-or-death shelter call, and expand the station’s mission from infrastructure to human needs including a missing dog.\",\"turning_points\":[\"Antenna clamped on the water-tower catwalk in high wind.\",\"Unknown voice: north shelter needs insulin and dry blankets.\",\"June copies; Aria smiles and finishes the bolt.\",\"Maya asks to announce Comet; June agrees if they can name roads and insulin.\",\"Noah reports east road open one lane.\"]},{\"act_number\":3,\"title\":\"Resolution\",\"start_scene\":\"INT. COMMUNITY RADIO STUDIO - MORNING\",\"end_scene\":\"INT. COMMUNITY RADIO STUDIO - MORNING (ON AIR sign steadies)\",\"summary\":\"Day two: the frequency is formally open, Comet is found, and a morning bulletin plus one burst of music restores communal connection.\",\"turning_points\":[\"June tapes OPEN FREQUENCY over the door.\",\"Maya brings Comet from the band-room vending machine.\",\"Morning bulletin: roads, shelter stock, recovered dog.\",\"Noah cues music once; ON AIR glows solid red.\"]}],\"themes\":[{\"theme\":\"Community as infrastructure\",\"description\":\"When official networks fail, neighbors become the grid—maps, batteries, antennas, and voice.\",\"evidence\":[\"Hill relay is our only shot.\",\"June’s whiteboard of closures, shelters, and call signs.\",\"East road is open one lane.\"]},{\"theme\":\"Voice as care\",\"description\":\"Broadcasting is not branding but naming what people need—medicine, roads, even a dog.\",\"evidence\":[\"If we're naming roads and insulin drops, we can name dogs.\",\"Once is joy. Twice is branding.\",\"Red Creek, morning bulletin...\"]},{\"theme\":\"Found family under pressure\",\"description\":\"The crew and Maya treat work, humor, and a muddy dog as kinship after evacuation.\",\"evidence\":[\"He stole my grilled cheese... He's family.\",\"Smart dog. Dry floor, free snacks.\",\"The four of them settle back to work.\"]}],\"narrative_arc\":\"Compressed three-beat night-to-morning arc: isolation and technical crisis, perilous restore-and-listen, then communal morning resolution. Tension rises from dead air to a received SOS, then eases into service and one unrepeatable moment of joy.\",\"genre\":\"Drama\",\"tone\":\"Warm, urgent, and quietly hopeful\",\"protagonist_journey\":\"The ensemble—especially Aria (technical will) and June (editorial heart)—moves from scrambling against dead systems to claiming an open frequency that treats insulin, roads, and Comet as equally worth saying out loud. Aria’s first smile marks the shift from grim competence to belief that the signal can hold people together.\",\"central_conflict\":\"Restore and keep a community radio link through storm damage so isolated people can request aid and share news before official systems return.\",\"setting_overview\":\"Contemporary small town Red Creek during and just after a severe night storm: community radio studio on emergency power, water-tower catwalk above a mostly dark town, high-school gym shelter with cots and handwritten signs. Analog tools—tape reels, mixers, portable antenna, whiteboard, cassette cue.\",\"confidence\":0.86}",
+          "tokenUsage": {
+            "total": 3510,
+            "prompt": 2330,
+            "completion": 1153,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 27
+            }
+          },
+          "cost": 0.011548,
+          "latencyMs": 23699,
+          "cached": false,
+          "metadata": {
+            "provider": "xai",
+            "model": "grok-4.6",
+            "requested_model": "grok-4.6",
+            "returned_model": "grok-4.6",
+            "request_id": "1d3b7313-ab85-9eba-8020-6a159b39e05e",
+            "finish_reason": "completed",
+            "cost_estimated": false,
+            "runtime_prompt": "script_bible_v1.EXTRACTION_PROMPT",
+            "runtime_schema": "cine_forge.schemas.ScriptBible",
+            "upstream_provider": null,
+            "reasoning_effort": "low",
+            "allow_fallbacks": null,
+            "data_collection": null,
+            "zdr": false,
+            "store": false,
+            "x_zero_data_retention": "false"
+          },
+          "raw": {
+            "id": "1d3b7313-ab85-9eba-8020-6a159b39e05e",
+            "model": "grok-4.6",
+            "provider": null,
+            "usage": {
+              "input_tokens": 2330,
+              "input_tokens_details": {
+                "cached_tokens": 128
+              },
+              "output_tokens": 1180,
+              "output_tokens_details": {
+                "reasoning_tokens": 27
+              },
+              "total_tokens": 3510,
+              "num_sources_used": 0,
+              "num_server_side_tools_used": 0,
+              "cost_in_usd_ticks": 115480000,
+              "context_details": {
+                "input_tokens": 2330,
+                "output_tokens": 1180
+              }
+            }
+          }
+        },
+        "score": 0.92665,
+        "success": true,
+        "testCase": {
+          "description": "Open Frequency exact-runtime script bible",
+          "vars": {
+            "screenplay": "file://../../tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+            "golden_path": "golden/open-frequency-script-bible.json",
+            "golden_sha256": "2e70cd6255c04b1cf9e7ef94d13b9a3935be3c026d12afbfaf21e4595cd83d5b",
+            "ending_contract": "Maya's missing-dog plea leads to Comet's morning return; the ON AIR sign steadies and the radio team settles back to work."
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/script_bible_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../../tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+          "golden_path": "golden/open-frequency-script-bible.json",
+          "golden_sha256": "2e70cd6255c04b1cf9e7ef94d13b9a3935be3c026d12afbfaf21e4595cd83d5b",
+          "ending_contract": "Maya's missing-dog plea leads to Comet's morning return; the ON AIR sign steadies and the radio team settles back to work."
+        },
+        "metadata": {
+          "provider": "xai",
+          "model": "grok-4.6",
+          "requested_model": "grok-4.6",
+          "returned_model": "grok-4.6",
+          "request_id": "1d3b7313-ab85-9eba-8020-6a159b39e05e",
+          "finish_reason": "completed",
+          "cost_estimated": false,
+          "runtime_prompt": "script_bible_v1.EXTRACTION_PROMPT",
+          "runtime_schema": "cine_forge.schemas.ScriptBible",
+          "upstream_provider": null,
+          "reasoning_effort": "low",
+          "allow_fallbacks": null,
+          "data_collection": null,
+          "zdr": false,
+          "store": false,
+          "x_zero_data_retention": "false",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 1,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 2330,
+        "completion": 1180,
+        "cached": 0,
+        "total": 3510,
+        "numRequests": 1,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 4169,
+          "prompt": 2969,
+          "completion": 1200,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 53974,
+      "evaluationDurationMs": 53974
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Exact runtime script-bible extraction from The Mariner and Open Frequency",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/grok46-script-bible/cine-forge/benchmarks/prompts/script-bible-runtime-marker.txt"
+    ],
+    "providers": [
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Grok 4.6",
+        "config": {
+          "model": "grok-4.6",
+          "max_tokens": 8192,
+          "max_retries": 1,
+          "request_timeout_seconds": 120,
+          "reasoning_effort": "low"
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "DeepSeek V4 Flash 0731 via OpenRouter",
+        "config": {
+          "model": "deepseek/deepseek-v4-flash-0731",
+          "provider": "openrouter",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 600,
+          "timeout": 660000,
+          "reasoning_effort": "low"
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Qwen3.8 Max via OpenRouter",
+        "config": {
+          "model": "qwen/qwen3.8-max",
+          "provider": "openrouter",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 600,
+          "reasoning_effort": "low"
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Claude Opus 5",
+        "config": {
+          "model": "claude-opus-5",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 600
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Gemini 3.5 Flash-Lite",
+        "config": {
+          "model": "gemini-3.5-flash-lite",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 600,
+          "thinking_level": "minimal"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "description": "The Mariner exact-runtime script bible",
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-script-bible.json",
+          "golden_sha256": "[REDACTED]",
+          "ending_contract": "Rose affirms that Mariner became a real hero and never backs down; Mariner smiles and clenches his hands into fists; the screenplay cuts to black without resolving the confrontation."
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/script_bible_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+          }
+        ]
+      },
+      {
+        "description": "Open Frequency exact-runtime script bible",
+        "vars": {
+          "screenplay": "file://../../tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+          "golden_path": "golden/open-frequency-script-bible.json",
+          "golden_sha256": "[REDACTED]",
+          "ending_contract": "Maya's missing-dog plea leads to Comet's morning return; the ON AIR sign steadies and the radio team settles back to work."
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/script_bible_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": {
+          "id": "anthropic:messages:claude-opus-4-6",
+          "config": {
+            "max_tokens": 4096
+          }
+        }
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/script-bible-grok46-open-frequency-2026-08-12.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-08-12T22:34:49.357Z",
+    "evaluationCreatedAt": "2026-08-12T22:33:55.308Z"
+  }
+}

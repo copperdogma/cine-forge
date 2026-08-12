@@ -37,6 +37,7 @@ _to_openai_strict_schema = _llm._to_openai_strict_schema
 
 ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages"
 OPENROUTER_CHAT_URL = "https://openrouter.ai/api/v1/chat/completions"
+XAI_RESPONSES_URL = "https://api.x.ai/v1/responses"
 OPUS_5_MODEL = "claude-opus-5"
 OPUS_5_INPUT_PER_M = 5.0
 OPUS_5_OUTPUT_PER_M = 25.0
@@ -44,6 +45,7 @@ QWEN38_OPENROUTER_MODEL = "qwen/qwen3.8-max"
 QWEN38_OPENROUTER_PROVIDER = "Alibaba"
 DEEPSEEK_V4_FLASH_OPENROUTER_MODEL = "deepseek/deepseek-v4-flash-0731"
 DEEPSEEK_V4_FLASH_OPENROUTER_PROVIDER = "Phala"
+GROK_46_MODEL = "grok-4.6"
 OPENROUTER_MODEL_CONFIGS = {
     QWEN38_OPENROUTER_MODEL: {
         "provider": QWEN38_OPENROUTER_PROVIDER,
@@ -87,7 +89,14 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
             call_options["thinking_level"] = str(
                 config.get("thinking_level") or DEFAULT_THINKING_LEVEL
             )
-        if bare_model in OPENROUTER_MODEL_CONFIGS:
+        if bare_model == GROK_46_MODEL:
+            output, metadata = _call_xai_responses_strict(
+                prompt=call_options["prompt"],
+                max_tokens=max_tokens,
+                timeout_seconds=call_options["request_timeout_seconds"],
+                reasoning_effort=str(config.get("reasoning_effort") or "low"),
+            )
+        elif bare_model in OPENROUTER_MODEL_CONFIGS:
             openrouter_config = OPENROUTER_MODEL_CONFIGS[bare_model]
             output, metadata = _call_openrouter_strict(
                 prompt=call_options["prompt"],
@@ -128,6 +137,10 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
 
     prompt_tokens = int(metadata.get("input_tokens") or 0)
     completion_tokens = int(metadata.get("output_tokens") or 0)
+    reasoning_tokens = int(metadata.get("reasoning_output_tokens") or 0)
+    visible_completion_tokens = int(
+        metadata.get("visible_output_tokens") or completion_tokens
+    )
     cost = float(
         metadata.get("reported_cost_usd")
         if metadata.get("reported_cost_usd") is not None
@@ -144,7 +157,12 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
         "tokenUsage": {
             "total": prompt_tokens + completion_tokens,
             "prompt": prompt_tokens,
-            "completion": completion_tokens,
+            "completion": visible_completion_tokens,
+            **(
+                {"completionDetails": {"reasoning": reasoning_tokens}}
+                if reasoning_tokens
+                else {}
+            ),
         },
         "cost": cost,
         "latencyMs": round(float(metadata.get("latency_seconds") or 0.0) * 1000),
@@ -164,6 +182,8 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
             "allow_fallbacks": metadata.get("allow_fallbacks"),
             "data_collection": metadata.get("data_collection"),
             "zdr": metadata.get("zdr"),
+            "store": metadata.get("store"),
+            "x_zero_data_retention": metadata.get("x_zero_data_retention"),
         },
         "raw": {
             "id": identity.request_id,
@@ -373,6 +393,104 @@ def _call_openrouter_strict(
     }
 
 
+def _call_xai_responses_strict(
+    *,
+    prompt: str,
+    max_tokens: int,
+    timeout_seconds: float,
+    reasoning_effort: str,
+) -> tuple[ScriptBible, dict[str, Any]]:
+    """Call Grok 4.6 through native Responses with strict JSON and no storage."""
+    payload = {
+        "model": GROK_46_MODEL,
+        "input": [
+            {
+                "role": "user",
+                "content": [{"type": "input_text", "text": prompt}],
+            }
+        ],
+        "reasoning": {"effort": reasoning_effort},
+        "store": False,
+        "max_output_tokens": max_tokens,
+        "text": {
+            "format": {
+                "type": "json_schema",
+                "name": "script_bible",
+                "strict": True,
+                "schema": _to_openai_strict_schema(ScriptBible.model_json_schema()),
+            }
+        },
+    }
+    started = time.perf_counter()
+    raw, x_zero_data_retention = _request_xai_responses_json(
+        payload,
+        timeout_seconds=timeout_seconds,
+    )
+    latency_seconds = time.perf_counter() - started
+    identity = validate_provider_response_identity(
+        provider="xai",
+        requested_model=GROK_46_MODEL,
+        returned_model=raw.get("model"),
+        request_id=raw.get("id"),
+        require_returned=True,
+    )
+    status = raw.get("status")
+    if status != "completed" or raw.get("incomplete_details") is not None:
+        raise RuntimeError(
+            "xAI response did not complete: "
+            f"status={status!r}, incomplete={raw.get('incomplete_details')!r}"
+        )
+    output = raw.get("output")
+    if not isinstance(output, list):
+        raise RuntimeError("xAI response output must be a list")
+    text = "".join(
+        part.get("text", "")
+        for item in output
+        if isinstance(item, dict)
+        for part in item.get("content", [])
+        if isinstance(part, dict) and part.get("type") == "output_text"
+    )
+    if not text.strip():
+        raise RuntimeError("xAI Responses transport returned no output text")
+    bible = ScriptBible.model_validate_json(text)
+
+    usage = raw.get("usage")
+    if not isinstance(usage, dict):
+        raise RuntimeError("xAI response usage must be a mapping")
+    input_tokens = _token_count(usage.get("input_tokens"), "input_tokens")
+    output_tokens = _token_count(usage.get("output_tokens"), "output_tokens")
+    total_tokens = _token_count(usage.get("total_tokens"), "total_tokens")
+    if total_tokens != input_tokens + output_tokens:
+        raise RuntimeError("xAI total_tokens does not reconcile")
+    details = usage.get("output_tokens_details")
+    if not isinstance(details, dict):
+        raise RuntimeError("xAI output_tokens_details must be a mapping")
+    reasoning_tokens = _token_count(
+        details.get("reasoning_tokens"), "reasoning_tokens"
+    )
+    if reasoning_tokens > output_tokens:
+        raise RuntimeError("xAI reasoning_tokens exceeds output_tokens")
+    cost_ticks = _token_count(usage.get("cost_in_usd_ticks"), "cost_in_usd_ticks")
+    return bible, {
+        "requested_model": identity.requested_model,
+        "returned_model": identity.returned_model,
+        "request_id": identity.request_id,
+        "finish_reason": status,
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "visible_output_tokens": output_tokens - reasoning_tokens,
+        "reasoning_output_tokens": reasoning_tokens,
+        "reported_cost_usd": cost_ticks / 10_000_000_000,
+        "cost_estimated": False,
+        "latency_seconds": latency_seconds,
+        "reasoning_effort": reasoning_effort,
+        "store": False,
+        "x_zero_data_retention": x_zero_data_retention,
+        "zdr": x_zero_data_retention == "true",
+        "raw_usage": usage,
+    }
+
+
 def _anthropic_schema(schema: dict[str, Any]) -> dict[str, Any]:
     """Match Anthropic SDK schema simplification while preserving post-validation."""
     normalized = _to_openai_strict_schema(schema)
@@ -447,6 +565,34 @@ def _request_openrouter_json(payload: dict, *, timeout_seconds: float) -> dict:
     if not isinstance(raw, dict):
         raise RuntimeError("OpenRouter response must be a mapping")
     return raw
+
+
+def _request_xai_responses_json(
+    payload: dict,
+    *,
+    timeout_seconds: float,
+) -> tuple[dict, str | None]:
+    request = urllib.request.Request(
+        XAI_RESPONSES_URL,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {require_env('XAI_API_KEY')}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=timeout_seconds) as response:  # noqa: S310
+            raw = json.loads(response.read().decode("utf-8"))
+            x_zero_data_retention = response.headers.get("x-zero-data-retention")
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"xAI HTTP error {exc.code}: {detail}") from exc
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"xAI request failed: {exc.reason}") from exc
+    if not isinstance(raw, dict):
+        raise RuntimeError("xAI response must be a mapping")
+    return raw, x_zero_data_retention
 
 
 def _token_count(value: object, name: str) -> int:

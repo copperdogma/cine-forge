@@ -1,0 +1,24 @@
+{
+  "requested_model": "grok-4.6",
+  "returned_model": "grok-4.6",
+  "response_id": "d195c7e9-468a-980e-9c84-657b69c863b4",
+  "status": "completed",
+  "output_valid": true,
+  "runtime_prompt": "script_bible_v1.EXTRACTION_PROMPT",
+  "runtime_schema": "cine_forge.schemas.ScriptBible",
+  "reasoning_effort": "low",
+  "store": false,
+  "max_output_tokens": 2048,
+  "strict_schema": true,
+  "latency_ms": 12444,
+  "x_zero_data_retention": "false",
+  "usage": {
+    "input_tokens": 1530,
+    "cached_input_tokens": 128,
+    "output_tokens": 458,
+    "reasoning_tokens": 153,
+    "total_tokens": 1988,
+    "cost_in_usd_ticks": 56160000,
+    "cost_usd": 0.005616
+  }
+}

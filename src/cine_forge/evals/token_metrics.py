@@ -8,6 +8,7 @@ from cine_forge.ai.token_usage import (
     aliased_token_count,
     validate_gemini_token_usage,
     validate_standard_token_usage,
+    validate_token_count,
 )
 
 
@@ -252,6 +253,23 @@ def _validated_raw_standard_usage(
     reasoning = _raw_standard_reasoning_evidence(raw_usage)
     if reasoning is not None:
         optional["reasoning_completion_tokens"] = reasoning
+    # xAI Responses reports output_tokens as the billed total inclusive of
+    # reasoning, unlike xAI Chat Completions where completion_tokens is visible
+    # output and reasoning is additional. Normalize only the unambiguous
+    # Responses shape before applying the shared reconciliation contract.
+    if (
+        allow_total_derived_hidden
+        and "output_tokens" in raw_usage
+        and "completion_tokens" not in raw_usage
+        and reasoning is not None
+        and completion is not None
+    ):
+        completion -= validate_token_count(
+            reasoning,
+            "raw output_tokens_details.reasoning_tokens",
+        )
+        if completion < 0:
+            raise ValueError("raw xAI reasoning tokens exceed output_tokens")
     return validate_standard_token_usage(
         prompt_tokens=prompt,
         completion_tokens=completion,

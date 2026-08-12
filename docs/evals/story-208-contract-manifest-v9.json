@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "manifest_id": "story-208-eval-contracts-v9",
-  "as_of": "2026-07-22",
+  "as_of": "2026-07-24",
   "commit_identity_policy": "the immutable Git commit containing this manifest identifies these exact contract bytes; a dirty working-tree copy is provisional",
   "source_ledger": "docs/evals/truth-audit-ledger.yaml",
   "selection_policy": {
@@ -32,8 +32,8 @@
       "docs/evals/registry.yaml eval definitions excluding scores and attempts"
     ]
   },
-  "file_count": 922,
-  "bundle_sha256": "817f7426c744eb8e4b46c21e04816506c21d0adad874a732743611d208afb191",
+  "file_count": 927,
+  "bundle_sha256": "7ff60f2dde958a5e7cb54d5c996e2c3aa971afc3fc4b2ae43dced362f331cbeb",
   "files": [
     {
       "path": ".agents/skills/create-eval/SKILL.md",
@@ -1256,6 +1256,11 @@
       "bytes": 2230
     },
     {
+      "path": "benchmarks/prompts/script-bible-runtime-marker.txt",
+      "sha256": "636a2e3031b731546a6deccc15ff98acd6f360765a77112976f74384abd30e19",
+      "bytes": 142
+    },
+    {
       "path": "benchmarks/prompts/script-bible.txt",
       "sha256": "8c98d16659fe8b9a1795984b7a02d741664b80db587637889949b41b6c95382a",
       "bytes": 2628
@@ -1279,6 +1284,11 @@
       "path": "benchmarks/providers/openai_responses_provider.py",
       "sha256": "7cfd605f12f818208ecee3f3566485044246fff5bc230ea6d52b73cd94faa4fc",
       "bytes": 7793
+    },
+    {
+      "path": "benchmarks/providers/script_bible_runtime_provider.py",
+      "sha256": "c3bc6ff45b8a4f0af34388e7a199134feed7717e4cfa1d63e13cc1fa2ab4f2d9",
+      "bytes": 23280
     },
     {
       "path": "benchmarks/providers/storyboard_understanding_packet.py",
@@ -1377,8 +1387,8 @@
     },
     {
       "path": "benchmarks/scorers/script_bible_scorer.py",
-      "sha256": "d7600e8b652d18c32127bcbdec7dcffa340feccf2d500f00b62b4e7ae335b086",
-      "bytes": 15048
+      "sha256": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+      "bytes": 20039
     },
     {
       "path": "benchmarks/scorers/storyboard_understanding_dimensions.py",
@@ -2649,18 +2659,18 @@
       "path": "docs/evals/registry.yaml#contract-projection",
       "source_path": "docs/evals/registry.yaml",
       "projection": "all eval fields except mutable scores and attempts",
-      "sha256": "2030ff963c70a492622d32c2ab06b2fd4f9fa8987e856b227622af2d8d417358",
-      "bytes": 39780
+      "sha256": "f02705bb57cf57dda24ff30cd3359b8cb6c0bf15a87315e9f68c78d72ec7da0f",
+      "bytes": 39876
     },
     {
       "path": "docs/evals/truth-audit-ledger.yaml",
-      "sha256": "88b15963b8d5aa9460499ea6d00c65772f21b3fde29576f36ee61308e428bdea",
-      "bytes": 231550
+      "sha256": "f59ebafdb79f113a21d3a86af81e6e512144461cc60ce3fe4f70553349482f6f",
+      "bytes": 237437
     },
     {
       "path": "docs/methodology/state.yaml",
-      "sha256": "b4f0ac08e6bb5fdaafa2caf0d6cf91e5453d2aaaaf80d28959b9f345e8ab0b76",
-      "bytes": 32702
+      "sha256": "a88dd264ae8eb202572eeb1453b489b336af78ce440ac7c7f96d6bbce3c2114a",
+      "bytes": 32744
     },
     {
       "path": "docs/runbooks/create-eval.md",
@@ -2704,8 +2714,8 @@
     },
     {
       "path": "scripts/extract-eval-metrics.py",
-      "sha256": "334a6cf90ccd1c2cdbc7205cd96ad6be2ba0d31c1a725ebe91d5ad154397cd39",
-      "bytes": 14372
+      "sha256": "8f46da20981eb9eea1a350a300dd6638d0c0cf16dceac29d758a1b42012b2613",
+      "bytes": 15131
     },
     {
       "path": "scripts/live_ai_capability_smoke.py",
@@ -2814,8 +2824,8 @@
     },
     {
       "path": "src/cine_forge/evals/cost_metrics.py",
-      "sha256": "4a9a8e5a7875bb07b8ea526e13919a0c9ed1833aa28dfa108a236165d300fe81",
-      "bytes": 3366
+      "sha256": "69e830053354a8dc59d19c8ba5e0e1551fc481080b50820055a545c149d2ae97",
+      "bytes": 3913
     },
     {
       "path": "src/cine_forge/evals/provider_identity.py",
@@ -2849,8 +2859,8 @@
     },
     {
       "path": "src/cine_forge/evals/token_metrics.py",
-      "sha256": "0b444b1ea8520de46a3a9d97adc085b4ddc0beb0239e9a003be25f680ed4c7dd",
-      "bytes": 9538
+      "sha256": "eff4b3a1fd5f4c5e434ac8cd4aa3ec9f4cb919b252071d3de746b2ebab5bf4a6",
+      "bytes": 11176
     },
     {
       "path": "src/cine_forge/modules/ingest/scene_breakdown_v1/main.py",
@@ -2921,6 +2931,11 @@
       "path": "src/cine_forge/schemas/__init__.py",
       "sha256": "3c6d1338ad6824765e705d02015d86a131a67986c06daf7bda3fdf9a1ae227b2",
       "bytes": 11876
+    },
+    {
+      "path": "src/cine_forge/schemas/script_bible.py",
+      "sha256": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb",
+      "bytes": 2864
     },
     {
       "path": "src/cine_forge/schemas/storyboard_analysis.py",
@@ -4014,8 +4029,8 @@
     },
     {
       "path": "tests/unit/test_eval_text_providers.py",
-      "sha256": "79d98d4dc306204cb69410dcdb7525606c63ee2bb20bd312138204aea45fd183",
-      "bytes": 10824
+      "sha256": "b7a2e75e834000db551af4aa2e541e464f152b914795321ceee47e6ecf555c01",
+      "bytes": 16539
     },
     {
       "path": "tests/unit/test_event_emitter.py",
@@ -4199,8 +4214,8 @@
     },
     {
       "path": "tests/unit/test_non_gemini_token_metrics.py",
-      "sha256": "acde810c5c5f9cb9b296d27a2849c3522e8225ab940f6762fab476d0cd5fdc73",
-      "bytes": 5279
+      "sha256": "ff5814c6fee915a07693b4ed0d6869eb174727d7384f083e1b8e36a245f356c8",
+      "bytes": 6693
     },
     {
       "path": "tests/unit/test_normalization_scorer.py",
@@ -4211,6 +4226,11 @@
       "path": "tests/unit/test_normalize_tiers.py",
       "sha256": "a3f853aa7dd7c030a84b27b9e099b52f52a7401eaeb26b2f0c51ae9ad36ff50f",
       "bytes": 5394
+    },
+    {
+      "path": "tests/unit/test_openrouter_script_bible_provider.py",
+      "sha256": "c0ebaa542de6dfffdd725f3061c5fd55e99872f3a3a01899ff211ca52402469d",
+      "bytes": 7783
     },
     {
       "path": "tests/unit/test_orphan_detection.py",
@@ -4454,8 +4474,8 @@
     },
     {
       "path": "tests/unit/test_script_bible_scorer.py",
-      "sha256": "06062db451e69bfc2e4f07efe2b3f0940be99176611611c7cc4d8f496859071d",
-      "bytes": 12286
+      "sha256": "7579922707eb712548019c672e78fe95754fcb8dadbbbea4c0712b270eaee732",
+      "bytes": 15918
     },
     {
       "path": "tests/unit/test_script_normalize_model_selection.py",
@@ -4611,6 +4631,11 @@
       "path": "tests/unit/test_visual_frame_eval_contract.py",
       "sha256": "6680bfda91e5fb9738038fe5bde126d12ee1b57ea66d2d77de8fc52469cd9b2e",
       "bytes": 2237
+    },
+    {
+      "path": "tests/unit/test_xai_script_bible_provider.py",
+      "sha256": "d5cc34eb7acb89eaaa18d2db0303216c054780554cd7ee2e6c985d78aa446b09",
+      "bytes": 5660
     },
     {
       "path": "ui/package.json",

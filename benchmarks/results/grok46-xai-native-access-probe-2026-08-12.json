@@ -1,0 +1,23 @@
+{
+  "requested_model": "grok-4.6",
+  "returned_model": "grok-4.6",
+  "response_id": "8788c0c3-f560-9f17-9884-085b378e99d8",
+  "status": "completed",
+  "incomplete_details": null,
+  "output": {"status": "API_OK"},
+  "reasoning_effort": "low",
+  "store": false,
+  "max_output_tokens": 256,
+  "strict_schema": true,
+  "latency_ms": 2171,
+  "x_zero_data_retention": "false",
+  "usage": {
+    "input_tokens": 275,
+    "cached_input_tokens": 128,
+    "output_tokens": 101,
+    "reasoning_tokens": 93,
+    "total_tokens": 376,
+    "cost_in_usd_ticks": 9640000,
+    "cost_usd": 0.000964
+  }
+}
