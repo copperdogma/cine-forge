@@ -1,0 +1,49 @@
+{
+  "date": "2026-08-13",
+  "model": "deepseek/deepseek-v4-pro",
+  "fixture_class": "tiny-public-synthetic",
+  "semantic_output_retained": false,
+  "routes": [
+    {
+      "provider": "Together",
+      "status": "qualified",
+      "requested_model": "deepseek/deepseek-v4-pro",
+      "returned_model": "deepseek/deepseek-v4-pro",
+      "request_id": "gen-1786653387-RGwwgnHhzprFmx1SSjmq",
+      "finish_reason": "stop",
+      "reasoning_effort": "low",
+      "strict_script_bible_schema": true,
+      "allow_fallbacks": false,
+      "require_parameters": true,
+      "data_collection": "deny",
+      "zdr": true,
+      "latency_ms": 19109,
+      "usage": {
+        "prompt_tokens": 464,
+        "completion_tokens": 985,
+        "reasoning_tokens": 984,
+        "total_tokens": 1449
+      },
+      "reported_cost_usd": 0.00423516,
+      "decision": "not advanced because the tiny call consumed 42 percent of the full-script cost gate"
+    },
+    {
+      "provider": "Baidu",
+      "status": "interrupted-after-hard-latency-failure",
+      "requested_model": "deepseek/deepseek-v4-pro",
+      "returned_model": null,
+      "request_id": null,
+      "finish_reason": null,
+      "reasoning_effort": "low",
+      "strict_script_bible_schema": true,
+      "allow_fallbacks": false,
+      "require_parameters": true,
+      "data_collection": "deny",
+      "zdr": false,
+      "minimum_observed_latency_ms": 60000,
+      "usage": null,
+      "reported_cost_usd": null,
+      "decision": "full screenplay not run; capability not measured"
+    }
+  ]
+}

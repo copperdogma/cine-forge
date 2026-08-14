@@ -1449,6 +1449,7 @@ evals:
       - spec:8
     story_refs:
       - "208"
+      - "213"
     category_refs:
       - spec:8
     compromise_refs: []
@@ -1458,7 +1459,7 @@ evals:
       deliberately defective rejection control. Historical rows predate the
       source-truth and strict issue-accounting repair and cannot drive a QA
       default or compromise detector until they are regraded.
-    historical_evidence_status: contaminated-non-decision-grade
+    historical_evidence_status: "Rows before Attempt 026 are contaminated/non-decision-grade; current two-case rows are bounded diagnostics, not default evidence."
     pipeline_stage: qa
     runner: promptfoo
     command: "cd benchmarks && promptfoo eval -c tasks/qa-pass.yaml --no-cache -j 3"
@@ -1475,6 +1476,46 @@ evals:
       note: "QA should be near-perfect — false positives waste pipeline budget"
 
     scores:
+      - model: "Gemini 3.7 Flash — current QA runtime contract"
+        evidence_status: superseded-pre-family-contract-non-decision-grade
+        metrics:
+          overall: 0.834975
+          deterministic: 0.79995
+          rubric: 0.87
+        latency_ms: 2340
+        cost_usd: 0.003323625
+        cost_estimated: true
+        measured: 2026-08-13
+        git_sha: "b2f9002+attempt026-uncommitted"
+        result_file: benchmarks/results/qa-pass-gemini37flash-current-runtime-2026-08-13.json
+        note: "Attempt 026 pre-family-contract diagnostic. Exact gemini-3.7-flash returned correct verdicts on both cases through the shared prompt/schema boundary, but candidate-blind review then proved the count scorer unsafe and required a six-family production prompt/scorer contract. Frozen regrade under that final scorer is deterministic 0.79995, prior Opus 0.87, aggregate 0.834975: the bad result missed candidate-confidence error coverage, used warning severity for metadata, and lacked a source-specific failure-summary anchor. Latency 2,340 ms/call and estimated cost $0.003323625/call remain valid transport evidence. The production prompt subsequently changed, so this is not final current-contract parity and cannot support adoption."
+      - model: "GPT-4.1 Mini — current QA runtime contract"
+        evidence_status: superseded-pre-family-contract-non-decision-grade
+        metrics:
+          overall: 0.832475
+          deterministic: 0.79995
+          rubric: 0.865
+        latency_ms: 3148
+        cost_usd: 0.000955
+        cost_estimated: true
+        measured: 2026-08-13
+        git_sha: "b2f9002+attempt026-uncommitted"
+        result_file: benchmarks/results/qa-pass-gpt41mini-current-runtime-v2-2026-08-13.json
+        note: "Attempt 026 pre-family-contract incumbent diagnostic. OpenAI served allowed dated snapshot gpt-4.1-mini-2025-04-14 and returned correct verdicts on both cases, but candidate-blind review then proved the count scorer unsafe and required a six-family production prompt/scorer contract. Frozen regrade under that final scorer is deterministic 0.79995, prior Opus 0.865, aggregate 0.832475: the bad result missed beats-event and candidate-confidence families and lacked a source-specific failure-summary anchor. Latency 3,148 ms/call and estimated cost $0.000955/call remain valid transport evidence. The production prompt subsequently changed, so this is not final current-contract parity. Retain the default pending a future fresh comparison; no current promotion evidence exists."
+      - model: "Gemini 3.7 Flash"
+        evidence_status: superseded-scorer-golden-wrong-non-decision-grade
+        metrics:
+          overall: 0.70995
+          deterministic: 0.5999
+          rubric: 0.82
+        latency_ms: 1358
+        cost_usd: 0.0024825
+        cost_estimated: true
+        measured: 2026-08-13
+        git_sha: "b2f9002+story213-hash-manifest"
+        result_file: benchmarks/results/qa-pass-gemini37flash-known-good-retry-2026-08-13.json
+        contract_manifest: docs/evals/story-213-model-eval-contract-manifest.json
+        note: "Superseded by Attempt 026. The direct Google transport evidence remains valid, but the rejection was scorer/golden-wrong: the production contract never required the three selected positive-summary anchors. Frozen regrade is deterministic 1.0, Opus 0.82, aggregate 0.91. Do not use this one-case row for adoption."
       - model: "Gemini 3.6 Flash"
         metrics:
           overall: 0.74995
@@ -1486,7 +1527,7 @@ evals:
         measured: 2026-07-22
         git_sha: "2367cc0"
         result_file: benchmarks/results/qa-pass-story-208-post-repair-v4-2026-07-22.json
-        evidence_status: decision-grade
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Final Attempt 018 result on the independently CLEAN v4 source fixture and explicit 4,096-token Opus judge. The model passed neither case: both outputs used generic summaries that omitted required source anchors, and the negative judgment found only five required defect concepts with fewer than six required error-level findings. Opus was lenient on the generic summaries, but the independent deterministic gate prevented a false dual pass. Model-wrong, non-runtime-blocking challenger rejection; do not adopt for QA."
       - model: "Gemini 3.5 Flash-Lite"
         metrics:
@@ -1499,7 +1540,7 @@ evals:
         measured: 2026-07-22
         git_sha: "2367cc0"
         result_file: benchmarks/results/qa-pass-story-208-post-repair-v4-2026-07-22.json
-        evidence_status: decision-grade
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Final Attempt 018 result on the independently CLEAN v4 source fixture and explicit 4,096-token Opus judge. Flash-Lite cleanly passed the six-error negative control but its positive judgment supplied none of the required AirTag, armed-thug, or oar/gunfire grounding facts, so only one of two cases dual-passed. Opus was lenient on the generic positive summary, but the deterministic gate prevented a false pass. Model-wrong, non-runtime-blocking challenger rejection; do not adopt for QA."
       - model: "Gemini 3.6 Flash"
         metrics:
@@ -1588,6 +1629,7 @@ evals:
         measured: 2026-07-21
         git_sha: "f5a3ffb"
         result_file: benchmarks/results/qa-pass-gemini36flash-2026-07-21.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Story 208 raw score is not decision-grade. Classification: golden-wrong/non-runtime-blocking—the fixture labeled good actually changes the AirTag location and discovery timing and omits the thugs and gunfight, which Gemini correctly flagged. Repair the QA golden and rerun before any default comparison."
       - model: "Gemini 3.5 Flash-Lite"
         metrics:
@@ -1598,6 +1640,7 @@ evals:
         measured: 2026-07-21
         git_sha: "f5a3ffb"
         result_file: benchmarks/results/qa-pass-gemini35flashlite-2026-07-21.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Story 208 raw score is not decision-grade. Classification: golden-wrong/non-runtime-blocking—the fixture labeled good contains real extraction errors that the model correctly rejected. Repair the QA golden and rerun before any default comparison."
       - model: "Grok 4.5"
         metrics:
@@ -1608,6 +1651,7 @@ evals:
         measured: 2026-07-20
         git_sha: "dea7024"
         result_file: benchmarks/results/qa-pass-grok45-2026-07-20.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Story 207 caught the deliberately bad extraction but false-negatived the known-good case, inventing seven errors that the fixture does not contain. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default. It also narrowly misses the 10s latency target."
       - model: "Kimi K2.6"
         metrics:
@@ -1618,6 +1662,7 @@ evals:
         measured: 2026-05-20
         git_sha: "eb5de87"
         result_file: benchmarks/results/qa-pass-kimi-k26-2026-05-20.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Story 205 Moonshot probe caught the bad extraction but false-negatived the known-good scene. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default."
       - model: "GPT-5.5"
         metrics:
@@ -1628,6 +1673,7 @@ evals:
         measured: 2026-04-24
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-qa-pass-2026-04-24.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Model-wrong: false-negatived the known-good scene case; runtime-blocking if used as the QA default."
       - model: "GPT-5.5 Pro"
         metrics:
@@ -1638,6 +1684,7 @@ evals:
         measured: 2026-04-24
         git_sha: "9ede74c"
         result_file: benchmarks/results/gpt55-qa-pass-2026-04-24.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Model-wrong: same false negative on the known-good scene case; runtime-blocking if used as the QA default."
       - model: "Gemini 3.5 Flash"
         metrics:
@@ -1648,6 +1695,7 @@ evals:
         measured: 2026-05-20
         git_sha: "0b5ae05"
         result_file: benchmarks/results/qa-pass-gemini35flash-2026-05-20.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Story 204 verification-slot probe caught the bad extraction but false-negatived the known-good scene. Classification: model-wrong unsafe QA judgment; runtime-blocking if used as a QA default."
       - model: "GPT-4.1 Mini"
         metrics:
@@ -1657,7 +1705,8 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/qa-pass-post-golden-verify.json
-        note: "Production winner — perfect score, cheapest, fast"
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
+        note: "Historical old-contract score; contaminated/non-decision-grade after Attempt 026's prompt/scorer/golden audit. The actual runtime default is still GPT-4.1 Mini, but this row does not prove a current production win. See the current-contract bounded row above."
       - model: "GPT-5.2"
         metrics:
           overall: 1.000
@@ -1666,6 +1715,7 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/qa-pass-post-golden-verify.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
       - model: "Gemini 2.5 Flash"
         metrics:
           overall: 1.000
@@ -1674,6 +1724,7 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/qa-pass-post-golden-verify.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
       - model: "Gemini 3 Flash"
         metrics:
           overall: 1.000
@@ -1682,6 +1733,7 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/qa-pass-post-golden-verify.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
       - model: "Gemini 3 Pro"
         metrics:
           overall: 1.000
@@ -1690,6 +1742,7 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/qa-pass-post-golden-verify.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Up from 0.975 — golden fix corrected phantom issue penalty"
       - model: "Sonnet 4.6"
         metrics:
@@ -1700,6 +1753,7 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/qa-pass-post-golden-verify.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
       - model: "Opus 4.6"
         metrics:
           overall: 0.995
@@ -1708,6 +1762,7 @@ evals:
         measured: 2026-03-01
         git_sha: "8c9e0a1"
         result_file: benchmarks/results/qa-pass-post-golden-verify.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
       - model: "GPT-5.4 Mini"
         metrics:
           overall: 0.640625
@@ -1717,6 +1772,7 @@ evals:
         measured: 2026-03-18
         git_sha: "cfb2c78"
         result_file: benchmarks/results/gpt54-mini-nano-qa-pass-2026-03-18.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Unsafe QA gate: caught the bad extraction, but falsely failed the known-good scene."
       - model: "GPT-5.4 Nano"
         metrics:
@@ -1727,6 +1783,7 @@ evals:
         measured: 2026-03-18
         git_sha: "cfb2c78"
         result_file: benchmarks/results/gpt54-mini-nano-qa-pass-2026-03-18.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Unsafe QA gate: same false-negative pattern as GPT-5.4 Mini on the known-good scene."
       - model: "Grok 4.1 Fast Reasoning"
         metrics:
@@ -1736,6 +1793,7 @@ evals:
         measured: 2026-03-14
         git_sha: "e704243"
         result_file: benchmarks/results/model-scout-qa-pass-grok-4-1-fast-reasoning-full.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Caught the bad extraction but incorrectly failed the good one, making it unsafe as a QA gate."
       - model: "Grok 4.3"
         metrics:
@@ -1746,9 +1804,45 @@ evals:
         measured: 2026-05-04
         git_sha: "f2d0f13"
         result_file: benchmarks/results/qa-pass-grok43-2026-05-04.json
+        evidence_status: contaminated-pre-final-qa-contract-non-decision-grade
         note: "Story 200 Grok 4.3 verification-slot probe failed both QA cases. Classification: model-wrong/output-format plus unsafe judgment - it emitted reasoning before JSON and false-negatived the known-good scene while catching the bad case. Runtime-blocking if used as a QA default."
 
     attempts:
+      - id: "026"
+        story: attempts/026-qa-pass-production-contract-repair.md
+        date: 2026-08-13
+        status: succeeded
+        approach: "Blindly reverified source/golden truth, aligned scorer semantics with the production QA prompt and consumers, regraded frozen Gemini output, and ran identical exact shared-prompt/schema two-case comparisons for the incumbent and Gemini 3.7."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-13
+        subject_model: "GPT-4.1 Mini and Gemini 3.7 Flash"
+        score_before: 0.70995
+        score_after: 0.834975
+        latency_before: 1358
+        latency_after: 2340
+        cost_before: 0.0024825
+        cost_after: 0.003323625
+        retry_status: retired
+      - id: "024"
+        story: attempts/024-qa-pass-gemini-37-flash.md
+        date: 2026-08-13
+        status: failed
+        approach: "Ran the repaired known-good QA case only through direct Gemini 3.7 Flash with one schema-subset transport repair, then stopped the ladder on the source-grounding quality gate."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-13
+        subject_model: "Gemini 3.7 Flash"
+        score_before: 0.74995
+        score_after: 0.70995
+        latency_before: 6516
+        latency_after: 1358
+        cost_before: 0.012589
+        cost_after: 0.0024825
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-subject-model
+            note: "Retry this exact source-grounding screen only for a materially newer Gemini model."
+          - condition: new-approach
+            note: "Retry 3.7 only after an independently validated production QA prompt or contract change."
       - id: "018"
         story: attempts/018-qa-pass-post-commit-calibration.md
         date: 2026-07-22
@@ -1909,6 +2003,7 @@ evals:
     story_refs:
       - "030"
       - "208"
+      - "213"
     category_refs:
       - spec:7
       - spec:8
@@ -3862,6 +3957,7 @@ evals:
       - "210"
       - "211"
       - "212"
+      - "213"
     category_refs:
       - spec:2
       - spec:8
@@ -4171,6 +4267,30 @@ evals:
         note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
     attempts:
+      - id: "025"
+        story: attempts/025-script-bible-deepseek-v4-pro.md
+        date: 2026-08-13
+        status: failed
+        approach: "Qualified exact DeepSeek V4 Pro strict output on Together/ZDR, then froze lower-cost Baidu for public synthetic data and stopped when its tiny probe exceeded 60 seconds without completing."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-13
+        subject_model: "DeepSeek V4 Pro via OpenRouter"
+        score_before: null
+        score_after: null
+        latency_before: 300000
+        latency_after: null
+        minimum_observed_latency_ms: 60000
+        cost_before: null
+        cost_after: null
+        transport_probe_cost_usd: 0.00423516
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: stable-fast-zdr-route
+            note: "Retry only when an exact strict route can plausibly clear both 30 seconds and $0.01 on the full runtime prompt."
+          - condition: native-deepseek-access
+            note: "A separately qualified direct credential may reopen access if explicitly supplied."
+          - condition: cheaper-subject-model
+            note: "Retry after documented routing or pricing changes make the full call plausibly pass."
       - id: "023"
         story: attempts/023-script-bible-grok-46.md
         date: 2026-08-12

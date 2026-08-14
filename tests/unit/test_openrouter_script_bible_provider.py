@@ -110,6 +110,7 @@ def test_qwen38_openrouter_enforces_schema_provider_and_usage(
         "order": ["Alibaba"],
         "allow_fallbacks": False,
         "require_parameters": True,
+        "data_collection": "deny",
     }
     assert payload["response_format"]["type"] == "json_schema"
     assert payload["response_format"]["json_schema"]["strict"] is True
@@ -230,3 +231,65 @@ def test_deepseek_v4_flash_openrouter_enforces_zdr_schema_and_usage(
     assert result["metadata"]["data_collection"] == "deny"
     assert result["metadata"]["zdr"] is True
     assert result["raw"]["provider"] == "Phala"
+
+
+def test_deepseek_v4_pro_openrouter_enforces_zdr_schema_and_usage(
+    provider,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    bible = _bible(provider)
+    seen = {}
+
+    def fake_request(payload: dict, *, timeout_seconds: float):
+        seen.update(payload=payload, timeout_seconds=timeout_seconds)
+        return {
+            "id": "gen-deepseek-v4-pro",
+            "model": "deepseek/deepseek-v4-pro",
+            "provider": "Baidu",
+            "choices": [
+                {
+                    "finish_reason": "stop",
+                    "message": {"role": "assistant", "content": bible.model_dump_json()},
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 120,
+                "completion_tokens": 80,
+                "total_tokens": 200,
+                "cost": 0.0006,
+                "completion_tokens_details": {"reasoning_tokens": 30},
+            },
+        }
+
+    monkeypatch.setattr(provider, "_request_openrouter_json", fake_request)
+    result = provider.call_api(
+        "marker",
+        {
+            "config": {
+                "model": "deepseek/deepseek-v4-pro",
+                "provider": "openrouter",
+                "max_tokens": 65536,
+                "request_timeout_seconds": 12,
+                "reasoning_effort": "low",
+            }
+        },
+        {"vars": {"screenplay": "INT. STUDIO - NIGHT\nARIA broadcasts."}},
+    )
+
+    payload = seen["payload"]
+    assert payload["model"] == "deepseek/deepseek-v4-pro"
+    assert payload["reasoning"] == {"effort": "low", "exclude": True}
+    assert payload["provider"] == {
+        "order": ["Baidu"],
+        "allow_fallbacks": False,
+        "require_parameters": True,
+        "data_collection": "deny",
+    }
+    assert payload["response_format"]["type"] == "json_schema"
+    assert payload["response_format"]["json_schema"]["strict"] is True
+    assert result["output"] == bible.model_dump_json()
+    assert result["metadata"]["returned_model"] == "deepseek/deepseek-v4-pro"
+    assert result["metadata"]["upstream_provider"] == "Baidu"
+    assert result["metadata"]["data_collection"] == "deny"
+    assert result["metadata"]["zdr"] is False
+    assert result["raw"]["provider"] == "Baidu"

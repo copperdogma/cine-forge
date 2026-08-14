@@ -15,7 +15,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LEDGER = REPO_ROOT / "docs/evals/truth-audit-ledger.yaml"
-DEFAULT_OUTPUT = REPO_ROOT / "docs/evals/story-208-contract-manifest-v9.json"
+DEFAULT_OUTPUT = REPO_ROOT / "docs/evals/story-208-contract-manifest-v10.json"
 REGISTRY_RELATIVE_PATH = "docs/evals/registry.yaml"
 REGISTRY_HISTORY_KEYS = {"scores", "attempts"}
 

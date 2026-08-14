@@ -354,8 +354,22 @@ GOLDEN_SPECS: dict[str, dict] = {
         "key_convention": "snake_case",
         "entry_required_fields": ["expected_passed"],
         "good_scene_fields": ["max_errors", "max_warnings", "required_in_summary"],
-        "bad_scene_fields": ["min_errors", "required_issues"],
+        "bad_scene_fields": [
+            "required_issues",
+            "required_families",
+            "critical_error_families",
+            "family_claim_contracts",
+            "required_in_summary_any",
+        ],
         "issue_entry_fields": ["field", "reason"],
+        "repair_family_fields": {
+            "metadata": ["heading", "location", "time_of_day"],
+            "cast_identity": ["characters_present"],
+            "summary_plot": ["summary"],
+            "beats_events": ["narrative_beats"],
+            "tone": ["tone_mood"],
+            "candidate_confidence": ["confidence"],
+        },
     },
     "continuity-extraction-golden.json": {
         "label": "Continuity Extraction",

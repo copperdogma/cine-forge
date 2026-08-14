@@ -225,9 +225,95 @@ def validate_qa_pass(data: dict, spec: dict, result: ValidationResult) -> None:
         fields = spec.get("good_scene_fields" if passed else "bad_scene_fields", [])
         for field in fields:
             if field not in entry:
-                result.warn(f"[{key}]: missing {field!r}")
+                result.error(f"[{key}]: missing {field!r}")
         if passed:
             continue
+        family_fields = spec.get("repair_family_fields", {})
+        known_families = set(family_fields)
+        required_families = entry.get("required_families", [])
+        critical_families = entry.get("critical_error_families", [])
+        summary_anchors = entry.get("required_in_summary_any", [])
+        claim_contracts = entry.get("family_claim_contracts", {})
+        for field_name, values in (
+            ("required_families", required_families),
+            ("critical_error_families", critical_families),
+            ("required_in_summary_any", summary_anchors),
+        ):
+            validate_string_list(values, field_name, f"[{key}]", result)
+            if isinstance(values, list):
+                if not values:
+                    result.error(f"[{key}]: {field_name} must not be empty")
+                elif len(values) != len(set(values)):
+                    result.error(f"[{key}]: {field_name} contains duplicates")
+        if isinstance(required_families, list):
+            declared = set(required_families)
+            if declared != known_families:
+                result.error(
+                    f"[{key}]: required_families must equal canonical families "
+                    f"{sorted(known_families)}; got {sorted(declared)}"
+                )
+        if isinstance(critical_families, list):
+            declared = set(critical_families)
+            if declared != known_families:
+                result.error(
+                    f"[{key}]: critical_error_families must equal canonical families "
+                    f"{sorted(known_families)}; got {sorted(declared)}"
+                )
+        if "min_errors" in entry:
+            result.error(f"[{key}]: min_errors is legacy and forbidden in maintained QA goldens")
+        if not isinstance(claim_contracts, dict) or set(claim_contracts) != known_families:
+            result.error(
+                f"[{key}]: family_claim_contracts must define exactly canonical families "
+                f"{sorted(known_families)}"
+            )
+        elif isinstance(claim_contracts, dict):
+            required_claim_fields = {
+                "candidate_terms",
+                "defect_relations",
+                "source_corrections",
+                "source_relations",
+            }
+            for family, contract in claim_contracts.items():
+                if not isinstance(contract, dict) or set(contract) != required_claim_fields:
+                    result.error(
+                        f"[{key}]: family_claim_contracts[{family!r}] must define exactly "
+                        f"{sorted(required_claim_fields)}"
+                    )
+                    continue
+                for field_name, alternatives in contract.items():
+                    valid = (
+                        isinstance(alternatives, list)
+                        and bool(alternatives)
+                        and all(
+                            isinstance(value, str) and value.strip()
+                            for value in alternatives
+                        )
+                        and len(alternatives) == len(set(alternatives))
+                    )
+                    if not valid:
+                        result.error(
+                            f"[{key}]: family_claim_contracts[{family!r}]"
+                            f"[{field_name!r}] must be a non-empty unique string list"
+                        )
+                defect_relations = contract.get("defect_relations", [])
+                source_relations = contract.get("source_relations", [])
+                if isinstance(defect_relations, list) and isinstance(source_relations, list):
+                    for defect_relation in defect_relations:
+                        if not isinstance(defect_relation, str):
+                            continue
+                        defect_tokens = set(re.findall(r"[a-z0-9]+", defect_relation.lower()))
+                        if any(
+                            set(re.findall(r"[a-z0-9]+", source_relation.lower()))
+                            <= defect_tokens
+                            for source_relation in source_relations
+                            if isinstance(source_relation, str) and source_relation.strip()
+                        ):
+                            result.error(
+                                f"[{key}]: family_claim_contracts[{family!r}] source "
+                                "relations must require more than a candidate-defect "
+                                f"relation ({defect_relation!r})"
+                            )
+        issue_fields: set[str] = set()
         for index, issue in enumerate(entry.get("required_issues", [])):
             if not isinstance(issue, dict):
                 result.error(f"[{key}]: required_issues[{index}] must be an object")
@@ -235,6 +321,14 @@ def validate_qa_pass(data: dict, spec: dict, result: ValidationResult) -> None:
             for field in spec.get("issue_entry_fields", []):
                 if field not in issue:
                     result.error(f"[{key}]: required_issues[{index}] missing {field!r}")
+            issue_field = issue.get("field")
+            if isinstance(issue_field, str):
+                issue_fields.add(issue_field)
+        for family, mapped_fields in family_fields.items():
+            if not issue_fields.intersection(mapped_fields):
+                result.error(
+                    f"[{key}]: repair family {family!r} has no mapped required_issues entry"
+                )
     if expected_verdicts != {True, False}:
         result.error(
             "QA pass golden must contain at least one accepted extraction and "

@@ -292,7 +292,8 @@
           "208",
           "210",
           "211",
-          "212"
+          "212",
+          "213"
         ],
         "adrIds": [
           "ADR-003"
@@ -1089,7 +1090,8 @@
           "209",
           "210",
           "211",
-          "212"
+          "212",
+          "213"
         ],
         "adrIds": [
           "ADR-001",
@@ -1591,7 +1593,8 @@
           "204",
           "205",
           "207",
-          "208"
+          "208",
+          "213"
         ],
         "evalIds": [
           "compromise-C2-qa-validation"
@@ -1618,7 +1621,8 @@
             "204",
             "205",
             "207",
-            "208"
+            "208",
+            "213"
           ],
           "evalIds": [
             "compromise-C2-qa-validation"
@@ -1662,7 +1666,8 @@
           "208",
           "210",
           "211",
-          "212"
+          "212",
+          "213"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1714,7 +1719,8 @@
             "208",
             "210",
             "211",
-            "212"
+            "212",
+            "213"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -1793,7 +1799,8 @@
           "199",
           "200",
           "204",
-          "208"
+          "208",
+          "213"
         ],
         "evalIds": [
           "compromise-C5-role-modality"
@@ -1817,7 +1824,8 @@
             "199",
             "200",
             "204",
-            "208"
+            "208",
+            "213"
           ],
           "evalIds": [
             "compromise-C5-role-modality"
@@ -14000,6 +14008,71 @@
           "summary": "completion: exact direct Grok 4.6 access, strict production"
         }
       }
+    },
+    {
+      "id": "213",
+      "title": "Gemini 3.7 Flash and DeepSeek V4 Pro bounded evals",
+      "path": "docs/stories/story-213-gemini-37-flash-and-deepseek-v4-pro-bounded-evals.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1",
+        "R12",
+        "R3",
+        "R8"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C2",
+        "C3",
+        "C5"
+      ],
+      "dependsOn": [
+        "208",
+        "211"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "deepseek-v4-pro",
+        "evals",
+        "gemini-3.7",
+        "model-refresh"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "213",
+        "sourcePath": "docs/stories/story-213-gemini-37-flash-and-deepseek-v4-pro-bounded-evals.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-213-gemini-37-flash-and-deepseek-v4-pro-bounded-evals.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -15097,7 +15170,8 @@
         "spec:8"
       ],
       "storyIds": [
-        "208"
+        "208",
+        "213"
       ],
       "categoryRefs": [
         "spec:8"
@@ -15105,6 +15179,25 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "026",
+          "date": "2026-08-13",
+          "approach": "Blindly reverified source/golden truth, aligned scorer semantics with the production QA prompt and consumers, regraded frozen Gemini output, and ran identical exact shared-prompt/schema two-case comparisons for the incumbent and Gemini 3.7.",
+          "note": "",
+          "retryStatus": "retired",
+          "retryWhen": []
+        },
+        {
+          "id": "024",
+          "date": "2026-08-13",
+          "approach": "Ran the repaired known-good QA case only through direct Gemini 3.7 Flash with one schema-subset transport repair, then stopped the ladder on the source-grounding quality gate.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "new-approach",
+            "new-subject-model"
+          ]
+        },
         {
           "id": "018",
           "date": "2026-07-22",
@@ -15114,22 +15207,15 @@
           "retryWhen": []
         }
       ],
-      "latestScore": {
-        "model": "Gemini 3.5 Flash-Lite",
-        "measured": "2026-07-22",
-        "metrics": {
-          "overall": 0.8484
-        },
-        "evidenceStatus": "decision-grade",
-        "note": "Final Attempt 018 result on the independently CLEAN v4 source fixture and explicit 4,096-token Opus judge. Flash-Lite cleanly passed the six-error negative control but its positive judgment supplied none of the required AirTag, armed-thug, or oar/gunfire grounding facts, so only one of two cases dual-passed. Opus was lenient on the generic positive summary, but the deterministic gate prevented a…"
-      },
-      "historicalEvidenceStatus": "contaminated-non-decision-grade",
-      "excludedScoreCount": 24,
+      "latestScore": null,
+      "historicalEvidenceStatus": "Rows before Attempt 026 are contaminated/non-decision-grade; current two-case rows are bounded diagnostics, not default evidence.",
+      "excludedScoreCount": 29,
       "declaredSpecRefs": [
         "spec:8"
       ],
       "declaredStoryIds": [
-        "208"
+        "208",
+        "213"
       ],
       "declaredCategoryRefs": [
         "spec:8"
@@ -15145,15 +15231,15 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "no-trigger-recorded",
-        "whyNow": "Final Attempt 018 result on the independently CLEAN v4 source fixture and explicit 4,096-token Opus judge. Flash-Lite cleanly passed the six-error negative control but its positive judgment supplied none of the required AirTag, armed-thug, or oar/gunfire grounding facts, so only one of two cases dual-passed. Opus was lenient on the generic positive summary, but the deterministic gate prevented a…",
+        "whyNow": "",
         "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-07-22",
+          "date": "2026-08-13",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "018",
-          "summary": "Preserved three contaminated diagnostics, repaired source truth, six-error accounting, and the Opus output budget, then ran the final source-clean v4 contract. Flash-Lite reached 0.8484 with one of two dual passes; Gemini 3.6 reached 0.74995 with none. Both challengers are rejected for QA."
+          "sourceId": "026",
+          "summary": "Blindly reverified source/golden truth, aligned scorer semantics with the production QA prompt and consumers, regraded frozen Gemini output, and ran identical exact shared-prompt/schema two-case comparisons for the incumbent and Gemini 3.7."
         }
       }
     },
@@ -15591,7 +15677,8 @@
         "208",
         "210",
         "211",
-        "212"
+        "212",
+        "213"
       ],
       "categoryRefs": [
         "spec:2",
@@ -15600,6 +15687,18 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "025",
+          "date": "2026-08-13",
+          "approach": "Qualified exact DeepSeek V4 Pro strict output on Together/ZDR, then froze lower-cost Baidu for public synthetic data and stopped when its tiny probe exceeded 60 seconds without completing.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "cheaper-subject-model",
+            "native-deepseek-access",
+            "stable-fast-zdr-route"
+          ]
+        },
         {
           "id": "023",
           "date": "2026-08-12",
@@ -15666,7 +15765,8 @@
         "208",
         "210",
         "211",
-        "212"
+        "212",
+        "213"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -15688,14 +15788,15 @@
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
           "cheaper-subject-model",
+          "native-deepseek-access",
           "stable-fast-zdr-route"
         ],
         "lastRelevantAction": {
-          "date": "2026-08-12",
+          "date": "2026-08-13",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "023",
-          "summary": "Qualified direct Grok 4.6 Responses strict output and ran one frozen low-reasoning exact-runtime Open Frequency case before stopping on the hard subject-cost gate."
+          "sourceId": "025",
+          "summary": "Qualified exact DeepSeek V4 Pro strict output on Together/ZDR, then froze lower-cost Baidu for public synthetic data and stopped when its tiny probe exceeded 60 seconds without completing."
         }
       }
     },
@@ -15849,7 +15950,8 @@
       ],
       "storyIds": [
         "030",
-        "208"
+        "208",
+        "213"
       ],
       "categoryRefs": [
         "spec:7",
@@ -15896,7 +15998,8 @@
       ],
       "declaredStoryIds": [
         "030",
-        "208"
+        "208",
+        "213"
       ],
       "declaredCategoryRefs": [
         "spec:7",
@@ -16536,7 +16639,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 122 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 124 days old against a 14-day cadence"
     ]
   }
 }

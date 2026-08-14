@@ -1,0 +1,513 @@
+{
+  "evalId": "eval-9uG-2026-08-13T20:35:10",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-08-13T20:35:10.717Z",
+    "prompts": [
+      {
+        "raw": "You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\n{{scene_text}}\n\n==========\nCANDIDATE EXTRACTION:\n{{extracted_data}}\n==========",
+        "label": "prompts/qa-pass.txt: You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\n{{scene_text}}\n\n==========\nCANDIDATE EXTRACTION:\n{{extracted_data}}\n==========",
+        "id": "01b035ecf548723f487b501e2947758409febe7f1e73064d84e82dfde05191fb",
+        "provider": "Gemini 3.7 Flash",
+        "metrics": {
+          "score": 0,
+          "testPassCount": 0,
+          "testFailCount": 0,
+          "testErrorCount": 1,
+          "assertPassCount": 0,
+          "assertFailCount": 0,
+          "totalLatencyMs": 227,
+          "tokenUsage": {
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "total": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "error": "Error: No candidates returned in API response.\n\nGot response: {\"error\":{\"code\":400,\"message\":\"Invalid JSON payload received. Unknown name \\\"additionalProperties\\\" at 'generation_config.response_schema': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"additionalProperties\\\" at 'generation_config.response_schema.properties[2].value.items': Cannot find field.\",\"status\":\"INVALID_ARGUMENT\",\"details\":[{\"@type\":\"type.googleapis.com/google.rpc.BadRequest\",\"fieldViolations\":[{\"field\":\"generation_config.response_schema\",\"description\":\"Invalid JSON payload received. Unknown name \\\"additionalProperties\\\" at 'generation_config.response_schema': Cannot find field.\"},{\"field\":\"generation_config.response_schema.properties[2].value.items\",\"description\":\"Invalid JSON payload received. Unknown name \\\"additionalProperties\\\" at 'generation_config.response_schema.properties[2].value.items': Cannot find field.\"}]}]}}",
+        "gradingResult": null,
+        "id": "e6d850b9-4a43-46fb-a2ca-d02e4f4d0fa1",
+        "latencyMs": 227,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\nINT. RUDDY & GREEN BUILDING - ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE\nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \"THE MARINER\"\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER\nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \"Dad\" in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE\nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE\n(annoyed)\nWhat?\n\nMARINER\nAirTag.\n\nROSE\nWhat??\n\nMARINER\nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE\nShit! My purse!\n\nMARINER\nJust in case! I worry about--\n\nROSE\nShut it! We gotta go back for it.\n\nMARINER\nWhat? No way! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE\n(laughing)\nYou think they’re after you?\n\nMariner looks confused. DING - elevator doors open on 12.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG - shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2\n(into radio)\nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG\n(muffled)\nGo! Go! Down to eight!\n\nRose presses 11.\n\nROSE\nWe’ll take the stairs up. They won’t expect that.\n\nMARINER\nBecause it’s stupid!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER\nIt’s functional! ... And an homage.\n\n==========\nCANDIDATE EXTRACTION:\n{\n  \"scene_number\": null,\n  \"heading\": \"INT. RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"int_ext\": \"INT\",\n  \"location\": \"RUDDY & GREEN BUILDING - ELEVATOR\",\n  \"time_of_day\": null,\n  \"characters_present\": [\"ROSE\", \"MARINER\", \"THUG 1\", \"THUG 2\", \"THUG 3\"],\n  \"summary\": \"Mid-30s Rose, wearing a Tim Hortons uniform with messy hair and blood on her face, catches her breath beside the far bloodier Mariner while romantic muzak plays. She picks up a bloody scrap with hair, snorts, drops it, and asks whether it is skull. Mariner's face, beard, red cap, and mask are described before a full-screen title card introduces him; after he confirms that the scrap is skull, the screenplay details his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar. Mariner admits that he hid an AirTag in Rose's purse at Thanksgiving; when he assumes the armed men targeted her because of him, Rose laughs and challenges that assumption. Three armed thugs attack when the doors open on twelve, and Mariner deflects a gun with his oar and kicks one thug into the others while Rose closes the doors under gunfire. After a thug orders the group down to eight, Rose chooses eleven so she and Mariner can take the stairs back up, then silently questions his outfit before he calls it functional and an homage.\",\n  \"narrative_beats\": [\n    {\"beat_type\": \"comic_relief\", \"description\": \"Rose is introduced in a Tim Hortons uniform with messy hair and blood on her face while romantic muzak plays; she handles a bloody scrap with hair and asks whether it is skull.\", \"confidence\": 0.99},\n    {\"beat_type\": \"character_introduction\", \"description\": \"The source describes the much bloodier Mariner's face, beard, red cap, and mask, presents a full-screen title card naming him, then has him confirm that the scrap is skull before detailing his moss-green sweater, anchor bracers, Dad tattoo, shell-and-fish-hook bandolier, tall boots, weighted fishing-net cape, and bloodied metal-edged oar.\", \"confidence\": 0.99},\n    {\"beat_type\": \"revelation\", \"description\": \"Mariner admits he stashed an AirTag in Rose's purse at Thanksgiving, and Rose realizes the purse was left behind.\", \"confidence\": 0.98},\n    {\"beat_type\": \"conflict\", \"description\": \"Rose and Mariner argue about returning for the purse and whether the armed men targeted her because of him.\", \"confidence\": 0.96},\n    {\"beat_type\": \"revelation\", \"description\": \"Rose laughs at Mariner's belief that the attackers went after her because of him, implying that his assumption about their target is wrong.\", \"confidence\": 0.97},\n    {\"beat_type\": \"conflict\", \"description\": \"Three armed thugs confront them on twelve; Mariner uses his oar and a kick to break the attack while Rose closes the elevator doors under gunfire.\", \"confidence\": 0.99},\n    {\"beat_type\": \"character_development\", \"description\": \"After a muffled thug orders the group down to eight, Rose sends the elevator to eleven so she and Mariner can take the stairs up, showing improvisational resolve despite his objection.\", \"confidence\": 0.98},\n    {\"beat_type\": \"comic_relief\", \"description\": \"Rose raises an eyebrow at Mariner's strange costume, and he insists that it is functional and an homage.\", \"confidence\": 0.99}\n  ],\n  \"tone_mood\": \"darkly comic, tense, intimate, and violently kinetic\",\n  \"confidence\": 0.98\n}\n==========",
+          "label": "prompts/qa-pass.txt: You are a QA reviewer deciding whether an extracted scene analysis is complete and faithful to the supplied source scene.\n\nCompare every candidate claim against the source. Evaluate:\n1. Heading metadata: location, INT/EXT, and time of day must match what the source actually supplies. Do not penalize an administrative field merely because this excerpt cannot verify it.\n2. Character completeness and precision: every individually identified character who appears, acts, or speaks must be represented, with no invented or substituted identities.\n3. Summary fidelity and coverage: the summary must not fabricate, contradict, or omit events that materially change what happens.\n4. Narrative beats: each beat must be present in the source, and the collection must cover the scene's major actions, revelations, conflicts, or character turns.\n5. Tone: the tone must be specific and supported by dialogue, action, atmosphere, music, or juxtaposition in this scene.\n6. Candidate confidence: identify overconfidence or underconfidence when it materially conflicts with the candidate's actual fidelity.\n\nSeverity and pass rules:\n- error: a factual contradiction, fabrication, wrong identity/heading, or material omission.\n- warning: a real but non-material omission, imprecision, or misleading emphasis.\n- note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.\n- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.\n- passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.\n- confidence is confidence in your QA judgment. Do not copy the candidate's confidence.\n\nReturn exactly one JSON object containing exactly passed, confidence, issues, and summary, with no other top-level keys:\n- passed: a JSON boolean derived from the comparison\n- confidence: a finite JSON number from 0.0 through 1.0\n- issues: a JSON array of zero or more issue objects\n- summary: one or two substantive sentences explaining the judgment\n\nEach issue object must contain exactly:\n- severity: \"error\", \"warning\", or \"note\"\n- description: a specific source-grounded defect\n- location: the exact candidate field containing the defect\n\nGeneric claims such as \"looks inaccurate\" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.\n\nReturn only valid JSON. No explanations, markdown fences, comments, or trailing text.\n\n==========\nSOURCE SCENE:\n{{scene_text}}\n\n==========\nCANDIDATE EXTRACTION:\n{{extracted_data}}\n==========",
+          "config": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          }
+        },
+        "promptId": "01b035ecf548723f487b501e2947758409febe7f1e73064d84e82dfde05191fb",
+        "promptIdx": 0,
+        "provider": {
+          "id": "google:gemini-3.7-flash",
+          "label": "Gemini 3.7 Flash"
+        },
+        "response": {
+          "error": "Error: No candidates returned in API response.\n\nGot response: {\"error\":{\"code\":400,\"message\":\"Invalid JSON payload received. Unknown name \\\"additionalProperties\\\" at 'generation_config.response_schema': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"additionalProperties\\\" at 'generation_config.response_schema.properties[2].value.items': Cannot find field.\",\"status\":\"INVALID_ARGUMENT\",\"details\":[{\"@type\":\"type.googleapis.com/google.rpc.BadRequest\",\"fieldViolations\":[{\"field\":\"generation_config.response_schema\",\"description\":\"Invalid JSON payload received. Unknown name \\\"additionalProperties\\\" at 'generation_config.response_schema': Cannot find field.\"},{\"field\":\"generation_config.response_schema.properties[2].value.items\",\"description\":\"Invalid JSON payload received. Unknown name \\\"additionalProperties\\\" at 'generation_config.response_schema.properties[2].value.items': Cannot find field.\"}]}]}}"
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+            "extracted_data": "file://../input/qa-good-scene.json",
+            "golden_path": "golden/qa-pass-golden.json",
+            "test_key": "good_scene"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/qa_pass_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-good-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "good_scene"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 2
+      }
+    ],
+    "stats": {
+      "successes": 0,
+      "failures": 0,
+      "errors": 1,
+      "tokenUsage": {
+        "prompt": 0,
+        "completion": 0,
+        "cached": 0,
+        "total": 0,
+        "numRequests": 1,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 245,
+      "evaluationDurationMs": 245
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "QA pass — independently judge scene-extraction fidelity",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/gemini37-deepseek-v4pro-eval/cine-forge/benchmarks/prompts/qa-pass.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-nano",
+        "label": "GPT-4.1 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:chat:gpt-5.4-nano",
+        "label": "GPT-5.4 Nano",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:chat:gpt-5.4-mini",
+        "label": "GPT-5.4 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "openai:gpt-4.1",
+        "label": "GPT-4.1",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-5-20250929",
+        "label": "Claude Sonnet 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "maxOutputTokens": 65536
+        }
+      },
+      {
+        "id": "google:gemini-3.5-flash",
+        "label": "Gemini 3.5 Flash",
+        "config": {
+          "maxOutputTokens": 65536
+        }
+      },
+      {
+        "id": "google:gemini-3.5-flash-lite",
+        "label": "Gemini 3.5 Flash-Lite",
+        "config": {
+          "maxOutputTokens": 65536,
+          "inputCost": 3e-7,
+          "outputCost": 0.0000025
+        }
+      },
+      {
+        "id": "google:gemini-3.6-flash",
+        "label": "Gemini 3.6 Flash",
+        "config": {
+          "maxOutputTokens": 65536,
+          "inputCost": 0.0000015,
+          "outputCost": 0.0000075
+        }
+      },
+      {
+        "id": "google:gemini-3.7-flash",
+        "label": "Gemini 3.7 Flash",
+        "config": {
+          "maxOutputTokens": 65536,
+          "thinkingConfig": {
+            "thinkingLevel": "low"
+          },
+          "responseMimeType": "application/json",
+          "responseSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "passed",
+              "confidence",
+              "issues",
+              "summary"
+            ],
+            "properties": {
+              "passed": {
+                "type": "boolean"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "issues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "severity",
+                    "description",
+                    "location"
+                  ],
+                  "properties": {
+                    "severity": {
+                      "type": "string",
+                      "enum": [
+                        "error",
+                        "warning",
+                        "note"
+                      ]
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "summary": {
+                "type": "string"
+              }
+            }
+          },
+          "inputCost": 7.5e-7,
+          "outputCost": 0.00000375
+        }
+      },
+      {
+        "id": "openai:gpt-5.2",
+        "label": "GPT-5.2",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-5.5",
+        "label": "GPT-5.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "file://../providers/openai_responses_provider.py",
+        "label": "GPT-5.5 Pro",
+        "config": {
+          "model": "gpt-5.5-pro",
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "xai:grok-4.3",
+        "label": "Grok 4.3",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "xai:grok-4.5",
+        "label": "Grok 4.5",
+        "config": {
+          "max_tokens": 4096,
+          "reasoning_effort": "high",
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:kimi-k2.6",
+        "label": "Kimi K2.6",
+        "config": {
+          "apiBaseUrl": "https://api.moonshot.ai/v1",
+          "apiKeyEnvar": "[REDACTED]",
+          "temperature": 1,
+          "top_p": 0.95,
+          "max_tokens": 32768,
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-pro",
+        "label": "Gemini 2.5 Pro",
+        "config": {
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "maxOutputTokens": 65536
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-good-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "good_scene"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/qa_pass_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "scene_text": "file://../fixtures/enrich-scene-elevator.txt",
+          "extracted_data": "file://../input/qa-bad-scene.json",
+          "golden_path": "golden/qa-pass-golden.json",
+          "test_key": "bad_scene"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/qa_pass_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the candidate QA judgment by independently comparing the scene\nextraction with the source. Do not assume whether the extraction or QA\njudgment should pass from a filename, test label, or rubric wording.\n\nSOURCE SCENE\n============\n{{scene_text}}\n============\n\nEXTRACTION BEING REVIEWED\n=========================\n{{extracted_data}}\n=========================\n\nGrade all of these dimensions:\n1. Verdict: independently decide passed from source fidelity. Any factual\n   contradiction, fabrication, wrong identity/heading, or material omission\n   requires passed=false; only genuinely minor warnings may coexist with true.\n2. Issue recall and precision: every distinct material defect is identified\n   in its correct field, while accurate content is not attacked. A generic\n   complaint or copied candidate wording is not a grounded issue.\n3. Severity: factual errors and meaning-changing omissions are errors;\n   lesser imprecision may be a warning; notes cannot hide actual defects.\n4. Summary and confidence: the summary substantiates the verdict with source\n   facts, and confidence represents certainty in this QA judgment rather\n   than copying the extraction's confidence.\n5. Exact schema: the QA result uses the requested top-level and issue keys,\n   valid types, and substantive descriptions. A schema-only result is not a pass.\n\nA generic, copied, contradictory, invented, or schema-only QA judgment must\nfail. Do not reward a fluent pass/fail claim that disagrees with its own issue\nlist or the source. Score 0.80 or higher, and pass, only when the verdict,\nissues, severities, summary, and confidence are source-faithful and remaining\ndefects are genuinely minor.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": {
+          "id": "anthropic:messages:claude-opus-4-6",
+          "config": {
+            "max_tokens": 4096
+          }
+        }
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/qa-pass-gemini37flash-known-good-2026-08-13.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-08-13T20:35:11.034Z",
+    "evaluationCreatedAt": "2026-08-13T20:35:10.717Z"
+  }
+}

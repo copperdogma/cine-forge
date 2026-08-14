@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -15,8 +16,28 @@ SPEC.loader.exec_module(manifest)
 
 
 @pytest.mark.unit
+def test_story_213_manifest_is_hash_complete_for_final_qa_contract() -> None:
+    path = REPO_ROOT / "docs/evals/story-213-model-eval-contract-manifest.json"
+    payload = json.loads(path.read_text())
+    required = {
+        "docs/evals/attempts/026-qa-pass-production-contract-repair.md",
+        "benchmarks/providers/qa_runtime_provider.py",
+        "src/cine_forge/ai/qa.py",
+        "benchmarks/golden/qa-pass-golden.json",
+        "benchmarks/results/qa-pass-gpt41mini-current-runtime-v2-2026-08-13.json",
+        "benchmarks/results/qa-pass-gemini37flash-current-runtime-2026-08-13.json",
+    }
+    assert payload["attempts"] == ["024", "025", "026"]
+    assert required <= set(payload["files"])
+    assert payload["evidence_status"] == "final-contract-hash-complete-fresh-parity-unmeasured"
+    for relative, expected in payload["files"].items():
+        actual = hashlib.sha256((REPO_ROOT / relative).read_bytes()).hexdigest()
+        assert actual == expected, relative
+
+
+@pytest.mark.unit
 def test_current_story_208_manifest_rolls_forward_without_rewriting_v1() -> None:
-    assert manifest.DEFAULT_OUTPUT.name == "story-208-contract-manifest-v9.json"
+    assert manifest.DEFAULT_OUTPUT.name == "story-208-contract-manifest-v10.json"
     payload = manifest.build_manifest(
         REPO_ROOT,
         manifest.DEFAULT_LEDGER,

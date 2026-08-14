@@ -30,7 +30,6 @@ def _context(tmp_path: Path, test_key: str) -> dict:
             "expected_passed": True,
             "max_errors": 0,
             "max_warnings": 0,
-            "required_in_summary": ["source grounded and complete"],
         },
         "bad": {
             "expected_passed": False,
@@ -80,7 +79,7 @@ def _multi_bad_control() -> dict:
             {
                 "location": "cast",
                 "severity": "error",
-                "description": "Billy is a fabricated character who does not exist.",
+                "description": "Billy is a fabricated character absent from the source.",
             },
             {
                 "location": "summary",
@@ -100,13 +99,331 @@ def _multi_bad_control() -> dict:
     }
 
 
+FAMILY_POLARITY_CASES = [
+    (
+        "metadata",
+        "The candidate wrongly claims Office Building and DAY; the source says "
+        "Ruddy & Green with unspecified time.",
+        "The candidate does not claim Office Building or DAY and correctly states "
+        "Ruddy & Green with unspecified time.",
+        "The source says Ruddy & Green with unspecified time.",
+    ),
+    (
+        "cast_identity",
+        "The candidate includes invented Billy and omits Mariner; the source has "
+        "Mariner and three thugs.",
+        "The candidate does not include Billy and correctly includes Mariner and three thugs.",
+        "The source correctly includes Mariner and three thugs.",
+    ),
+    (
+        "summary_plot",
+        "The candidate invents grocery and evening plans; the source has the AirTag "
+        "and armed confrontation.",
+        "The candidate does not invent grocery or evening plans and correctly "
+        "describes the AirTag and armed confrontation.",
+        "The source plot contains the AirTag and armed confrontation.",
+    ),
+    (
+        "beats_events",
+        "The candidate invents daily-plan exposition and omits events; the source has "
+        "the AirTag reveal and gunfire.",
+        "The candidate does not invent daily plans and correctly includes the AirTag "
+        "reveal and gunfire.",
+        "The source beats contain the AirTag reveal and gunfire.",
+    ),
+    (
+        "tone",
+        "The candidate wrongly calls the tone casual; the source is tense and violent.",
+        "The candidate does not call the tone casual and correctly labels it tense and violent.",
+        "The source tone is tense and violent.",
+    ),
+    (
+        "candidate_confidence",
+        "The candidate confidence is unjustifiably high despite pervasive errors "
+        "and major omissions.",
+        "The candidate confidence is not unjustifiably high and is correctly "
+        "calibrated for the major omissions.",
+        "The confidence is correctly calibrated for the major omissions.",
+    ),
+]
+
+FAMILY_ROLE_CASES = [
+    (
+        "metadata",
+        "The candidate wrongly claims Office Building and DAY",
+        "the source says Ruddy & Green with unspecified time",
+    ),
+    (
+        "cast_identity",
+        "The candidate includes invented Billy and omits characters",
+        "the source has Mariner and three thugs",
+    ),
+    (
+        "summary_plot",
+        "The candidate invents grocery and evening plans",
+        "the source has the AirTag and armed confrontation",
+    ),
+    (
+        "beats_events",
+        "The candidate invents daily-plan exposition",
+        "the source has the AirTag reveal and gunfire",
+    ),
+    (
+        "tone",
+        "The candidate wrongly calls the tone casual",
+        "the source is tense and violent",
+    ),
+    (
+        "candidate_confidence",
+        "The candidate confidence is unjustifiably high",
+        "given pervasive errors and major omissions",
+    ),
+]
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(("family", "defect", "correction"), FAMILY_ROLE_CASES)
+def test_maintained_qa_family_claims_keep_defect_and_correction_roles_clause_local(
+    family: str, defect: str, correction: str
+) -> None:
+    golden = json.loads(
+        (REPO_ROOT / "benchmarks/golden/qa-pass-golden.json").read_text()
+    )["bad_scene"]
+    contract = golden["family_claim_contracts"][family]
+
+    assert scorer._family_claim_matches(
+        f"{defect}; {correction}.", contract
+    ) is True
+    assert scorer._family_claim_matches(
+        f"{defect}; the source may say {correction}.", contract
+    ) is False
+    assert scorer._family_claim_matches(
+        f"It might be true that {defect.lower()}; {correction}.", contract
+    ) is False
+    assert scorer._family_claim_matches(
+        f"{defect}, while {correction}.", contract
+    ) is True
+
+
+@pytest.mark.unit
+def test_maintained_qa_overlap_token_cannot_bridge_hedged_correction() -> None:
+    golden = json.loads(
+        (REPO_ROOT / "benchmarks/golden/qa-pass-golden.json").read_text()
+    )["bad_scene"]
+    description = (
+        "The candidate includes invented Billy rather than Mariner; the source may "
+        "have Mariner and three thugs."
+    )
+
+    assert scorer._family_claim_matches(
+        description, golden["family_claim_contracts"]["cast_identity"]
+    ) is True
+
+    bridged = (
+        "The candidate includes invented Billy and merely mentions Mariner; the source "
+        "may have Mariner and three thugs."
+    )
+    assert scorer._family_claim_matches(
+        bridged, golden["family_claim_contracts"]["cast_identity"]
+    ) is False
+
+    exact_review_probe = (
+        "The candidate includes invented Billy and omits Mariner; the source may "
+        "have Mariner and three thugs."
+    )
+    assert scorer._family_claim_matches(
+        exact_review_probe, golden["family_claim_contracts"]["cast_identity"]
+    ) is False
+
+
+@pytest.mark.unit
+def test_maintained_qa_candidate_relation_tokens_cannot_satisfy_source_relation() -> None:
+    golden = json.loads(
+        (REPO_ROOT / "benchmarks/golden/qa-pass-golden.json").read_text()
+    )["bad_scene"]
+
+    for family, contract in golden["family_claim_contracts"].items():
+        for relation in contract["defect_relations"]:
+            assert scorer._matches_alternative(
+                scorer._all_concepts(relation), contract["source_relations"]
+            ) is False, (family, relation)
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    ("family", "affirmative", "negated", "correction_only"),
+    FAMILY_POLARITY_CASES,
+)
+def test_maintained_qa_family_claims_are_polarity_safe(
+    family: str,
+    affirmative: str,
+    negated: str,
+    correction_only: str,
+) -> None:
+    golden = json.loads(
+        (REPO_ROOT / "benchmarks/golden/qa-pass-golden.json").read_text()
+    )["bad_scene"]
+    contract = golden["family_claim_contracts"][family]
+
+    assert scorer._family_claim_matches(affirmative, contract) is True
+    assert scorer._family_claim_matches(negated, contract) is False
+    assert scorer._family_claim_matches(correction_only, contract) is False
+
+
+@pytest.mark.unit
+def test_maintained_qa_family_claims_fail_closed_on_double_negation() -> None:
+    golden = json.loads(
+        (REPO_ROOT / "benchmarks/golden/qa-pass-golden.json").read_text()
+    )["bad_scene"]
+    description = (
+        "It is not true that the candidate does not include Billy; the source has "
+        "Mariner and three thugs."
+    )
+
+    assert scorer._family_claim_matches(
+        description, golden["family_claim_contracts"]["cast_identity"]
+    ) is False
+
+
+HEDGE_FORMS = [
+    "may",
+    "might",
+    "could",
+    "perhaps",
+    "possibly",
+    "appears to",
+    "seems to",
+    "suggests",
+]
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize("hedge", HEDGE_FORMS)
+@pytest.mark.parametrize(
+    ("family", "affirmative", "_negated", "_correction_only"),
+    FAMILY_POLARITY_CASES,
+)
+def test_maintained_qa_family_claims_reject_hedged_defect_relations(
+    hedge: str,
+    family: str,
+    affirmative: str,
+    _negated: str,
+    _correction_only: str,
+) -> None:
+    golden = json.loads(
+        (REPO_ROOT / "benchmarks/golden/qa-pass-golden.json").read_text()
+    )["bad_scene"]
+    description = f"It {hedge} be true that {affirmative.lower()}"
+
+    assert scorer._family_claim_matches(
+        description, golden["family_claim_contracts"][family]
+    ) is False
+
+
+@pytest.mark.unit
+def test_maintained_qa_rejects_one_hedged_family_among_affirmative_findings() -> None:
+    locations = {
+        "metadata": "heading_metadata",
+        "cast_identity": "characters_present",
+        "summary_plot": "summary",
+        "beats_events": "narrative_beats",
+        "tone": "tone_mood",
+        "candidate_confidence": "confidence",
+    }
+    issues = []
+    for family, affirmative, _negated, _correction_only in FAMILY_POLARITY_CASES:
+        description = affirmative
+        if family == "tone":
+            description = f"It might be true that {affirmative.lower()}"
+        issues.append(
+            {
+                "severity": "error",
+                "location": locations[family],
+                "description": description,
+            }
+        )
+    output = {
+        "passed": False,
+        "confidence": 0.99,
+        "issues": issues,
+        "summary": "Rejected because it omits the AirTag reveal and armed attack.",
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("bad_scene"))
+
+    assert result["pass"] is False
+    assert "tone" in result["reason"]
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize("hedge", HEDGE_FORMS)
+def test_maintained_qa_failure_summary_anchor_rejects_modality(hedge: str) -> None:
+    golden = json.loads(
+        (REPO_ROOT / "benchmarks/golden/qa-pass-golden.json").read_text()
+    )["bad_scene"]
+    summary = f"The candidate {hedge} omit the AirTag reveal and armed attack."
+
+    assert scorer._bad_summary_has_source_anchor(
+        summary, golden["required_in_summary_any"]
+    ) is False
+
+
+@pytest.mark.unit
+def test_maintained_qa_confidence_finding_is_not_mistaken_for_modality() -> None:
+    golden = json.loads(
+        (REPO_ROOT / "benchmarks/golden/qa-pass-golden.json").read_text()
+    )["bad_scene"]
+    description = (
+        "The candidate confidence is overconfident despite pervasive errors and "
+        "major omissions."
+    )
+
+    assert scorer._family_claim_matches(
+        description, golden["family_claim_contracts"]["candidate_confidence"]
+    ) is True
+
+
+@pytest.mark.unit
+def test_maintained_qa_rejects_six_negated_defects_despite_anchored_summary() -> None:
+    locations = {
+        "metadata": "heading_metadata",
+        "cast_identity": "characters_present",
+        "summary_plot": "summary",
+        "beats_events": "narrative_beats",
+        "tone": "tone_mood",
+        "candidate_confidence": "confidence",
+    }
+    output = {
+        "passed": False,
+        "confidence": 0.99,
+        "issues": [
+            {
+                "severity": "error",
+                "location": locations[family],
+                "description": negated,
+            }
+            for family, _affirmative, negated, _correction_only in FAMILY_POLARITY_CASES
+        ],
+        "summary": "Rejected because it omits the AirTag reveal and armed attack.",
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("bad_scene"))
+
+    assert result["pass"] is False
+    assert result["score"] < 1.0
+    assert "Missing actionable repair families" in result["reason"]
+
+
 @pytest.mark.unit
 def test_qa_scorer_rewards_grounded_good_control(tmp_path: Path) -> None:
     output = {
         "passed": True,
         "issues": [],
         "confidence": 0.9,
-        "summary": "The extraction is source grounded and complete.",
+        "summary": (
+            "The extraction is accurate and source grounded across its setting, "
+            "character roster, plot summary, action beats, and tone."
+        ),
     }
     result = scorer.get_assert(json.dumps(output), _context(tmp_path, "good"))
 
@@ -121,7 +438,8 @@ def test_maintained_qa_positive_case_rejects_always_reject_judge() -> None:
         "issues": [],
         "confidence": 0.99,
         "summary": (
-            "The source-grounded extraction correctly captures the AirTag in Rose's "
+            "The source-grounded extraction correctly captures the setting, character "
+            "roster, plot summary, and action beats, including the AirTag in Rose's "
             "purse, the three armed thugs, and Mariner's oar and gunfire."
         ),
     }
@@ -156,7 +474,7 @@ def test_maintained_qa_positive_case_rejects_always_reject_judge() -> None:
 
 
 @pytest.mark.unit
-def test_maintained_qa_positive_case_rejects_negated_required_summary() -> None:
+def test_maintained_qa_positive_case_rejects_negated_judgment() -> None:
     output = {
         "passed": True,
         "issues": [],
@@ -174,11 +492,11 @@ def test_maintained_qa_positive_case_rejects_negated_required_summary() -> None:
 
     assert result["pass"] is False
     assert result["score"] < 1.0
-    assert "Summary misses required source-grounded conclusions" in result["reason"]
+    assert "positive QA judgment" in result["reason"]
 
 
 @pytest.mark.unit
-def test_maintained_qa_bad_case_accepts_six_material_error_findings() -> None:
+def test_maintained_qa_bad_case_accepts_all_material_repair_families() -> None:
     output = {
         "passed": False,
         "confidence": 1.0,
@@ -200,7 +518,7 @@ def test_maintained_qa_bad_case_accepts_six_material_error_findings() -> None:
             },
             {
                 "severity": "error",
-                "description": "BILLY is invented and substituted for MARINER.",
+                "description": "BILLY is invented; the source has MARINER and three thugs.",
                 "location": "characters_present",
             },
             {
@@ -214,17 +532,25 @@ def test_maintained_qa_bad_case_accepts_six_material_error_findings() -> None:
             {
                 "severity": "error",
                 "description": (
-                    "The beats omit the AirTag reveal and armed conflict and invent "
-                    "a discussion of daily plans."
+                    "The beats invent a discussion of daily plans; the source has the "
+                    "AirTag reveal and armed conflict."
                 ),
                 "location": "narrative_beats",
             },
             {
                 "severity": "error",
                 "description": (
-                    "Casual is the wrong tone for a bloody, tense, violent scene."
+                    "The candidate wrongly calls the tone casual; the source is "
+                    "bloody, tense, and violent."
                 ),
                 "location": "tone_mood",
+            },
+            {
+                "severity": "error",
+                "description": (
+                    "Confidence is overconfident given pervasive errors and major omissions."
+                ),
+                "location": "confidence",
             },
         ],
         "summary": (
@@ -240,7 +566,7 @@ def test_maintained_qa_bad_case_accepts_six_material_error_findings() -> None:
 
 
 @pytest.mark.unit
-def test_maintained_qa_bad_case_rejects_fewer_than_six_error_findings() -> None:
+def test_maintained_qa_bad_case_rejects_missing_repair_families() -> None:
     output = {
         "passed": False,
         "confidence": 1.0,
@@ -264,16 +590,6 @@ def test_maintained_qa_bad_case_rejects_fewer_than_six_error_findings() -> None:
                     "The beats invent daily plans and omit the AirTag reveal and conflict."
                 ),
             },
-            {
-                "severity": "error",
-                "location": "tone_mood",
-                "description": "Casual contradicts the bloody, tense, violent action.",
-            },
-            {
-                "severity": "warning",
-                "location": "location",
-                "description": "The location uses OFFICE BUILDING instead of RUDDY & GREEN.",
-            },
         ],
         "summary": (
             "Rejected because the extraction invents the cast and plot and omits "
@@ -284,7 +600,134 @@ def test_maintained_qa_bad_case_rejects_fewer_than_six_error_findings() -> None:
     result = scorer.get_assert(json.dumps(output), _maintained_context("bad_scene"))
 
     assert result["pass"] is False
-    assert "need 6" in result["reason"]
+    assert "Missing actionable repair families" in result["reason"]
+
+
+@pytest.mark.unit
+def test_maintained_qa_bad_case_rejects_metadata_confidence_only_duplicate_credit() -> None:
+    output = {
+        "passed": False,
+        "confidence": 0.99,
+        "issues": [
+            {
+                "severity": "error",
+                "location": "heading metadata",
+                "description": (
+                    "The source says RUDDY & GREEN BUILDING - ELEVATOR with no "
+                    "time of day, not OFFICE BUILDING - ELEVATOR in DAY."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "confidence",
+                "description": "Confidence is overconfident for this fabricated output.",
+            },
+        ],
+        "summary": "Rejected because OFFICE BUILDING and DAY contradict the source.",
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("bad_scene"))
+
+    assert result["pass"] is False
+    assert "cast_identity" in result["reason"]
+    assert "summary_plot" in result["reason"]
+    assert "beats_events" in result["reason"]
+
+
+@pytest.mark.unit
+def test_maintained_qa_bad_case_rejects_generic_failure_summary() -> None:
+    output = {
+        "passed": False,
+        "confidence": 0.99,
+        "issues": [
+            {
+                "severity": "error",
+                "location": field,
+                "description": description,
+            }
+            for field, description in [
+                ("heading metadata", "OFFICE BUILDING and DAY contradict RUDDY & GREEN."),
+                ("characters_present", "Billy is invented; Mariner and three thugs are omitted."),
+                ("summary", "Grocery plans replace the AirTag exchange and armed attack."),
+                ("narrative_beats", "Daily plans replace the AirTag reveal and gunfight."),
+                ("tone_mood", "Casual contradicts the bloody violent tone."),
+                ("confidence", "Confidence is overconfident for fabricated content."),
+            ]
+        ],
+        "summary": "The output fails quality review.",
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("bad_scene"))
+
+    assert result["pass"] is False
+    assert "specific source-grounded critical defect" in result["reason"]
+
+
+@pytest.mark.unit
+def test_maintained_qa_bad_case_accepts_runtime_heading_metadata_group() -> None:
+    output = {
+        "passed": False,
+        "confidence": 0.95,
+        "issues": [
+            {
+                "severity": "error",
+                "location": "heading metadata",
+                "description": (
+                    "The candidate wrongly substitutes OFFICE BUILDING and DAY. The "
+                    "source heading is INT. RUDDY & GREEN BUILDING - ELEVATOR with "
+                    "unspecified time."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "characters_present",
+                "description": (
+                    "The candidate invents Billy; the source has Mariner and the "
+                    "three thugs."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "summary",
+                "description": (
+                    "It invents grocery and evening plans; the source has the AirTag "
+                    "exchange and armed thug confrontation."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "narrative_beats",
+                "description": (
+                    "It invents daily-plan exposition; the source has the AirTag reveal, "
+                    "armed confrontation, gunfire, and escape."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "tone_mood",
+                "description": (
+                    "The candidate calls the tone casual; the source is bloody, "
+                    "tense, and violent."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "confidence",
+                "description": (
+                    "Confidence is overconfident given pervasive errors and major omissions."
+                ),
+            },
+        ],
+        "summary": (
+            "Rejected because it invents Billy, omits Mariner and the three thugs, "
+            "and fabricates grocery plans instead of the armed confrontation."
+        ),
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("bad_scene"))
+
+    assert result["pass"] is True
+    assert result["score"] >= 0.90
 
 
 @pytest.mark.unit
@@ -293,7 +736,10 @@ def test_qa_scorer_hard_gates_wrong_pass_boolean(tmp_path: Path) -> None:
         "passed": False,
         "issues": [],
         "confidence": 0.9,
-        "summary": "The extraction is source grounded and complete.",
+        "summary": (
+            "The extraction is accurate and source grounded across its setting, "
+            "character roster, plot summary, action beats, and tone."
+        ),
     }
     result = scorer.get_assert(json.dumps(output), _context(tmp_path, "good"))
 
@@ -302,7 +748,7 @@ def test_qa_scorer_hard_gates_wrong_pass_boolean(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
-def test_qa_scorer_enforces_good_case_summary_contract(tmp_path: Path) -> None:
+def test_qa_scorer_rejects_generic_positive_summary(tmp_path: Path) -> None:
     output = {
         "passed": True,
         "issues": [],
@@ -312,7 +758,236 @@ def test_qa_scorer_enforces_good_case_summary_contract(tmp_path: Path) -> None:
     result = scorer.get_assert(json.dumps(output), _context(tmp_path, "good"))
 
     assert result["pass"] is False
-    assert "Summary misses" in result["reason"]
+    assert "positive QA judgment" in result["reason"]
+
+
+@pytest.mark.unit
+def test_maintained_qa_rejects_positive_adjective_stuffing() -> None:
+    output = {
+        "passed": True,
+        "issues": [],
+        "confidence": 0.99,
+        "summary": "Accurate complete faithful grounded.",
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("good_scene"))
+
+    assert result["pass"] is False
+    assert result["score"] < 1.0
+    assert "positive QA judgment" in result["reason"]
+
+
+@pytest.mark.unit
+def test_maintained_qa_rejects_contrastive_positive_summary_with_material_fault() -> None:
+    output = {
+        "passed": True,
+        "issues": [],
+        "confidence": 0.99,
+        "summary": (
+            "The extraction is accurate across metadata, character roster, plot "
+            "summary, and action beats, but its tone is wrong."
+        ),
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("good_scene"))
+
+    assert result["pass"] is False
+    assert "positive QA judgment" in result["reason"]
+
+
+@pytest.mark.unit
+def test_maintained_qa_accepts_unqualified_positive_with_no_fault_denial() -> None:
+    output = {
+        "passed": True,
+        "issues": [],
+        "confidence": 0.99,
+        "summary": (
+            "The extraction is accurate across metadata, character roster, plot "
+            "summary, action beats, and tone. It contains no material errors or omissions."
+        ),
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("good_scene"))
+
+    assert result["pass"] is True
+    assert result["score"] == 1.0
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    ("summary", "expected"),
+    [
+        ("Rejected because it omits the AirTag reveal and armed attack.", True),
+        ("The candidate does not omit the AirTag reveal or armed attack.", False),
+        ("The AirTag reveal and armed attack.", False),
+        ("It is not true that the candidate does not omit the AirTag reveal.", False),
+    ],
+)
+def test_maintained_qa_failure_summary_anchor_requires_affirmative_defect(
+    summary: str, expected: bool
+) -> None:
+    golden = json.loads(
+        (REPO_ROOT / "benchmarks/golden/qa-pass-golden.json").read_text()
+    )["bad_scene"]
+
+    assert scorer._bad_summary_has_source_anchor(
+        summary, golden["required_in_summary_any"]
+    ) is expected
+
+
+@pytest.mark.unit
+def test_qa_scorer_accepts_substantive_positive_judgment_without_anchor_recitation(
+    tmp_path: Path,
+) -> None:
+    output = {
+        "passed": True,
+        "issues": [],
+        "confidence": 0.99,
+        "summary": (
+            "The candidate extraction accurately and comprehensively captures the "
+            "scene metadata, characters, narrative beats, summary, and tone without "
+            "any factual errors or omissions."
+        ),
+    }
+
+    result = scorer.get_assert(json.dumps(output), _context(tmp_path, "good"))
+
+    assert result["pass"] is True
+    assert result["score"] == 1.0
+
+
+@pytest.mark.unit
+def test_maintained_qa_accepts_paraphrased_dimension_based_positive_judgment() -> None:
+    output = {
+        "passed": True,
+        "issues": [],
+        "confidence": 0.97,
+        "summary": (
+            "The candidate is source-grounded: its setting and cast are correct, "
+            "and its account of the plot, action, and mood is materially complete."
+        ),
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("good_scene"))
+
+    assert result["pass"] is True
+    assert result["score"] == 1.0
+
+
+@pytest.mark.unit
+def test_maintained_qa_rejects_sparse_family_keyword_stuffing() -> None:
+    output = {
+        "passed": False,
+        "confidence": 0.99,
+        "issues": [
+            {"severity": "error", "location": "heading", "description": "wrong building"},
+            {
+                "severity": "error",
+                "location": "characters_present",
+                "description": "wrong cast",
+            },
+            {"severity": "error", "location": "summary", "description": "invent plan"},
+            {
+                "severity": "error",
+                "location": "narrative_beats",
+                "description": "invent plan",
+            },
+            {"severity": "error", "location": "tone_mood", "description": "wrong tone"},
+            {
+                "severity": "error",
+                "location": "confidence",
+                "description": "wrong confidence",
+            },
+        ],
+        "summary": "Rejected because the AirTag reveal and armed attack are omitted.",
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("bad_scene"))
+
+    assert result["pass"] is False
+    assert result["score"] < 1.0
+    assert "Missing actionable repair families" in result["reason"]
+
+
+@pytest.mark.unit
+def test_maintained_qa_accepts_paraphrased_source_specific_family_findings() -> None:
+    output = {
+        "passed": False,
+        "confidence": 0.98,
+        "issues": [
+            {
+                "severity": "error",
+                "location": "heading_metadata",
+                "description": (
+                    "The candidate says DAY in an Office Building; the script names "
+                    "Ruddy & Green and gives no time."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "characters_present",
+                "description": (
+                    "Billy is invented; the source has Mariner and the three attackers."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "summary",
+                "description": (
+                    "The grocery-plan story is invented; the script shows the AirTag "
+                    "dispute and armed confrontation."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "narrative_beats",
+                "description": (
+                    "Daily-plan exposition is invented; the script shows the AirTag "
+                    "reveal, gunfire, and escape action."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "tone_mood",
+                "description": (
+                    "Calling it casual is wrong; the source is bloody, tense, violent, "
+                    "and darkly comic."
+                ),
+            },
+            {
+                "severity": "error",
+                "location": "confidence",
+                "description": (
+                    "The confidence is unjustifiably high despite fabricated plot "
+                    "and major omissions."
+                ),
+            },
+        ],
+        "summary": (
+            "Rejected: it omits the AirTag reveal and armed attack while inventing "
+            "grocery plans."
+        ),
+    }
+
+    result = scorer.get_assert(json.dumps(output), _maintained_context("bad_scene"))
+
+    assert result["pass"] is True
+    assert result["score"] == 1.0
+
+
+@pytest.mark.unit
+def test_qa_scorer_rejects_anchor_stuffing_without_a_judgment(tmp_path: Path) -> None:
+    output = {
+        "passed": True,
+        "issues": [],
+        "confidence": 0.99,
+        "summary": "AirTag, purse, three armed thugs, Mariner, oar, and gunfire.",
+    }
+
+    result = scorer.get_assert(json.dumps(output), _context(tmp_path, "good"))
+
+    assert result["pass"] is False
+    assert "positive QA judgment" in result["reason"]
 
 
 @pytest.mark.unit
@@ -323,7 +998,7 @@ def test_qa_scorer_enforces_good_case_warning_limit(tmp_path: Path) -> None:
             {"location": "style", "severity": "warning", "description": "Minor concern."}
         ],
         "confidence": 0.9,
-        "summary": "The extraction is source grounded and complete.",
+        "summary": "The extraction is accurate, source grounded, and materially complete.",
     }
     result = scorer.get_assert(json.dumps(output), _context(tmp_path, "good"))
 
@@ -553,7 +1228,10 @@ def test_qa_scorer_accepts_prompt_declared_confidence_range(
         "passed": True,
         "issues": [],
         "confidence": confidence,
-        "summary": "The extraction is source grounded and complete.",
+        "summary": (
+            "The extraction is accurate and source grounded across its setting, "
+            "character roster, plot summary, action beats, and tone."
+        ),
     }
 
     assert scorer.get_assert(json.dumps(output), _context(tmp_path, "good"))["pass"] is True

@@ -242,8 +242,46 @@ Object keyed by test case key (`"good_scene"`, `"bad_scene"`). Each entry:
 | `max_errors` | int | (good only) Max acceptable errors |
 | `max_warnings` | int | (good only) Max acceptable warnings |
 | `required_in_summary` | string[] | (good only) Expected summary keywords |
-| `min_errors` | int | (bad only) Min errors model must detect |
 | `required_issues` | object[] | (bad only) `{field, reason}` pairs |
+| `required_families` | string[] | (bad only) Exact non-duplicating repair families that need actionable coverage |
+| `critical_error_families` | string[] | (bad only) Required families whose matched finding must use `error` severity |
+| `family_claim_contracts` | object | (bad only) Per-family candidate terms, defect relations, and source-correction alternatives required in an affirmative actionable finding |
+| `required_in_summary_any` | string[] | (bad only) Source-specific alternatives; the failure summary must cover at least one |
+
+The canonical bad-case repair families are `metadata`, `cast_identity`,
+`summary_plot`, `beats_events`, `tone`, and `candidate_confidence`. Multiple
+field-level defects in one family earn only one family credit. Every family
+must have at least one matching `required_issues` entry; family lists and
+summary anchors must be non-empty and unique. Numeric `min_errors` is not part
+of the maintained QA golden because it can double-count grouped metadata or
+overlapping plot/beat feedback. The scorer retains a legacy numeric fallback
+only for isolated synthetic unit-test goldens.
+Each issue can satisfy only the family named by its normalized `location`. A
+family finding must affirm a defect relation involving a candidate-error term
+and include a source/correction term. Negated, correction-only, and explicitly
+source-correct clauses fail closed; unordered term presence is not evidence of
+an asserted defect. Clauses hedged by maintained uncertainty/modality terms
+(`may`, `might`, `could`, `perhaps`, `possibly`, `appears to`, `seems to`,
+`suggests`, and equivalents) do not earn family or failure-summary hard credit.
+This applies to both the candidate-defect relation and the source correction in
+that clause; unhedged confidence-calibration findings remain valid. Double
+negation is intentionally unsupported and fails
+closed because this deterministic scorer does not pretend to solve general
+entailment. Positive summaries do
+not recite fixture anchors, but must state a positive judgment and discuss at
+least three reviewed QA dimensions (for example metadata, cast, plot/beats, or
+tone); adjective-only claims are not substantive, and an affirmative material
+fault after `but`, `however`, `except`, or a similar contrast invalidates them.
+Candidate-defect and source-correction roles are matched clause-locally. Each
+role must be established in its own unhedged clause, or both must appear with
+their explicit relations in one unhedged clause. The scorer never unions terms
+across clauses, so a direct defect clause cannot borrow correction vocabulary
+from a hedged clause; overlapping names alone cannot bridge the roles.
+`source_relations` are taxonomy-disjoint from candidate `defect_relations`:
+they require explicit source authority (`source`/`script` plus a relation), a
+bounded comparative correction (`instead of`/`rather than`/`should be`), or an
+explicit calibration basis (`given`/`despite`/`because`). Candidate verbs such
+as `omits`, `claims`, `adds`, or `replaces` never count as source authority.
 
 ## Conventions
 

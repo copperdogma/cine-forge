@@ -16,6 +16,17 @@ prompts:
 
 providers:
   - id: file://../providers/script_bible_runtime_provider.py
+    label: "DeepSeek V4 Pro via OpenRouter"
+    config:
+      model: deepseek/deepseek-v4-pro
+      provider: openrouter
+      max_tokens: 65536
+      max_retries: 1
+      request_timeout_seconds: 120
+      timeout: 180000
+      reasoning_effort: low
+
+  - id: file://../providers/script_bible_runtime_provider.py
     label: "Grok 4.6"
     config:
       model: grok-4.6

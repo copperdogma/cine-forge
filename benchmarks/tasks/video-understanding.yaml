@@ -150,6 +150,18 @@ providers:
       prompt_version: video-understanding-frame-packet-v3
       pythonExecutable: python
       timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
+    label: "Gemini 3.7 Flash"
+    config:
+      provider: google
+      model: gemini-3.7-flash
+      max_tokens: 65536
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: video-understanding-frame-packet-v3
+      pythonExecutable: python
+      timeout: 300000
 tests:
   - vars:
       clip_id: dialogue_confession_push_in

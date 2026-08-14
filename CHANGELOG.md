@@ -1,5 +1,29 @@
 # Changelog
 
+## [2026-08-13-01] — Evaluate Gemini 3.7 Flash and DeepSeek V4 Pro (Story 213)
+
+### Added
+- Added bounded Gemini 3.7 Flash QA and DeepSeek V4 Pro script-bible transport
+  evidence with exact identity, schema, routing, privacy, latency, usage, cost,
+  progressive-stop records, and hash-complete Attempts 024-026.
+- Added an exact production-prompt/schema QA runtime provider and adversarial
+  regression coverage for positive judgments and all six negative repair
+  families.
+
+### Changed
+- Marked every pre-final-contract QA score non-decision-grade; the runtime
+  GPT-4.1 Mini default remains only by inertia because neither frozen subject
+  passed the final contract and fresh final-contract parity is unmeasured.
+- Recorded do-not-adopt decisions for Gemini 3.7 Flash and DeepSeek V4 Pro;
+  production model and transport defaults remain unchanged.
+
+### Fixed
+- Repaired the QA prompt, golden, validator, and scorer so positive summaries
+  require substantive reviewed dimensions and negative findings require
+  field-owned, affirmative, unhedged candidate-defect and source-correction
+  roles without duplicate, cross-clause, polarity, modality, or relation-taxonomy
+  false credit.
+
 ## [2026-08-12-01] — Evaluate Grok 4.6 for script bible (Story 212)
 
 ### Added

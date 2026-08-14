@@ -3,15 +3,39 @@
     "expected_passed": true,
     "max_errors": 0,
     "max_warnings": 0,
-    "required_in_summary": [
-      "AirTag in Rose's purse",
-      "three armed thugs",
-      "Mariner's oar and gunfire"
-    ]
+    "required_in_summary": []
   },
   "bad_scene": {
     "expected_passed": false,
-    "min_errors": 6,
+    "required_families": [
+      "metadata",
+      "cast_identity",
+      "summary_plot",
+      "beats_events",
+      "tone",
+      "candidate_confidence"
+    ],
+    "critical_error_families": [
+      "metadata",
+      "cast_identity",
+      "summary_plot",
+      "beats_events",
+      "tone",
+      "candidate_confidence"
+    ],
+    "family_claim_contracts": {
+      "metadata": {"candidate_terms": ["Office Building", "DAY"], "defect_relations": ["says", "states", "claims", "wrong", "unsupported", "invented", "substitutes"], "source_corrections": ["Ruddy & Green", "no time", "no time of day", "unspecified time"], "source_relations": ["source says", "source heading", "source supplies", "script names", "script gives", "should be", "instead of", "rather than"]},
+      "cast_identity": {"candidate_terms": ["Billy", "omits characters"], "defect_relations": ["includes", "invents", "invented", "fabricated", "replaces", "replacing", "substituted", "omits"], "source_corrections": ["Mariner", "three thugs", "three attackers"], "source_relations": ["source has", "source includes", "script has", "script includes", "should be", "instead of", "rather than"]},
+      "summary_plot": {"candidate_terms": ["groceries", "evening plans"], "defect_relations": ["claims", "describes", "fabricates", "invents", "invented", "replaces", "wrong"], "source_corrections": ["AirTag", "armed confrontation", "violent encounter", "violent attack", "armed thugs"], "source_relations": ["source has", "source shows", "script has", "script shows", "should describe", "instead of", "rather than"]},
+      "beats_events": {"candidate_terms": ["daily plans", "casual exposition"], "defect_relations": ["claims", "describes", "fabricates", "invents", "invented", "replaces", "omits"], "source_corrections": ["AirTag reveal", "armed conflict", "gunfire"], "source_relations": ["source has", "source shows", "script has", "script shows", "should include", "instead of", "rather than"]},
+      "tone": {"candidate_terms": ["casual"], "defect_relations": ["calls", "calling", "labels", "marks", "claims", "wrong", "misses", "contradicts"], "source_corrections": ["darkly comic", "dark comedy", "bloody", "tense", "violent"], "source_relations": ["source is", "script is", "should be", "instead of", "rather than"]},
+      "candidate_confidence": {"candidate_terms": ["confidence", "0.88", "high"], "defect_relations": ["overconfident", "unjustified", "unsupported", "wrong", "miscalibrated"], "source_corrections": ["pervasive errors", "fabricated extraction", "major omissions"], "source_relations": ["despite", "given", "because", "for"]}
+    },
+    "required_in_summary_any": [
+      "Mariner and the three thugs are omitted",
+      "fabricates groceries instead of the AirTag exchange and armed confrontation",
+      "omits the AirTag reveal and armed attack"
+    ],
     "required_issues": [
       {"field": "heading", "reason": "Wrong building name in the heading: should be Ruddy & Green Building, not Office Building"},
       {"field": "location", "reason": "Wrong location: should be Ruddy & Green Building - Elevator, not Office Building - Elevator"},

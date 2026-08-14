@@ -85,3 +85,18 @@ def test_qa_check_with_repairs_returns_edit_plan(monkeypatch: pytest.MonkeyPatch
     )
     assert plan.qa_result.passed is False
     assert plan.edits[0].search == "int. room - night"
+
+
+@pytest.mark.unit
+def test_qa_prompt_requires_complete_actionable_failure_feedback() -> None:
+    prompt = qa._build_qa_prompt(
+        original_input="source",
+        prompt_used="producer prompt",
+        output_produced="candidate",
+        criteria=["source fidelity"],
+    )
+
+    assert "Identify every distinct material defect" in prompt
+    assert "Do not combine unrelated defects" in prompt
+    assert "Mark factual contradictions" in prompt
+    assert "specific source fact" in prompt

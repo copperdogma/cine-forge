@@ -18,7 +18,7 @@ inventory_expectations:
   prompt: 15
   llm_rubric: 16
   python_scorer: 13
-  eval_transport: 6
+  eval_transport: 7
   custom_scorer_runner: 13
   semantic_golden: 19
   fixture_class: 19
@@ -270,7 +270,7 @@ surfaces:
       - "docs/evals/story-208-contract-manifest-v6.json"
       - "docs/evals/story-208-contract-manifest-v7.json"
       - "docs/evals/story-208-contract-manifest-v8.json"
-      - "docs/evals/story-208-contract-manifest-v9.json"
+      - "docs/evals/story-208-contract-manifest-v10.json"
       - "scripts/build_eval_contract_manifest.py"
       - "benchmarks/scorers/score_semantics.py"
       - "benchmarks/previz_usefulness/README.md"
@@ -355,7 +355,7 @@ surfaces:
       - "docs/evals/story-208-contract-manifest-v6.json"
       - "docs/evals/story-208-contract-manifest-v7.json"
       - "docs/evals/story-208-contract-manifest-v8.json"
-      - "docs/evals/story-208-contract-manifest-v9.json"
+      - "docs/evals/story-208-contract-manifest-v10.json"
       - "scripts/build_eval_contract_manifest.py"
       - "benchmarks/scorers/score_semantics.py"
       - "tests/unit/test_eval_contract_manifest.py"
@@ -1534,6 +1534,25 @@ surfaces:
       - "tests/unit/test_eval_text_providers.py"
     notes: "The Responses transport requires an explicit configured model, preserves requested and provider-returned model plus response ID/raw usage, accepts only the exact model or its same-base dated snapshot, validates token counters, retries without temperature only when that field is rejected, uses explicit timeout units, and fails closed on substitution, missing identity, incomplete status, or empty output."
     limitations: "Offline controls do not prove live provider availability, pricing, or credentials."
+  - id: "transport-qa-runtime-provider"
+    kind: "eval_transport"
+    owner: "Story 213 bounded QA eval owner"
+    paths:
+      - "benchmarks/providers/qa_runtime_provider.py"
+      - "src/cine_forge/ai/qa.py"
+      - "src/cine_forge/schemas/qa.py"
+    decision_impact:
+      default_driving: false
+      scope: "Isolated exact shared QA prompt/schema comparison for the current GPT-4.1 Mini incumbent and bounded Gemini challengers."
+    audit_status: "documented limitation"
+    evidence:
+      - "docs/stories/story-213-gemini-37-flash-and-deepseek-v4-pro-bounded-evals.md"
+      - "benchmarks/providers/qa_runtime_provider.py"
+      - "benchmarks/tasks/qa-pass.yaml"
+      - "tests/unit/test_qa_runtime_provider.py"
+      - "tests/unit/test_qa_pass_scorer.py"
+    notes: "The isolated provider imports the production QA prompt builder and QAResult schema, preserves requested/returned identity, terminal status, usage, latency, and pricing, and leaves the production model default and shared transport unchanged."
+    limitations: "The two checked-in cases are a narrow source-fidelity screen, not broad runtime validation; the scene-analysis consumer submits a compact enrichment summary rather than this benchmark's full extraction payload."
   - id: "transport-storyboard-understanding-provider"
     kind: "eval_transport"
     owner: "storyboard multimodal benchmark transport owner"

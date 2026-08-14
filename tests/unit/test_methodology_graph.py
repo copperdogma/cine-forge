@@ -7,11 +7,27 @@ import textwrap
 from pathlib import Path
 
 import pytest
+import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT_PATH = REPO_ROOT / "scripts" / "methodology-graph.js"
 
 pytestmark = pytest.mark.unit
+
+
+def test_qa_registry_and_graph_have_no_pre_final_decision_grade_winner() -> None:
+    registry = yaml.safe_load((REPO_ROOT / "docs/evals/registry.yaml").read_text())
+    qa_eval = next(item for item in registry["evals"] if item["id"] == "qa-pass")
+    assert qa_eval["scores"]
+    assert all(
+        "non-decision-grade" in score.get("evidence_status", "")
+        for score in qa_eval["scores"]
+    )
+
+    graph = json.loads((REPO_ROOT / "docs/methodology/graph.json").read_text())
+    qa_graph = next(item for item in graph["evals"] if item["id"] == "qa-pass")
+    assert qa_graph["latestScore"] is None
+    assert qa_graph["excludedScoreCount"] == len(qa_eval["scores"])
 
 
 def _write(path: Path, content: str) -> None:

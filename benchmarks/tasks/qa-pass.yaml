@@ -108,6 +108,32 @@ providers:
       inputCost: 0.0000015
       outputCost: 0.0000075
 
+  - id: google:gemini-3.7-flash
+    label: "Gemini 3.7 Flash"
+    config:
+      maxOutputTokens: 65536
+      thinkingConfig:
+        thinkingLevel: low
+      responseMimeType: application/json
+      responseSchema:
+        type: object
+        required: [passed, confidence, issues, summary]
+        properties:
+          passed: {type: boolean}
+          confidence: {type: number, minimum: 0, maximum: 1}
+          issues:
+            type: array
+            items:
+              type: object
+              required: [severity, description, location]
+              properties:
+                severity: {type: string, enum: [error, warning, note]}
+                description: {type: string}
+                location: {type: string}
+          summary: {type: string}
+      inputCost: 0.00000075
+      outputCost: 0.00000375
+
   # --- SOTA tier ---
   - id: openai:gpt-5.2
     label: "GPT-5.2"
@@ -173,6 +199,25 @@ providers:
     config:
       maxOutputTokens: 65536
 
+  # --- Exact shared qa_check runtime boundary ---
+  # These providers ignore the benchmark prompt marker and call the production
+  # prompt builder plus provider-enforced QAResult schema directly.
+  - id: file://../providers/qa_runtime_provider.py
+    label: "GPT-4.1 Mini Current Runtime"
+    config:
+      model: gpt-4.1-mini
+      max_tokens: 1200
+      max_retries: 2
+      request_timeout_seconds: 120
+
+  - id: file://../providers/qa_runtime_provider.py
+    label: "Gemini 3.7 Flash Current Runtime"
+    config:
+      model: gemini-3.7-flash
+      max_tokens: 1200
+      max_retries: 2
+      request_timeout_seconds: 120
+
 tests:
   # Candidate A — independently derive the QA judgment from source
   - vars:
@@ -206,11 +251,21 @@ tests:
              requires passed=false; only genuinely minor warnings may coexist with true.
           2. Issue recall and precision: every distinct material defect is identified
              in its correct field, while accurate content is not attacked. A generic
-             complaint or copied candidate wording is not a grounded issue.
+             complaint or copied candidate wording is not a grounded issue. Each issue
+             identifies both the candidate defect and the source fact/correction, and
+             states that relation directly and affirmatively. Negation, double
+             negation, hedging/modality (`may`, `might`, `could`, `perhaps`, `appears
+             to`, `seems to`), or correction-only wording is not defect evidence, and
+             one issue cannot earn credit for multiple repair families.
           3. Severity: factual errors and meaning-changing omissions are errors;
              lesser imprecision may be a warning; notes cannot hide actual defects.
-          4. Summary and confidence: the summary substantiates the verdict with source
-             facts, and confidence represents certainty in this QA judgment rather
+          4. Summary and confidence: for passed=true, the summary gives a substantive
+             positive judgment across at least three reviewed dimensions but need not
+             recite selected source details that the runtime contract does not request.
+             A contrastive material-fault clause invalidates the positive judgment.
+             For passed=false, it gives actionable,
+             source-grounded defect feedback because runtime repair/escalation consumers
+             may use it. Confidence represents certainty in this QA judgment rather
              than copying the extraction's confidence.
           5. Exact schema: the QA result uses the requested top-level and issue keys,
              valid types, and substantive descriptions. A schema-only result is not a pass.

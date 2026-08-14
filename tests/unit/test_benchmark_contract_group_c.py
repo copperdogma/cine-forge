@@ -125,7 +125,7 @@ def test_qa_contract_is_blind_to_candidate_labels_and_matches_verified_truth() -
     assert golden["bad_scene"]["expected_passed"] is False
     assert golden["good_scene"]["max_errors"] == 0
     assert golden["good_scene"]["max_warnings"] == 0
-    assert len(golden["good_scene"]["required_in_summary"]) >= 3
+    assert golden["good_scene"]["required_in_summary"] == []
     assert "good vs bad" not in task["description"].lower()
     assert rubrics[0] == rubrics[1]
     assert "given a good" not in _flat(rubrics[0])
@@ -142,6 +142,7 @@ def test_qa_contract_is_blind_to_candidate_labels_and_matches_verified_truth() -
     assert "scrap is skull" in positive_text
     assert "full-screen title card" in positive_text
     assert "dad tattoo" in positive_text
+    assert "ruddy & green building - elevator" in positive_text
 
 
 @pytest.mark.unit

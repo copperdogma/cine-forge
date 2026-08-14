@@ -104,6 +104,63 @@ def test_qa_golden_exercises_both_verdicts() -> None:
     assert {case["expected_passed"] for case in data.values()} == {True, False}
 
 
+def _qa_errors(data: dict) -> list[str]:
+    result = validator.ValidationResult("qa.json", "QA Pass")
+    validator.validate_qa_pass(
+        data,
+        validator.GOLDEN_SPECS["qa-pass-golden.json"],
+        result,
+    )
+    return result.errors
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "missing_families",
+        "unknown_family",
+        "duplicate_family",
+        "missing_family_mapping",
+        "empty_summary_anchors",
+        "missing_claim_family",
+        "empty_claim_alternatives",
+        "missing_claim_field",
+        "defect_source_overlap",
+        "legacy_min_errors",
+    ],
+)
+def test_qa_validator_fails_closed_on_family_contract_drift(mutation: str) -> None:
+    data = json.loads((GOLDEN_ROOT / "qa-pass-golden.json").read_text())
+    bad = data["bad_scene"]
+    if mutation == "missing_families":
+        bad.pop("required_families")
+    elif mutation == "unknown_family":
+        bad["required_families"][-1] = "unknown"
+    elif mutation == "duplicate_family":
+        bad["critical_error_families"].append(bad["critical_error_families"][0])
+    elif mutation == "missing_family_mapping":
+        bad["required_issues"] = [
+            issue for issue in bad["required_issues"] if issue["field"] != "confidence"
+        ]
+    elif mutation == "empty_summary_anchors":
+        bad["required_in_summary_any"] = []
+    elif mutation == "missing_claim_family":
+        bad["family_claim_contracts"].pop("tone")
+    elif mutation == "empty_claim_alternatives":
+        bad["family_claim_contracts"]["tone"]["defect_relations"] = []
+    elif mutation == "missing_claim_field":
+        bad["family_claim_contracts"]["tone"].pop("source_corrections")
+    elif mutation == "defect_source_overlap":
+        bad["family_claim_contracts"]["cast_identity"]["source_relations"].append(
+            "omits"
+        )
+    elif mutation == "legacy_min_errors":
+        bad["min_errors"] = 6
+
+    assert _qa_errors(data)
+
+
 def _continuity_errors(data: dict) -> list[str]:
     result = validator.ValidationResult("continuity.json", "Continuity")
     validator.validate_continuity(

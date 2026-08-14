@@ -45,6 +45,8 @@ QWEN38_OPENROUTER_MODEL = "qwen/qwen3.8-max"
 QWEN38_OPENROUTER_PROVIDER = "Alibaba"
 DEEPSEEK_V4_FLASH_OPENROUTER_MODEL = "deepseek/deepseek-v4-flash-0731"
 DEEPSEEK_V4_FLASH_OPENROUTER_PROVIDER = "Phala"
+DEEPSEEK_V4_PRO_OPENROUTER_MODEL = "deepseek/deepseek-v4-pro"
+DEEPSEEK_V4_PRO_OPENROUTER_PROVIDER = "Baidu"
 GROK_46_MODEL = "grok-4.6"
 OPENROUTER_MODEL_CONFIGS = {
     QWEN38_OPENROUTER_MODEL: {
@@ -56,6 +58,11 @@ OPENROUTER_MODEL_CONFIGS = {
         "provider": DEEPSEEK_V4_FLASH_OPENROUTER_PROVIDER,
         "max_tokens": 393_216,
         "zdr": True,
+    },
+    DEEPSEEK_V4_PRO_OPENROUTER_MODEL: {
+        "provider": DEEPSEEK_V4_PRO_OPENROUTER_PROVIDER,
+        "max_tokens": 384_000,
+        "zdr": False,
     },
 }
 
@@ -301,14 +308,10 @@ def _call_openrouter_strict(
         "order": [upstream_provider],
         "allow_fallbacks": False,
         "require_parameters": True,
+        "data_collection": "deny",
     }
     if zdr:
-        provider_preferences.update(
-            {
-                "data_collection": "deny",
-                "zdr": True,
-            }
-        )
+        provider_preferences["zdr"] = True
     payload = {
         "model": model,
         "messages": [{"role": "user", "content": prompt}],
@@ -387,7 +390,7 @@ def _call_openrouter_strict(
         "upstream_provider": returned_provider,
         "reasoning_effort": reasoning_effort,
         "allow_fallbacks": False,
-        "data_collection": "deny" if zdr else None,
+        "data_collection": "deny",
         "zdr": zdr,
         "raw_usage": usage,
     }

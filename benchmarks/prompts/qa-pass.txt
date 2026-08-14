@@ -12,7 +12,7 @@ Severity and pass rules:
 - error: a factual contradiction, fabrication, wrong identity/heading, or material omission.
 - warning: a real but non-material omission, imprecision, or misleading emphasis.
 - note: an optional improvement that is not a source-fidelity defect. Do not hide a factual defect as a note.
-- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint.
+- Create one issue for each distinct material defect; do not bundle unrelated errors into a vague complaint or use one issue to cover multiple candidate fields.
 - passed is true only when there are no errors and any warnings are genuinely minor. Otherwise passed is false.
 - confidence is confidence in your QA judgment. Do not copy the candidate's confidence.
 
@@ -24,10 +24,11 @@ Return exactly one JSON object containing exactly passed, confidence, issues, an
 
 Each issue object must contain exactly:
 - severity: "error", "warning", or "note"
-- description: a specific source-grounded defect
+- description: a specific actionable defect that directly and affirmatively identifies both the candidate error and the source fact or correction; do not express a finding through negation, double negation, or hedging such as may, might, could, perhaps, appears to, or seems to
 - location: the exact candidate field containing the defect
 
 Generic claims such as "looks inaccurate" are not substantive issues. Do not invent defects, copy the candidate's language as proof, or treat a schema-only response as evidence of fidelity.
+For passed=true, the summary must explain the positive judgment across at least three applicable reviewed dimensions; adjective-only approval is not substantive, and a material-fault qualification after "but", "however", or "except" invalidates the pass. For passed=false, directly and affirmatively name at least one specific source defect or correction in the summary.
 
 Return only valid JSON. No explanations, markdown fences, comments, or trailing text.
 
