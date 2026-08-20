@@ -293,7 +293,8 @@
           "210",
           "211",
           "212",
-          "213"
+          "213",
+          "214"
         ],
         "adrIds": [
           "ADR-003"
@@ -1091,7 +1092,8 @@
           "210",
           "211",
           "212",
-          "213"
+          "213",
+          "214"
         ],
         "adrIds": [
           "ADR-001",
@@ -1667,7 +1669,8 @@
           "210",
           "211",
           "212",
-          "213"
+          "213",
+          "214"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1720,7 +1723,8 @@
             "210",
             "211",
             "212",
-            "213"
+            "213",
+            "214"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -14073,6 +14077,76 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "214",
+      "title": "GLM-5.3 Bounded Script-Bible Evaluation",
+      "path": "docs/stories/story-214-glm-53-cineforge-script-bible-eval.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "dependsOn": [
+        "208",
+        "210",
+        "211",
+        "212",
+        "213"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "glm-5.3",
+        "model-refresh",
+        "zai"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260820-1521",
+        "date": "2026-08-20",
+        "summary": "close-out validation: refreshed the generated eval-contract"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "214",
+        "sourcePath": "docs/stories/story-214-glm-53-cineforge-script-bible-eval.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "close-out validation: refreshed the generated eval-contract",
+        "lastRelevantAction": {
+          "date": "2026-08-20",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-214-glm-53-cineforge-script-bible-eval.md",
+          "summary": "close-out validation: refreshed the generated eval-contract"
+        }
+      }
     }
   ],
   "adrs": [
@@ -15678,7 +15752,8 @@
         "210",
         "211",
         "212",
-        "213"
+        "213",
+        "214"
       ],
       "categoryRefs": [
         "spec:2",
@@ -15687,6 +15762,17 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "027",
+          "date": "2026-08-20",
+          "approach": "Predeclared direct Z.ai GLM-5.3 strict-runtime ladder, then stopped before model invocation because CineForge has no Z.ai credential and current official transport documents JSON-object plus client-side validation rather than provider-enforced strict JSON Schema.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "native-zai-access",
+            "provider-strict-json-schema"
+          ]
+        },
         {
           "id": "025",
           "date": "2026-08-13",
@@ -15766,7 +15852,8 @@
         "210",
         "211",
         "212",
-        "213"
+        "213",
+        "214"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -15787,16 +15874,15 @@
         "whyNow": "Attempt 023 exact-runtime Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.6 identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, raw usage, and provider-reported cached-token-aware cost. All maintained assertions passed: 0.9333 deterministic, 0.92 cross-provider Opus rubric, and 0.92665 aggregate in 23,699 ms. The subject cost was $…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
-          "cheaper-subject-model",
-          "native-deepseek-access",
-          "stable-fast-zdr-route"
+          "native-zai-access",
+          "provider-strict-json-schema"
         ],
         "lastRelevantAction": {
-          "date": "2026-08-13",
+          "date": "2026-08-20",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "025",
-          "summary": "Qualified exact DeepSeek V4 Pro strict output on Together/ZDR, then froze lower-cost Baidu for public synthetic data and stopped when its tiny probe exceeded 60 seconds without completing."
+          "sourceId": "027",
+          "summary": "Predeclared direct Z.ai GLM-5.3 strict-runtime ladder, then stopped before model invocation because CineForge has no Z.ai credential and current official transport documents JSON-object plus client-side validation rather than provider-enforced strict JSON Schema."
         }
       }
     },
@@ -16517,9 +16603,10 @@
             "209",
             "210",
             "211",
-            "212"
+            "212",
+            "214"
           ],
-          "stories_since_audit": 4,
+          "stories_since_audit": 5,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16553,9 +16640,10 @@
             "202",
             "210",
             "211",
-            "212"
+            "212",
+            "214"
           ],
-          "stories_since_audit": 6,
+          "stories_since_audit": 7,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16639,7 +16727,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 124 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 130 days old against a 14-day cadence"
     ]
   }
 }

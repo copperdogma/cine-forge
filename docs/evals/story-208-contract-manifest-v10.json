@@ -33,7 +33,7 @@
     ]
   },
   "file_count": 931,
-  "bundle_sha256": "8aa8852dd59401b13e2e39790060bf6d15da047fbb7eb0962a9ade36ff98e744",
+  "bundle_sha256": "22b850a6247324bd5f2b6c4d8ba9b54054843432674c583f2f0de80393b7f05d",
   "files": [
     {
       "path": ".agents/skills/create-eval/SKILL.md",
@@ -2664,18 +2664,18 @@
       "path": "docs/evals/registry.yaml#contract-projection",
       "source_path": "docs/evals/registry.yaml",
       "projection": "all eval fields except mutable scores and attempts",
-      "sha256": "c8f12d3fc128883ebb7067c7339e0c5ae3d5429a4002e612c580bb1c82e6b011",
-      "bytes": 39992
+      "sha256": "70bf1692b34acc48997cc2383574cd0f9708acb04593bf528026c40573f6b584",
+      "bytes": 39998
     },
     {
       "path": "docs/evals/truth-audit-ledger.yaml",
-      "sha256": "cc3dc1eeeee9fa374871daf3a01db018a1202123da14c119b03c01aa790162c3",
-      "bytes": 238688
+      "sha256": "8476d5f32d303fb19ce1a7d9b784c768eee357a38441e6a7c27759cdc677e1ec",
+      "bytes": 239340
     },
     {
       "path": "docs/methodology/state.yaml",
-      "sha256": "a88dd264ae8eb202572eeb1453b489b336af78ce440ac7c7f96d6bbce3c2114a",
-      "bytes": 32744
+      "sha256": "e00b81b870af44ff296c8581a9b1a6d01a82f5ca361cdb1b5fdb0eca9d538188",
+      "bytes": 32758
     },
     {
       "path": "docs/runbooks/create-eval.md",

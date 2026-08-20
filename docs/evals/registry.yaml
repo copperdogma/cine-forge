@@ -3958,6 +3958,7 @@ evals:
       - "211"
       - "212"
       - "213"
+      - "214"
     category_refs:
       - spec:2
       - spec:8
@@ -4267,6 +4268,28 @@ evals:
         note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
     attempts:
+      - id: "027"
+        story: attempts/027-script-bible-glm-53.md
+        date: 2026-08-20
+        status: inconclusive
+        approach: "Predeclared direct Z.ai GLM-5.3 strict-runtime ladder, then stopped before model invocation because CineForge has no Z.ai credential and current official transport documents JSON-object plus client-side validation rather than provider-enforced strict JSON Schema."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-20
+        subject_model: "Z.ai GLM-5.3"
+        score_before: null
+        score_after: null
+        latency_before: null
+        latency_after: null
+        cost_before: null
+        cost_after: null
+        access_probe_cost_usd: 0.0
+        evidence: docs/evals/story-214-glm53-access-transport-evidence.json
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: native-zai-access
+            note: "Retry only after a CineForge-scoped pay-as-you-go Z.ai key is explicitly configured."
+          - condition: provider-strict-json-schema
+            note: "Require current official or live native proof of provider-enforced strict ScriptBible JSON; json_object and client-side validation remain ineligible."
       - id: "025"
         story: attempts/025-script-bible-deepseek-v4-pro.md
         date: 2026-08-13

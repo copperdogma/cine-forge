@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "story_id": "214",
+  "attempt_id": "027",
+  "eval_id": "script-bible",
+  "checked_at": "2026-08-20T15:08:00Z",
+  "git_base": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+  "candidate": {
+    "provider": "Z.ai",
+    "requested_model": "glm-5.3",
+    "access_path": "https://api.z.ai/api/paas/v4/chat/completions",
+    "account_tier_required": "pay-as-you-go general API",
+    "reasoning_arms_predeclared": ["low", "max"],
+    "sampling": "omitted"
+  },
+  "official_sources": {
+    "model_and_migration": "https://docs.z.ai/guides/overview/migrate-to-glm-new",
+    "chat_completions": "https://docs.z.ai/api-reference/llm/chat-completion",
+    "structured_output": "https://docs.z.ai/guides/capabilities/struct-output",
+    "pricing": "https://docs.z.ai/guides/overview/pricing",
+    "privacy_and_dpa": "https://docs.z.ai/legal-agreement/privacy-policy",
+    "checked_date": "2026-08-20",
+    "documented_response_format": "json_object only; no json_schema request type",
+    "documented_schema_handling": "schema in prompt followed by client-side validation",
+    "pricing_usd_per_million_tokens": {
+      "input": 1.4,
+      "cached_input": 0.26,
+      "output": 4.4
+    },
+    "privacy_summary": "API content is documented as processed in real time and not stored; other customer data may be temporarily stored; processing is generally in Singapore. No per-request ZDR control was documented."
+  },
+  "access_checks": {
+    "cineforge_provider_env_wrapper_used": true,
+    "credential_names_checked": [
+      "ZAI_API_KEY",
+      "CINE_FORGE_ZAI_API_KEY",
+      "ZHIPUAI_API_KEY"
+    ],
+    "credential_present": false,
+    "general_reference_terms_checked": ["Z.ai", "z.ai", "ZAI", "GLM", "Zhipu"],
+    "general_reference_match": false,
+    "in_app_browser_portal_status": "logged_out",
+    "chrome_portal_status": "logged_out",
+    "live_catalog_discovery": "CineForge discovery completed for configured OpenAI, Anthropic, Google, xAI, and Moonshot providers; Z.ai is not a configured provider lane"
+  },
+  "credential_free_endpoint_probe": {
+    "method": "POST",
+    "payload_classification": "tiny public synthetic text",
+    "authorization_header_sent": false,
+    "http_status": 401,
+    "provider_error_code": "1001",
+    "provider_error_message": "Authentication parameter not received in Header, unable to authenticate",
+    "provider_log_id": "20260820230743107c5a2c051340cb",
+    "model_invoked": false,
+    "cost_usd": 0.0
+  },
+  "transport_gates": {
+    "authenticated_exact_access": "blocked",
+    "native_minimal": "blocked-before-model",
+    "provider_enforced_strict_script_bible": "blocked-and-undocumented",
+    "harness_parity": "not_run_entry_gate_failed",
+    "semantic_open_frequency": "not_run_entry_gate_failed",
+    "incumbent": "not_run_candidate_did_not_qualify",
+    "mariner": "not_run_candidate_did_not_qualify"
+  },
+  "frozen_contract_sha256": {
+    "production_prompt_module": "7361da008a1d058fcae7e9e8733128a60e459d4677612a7f11681bdeda54376d",
+    "script_bible_schema": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb",
+    "runtime_task": "e1098a14f0d0adc035636b53e204a3e3c0488262ba9874ccb80501fcbbd4e281",
+    "scorer": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+    "open_frequency_golden": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
+    "open_frequency_source": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "conductor_handoff": "03cb84504cbec4689fbaee7efb9a1839fc26b44b6a74d79731a66d4a9fca91c4"
+  },
+  "spend_ledger_usd": {
+    "access_and_endpoint_checks": 0.0,
+    "subject_calls": 0.0,
+    "judge_calls": 0.0,
+    "total": 0.0,
+    "cap": 5.0
+  },
+  "terminal_verdict": {
+    "access": "blocked",
+    "transport": "blocked",
+    "reliability": "not_measured",
+    "capability": "not_measured",
+    "economics": "list_pricing_only",
+    "adoption": "defer",
+    "default_changed": false
+  }
+}

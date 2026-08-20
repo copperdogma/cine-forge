@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-08-20-01] — Defer GLM-5.3 script-bible evaluation (Story 214)
+
+### Added
+- Added Story 214, Attempt 027, and sanitized access/transport evidence for the
+  exact Z.ai `glm-5.3` pay-as-you-go qualification lane.
+
+### Changed
+- Recorded the terminal verdict `deferred — no key yet`: CineForge has no prior
+  GLM subject evaluation or configured Z.ai credential, so capability,
+  reliability, and lane economics remain unmeasured and the provisional
+  Gemini 3.5 Flash-Lite default remains unchanged.
+- Closed before paid inference because authenticated access and provider-
+  enforced strict `ScriptBible` JSON could not be proven; aggregate spend was
+  `$0`.
+
 ## [2026-08-13-01] — Evaluate Gemini 3.7 Flash and DeepSeek V4 Pro (Story 213)
 
 ### Added
