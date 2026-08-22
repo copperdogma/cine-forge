@@ -28,11 +28,11 @@
     "docs/evals/attempts/024-qa-pass-gemini-37-flash.md": "d7412094ff72d83f5fcb93fa283b8f1450c4773d258c5b26611e57b76db373de",
     "docs/evals/attempts/025-script-bible-deepseek-v4-pro.md": "53841132f3ff5e5d9c0f040017ed03355067e71f14775b0515cf783dc2843ee1",
     "docs/evals/attempts/026-qa-pass-production-contract-repair.md": "6efe1a509697c44656632767e6a589e4a4f98b119b8b8622a5d8ba6ab245fbc8",
-    "docs/evals/registry.yaml": "65941ca93d76d6e3a53733347b79b4a87df6c8c3165fbbba93501d33ff31b4a2",
+    "docs/evals/registry.yaml": "b88446bfab3b6388676e4976bf48a4cdee454f10f632573b53e3637a866d8727",
     "docs/evals/truth-audit-ledger.yaml": "8476d5f32d303fb19ce1a7d9b784c768eee357a38441e6a7c27759cdc677e1ec",
     "docs/stories/story-213-gemini-37-flash-and-deepseek-v4-pro-bounded-evals.md": "0e6ec79959ae3c5d4321b7081d698e289c23eb82b998ba832dd8a13ada66152d",
-    "benchmarks/providers/script_bible_runtime_provider.py": "8c0e0a9cffdd43757cae6214dccbc336c50cc9582396e6c8bd3ed166f6f012fe",
-    "benchmarks/runtime_tasks/script-bible-runtime.yaml": "e1098a14f0d0adc035636b53e204a3e3c0488262ba9874ccb80501fcbbd4e281",
+    "benchmarks/providers/script_bible_runtime_provider.py": "30e15769cf1fc7c897e2e33713dd9970e7801e512e5e5f2f513f835226287afb",
+    "benchmarks/runtime_tasks/script-bible-runtime.yaml": "74bdbdaf19b7a2b37d7b71a03c073c18fab5ba3b739867d49d780e646c49efc9",
     "benchmarks/prompts/script-bible-runtime-marker.txt": "636a2e3031b731546a6deccc15ff98acd6f360765a77112976f74384abd30e19",
     "src/cine_forge/modules/ingest/script_bible_v1/main.py": "7361da008a1d058fcae7e9e8733128a60e459d4677612a7f11681bdeda54376d",
     "src/cine_forge/schemas/script_bible.py": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb",
@@ -40,7 +40,7 @@
     "benchmarks/golden/open-frequency-script-bible.json": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
     "tests/fixtures/ingest_inputs/open_frequency_short.fountain": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
     "benchmarks/results/deepseek-v4-pro-openrouter-route-probes-2026-08-13.json": "861318dba5f4682e64e2bf2db61a6b82eb99e90b0c9c729e6b49af36e18346fe",
-    "tests/unit/test_openrouter_script_bible_provider.py": "2709ac8f12b99145f36d93e0721a8daa333135e8674e6ac33ae29d3f8f883bf0"
+    "tests/unit/test_openrouter_script_bible_provider.py": "a4468adbe6eeb99178950762aa208cccee3cfb1f3f9e6cf7327b1248c50c7d64"
   },
   "commands": {
     "gemini_qa_initial": "promptfoo eval -c tasks/qa-pass.yaml --filter-providers 'Gemini 3.7 Flash' --filter-first-n 1 --no-cache -j 1",

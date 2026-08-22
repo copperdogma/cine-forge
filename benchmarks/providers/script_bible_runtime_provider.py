@@ -35,6 +35,15 @@ call_llm = _llm.call_llm
 _parse_provider = _llm._parse_provider
 _to_openai_strict_schema = _llm._to_openai_strict_schema
 
+DIAGNOSTIC_JSON_INSTRUCTION = """
+
+DIAGNOSTIC OUTPUT CONTRACT
+Return only one JSON object matching the requested ScriptBible schema. Do not
+include prose or headings. A single whole-response ```json fence is tolerated
+only for client-side diagnostic validation; this route is not provider-enforced
+structured output and cannot establish production parity.
+"""
+
 ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages"
 OPENROUTER_CHAT_URL = "https://openrouter.ai/api/v1/chat/completions"
 XAI_RESPONSES_URL = "https://api.x.ai/v1/responses"
@@ -47,6 +56,7 @@ DEEPSEEK_V4_FLASH_OPENROUTER_MODEL = "deepseek/deepseek-v4-flash-0731"
 DEEPSEEK_V4_FLASH_OPENROUTER_PROVIDER = "Phala"
 DEEPSEEK_V4_PRO_OPENROUTER_MODEL = "deepseek/deepseek-v4-pro"
 DEEPSEEK_V4_PRO_OPENROUTER_PROVIDER = "Baidu"
+OX_ALPHA_OPENROUTER_MODEL = "stealth/ox-alpha"
 GROK_46_MODEL = "grok-4.6"
 OPENROUTER_MODEL_CONFIGS = {
     QWEN38_OPENROUTER_MODEL: {
@@ -62,6 +72,12 @@ OPENROUTER_MODEL_CONFIGS = {
     DEEPSEEK_V4_PRO_OPENROUTER_MODEL: {
         "provider": DEEPSEEK_V4_PRO_OPENROUTER_PROVIDER,
         "max_tokens": 384_000,
+        "zdr": False,
+    },
+    OX_ALPHA_OPENROUTER_MODEL: {
+        "provider": None,
+        "max_tokens": 131_072,
+        "data_collection": None,
         "zdr": False,
     },
 }
@@ -92,6 +108,9 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
             "fail_on_truncation": True,
             "request_timeout_seconds": _timeout_seconds(config),
         }
+        diagnostic_json_only = bool(config.get("diagnostic_json_only", False))
+        if diagnostic_json_only:
+            call_options["prompt"] += DIAGNOSTIC_JSON_INSTRUCTION
         if bare_model == DEFAULT_WORK_MODEL:
             call_options["thinking_level"] = str(
                 config.get("thinking_level") or DEFAULT_THINKING_LEVEL
@@ -108,11 +127,16 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
             output, metadata = _call_openrouter_strict(
                 prompt=call_options["prompt"],
                 model=bare_model,
-                upstream_provider=str(openrouter_config["provider"]),
+                upstream_provider=openrouter_config["provider"],
                 max_tokens=min(max_tokens, int(openrouter_config["max_tokens"])),
                 timeout_seconds=call_options["request_timeout_seconds"],
                 reasoning_effort=str(config.get("reasoning_effort") or "low"),
+                require_parameters=bool(config.get("require_parameters", True)),
+                data_collection=openrouter_config.get("data_collection", "deny"),
                 zdr=bool(openrouter_config["zdr"]),
+                enforce_schema=not diagnostic_json_only,
+                allow_markdown_fence=diagnostic_json_only,
+                raw_output_path=_diagnostic_raw_output_path(config, context),
             )
         elif bare_model == OPUS_5_MODEL:
             output, metadata = _call_opus_5(
@@ -186,6 +210,10 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
             "runtime_schema": "cine_forge.schemas.ScriptBible",
             "upstream_provider": metadata.get("upstream_provider"),
             "reasoning_effort": metadata.get("reasoning_effort"),
+            "require_parameters": metadata.get("require_parameters"),
+            "schema_enforcement": metadata.get("schema_enforcement"),
+            "markdown_fence_removed": metadata.get("markdown_fence_removed"),
+            "raw_output_path": metadata.get("raw_output_path"),
             "allow_fallbacks": metadata.get("allow_fallbacks"),
             "data_collection": metadata.get("data_collection"),
             "zdr": metadata.get("zdr"),
@@ -208,6 +236,20 @@ def _configured_model(config: object) -> str:
     if not isinstance(model, str) or not model.strip():
         raise ValueError("script-bible runtime provider config.model is required")
     return model.strip()
+
+
+def _diagnostic_raw_output_path(config: dict, context: dict) -> Path | None:
+    configured_dir = config.get("raw_output_dir")
+    if not configured_dir:
+        return None
+    output_root = (REPO_ROOT / "output").resolve()
+    target_dir = (REPO_ROOT / str(configured_dir)).resolve()
+    if target_dir != output_root and output_root not in target_dir.parents:
+        raise ValueError("diagnostic raw output must stay under repo output/")
+    variables = context.get("vars", {}) if isinstance(context, dict) else {}
+    golden = str(variables.get("golden_path") or "unknown-case")
+    case_name = Path(golden).stem.replace("-script-bible", "")
+    return target_dir / f"{case_name}-raw.md"
 
 
 def _screenplay(context: object) -> str:
@@ -297,36 +339,44 @@ def _call_openrouter_strict(
     *,
     prompt: str,
     model: str,
-    upstream_provider: str,
+    upstream_provider: str | None,
     max_tokens: int,
     timeout_seconds: float,
     reasoning_effort: str,
-    zdr: bool,
+    require_parameters: bool = True,
+    data_collection: str | None = "deny",
+    zdr: bool = False,
+    enforce_schema: bool = True,
+    allow_markdown_fence: bool = False,
+    raw_output_path: Path | None = None,
 ) -> tuple[ScriptBible, dict[str, Any]]:
-    """Call one pinned OpenRouter model/provider pair with strict JSON."""
-    provider_preferences: dict[str, Any] = {
-        "order": [upstream_provider],
-        "allow_fallbacks": False,
-        "require_parameters": True,
-        "data_collection": "deny",
-    }
+    """Call one exact OpenRouter model with strict JSON."""
+    provider_preferences: dict[str, Any] = {}
+    if require_parameters:
+        provider_preferences["require_parameters"] = True
+    if upstream_provider:
+        provider_preferences["order"] = [upstream_provider]
+        provider_preferences["allow_fallbacks"] = False
+    if data_collection:
+        provider_preferences["data_collection"] = data_collection
     if zdr:
         provider_preferences["zdr"] = True
-    payload = {
+    payload: dict[str, Any] = {
         "model": model,
         "messages": [{"role": "user", "content": prompt}],
         "max_tokens": max_tokens,
         "reasoning": {"effort": reasoning_effort, "exclude": True},
         "provider": provider_preferences,
-        "response_format": {
+    }
+    if enforce_schema:
+        payload["response_format"] = {
             "type": "json_schema",
             "json_schema": {
                 "name": "script_bible",
                 "strict": True,
                 "schema": _to_openai_strict_schema(ScriptBible.model_json_schema()),
             },
-        },
-    }
+        }
     started = time.perf_counter()
     raw = _request_openrouter_json(payload, timeout_seconds=timeout_seconds)
     latency_seconds = time.perf_counter() - started
@@ -338,7 +388,7 @@ def _call_openrouter_strict(
         require_returned=True,
     )
     returned_provider = raw.get("provider")
-    if returned_provider != upstream_provider:
+    if upstream_provider and returned_provider != upstream_provider:
         raise RuntimeError(
             "OpenRouter response provider does not match pinned provider: "
             f"expected {upstream_provider}, received {returned_provider!r}"
@@ -358,7 +408,13 @@ def _call_openrouter_strict(
     content = message.get("content")
     if not isinstance(content, str) or not content.strip():
         raise RuntimeError("OpenRouter transport returned no output text")
-    output = ScriptBible.model_validate_json(content)
+    if raw_output_path is not None:
+        raw_output_path.parent.mkdir(parents=True, exist_ok=True)
+        raw_output_path.write_text(content, encoding="utf-8")
+    validated_content, fence_removed = _diagnostic_json_content(
+        content, allow_markdown_fence=allow_markdown_fence
+    )
+    output = ScriptBible.model_validate_json(validated_content)
 
     usage = raw.get("usage")
     if not isinstance(usage, dict):
@@ -389,11 +445,36 @@ def _call_openrouter_strict(
         "latency_seconds": latency_seconds,
         "upstream_provider": returned_provider,
         "reasoning_effort": reasoning_effort,
-        "allow_fallbacks": False,
-        "data_collection": "deny",
+        "require_parameters": require_parameters,
+        "schema_enforcement": (
+            "provider-strict" if enforce_schema else "client-only-diagnostic"
+        ),
+        "markdown_fence_removed": fence_removed,
+        "raw_output_path": (
+            raw_output_path.relative_to(REPO_ROOT).as_posix()
+            if raw_output_path is not None
+            else None
+        ),
+        "allow_fallbacks": False if upstream_provider else None,
+        "data_collection": data_collection,
         "zdr": zdr,
         "raw_usage": usage,
     }
+
+
+def _diagnostic_json_content(
+    content: str, *, allow_markdown_fence: bool
+) -> tuple[str, bool]:
+    stripped = content.strip()
+    if not allow_markdown_fence or not stripped.startswith("```"):
+        return content, False
+    lines = stripped.splitlines()
+    if len(lines) < 3 or lines[-1].strip() != "```":
+        return content, False
+    opening = lines[0].strip().lower()
+    if opening not in {"```", "```json"}:
+        return content, False
+    return "\n".join(lines[1:-1]).strip(), True
 
 
 def _call_xai_responses_strict(

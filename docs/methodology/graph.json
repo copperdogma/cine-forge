@@ -294,7 +294,8 @@
           "211",
           "212",
           "213",
-          "214"
+          "214",
+          "215"
         ],
         "adrIds": [
           "ADR-003"
@@ -1093,7 +1094,8 @@
           "211",
           "212",
           "213",
-          "214"
+          "214",
+          "215"
         ],
         "adrIds": [
           "ADR-001",
@@ -1670,7 +1672,8 @@
           "211",
           "212",
           "213",
-          "214"
+          "214",
+          "215"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1724,7 +1727,8 @@
             "211",
             "212",
             "213",
-            "214"
+            "214",
+            "215"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -14147,6 +14151,74 @@
           "summary": "close-out validation: refreshed the generated eval-contract"
         }
       }
+    },
+    {
+      "id": "215",
+      "title": "Ox Alpha Bounded Script-Bible Evaluation",
+      "path": "docs/stories/story-215-ox-alpha-bounded-script-bible-eval.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "dependsOn": [
+        "208",
+        "211",
+        "214"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "model-refresh",
+        "openrouter",
+        "ox-alpha"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260822-1000",
+        "date": "2026-08-22",
+        "summary": "`/mark-story-done` closeout: all tasks and acceptance criteria"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "215",
+        "sourcePath": "docs/stories/story-215-ox-alpha-bounded-script-bible-eval.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "`/mark-story-done` closeout: all tasks and acceptance criteria",
+        "lastRelevantAction": {
+          "date": "2026-08-22",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-215-ox-alpha-bounded-script-bible-eval.md",
+          "summary": "`/mark-story-done` closeout: all tasks and acceptance criteria"
+        }
+      }
     }
   ],
   "adrs": [
@@ -15753,7 +15825,8 @@
         "211",
         "212",
         "213",
-        "214"
+        "214",
+        "215"
       ],
       "categoryRefs": [
         "spec:2",
@@ -15762,6 +15835,28 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "029",
+          "date": "2026-08-22",
+          "approach": "Removed universal ZDR/data-collection denial and provider pinning for owner-approved fixtures. After strict and initial diagnostic failures, a final bounded Open Frequency diagnostic retained the raw body before parsing, added an explicit JSON-only instruction, and allowed only whole-response fence removal; the response remained malformed and missed latency.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "provider-strict-json-schema",
+            "separately-approved-adapter-lane"
+          ]
+        },
+        {
+          "id": "028",
+          "date": "2026-08-22",
+          "approach": "Added an isolated exact OpenRouter/Stealth strict-schema lane, then stopped before model invocation when the pinned fail-closed route had no Zero Data Retention endpoint.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "provider-strict-json-schema",
+            "stable-zdr-route"
+          ]
+        },
         {
           "id": "027",
           "date": "2026-08-20",
@@ -15853,7 +15948,8 @@
         "211",
         "212",
         "213",
-        "214"
+        "214",
+        "215"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -15874,15 +15970,15 @@
         "whyNow": "Attempt 023 exact-runtime Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.6 identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, raw usage, and provider-reported cached-token-aware cost. All maintained assertions passed: 0.9333 deterministic, 0.92 cross-provider Opus rubric, and 0.92665 aggregate in 23,699 ms. The subject cost was $…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
-          "native-zai-access",
-          "provider-strict-json-schema"
+          "provider-strict-json-schema",
+          "separately-approved-adapter-lane"
         ],
         "lastRelevantAction": {
-          "date": "2026-08-20",
+          "date": "2026-08-22",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "027",
-          "summary": "Predeclared direct Z.ai GLM-5.3 strict-runtime ladder, then stopped before model invocation because CineForge has no Z.ai credential and current official transport documents JSON-object plus client-side validation rather than provider-enforced strict JSON Schema."
+          "sourceId": "029",
+          "summary": "Removed universal ZDR/data-collection denial and provider pinning for owner-approved fixtures. After strict and initial diagnostic failures, a final bounded Open Frequency diagnostic retained the raw body before parsing, added an explicit JSON-only instruction, and allowed only whole-response fence removal; the response remained malformed and missed latency."
         }
       }
     },
@@ -16604,9 +16700,10 @@
             "210",
             "211",
             "212",
-            "214"
+            "214",
+            "215"
           ],
-          "stories_since_audit": 5,
+          "stories_since_audit": 6,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16641,9 +16738,10 @@
             "210",
             "211",
             "212",
-            "214"
+            "214",
+            "215"
           ],
-          "stories_since_audit": 7,
+          "stories_since_audit": 8,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16727,7 +16825,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 130 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 132 days old against a 14-day cadence"
     ]
   }
 }

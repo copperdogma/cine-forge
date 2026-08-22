@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "evaluated_at": "2026-08-22",
+  "base_git_sha": "94861914623fff237ffb4ab379fa9f995a58da1e",
+  "candidate": {
+    "requested_model": "stealth/ox-alpha",
+    "access_path": "OpenRouter Chat Completions",
+    "provider_pin": null,
+    "model_fallbacks": false
+  },
+  "fixture_policy": {
+    "open_frequency": "repo-authored synthetic; approved when provider may retain or train",
+    "the_mariner": "owner-authored screenplay; owner confirmed no privacy issue and approved for this evaluation"
+  },
+  "request_contract": {
+    "reasoning_effort": "low",
+    "sampling_parameters_omitted": true,
+    "data_collection_filter": null,
+    "zdr_filter": null,
+    "account_settings_changed": false,
+    "response_format": "strict json_schema",
+    "require_parameters": true
+  },
+  "probes": [
+    {
+      "stage": "strict ScriptBible contract",
+      "model_invoked": false,
+      "http_status": 404,
+      "latency_ms": 823,
+      "sanitized_error": "No endpoints found that can handle the requested parameters.",
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "public-synthetic capability diagnostic",
+      "changed_variable": "require_parameters disabled; strict response_format remained requested",
+      "model_invoked": true,
+      "terminal_http_response": true,
+      "exact_returned_model_validated_before_parse": true,
+      "latency_ms": 21629,
+      "schema_valid": false,
+      "raw_output_retained": false,
+      "retention_limit": "The current adapter validated before persistence; only the sanitized Markdown prefix and suffix survived in the validation traceback.",
+      "sanitized_error": "ScriptBible parse failed because the response began as Markdown rather than JSON.",
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "fresh Open Frequency diagnostic with safe raw retention",
+      "changed_variables": [
+        "provider response_format omitted",
+        "explicit diagnostic JSON-only instruction appended",
+        "whole-response Markdown fence extraction allowed before client validation"
+      ],
+      "model_invoked": true,
+      "terminal_http_response": true,
+      "exact_returned_model_validated_before_parse": true,
+      "latency_ms": 47799,
+      "markdown_fence_removed": true,
+      "schema_valid": false,
+      "scored": false,
+      "sanitized_error": "After removing the whole-response json fence, JSON parsing failed at line 11 because an embedded quotation was not escaped.",
+      "cost_usd": 0.0
+    }
+  ],
+  "progressive_stop": {
+    "open_frequency_scored_case_run": false,
+    "the_mariner_scored_case_run": false,
+    "incumbent_run": false,
+    "reason": "The final approved Open Frequency diagnostic exceeded the 30-second gate and produced malformed fenced JSON, so no valid ScriptBible reached the maintained scorer."
+  },
+  "ledger": {
+    "approved_cap_usd": 0.75,
+    "provider_spend_usd": 0.0,
+    "candidate_model_invocations": 2,
+    "judge_invocations": 0
+  },
+  "artifacts": {
+    "ignored_raw": {
+      "path": "output/evals/ox-alpha-script-bible-20260822/open-frequency-raw.md",
+      "sha256": "da6b2f904b94fe1d499bd03554683730e7ada5e726bd1561ab07b32bc6f715ba",
+      "bytes": 7041,
+      "privacy": "repo-authored synthetic Open Frequency output; ignored local evidence",
+      "regeneration_command": "cd benchmarks && python ../scripts/with_cine_forge_provider_env.py npx promptfoo eval -c runtime_tasks/script-bible-runtime.yaml --filter-providers 'Ox Alpha via OpenRouter diagnostic' --filter-pattern 'Open Frequency' --no-cache -j 1 -o results/script-bible-ox-alpha-diagnostic-open-frequency-2026-08-22.json"
+    },
+    "promptfoo_result": {
+      "path": "benchmarks/results/script-bible-ox-alpha-diagnostic-open-frequency-2026-08-22.json",
+      "sha256": "638d84e19f128dc6319dc6524e1ff2f0d5d51440210497892e82e27fd534d87e",
+      "bytes": 18830,
+      "eval_id": "eval-Ti4-2026-08-22T15:37:05"
+    }
+  },
+  "contract_hashes_sha256": {
+    "benchmarks/runtime_tasks/script-bible-runtime.yaml": "74bdbdaf19b7a2b37d7b71a03c073c18fab5ba3b739867d49d780e646c49efc9",
+    "benchmarks/providers/script_bible_runtime_provider.py": "30e15769cf1fc7c897e2e33713dd9970e7801e512e5e5f2f513f835226287afb",
+    "benchmarks/prompts/script-bible-runtime-marker.txt": "636a2e3031b731546a6deccc15ff98acd6f360765a77112976f74384abd30e19",
+    "benchmarks/scorers/script_bible_scorer.py": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+    "benchmarks/golden/open-frequency-script-bible.json": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
+    "tests/fixtures/ingest_inputs/open_frequency_short.fountain": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "src/cine_forge/modules/ingest/script_bible_v1/main.py": "7361da008a1d058fcae7e9e8733128a60e459d4677612a7f11681bdeda54376d",
+    "src/cine_forge/schemas/script_bible.py": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb",
+    "tests/unit/test_openrouter_script_bible_provider.py": "a4468adbe6eeb99178950762aa208cccee3cfb1f3f9e6cf7327b1248c50c7d64"
+  },
+  "verdict": {
+    "access": "available through the relaxed public-synthetic route",
+    "transport": "production strict schema blocked; diagnostic transport returned non-JSON Markdown",
+    "reliability": "two diagnostic completions, neither yielded a valid ScriptBible artifact",
+    "capability": "not scored because the final diagnostic remained malformed after the only permitted fence extraction",
+    "economics": "zero list price and zero reported campaign spend; final diagnostic latency 47.799 seconds exceeded the 30-second owner gate",
+    "adoption": "defer for exact-runtime script-bible"
+  }
+}

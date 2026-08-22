@@ -3959,6 +3959,7 @@ evals:
       - "212"
       - "213"
       - "214"
+      - "215"
     category_refs:
       - spec:2
       - spec:8
@@ -4268,6 +4269,50 @@ evals:
         note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
     attempts:
+      - id: "029"
+        story: attempts/029-script-bible-ox-alpha-public-synthetic-rerun.md
+        date: 2026-08-22
+        status: inconclusive
+        approach: "Removed universal ZDR/data-collection denial and provider pinning for owner-approved fixtures. After strict and initial diagnostic failures, a final bounded Open Frequency diagnostic retained the raw body before parsing, added an explicit JSON-only instruction, and allowed only whole-response fence removal; the response remained malformed and missed latency."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-22
+        subject_model: "Ox Alpha via OpenRouter"
+        score_before: null
+        score_after: null
+        latency_before: null
+        latency_after: null
+        cost_before: null
+        cost_after: null
+        access_probe_cost_usd: 0.0
+        evidence: docs/evals/story-215-ox-alpha-public-synthetic-rerun-evidence.json
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: provider-strict-json-schema
+            note: "Retry exact-runtime scoring when the route accepts require_parameters with strict ScriptBible JSON."
+          - condition: separately-approved-adapter-lane
+            note: "Any repair beyond whole-response fence removal requires a new adapter decision and cannot claim native strict-schema parity."
+      - id: "028"
+        story: attempts/028-script-bible-ox-alpha.md
+        date: 2026-08-22
+        status: inconclusive
+        approach: "Added an isolated exact OpenRouter/Stealth strict-schema lane, then stopped before model invocation when the pinned fail-closed route had no Zero Data Retention endpoint."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-22
+        subject_model: "Ox Alpha via OpenRouter"
+        score_before: null
+        score_after: null
+        latency_before: null
+        latency_after: null
+        cost_before: null
+        cost_after: null
+        access_probe_cost_usd: 0.0
+        evidence: docs/evals/story-215-ox-alpha-access-transport-evidence.json
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: stable-zdr-route
+            note: "Retry only when exact stealth/ox-alpha has a pinned ZDR endpoint under denied data collection."
+          - condition: provider-strict-json-schema
+            note: "After privacy qualifies, require live provider-enforced strict ScriptBible JSON before scoring."
       - id: "027"
         story: attempts/027-script-bible-glm-53.md
         date: 2026-08-20

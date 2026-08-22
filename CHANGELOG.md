@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-08-22-01] — Defer Ox Alpha script-bible evaluation (Story 215)
+
+### Added
+- Added bounded strict and diagnostic Ox Alpha script-bible attempts with
+  exact-model identity, retained response evidence, and focused adapter tests.
+
+### Changed
+- Recorded Ox Alpha as non-drop-in after the strict route was unavailable and
+  the diagnostic response remained malformed JSON while exceeding the
+  30-second latency gate; production defaults remain unchanged.
+
 ## [2026-08-20-01] — Defer GLM-5.3 script-bible evaluation (Story 214)
 
 ### Added

@@ -293,3 +293,128 @@ def test_deepseek_v4_pro_openrouter_enforces_zdr_schema_and_usage(
     assert result["metadata"]["data_collection"] == "deny"
     assert result["metadata"]["zdr"] is False
     assert result["raw"]["provider"] == "Baidu"
+
+
+def test_ox_alpha_openrouter_keeps_schema_without_privacy_or_provider_pin(
+    provider,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    bible = _bible(provider)
+    seen = {}
+
+    def fake_request(payload: dict, *, timeout_seconds: float):
+        seen.update(payload=payload, timeout_seconds=timeout_seconds)
+        return {
+            "id": "gen-ox-alpha",
+            "model": "stealth/ox-alpha",
+            "provider": "Stealth",
+            "choices": [
+                {
+                    "finish_reason": "stop",
+                    "message": {"role": "assistant", "content": bible.model_dump_json()},
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 120,
+                "completion_tokens": 80,
+                "total_tokens": 200,
+                "cost": 0.0,
+                "completion_tokens_details": {"reasoning_tokens": 30},
+            },
+        }
+
+    monkeypatch.setattr(provider, "_request_openrouter_json", fake_request)
+    result = provider.call_api(
+        "marker",
+        {
+            "config": {
+                "model": "stealth/ox-alpha",
+                "provider": "openrouter",
+                "max_tokens": 65536,
+                "request_timeout_seconds": 12,
+                "reasoning_effort": "low",
+            }
+        },
+        {"vars": {"screenplay": "INT. STUDIO - NIGHT\nARIA broadcasts."}},
+    )
+
+    payload = seen["payload"]
+    assert payload["model"] == "stealth/ox-alpha"
+    assert "models" not in payload
+    assert payload["reasoning"] == {"effort": "low", "exclude": True}
+    assert payload["provider"] == {"require_parameters": True}
+    assert payload["response_format"]["type"] == "json_schema"
+    assert payload["response_format"]["json_schema"]["strict"] is True
+    assert "temperature" not in payload
+    assert result["output"] == bible.model_dump_json()
+    assert result["cost"] == 0.0
+    assert result["metadata"]["returned_model"] == "stealth/ox-alpha"
+    assert result["metadata"]["upstream_provider"] == "Stealth"
+    assert result["metadata"]["allow_fallbacks"] is None
+    assert result["metadata"]["data_collection"] is None
+    assert result["metadata"]["zdr"] is False
+
+
+def test_ox_alpha_diagnostic_can_relax_only_parameter_enforcement(
+    provider,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    bible = _bible(provider)
+    seen = {}
+
+    def fake_request(payload: dict, *, timeout_seconds: float):
+        seen.update(payload=payload, timeout_seconds=timeout_seconds)
+        return {
+            "id": "gen-ox-alpha-diagnostic",
+            "model": "stealth/ox-alpha",
+            "provider": "Stealth",
+            "choices": [
+                {
+                    "finish_reason": "stop",
+                    "message": {"role": "assistant", "content": bible.model_dump_json()},
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 120,
+                "completion_tokens": 80,
+                "total_tokens": 200,
+                "cost": 0.0,
+            },
+        }
+
+    monkeypatch.setattr(provider, "_request_openrouter_json", fake_request)
+    result = provider.call_api(
+        "marker",
+        {
+            "config": {
+                "model": "stealth/ox-alpha",
+                "provider": "openrouter",
+                "max_tokens": 65536,
+                "request_timeout_seconds": 12,
+                "reasoning_effort": "low",
+                "require_parameters": False,
+                "diagnostic_json_only": True,
+            }
+        },
+        {"vars": {"screenplay": "INT. STUDIO - NIGHT\nARIA broadcasts."}},
+    )
+
+    assert seen["payload"]["provider"] == {}
+    assert seen["payload"]["model"] == "stealth/ox-alpha"
+    assert "models" not in seen["payload"]
+    assert "response_format" not in seen["payload"]
+    assert "DIAGNOSTIC OUTPUT CONTRACT" in seen["payload"]["messages"][0]["content"]
+    assert result["metadata"]["require_parameters"] is False
+    assert result["metadata"]["schema_enforcement"] == "client-only-diagnostic"
+    assert result["metadata"]["returned_model"] == "stealth/ox-alpha"
+
+
+def test_ox_alpha_diagnostic_strips_only_whole_response_json_fence(provider) -> None:
+    payload = '{"title":"Example"}'
+    assert provider._diagnostic_json_content(
+        f"```json\n{payload}\n```", allow_markdown_fence=True
+    ) == (payload, True)
+    wrapped = f"before\n```json\n{payload}\n```"
+    assert provider._diagnostic_json_content(
+        wrapped, allow_markdown_fence=True
+    ) == (wrapped, False)
