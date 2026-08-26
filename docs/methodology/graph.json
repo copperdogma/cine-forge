@@ -179,7 +179,8 @@
           "131",
           "139",
           "142",
-          "182"
+          "182",
+          "216"
         ],
         "adrIds": [
           "ADR-002",
@@ -1095,7 +1096,8 @@
           "212",
           "213",
           "214",
-          "215"
+          "215",
+          "216"
         ],
         "adrIds": [
           "ADR-001",
@@ -1598,7 +1600,8 @@
           "205",
           "207",
           "208",
-          "213"
+          "213",
+          "216"
         ],
         "evalIds": [
           "compromise-C2-qa-validation"
@@ -1626,7 +1629,8 @@
             "205",
             "207",
             "208",
-            "213"
+            "213",
+            "216"
           ],
           "evalIds": [
             "compromise-C2-qa-validation"
@@ -1673,7 +1677,8 @@
           "212",
           "213",
           "214",
-          "215"
+          "215",
+          "216"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1728,7 +1733,8 @@
             "212",
             "213",
             "214",
-            "215"
+            "215",
+            "216"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -14219,6 +14225,65 @@
           "summary": "`/mark-story-done` closeout: all tasks and acceptance criteria"
         }
       }
+    },
+    {
+      "id": "216",
+      "title": "Retrospective SOTA model reevaluation",
+      "path": "docs/stories/story-216-retrospective-sota-model-reevaluation.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "Persistence & Provenance",
+        "Story Understanding",
+        "Transparency & Control"
+      ],
+      "specRefs": [
+        "spec:1.4",
+        "spec:8"
+      ],
+      "adrIds": [],
+      "compromiseIds": [
+        "C2",
+        "C3"
+      ],
+      "dependsOn": [
+        "208",
+        "213"
+      ],
+      "categoryRefs": [
+        "spec:1",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [
+        "evals"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260825-0001",
+        "date": "2026-08-25",
+        "summary": "close-out renumbering: upstream work added Stories 214–215 and Attempts 027–029 while this isolated branch was awaiting landing. Renumbered this unchanged retrospective owner to Story 216 and Attempt 030 before integrat…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "216",
+        "sourcePath": "docs/stories/story-216-retrospective-sota-model-reevaluation.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "close-out renumbering: upstream work added Stories 214–215 and Attempts 027–029 while this isolated branch was awaiting landing. Renumbered this unchanged retrospective owner to Story 216 and Attempt 030 before integrat…",
+        "lastRelevantAction": {
+          "date": "2026-08-25",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-216-retrospective-sota-model-reevaluation.md",
+          "summary": "close-out renumbering: upstream work added Stories 214–215 and Attempts 027–029 while this isolated branch was awaiting landing. Renumbered this unchanged retrospective owner to Story 216 and Attempt 030 before integrat…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -14700,7 +14765,8 @@
         "spec:8"
       ],
       "storyIds": [
-        "208"
+        "208",
+        "216"
       ],
       "categoryRefs": [
         "spec:2",
@@ -14720,13 +14786,14 @@
       ],
       "latestScore": null,
       "historicalEvidenceStatus": "superseded-strict-semantic-contract-non-decision-grade",
-      "excludedScoreCount": 14,
+      "excludedScoreCount": 16,
       "declaredSpecRefs": [
         "spec:2",
         "spec:8"
       ],
       "declaredStoryIds": [
-        "208"
+        "208",
+        "216"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -15317,7 +15384,8 @@
       ],
       "storyIds": [
         "208",
-        "213"
+        "213",
+        "216"
       ],
       "categoryRefs": [
         "spec:8"
@@ -15355,13 +15423,14 @@
       ],
       "latestScore": null,
       "historicalEvidenceStatus": "Rows before Attempt 026 are contaminated/non-decision-grade; current two-case rows are bounded diagnostics, not default evidence.",
-      "excludedScoreCount": 29,
+      "excludedScoreCount": 31,
       "declaredSpecRefs": [
         "spec:8"
       ],
       "declaredStoryIds": [
         "208",
-        "213"
+        "213",
+        "216"
       ],
       "declaredCategoryRefs": [
         "spec:8"
@@ -15826,7 +15895,8 @@
         "212",
         "213",
         "214",
-        "215"
+        "215",
+        "216"
       ],
       "categoryRefs": [
         "spec:2",
@@ -15937,7 +16007,7 @@
         "note": "Attempt 023 exact-runtime Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.6 identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, raw usage, and provider-reported cached-token-aware cost. All maintained assertions passed: 0.9333 deterministic, 0.92 cross-provider Opus rubric, and 0.92665 aggregate in 23,699 ms. The subject cost was $…"
       },
       "historicalEvidenceStatus": "pre-open-frequency-corpus-non-decision-grade",
-      "excludedScoreCount": 23,
+      "excludedScoreCount": 25,
       "declaredSpecRefs": [
         "spec:2",
         "spec:8"
@@ -15949,7 +16019,8 @@
         "212",
         "213",
         "214",
-        "215"
+        "215",
+        "216"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -16825,7 +16896,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 132 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 136 days old against a 14-day cadence"
     ]
   }
 }

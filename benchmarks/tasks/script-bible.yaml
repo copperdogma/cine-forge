@@ -78,6 +78,28 @@ providers:
       inputCost: 0.0000015
       outputCost: 0.0000075
 
+  - id: google:gemini-3.7-flash
+    label: "Gemini 3.7 Flash"
+    config:
+      maxOutputTokens: 65536
+
+  - id: file://../providers/script_bible_runtime_provider.py
+    label: "Gemini 3.5 Flash-Lite Current Runtime"
+    config:
+      model: gemini-3.5-flash-lite
+      thinking_level: minimal
+      max_tokens: 65536
+      max_retries: 1
+      request_timeout_seconds: 180
+
+  - id: file://../providers/script_bible_runtime_provider.py
+    label: "Gemini 3.7 Flash Current Runtime"
+    config:
+      model: gemini-3.7-flash
+      max_tokens: 65536
+      max_retries: 1
+      request_timeout_seconds: 180
+
   # --- SOTA tier ---
   - id: anthropic:messages:claude-opus-4-6
     label: "Claude Opus 4.6"

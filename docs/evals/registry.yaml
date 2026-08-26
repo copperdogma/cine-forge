@@ -658,6 +658,7 @@ evals:
       - spec:8
     story_refs:
       - "208"
+      - "216"
     category_refs:
       - spec:2
       - spec:8
@@ -702,6 +703,28 @@ evals:
       cost_usd_max: 0.02
 
     scores:
+      - model: "Gemini 3 Flash — repaired two-corpus contract"
+        evidence_status: current-comparable-quality-leader-production-ineligible
+        metrics:
+          overall: 0.67995
+        latency_ms: 17514
+        cost_usd: 0.0283395
+        cost_estimated: false
+        measured: 2026-08-14
+        git_sha: "17e4a8b+story216-uncommitted"
+        result_file: benchmarks/results/retrospective-config-parity-openai-judge-20260814.json
+        note: "Fresh symmetric comparator under the repaired two-corpus scorer and one frozen GPT-5.4 judge. Highest valid comparable score, but it misses the quality and latency gates and is not production-qualified; its per-call cost remains below the $0.02 gate."
+      - model: "Gemini 3.7 Flash — repaired two-corpus contract"
+        evidence_status: current-comparable-challenger-production-ineligible
+        metrics:
+          overall: 0.65245
+        latency_ms: 6585
+        cost_usd: 0.01891
+        cost_estimated: true
+        measured: 2026-08-14
+        git_sha: "17e4a8b+story216-uncommitted"
+        result_file: benchmarks/results/retrospective-config-parity-openai-judge-20260814.json
+        note: "Fresh symmetric challenger. Faster and cheaper than Gemini 3 Flash, but lower quality and below the 0.92 gate; do not adopt."
       - model: "Gemini 3.6 Flash"
         metrics:
           overall: 0.67985
@@ -1450,6 +1473,7 @@ evals:
     story_refs:
       - "208"
       - "213"
+      - "216"
     category_refs:
       - spec:8
     compromise_refs: []
@@ -1476,6 +1500,28 @@ evals:
       note: "QA should be near-perfect — false positives waste pipeline budget"
 
     scores:
+      - model: "GPT-4.1 Mini — final QA family contract"
+        evidence_status: current-comparable-quality-leader-production-ineligible
+        metrics:
+          overall: 0.817475
+        latency_ms: 3905
+        cost_usd: 0.0010718
+        cost_estimated: false
+        measured: 2026-08-14
+        git_sha: "17e4a8b+story216-uncommitted"
+        result_file: benchmarks/results/retrospective-qa-parity-20260814.json
+        note: "Fresh exact-runtime two-case parity. Highest valid comparable score and therefore the measured QA quality leader, but only the positive case passed; the negative case omitted all six actionable repair families. It does not clear the 1.0 production gate."
+      - model: "Gemini 3.7 Flash — final QA family contract"
+        evidence_status: current-comparable-challenger-production-ineligible
+        metrics:
+          overall: 0.73495
+        latency_ms: 3082
+        cost_usd: 0.003907125
+        cost_estimated: false
+        measured: 2026-08-14
+        git_sha: "17e4a8b+story216-uncommitted"
+        result_file: benchmarks/results/retrospective-qa-parity-20260814.json
+        note: "Fresh exact-runtime two-case parity. Faster but lower-scoring than GPT-4.1 Mini; neither case cleared the complete family contract. Do not adopt."
       - model: "Gemini 3.7 Flash — current QA runtime contract"
         evidence_status: superseded-pre-family-contract-non-decision-grade
         metrics:
@@ -3960,6 +4006,7 @@ evals:
       - "213"
       - "214"
       - "215"
+      - "216"
     category_refs:
       - spec:2
       - spec:8
@@ -4006,6 +4053,28 @@ evals:
       cost_usd_max: 0.01
 
     scores:
+      - model: "Gemini 3.5 Flash-Lite — exact runtime two-corpus"
+        evidence_status: current-comparable-quality-leader-production-ineligible
+        metrics:
+          overall: 0.74495
+        latency_ms: 4933
+        cost_usd: 0.00369995
+        cost_estimated: false
+        measured: 2026-08-14
+        git_sha: "17e4a8b+story216-uncommitted"
+        result_file: benchmarks/results/retrospective-script-bible-parity-openai-judge-20260814.json
+        note: "Fresh exact production prompt/schema two-corpus comparator with one frozen GPT-5.4 judge. Highest valid comparable score, but below the 0.90 quality gate; measured quality leader, not production-qualified."
+      - model: "Gemini 3.7 Flash — exact runtime two-corpus"
+        evidence_status: current-comparable-challenger-production-ineligible
+        metrics:
+          overall: 0.70995
+        latency_ms: 10106
+        cost_usd: 0.011435
+        cost_estimated: true
+        measured: 2026-08-14
+        git_sha: "17e4a8b+story216-uncommitted"
+        result_file: benchmarks/results/retrospective-script-bible-parity-openai-judge-20260814.json
+        note: "Fresh exact-runtime challenger. Lower quality, slower, and estimated above the $0.01/call value gate; do not adopt."
       - model: "Grok 4.6"
         evidence_status: bounded-one-case-decision-grade-rejection
         metrics:

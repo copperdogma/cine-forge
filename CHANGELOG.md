@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-08-25-01] — Re-establish current model leaders (Story 216)
+
+### Added
+- Added fresh repaired-contract incumbent parity against Gemini 3.7 Flash for
+  QA, config detection, and script-bible generation, with retained subject and
+  judge artifacts, cost/latency evidence, and explicit mismatch classification.
+
+### Changed
+- Recorded GPT-4.1 Mini, Gemini 3 Flash, and Gemini 3.5 Flash-Lite as the
+  respective current measured quality leaders while keeping all three
+  production-ineligible under their repaired absolute contracts.
+
 ## [2026-08-22-01] — Defer Ox Alpha script-bible evaluation (Story 215)
 
 ### Added

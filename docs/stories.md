@@ -104,7 +104,7 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:6`, `spec:7`
-- UI scout freshness: attention needed — last run 2026-04-12 is 132 days old against a 14-day cadence
+- UI scout freshness: attention needed — last run 2026-04-12 is 136 days old against a 14-day cadence
 - Sequencing bias: `scene-generation-completion` — Keep `spec:6` / `spec:7` as the active product lane even after Story 164 closed the first surfaced real-scene render route. The next slice should deepen scene-generation completeness from that honest operator path instead of retreating to throughput-only or eval-polish work.
 - Sequencing bias: `pipeline-throughput-efficiency` — Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
@@ -358,6 +358,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 107 | Value-Optimized Model Selection Across All Modules | High | Done | — | spec:8 | — | [story-107](stories/story-107-value-optimized-model-selection.md) |
 | 136 | ADR-021 Execution-Ideal and Phase-Governance Migration | High | Done | — | spec:8, spec:11 | 134 | [story-136](stories/story-136-adr-021-execution-planning-migration.md) |
 | 209 | Evidence-First Evaluate-Model Workflow | High | Done | — | spec:8, spec:11 | 035, 208 | [story-209](stories/story-209-evaluate-model-evidence-first-workflow.md) |
+| 216 | Retrospective SOTA model reevaluation | High | Done | — | spec:1, spec:8 | 208, 213 | [story-216](stories/story-216-retrospective-sota-model-reevaluation.md) |
 | 039 | Apply Model Selections to Production | Medium | Done | — | spec:8 | — | [story-039](stories/story-039-apply-model-selections.md) |
 | 122 | Golden Fixture Helpers | Medium | Done | — | spec:8 | — | [story-122](stories/story-122-golden-fixture-helpers.md) |
 | 123 | Anthropic Prompt Caching | Medium | Done | — | spec:8 | — | [story-123](stories/story-123-anthropic-prompt-caching.md) |

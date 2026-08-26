@@ -33,7 +33,7 @@
     ]
   },
   "file_count": 931,
-  "bundle_sha256": "22b850a6247324bd5f2b6c4d8ba9b54054843432674c583f2f0de80393b7f05d",
+  "bundle_sha256": "437ddb1633cb99585d7d2fcca36c8c485e81455cd8117a2522ad64c7a629ffba",
   "files": [
     {
       "path": ".agents/skills/create-eval/SKILL.md",
@@ -1292,8 +1292,8 @@
     },
     {
       "path": "benchmarks/providers/script_bible_runtime_provider.py",
-      "sha256": "8c0e0a9cffdd43757cae6214dccbc336c50cc9582396e6c8bd3ed166f6f012fe",
-      "bytes": 23459
+      "sha256": "30e15769cf1fc7c897e2e33713dd9970e7801e512e5e5f2f513f835226287afb",
+      "bytes": 27195
     },
     {
       "path": "benchmarks/providers/storyboard_understanding_packet.py",
@@ -1672,8 +1672,8 @@
     },
     {
       "path": "benchmarks/tasks/config-detection.yaml",
-      "sha256": "189e587e1cecc577f11abbf90f57f3f724c44340fddadef4967e33f944130999",
-      "bytes": 6100
+      "sha256": "63c2209a89040327e125678a80b203014eea53040d18b81e2a27d8f38f383f4e",
+      "bytes": 6204
     },
     {
       "path": "benchmarks/tasks/continuity-extraction.yaml",
@@ -1732,8 +1732,8 @@
     },
     {
       "path": "benchmarks/tasks/script-bible.yaml",
-      "sha256": "0c82248741b62489716ff5c9ab782d357ffc913e2fbbf3986957d70e571ac21f",
-      "bytes": 7646
+      "sha256": "cf587fa75c8c556dc153b2355565d758f3c3f45794fac4434bcc5036605eacdf",
+      "bytes": 8250
     },
     {
       "path": "benchmarks/tasks/storyboard-generation-quality.yaml",
@@ -2664,8 +2664,8 @@
       "path": "docs/evals/registry.yaml#contract-projection",
       "source_path": "docs/evals/registry.yaml",
       "projection": "all eval fields except mutable scores and attempts",
-      "sha256": "70bf1692b34acc48997cc2383574cd0f9708acb04593bf528026c40573f6b584",
-      "bytes": 39998
+      "sha256": "f11ad99c6727960b8e9b19d809459f7ed787d05bb31c91a04cc8fbe7c014e9cd",
+      "bytes": 40022
     },
     {
       "path": "docs/evals/truth-audit-ledger.yaml",
@@ -2674,8 +2674,8 @@
     },
     {
       "path": "docs/methodology/state.yaml",
-      "sha256": "e00b81b870af44ff296c8581a9b1a6d01a82f5ca361cdb1b5fdb0eca9d538188",
-      "bytes": 32758
+      "sha256": "f03acfa711ba6ccda5da86a5fd2e0f96a7078ab7ca71b49ce2f263e839405940",
+      "bytes": 32772
     },
     {
       "path": "docs/runbooks/create-eval.md",
@@ -4244,8 +4244,8 @@
     },
     {
       "path": "tests/unit/test_openrouter_script_bible_provider.py",
-      "sha256": "2709ac8f12b99145f36d93e0721a8daa333135e8674e6ac33ae29d3f8f883bf0",
-      "bytes": 10050
+      "sha256": "a4468adbe6eeb99178950762aa208cccee3cfb1f3f9e6cf7327b1248c50c7d64",
+      "bytes": 14594
     },
     {
       "path": "tests/unit/test_orphan_detection.py",

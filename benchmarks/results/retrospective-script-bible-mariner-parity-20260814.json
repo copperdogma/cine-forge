@@ -1,0 +1,709 @@
+{
+  "evalId": "eval-JQt-2026-08-14T06:42:18",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-08-14T06:42:18.605Z",
+    "prompts": [
+      {
+        "raw": "You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the story actually presented through its final written beat. Include key plot points but keep it concise. If the screenplay ends before an external conflict resolves, preserve that unresolved ending rather than supplying an outcome.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (a short, source-grounded label for the act's dramatic function)\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n   Use exact source headings for act boundaries when they exist. If a boundary is a final transition rather than a heading, identify that transition without inventing a scene heading.\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement through the final available beat. Do not turn an implied next action into a completed resolution.\n7. **genre** — Primary genre or supported hybrid genre.\n8. **tone** — Dominant tonal qualities supported by the screenplay.\n9. **protagonist_journey** — The protagonist's psychological trajectory in the supplied pages, without claiming a later transformation the pages do not show.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Theme evidence must be a faithful brief quote or a precise reference to material that appears in the screenplay. Do not invent scenes, outcomes, quotations, settings, or character knowledge. Do not write generic analysis that could apply to any film. Before returning, verify every claim against the supplied screenplay and verify that every required field is complete.",
+        "label": "benchmarks/prompts/script-bible.txt: You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the story actually presented through its final written beat. Include key plot points but keep it concise. If the screenplay ends before an external conflict resolves, preserve that unresolved ending rather than supplying an outcome.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (a short, source-grounded label for the act's dramatic function)\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n   Use exact source headings for act boundaries when they exist. If a boundary is a final transition rather than a heading, identify that transition without inventing a scene heading.\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement through the final available beat. Do not turn an implied next action into a completed resolution.\n7. **genre** — Primary genre or supported hybrid genre.\n8. **tone** — Dominant tonal qualities supported by the screenplay.\n9. **protagonist_journey** — The protagonist's psychological trajectory in the supplied pages, without claiming a later transformation the pages do not show.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Theme evidence must be a faithful brief quote or a precise reference to material that appears in the screenplay. Do not invent scenes, outcomes, quotations, settings, or character knowledge. Do not write generic analysis that could apply to any film. Before returning, verify every claim against the supplied screenplay and verify that every required field is complete.",
+        "id": "efa7b36eec9956ffc7e9184602c12a408a47d1a02068540c9f48493d0af1934f",
+        "provider": "Gemini 3.5 Flash-Lite Current Runtime",
+        "metrics": {
+          "score": 0.34995,
+          "testPassCount": 0,
+          "testFailCount": 1,
+          "testErrorCount": 0,
+          "assertPassCount": 0,
+          "assertFailCount": 2,
+          "totalLatencyMs": 4278,
+          "tokenUsage": {
+            "prompt": 4941,
+            "completion": 1006,
+            "cached": 0,
+            "total": 5947,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 7794,
+              "prompt": 6770,
+              "completion": 1024,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.0039973
+        }
+      },
+      {
+        "raw": "You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the story actually presented through its final written beat. Include key plot points but keep it concise. If the screenplay ends before an external conflict resolves, preserve that unresolved ending rather than supplying an outcome.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (a short, source-grounded label for the act's dramatic function)\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n   Use exact source headings for act boundaries when they exist. If a boundary is a final transition rather than a heading, identify that transition without inventing a scene heading.\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement through the final available beat. Do not turn an implied next action into a completed resolution.\n7. **genre** — Primary genre or supported hybrid genre.\n8. **tone** — Dominant tonal qualities supported by the screenplay.\n9. **protagonist_journey** — The protagonist's psychological trajectory in the supplied pages, without claiming a later transformation the pages do not show.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Theme evidence must be a faithful brief quote or a precise reference to material that appears in the screenplay. Do not invent scenes, outcomes, quotations, settings, or character knowledge. Do not write generic analysis that could apply to any film. Before returning, verify every claim against the supplied screenplay and verify that every required field is complete.",
+        "label": "benchmarks/prompts/script-bible.txt: You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the story actually presented through its final written beat. Include key plot points but keep it concise. If the screenplay ends before an external conflict resolves, preserve that unresolved ending rather than supplying an outcome.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (a short, source-grounded label for the act's dramatic function)\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n   Use exact source headings for act boundaries when they exist. If a boundary is a final transition rather than a heading, identify that transition without inventing a scene heading.\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement through the final available beat. Do not turn an implied next action into a completed resolution.\n7. **genre** — Primary genre or supported hybrid genre.\n8. **tone** — Dominant tonal qualities supported by the screenplay.\n9. **protagonist_journey** — The protagonist's psychological trajectory in the supplied pages, without claiming a later transformation the pages do not show.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Theme evidence must be a faithful brief quote or a precise reference to material that appears in the screenplay. Do not invent scenes, outcomes, quotations, settings, or character knowledge. Do not write generic analysis that could apply to any film. Before returning, verify every claim against the supplied screenplay and verify that every required field is complete.",
+        "id": "efa7b36eec9956ffc7e9184602c12a408a47d1a02068540c9f48493d0af1934f",
+        "provider": "Gemini 3.7 Flash Current Runtime",
+        "metrics": {
+          "score": 0.34995,
+          "testPassCount": 0,
+          "testFailCount": 1,
+          "testErrorCount": 0,
+          "assertPassCount": 0,
+          "assertFailCount": 2,
+          "totalLatencyMs": 15184,
+          "tokenUsage": {
+            "prompt": 4941,
+            "completion": 1702,
+            "cached": 0,
+            "total": 8338,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 1695,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 8513,
+              "prompt": 7489,
+              "completion": 1024,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0.0039973,
+        "error": "Could not extract JSON from llm-rubric response",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.34995,
+          "reason": "Could not extract JSON from llm-rubric response",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 7794,
+            "prompt": 6770,
+            "completion": 1024,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.6999,
+              "reason": "raw_score=0.8214 | act_boundary_grounding=0.00 | act_structure=1.00 | confidence_quality=1.00 | conflict_grounding=1.00 | field_completeness=1.00 | full_source_coverage=0.23 | genre_tone_grounding=1.00 | journey_grounding=1.00 | json_valid=1.00 | logline_grounding=1.00 | setting_grounding=0.50 | synopsis_grounding=1.00 | theme_evidence_grounding=0.00 | themes=0.83 | title_correct=1.00 | unsupported_claims=1.00 | Required story events missing: Mariner gets Rose out of the gang-held building, Mariner hid the AirTag in Rose's purse, The AirTag let Mariner find or track Rose, Rose makes them return for her purse, The purse lining contains the memory-stick chip carrying the blockchain password, Mariner uses the oar against thugs at the elevator, Mariner uses the flare gun against Vinnie on the thirteenth floor, Rose reveals that Dad is alive in Chimney Bay, Rose reveals that Dad abandoned Mariner, Salvatori holds Rose at gunpoint, The thugs take Mariner's oar and force him to his knees, Salvatori demands the memory stick from Rose, Salvatori demands the password from Rose, Rose affirms that Mariner became a real hero, Rose says Mariner never backs down from a fight, The screenplay cuts to black, The final confrontation remains unresolved | Act boundaries do not partition the exact source headings | Theme evidence is not grounded in the source screenplay",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/script_bible_scorer.py"
+              }
+            },
+            {
+              "pass": false,
+              "reason": "Could not extract JSON from llm-rubric response",
+              "score": 0,
+              "tokensUsed": {
+                "total": 7794,
+                "prompt": 6770,
+                "completion": 1024,
+                "cached": 0,
+                "numRequests": 0
+              },
+              "metadata": {
+                "renderedAssertionValue": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   Rose affirms that Mariner became a real hero and never backs down; Mariner smiles and clenches his hands into fists; the screenplay cuts to black without resolving the confrontation.\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+              }
+            }
+          ]
+        },
+        "id": "284165db-7a0a-4f39-b451-1983c9c8a9dd",
+        "latencyMs": 4278,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the story actually presented through its final written beat. Include key plot points but keep it concise. If the screenplay ends before an external conflict resolves, preserve that unresolved ending rather than supplying an outcome.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (a short, source-grounded label for the act's dramatic function)\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n   Use exact source headings for act boundaries when they exist. If a boundary is a final transition rather than a heading, identify that transition without inventing a scene heading.\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement through the final available beat. Do not turn an implied next action into a completed resolution.\n7. **genre** — Primary genre or supported hybrid genre.\n8. **tone** — Dominant tonal qualities supported by the screenplay.\n9. **protagonist_journey** — The protagonist's psychological trajectory in the supplied pages, without claiming a later transformation the pages do not show.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Theme evidence must be a faithful brief quote or a precise reference to material that appears in the screenplay. Do not invent scenes, outcomes, quotations, settings, or character knowledge. Do not write generic analysis that could apply to any film. Before returning, verify every claim against the supplied screenplay and verify that every required field is complete.",
+          "label": "benchmarks/prompts/script-bible.txt: You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the story actually presented through its final written beat. Include key plot points but keep it concise. If the screenplay ends before an external conflict resolves, preserve that unresolved ending rather than supplying an outcome.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (a short, source-grounded label for the act's dramatic function)\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n   Use exact source headings for act boundaries when they exist. If a boundary is a final transition rather than a heading, identify that transition without inventing a scene heading.\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement through the final available beat. Do not turn an implied next action into a completed resolution.\n7. **genre** — Primary genre or supported hybrid genre.\n8. **tone** — Dominant tonal qualities supported by the screenplay.\n9. **protagonist_journey** — The protagonist's psychological trajectory in the supplied pages, without claiming a later transformation the pages do not show.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Theme evidence must be a faithful brief quote or a precise reference to material that appears in the screenplay. Do not invent scenes, outcomes, quotations, settings, or character knowledge. Do not write generic analysis that could apply to any film. Before returning, verify every claim against the supplied screenplay and verify that every required field is complete.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "efa7b36eec9956ffc7e9184602c12a408a47d1a02068540c9f48493d0af1934f",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/script_bible_runtime_provider.py",
+          "label": "Gemini 3.5 Flash-Lite Current Runtime"
+        },
+        "response": {
+          "output": "{\"title\":\"The Mariner\",\"logline\":\"A brutally tough, vigilante brawler styled after his idealized memories of a heroic fisherman father must protect his estranged sister after she steals twenty million in blockchain gang money.\",\"synopsis\":\"In a ruined, post-pandemic urban landscape, a vigilante known as the Mariner rescues his sister Rose from a high-rise gang headquarters. As they fight their way through waves of thugs sent by the crime lord Salvatori, Rose reveals that she stole twenty million dollars in digital assets from the gang. Along the way, painful childhood flashbacks reveal that Mariner's legendary 'hero' of a father was actually an abusive, deadbeat alcoholic. Confronted by Salvatori at the top of the tower, Mariner must overcome his shattered worldview and choose his own path of true heroism.\",\"act_structure\":[{\"act_number\":1,\"title\":\"Setup & Descent into the Tower\",\"start_scene\":\"EXT. CITY CENTRE - NIGHT\",\"end_scene\":\"INT. ELEVATOR - CONTINUOUS\",\"summary\":\"The Mariner breaches the Ruddy & Greene building to rescue his sister Rose, fighting through brutal resistance to reach the elevators.\",\"turning_points\":[\"Mariner infiltrates the gang-infested building.\",\"Mariner and Rose escape into an elevator while dodging thugs.\"]},{\"act_number\":2,\"title\":\"Confrontation & Revelation\",\"start_scene\":\"INT. 11TH FLOOR - CONTINUOUS\",\"end_scene\":\"INT. 15TH FLOOR - CONTINUOUS\",\"summary\":\"While navigating stairwells and corridors filled with armed thugs, Rose reveals she stole a blockchain password to twenty million dollars, and shatters Mariner's illusions about their abusive father.\",\"turning_points\":[\"Rose admits she stole gang money and holds the password on a chip.\",\"Flashbacks reveal Mariner's father was an abusive drunk rather than a hero.\",\"Rose confronts Mariner with the truth about their father still living nearby.\"]},{\"act_number\":3,\"title\":\"Resolution\",\"start_scene\":\"INT. 15TH FLOOR (OFFICE)\",\"end_scene\":\"CUT TO BLACK\",\"summary\":\"Cornered by Salvatori and his thugs, Mariner faces an emotional reckoning as Rose redefines true heroism, giving him the resolve to fight back.\",\"turning_points\":[\"Salvatori corners Mariner and Rose in the penthouse office.\",\"Rose delivers a passionate speech redefining what makes a true hero.\",\"Mariner smiles and clenches his fists as he rejects his false idol for his own inner strength.\"]}],\"themes\":[{\"theme\":\"The Illusion of Heroes\",\"description\":\"The deconstruction of childhood idols and the painful realization that parental figures are deeply flawed.\",\"evidence\":[\"Flashbacks to Mariner's abusive father contrasted with Mariner's self-imposed heroic code.\",\"Rose exposing that their father was an abandoning deadbeat rather than a sailor hero.\"]},{\"theme\":\"Redemption through Action\",\"description\":\"Choosing to forge one's own moral path despite a toxic upbringing.\",\"evidence\":[\"Mariner protecting Rose despite her bringing danger to his door.\",\"Rose's final speech framing Mariner as a real hero because he chose a better path.\"]}],\"narrative_arc\":\"Linear narrative following an action-thriller escalation format, interspersed with psychological flashbacks that deconstruct the protagonist's motivation before culminating in a thematic climax.\",\"genre\":\"Action-Thriller\",\"tone\":\"Gritty, darkly humorous, and emotionally raw\",\"protagonist_journey\":\"The Mariner shifts from blindly adhering to a fabricated code based on an abusive father to recognizing his own authentic strength and agency as a true hero.\",\"central_conflict\":\"Mariner and Rose must survive a gauntlet of gangsters led by Salvatori while wrestling with family trauma and stolen cryptocurrency.\",\"setting_overview\":\"Set in a decaying, post-pandemic urban center plagued by commercial real estate collapse, primarily taking place inside a bullet-ridden, fifteen-story gang-controlled skyscraper.\",\"confidence\":0.95}",
+          "tokenUsage": {
+            "total": 5947,
+            "prompt": 4941,
+            "completion": 1006,
+            "numRequests": 1
+          },
+          "cost": 0.0039973,
+          "latencyMs": 4278,
+          "cached": false,
+          "metadata": {
+            "provider": "google",
+            "model": "gemini-3.5-flash-lite",
+            "requested_model": "gemini-3.5-flash-lite",
+            "returned_model": "gemini-3.5-flash-lite",
+            "request_id": "y7h-apPMIqWHz7IPkPe2kQ4",
+            "finish_reason": "stop",
+            "cost_estimated": true,
+            "runtime_prompt": "script_bible_v1.EXTRACTION_PROMPT",
+            "runtime_schema": "cine_forge.schemas.ScriptBible",
+            "upstream_provider": null,
+            "reasoning_effort": null,
+            "allow_fallbacks": null,
+            "data_collection": null,
+            "zdr": null,
+            "store": null,
+            "x_zero_data_retention": null
+          },
+          "raw": {
+            "id": "y7h-apPMIqWHz7IPkPe2kQ4",
+            "model": "gemini-3.5-flash-lite",
+            "provider": null,
+            "usage": {
+              "input_tokens": 4941,
+              "output_tokens": 1006
+            }
+          }
+        },
+        "score": 0.34995,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-script-bible.json",
+            "golden_sha256": "e922269fc7492bf91305cb6bf36615358476a37d11ae1bae551e96870434a9c2",
+            "ending_contract": "Rose affirms that Mariner became a real hero and never backs down; Mariner smiles and clenches his hands into fists; the screenplay cuts to black without resolving the confrontation."
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/script_bible_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-script-bible.json",
+          "golden_sha256": "e922269fc7492bf91305cb6bf36615358476a37d11ae1bae551e96870434a9c2",
+          "ending_contract": "Rose affirms that Mariner became a real hero and never backs down; Mariner smiles and clenches his hands into fists; the screenplay cuts to black without resolving the confrontation."
+        },
+        "metadata": {
+          "provider": "google",
+          "model": "gemini-3.5-flash-lite",
+          "requested_model": "gemini-3.5-flash-lite",
+          "returned_model": "gemini-3.5-flash-lite",
+          "request_id": "y7h-apPMIqWHz7IPkPe2kQ4",
+          "finish_reason": "stop",
+          "cost_estimated": true,
+          "runtime_prompt": "script_bible_v1.EXTRACTION_PROMPT",
+          "runtime_schema": "cine_forge.schemas.ScriptBible",
+          "upstream_provider": null,
+          "reasoning_effort": null,
+          "allow_fallbacks": null,
+          "data_collection": null,
+          "zdr": null,
+          "store": null,
+          "x_zero_data_retention": null,
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Could not extract JSON from llm-rubric response",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.34995,
+          "reason": "Could not extract JSON from llm-rubric response",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 8513,
+            "prompt": 7489,
+            "completion": 1024,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.6999,
+              "reason": "raw_score=0.8904 | act_boundary_grounding=0.00 | act_structure=1.00 | confidence_quality=1.00 | conflict_grounding=1.00 | field_completeness=1.00 | full_source_coverage=0.36 | genre_tone_grounding=1.00 | journey_grounding=1.00 | json_valid=1.00 | logline_grounding=1.00 | setting_grounding=1.00 | synopsis_grounding=1.00 | theme_evidence_grounding=0.44 | themes=1.00 | title_correct=1.00 | unsupported_claims=1.00 | Required story events missing: The AirTag let Mariner find or track Rose, Rose makes them return for her purse, The purse lining contains the memory-stick chip carrying the blockchain password, Rose stole the password-controlled money from the gang, Mariner uses the flare gun against Vinnie on the thirteenth floor, Rose reveals that Dad is alive in Chimney Bay, Salvatori holds Rose at gunpoint, The thugs take Mariner's oar and force him to his knees, Salvatori demands the memory stick from Rose, Salvatori demands the password from Rose, Rose affirms that Mariner became a real hero, Rose says Mariner never backs down from a fight, Mariner smiles at Rose's affirmation, The final confrontation remains unresolved | Act boundaries do not partition the exact source headings | Theme evidence is not grounded in the source screenplay",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/script_bible_scorer.py"
+              }
+            },
+            {
+              "pass": false,
+              "reason": "Could not extract JSON from llm-rubric response",
+              "score": 0,
+              "tokensUsed": {
+                "total": 8513,
+                "prompt": 7489,
+                "completion": 1024,
+                "cached": 0,
+                "numRequests": 0
+              },
+              "metadata": {
+                "renderedAssertionValue": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   Rose affirms that Mariner became a real hero and never backs down; Mariner smiles and clenches his hands into fists; the screenplay cuts to black without resolving the confrontation.\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+              }
+            }
+          ]
+        },
+        "id": "79c6797c-0104-4850-b5fe-558ce9b56a57",
+        "latencyMs": 15184,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\nThe Mariner\n\nWhat happens when a hero’s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn’t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. “McAngus Fish & Brewis” painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building’s back door, his huge frame silhouetted against the interior’s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of “Faith” by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, “Faith” playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C’mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She’s wearing a Tim Hortons uniform, her hair is a mess, and there’s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: “THE MARINER”\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe’s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with “Dad” in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma’s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I’m taking you home. It’s my fault they went after you. I never thought they’d--\n\nROSE  \n(laughing)  \nYou think they’re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe’ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner’s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe’ll take the stairs up. They won’t expect that.\n\nMARINER  \nBecause it’s stupid\\!\n\nRose raises an eyebrow at Mariner’s crazy outfit.\n\nMARINER  \nIt’s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his “Dad” TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what’s a hero? ‘E’s the one what’s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I’ll buy you a new bloody purse.\n\nROSE  \nIt ain’t the purse. It’s... a blockchain password to my life savings. I hid it on a chip in the lining. It’s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell’s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It’s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori’s gonna kill ya, Rosie.\n\nRose nods “yes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain’t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It’s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit’s a scam. You gotta get into PonziCoin. My cousin’s in it. He says it’s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe’re leaving. Now. I don’t steal, Rose. It’s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner’s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don’t wanna hurt ya. Mr. Salvatori just wants his password. That’s all. Then maybe, if you’re reeeaal nice, maybe you can be my booty call some more.\n\nRose’s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner’s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE’S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos’ back. “BOSUN” is carved into the wood. Rose gives Vinnie’s body a kick.\n\nROSE  \nPrick. Oh shit\\! You’re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner’s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie’s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C’mon.\n\nINT. 15TH FLOOR\n\nThis floor isn’t destroyed like the others. It’s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner’s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you’re strong, Billy. That’s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner’s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don’t never run from a fight. Not again, ya hears me? It’s not what a man does. It’s not what a MacAngus does. Let’s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin’ tin, sis. Just like dad taught me.\n\nROSE  \nYou’re serious about this dad shit? You talking about the summer he took you to buddy’s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT’D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he’s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy’s\\! He was supposed to be taking care of you. Instead he’d ditch you in his deadbeat friend’s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would’a said.\n\nROSE  \nYou were too young, Will. She didn’t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you’d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He’s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner’s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don’t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you’re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b’y? It’s got two thumbs and ‘e looks like this\\! Ha\\! Now fetch me anudder. An don’t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT’D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner’s OAR and kick the back of his legs so he’s kneeling at their feet. Mariner doesn’t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe’s no hero. He’s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don’t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe’s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose’s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner’s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the story actually presented through its final written beat. Include key plot points but keep it concise. If the screenplay ends before an external conflict resolves, preserve that unresolved ending rather than supplying an outcome.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (a short, source-grounded label for the act's dramatic function)\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n   Use exact source headings for act boundaries when they exist. If a boundary is a final transition rather than a heading, identify that transition without inventing a scene heading.\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement through the final available beat. Do not turn an implied next action into a completed resolution.\n7. **genre** — Primary genre or supported hybrid genre.\n8. **tone** — Dominant tonal qualities supported by the screenplay.\n9. **protagonist_journey** — The protagonist's psychological trajectory in the supplied pages, without claiming a later transformation the pages do not show.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Theme evidence must be a faithful brief quote or a precise reference to material that appears in the screenplay. Do not invent scenes, outcomes, quotations, settings, or character knowledge. Do not write generic analysis that could apply to any film. Before returning, verify every claim against the supplied screenplay and verify that every required field is complete.",
+          "label": "benchmarks/prompts/script-bible.txt: You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n==========\n{{screenplay}}\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** — The title of the screenplay.\n2. **logline** — A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** — A 1-3 paragraph synopsis covering the story actually presented through its final written beat. Include key plot points but keep it concise. If the screenplay ends before an external conflict resolves, preserve that unresolved ending rather than supplying an outcome.\n4. **act_structure** — Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (a short, source-grounded label for the act's dramatic function)\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n   Use exact source headings for act boundaries when they exist. If a boundary is a final transition rather than a heading, identify that transition without inventing a scene heading.\n5. **themes** — Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** — Describe the overall story shape and dramatic movement through the final available beat. Do not turn an implied next action into a completed resolution.\n7. **genre** — Primary genre or supported hybrid genre.\n8. **tone** — Dominant tonal qualities supported by the screenplay.\n9. **protagonist_journey** — The protagonist's psychological trajectory in the supplied pages, without claiming a later transformation the pages do not show.\n10. **central_conflict** — The core dramatic conflict.\n11. **setting_overview** — Time period, locations, and world context.\n12. **confidence** — Your confidence in this analysis (0.0-1.0).\n\nReturn ONLY valid JSON matching this schema. Be specific and evidence-grounded — name actual characters, locations, and scenes. Theme evidence must be a faithful brief quote or a precise reference to material that appears in the screenplay. Do not invent scenes, outcomes, quotations, settings, or character knowledge. Do not write generic analysis that could apply to any film. Before returning, verify every claim against the supplied screenplay and verify that every required field is complete.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "efa7b36eec9956ffc7e9184602c12a408a47d1a02068540c9f48493d0af1934f",
+        "promptIdx": 1,
+        "provider": {
+          "id": "file://../providers/script_bible_runtime_provider.py",
+          "label": "Gemini 3.7 Flash Current Runtime"
+        },
+        "response": {
+          "output": "{\"title\":\"The Mariner\",\"logline\":\"When an oar-wielding vigilante storms a gang-infested high-rise to rescue his estranged sister, he must confront the shattering truth about his idealized abusive father to find his own true strength before a ruthless mob boss executes them both.\",\"synopsis\":\"In a near-future city hollowed out by economic collapse and overrun by gangs, Billy MacAngus—operating as the costumed vigilante 'The Mariner'—storms the derelict Ruddy & Greene skyscraper to rescue his sister, Rose. After fighting his way through armed thugs with his signature weighted oar and flare gun, he discovers Rose wasn't merely an innocent hostage: she stole a $20 million cryptocurrency ledger from ruthless crime boss Salvatori and refuses to leave without the purse containing her blockchain key.\\n\\nAs the siblings fight their way up to the 15th-floor penthouse office to retrieve the drive, Mariner proudly recounts how his core values and fighting skills were passed down from his late, heroic father. However, once they reach the penthouse, Rose shatters his romanticized memory, revealing that their father never died heroically—he was an abusive, alcoholic deadbeat who collected welfare, beat young Billy, and abandoned him for another woman. Billy's nostalgic golden memories instantly warp into stark, painful recollections of domestic abuse and neglect.\\n\\nBefore Billy can process the psychological shock, Salvatori and his enforcers ambush them, forcing a demoralized Mariner to his knees. As Salvatori threatens Rose at gunpoint, Rose delivers a defiant speech, reminding Billy that despite having every reason to become a monster, he forged his own code of honor and became a real hero. Renewed with genuine self-worth, Mariner clenches his fists, ready to fight back.\",\"act_structure\":[{\"act_number\":1,\"title\":\"The Rescue and the Real Motive\",\"start_scene\":\"EXT. CITY CENTRE - NIGHT\",\"end_scene\":\"INT. STAIRWELL - CONTINUOUS\",\"summary\":\"The Mariner infiltrates the gang-occupied Ruddy & Greene building to rescue Rose, only to learn she intentionally returned to retrieve a stolen $20 million crypto key.\",\"turning_points\":[\"The Mariner breaches the high-rise and rescues Rose from the top-floor elevator.\",\"Mariner admits he tracked Rose via an AirTag in her purse, which she left behind.\",\"Rose heads back up into danger, revealing the purse contains a multi-million dollar blockchain password.\"]},{\"act_number\":2,\"title\":\"The Climb and the Shattered Myth\",\"start_scene\":\"INT. 12TH FLOOR STAIRWELL - CONTINUOUS\",\"end_scene\":\"EXT. BACKYARD - DAY - (FLASHBACK)\",\"summary\":\"Billy and Rose battle gang members to reach the 15th-floor penthouse, where Rose shatters Billy's origin story by exposing their father as a living, abusive deadbeat.\",\"turning_points\":[\"Mariner neutralizes Vinnie and gang members on the 13th floor using a flare gun and his oar.\",\"They breach the luxurious 15th-floor penthouse office and secure the purse.\",\"Rose reveals their father is still alive and abandoned Billy after years of physical and emotional abuse.\",\"Billy's idyllic childhood memories are rewritten into visceral memories of abuse, breaking his spirit as Salvatori ambushes them.\"]},{\"act_number\":3,\"title\":\"A Hero Forged, Not Inherited\",\"start_scene\":\"INT. STAIRWELL - (BACK TO PRESENT)\",\"end_scene\":\"INT. 15TH FLOOR\",\"summary\":\"Forced to his knees by Salvatori, Billy regains his resolve when Rose validates that his heroic code is entirely self-made, setting the stage for a final showdown.\",\"turning_points\":[\"Salvatori disarms and subdues a despondent Billy at gunpoint.\",\"Rose defies Salvatori and gives a speech reframing Billy's trauma as the crucible of a genuine, self-forged superhero.\",\"Billy smiles and clenches his fists to fight back as the scene cuts to black.\"]}],\"themes\":[{\"theme\":\"Deconstruction of Childhood Myth vs. Reality\",\"description\":\"The narrative explores how children construct heroic mythologies around neglectful or abusive parents to survive trauma, and the painful necessity of confronting the truth.\",\"evidence\":[\"Golden-hued flashbacks of fatherly sailing and lifting lessons contrast directly with harsh flashbacks of the father punching young Billy and drinking on a dirty boat.\",\"Rose confronting Billy: 'All these years you thought he was dead? ... he's living up in Chimney Bay with some skank.'\",\"Billy's sudden shift from proud vigilante to quiet despondence when asked by Salvatori if he is a hero.\"]},{\"theme\":\"Self-Forged Heroism\",\"description\":\"True virtue and strength are not hereditary or granted by an idealized mentor, but are chosen through moral agency and resilience in the face of adversity.\",\"evidence\":[\"Mariner's articulated code: 'I live by the Mariner's code: honesty, bravery, and grit. A true hero never backs down from a fight.'\",\"Rose's climactic speech: 'He somehow turned a deadbeat father into a superhero. Then became a real one.'\",\"Billy clenching his fists after realizing his goodness belongs to him, not his father.\"]},{\"theme\":\"Sibling Loyalty Amid Chaos\",\"description\":\"Despite differing coping mechanisms—Billy's vigilantism and Rose's opportunistic crime—the siblings share an enduring, protective bond.\",\"evidence\":[\"Billy planting an AirTag at Thanksgiving out of genuine protective concern.\",\"Rose bandaging Billy's leg wound with a strip from her Tim Hortons uniform.\",\"Rose standing up to Salvatori's submachine gun to defend her brother's dignity.\"]}],\"narrative_arc\":\"The story follows an inverted deconstruction arc: Billy enters as a hyper-competent, archetype-driven vigilante fueled by a romanticized origin story. As he physically ascends the tower, his psychological foundation is dismantled until he hits an emotional nadir under enemy guns, only to be resurrected by the realization that his heroism is self-created.\",\"genre\":\"Action / Dark Comedy / Vigilante Thriller\",\"tone\":\"Gritty, darkly humorous, and emotionally poignant.\",\"protagonist_journey\":\"Billy begins as a man-child vigilante defining his identity and strength through the memory of a mythical heroic father. Upon learning the traumatic truth of his abandonment and abuse, he is temporarily crushed into believing he is 'nobody,' before realizing his morality and physical power are his own achievements, transforming him into an authentic hero.\",\"central_conflict\":\"Billy must protect his sister Rose from Salvatori's gang while internally grappling with the destruction of his foundational worldview and identity.\",\"setting_overview\":\"A near-future, post-2025 dystopian urban center hollowed out by pandemics and financial collapse, specifically set within the bullet-riddled, decaying 15-story Ruddy & Greene office building now operated as a mob fortress.\",\"confidence\":0.98}",
+          "tokenUsage": {
+            "total": 8338,
+            "prompt": 4941,
+            "completion": 1702,
+            "completionDetails": {
+              "reasoning": 1695
+            },
+            "numRequests": 1
+          },
+          "cost": 0,
+          "latencyMs": 15184,
+          "cached": false,
+          "metadata": {
+            "provider": "google",
+            "model": "gemini-3.7-flash",
+            "requested_model": "gemini-3.7-flash",
+            "returned_model": "gemini-3.7-flash",
+            "request_id": "6rh-auFOtp2q2w-PlbrxCA",
+            "finish_reason": "stop",
+            "cost_estimated": true,
+            "runtime_prompt": "script_bible_v1.EXTRACTION_PROMPT",
+            "runtime_schema": "cine_forge.schemas.ScriptBible",
+            "upstream_provider": null,
+            "reasoning_effort": null,
+            "allow_fallbacks": null,
+            "data_collection": null,
+            "zdr": null,
+            "store": null,
+            "x_zero_data_retention": null
+          },
+          "raw": {
+            "id": "6rh-auFOtp2q2w-PlbrxCA",
+            "model": "gemini-3.7-flash",
+            "provider": null,
+            "usage": {
+              "input_tokens": 4941,
+              "output_tokens": 3397
+            }
+          }
+        },
+        "score": 0.34995,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "screenplay": "file://../input/the-mariner.md",
+            "golden_path": "golden/the-mariner-script-bible.json",
+            "golden_sha256": "e922269fc7492bf91305cb6bf36615358476a37d11ae1bae551e96870434a9c2",
+            "ending_contract": "Rose affirms that Mariner became a real hero and never backs down; Mariner smiles and clenches his hands into fists; the screenplay cuts to black without resolving the confrontation."
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/script_bible_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-script-bible.json",
+          "golden_sha256": "e922269fc7492bf91305cb6bf36615358476a37d11ae1bae551e96870434a9c2",
+          "ending_contract": "Rose affirms that Mariner became a real hero and never backs down; Mariner smiles and clenches his hands into fists; the screenplay cuts to black without resolving the confrontation."
+        },
+        "metadata": {
+          "provider": "google",
+          "model": "gemini-3.7-flash",
+          "requested_model": "gemini-3.7-flash",
+          "returned_model": "gemini-3.7-flash",
+          "request_id": "6rh-auFOtp2q2w-PlbrxCA",
+          "finish_reason": "stop",
+          "cost_estimated": true,
+          "runtime_prompt": "script_bible_v1.EXTRACTION_PROMPT",
+          "runtime_schema": "cine_forge.schemas.ScriptBible",
+          "upstream_provider": null,
+          "reasoning_effort": null,
+          "allow_fallbacks": null,
+          "data_collection": null,
+          "zdr": null,
+          "store": null,
+          "x_zero_data_retention": null,
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      }
+    ],
+    "stats": {
+      "successes": 0,
+      "failures": 2,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 9882,
+        "completion": 2708,
+        "cached": 0,
+        "total": 14285,
+        "numRequests": 2,
+        "completionDetails": {
+          "reasoning": 1695,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 16307,
+          "prompt": 14259,
+          "completion": 2048,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 72431,
+      "evaluationDurationMs": 72431
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Script bible extraction from two repo-owned screenplays — The Mariner and Open Frequency",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/retrospective-sota/cine-forge/benchmarks/prompts/script-bible.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1-mini",
+        "label": "GPT-4.1 Mini",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-haiku-4-5-20251001",
+        "label": "Claude Haiku 4.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash-lite",
+        "label": "Gemini 2.5 Flash Lite",
+        "config": {
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3.1-flash-lite",
+        "label": "Gemini 3.1 Flash Lite",
+        "config": {
+          "maxOutputTokens": 65536
+        }
+      },
+      {
+        "id": "google:gemini-3.5-flash-lite",
+        "label": "Gemini 3.5 Flash-Lite",
+        "config": {
+          "maxOutputTokens": 65536,
+          "inputCost": 3e-7,
+          "outputCost": 0.0000025
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-sonnet-4-6",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "google:gemini-2.5-flash",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "maxOutputTokens": 16384
+        }
+      },
+      {
+        "id": "google:gemini-3-flash-preview",
+        "label": "Gemini 3 Flash",
+        "config": {
+          "maxOutputTokens": 65536
+        }
+      },
+      {
+        "id": "google:gemini-3.5-flash",
+        "label": "Gemini 3.5 Flash",
+        "config": {
+          "maxOutputTokens": 65536
+        }
+      },
+      {
+        "id": "google:gemini-3.6-flash",
+        "label": "Gemini 3.6 Flash",
+        "config": {
+          "maxOutputTokens": 65536,
+          "inputCost": 0.0000015,
+          "outputCost": 0.0000075
+        }
+      },
+      {
+        "id": "google:gemini-3.7-flash",
+        "label": "Gemini 3.7 Flash",
+        "config": {
+          "maxOutputTokens": 65536
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Gemini 3.5 Flash-Lite Current Runtime",
+        "config": {
+          "model": "gemini-3.5-flash-lite",
+          "thinking_level": "minimal",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 180
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Gemini 3.7 Flash Current Runtime",
+        "config": {
+          "model": "gemini-3.7-flash",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 180
+        }
+      },
+      {
+        "id": "anthropic:messages:claude-opus-4-6",
+        "label": "Claude Opus 4.6",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "file://../providers/anthropic_messages_provider.py",
+        "label": "Claude Opus 4.8",
+        "config": {
+          "model": "claude-opus-4-8",
+          "max_tokens": 4096
+        }
+      },
+      {
+        "id": "openai:gpt-5.4",
+        "label": "GPT-5.4",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:gpt-5.5",
+        "label": "GPT-5.5",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "file://../providers/openai_responses_provider.py",
+        "label": "GPT-5.5 Pro",
+        "config": {
+          "model": "gpt-5.5-pro",
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "xai:grok-4.3",
+        "label": "Grok 4.3",
+        "config": {
+          "temperature": 0,
+          "max_tokens": 4096,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "xai:grok-4.5",
+        "label": "Grok 4.5",
+        "config": {
+          "max_tokens": 4096,
+          "reasoning_effort": "high",
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "openai:kimi-k2.6",
+        "label": "Kimi K2.6",
+        "config": {
+          "apiBaseUrl": "https://api.moonshot.ai/v1",
+          "apiKeyEnvar": "[REDACTED]",
+          "temperature": 1,
+          "top_p": 0.95,
+          "max_tokens": 32768,
+          "showThinking": false,
+          "response_format": {
+            "type": "json_object"
+          }
+        }
+      },
+      {
+        "id": "google:gemini-3-pro-preview",
+        "label": "Gemini 3 Pro",
+        "config": {
+          "maxOutputTokens": 65536
+        }
+      },
+      {
+        "id": "google:gemini-3.1-pro-preview",
+        "label": "Gemini 3.1 Pro",
+        "config": {
+          "maxOutputTokens": 65536
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-script-bible.json",
+          "golden_sha256": "[REDACTED]",
+          "ending_contract": "Rose affirms that Mariner became a real hero and never backs down; Mariner smiles and clenches his hands into fists; the screenplay cuts to black without resolving the confrontation."
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/script_bible_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "screenplay": "file://../../tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+          "golden_path": "golden/open-frequency-script-bible.json",
+          "golden_sha256": "[REDACTED]",
+          "ending_contract": "Maya's missing-dog plea leads to Comet's morning return; the ON AIR sign steadies and the radio team settles back to work."
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/script_bible_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "benchmarks/results/retrospective-script-bible-mariner-parity-20260814.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-08-14T06:43:31.145Z",
+    "evaluationCreatedAt": "2026-08-14T06:42:18.605Z"
+  }
+}
