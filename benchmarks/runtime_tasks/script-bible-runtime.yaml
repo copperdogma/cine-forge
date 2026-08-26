@@ -38,7 +38,7 @@ providers:
       reasoning_effort: low
       require_parameters: false
       diagnostic_json_only: true
-      raw_output_dir: output/evals/ox-alpha-script-bible-20260822
+      raw_output_dir: output/evals/ox-alpha-script-bible-20260825
 
   - id: file://../providers/script_bible_runtime_provider.py
     label: "DeepSeek V4 Pro via OpenRouter"

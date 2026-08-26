@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "evaluated_at": "2026-08-25",
+  "base_git_sha": "a68a6cda6f1ea31a8a519b23032f5536ad0ec951",
+  "freshness_mode": "force-fresh candidate drift; no contemporaneous superiority claim",
+  "candidate": {
+    "requested_model": "stealth/ox-alpha",
+    "access_path": "OpenRouter Chat Completions",
+    "provider_pin": null,
+    "model_fallbacks": false
+  },
+  "fixture_policy": {
+    "open_frequency": "repo-authored synthetic; approved when provider may retain or train",
+    "the_mariner": "owner-authored screenplay; approved, but progressive gates did not permit invocation"
+  },
+  "frozen_contract": {
+    "reasoning_effort": "low",
+    "sampling_parameters_omitted": true,
+    "max_tokens": 65536,
+    "concurrency": 1,
+    "cache": false,
+    "data_collection_filter": null,
+    "zdr_filter": null,
+    "account_settings_changed": false,
+    "strict_response_format": "strict json_schema with require_parameters=true",
+    "diagnostic_cleanup": "whole-response Markdown fence removal only",
+    "latency_gate_ms": 30000,
+    "subject_cost_gate_usd": 0.01,
+    "aggregate_cap_usd": 0.75
+  },
+  "current_endpoint_snapshot": {
+    "source": "https://openrouter.ai/api/v1/models/stealth/ox-alpha/endpoints",
+    "endpoint_name": "Stealth | stealth/ox-alpha",
+    "context_length": 1048576,
+    "max_completion_tokens": 131072,
+    "list_price_prompt_per_token": "0",
+    "list_price_completion_per_token": "0",
+    "supported_parameters_include": [
+      "reasoning",
+      "max_tokens",
+      "response_format",
+      "reasoning_effort"
+    ]
+  },
+  "probes": [
+    {
+      "stage": "strict ScriptBible contract",
+      "promptfoo_eval_id": "eval-FTV-2026-08-26T05:47:38",
+      "model_invoked": false,
+      "http_status": 404,
+      "latency_ms": 153,
+      "sanitized_error": "No endpoints found that can handle the requested parameters.",
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "fresh Open Frequency client-only diagnostic",
+      "promptfoo_eval_id": "eval-wYR-2026-08-26T05:47:51",
+      "model_invoked": true,
+      "terminal_http_response": true,
+      "exact_returned_model_validated_before_parse": true,
+      "provider_response_id_retained": false,
+      "provider_usage_retained": false,
+      "evidence_limit": "The adapter wrote the complete returned content before parsing, but exception handling discarded provider response ID and raw usage after Pydantic rejected the content.",
+      "latency_ms": 96146,
+      "promptfoo_evaluation_duration_ms": 217675,
+      "markdown_fence_removed": true,
+      "schema_valid": false,
+      "scored": false,
+      "sanitized_error": "After removing the whole-response json fence, JSON parsing failed at line 5 column 350 because a key/value separator was missing.",
+      "raw_content_bytes": 7608,
+      "raw_content_lines": 90,
+      "promptfoo_reported_cost_usd": 0.0
+    }
+  ],
+  "progressive_stop": {
+    "open_frequency_scored_case_run": false,
+    "the_mariner_scored_case_run": false,
+    "incumbent_run": false,
+    "judge_run": false,
+    "reason": "The Open Frequency diagnostic was malformed and its 96.146-second provider latency exceeded the unchanged 30-second gate."
+  },
+  "comparison_to_2026_08_22": {
+    "previous_latency_ms": 47799,
+    "current_latency_ms": 96146,
+    "latency_delta_ms": 48347,
+    "latency_ratio": 2.0115,
+    "previous_schema_valid": false,
+    "current_schema_valid": false,
+    "previous_raw_bytes": 7041,
+    "current_raw_bytes": 7608,
+    "behavior_changed": true,
+    "improved": false,
+    "causal_limit": "A changed response under an opaque alias can show behavioral drift, but cannot prove live learning rather than provider-side model, serving, or sampling changes."
+  },
+  "ledger": {
+    "approved_cap_usd": 0.75,
+    "promptfoo_reported_spend_usd": 0.0,
+    "candidate_terminal_completions": 1,
+    "judge_invocations": 0,
+    "usage_reconciliation": "unavailable because the diagnostic parse failure discarded provider raw usage"
+  },
+  "artifacts": {
+    "ignored_raw_content": {
+      "path": "output/evals/ox-alpha-script-bible-20260825/open-frequency-raw.md",
+      "sha256": "05bedb4ea0cff08fb763ebe118d692f3f1a242bb17fa2fc7df0809f171d52322",
+      "bytes": 7608,
+      "privacy": "repo-authored synthetic Open Frequency output; ignored local evidence"
+    },
+    "strict_promptfoo_result": {
+      "path": "benchmarks/results/script-bible-ox-alpha-strict-open-frequency-2026-08-25.json",
+      "sha256": "aaa916fd0ceec08efb5180967a892ff25de4cf723aa37eb2e124bce080fbeb5a",
+      "bytes": 18645,
+      "eval_id": "eval-FTV-2026-08-26T05:47:38"
+    },
+    "diagnostic_promptfoo_result": {
+      "path": "benchmarks/results/script-bible-ox-alpha-diagnostic-open-frequency-2026-08-25.json",
+      "sha256": "8eee333e3b20c1bdddf96e6c1167de6b2566f5ea65b3ad442daae2eff9f4266f",
+      "bytes": 18827,
+      "eval_id": "eval-wYR-2026-08-26T05:47:51"
+    }
+  },
+  "contract_hashes_sha256": {
+    "benchmarks/runtime_tasks/script-bible-runtime.yaml": "6669ac13cf56d447df17fc969eb489eb368a6a00a612ce748eb4e143d5f365f2",
+    "benchmarks/providers/script_bible_runtime_provider.py": "30e15769cf1fc7c897e2e33713dd9970e7801e512e5e5f2f513f835226287afb",
+    "benchmarks/prompts/script-bible-runtime-marker.txt": "636a2e3031b731546a6deccc15ff98acd6f360765a77112976f74384abd30e19",
+    "benchmarks/scorers/script_bible_scorer.py": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+    "benchmarks/golden/open-frequency-script-bible.json": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
+    "tests/fixtures/ingest_inputs/open_frequency_short.fountain": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "src/cine_forge/modules/ingest/script_bible_v1/main.py": "7361da008a1d058fcae7e9e8733128a60e459d4677612a7f11681bdeda54376d",
+    "src/cine_forge/schemas/script_bible.py": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb",
+    "tests/unit/test_openrouter_script_bible_provider.py": "a4468adbe6eeb99178950762aa208cccee3cfb1f3f9e6cf7327b1248c50c7d64"
+  },
+  "verdict": {
+    "access": "available on the relaxed public-synthetic diagnostic route",
+    "transport": "production strict schema blocked; diagnostic remained malformed JSON",
+    "reliability": "failed the 30-second gate and produced no valid ScriptBible artifact",
+    "capability": "not measured because no valid artifact reached either scorer",
+    "economics": "zero list price and zero Promptfoo-reported spend, but response-level usage/cost were not retained after parse failure",
+    "adoption": "defer for exact-runtime script bible",
+    "drift_hypothesis": "behavior changed but did not improve versus 2026-08-22"
+  }
+}

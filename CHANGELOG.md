@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-08-26-01] — Record Ox Alpha drift rerun (Story 215)
+
+### Changed
+- Recorded the force-fresh Open Frequency rerun: strict routing remained
+  unavailable, the diagnostic remained malformed, and provider latency roughly
+  doubled without advancing to scoring or the second screenplay.
+
 ## [2026-08-25-01] — Re-establish current model leaders (Story 216)
 
 ### Added

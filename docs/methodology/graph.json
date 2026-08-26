@@ -14205,9 +14205,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260822-1000",
-        "date": "2026-08-22",
-        "summary": "`/mark-story-done` closeout: all tasks and acceptance criteria"
+        "timestamp": "20260825-2355",
+        "date": "2026-08-25",
+        "summary": "force-fresh candidate-drift follow-up (Attempt 030): repeated"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -14217,12 +14217,12 @@
         "sourcePath": "docs/stories/story-215-ox-alpha-bounded-script-bible-eval.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "`/mark-story-done` closeout: all tasks and acceptance criteria",
+        "whyNow": "force-fresh candidate-drift follow-up (Attempt 030): repeated",
         "lastRelevantAction": {
-          "date": "2026-08-22",
+          "date": "2026-08-25",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-215-ox-alpha-bounded-script-bible-eval.md",
-          "summary": "`/mark-story-done` closeout: all tasks and acceptance criteria"
+          "summary": "force-fresh candidate-drift follow-up (Attempt 030): repeated"
         }
       }
     },
@@ -15906,6 +15906,17 @@
       "retryWhen": [],
       "attempts": [
         {
+          "id": "030",
+          "date": "2026-08-25",
+          "approach": "Force-fresh candidate-drift rerun of Attempt 029's exact progressive Open Frequency route, with unchanged schema, prompt, scorer, gates, no-cache policy, and diagnostic cleanup.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "provider-strict-json-schema",
+            "separately-approved-adapter-lane"
+          ]
+        },
+        {
           "id": "029",
           "date": "2026-08-22",
           "approach": "Removed universal ZDR/data-collection denial and provider pinning for owner-approved fixtures. After strict and initial diagnostic failures, a final bounded Open Frequency diagnostic retained the raw body before parsing, added an explicit JSON-only instruction, and allowed only whole-response fence removal; the response remained malformed and missed latency.",
@@ -16045,11 +16056,11 @@
           "separately-approved-adapter-lane"
         ],
         "lastRelevantAction": {
-          "date": "2026-08-22",
+          "date": "2026-08-25",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "029",
-          "summary": "Removed universal ZDR/data-collection denial and provider pinning for owner-approved fixtures. After strict and initial diagnostic failures, a final bounded Open Frequency diagnostic retained the raw body before parsing, added an explicit JSON-only instruction, and allowed only whole-response fence removal; the response remained malformed and missed latency."
+          "sourceId": "030",
+          "summary": "Force-fresh candidate-drift rerun of Attempt 029's exact progressive Open Frequency route, with unchanged schema, prompt, scorer, gates, no-cache policy, and diagnostic cleanup."
         }
       }
     },

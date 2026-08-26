@@ -241,3 +241,14 @@ remain complete, mismatch and transport failures are classified in Attempts
 028–029, the registry and generated methodology surfaces are current, and the
 full unit suite passed with `2174 passed`. Story 215 is closed; recommended
 next step: `/check-in-diff`.
+
+20260825-2355 — force-fresh candidate-drift follow-up (Attempt 030): repeated
+the exact Attempt 029 Open Frequency ladder from clean base `a68a6cd`. The
+strict request again returned pre-invocation HTTP 404. The client-only
+diagnostic returned exact-model content, but its 7,608-byte fenced body was
+still malformed after whole-fence removal (line 5 column 350), with 96,146 ms
+provider latency and 217,675 ms total eval duration. This is 48,347 ms slower
+than Aug 22 and still misses the unchanged 30-second gate. Stopped before
+scoring, judge, Mariner, and incumbent. Behavior changed, but did not improve;
+the rerun cannot establish live learning as the cause. Defaults remain
+unchanged.

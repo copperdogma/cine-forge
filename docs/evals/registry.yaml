@@ -4338,6 +4338,28 @@ evals:
         note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
     attempts:
+      - id: "030"
+        story: attempts/030-script-bible-ox-alpha-drift-rerun.md
+        date: 2026-08-25
+        status: inconclusive
+        approach: "Force-fresh candidate-drift rerun of Attempt 029's exact progressive Open Frequency route, with unchanged schema, prompt, scorer, gates, no-cache policy, and diagnostic cleanup."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-25
+        subject_model: "Ox Alpha via OpenRouter"
+        score_before: null
+        score_after: null
+        latency_before: 47799
+        latency_after: 96146
+        cost_before: 0.0
+        cost_after: 0.0
+        access_probe_cost_usd: 0.0
+        evidence: docs/evals/story-215-ox-alpha-drift-rerun-evidence.json
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: provider-strict-json-schema
+            note: "Retry exact-runtime scoring when the route accepts require_parameters with strict ScriptBible JSON."
+          - condition: separately-approved-adapter-lane
+            note: "Any repair beyond whole-response fence removal requires a separate adapter decision."
       - id: "029"
         story: attempts/029-script-bible-ox-alpha-public-synthetic-rerun.md
         date: 2026-08-22

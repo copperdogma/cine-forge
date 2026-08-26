@@ -1,0 +1,341 @@
+{
+  "evalId": "eval-FTV-2026-08-26T05:47:38",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-08-26T05:47:38.916Z",
+    "prompts": [
+      {
+        "raw": "The configured provider must run the supplied screenplay through the exact\nproduction script_bible_v1 prompt and ScriptBible schema boundary.",
+        "label": "prompts/script-bible-runtime-marker.txt: The configured provider must run the supplied screenplay through the exact\nproduction script_bible_v1 prompt and ScriptBible schema boundary.",
+        "id": "ee4b360eb041c4cad35c5314ca9a3a2e3d4734127b81a9e604a0883f08dd8163",
+        "provider": "Ox Alpha via OpenRouter",
+        "metrics": {
+          "score": 0,
+          "testPassCount": 0,
+          "testFailCount": 0,
+          "testErrorCount": 1,
+          "assertPassCount": 0,
+          "assertFailCount": 0,
+          "totalLatencyMs": 153,
+          "tokenUsage": {
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "total": 0,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "error": "OpenRouter HTTP error 404: {\"error\":{\"message\":\"No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection\",\"code\":404}}",
+        "gradingResult": null,
+        "id": "d30075bc-b2b6-4196-b50c-8375e1559e74",
+        "latencyMs": 153,
+        "namedScores": {},
+        "prompt": {
+          "raw": "The configured provider must run the supplied screenplay through the exact\nproduction script_bible_v1 prompt and ScriptBible schema boundary.",
+          "label": "prompts/script-bible-runtime-marker.txt: The configured provider must run the supplied screenplay through the exact\nproduction script_bible_v1 prompt and ScriptBible schema boundary.",
+          "config": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          }
+        },
+        "promptId": "ee4b360eb041c4cad35c5314ca9a3a2e3d4734127b81a9e604a0883f08dd8163",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/script_bible_runtime_provider.py",
+          "label": "Ox Alpha via OpenRouter"
+        },
+        "response": {
+          "output": "",
+          "error": "OpenRouter HTTP error 404: {\"error\":{\"message\":\"No endpoints found that can handle the requested parameters. To learn more about provider routing, visit: https://openrouter.ai/docs/guides/routing/provider-selection\",\"code\":404}}",
+          "latencyMs": 153,
+          "metadata": {
+            "provider": "runtime-script-bible",
+            "requested_model": "stealth/ox-alpha"
+          },
+          "cached": false
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "description": "Open Frequency exact-runtime script bible",
+          "vars": {
+            "screenplay": "file://../../tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+            "golden_path": "golden/open-frequency-script-bible.json",
+            "golden_sha256": "2e70cd6255c04b1cf9e7ef94d13b9a3935be3c026d12afbfaf21e4595cd83d5b",
+            "ending_contract": "Maya's missing-dog plea leads to Comet's morning return; the ON AIR sign steadies and the radio team settles back to work."
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/script_bible_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+            }
+          ],
+          "options": {
+            "provider": {
+              "id": "anthropic:messages:claude-opus-4-6",
+              "config": {
+                "max_tokens": 4096
+              }
+            }
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "screenplay": "file://../../tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+          "golden_path": "golden/open-frequency-script-bible.json",
+          "golden_sha256": "2e70cd6255c04b1cf9e7ef94d13b9a3935be3c026d12afbfaf21e4595cd83d5b",
+          "ending_contract": "Maya's missing-dog plea leads to Comet's morning return; the ON AIR sign steadies and the radio team settles back to work."
+        },
+        "metadata": {
+          "provider": "runtime-script-bible",
+          "requested_model": "stealth/ox-alpha",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 2
+      }
+    ],
+    "stats": {
+      "successes": 0,
+      "failures": 0,
+      "errors": 1,
+      "tokenUsage": {
+        "prompt": 0,
+        "completion": 0,
+        "cached": 0,
+        "total": 0,
+        "numRequests": 1,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 1396,
+      "evaluationDurationMs": 1396
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Exact runtime script-bible extraction from The Mariner and Open Frequency",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/ox-alpha-20260825-cineforge/benchmarks/prompts/script-bible-runtime-marker.txt"
+    ],
+    "providers": [
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Ox Alpha via OpenRouter",
+        "config": {
+          "model": "stealth/ox-alpha",
+          "provider": "openrouter",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 120,
+          "timeout": 180000,
+          "reasoning_effort": "low"
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Ox Alpha via OpenRouter diagnostic (schema enforcement unverified)",
+        "config": {
+          "model": "stealth/ox-alpha",
+          "provider": "openrouter",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 120,
+          "timeout": 180000,
+          "reasoning_effort": "low",
+          "require_parameters": false,
+          "diagnostic_json_only": true,
+          "raw_output_dir": "output/evals/ox-alpha-script-bible-20260825"
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "DeepSeek V4 Pro via OpenRouter",
+        "config": {
+          "model": "deepseek/deepseek-v4-pro",
+          "provider": "openrouter",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 120,
+          "timeout": 180000,
+          "reasoning_effort": "low"
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Grok 4.6",
+        "config": {
+          "model": "grok-4.6",
+          "max_tokens": 8192,
+          "max_retries": 1,
+          "request_timeout_seconds": 120,
+          "reasoning_effort": "low"
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "DeepSeek V4 Flash 0731 via OpenRouter",
+        "config": {
+          "model": "deepseek/deepseek-v4-flash-0731",
+          "provider": "openrouter",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 600,
+          "timeout": 660000,
+          "reasoning_effort": "low"
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Qwen3.8 Max via OpenRouter",
+        "config": {
+          "model": "qwen/qwen3.8-max",
+          "provider": "openrouter",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 600,
+          "reasoning_effort": "low"
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Claude Opus 5",
+        "config": {
+          "model": "claude-opus-5",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 600
+        }
+      },
+      {
+        "id": "file://../providers/script_bible_runtime_provider.py",
+        "label": "Gemini 3.5 Flash-Lite",
+        "config": {
+          "model": "gemini-3.5-flash-lite",
+          "max_tokens": 65536,
+          "max_retries": 1,
+          "request_timeout_seconds": 600,
+          "thinking_level": "minimal"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "description": "The Mariner exact-runtime script bible",
+        "vars": {
+          "screenplay": "file://../input/the-mariner.md",
+          "golden_path": "golden/the-mariner-script-bible.json",
+          "golden_sha256": "[REDACTED]",
+          "ending_contract": "Rose affirms that Mariner became a real hero and never backs down; Mariner smiles and clenches his hands into fists; the screenplay cuts to black without resolving the confrontation."
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/script_bible_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+          }
+        ]
+      },
+      {
+        "description": "Open Frequency exact-runtime script bible",
+        "vars": {
+          "screenplay": "file://../../tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+          "golden_path": "golden/open-frequency-script-bible.json",
+          "golden_sha256": "[REDACTED]",
+          "ending_contract": "Maya's missing-dog plea leads to Comet's morning return; the ON AIR sign steadies and the radio team settles back to work."
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/script_bible_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate the candidate script bible only against the supplied screenplay.\nDo not rely on outside knowledge or reward a claim simply because it\nresembles a conventional story beat.\n\nSOURCE SCREENPLAY\n=================\n{{screenplay}}\n=================\n\nGrade all of these dimensions:\n1. Fidelity and completeness: the logline, synopsis, narrative arc,\n   protagonist journey, conflict, and setting cover the material the\n   screenplay actually presents, with no material contradiction or\n   omission.\n2. Ending discipline: distinguish the last written beat from an implied\n   next action. If the source cuts away before the external conflict is\n   resolved, the bible must preserve that uncertainty and must not\n   invent a fight, victory, escape, death, or other outcome.\n   The required terminal beats for this case are:\n   {{ending_contract}}\n   Omitting any named terminal beat is a material completeness failure.\n3. Act structure: boundaries correspond to actual source headings or\n   clearly identified beats; every act summary and turning point is\n   supported by the screenplay.\n4. Themes and evidence: themes are specific to this screenplay, and\n   every quotation or scene reference is faithful to the source rather\n   than fabricated or generic.\n5. Genre and tone: labels reflect all materially present modes. Hybrid\n   labels are valid when supported; do not reject a source-supported\n   tonal component merely because another mode is more prominent.\n6. Production usefulness: all required fields are substantive,\n   internally consistent, and specific enough to guide later work.\n7. Exact schema: the root object contains exactly title, logline,\n   synopsis, act_structure, themes, narrative_arc, genre, tone,\n   protagonist_journey, central_conflict, setting_overview, and\n   confidence. Every act contains exactly act_number, title,\n   start_scene, end_scene, summary, and turning_points. Every theme\n   contains exactly theme, description, and evidence. Extra keys at\n   any of these levels are a hard failure.\n\nA schema-only, generic, padded, or hallucinated bible must fail. Score\n0.80 or higher, and pass, only if this could serve as a trustworthy\nproduction reference for the supplied screenplay. Any invented ending\nor materially source-contradictory claim is a hard failure.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": {
+          "id": "anthropic:messages:claude-opus-4-6",
+          "config": {
+            "max_tokens": 4096
+          }
+        }
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/script-bible-ox-alpha-strict-open-frequency-2026-08-25.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-08-26T05:47:40.381Z",
+    "evaluationCreatedAt": "2026-08-26T05:47:38.916Z"
+  }
+}
