@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "evaluated_at": "2026-08-29",
+  "base_git_sha": "2530ca6c0910672a20594bd2c3908b4b7df43535",
+  "candidate": {
+    "requested_model": "tencent/hy4-preview",
+    "canonical_snapshot": "tencent/hy4-preview-20260827",
+    "access_path": "OpenRouter Chat Completions",
+    "provider_pin": null,
+    "model_fallbacks": false
+  },
+  "fixture_policy": {
+    "open_frequency": "repo-authored synthetic; approved when the provider may retain or train",
+    "private_or_second_corpus": "excluded"
+  },
+  "frozen_contract": {
+    "reasoning_effort": "low",
+    "reasoning_excluded_from_visible_output": true,
+    "sampling_parameters_omitted": true,
+    "configured_max_tokens": 65536,
+    "route_max_tokens": 64000,
+    "concurrency": 1,
+    "cache": false,
+    "require_parameters": true,
+    "data_collection_filter": null,
+    "zdr_filter": null,
+    "strict_response_format": "provider-enforced strict ScriptBible json_schema",
+    "latency_gate_ms": 30000,
+    "subject_cost_gate_usd": 0.01,
+    "aggregate_cap_usd": 0.75
+  },
+  "resolved_matrix": {
+    "cell_count": 1,
+    "subject_label": "Hy4 Preview via OpenRouter",
+    "case": "Open Frequency exact-runtime script bible",
+    "runtime_prompt": "script_bible_v1.EXTRACTION_PROMPT",
+    "runtime_schema": "cine_forge.schemas.ScriptBible",
+    "structural_scorer": "benchmarks/scorers/script_bible_scorer.py",
+    "rubric_judge": "anthropic:messages:claude-opus-4-6",
+    "command_if_transport_qualified": "cd benchmarks && PROMPTFOO_PYTHON=/Users/cam/Documents/Projects/cine-forge/.venv/bin/python /Users/cam/Documents/Projects/cine-forge/.venv/bin/python ../scripts/with_cine_forge_provider_env.py promptfoo eval -c runtime_tasks/script-bible-runtime.yaml --no-cache --filter-providers 'Hy4 Preview via OpenRouter' --filter-pattern 'Open Frequency exact-runtime script bible' -j 1 --output results/script-bible-hy4-preview-open-frequency-2026-08-29.json"
+  },
+  "current_endpoint_snapshot": {
+    "source": "https://openrouter.ai/api/v1/models/tencent/hy4-preview/endpoints",
+    "endpoint_name": "Tencent | tencent/hy4-preview-20260827",
+    "provider_name": "Tencent",
+    "context_length": 1048576,
+    "max_completion_tokens": 64000,
+    "list_price_prompt_per_token": "0.000000834",
+    "list_price_completion_per_token": "0.000002501",
+    "supported_parameters_include": [
+      "reasoning",
+      "reasoning_effort",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice"
+    ]
+  },
+  "probes": [
+    {
+      "stage": "tiny native strict ScriptBible contract",
+      "model_invoked": false,
+      "http_status": 429,
+      "provider_name": "Tencent",
+      "provider_error_code": "429001",
+      "limit_source": "upstream_provider_shared_pool",
+      "retry_after_seconds": 60,
+      "cost_usd": 0.0
+    },
+    {
+      "stage": "one provider-directed identical retry after availability window",
+      "model_invoked": false,
+      "http_status": 429,
+      "provider_name": "Tencent",
+      "provider_error_code": "429001",
+      "limit_source": "upstream_provider_shared_pool",
+      "retry_after_seconds": 60,
+      "cost_usd": 0.0
+    }
+  ],
+  "progressive_stop": {
+    "harness_parity_run": false,
+    "open_frequency_scored_case_run": false,
+    "judge_run": false,
+    "incumbent_run": false,
+    "reason": "The exact route returned the same upstream shared-pool capacity 429 before invocation on the initial tiny probe and its one allowed provider-directed retry."
+  },
+  "ledger": {
+    "approved_cap_usd": 0.75,
+    "provider_spend_usd": 0.0,
+    "candidate_terminal_completions": 0,
+    "judge_invocations": 0
+  },
+  "contract_hashes_sha256": {
+    "benchmarks/runtime_tasks/script-bible-runtime.yaml": "049bde1098e6827e83bc817f075c81cd254c30c7b39313976db23967c216da73",
+    "benchmarks/providers/script_bible_runtime_provider.py": "718dfb612248fb408269c48c87613327fda4d4f0ff6785e7a6539455b7faf29f",
+    "benchmarks/prompts/script-bible-runtime-marker.txt": "636a2e3031b731546a6deccc15ff98acd6f360765a77112976f74384abd30e19",
+    "benchmarks/scorers/script_bible_scorer.py": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+    "benchmarks/golden/open-frequency-script-bible.json": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
+    "tests/fixtures/ingest_inputs/open_frequency_short.fountain": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "src/cine_forge/modules/ingest/script_bible_v1/main.py": "7361da008a1d058fcae7e9e8733128a60e459d4677612a7f11681bdeda54376d",
+    "src/cine_forge/schemas/script_bible.py": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb",
+    "tests/unit/test_openrouter_script_bible_provider.py": "46e7856675e5dc55fd528ed150f368b90cf3b2a682ebdb0bf2536f3aedb2fbc2"
+  },
+  "verdict": {
+    "access": "constrained by the exact Tencent route's upstream shared pool",
+    "transport": "not measured beyond routing; strict ScriptBible remains unverified",
+    "reliability": "failed to produce a response across the initial probe and one provider-directed retry",
+    "capability": "not measured because no valid answer reached either scorer",
+    "economics": "zero spend; subject economics unmeasured",
+    "adoption": "defer for exact-runtime script bible"
+  }
+}

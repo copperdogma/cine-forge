@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-08-31-01] — Defer Hy4 Preview script-bible adoption (Story 217)
+
+### Added
+- Added a bounded OpenRouter Hy4 Preview benchmark arm, focused strict-contract
+  tests, and four replayable access, transport, and diagnostic attempt records.
+
+### Changed
+- Recorded that the exact Tencent route never produced a terminal production
+  response and also delivered no body during the one-variable capability
+  diagnostic; exact-runtime adoption remains deferred and the provisional
+  Gemini 3.5 Flash-Lite default remains unchanged.
+- Exhausted unchanged retries pending a material provider-transport change or
+  new authorization, with confirmed spend at `$0` and conservative cumulative
+  unreconciled exposure bounded at `US$0.486`.
+
 ## [2026-08-26-01] — Record Ox Alpha drift rerun (Story 215)
 
 ### Changed

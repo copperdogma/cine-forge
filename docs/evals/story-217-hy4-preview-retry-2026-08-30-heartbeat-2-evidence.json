@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "evaluated_at": "2026-08-30",
+  "base_git_sha": "2530ca6c0910672a20594bd2c3908b4b7df43535",
+  "attempt": "033",
+  "attempt_group": "hy4-preview-2026-08-30-heartbeat-2",
+  "candidate": {
+    "requested_model": "tencent/hy4-preview",
+    "canonical_snapshot": "tencent/hy4-preview-20260827",
+    "access_path": "OpenRouter Chat Completions",
+    "provider_pin": "Tencent",
+    "model_fallbacks": false
+  },
+  "fixture_policy": {
+    "probe": "repo-authored synthetic radio-studio micro-source",
+    "open_frequency": "repo-authored synthetic; eligible only after transport qualification",
+    "private_or_second_corpus": "excluded"
+  },
+  "frozen_contract": {
+    "reasoning_effort": "low",
+    "reasoning_excluded_from_visible_output": true,
+    "sampling_parameters_omitted": true,
+    "configured_max_tokens": 64000,
+    "request_timeout_seconds": 30,
+    "concurrency": 1,
+    "cache": false,
+    "require_parameters": true,
+    "data_collection_filter": null,
+    "zdr_filter": null,
+    "strict_response_format": "provider-enforced strict ScriptBible json_schema",
+    "latency_gate_ms": 30000,
+    "subject_cost_gate_usd": 0.01,
+    "aggregate_cap_usd": 0.75
+  },
+  "current_endpoint_snapshot": {
+    "source": "https://openrouter.ai/api/v1/models/tencent/hy4-preview/endpoints",
+    "observed_at": "2026-08-30T23:09:00-06:00",
+    "endpoint_name": "Tencent | tencent/hy4-preview-20260827",
+    "provider_name": "Tencent",
+    "context_length": 1048576,
+    "max_completion_tokens": 64000,
+    "quantization": "fp8",
+    "list_price_prompt_per_token": "0.000000834",
+    "list_price_completion_per_token": "0.000002501",
+    "supported_parameters_include": [
+      "reasoning",
+      "reasoning_effort",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice"
+    ]
+  },
+  "probes": [
+    {
+      "stage": "scheduled heartbeat-2 tiny native strict ScriptBible transport retry",
+      "submitted": true,
+      "provider_pinned": "Tencent",
+      "model_fallbacks": false,
+      "response_headers_accepted": true,
+      "response_body_transfer": "chunked and incomplete at client stop",
+      "terminal_response_received": false,
+      "client_elapsed_ms": 30000,
+      "client_terminated": true,
+      "http_status": null,
+      "request_id": null,
+      "returned_model": null,
+      "provider_name": null,
+      "finish_reason": null,
+      "schema_valid": null,
+      "usage": null,
+      "reported_cost_usd": null,
+      "confirmed_spend_usd": 0.0,
+      "conservative_unreconciled_exposure_upper_bound_usd": 0.162,
+      "raw_output_file": null
+    }
+  ],
+  "progressive_stop": {
+    "harness_parity_run": false,
+    "open_frequency_scored_case_run": false,
+    "judge_run": false,
+    "incumbent_run": false,
+    "reason": "The Tencent-pinned strict probe was still reading an incomplete chunked response body at the absolute 30-second latency boundary."
+  },
+  "ledger": {
+    "approved_cap_usd": 0.75,
+    "prior_confirmed_spend_usd": 0.0,
+    "current_confirmed_spend_usd": 0.0,
+    "cumulative_confirmed_spend_usd": 0.0,
+    "prior_unreconciled_exposure_upper_bound_usd": 0.162,
+    "current_unreconciled_exposure_upper_bound_usd": 0.162,
+    "cumulative_unreconciled_exposure_upper_bound_usd": 0.324,
+    "remaining_conservative_exposure_usd": 0.426,
+    "candidate_terminal_completions": 0,
+    "judge_invocations": 0
+  },
+  "contract_hashes_sha256": {
+    "benchmarks/runtime_tasks/script-bible-runtime.yaml": "049bde1098e6827e83bc817f075c81cd254c30c7b39313976db23967c216da73",
+    "benchmarks/providers/script_bible_runtime_provider.py": "718dfb612248fb408269c48c87613327fda4d4f0ff6785e7a6539455b7faf29f",
+    "benchmarks/prompts/script-bible-runtime-marker.txt": "636a2e3031b731546a6deccc15ff98acd6f360765a77112976f74384abd30e19",
+    "benchmarks/scorers/script_bible_scorer.py": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+    "benchmarks/golden/open-frequency-script-bible.json": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
+    "tests/fixtures/ingest_inputs/open_frequency_short.fountain": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "src/cine_forge/modules/ingest/script_bible_v1/main.py": "7361da008a1d058fcae7e9e8733128a60e459d4677612a7f11681bdeda54376d",
+    "src/cine_forge/schemas/script_bible.py": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb",
+    "tests/unit/test_openrouter_script_bible_provider.py": "46e7856675e5dc55fd528ed150f368b90cf3b2a682ebdb0bf2536f3aedb2fbc2"
+  },
+  "verdict": {
+    "access": "constrained; exact route accepted the request but terminal callability remains unproven",
+    "transport": "failed terminal-response and latency gates",
+    "reliability": "failed; chunked body remained incomplete at 30 seconds",
+    "capability": "not measured because no complete answer existed",
+    "economics": "confirmed spend zero; cumulative conservative unreconciled exposure at most 0.324 USD",
+    "adoption": "defer for exact-runtime script bible"
+  }
+}

@@ -16,6 +16,17 @@ prompts:
 
 providers:
   - id: file://../providers/script_bible_runtime_provider.py
+    label: "Hy4 Preview via OpenRouter"
+    config:
+      model: tencent/hy4-preview
+      provider: openrouter
+      max_tokens: 65536
+      max_retries: 1
+      request_timeout_seconds: 120
+      timeout: 180000
+      reasoning_effort: low
+
+  - id: file://../providers/script_bible_runtime_provider.py
     label: "Ox Alpha via OpenRouter"
     config:
       model: stealth/ox-alpha

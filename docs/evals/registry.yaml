@@ -4007,6 +4007,7 @@ evals:
       - "214"
       - "215"
       - "216"
+      - "217"
     category_refs:
       - spec:2
       - spec:8
@@ -4338,6 +4339,86 @@ evals:
         note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
     attempts:
+      - id: "034"
+        story: attempts/034-script-bible-hy4-preview-capability-diagnostic.md
+        date: 2026-08-31
+        status: inconclusive
+        approach: "Relaxed only provider-enforced response_format for a diagnostic-only tiny synthetic probe; stopped before Open Frequency when HTTP 200 chunked transport delivered zero body bytes by the 180-second bounded deadline."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-31
+        subject_model: "Tencent Hy4 preview via OpenRouter/Tencent"
+        score_before: null
+        score_after: null
+        latency_before: null
+        latency_after: null
+        cost_before: null
+        cost_after: null
+        access_probe_cost_usd: null
+        evidence: docs/evals/story-217-hy4-preview-capability-diagnostic-2026-08-31-evidence.json
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: materially-changed-provider-transport
+            note: "Do not repeat unchanged. Any future run needs a material Tencent/OpenRouter transport change or new authorization; production adoption remains defer because strict transport failed."
+      - id: "033"
+        story: attempts/033-script-bible-hy4-preview-heartbeat-2.md
+        date: 2026-08-30
+        status: inconclusive
+        approach: "Retried the exact Tencent-pinned tiny strict ScriptBible transport gate and stopped before Open Frequency when the chunked response body remained incomplete at the absolute 30-second latency boundary."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-30
+        subject_model: "Tencent Hy4 preview via OpenRouter/Tencent"
+        score_before: null
+        score_after: null
+        latency_before: null
+        latency_after: null
+        cost_before: null
+        cost_after: null
+        access_probe_cost_usd: null
+        evidence: docs/evals/story-217-hy4-preview-retry-2026-08-30-heartbeat-2-evidence.json
+        retry_status: open
+        retry_when:
+          - condition: provider-terminal-response-within-latency-gate
+            note: "Resume only at the identical Tencent-pinned tiny strict-schema gate with remaining conservative exposure US$0.426; do not run Open Frequency until every transport gate qualifies."
+      - id: "032"
+        story: attempts/032-script-bible-hy4-preview-capacity-retry.md
+        date: 2026-08-30
+        status: inconclusive
+        approach: "Resumed exact Hy4 transport qualification at the tiny production-shaped strict ScriptBible probe and stopped before Open Frequency when the request produced no terminal response and exceeded the 30-second latency gate by more than 85 seconds."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-30
+        subject_model: "Tencent Hy4 preview via OpenRouter"
+        score_before: null
+        score_after: null
+        latency_before: null
+        latency_after: null
+        cost_before: null
+        cost_after: null
+        access_probe_cost_usd: null
+        evidence: docs/evals/story-217-hy4-preview-retry-2026-08-30-evidence.json
+        retry_status: open
+        retry_when:
+          - condition: provider-terminal-response-within-latency-gate
+            note: "Resume only at the identical tiny strict-schema probe; do not run Open Frequency until exact identity, terminal completion, strict schema, reconciled usage/cost, and <=30-second latency qualify."
+      - id: "031"
+        story: attempts/031-script-bible-hy4-preview.md
+        date: 2026-08-29
+        status: inconclusive
+        approach: "Added the exact Hy4 Preview OpenRouter strict-schema lane and stopped before screenplay or judge invocation after the tiny native probe and its one provider-directed retry both hit upstream shared-pool capacity 429s."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-08-29
+        subject_model: "Tencent Hy4 preview via OpenRouter"
+        score_before: null
+        score_after: null
+        latency_before: null
+        latency_after: null
+        cost_before: null
+        cost_after: null
+        access_probe_cost_usd: 0.0
+        evidence: docs/evals/story-217-hy4-preview-access-transport-evidence.json
+        retry_status: open
+        retry_when:
+          - condition: provider-capacity-available
+            note: "Resume at the identical tiny strict-schema probe when OpenRouter's Tencent upstream shared pool is materially available; do not rerun discovery or broaden the lane."
       - id: "030"
         story: attempts/030-script-bible-ox-alpha-drift-rerun.md
         date: 2026-08-25

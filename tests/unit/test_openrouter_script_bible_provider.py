@@ -355,6 +355,67 @@ def test_ox_alpha_openrouter_keeps_schema_without_privacy_or_provider_pin(
     assert result["metadata"]["zdr"] is False
 
 
+def test_hy4_preview_openrouter_enforces_schema_without_route_pin(
+    provider,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    bible = _bible(provider)
+    seen = {}
+
+    def fake_request(payload: dict, *, timeout_seconds: float):
+        seen.update(payload=payload, timeout_seconds=timeout_seconds)
+        return {
+            "id": "gen-hy4-preview",
+            "model": "tencent/hy4-preview",
+            "provider": "Tencent",
+            "choices": [
+                {
+                    "finish_reason": "stop",
+                    "message": {"role": "assistant", "content": bible.model_dump_json()},
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 120,
+                "completion_tokens": 80,
+                "total_tokens": 200,
+                "cost": 0.00030016,
+                "completion_tokens_details": {"reasoning_tokens": 30},
+            },
+        }
+
+    monkeypatch.setattr(provider, "_request_openrouter_json", fake_request)
+    result = provider.call_api(
+        "marker",
+        {
+            "config": {
+                "model": "tencent/hy4-preview",
+                "provider": "openrouter",
+                "max_tokens": 65536,
+                "request_timeout_seconds": 12,
+                "reasoning_effort": "low",
+            }
+        },
+        {"vars": {"screenplay": "INT. STUDIO - NIGHT\nARIA broadcasts."}},
+    )
+
+    payload = seen["payload"]
+    assert payload["model"] == "tencent/hy4-preview"
+    assert "models" not in payload
+    assert payload["max_tokens"] == 64000
+    assert payload["reasoning"] == {"effort": "low", "exclude": True}
+    assert payload["provider"] == {"require_parameters": True}
+    assert payload["response_format"]["type"] == "json_schema"
+    assert payload["response_format"]["json_schema"]["strict"] is True
+    assert "temperature" not in payload
+    assert result["output"] == bible.model_dump_json()
+    assert result["cost"] == 0.00030016
+    assert result["metadata"]["returned_model"] == "tencent/hy4-preview"
+    assert result["metadata"]["upstream_provider"] == "Tencent"
+    assert result["metadata"]["allow_fallbacks"] is None
+    assert result["metadata"]["data_collection"] is None
+    assert result["metadata"]["zdr"] is False
+
+
 def test_ox_alpha_diagnostic_can_relax_only_parameter_enforcement(
     provider,
     monkeypatch: pytest.MonkeyPatch,

@@ -296,7 +296,8 @@
           "212",
           "213",
           "214",
-          "215"
+          "215",
+          "217"
         ],
         "adrIds": [
           "ADR-003"
@@ -1097,7 +1098,8 @@
           "213",
           "214",
           "215",
-          "216"
+          "216",
+          "217"
         ],
         "adrIds": [
           "ADR-001",
@@ -1678,7 +1680,8 @@
           "213",
           "214",
           "215",
-          "216"
+          "216",
+          "217"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1734,7 +1737,8 @@
             "213",
             "214",
             "215",
-            "216"
+            "216",
+            "217"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -14284,6 +14288,74 @@
           "summary": "close-out renumbering: upstream work added Stories 214–215 and Attempts 027–029 while this isolated branch was awaiting landing. Renumbered this unchanged retrospective owner to Story 216 and Attempt 030 before integrat…"
         }
       }
+    },
+    {
+      "id": "217",
+      "title": "Hy4 Preview Bounded Script-Bible Evaluation",
+      "path": "docs/stories/story-217-hy4-preview-bounded-script-bible-eval.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "dependsOn": [
+        "208",
+        "211",
+        "216"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "hy4-preview",
+        "model-refresh",
+        "openrouter"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260831-1011",
+        "date": "2026-08-31",
+        "summary": "closeout: full backend validation passed (`2175` unit tests),"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "217",
+        "sourcePath": "docs/stories/story-217-hy4-preview-bounded-script-bible-eval.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "closeout: full backend validation passed (`2175` unit tests),",
+        "lastRelevantAction": {
+          "date": "2026-08-31",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-217-hy4-preview-bounded-script-bible-eval.md",
+          "summary": "closeout: full backend validation passed (`2175` unit tests),"
+        }
+      }
     }
   ],
   "adrs": [
@@ -15896,7 +15968,8 @@
         "213",
         "214",
         "215",
-        "216"
+        "216",
+        "217"
       ],
       "categoryRefs": [
         "spec:2",
@@ -15905,6 +15978,46 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "034",
+          "date": "2026-08-31",
+          "approach": "Relaxed only provider-enforced response_format for a diagnostic-only tiny synthetic probe; stopped before Open Frequency when HTTP 200 chunked transport delivered zero body bytes by the 180-second bounded deadline.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "materially-changed-provider-transport"
+          ]
+        },
+        {
+          "id": "033",
+          "date": "2026-08-30",
+          "approach": "Retried the exact Tencent-pinned tiny strict ScriptBible transport gate and stopped before Open Frequency when the chunked response body remained incomplete at the absolute 30-second latency boundary.",
+          "note": "",
+          "retryStatus": "open",
+          "retryWhen": [
+            "provider-terminal-response-within-latency-gate"
+          ]
+        },
+        {
+          "id": "032",
+          "date": "2026-08-30",
+          "approach": "Resumed exact Hy4 transport qualification at the tiny production-shaped strict ScriptBible probe and stopped before Open Frequency when the request produced no terminal response and exceeded the 30-second latency gate by more than 85 seconds.",
+          "note": "",
+          "retryStatus": "open",
+          "retryWhen": [
+            "provider-terminal-response-within-latency-gate"
+          ]
+        },
+        {
+          "id": "031",
+          "date": "2026-08-29",
+          "approach": "Added the exact Hy4 Preview OpenRouter strict-schema lane and stopped before screenplay or judge invocation after the tiny native probe and its one provider-directed retry both hit upstream shared-pool capacity 429s.",
+          "note": "",
+          "retryStatus": "open",
+          "retryWhen": [
+            "provider-capacity-available"
+          ]
+        },
         {
           "id": "030",
           "date": "2026-08-25",
@@ -16031,7 +16144,8 @@
         "213",
         "214",
         "215",
-        "216"
+        "216",
+        "217"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -16052,15 +16166,14 @@
         "whyNow": "Attempt 023 exact-runtime Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.6 identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, raw usage, and provider-reported cached-token-aware cost. All maintained assertions passed: 0.9333 deterministic, 0.92 cross-provider Opus rubric, and 0.92665 aggregate in 23,699 ms. The subject cost was $…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
-          "provider-strict-json-schema",
-          "separately-approved-adapter-lane"
+          "materially-changed-provider-transport"
         ],
         "lastRelevantAction": {
-          "date": "2026-08-25",
+          "date": "2026-08-31",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "030",
-          "summary": "Force-fresh candidate-drift rerun of Attempt 029's exact progressive Open Frequency route, with unchanged schema, prompt, scorer, gates, no-cache policy, and diagnostic cleanup."
+          "sourceId": "034",
+          "summary": "Relaxed only provider-enforced response_format for a diagnostic-only tiny synthetic probe; stopped before Open Frequency when HTTP 200 chunked transport delivered zero body bytes by the 180-second bounded deadline."
         }
       }
     },
@@ -16783,9 +16896,10 @@
             "211",
             "212",
             "214",
-            "215"
+            "215",
+            "217"
           ],
-          "stories_since_audit": 6,
+          "stories_since_audit": 7,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16821,9 +16935,10 @@
             "211",
             "212",
             "214",
-            "215"
+            "215",
+            "217"
           ],
-          "stories_since_audit": 8,
+          "stories_since_audit": 9,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16907,7 +17022,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 136 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 141 days old against a 14-day cadence"
     ]
   }
 }

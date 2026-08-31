@@ -57,6 +57,7 @@ DEEPSEEK_V4_FLASH_OPENROUTER_PROVIDER = "Phala"
 DEEPSEEK_V4_PRO_OPENROUTER_MODEL = "deepseek/deepseek-v4-pro"
 DEEPSEEK_V4_PRO_OPENROUTER_PROVIDER = "Baidu"
 OX_ALPHA_OPENROUTER_MODEL = "stealth/ox-alpha"
+HY4_PREVIEW_OPENROUTER_MODEL = "tencent/hy4-preview"
 GROK_46_MODEL = "grok-4.6"
 OPENROUTER_MODEL_CONFIGS = {
     QWEN38_OPENROUTER_MODEL: {
@@ -77,6 +78,12 @@ OPENROUTER_MODEL_CONFIGS = {
     OX_ALPHA_OPENROUTER_MODEL: {
         "provider": None,
         "max_tokens": 131_072,
+        "data_collection": None,
+        "zdr": False,
+    },
+    HY4_PREVIEW_OPENROUTER_MODEL: {
+        "provider": None,
+        "max_tokens": 64_000,
         "data_collection": None,
         "zdr": False,
     },
