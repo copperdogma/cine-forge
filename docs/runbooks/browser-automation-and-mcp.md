@@ -9,6 +9,23 @@ Use this for:
 - Browser automation troubleshooting
 - MCP setup/recovery across agent environments
 
+## Choosing the Browser Lane
+
+- **Playwright is the default for deterministic testing**: use it for
+  repeatable setup, selectors, assertions, scripted smoke tests, and regression
+  coverage.
+- **Computer Use is better for vision-led and real-browser tasks**: use it when
+  the question is "does this look right?", when you need to judge rendered
+  layout or clipped text, or when the flow involves OAuth, permission prompts,
+  native dialogs, or an already-running Chrome profile.
+- **Best practice is often both**: let Playwright drive the product into the
+  target state, then use Computer Use or screenshot review to judge the final
+  rendered result.
+
+Simple rule:
+- If the question is "does this behave correctly?", favor Playwright.
+- If the question is "does this look right?", favor Computer Use.
+
 ## Scope and Placement
 
 Keep responsibilities split:
