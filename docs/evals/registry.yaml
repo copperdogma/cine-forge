@@ -4008,6 +4008,7 @@ evals:
       - "215"
       - "216"
       - "217"
+      - "218"
     category_refs:
       - spec:2
       - spec:8
@@ -4054,6 +4055,21 @@ evals:
       cost_usd_max: 0.01
 
     scores:
+      - model: "GPT-6 Astra Low"
+        evidence_status: bounded-one-case-decision-grade-rejection
+        metrics:
+          overall: 0.82495
+          deterministic: 0.6999
+          deterministic_raw: 0.9279
+          rubric: 0.95
+        latency_ms: 33086
+        cost_usd: 0.10699
+        cost_estimated: true
+        measured: 2026-09-05
+        git_sha: "89b336d+story218-hash-manifest"
+        result_file: benchmarks/results/script-bible-gpt6-astra-low-open-frequency-2026-09-05.json
+        contract_manifest: docs/evals/story-218-gpt6-astra-contract-manifest.json
+        note: "Attempt 035 exact-runtime Open Frequency progressive stop. Direct OpenAI Responses returned exact gpt-6-astra identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, and reconciled usage. The frozen Opus rubric passed at 0.95 and the deterministic raw score was 0.9279, but the maintained deterministic hard gate normalized to 0.6999 because paraphrased theme citations did not satisfy its exact source-grounding heuristic; source inspection and the independent rubric treat those citations as materially faithful, so this is a scorer-contract ambiguity rather than a clean semantic loss. The aggregate was 0.82495. The subject also missed latency at 33,086 ms and cost at an estimated $0.10699, 10.7x the $0.01 gate. Medium/high and the fresh Gemini comparator were correctly not run. Do not adopt for the value-optimized script-bible slot."
       - model: "Gemini 3.5 Flash-Lite — exact runtime two-corpus"
         evidence_status: current-comparable-quality-leader-production-ineligible
         metrics:
@@ -4339,6 +4355,28 @@ evals:
         note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
     attempts:
+      - id: "035"
+        story: attempts/035-script-bible-gpt6-astra.md
+        date: 2026-09-05
+        status: failed
+        approach: "Qualified exact direct OpenAI Responses strict output, then ran one no-cache low-reasoning exact-runtime Open Frequency case and stopped on quality, latency, and cost gates."
+        worker_model: "Codex (GPT-6 Astra)"
+        worker_model_date: 2026-09-05
+        subject_model: "OpenAI GPT-6 Astra"
+        score_before: null
+        score_after: 0.82495
+        latency_before: null
+        latency_after: 33086
+        cost_before: null
+        cost_after: 0.10699
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: cheaper-subject-model
+            note: "Retry this value lane only if exact-model pricing or a supported cheaper mode makes the same call plausibly clear $0.01."
+          - condition: faster-subject-model
+            note: "Retry this value lane only if the exact runtime call can plausibly clear 30 seconds."
+          - condition: scorer-fix
+            note: "Regrade the frozen output after an independently approved theme-evidence scorer repair; no fresh subject call is needed."
       - id: "034"
         story: attempts/034-script-bible-hy4-preview-capability-diagnostic.md
         date: 2026-08-31

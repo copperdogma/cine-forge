@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-09-05-01] — Evaluate GPT-6 Astra script-bible value (Story 218)
+
+### Added
+- Added a direct OpenAI Responses strict-schema benchmark arm for GPT-6 Astra,
+  focused transport tests, and replayable one-case evaluation evidence.
+
+### Changed
+- Recorded that Astra low reasoning produced strong semantic analysis but missed
+  the maintained script-bible quality hard gate, 30-second latency limit, and
+  `$0.01` subject-cost ceiling; the provisional Gemini 3.5 Flash-Lite default
+  remains unchanged.
+- Stopped before medium, high, and fresh-comparator calls under the approved
+  progressive contract, with estimated total campaign spend of `$0.290085`.
+
 ## [2026-08-31-01] — Defer Hy4 Preview script-bible adoption (Story 217)
 
 ### Added

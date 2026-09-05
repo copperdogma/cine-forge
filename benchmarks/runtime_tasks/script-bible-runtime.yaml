@@ -16,6 +16,15 @@ prompts:
 
 providers:
   - id: file://../providers/script_bible_runtime_provider.py
+    label: "GPT-6 Astra Low"
+    config:
+      model: gpt-6-astra
+      max_tokens: 8192
+      max_retries: 0
+      request_timeout_seconds: 120
+      reasoning_effort: low
+
+  - id: file://../providers/script_bible_runtime_provider.py
     label: "Hy4 Preview via OpenRouter"
     config:
       model: tencent/hy4-preview

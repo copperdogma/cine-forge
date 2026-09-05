@@ -297,7 +297,8 @@
           "213",
           "214",
           "215",
-          "217"
+          "217",
+          "218"
         ],
         "adrIds": [
           "ADR-003"
@@ -1099,7 +1100,8 @@
           "214",
           "215",
           "216",
-          "217"
+          "217",
+          "218"
         ],
         "adrIds": [
           "ADR-001",
@@ -1681,7 +1683,8 @@
           "214",
           "215",
           "216",
-          "217"
+          "217",
+          "218"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1738,7 +1741,8 @@
             "214",
             "215",
             "216",
-            "217"
+            "217",
+            "218"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -14356,6 +14360,73 @@
           "summary": "closeout: full backend validation passed (`2175` unit tests),"
         }
       }
+    },
+    {
+      "id": "218",
+      "title": "GPT-6 Astra Bounded Script-Bible Evaluation",
+      "path": "docs/stories/story-218-gpt6-astra-bounded-script-bible-eval.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "dependsOn": [
+        "208",
+        "216"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "gpt-6-astra",
+        "model-refresh",
+        "openai"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260905-1012",
+        "date": "2026-09-05",
+        "summary": "completed the bounded evaluation. Exact native and harness"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "218",
+        "sourcePath": "docs/stories/story-218-gpt6-astra-bounded-script-bible-eval.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "completed the bounded evaluation. Exact native and harness",
+        "lastRelevantAction": {
+          "date": "2026-09-05",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-218-gpt6-astra-bounded-script-bible-eval.md",
+          "summary": "completed the bounded evaluation. Exact native and harness"
+        }
+      }
     }
   ],
   "adrs": [
@@ -15969,7 +16040,8 @@
         "214",
         "215",
         "216",
-        "217"
+        "217",
+        "218"
       ],
       "categoryRefs": [
         "spec:2",
@@ -15978,6 +16050,18 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "035",
+          "date": "2026-09-05",
+          "approach": "Qualified exact direct OpenAI Responses strict output, then ran one no-cache low-reasoning exact-runtime Open Frequency case and stopped on quality, latency, and cost gates.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "cheaper-subject-model",
+            "faster-subject-model",
+            "scorer-fix"
+          ]
+        },
         {
           "id": "034",
           "date": "2026-08-31",
@@ -16122,13 +16206,13 @@
         }
       ],
       "latestScore": {
-        "model": "Grok 4.6",
-        "measured": "2026-08-12",
+        "model": "GPT-6 Astra Low",
+        "measured": "2026-09-05",
         "metrics": {
-          "overall": 0.92665
+          "overall": 0.82495
         },
         "evidenceStatus": "bounded-one-case-decision-grade-rejection",
-        "note": "Attempt 023 exact-runtime Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.6 identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, raw usage, and provider-reported cached-token-aware cost. All maintained assertions passed: 0.9333 deterministic, 0.92 cross-provider Opus rubric, and 0.92665 aggregate in 23,699 ms. The subject cost was $…"
+        "note": "Attempt 035 exact-runtime Open Frequency progressive stop. Direct OpenAI Responses returned exact gpt-6-astra identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, and reconciled usage. The frozen Opus rubric passed at 0.95 and the deterministic raw score was 0.9279, but the maintained deterministic hard gate normalized to 0.6999 because paraphrased theme citat…"
       },
       "historicalEvidenceStatus": "pre-open-frequency-corpus-non-decision-grade",
       "excludedScoreCount": 25,
@@ -16145,7 +16229,8 @@
         "214",
         "215",
         "216",
-        "217"
+        "217",
+        "218"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -16163,17 +16248,19 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "trigger-exhausted",
-        "whyNow": "Attempt 023 exact-runtime Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.6 identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, raw usage, and provider-reported cached-token-aware cost. All maintained assertions passed: 0.9333 deterministic, 0.92 cross-provider Opus rubric, and 0.92665 aggregate in 23,699 ms. The subject cost was $…",
+        "whyNow": "Attempt 035 exact-runtime Open Frequency progressive stop. Direct OpenAI Responses returned exact gpt-6-astra identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, and reconciled usage. The frozen Opus rubric passed at 0.95 and the deterministic raw score was 0.9279, but the maintained deterministic hard gate normalized to 0.6999 because paraphrased theme citat…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
-          "materially-changed-provider-transport"
+          "cheaper-subject-model",
+          "faster-subject-model",
+          "scorer-fix"
         ],
         "lastRelevantAction": {
-          "date": "2026-08-31",
+          "date": "2026-09-05",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "034",
-          "summary": "Relaxed only provider-enforced response_format for a diagnostic-only tiny synthetic probe; stopped before Open Frequency when HTTP 200 chunked transport delivered zero body bytes by the 180-second bounded deadline."
+          "sourceId": "035",
+          "summary": "Qualified exact direct OpenAI Responses strict output, then ran one no-cache low-reasoning exact-runtime Open Frequency case and stopped on quality, latency, and cost gates."
         }
       }
     },
@@ -16897,9 +16984,10 @@
             "212",
             "214",
             "215",
-            "217"
+            "217",
+            "218"
           ],
-          "stories_since_audit": 7,
+          "stories_since_audit": 8,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -16936,9 +17024,10 @@
             "212",
             "214",
             "215",
-            "217"
+            "217",
+            "218"
           ],
-          "stories_since_audit": 9,
+          "stories_since_audit": 10,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -17021,8 +17110,8 @@
   "validation": {
     "errors": [],
     "warnings": [
-      "Architecture audit domains due or carrying open findings: api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 141 days old against a 14-day cadence"
+      "Architecture audit domains due or carrying open findings: ingest_and_world_building, api_service_and_operator_console, generation_and_visualization",
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 146 days old against a 14-day cadence"
     ]
   }
 }

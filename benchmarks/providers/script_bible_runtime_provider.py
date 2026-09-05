@@ -47,6 +47,7 @@ structured output and cannot establish production parity.
 ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages"
 OPENROUTER_CHAT_URL = "https://openrouter.ai/api/v1/chat/completions"
 XAI_RESPONSES_URL = "https://api.x.ai/v1/responses"
+OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses"
 OPUS_5_MODEL = "claude-opus-5"
 OPUS_5_INPUT_PER_M = 5.0
 OPUS_5_OUTPUT_PER_M = 25.0
@@ -59,6 +60,10 @@ DEEPSEEK_V4_PRO_OPENROUTER_PROVIDER = "Baidu"
 OX_ALPHA_OPENROUTER_MODEL = "stealth/ox-alpha"
 HY4_PREVIEW_OPENROUTER_MODEL = "tencent/hy4-preview"
 GROK_46_MODEL = "grok-4.6"
+GPT6_ASTRA_MODEL = "gpt-6-astra"
+GPT6_ASTRA_INPUT_PER_M = 10.0
+GPT6_ASTRA_CACHED_INPUT_PER_M = 1.0
+GPT6_ASTRA_OUTPUT_PER_M = 50.0
 OPENROUTER_MODEL_CONFIGS = {
     QWEN38_OPENROUTER_MODEL: {
         "provider": QWEN38_OPENROUTER_PROVIDER,
@@ -122,7 +127,14 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
             call_options["thinking_level"] = str(
                 config.get("thinking_level") or DEFAULT_THINKING_LEVEL
             )
-        if bare_model == GROK_46_MODEL:
+        if bare_model == GPT6_ASTRA_MODEL:
+            output, metadata = _call_openai_responses_strict(
+                prompt=call_options["prompt"],
+                max_tokens=max_tokens,
+                timeout_seconds=call_options["request_timeout_seconds"],
+                reasoning_effort=str(config.get("reasoning_effort") or "low"),
+            )
+        elif bare_model == GROK_46_MODEL:
             output, metadata = _call_xai_responses_strict(
                 prompt=call_options["prompt"],
                 max_tokens=max_tokens,
@@ -582,6 +594,112 @@ def _call_xai_responses_strict(
     }
 
 
+def _call_openai_responses_strict(
+    *,
+    prompt: str,
+    max_tokens: int,
+    timeout_seconds: float,
+    reasoning_effort: str,
+) -> tuple[ScriptBible, dict[str, Any]]:
+    """Call GPT-6 Astra through native Responses with strict JSON and no storage."""
+    payload = {
+        "model": GPT6_ASTRA_MODEL,
+        "input": [
+            {
+                "role": "user",
+                "content": [{"type": "input_text", "text": prompt}],
+            }
+        ],
+        "reasoning": {"effort": reasoning_effort},
+        "store": False,
+        "max_output_tokens": min(max_tokens, 128_000),
+        "text": {
+            "format": {
+                "type": "json_schema",
+                "name": "script_bible",
+                "strict": True,
+                "schema": _to_openai_strict_schema(ScriptBible.model_json_schema()),
+            }
+        },
+    }
+    started = time.perf_counter()
+    raw = _request_openai_responses_json(payload, timeout_seconds=timeout_seconds)
+    latency_seconds = time.perf_counter() - started
+    identity = validate_provider_response_identity(
+        provider="openai",
+        requested_model=GPT6_ASTRA_MODEL,
+        returned_model=raw.get("model"),
+        request_id=raw.get("id"),
+        require_returned=True,
+    )
+    status = raw.get("status")
+    if status != "completed" or raw.get("incomplete_details") is not None:
+        raise RuntimeError(
+            "OpenAI response did not complete: "
+            f"status={status!r}, incomplete={raw.get('incomplete_details')!r}"
+        )
+    output = raw.get("output")
+    if not isinstance(output, list):
+        raise RuntimeError("OpenAI response output must be a list")
+    text = "".join(
+        part.get("text", "")
+        for item in output
+        if isinstance(item, dict)
+        for part in item.get("content", [])
+        if isinstance(part, dict) and part.get("type") == "output_text"
+    )
+    if not text.strip():
+        raise RuntimeError("OpenAI Responses transport returned no output text")
+    bible = ScriptBible.model_validate_json(text)
+
+    usage = raw.get("usage")
+    if not isinstance(usage, dict):
+        raise RuntimeError("OpenAI response usage must be a mapping")
+    input_tokens = _token_count(usage.get("input_tokens"), "input_tokens")
+    output_tokens = _token_count(usage.get("output_tokens"), "output_tokens")
+    total_tokens = _token_count(usage.get("total_tokens"), "total_tokens")
+    if total_tokens != input_tokens + output_tokens:
+        raise RuntimeError("OpenAI total_tokens does not reconcile")
+    input_details = usage.get("input_tokens_details") or {}
+    if not isinstance(input_details, dict):
+        raise RuntimeError("OpenAI input_tokens_details must be a mapping")
+    cached_tokens = _token_count(
+        input_details.get("cached_tokens", 0), "cached_tokens"
+    )
+    if cached_tokens > input_tokens:
+        raise RuntimeError("OpenAI cached_tokens exceeds input_tokens")
+    output_details = usage.get("output_tokens_details") or {}
+    if not isinstance(output_details, dict):
+        raise RuntimeError("OpenAI output_tokens_details must be a mapping")
+    reasoning_tokens = _token_count(
+        output_details.get("reasoning_tokens", 0), "reasoning_tokens"
+    )
+    if reasoning_tokens > output_tokens:
+        raise RuntimeError("OpenAI reasoning_tokens exceeds output_tokens")
+    estimated_cost = (
+        (input_tokens - cached_tokens) * GPT6_ASTRA_INPUT_PER_M
+        + cached_tokens * GPT6_ASTRA_CACHED_INPUT_PER_M
+        + output_tokens * GPT6_ASTRA_OUTPUT_PER_M
+    ) / 1_000_000
+    return bible, {
+        "requested_model": identity.requested_model,
+        "returned_model": identity.returned_model,
+        "request_id": identity.request_id,
+        "finish_reason": status,
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "visible_output_tokens": output_tokens - reasoning_tokens,
+        "reasoning_output_tokens": reasoning_tokens,
+        "estimated_cost_usd": estimated_cost,
+        "cost_estimated": True,
+        "latency_seconds": latency_seconds,
+        "reasoning_effort": reasoning_effort,
+        "schema_enforcement": "provider-strict",
+        "store": False,
+        "raw_usage": usage,
+    }
+
+
 def _anthropic_schema(schema: dict[str, Any]) -> dict[str, Any]:
     """Match Anthropic SDK schema simplification while preserving post-validation."""
     normalized = _to_openai_strict_schema(schema)
@@ -684,6 +802,33 @@ def _request_xai_responses_json(
     if not isinstance(raw, dict):
         raise RuntimeError("xAI response must be a mapping")
     return raw, x_zero_data_retention
+
+
+def _request_openai_responses_json(
+    payload: dict,
+    *,
+    timeout_seconds: float,
+) -> dict:
+    request = urllib.request.Request(
+        OPENAI_RESPONSES_URL,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {require_env('OPENAI_API_KEY')}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=timeout_seconds) as response:  # noqa: S310
+            raw = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"OpenAI HTTP error {exc.code}: {detail}") from exc
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"OpenAI request failed: {exc.reason}") from exc
+    if not isinstance(raw, dict):
+        raise RuntimeError("OpenAI response must be a mapping")
+    return raw
 
 
 def _token_count(value: object, name: str) -> int:

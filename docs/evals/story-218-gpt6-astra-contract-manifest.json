@@ -1,0 +1,47 @@
+{
+  "story": "218",
+  "attempt": "035",
+  "base_git_sha": "89b336ddc95788563d966d8193ae6380f6199a30",
+  "generated_at": "2026-09-05T16:10:00Z",
+  "evidence_status": "dirty-contract-hash-complete",
+  "files": {
+    "benchmarks/providers/script_bible_runtime_provider.py": "9ae8c6b0df31adb0efefb7f21ab9a88a071f6657f4fa7b77e94f395db623187f",
+    "benchmarks/runtime_tasks/script-bible-runtime.yaml": "0bb902c5d2c5877261098e52afc8271376c57881a46b56de91a409fbf0019f3c",
+    "benchmarks/prompts/script-bible-runtime-marker.txt": "636a2e3031b731546a6deccc15ff98acd6f360765a77112976f74384abd30e19",
+    "src/cine_forge/modules/ingest/script_bible_v1/main.py": "7361da008a1d058fcae7e9e8733128a60e459d4677612a7f11681bdeda54376d",
+    "src/cine_forge/schemas/script_bible.py": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb",
+    "benchmarks/scorers/script_bible_scorer.py": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+    "benchmarks/golden/open-frequency-script-bible.json": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
+    "tests/fixtures/ingest_inputs/open_frequency_short.fountain": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "tests/unit/test_openai_astra_script_bible_provider.py": "4edbda1eace59844a3944328a4b9ad3e33525fd98c64a035549c5cffd0484c0e",
+    "benchmarks/results/script-bible-gpt6-astra-low-open-frequency-2026-09-05.json": "f0cf43ecd663defb7681af746cb86b4a0dfad5e6cd53026245c1944f584b68fb"
+  },
+  "native_contract_probe": {
+    "requested_model": "gpt-6-astra",
+    "returned_model": "gpt-6-astra",
+    "reasoning_effort": "low",
+    "schema_enforcement": "provider-strict",
+    "status": "completed",
+    "store": false,
+    "input_tokens": 722,
+    "output_tokens": 741,
+    "reasoning_tokens": 0,
+    "latency_ms": 15766,
+    "estimated_cost_usd": 0.04427,
+    "output_sha256": "1cdcd3143468296fd20677c0842e1c5c677e0e37e6f6f4f60460935d3ab0cb8f"
+  },
+  "commands": {
+    "catalog": "/Users/cam/Documents/Projects/cine-forge/.venv/bin/python scripts/discover-models.py --check-new",
+    "native_contract_probe": "script_bible_runtime_provider._call_openai_responses_strict with tiny synthetic SIGNAL, low reasoning, store=false, 2048 output tokens, and strict ScriptBible schema",
+    "resolved_preflight": "promptfoo validate config -c benchmarks/runtime_tasks/script-bible-runtime.yaml plus filtered YAML topology inspection",
+    "bounded_eval": "promptfoo eval -c runtime_tasks/script-bible-runtime.yaml --no-cache --no-share --filter-providers '^GPT-6 Astra Low$' --filter-pattern 'Open Frequency' -j 1 -o results/script-bible-gpt6-astra-low-open-frequency-2026-09-05.json",
+    "metrics": "PYTHONPATH=src <cineforge-python> scripts/extract-eval-metrics.py --result-file benchmarks/results/script-bible-gpt6-astra-low-open-frequency-2026-09-05.json"
+  },
+  "spend_ledger": {
+    "native_contract_probe_usd": 0.04427,
+    "astra_open_frequency_subject_usd": 0.10699,
+    "opus_4_6_judge_estimated_usd": 0.138825,
+    "total_estimated_usd": 0.290085,
+    "cap_usd": 0.60
+  }
+}
