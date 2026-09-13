@@ -298,7 +298,8 @@
           "214",
           "215",
           "217",
-          "218"
+          "218",
+          "219"
         ],
         "adrIds": [
           "ADR-003"
@@ -1101,7 +1102,8 @@
           "215",
           "216",
           "217",
-          "218"
+          "218",
+          "219"
         ],
         "adrIds": [
           "ADR-001",
@@ -1684,7 +1686,8 @@
           "215",
           "216",
           "217",
-          "218"
+          "218",
+          "219"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1742,7 +1745,8 @@
             "215",
             "216",
             "217",
-            "218"
+            "218",
+            "219"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -14427,6 +14431,70 @@
           "summary": "proportional validation passed with 151 focused provider,"
         }
       }
+    },
+    {
+      "id": "219",
+      "title": "Qwen3.8 Flash Force-Fresh Script-Bible Evaluation",
+      "path": "docs/stories/story-219-qwen38-flash-force-fresh-script-bible-eval.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3"
+      ],
+      "dependsOn": [
+        "208",
+        "211",
+        "216"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "model-refresh",
+        "openrouter",
+        "qwen"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "219",
+        "sourcePath": "docs/stories/story-219-qwen38-flash-force-fresh-script-bible-eval.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-219-qwen38-flash-force-fresh-script-bible-eval.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -16041,7 +16109,8 @@
         "215",
         "216",
         "217",
-        "218"
+        "218",
+        "219"
       ],
       "categoryRefs": [
         "spec:2",
@@ -16050,6 +16119,17 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "036",
+          "date": "2026-09-13",
+          "approach": "Force-fresh exact Qwen3.8 Flash OpenRouter/Alibaba strict-schema retry stopped after the native access probe and its one allowed retry both hit the upstream shared-pool 429 before inference.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "alibaba-byok-or-capacity-change",
+            "separately-approved-makora-arm"
+          ]
+        },
         {
           "id": "035",
           "date": "2026-09-05",
@@ -16230,7 +16310,8 @@
         "215",
         "216",
         "217",
-        "218"
+        "218",
+        "219"
       ],
       "declaredCategoryRefs": [
         "spec:2",
@@ -16251,16 +16332,15 @@
         "whyNow": "Attempt 035 exact-runtime Open Frequency progressive stop. Direct OpenAI Responses returned exact gpt-6-astra identity, terminal provider-enforced strict ScriptBible JSON, low reasoning, store=false, and reconciled usage. The frozen Opus rubric passed at 0.95 and the deterministic raw score was 0.9279, but the maintained deterministic hard gate normalized to 0.6999 because paraphrased theme citat…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
-          "cheaper-subject-model",
-          "faster-subject-model",
-          "scorer-fix"
+          "alibaba-byok-or-capacity-change",
+          "separately-approved-makora-arm"
         ],
         "lastRelevantAction": {
-          "date": "2026-09-05",
+          "date": "2026-09-13",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "035",
-          "summary": "Qualified exact direct OpenAI Responses strict output, then ran one no-cache low-reasoning exact-runtime Open Frequency case and stopped on quality, latency, and cost gates."
+          "sourceId": "036",
+          "summary": "Force-fresh exact Qwen3.8 Flash OpenRouter/Alibaba strict-schema retry stopped after the native access probe and its one allowed retry both hit the upstream shared-pool 429 before inference."
         }
       }
     },
@@ -17111,7 +17191,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: ingest_and_world_building, api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 146 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 154 days old against a 14-day cadence"
     ]
   }
 }

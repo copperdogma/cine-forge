@@ -52,6 +52,7 @@ OPUS_5_MODEL = "claude-opus-5"
 OPUS_5_INPUT_PER_M = 5.0
 OPUS_5_OUTPUT_PER_M = 25.0
 QWEN38_OPENROUTER_MODEL = "qwen/qwen3.8-max"
+QWEN38_FLASH_OPENROUTER_MODEL = "qwen/qwen3.8-flash"
 QWEN38_OPENROUTER_PROVIDER = "Alibaba"
 DEEPSEEK_V4_FLASH_OPENROUTER_MODEL = "deepseek/deepseek-v4-flash-0731"
 DEEPSEEK_V4_FLASH_OPENROUTER_PROVIDER = "Phala"
@@ -66,6 +67,11 @@ GPT6_ASTRA_CACHED_INPUT_PER_M = 1.0
 GPT6_ASTRA_OUTPUT_PER_M = 50.0
 OPENROUTER_MODEL_CONFIGS = {
     QWEN38_OPENROUTER_MODEL: {
+        "provider": QWEN38_OPENROUTER_PROVIDER,
+        "max_tokens": 131_072,
+        "zdr": False,
+    },
+    QWEN38_FLASH_OPENROUTER_MODEL: {
         "provider": QWEN38_OPENROUTER_PROVIDER,
         "max_tokens": 131_072,
         "zdr": False,

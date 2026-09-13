@@ -165,6 +165,66 @@ def test_qwen38_openrouter_rejects_unpinned_provider(
     assert "does not match pinned provider" in result["error"]
 
 
+def test_qwen38_flash_openrouter_enforces_schema_provider_and_usage(
+    provider,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    bible = _bible(provider)
+    seen = {}
+
+    def fake_request(payload: dict, *, timeout_seconds: float):
+        seen.update(payload=payload, timeout_seconds=timeout_seconds)
+        return {
+            "id": "gen-qwen38-flash",
+            "model": "qwen/qwen3.8-flash",
+            "provider": "Alibaba",
+            "choices": [
+                {
+                    "finish_reason": "stop",
+                    "message": {"role": "assistant", "content": bible.model_dump_json()},
+                }
+            ],
+            "usage": {
+                "prompt_tokens": 100,
+                "completion_tokens": 60,
+                "total_tokens": 160,
+                "cost": 0.000044,
+                "completion_tokens_details": {"reasoning_tokens": 40},
+            },
+        }
+
+    monkeypatch.setattr(provider, "_request_openrouter_json", fake_request)
+    result = provider.call_api(
+        "marker",
+        {
+            "config": {
+                "model": "qwen/qwen3.8-flash",
+                "provider": "openrouter",
+                "max_tokens": 65536,
+                "request_timeout_seconds": 12,
+                "reasoning_effort": "low",
+            }
+        },
+        {"vars": {"screenplay": "INT. STUDIO - NIGHT\nARIA broadcasts."}},
+    )
+
+    payload = seen["payload"]
+    assert payload["model"] == "qwen/qwen3.8-flash"
+    assert payload["reasoning"] == {"effort": "low", "exclude": True}
+    assert payload["provider"] == {
+        "order": ["Alibaba"],
+        "allow_fallbacks": False,
+        "require_parameters": True,
+        "data_collection": "deny",
+    }
+    assert payload["response_format"]["json_schema"]["strict"] is True
+    assert result["output"] == bible.model_dump_json()
+    assert result["metadata"]["returned_model"] == "qwen/qwen3.8-flash"
+    assert result["metadata"]["upstream_provider"] == "Alibaba"
+    assert result["metadata"]["allow_fallbacks"] is False
+    assert result["cost"] == 0.000044
+
+
 def test_deepseek_v4_flash_openrouter_enforces_zdr_schema_and_usage(
     provider,
     monkeypatch: pytest.MonkeyPatch,

@@ -104,6 +104,16 @@ providers:
       reasoning_effort: low
 
   - id: file://../providers/script_bible_runtime_provider.py
+    label: "Qwen3.8 Flash via OpenRouter / Alibaba"
+    config:
+      model: qwen/qwen3.8-flash
+      provider: openrouter
+      max_tokens: 65536
+      max_retries: 1
+      request_timeout_seconds: 600
+      reasoning_effort: low
+
+  - id: file://../providers/script_bible_runtime_provider.py
     label: "Claude Opus 5"
     config:
       model: claude-opus-5

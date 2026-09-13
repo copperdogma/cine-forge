@@ -4009,6 +4009,7 @@ evals:
       - "216"
       - "217"
       - "218"
+      - "219"
     category_refs:
       - spec:2
       - spec:8
@@ -4355,6 +4356,28 @@ evals:
         note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
     attempts:
+      - id: "036"
+        story: attempts/036-script-bible-qwen38-flash-force-fresh.md
+        date: 2026-09-13
+        status: inconclusive
+        approach: "Force-fresh exact Qwen3.8 Flash OpenRouter/Alibaba strict-schema retry stopped after the native access probe and its one allowed retry both hit the upstream shared-pool 429 before inference."
+        worker_model: "Codex (GPT-5.6)"
+        worker_model_date: 2026-09-13
+        subject_model: "Qwen3.8 Flash via OpenRouter/Alibaba"
+        score_before: null
+        score_after: null
+        latency_before: null
+        latency_after: null
+        cost_before: null
+        cost_after: null
+        access_probe_cost_usd: 0.0
+        evidence: docs/evals/story-219-qwen38-flash-force-fresh-evidence.json
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: alibaba-byok-or-capacity-change
+            note: "Retry the managed Alibaba arm only with authorized Alibaba BYOK or direct evidence that its shared pool accepts this exact strict request; unchanged catalog uptime is insufficient."
+          - condition: separately-approved-makora-arm
+            note: "Makora fp4 is a materially distinct route with a smaller context window; assess it only as a separately predeclared configuration, not as a hidden retry or evidence about Alibaba."
       - id: "035"
         story: attempts/035-script-bible-gpt6-astra.md
         date: 2026-09-05

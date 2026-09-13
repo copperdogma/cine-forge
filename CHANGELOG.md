@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-09-13-01] — Record Qwen3.8 Flash managed-route retry (Story 219)
+
+### Added
+- Added the exact OpenRouter/Alibaba Qwen3.8 Flash script-bible transport arm,
+  focused provider coverage, and replayable force-fresh Attempt 036 evidence.
+
+### Changed
+- Recorded that both bounded strict-schema requests stopped before inference on
+  Alibaba shared-pool capacity limits, leaving capability and subject economics
+  unmeasured with `$0` provider spend.
+- Deferred the managed Alibaba route without changing the provisional Gemini
+  script-bible default or substituting the materially different Makora fp4
+  endpoint after observing the result.
+
 ## [2026-09-05-01] — Evaluate GPT-6 Astra script-bible value (Story 218)
 
 ### Added

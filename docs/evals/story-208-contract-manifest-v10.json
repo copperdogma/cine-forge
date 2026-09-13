@@ -32,8 +32,8 @@
       "docs/evals/registry.yaml eval definitions excluding scores and attempts"
     ]
   },
-  "file_count": 931,
-  "bundle_sha256": "0f09d992eb129651d2a5c83fb83cc756c4e83a97c4df1d4722208e414375b3b2",
+  "file_count": 932,
+  "bundle_sha256": "f99ee5fba0ac0c2392a996ccdc7d2fbd980899b33ac2b6a709716355ee2878e8",
   "files": [
     {
       "path": ".agents/skills/create-eval/SKILL.md",
@@ -1292,8 +1292,8 @@
     },
     {
       "path": "benchmarks/providers/script_bible_runtime_provider.py",
-      "sha256": "30e15769cf1fc7c897e2e33713dd9970e7801e512e5e5f2f513f835226287afb",
-      "bytes": 27195
+      "sha256": "38480b2ac63f7273e5109e7f2602ecbbe5ab73d7cacedce7a5bb1a4306c3fef0",
+      "bytes": 33376
     },
     {
       "path": "benchmarks/providers/storyboard_understanding_packet.py",
@@ -2664,8 +2664,8 @@
       "path": "docs/evals/registry.yaml#contract-projection",
       "source_path": "docs/evals/registry.yaml",
       "projection": "all eval fields except mutable scores and attempts",
-      "sha256": "f11ad99c6727960b8e9b19d809459f7ed787d05bb31c91a04cc8fbe7c014e9cd",
-      "bytes": 40022
+      "sha256": "33afbeef914c5528a7e7135eeefe36249380403ab4d0f294b69bb68021c51761",
+      "bytes": 40040
     },
     {
       "path": "docs/evals/truth-audit-ledger.yaml",
@@ -2674,8 +2674,8 @@
     },
     {
       "path": "docs/methodology/state.yaml",
-      "sha256": "f03acfa711ba6ccda5da86a5fd2e0f96a7078ab7ca71b49ce2f263e839405940",
-      "bytes": 32772
+      "sha256": "c8ee4bedf0e5e2f24d83c39ec229ef84aa7bba49ad527be310d4c99211dc75d0",
+      "bytes": 32801
     },
     {
       "path": "docs/runbooks/create-eval.md",
@@ -4243,9 +4243,14 @@
       "bytes": 5394
     },
     {
+      "path": "tests/unit/test_openai_astra_script_bible_provider.py",
+      "sha256": "4edbda1eace59844a3944328a4b9ad3e33525fd98c64a035549c5cffd0484c0e",
+      "bytes": 5327
+    },
+    {
       "path": "tests/unit/test_openrouter_script_bible_provider.py",
-      "sha256": "a4468adbe6eeb99178950762aa208cccee3cfb1f3f9e6cf7327b1248c50c7d64",
-      "bytes": 14594
+      "sha256": "6d669eed7f52fb53bb933574ca83492baa330dcdd5291b08ce94d803dcdc1d80",
+      "bytes": 18957
     },
     {
       "path": "tests/unit/test_orphan_detection.py",
