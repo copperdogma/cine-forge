@@ -28,9 +28,9 @@ Close a completed story after validation.
    - [ ] All acceptance criteria met (with evidence)
    - [ ] Work log is current
    - [ ] Dependencies addressed
-   - [ ] Required checks passed for all code changes:
-     - Backend: `make test-unit PYTHON=.venv/bin/python` + `.venv/bin/python -m ruff check src/ tests/`
-     - UI: `pnpm --dir ui run lint` + `cd ui && npx tsc -b`
+   - [ ] The smallest sufficient checks selected under
+     `/finish-and-push`'s `Validation proportional to the change` policy pass;
+     use `docs/runbooks/close-out.md` for local commands and artifact rules
    - [ ] If evals were run: the work log contains a mismatch-classification report from `/improve-eval` or equivalent protocol with every mismatch classified as model-wrong / golden-wrong / ambiguous. Golden-wrong findings must be fixed and evals re-run before closing.
    - [ ] If any detector or compromise eval remained red: the work log or validation note records whether the remaining failure is runtime-blocking or non-runtime-blocking.
    - [ ] If any eval was run: `docs/evals/registry.yaml` updated with new scores, `git_sha`, and date
@@ -57,7 +57,9 @@ If complete (or the user explicitly approves the closure recommendation and any 
 3. If validation was explicitly skipped by the user, record that decision in the work log and check `Validation complete or explicitly skipped by user`.
 4. Run `pnpm methodology:compile` to refresh generated planning surfaces after
    the story status change. Do not modify the generated story index directly.
-5. Append completion note to story work log with date and evidence. End the note with the recommended next step: `/check-in-diff`.
+5. Append completion note to story work log with date and evidence. If invoked
+   by `/finish-and-push`, return control to that skill after closure. Otherwise,
+   end the note with `/finish-and-push` as the recommended next step.
 6. Update CHANGELOG.md:
    - Search CHANGELOG.md for the story number (e.g., `Story 001`)
    - If an entry already exists, skip — do not duplicate
@@ -90,10 +92,11 @@ If not complete, stop after reporting:
 - Never hide gaps — always report unmet criteria explicitly
 - Ask for confirmation when unresolved items remain
 - Do not duplicate CHANGELOG.md entries — always check before writing
-- Never mark Done without running the full check suite
+- Never mark Done without sufficient proportional validation and all explicit
+  acceptance or mandatory CI/release gates
 - Never mark Done if evals were run without a mismatch-classification report (`/improve-eval` or equivalent) in the work log
 - Never mark a Draft story as Done — it must be promoted to Pending and built via `/build-story` first
-- End with a concise summary, recommend `/check-in-diff` as the next step unless the user already approved later steps, and include a short `Where to verify` note whenever there is a concrete path for the user to inspect the result themselves
+- End with a concise summary, recommend `/finish-and-push` as the next step unless the user already approved later steps, and include a short `Where to verify` note whenever there is a concrete path for the user to inspect the result themselves
 - When incomplete, never end with "can't mark done" alone. Always include a firm recommendation: `Rescope then close`, `Keep open`, or `Mark blocked`.
 - Never recommend `Rescope then close` for remaining work that still shares the same subsystem, validation boundary, and success surface
-- If the user already explicitly approved `/check-in-diff`, commit, or push, continue without redundant confirmation unless a meaningful blocker appears
+- If the user already explicitly invoked `/finish-and-push` for execution, or approved commit or push, continue without redundant confirmation unless a meaningful blocker appears

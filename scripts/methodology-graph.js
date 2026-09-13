@@ -81,7 +81,7 @@ const STATIC_ACTIVE_SURFACE_PATHS = [
   join(ROOT, "docs/runbooks/triage-evals.md"),
   join(ROOT, "docs/runbooks/align.md"),
   join(ROOT, "docs/runbooks/create-eval.md"),
-  join(ROOT, "docs/runbooks/finish-and-push.md"),
+  join(ROOT, "docs/runbooks/close-out.md"),
   join(ROOT, "docs/runbooks/triage-architecture.md"),
   join(ROOT, ".agents/skills/setup-methodology/SKILL.md"),
   join(ROOT, ".agents/skills/triage/SKILL.md"),

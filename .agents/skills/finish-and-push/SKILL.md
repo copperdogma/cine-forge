@@ -1,130 +1,155 @@
 ---
 name: finish-and-push
-description: Close a completed story, fix minor close-out issues inline, then run the full check-in and push-to-main flow
+description: Complete, validate, and land current work and linked repo changes. Use for close-out and push requests, or an audit-only readiness review.
 user-invocable: true
 ---
 
-# /finish-and-push [story-number] [--cleanup]
+# /finish-and-push [story-number] [--audit-only] [--cleanup]
 
-> Alignment check: Before choosing an approach, verify it aligns with `docs/ideal.md`, `docs/methodology-ideal-spec-compromise.md`, `docs/methodology/state.yaml`, `docs/methodology/graph.json`, generated dashboards, and relevant decision records in `docs/decisions/` / `docs/design/`. If this work touches a known constraint in `docs/spec.md`, respect both its limitation type and its current state phase (`climb`, `hold`, `converge`, `unplanned`). If none apply, say so explicitly.
+Complete the requested work, satisfy each owning repo's completion requirements,
+and land the validated changes on its remote main branch. Keep this skill shared
+across repos; obtain local commands, artifact conventions, and branch policy from
+the owning repo's instructions rather than embedding project-specific recipes here.
 
-`/finish-and-push` is an orchestrator. It does not define a second close-out or
-landing workflow. It wraps the existing leaf skills in order:
+## Authorization and scope
 
-1. `/mark-story-done`
-2. `/check-in-diff`
+An execution request invoking this skill authorizes scoped close-out fixes,
+story closure when applicable, commits, execution-branch pushes, integration with
+the latest remote main, and fast-forward pushes to main in every repo belonging
+to the same request. Mentioning or reviewing the skill does not invoke it.
+Continue through completion without renewed approval for these actions.
 
-Use it when the user wants the story closed, checked in, and landed on `main`
-in one pass.
+Scope includes the current repo and linked repo worktrees or branches created or
+updated for the same user request, story, alignment, or scout, unless the user
+narrows it. Establish that relationship from task evidence; other dirty work or
+membership in a project registry does not establish scope. Honor explicit branch
+targets and repo policies; use the repo's actual remote and main branch names.
 
-Companion runbook: `docs/runbooks/finish-and-push.md`
+`--audit-only` is read-only: inspect and report readiness, gaps, and proposed
+fixes without edits, story closure, generation, staging, commits, pushes, or
+cleanup. Run checks only if they do not mutate the workspace or external state;
+identify any remaining validation needed. This mode takes precedence over
+`--cleanup` and all execution instructions below.
 
-## Inputs
+## Coordination
 
-- Story id, title, or path (optional if inferable from context)
-- `--cleanup` to request the optional branch/worktree cleanup step after landing
+The invoking agent owns completion. Delegate bounded, independent work to the
+lowest-cost model with demonstrated capability when the expected savings exceed
+coordination and verification overhead. Handle small tasks directly. Escalate
+ambiguous or consequential decisions to a sufficiently capable model.
 
-## Bundled Permission
+Give workers the relevant intent, bounded scope, and evidence to return. Parallel
+repo checks and independent reviews are useful candidates. Keep one writer in
+charge of each repo's Git state; the coordinator owns scope, integration and
+landing decisions, and the final outcome. When no capable delegate is available,
+handle work directly within the invoking agent's capability or report the limit.
 
-Invocation counts as explicit approval to:
+## Completion contract
 
-- run `/mark-story-done`
-- make narrowly scoped fixes needed to complete close-out safely
-- commit intended files
-- push the execution branch
-- sync with latest `origin/main`
-- re-run required validation
-- fast-forward `main`
-- push `main`
+Resolve the intended outcome from the user's current request and the relevant
+story, alignment, scout, or other source artifact, including a source in another
+repo when applicable. State a short validation target. A story is not required
+for work whose scope is already clear.
 
-Do not ask again for those actions unless a real blocker, risk, or ambiguity
-appears.
+Inspect the actual changes and satisfy the validation policy below and the
+owning repo's artifact requirements. Fix scoped, understood issues and continue; pause only
+the affected work when proceeding requires missing intent, new authorization,
+an unresolved safety or ownership issue, or a substantive scope decision. Report
+unmet requirements honestly instead of marking partial work complete.
 
-## Flow
+Include reviewed inbox capture (`inbox.md` or `docs/inbox.md`) by default unless
+the user excludes it. Reconcile inbox-only edits from the primary checkout when
+working in isolation, preserving live capture and leaving the source checkout
+untouched. Remove or mark handled only notes whose resolution is supported by
+the completed work or durable routing. Ambiguous notes remain live; conflicting
+edits or unsafe contents need resolution before inclusion.
 
-1. **Resolve the target**
-   - Read the target story and current git context.
-   - Confirm the worktree actually contains the intended story changes.
-   - If `docs/inbox.md` changed during the work, treat that as normal user
-     capture that should ride along with the landing by default, not as
-     unrelated drift.
-   - If the story cannot be resolved unambiguously, stop and ask.
+Close an in-scope story once its substantive work is validated, using the local
+story-close skill if available, otherwise the repo's documented convention.
+Skip an already completed closure unless its evidence or status needs repair.
+Include required changelog and generated-surface updates before final validation.
 
-2. **Run `/mark-story-done` first**
-   - Reuse that skill's workflow gates, validation requirements, generated
-     planning-surface refresh, and `CHANGELOG.md` behavior.
-   - Do not skip it and jump straight to git check-in.
+## Validation proportional to the change
 
-3. **Triage issues from close-out**
-   - If the leaf skill surfaces only minor issues, fix them immediately, rerun
-     the required checks, update the story work log, and continue.
-   - If it surfaces major gaps, stop before any commit/push, investigate, and
-     give the user a recommendation.
+The coordinator selects and briefly explains the smallest sufficient validation
+from the actual changed behavior and its dependencies, without routine user
+approval. This policy governs close-out and its story-close/validation handoffs;
+local documentation supplies commands and specific acceptance requirements.
 
-4. **Run `/check-in-diff` in full landing mode**
-   - Reuse that skill's branch selection, staging discipline, changelog audit,
-     sync-with-main, validation, and fast-forward-only landing rules.
-   - Treat this invocation as explicit approval for the full landing flow, not
-     audit-only mode.
-   - Pass through `--cleanup` only if the user explicitly requested it.
+- Evidence or documentation only: inspect the claims, provenance, links, schemas,
+  and generated records affected by the diff. Do not run product suites.
+- Isolated eval or development tooling: run focused tests and lint for the
+  changed tooling and affected shared interfaces. A Python file or a "do not
+  adopt" verdict alone does not determine the validation scope.
+- Runtime, shared libraries, dependencies, build configuration, or generated
+  executable artifacts: check affected consumers and broaden to integration or
+  full suites when the possible effects warrant it. Inspect actual artifacts
+  where semantic or visual correctness matters.
 
-5. **Triage issues from check-in**
-   - Fix minor mechanical issues inline and continue.
-   - Stop on major check-in or integration issues and report the safest next
-     action instead of forcing the landing.
+Keep explicit user-required checks, acceptance gates, and mandatory CI/release
+gates. If coverage or isolation is unclear, inspect the relevant dependency path
+and broaden checks as needed; do not label a change low-risk merely to skip work.
+Do not rerun paid evaluations or repair unrelated failures as part of landing
+without the corresponding authorization.
 
-6. **Report the outcome**
-   - If successful: summarize story closure, commit/landing path, validation
-     results, and whether `main` was pushed and cleanup was performed.
-   - If stopped: list blockers, what you already checked or fixed, and the
-     recommended next step.
+Carry evidence from implementation through validation, story closure, commit,
+and landing. Record the command, result, tested content (tree/diff or relevant
+file identities), and relevant environment/check configuration. Reuse a result
+when those inputs still apply to the candidate. A new commit SHA, branch push,
+story checkbox, or documentation-only edit does not by itself invalidate code
+tests; validate the changed records instead. If a check depends on Git metadata,
+include that metadata among its inputs.
 
-## Minor vs Major
+After fixes or integration, compare inputs and rerun only affected checks.
+Avoid separate pre-commit and post-commit full-suite runs over unchanged inputs.
+Broad rules such as "fresh this pass" or "full suite before Done" mean applicable
+evidence for the current candidate, not compulsory repetition. Report the check
+selection, reused evidence, and any limits honestly; passing commands alone does
+not prove the requested outcome is complete.
 
-Treat these as **minor** unless they reveal a larger underlying problem:
+## Landing and recovery
 
-- missing workflow-gate checkbox or stale story status row
-- stale generated planning surfaces resolved by rerunning `pnpm methodology:compile`
-- missing or incomplete `CHANGELOG.md` entry
-- skill-surface link or optional-alias drift fixed by `scripts/sync-agent-skills.sh`
-- small doc or metadata mismatch caused by the current work
-- narrow lint/test failure with an obvious, low-risk local fix
-- missing re-run of a required check after a small patch
+Before pushing any repo, preflight all in-scope repos for known completion,
+validation, ownership, and integration blockers. Keep a compact per-repo record
+of scope, candidate commit, validation, destination, and landing state. Resolve
+known blockers before beginning the multi-repo landing.
 
-Treat these as **major** and stop before commit/push:
+Stage only the reviewed intended files or hunks, including the reviewed inbox
+changes; never use `git add .`. Preserve unrelated changes and existing staged
+work. Review the full candidate diff against its destination, including existing
+branch commits. Integrate off main in a task branch or dedicated worktree, using
+a clean integration worktree when needed to preserve an active checkout. Do not reset,
+stash, or synchronize unrelated primary-checkout work as part of landing.
 
-- unmet acceptance criteria or unchecked substantive tasks
-- missing eval classification / registry updates required by the story scope
-- failing tests or lint with unclear root cause or broad blast radius
-- unrelated, risky, or suspicious git changes in the landing set, except for
-  `docs/inbox.md` edits that reflect normal user capture
-- secrets, credentials, large artifacts, or accidental generated output
-- integration conflicts that are not purely mechanical
-- anything that requires architecture changes, scope renegotiation, or user
-  judgment about what should land
+Push the execution branch and land each validated candidate by fast-forwarding
+remote main, respecting repo-required review or CI gates. Land dependencies
+before their consumers and supervisor completion records after the work they
+describe. Refresh remote state before landing; if it advances, integrate and
+revalidate affected surfaces before retrying. Do not force-push main.
 
+Multi-repo pushes are not atomic. If a later repo fails, retain successful
+landings, stop dependent landings, and report each repo as landed,
+validated-but-unlanded, or blocked, with commit IDs and the next recovery action.
+Do not roll back successful pushes automatically. Resume from verified remote
+state rather than replaying completed actions. Verify the intended commit is
+present on each destination remote branch before reporting it landed.
 
-## Reviewed Learning Hook
+## Optional cleanup and learning
 
-Before final closeout, run or explicitly consider `/learning-review` only when
-the landing exposed material check failures, repeated handoff friction, a
-stopped landing with a recurring process gap, a surprising result, a reusable
-procedure, or an explicit user correction. Skip it for ordinary successful
-landings. If it returns `RESULT: candidate-warranted`, report the finding or
-draft it through `/learning-candidate`; do not promote candidates during the
-landing flow. If drafting after check-in or landing would create a new dirty
-candidate file, report the recommendation and leave drafting for a separate
-approved follow-up unless it can be validated and included before closeout
-finishes.
+Without `--cleanup`, retain task worktrees and branches. With it, remove only
+identified task-owned temporary worktrees and local branches after verifying
+their commits are on remote main, their worktrees have no uncommitted or
+untracked work or valuable ignored files, and no other task is using them.
+Inspect ignored contents too; a clean Git status is insufficient. Keep primary
+checkouts, remote branches, stashes, and anything with uncertain ownership;
+report retained items.
+Do not use force deletion to bypass these checks.
 
-## Guardrails
+If a local learning-review skill exists and recurring friction or a material
+user correction warrants it, use it as a read-only detector after the episode.
+Report worthwhile candidates for separate drafting; do not create a post-landing
+diff or promote workflow changes as a side effect of close-out.
 
-- Never bypass `/mark-story-done`
-- Never push partial work just because only a small issue remains
-- After every inline fix, rerun the minimum required validation before continuing
-- Never weaken the guardrails from `/mark-story-done` or `/check-in-diff`
-- Never treat `docs/inbox.md` user-capture edits as a close-out blocker; they
-  should be included in the landing set by default unless the user says
-  otherwise
-- Never land onto `main` without the fast-forward-only rule
-- If you stop, explain whether the issue is minor-but-blocked or major and why
+Report the outcome against the validation target, relevant checks and limits,
+story closure if applicable, each repo's commit and remote landing result, and
+cleanup performed or retained. Name remaining work precisely when blocked.

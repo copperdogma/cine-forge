@@ -57,13 +57,20 @@ This file is the project-wide source of truth for agent behavior and engineering
 - **Coherent Scope Expansion**: If exploration reveals small, tightly coupled work that is necessary to actually satisfy the story goal, expand the current story and update the story file/work log instead of punting it as "out of scope." For larger expansions, surface the recommendation explicitly for approval instead of silently absorbing or silently splitting it out.
 - **Relative Effort, Not Calendar Theater**: Unless the user explicitly asks for time estimates, express scope or follow-up effort in relative sizes (`XS`, `S`, `M`, `L`, `XL`), not hours or days. Optimize for coherent AI-sized slices, not human sprint rituals.
 - **Definition of Done**: A task is complete ONLY when:
-  1. Relevant tests pass (`make test-unit` minimum).
-  2. Artifacts are produced and manually inspected for semantic correctness.
-  3. Schema validation passes.
+  1. The smallest sufficient validation for the changed behavior and its
+     dependencies passes, including explicit acceptance and mandatory
+     CI/release gates.
+  2. Changes that produce artifacts have representative outputs manually
+     inspected for semantic correctness.
+  3. Changed schemas and affected schema boundaries pass validation.
   4. If the task touched the UI: browser verification covers both a desktop view and a mobile view, with screenshots or equivalent evidence and clean console output unless a documented environment blocker prevented it. That verification must use a project state reachable through the normal API/driver pipeline for the feature under test, not a hand-seeded or impossible substrate combination, unless the artifact is explicitly labeled as a narrow non-evaluative smoke fixture.
   5. The active story's work log is updated with evidence and next actions.
   6. If the story touched an AI module or eval: every significant eval mismatch is classified as **model-wrong**, **golden-wrong**, or **ambiguous** with evidence. For compromise or detection evals, record whether any remaining failures are **runtime-blocking** or **non-runtime-blocking**. Silently accepting mismatches as noise is a hard stop.
   7. If you ran an eval (promptfoo, pytest acceptance, or any scored test): update `docs/evals/registry.yaml` with the new score, `git_sha`, and date. Stale scores are worse than no scores.
+- **Close-out validation authority:** For `/validate`, `/mark-story-done`, and
+  `/finish-and-push` handoffs, the shared skill's `Validation proportional to
+  the change` section governs check selection and evidence reuse. Preserve
+  explicit acceptance, semantic, security, and mandatory CI/release gates.
 
 ## General Agent Engineering Principles
 
@@ -121,6 +128,9 @@ Use subagents aggressively to parallelize work and protect the main context wind
 
 ### Running Log
 Track model performance observations in `/memory/subagent-log.md` to refine the table above over time.
+
+For `/finish-and-push`, its `Coordination` section governs delegation for the
+close-out flow in place of this general strategy.
 
 ## Architecture Rules
 
@@ -463,8 +473,7 @@ Eval `retry_when` conditions are also detectors, not evergreen invitations. If t
 - `/build-story` may promote a buildable `Draft` to `Pending` before implementation starts, and it may mark the story `Blocked` if exploration or implementation proves a real named blocker with evidence.
 - `/validate` owns validation only. It MUST report findings, update the validation gate, and recommend `/mark-story-done` if the story is clean. If the story is not clean, it MUST recommend a single disposition: `Rescope then close`, `Keep open`, or `Mark blocked`. Prefer `Keep open` for remaining work that is still in the same subsystem, validation boundary, and success surface. Use `Rescope then close` only when the remaining work is genuinely separate.
 - `/mark-story-done` is the only skill that may mark a story `Done` and refresh the generated planning surfaces for that status change. If the story is incomplete, it MUST still recommend a single disposition (`Rescope then close`, `Keep open`, or `Mark blocked`) instead of stopping at a blocker list, and it should keep same-surface work in the current story by default.
-- `/check-in-diff` happens after story closure to review the diff and prepare commit/push.
-- `/finish-and-push` is the bundled close-out path when the user explicitly wants story closure plus validated check-in/landing in one request. It MUST run `/mark-story-done` before `/check-in-diff` and may only fix minor close-out issues inline.
+- `/finish-and-push` owns close-out readiness review and, when explicitly invoked for execution, story closure plus validated commit/integration/landing. It uses `/mark-story-done` for an in-scope story and then resumes the same close-out flow without a recursive invocation.
 - Commit and push happen only when the user explicitly requests them.
 - Each step should end with a concise summary and a recommended next step the user can approve with a simple "yes". Prefer the explicit form: Reply `yes` to proceed with: ... when there is one clear next move.
 - When there is a concrete verification path, include a short `Where to verify` note so the user can spot-check the result themselves without reverse-engineering the change.
@@ -486,11 +495,10 @@ Runbooks live in `docs/runbooks/`. Create a runbook when a process has 3+ steps,
 
 Current runbooks:
 - `align.md` — Methodology-graph drift check across Ideal/spec/state/graph/generated dashboards/evals (skill: `/align`)
-- `check-in-worktree-landing.md` — Safe check-in and landing flow for task branches and worktrees (skill: `/check-in-diff`)
+- `close-out.md` — CineForge completion, validation, and landing requirements used by `/finish-and-push`
 - `codebase-improvement-scout.md` — Repo hygiene scan and cleanup triage flow (skill: `/codebase-improvement-scout`)
 - `create-eval.md` — Scaffold a new eval in the registry and benchmark workspace (skill: `/create-eval`)
 - `evaluate-model.md` — Fair end-to-end model qualification, comparison, debugging, and adoption workflow (skill: `/evaluate-model`)
-- `finish-and-push.md` — Bundled story closure plus validated landing flow (skill: `/finish-and-push`)
 - `golden-build.md` — Building hand-curated golden references and auditing eval mismatches (canonical bootstrap: `/setup-methodology`; day-to-day: `/golden-create`, `/golden-verify`)
 - `promptfoo.md` — Resolve, run, inspect, and record Promptfoo benchmark passes from one exact CineForge evidence checkout
 - `setup-methodology.md` — Install or refresh the methodology package and canonical setup surface (skill: `/setup-methodology`)
@@ -697,16 +705,16 @@ When starting a session, run `git worktree list` to understand the layout. Commo
 
 **If you are in `cine-forge/`** — you may be on `main` or another branch. Check `git branch --show-current` before assuming. If you are on `main`, treat it as the stable integration branch unless the user explicitly chose to work there.
 
-**If you are in `cine-forge-sidequests/`** (or similar) — you are on a feature or sidequest branch. This may be a new `codex/*` branch or an older user-managed sidequest branch. Stay within that worktree's scope. When done, use `/check-in-diff` if the user explicitly requests check-in.
+**If you are in `cine-forge-sidequests/`** (or similar) — you are on a feature or sidequest branch. This may be a new `codex/*` branch or an older user-managed sidequest branch. Stay within that worktree's scope. When done, use `/finish-and-push` if the user explicitly requests close-out and landing.
 
 #### Rules
 
-1. **Never do ordinary work across worktrees.** Each session stays in its own directory and does not edit project files in sibling worktrees. Narrow exception: `/check-in-diff` may run git-only landing commands in the existing `main` worktree when that is the only safe way to fast-forward `main`.
+1. **Never do ordinary work across worktrees.** Each session stays in its own directory and does not edit project files in sibling worktrees. Narrow exception: `/finish-and-push` may run git-only landing commands in the existing `main` worktree when that is the only safe way to fast-forward `main`.
 2. **Preferred structure**: create a task branch per workstream and keep one agent in that worktree at a time.
 3. **Agent-created branches**: when the agent creates a new branch itself, use the `codex/` prefix. Existing user branches do not need to be renamed.
-4. **Check-in flow**: `/check-in-diff` owns commit/push/integrate/land when the user explicitly requests check-in. The preferred landing path is task branch → sync with latest `origin/main` → validate → fast-forward `main`.
+4. **Close-out flow**: `/finish-and-push` owns commit/push/integrate/land when the user explicitly invokes execution. The preferred landing path is task branch → sync with latest `origin/main` → validate → fast-forward `main`.
 5. **Main fallback**: if the user chose to work on `main`, do not panic. But do not push `main` before validation, and do not resolve integration conflicts directly on `main`; use a temporary integration branch if sync with `origin/main` is required.
-6. **Landing exception only**: if another worktree already has `main` checked out, `/check-in-diff` may use git commands there for the final fast-forward landing step only. Do not do implementation edits or conflict resolution in that sibling worktree.
+6. **Landing exception only**: if another worktree already has `main` checked out, `/finish-and-push` may use git commands there for the final fast-forward landing step only. Do not do implementation edits or conflict resolution in that sibling worktree.
 7. **Shared files**: AGENTS.md, CLAUDE.md, and other root config files are tracked by git and shared across worktrees at their respective commit points. Avoid conflicting edits to these files across sessions — coordinate with the user.
 
 #### Creating a New Worktree

@@ -43,7 +43,7 @@ The companion skill is `/codebase-improvement-scout`.
 
 6. **[script] Optional execution**
    - If `--create-story`: create or link one best-fit story, then follow the normal story chain
-   - If `--autofix`: create a side branch, apply only narrow safe cleanup, run checks, and stop at `/check-in-diff`
+   - If `--autofix`: create a side branch, apply only narrow safe cleanup, run checks, and stop at `/finish-and-push`
 
 ## Boundaries
 

@@ -10,6 +10,11 @@ user-invocable: true
 
 Assess whether a story's implementation meets its requirements.
 
+For validation that feeds story closure or `/finish-and-push`, the shared
+skill's `Validation proportional to the change` policy is authoritative. Select
+the smallest sufficient checks and reuse evidence whose tested content,
+environment, and check configuration still apply.
+
 ## Steps
 
 1. **Collect local delta first**:
@@ -68,16 +73,20 @@ Assess whether a story's implementation meets its requirements.
    and no ADR is cited, search `docs/decisions/` and `docs/design/` for
    relevant decision records before reviewing implementation quality.
 
-4. **Run the full check suite**:
-   - **Mandatory for all code changes** (regardless of perceived scope):
-     - **Backend**:
-       - `make test-unit PYTHON=.venv/bin/python`
-       - `.venv/bin/python -m ruff check src/ tests/`
-       - Story-targeted pytest(s) when applicable.
-     - **UI**:
-       - `pnpm --dir ui run lint`
-       - `cd ui && npx tsc -b`
-       - If UI files changed: `pnpm --dir ui run build`
+4. **Select validation proportional to the changed behavior and dependencies**:
+   - **Evidence or documentation only**: inspect affected claims, provenance,
+     links, schemas, and generated records; do not run product suites.
+   - **Isolated eval or development tooling**: run story-targeted/focused tests
+     and lint for changed tooling plus affected shared interfaces.
+   - **Runtime, shared libraries, dependencies, build configuration, or
+     generated executable artifacts**: check affected consumers and broaden to:
+     - `make test-unit PYTHON=.venv/bin/python`
+     - `.venv/bin/python -m ruff check src/ tests/`
+     - relevant integration or full suites when the dependency path warrants it.
+   - **UI files**:
+     - `pnpm --dir ui run lint`
+     - `cd ui && npx tsc -b`
+     - `pnpm --dir ui run build`
    - **Agent/process surfaces**:
       - If `AGENTS.md` or `.agents/skills/` changed: `./scripts/sync-agent-skills.sh --check`
       - If story metadata, ADR metadata, methodology state, runbooks, or other
@@ -92,9 +101,9 @@ Assess whether a story's implementation meets its requirements.
      browser/live-smoke evidence review, eval mismatch review, and holistic
      Ideal/spec/design fit review.
    - Scope each packet to explicit files, commands, criteria, screens, smoke
-     targets, evals, or architecture questions. Require fresh evidence from
-     this validation pass, and preserve CineForge's backend, UI, browser,
-     eval, methodology, and skill-sync gates.
+     targets, evals, or architecture questions. Require evidence applicable to
+     the candidate and preserve CineForge's backend, UI, browser, eval,
+     methodology, and skill-sync gates.
    - When launching parallel validation packets, size each worker model and reasoning level to shard risk. Use cheaper or lower-reasoning workers for lookup, compatibility-link or optional-alias checks, and mechanical scans; keep stronger workers for semantic contracts, security, eval correctness, cross-repo decisions, or high-cost misses. Record any explicit override rationale in the validation report.
    - Subagents may gather evidence or flag findings, but the main thread keeps
      the final grade, closure recommendation, story handoff state, and
@@ -149,7 +158,9 @@ Assess whether a story's implementation meets its requirements.
    - If validation surfaces medium/high architecture drift outside the current
      shipping slice, map it to the best-fit `architecture_audits` domain and
      recommend `/triage-architecture`
-   - In that note and in the report, label results only from commands rerun in this validation pass; anything not rerun here must be called out as not freshly verified
+   - In that note and in the report, distinguish commands run for this candidate
+     from reused evidence, naming the tested content, environment, and check
+     configuration that make reused results applicable
 
 11. **Produce report** — Findings must explicitly call out:
    - findings first: concrete bugs, regressions, missing tests, or "no material
@@ -251,7 +262,9 @@ ordinary validation closeout.
 - When the story is not ready to close, never stop at "not done." Always recommend one disposition: `Rescope then close`, `Keep open`, or `Mark blocked`.
 - If implementation is complete and only close-out bookkeeping remains, prefer `Close now`
 - Never recommend `Rescope then close` for remaining work that still belongs to the same subsystem, validation boundary, and success surface
-- Never report a check as PASS/FAIL unless you reran it in this validation pass and inspected the output
-- **Mandatory UI Checks**: Never skip UI `lint` and `tsc -b` for code changes, even if you think only the backend was touched.
+- Never report a check as applicable unless its tested content, environment,
+  and check configuration cover the candidate; identify reused evidence and
+  rerun checks affected by later changes
+- **Mandatory UI Checks**: Never skip UI `lint` and `tsc -b` when UI files changed.
 - Prefer project-native checks over generic templates
 - Use `tsc -b` (not `tsc --noEmit`) for UI type checks in this repo

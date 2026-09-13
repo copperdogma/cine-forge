@@ -196,7 +196,7 @@ If the user also explicitly approves execution, continue using the normal chain:
 - `/build-story`
 - `/validate`
 - `/mark-story-done`
-- `/check-in-diff`
+- `/finish-and-push`
 
 ## Phase 5 — Optional Narrow Auto-Fix Lane
 
@@ -223,7 +223,7 @@ Only enter this phase when `--autofix` is set or the user explicitly approved sa
    - if UI changed, run browser verification per `docs/runbooks/browser-automation-and-mcp.md`
    - if checks fail twice, revert that cleanup and downgrade it to a story
 
-5. End with a concise summary and recommend `/check-in-diff` unless the user already approved later git steps.
+5. End with a concise summary and recommend `/finish-and-push` unless the user already approved later git steps.
 
 ## Guardrails
 

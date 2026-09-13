@@ -160,7 +160,7 @@ Canonical location: `.agents/skills/`, with compatibility links for `.claude/ski
 - `/create-story` — Scaffold story files with template (bootstrap script + template)
 - `/build-story` — Implement stories with work-log discipline + AI-first check + tenet verification
 - `/validate` — Assess implementation quality vs requirements
-- `/check-in-diff` — Audit git changes before commit + CHANGELOG enforcement
+- `/finish-and-push` — Audit close-out readiness or complete validated landing
 - `/mark-story-done` — Validate and close stories + update CHANGELOG
 - `/triage` — Identify the highest-leverage methodology gap and recommend the next action
 - `/scout` — Research external sources for adoptable patterns
@@ -245,7 +245,7 @@ docs/
   create-story/SKILL.md   # + scripts/ + templates/
   build-story/SKILL.md
   validate/SKILL.md
-  check-in-diff/SKILL.md
+  finish-and-push/SKILL.md
   mark-story-done/SKILL.md
   triage/SKILL.md
   scout/SKILL.md          # + scripts/ + templates/

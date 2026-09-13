@@ -1,5 +1,15 @@
 # Changelog
 
+## [2026-09-13-02] — Unify close-out and landing guidance
+
+### Changed
+- Replaced the repository-specific close-out wrapper with the shared
+  `/finish-and-push` skill and a concise CineForge validation runbook.
+- Retired `/check-in-diff` and its legacy alias, then routed active close-out
+  callers through the unified skill while preserving historical records.
+- Made proportional validation authoritative for close-out handoffs, including
+  input-based evidence reuse and focused checks for isolated tooling changes.
+
 ## [2026-09-13-01] — Record Qwen3.8 Flash managed-route retry (Story 219)
 
 ### Added
