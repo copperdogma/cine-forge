@@ -16522,6 +16522,16 @@
           "note": "",
           "retryStatus": "retired",
           "retryWhen": []
+        },
+        {
+          "id": "037",
+          "date": "2026-09-19",
+          "approach": "Approved direct Alibaba qwen3.8-omni-flash ordered-frame screen stopped at local credential preflight. No configured owner credential or supported central Alibaba custody mapping; zero provider calls and US$0 spend. Callability unverified; transport, reliability, capability and economics unmeasured. User explicitly deferred on 2026-09-19; no automatic retry.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "new-approach"
+          ]
         }
       ],
       "latestScore": {
@@ -16562,16 +16572,18 @@
         "sourceId": "video-understanding",
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
-        "posture": "no-trigger-recorded",
+        "posture": "trigger-exhausted",
         "whyNow": "Final Attempt 019 v3 ordered-frame result: all six schema-valid cases failed both quality gates, with complete requested/returned identity, call IDs, raw usage, exact case coverage, and a data-complete HOLD report. Model-wrong misses include motion, continuity, camera, recurring-object, tone, and evidence errors. Known conservative matcher/target defects can raise the aggregate only to about 0.45…",
-        "retryTriggerStatus": "none",
-        "retryWhen": [],
+        "retryTriggerStatus": "exhausted",
+        "retryWhen": [
+          "new-approach"
+        ],
         "lastRelevantAction": {
-          "date": "2026-07-22",
+          "date": "2026-09-19",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "019",
-          "summary": "Preserved the contract-contaminated diagnostic, rolled the ordered-frame output contract to typed v3 with Gemini responseSchema, and ran the final twelve-row matrix. Gemini 3.6 reached 0.4397 and Flash-Lite 0.4071; both failed all six cases, so the decision is HOLD/do-not-adopt."
+          "sourceId": "037",
+          "summary": "Approved direct Alibaba qwen3.8-omni-flash ordered-frame screen stopped at local credential preflight. No configured owner credential or supported central Alibaba custody mapping; zero provider calls and US$0 spend. Callability unverified; transport, reliability, capability and economics unmeasured. User explicitly deferred on 2026-09-19; no automatic retry."
         }
       }
     }
@@ -17191,7 +17203,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: ingest_and_world_building, api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 154 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 160 days old against a 14-day cadence"
     ]
   }
 }

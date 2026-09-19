@@ -2306,6 +2306,21 @@ evals:
         latency_after: 6356
         retry_status: retired
 
+      - id: "037"
+        story: attempts/037-video-understanding-qwen38-omni-flash-access-stop.md
+        date: 2026-09-19
+        status: inconclusive
+        approach: "Approved direct Alibaba qwen3.8-omni-flash ordered-frame screen stopped at local credential preflight. No configured owner credential or supported central Alibaba custody mapping; zero provider calls and US$0 spend. Callability unverified; transport, reliability, capability and economics unmeasured. User explicitly deferred on 2026-09-19; no automatic retry."
+        worker_model: "Codex"
+        worker_model_date: 2026-09-19
+        subject_model: "Alibaba qwen3.8-omni-flash"
+        score_before: null
+        score_after: null
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-approach
+            note: "Explicit future user reopening after authorized direct Alibaba credential and regional workspace endpoint become configured; no automatic retry. Resume access and strict frame-contract qualification, not full scoring."
+
   - id: previz-usefulness
     name: Previz Usefulness
     type: quality
