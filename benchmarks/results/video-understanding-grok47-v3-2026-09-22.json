@@ -1,0 +1,1651 @@
+{
+  "evalId": "eval-tse-2026-09-22T23:08:16",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-09-22T23:08:16.587Z",
+    "prompts": [
+      {
+        "raw": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "label": "prompts/video-understanding.txt: You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+        "id": "72459b03b2f28285007a43815d4e5c155ee504b39388b111860355eda47487e4",
+        "provider": "Grok 4.7",
+        "metrics": {
+          "score": 2.8897,
+          "testPassCount": 0,
+          "testFailCount": 6,
+          "testErrorCount": 0,
+          "assertPassCount": 0,
+          "assertFailCount": 12,
+          "totalLatencyMs": 51645,
+          "tokenUsage": {
+            "prompt": 26160,
+            "completion": 1502,
+            "cached": 0,
+            "total": 28469,
+            "numRequests": 6,
+            "completionDetails": {
+              "reasoning": 807,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 9411,
+              "prompt": 4550,
+              "completion": 4861,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.051005999999999996
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0.006254,
+        "error": "The model correctly identifies two figures, the pale rectangular panel, navy coloring, continuity as intact, locked_two_shot framing, and properly leaves audio fields empty. However, it has several significant errors: (1) misses the slow_push_in camera movement, instead claiming static/no change across frames; (2) tone is 'detached' vs reference 'intimate' — essentially opposite; (3) invents 'isolation' emotion when reference has none; (4) misses 'teal' color, substituting 'desaturated'; (5) motion tagged as 'stillness' vs reference 'measured' movement. The failure to detect the push-in is particularly problematic as it's a key observable change across the ordered frames, and the model explicitly denies any change occurred.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.41415,
+          "reason": "The model correctly identifies two figures, the pale rectangular panel, navy coloring, continuity as intact, locked_two_shot framing, and properly leaves audio fields empty. However, it has several significant errors: (1) misses the slow_push_in camera movement, instead claiming static/no change across frames; (2) tone is 'detached' vs reference 'intimate' — essentially opposite; (3) invents 'isolation' emotion when reference has none; (4) misses 'teal' color, substituting 'desaturated'; (5) motion tagged as 'stillness' vs reference 'measured' movement. The failure to detect the push-in is particularly problematic as it's a key observable change across the ordered frames, and the model explicitly denies any change occurred.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1562,
+            "prompt": 764,
+            "completion": 798,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.4483,
+              "reason": "raw_score=0.4483 | overall=0.448 | uncertainty=0.140 | summary=0.67 | tone=0.00 | emotion=0.00 | color=0.50 | camera=0.50 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached | emotion: unexpected=isolation | color: teal, unexpected=desaturated | camera: slow_push_in, unexpected=static | motion: measured, unexpected=stillness | continuity: The pale rectangle stays beside the right figure across all five frames., unexpected=Figure positions, colors, and the dark lower band remain consistent from the first sample through the last.",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+              },
+              "pass": false,
+              "score": 0.38,
+              "reason": "The model correctly identifies two figures, the pale rectangular panel, navy coloring, continuity as intact, locked_two_shot framing, and properly leaves audio fields empty. However, it has several significant errors: (1) misses the slow_push_in camera movement, instead claiming static/no change across frames; (2) tone is 'detached' vs reference 'intimate' — essentially opposite; (3) invents 'isolation' emotion when reference has none; (4) misses 'teal' color, substituting 'desaturated'; (5) motion tagged as 'stillness' vs reference 'measured' movement. The failure to detect the push-in is particularly problematic as it's a key observable change across the ordered frames, and the model explicitly denies any change occurred.",
+              "tokensUsed": {
+                "total": 1562,
+                "prompt": 764,
+                "completion": 798,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"vfp_active_001\\\",\\\"summary\\\":\\\"Two simplified figures stand apart on a dark band beneath a navy gradient, the beige figure unmarked and the blue figure carrying a pale rectangular panel. Across the ordered samples neither figure nor the framing changes.\\\",\\\"tone_tags\\\":[\\\"detached\\\"],\\\"emotion_tags\\\":[\\\"isolation\\\"],\\\"color_tags\\\":[\\\"navy\\\",\\\"desaturated\\\"],\\\"camera_tags\\\":[\\\"static\\\",\\\"locked_two_shot\\\"],\\\"motion_tags\\\":[\\\"stillness\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":[\\\"Figure positions, colors, and the dark lower band remain consistent from the first sample through the last.\\\"],\\\"audio_tags\\\":[],\\\"audio_notes\\\":[],\\\"evidence\\\":[{\\\"frame_index\\\":0,\\\"cue\\\":\\\"Beige figure left and light-blue figure with a pale torso panel right, separated against a navy gradient and black lower band.\\\"},{\\\"frame_index\\\":2,\\\"cue\\\":\\\"Same two-figure spacing and panel remain fixed at the midpoint sample.\\\"},{\\\"frame_index\\\":4,\\\"cue\\\":\\\"Final sample shows no shift in either figure, the panel, or the static framing.\\\"}],\\\"overall_confidence\\\":0.86}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured analysis against the ordered-frame\\nreference below.\\n\\nReference analysis:\\n# Ordered JPEG frame-packet reference\\n\\n- Summary: Two abstract figures face each other in blue light while the ordered frames move closer; a pale rectangle stays beside the right figure.\\n- Tone: intimate\\n- Emotion: [none]\\n- Color / grade: navy, teal\\n- Camera language inferable from the ordered samples: locked_two_shot, slow_push_in\\n- Motion inferable from the ordered samples: measured\\n- Continuity: intact - The pale rectangle stays beside the right figure across all five frames.\\n- Audio: unavailable to the subject and excluded from scoring\\n\\nThe subject received only five ordered JPEG samples plus neutral timing facts and\\nan opaque identifier. It did not receive the semantic clip ID, title, target,\\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\\nIgnore every audio line in the reference and require empty audio fields; do not\\nreward a claim of silence. Accept semantically equivalent visual wording, but\\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\\ninvented actions, edits, camera movement, continuity changes, identities, props,\\nlocations, or story meaning that the ordered samples do not show.\\nPass only at score >= 0.8.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: Two abstract figures face each other in blue light while the ordered frames move closer; a pale rectangle stays beside the right figure.\n- Tone: intimate\n- Emotion: [none]\n- Color / grade: navy, teal\n- Camera language inferable from the ordered samples: locked_two_shot, slow_push_in\n- Motion inferable from the ordered samples: measured\n- Continuity: intact - The pale rectangle stays beside the right figure across all five frames.\n- Audio: unavailable to the subject and excluded from scoring\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+              }
+            }
+          ]
+        },
+        "id": "097cc509-ac8d-48f6-88a8-f37f2bc82003",
+        "latencyMs": 10378,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/video-understanding.txt: You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "72459b03b2f28285007a43815d4e5c155ee504b39388b111860355eda47487e4",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Grok 4.7"
+        },
+        "response": {
+          "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified figures stand apart on a dark band beneath a navy gradient, the beige figure unmarked and the blue figure carrying a pale rectangular panel. Across the ordered samples neither figure nor the framing changes.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"static\",\"locked_two_shot\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Figure positions, colors, and the dark lower band remain consistent from the first sample through the last.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Beige figure left and light-blue figure with a pale torso panel right, separated against a navy gradient and black lower band.\"},{\"frame_index\":2,\"cue\":\"Same two-figure spacing and panel remain fixed at the midpoint sample.\"},{\"frame_index\":4,\"cue\":\"Final sample shows no shift in either figure, the panel, or the static framing.\"}],\"overall_confidence\":0.86}",
+          "tokenUsage": {
+            "total": 5037,
+            "prompt": 4360,
+            "completion": 253,
+            "completionDetails": {
+              "reasoning": 424
+            },
+            "numRequests": 1
+          },
+          "cost": 0.006254,
+          "latencyMs": 10378,
+          "cached": false,
+          "metadata": {
+            "clip_id": "dialogue_confession_push_in",
+            "evaluation_id": "vfp_active_001",
+            "candidate_variant": null,
+            "prompt_version": "video-understanding-frame-packet-v3",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "grok-4.7",
+            "requested_model": "grok-4.7",
+            "returned_model": "grok-4.7",
+            "request_id": "e2ff7770-978f-9ade-9116-6dce89b33b99",
+            "provider": "xai",
+            "cost_estimated": false,
+            "modality": "ordered_jpeg_frame_packet",
+            "audio_submitted": false,
+            "frame_count": 5,
+            "sample_times_seconds": [
+              0,
+              1,
+              2,
+              3,
+              3.875
+            ],
+            "frame_sha256": [
+              "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+              "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+              "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+              "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+              "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+            ],
+            "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347"
+          },
+          "raw": {
+            "id": "e2ff7770-978f-9ade-9116-6dce89b33b99",
+            "model": "grok-4.7",
+            "status": "completed",
+            "usage": {
+              "input_tokens": 4360,
+              "input_tokens_details": {
+                "cached_tokens": 4352
+              },
+              "output_tokens": 677,
+              "output_tokens_details": {
+                "reasoning_tokens": 424
+              },
+              "total_tokens": 5037,
+              "num_sources_used": 0,
+              "num_server_side_tools_used": 0,
+              "cost_in_usd_ticks": 62540000,
+              "context_details": {
+                "input_tokens": 4360,
+                "output_tokens": 686
+              }
+            },
+            "x_zero_data_retention": "false"
+          }
+        },
+        "score": 0.41415,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "clip_id": "dialogue_confession_push_in",
+            "evaluation_id": "vfp_active_001",
+            "clip_dir": "../video_understanding/dialogue_confession_push_in",
+            "target_path": "video_understanding/dialogue_confession_push_in/target.json",
+            "target_markdown": "file://../video_understanding/dialogue_confession_push_in/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "clip_id": "dialogue_confession_push_in",
+          "evaluation_id": "vfp_active_001",
+          "clip_dir": "../video_understanding/dialogue_confession_push_in",
+          "target_path": "video_understanding/dialogue_confession_push_in/target.json",
+          "target_markdown": "file://../video_understanding/dialogue_confession_push_in/target.md"
+        },
+        "metadata": {
+          "clip_id": "dialogue_confession_push_in",
+          "evaluation_id": "vfp_active_001",
+          "candidate_variant": null,
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "grok-4.7",
+          "requested_model": "grok-4.7",
+          "returned_model": "grok-4.7",
+          "request_id": "e2ff7770-978f-9ade-9116-6dce89b33b99",
+          "provider": "xai",
+          "cost_estimated": false,
+          "modality": "ordered_jpeg_frame_packet",
+          "audio_submitted": false,
+          "frame_count": 5,
+          "sample_times_seconds": [
+            0,
+            1,
+            2,
+            3,
+            3.875
+          ],
+          "frame_sha256": [
+            "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+            "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+            "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+            "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+            "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+          ],
+          "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.008816,
+        "error": "The model correctly identifies left-to-right movement, camera tags (static, wide_master - perfect match), continuity status (intact), red color, fast_lateral motion, and provides frame-grounded evidence. However, there are significant issues: (1) invented emotion tags (isolation, resolve) when reference says none; (2) claims background geometry/rectangle is stationary, but reference says the rectangle stays beside the runner (moves with it) - a key continuity detail error; (3) missed pulsing_light motion and diagonal line shifting; (4) tone tags (detached, ominous) don't align well with reference (urgent, tense). The continuity note contradiction and invented emotions are notable penalties.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.5258499999999999,
+          "reason": "The model correctly identifies left-to-right movement, camera tags (static, wide_master - perfect match), continuity status (intact), red color, fast_lateral motion, and provides frame-grounded evidence. However, there are significant issues: (1) invented emotion tags (isolation, resolve) when reference says none; (2) claims background geometry/rectangle is stationary, but reference says the rectangle stays beside the runner (moves with it) - a key continuity detail error; (3) missed pulsing_light motion and diagonal line shifting; (4) tone tags (detached, ominous) don't align well with reference (urgent, tense). The continuity note contradiction and invented emotions are notable penalties.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1761,
+            "prompt": 762,
+            "completion": 999,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.5317,
+              "reason": "raw_score=0.5317 | overall=0.532 | uncertainty=0.140 | summary=0.33 | tone=0.00 | emotion=0.00 | color=0.67 | camera=1.00 | motion=0.50 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, pulses | tone: tense, urgent, unexpected=detached, unexpected=ominous | emotion: unexpected=isolation, unexpected=resolve | color: unexpected=desaturated | motion: pulsing_light, unexpected=measured | continuity: The small red rectangle stays beside the runner throughout the packet., unexpected=The figure advances consistently rightward across all five ordered samples., unexpected=The background geometry remains fixed throughout the sequence.",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+              },
+              "pass": false,
+              "score": 0.52,
+              "reason": "The model correctly identifies left-to-right movement, camera tags (static, wide_master - perfect match), continuity status (intact), red color, fast_lateral motion, and provides frame-grounded evidence. However, there are significant issues: (1) invented emotion tags (isolation, resolve) when reference says none; (2) claims background geometry/rectangle is stationary, but reference says the rectangle stays beside the runner (moves with it) - a key continuity detail error; (3) missed pulsing_light motion and diagonal line shifting; (4) tone tags (detached, ominous) don't align well with reference (urgent, tense). The continuity note contradiction and invented emotions are notable penalties.",
+              "tokensUsed": {
+                "total": 1761,
+                "prompt": 762,
+                "completion": 999,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"vfp_active_002\\\",\\\"summary\\\":\\\"An orange stylized figure travels steadily from left to right across a fixed dark-red diagram. Thin pale lines, a rectangular outline, and a peaked line remain stationary while the figure passes through the center.\\\",\\\"tone_tags\\\":[\\\"detached\\\",\\\"ominous\\\"],\\\"emotion_tags\\\":[\\\"isolation\\\",\\\"resolve\\\"],\\\"color_tags\\\":[\\\"red\\\",\\\"desaturated\\\"],\\\"camera_tags\\\":[\\\"static\\\",\\\"wide_master\\\"],\\\"motion_tags\\\":[\\\"measured\\\",\\\"fast_lateral\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":[\\\"The figure advances consistently rightward across all five ordered samples.\\\",\\\"The background geometry remains fixed throughout the sequence.\\\"],\\\"audio_tags\\\":[],\\\"audio_notes\\\":[],\\\"evidence\\\":[{\\\"frame_index\\\":0,\\\"cue\\\":\\\"The orange figure is at the far left, beside a dark-red rectangle and pale diagonal lines.\\\"},{\\\"frame_index\\\":2,\\\"cue\\\":\\\"The figure overlaps the central rectangular outline as it continues rightward.\\\"},{\\\"frame_index\\\":4,\\\"cue\\\":\\\"The figure has cleared the rectangle and reached the right side while the background stays unchanged.\\\"}],\\\"overall_confidence\\\":0.86}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured analysis against the ordered-frame\\nreference below.\\n\\nReference analysis:\\n# Ordered JPEG frame-packet reference\\n\\n- Summary: A red abstract runner crosses a corridor from left to right while diagonal lines shift and red illumination pulses.\\n- Tone: urgent, tense\\n- Emotion: [none]\\n- Color / grade: red\\n- Camera language inferable from the ordered samples: static, wide_master\\n- Motion inferable from the ordered samples: fast_lateral, pulsing_light\\n- Continuity: intact - The small red rectangle stays beside the runner throughout the packet.\\n- Audio: unavailable to the subject and excluded from scoring\\n\\nThe subject received only five ordered JPEG samples plus neutral timing facts and\\nan opaque identifier. It did not receive the semantic clip ID, title, target,\\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\\nIgnore every audio line in the reference and require empty audio fields; do not\\nreward a claim of silence. Accept semantically equivalent visual wording, but\\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\\ninvented actions, edits, camera movement, continuity changes, identities, props,\\nlocations, or story meaning that the ordered samples do not show.\\nPass only at score >= 0.8.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: A red abstract runner crosses a corridor from left to right while diagonal lines shift and red illumination pulses.\n- Tone: urgent, tense\n- Emotion: [none]\n- Color / grade: red\n- Camera language inferable from the ordered samples: static, wide_master\n- Motion inferable from the ordered samples: fast_lateral, pulsing_light\n- Continuity: intact - The small red rectangle stays beside the runner throughout the packet.\n- Audio: unavailable to the subject and excluded from scoring\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+              }
+            }
+          ]
+        },
+        "id": "b2ca8d94-7618-450e-85f5-f2fe136e6300",
+        "latencyMs": 6051,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/video-understanding.txt: You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "72459b03b2f28285007a43815d4e5c155ee504b39388b111860355eda47487e4",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Grok 4.7"
+        },
+        "response": {
+          "output": "{\"clip_id\":\"vfp_active_002\",\"summary\":\"An orange stylized figure travels steadily from left to right across a fixed dark-red diagram. Thin pale lines, a rectangular outline, and a peaked line remain stationary while the figure passes through the center.\",\"tone_tags\":[\"detached\",\"ominous\"],\"emotion_tags\":[\"isolation\",\"resolve\"],\"color_tags\":[\"red\",\"desaturated\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"measured\",\"fast_lateral\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The figure advances consistently rightward across all five ordered samples.\",\"The background geometry remains fixed throughout the sequence.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The orange figure is at the far left, beside a dark-red rectangle and pale diagonal lines.\"},{\"frame_index\":2,\"cue\":\"The figure overlaps the central rectangular outline as it continues rightward.\"},{\"frame_index\":4,\"cue\":\"The figure has cleared the rectangle and reached the right side while the background stays unchanged.\"}],\"overall_confidence\":0.86}",
+          "tokenUsage": {
+            "total": 4664,
+            "prompt": 4360,
+            "completion": 255,
+            "completionDetails": {
+              "reasoning": 49
+            },
+            "numRequests": 1
+          },
+          "cost": 0.008816,
+          "latencyMs": 6051,
+          "cached": false,
+          "metadata": {
+            "clip_id": "alarm_chase_whip_pan",
+            "evaluation_id": "vfp_active_002",
+            "candidate_variant": null,
+            "prompt_version": "video-understanding-frame-packet-v3",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "grok-4.7",
+            "requested_model": "grok-4.7",
+            "returned_model": "grok-4.7",
+            "request_id": "5ba7bb36-c30f-99e8-90ef-d2938614d930",
+            "provider": "xai",
+            "cost_estimated": false,
+            "modality": "ordered_jpeg_frame_packet",
+            "audio_submitted": false,
+            "frame_count": 5,
+            "sample_times_seconds": [
+              0,
+              1,
+              2,
+              3,
+              3.875
+            ],
+            "frame_sha256": [
+              "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a",
+              "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039",
+              "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655",
+              "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b",
+              "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+            ],
+            "meta_sha256": "d028854d7c23197397b7003bfcfe3fd651d418a232950e8e28851ea210e7e99a"
+          },
+          "raw": {
+            "id": "5ba7bb36-c30f-99e8-90ef-d2938614d930",
+            "model": "grok-4.7",
+            "status": "completed",
+            "usage": {
+              "input_tokens": 4360,
+              "input_tokens_details": {
+                "cached_tokens": 1152
+              },
+              "output_tokens": 304,
+              "output_tokens_details": {
+                "reasoning_tokens": 49
+              },
+              "total_tokens": 4664,
+              "num_sources_used": 0,
+              "num_server_side_tools_used": 0,
+              "cost_in_usd_ticks": 88160000,
+              "context_details": {
+                "input_tokens": 4360,
+                "output_tokens": 313
+              }
+            },
+            "x_zero_data_retention": "false"
+          }
+        },
+        "score": 0.5258499999999999,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "clip_id": "alarm_chase_whip_pan",
+            "evaluation_id": "vfp_active_002",
+            "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+            "target_path": "video_understanding/alarm_chase_whip_pan/target.json",
+            "target_markdown": "file://../video_understanding/alarm_chase_whip_pan/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "clip_id": "alarm_chase_whip_pan",
+          "evaluation_id": "vfp_active_002",
+          "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+          "target_path": "video_understanding/alarm_chase_whip_pan/target.json",
+          "target_markdown": "file://../video_understanding/alarm_chase_whip_pan/target.md"
+        },
+        "metadata": {
+          "clip_id": "alarm_chase_whip_pan",
+          "evaluation_id": "vfp_active_002",
+          "candidate_variant": null,
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "grok-4.7",
+          "requested_model": "grok-4.7",
+          "returned_model": "grok-4.7",
+          "request_id": "5ba7bb36-c30f-99e8-90ef-d2938614d930",
+          "provider": "xai",
+          "cost_estimated": false,
+          "modality": "ordered_jpeg_frame_packet",
+          "audio_submitted": false,
+          "frame_count": 5,
+          "sample_times_seconds": [
+            0,
+            1,
+            2,
+            3,
+            3.875
+          ],
+          "frame_sha256": [
+            "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a",
+            "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039",
+            "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655",
+            "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b",
+            "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+          ],
+          "meta_sha256": "d028854d7c23197397b7003bfcfe3fd651d418a232950e8e28851ea210e7e99a",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.009368,
+        "error": "The model correctly identifies static camera, stillness in motion, intact continuity, and provides empty audio fields. However, there are significant errors: (1) tone is 'detached' vs reference 'intimate'; (2) emotion 'isolation' is invented where reference says none; (3) color 'navy' contradicts reference 'amber' (though both agree on 'desaturated'); (4) missing 'wide_master' camera tag. The summary interprets the abstract shapes differently (two figures + panel vs bed + lamp + figure). No fabricated actions or edits, which is positive. The structural/mechanical aspects are mostly correct but interpretive elements have notable mismatches.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.48750000000000004,
+          "reason": "The model correctly identifies static camera, stillness in motion, intact continuity, and provides empty audio fields. However, there are significant errors: (1) tone is 'detached' vs reference 'intimate'; (2) emotion 'isolation' is invented where reference says none; (3) color 'navy' contradicts reference 'amber' (though both agree on 'desaturated'); (4) missing 'wide_master' camera tag. The summary interprets the abstract shapes differently (two figures + panel vs bed + lamp + figure). No fabricated actions or edits, which is positive. The structural/mechanical aspects are mostly correct but interpretive elements have notable mismatches.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1504,
+            "prompt": 759,
+            "completion": 745,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.525,
+              "reason": "raw_score=0.5250 | overall=0.525 | uncertainty=0.140 | summary=0.33 | tone=0.00 | emotion=0.00 | color=0.50 | camera=0.67 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: bed, warm | tone: intimate, unexpected=detached | emotion: unexpected=isolation | color: amber, unexpected=navy | camera: wide_master | continuity: The bed, lamp-like block, and seated figure keep the same positions in every frame., unexpected=The left post and circle, central gray rectangle, and right figure remain in the same positions across all five frames.",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+              },
+              "pass": false,
+              "score": 0.45,
+              "reason": "The model correctly identifies static camera, stillness in motion, intact continuity, and provides empty audio fields. However, there are significant errors: (1) tone is 'detached' vs reference 'intimate'; (2) emotion 'isolation' is invented where reference says none; (3) color 'navy' contradicts reference 'amber' (though both agree on 'desaturated'); (4) missing 'wide_master' camera tag. The summary interprets the abstract shapes differently (two figures + panel vs bed + lamp + figure). No fabricated actions or edits, which is positive. The structural/mechanical aspects are mostly correct but interpretive elements have notable mismatches.",
+              "tokensUsed": {
+                "total": 1504,
+                "prompt": 759,
+                "completion": 745,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"vfp_active_003\\\",\\\"summary\\\":\\\"A static minimalist composition shows two beige figures separated by a gray rectangular panel against a dark gradient background. No visible movement or camera change occurs across the five ordered samples.\\\",\\\"tone_tags\\\":[\\\"detached\\\"],\\\"emotion_tags\\\":[\\\"isolation\\\"],\\\"color_tags\\\":[\\\"desaturated\\\",\\\"navy\\\"],\\\"camera_tags\\\":[\\\"static\\\"],\\\"motion_tags\\\":[\\\"stillness\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":[\\\"The left post and circle, central gray rectangle, and right figure remain in the same positions across all five frames.\\\"],\\\"audio_tags\\\":[],\\\"audio_notes\\\":[],\\\"evidence\\\":[{\\\"frame_index\\\":0,\\\"cue\\\":\\\"A beige circular head on a vertical post stands left of a gray outlined rectangle, with a separate beige figure on the right.\\\"},{\\\"frame_index\\\":2,\\\"cue\\\":\\\"The same two beige figures and gray panel remain separated and unchanged against the dark background.\\\"},{\\\"frame_index\\\":4,\\\"cue\\\":\\\"The composition matches the earlier frames, with no visible shift in position, scale, or framing.\\\"}],\\\"overall_confidence\\\":0.86}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured analysis against the ordered-frame\\nreference below.\\n\\nReference analysis:\\n# Ordered JPEG frame-packet reference\\n\\n- Summary: A warm static bedside composition holds on a bed, a lamp-like shape, and one abstract figure at frame right.\\n- Tone: intimate\\n- Emotion: [none]\\n- Color / grade: amber, desaturated\\n- Camera language inferable from the ordered samples: static, wide_master\\n- Motion inferable from the ordered samples: stillness\\n- Continuity: intact - The bed, lamp-like block, and seated figure keep the same positions in every frame.\\n- Audio: unavailable to the subject and excluded from scoring\\n\\nThe subject received only five ordered JPEG samples plus neutral timing facts and\\nan opaque identifier. It did not receive the semantic clip ID, title, target,\\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\\nIgnore every audio line in the reference and require empty audio fields; do not\\nreward a claim of silence. Accept semantically equivalent visual wording, but\\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\\ninvented actions, edits, camera movement, continuity changes, identities, props,\\nlocations, or story meaning that the ordered samples do not show.\\nPass only at score >= 0.8.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: A warm static bedside composition holds on a bed, a lamp-like shape, and one abstract figure at frame right.\n- Tone: intimate\n- Emotion: [none]\n- Color / grade: amber, desaturated\n- Camera language inferable from the ordered samples: static, wide_master\n- Motion inferable from the ordered samples: stillness\n- Continuity: intact - The bed, lamp-like block, and seated figure keep the same positions in every frame.\n- Audio: unavailable to the subject and excluded from scoring\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+              }
+            }
+          ]
+        },
+        "id": "0b0dd973-21b0-4cc4-ae39-93525b35ca0c",
+        "latencyMs": 6548,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/video-understanding.txt: You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "72459b03b2f28285007a43815d4e5c155ee504b39388b111860355eda47487e4",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Grok 4.7"
+        },
+        "response": {
+          "output": "{\"clip_id\":\"vfp_active_003\",\"summary\":\"A static minimalist composition shows two beige figures separated by a gray rectangular panel against a dark gradient background. No visible movement or camera change occurs across the five ordered samples.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"desaturated\",\"navy\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The left post and circle, central gray rectangle, and right figure remain in the same positions across all five frames.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A beige circular head on a vertical post stands left of a gray outlined rectangle, with a separate beige figure on the right.\"},{\"frame_index\":2,\"cue\":\"The same two beige figures and gray panel remain separated and unchanged against the dark background.\"},{\"frame_index\":4,\"cue\":\"The composition matches the earlier frames, with no visible shift in position, scale, or framing.\"}],\"overall_confidence\":0.86}",
+          "tokenUsage": {
+            "total": 4756,
+            "prompt": 4360,
+            "completion": 249,
+            "completionDetails": {
+              "reasoning": 147
+            },
+            "numRequests": 1
+          },
+          "cost": 0.009368,
+          "latencyMs": 6548,
+          "cached": false,
+          "metadata": {
+            "clip_id": "quiet_bedside_vigil",
+            "evaluation_id": "vfp_active_003",
+            "candidate_variant": null,
+            "prompt_version": "video-understanding-frame-packet-v3",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "grok-4.7",
+            "requested_model": "grok-4.7",
+            "returned_model": "grok-4.7",
+            "request_id": "b5f64c4a-5448-94bb-aab5-eaeca445c14c",
+            "provider": "xai",
+            "cost_estimated": false,
+            "modality": "ordered_jpeg_frame_packet",
+            "audio_submitted": false,
+            "frame_count": 5,
+            "sample_times_seconds": [
+              0,
+              1,
+              2,
+              3,
+              3.875
+            ],
+            "frame_sha256": [
+              "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+              "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+              "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+              "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+              "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+            ],
+            "meta_sha256": "ba3438e4973166276591efea693838df99841ac34eac732f433c0c5cfcefe8fa"
+          },
+          "raw": {
+            "id": "b5f64c4a-5448-94bb-aab5-eaeca445c14c",
+            "model": "grok-4.7",
+            "status": "completed",
+            "usage": {
+              "input_tokens": 4360,
+              "input_tokens_details": {
+                "cached_tokens": 1152
+              },
+              "output_tokens": 396,
+              "output_tokens_details": {
+                "reasoning_tokens": 147
+              },
+              "total_tokens": 4756,
+              "num_sources_used": 0,
+              "num_server_side_tools_used": 0,
+              "cost_in_usd_ticks": 93680000,
+              "context_details": {
+                "input_tokens": 4360,
+                "output_tokens": 404
+              }
+            },
+            "x_zero_data_retention": "false"
+          }
+        },
+        "score": 0.48750000000000004,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "clip_id": "quiet_bedside_vigil",
+            "evaluation_id": "vfp_active_003",
+            "clip_dir": "../video_understanding/quiet_bedside_vigil",
+            "target_path": "video_understanding/quiet_bedside_vigil/target.json",
+            "target_markdown": "file://../video_understanding/quiet_bedside_vigil/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "vars": {
+          "clip_id": "quiet_bedside_vigil",
+          "evaluation_id": "vfp_active_003",
+          "clip_dir": "../video_understanding/quiet_bedside_vigil",
+          "target_path": "video_understanding/quiet_bedside_vigil/target.json",
+          "target_markdown": "file://../video_understanding/quiet_bedside_vigil/target.md"
+        },
+        "metadata": {
+          "clip_id": "quiet_bedside_vigil",
+          "evaluation_id": "vfp_active_003",
+          "candidate_variant": null,
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "grok-4.7",
+          "requested_model": "grok-4.7",
+          "returned_model": "grok-4.7",
+          "request_id": "b5f64c4a-5448-94bb-aab5-eaeca445c14c",
+          "provider": "xai",
+          "cost_estimated": false,
+          "modality": "ordered_jpeg_frame_packet",
+          "audio_submitted": false,
+          "frame_count": 5,
+          "sample_times_seconds": [
+            0,
+            1,
+            2,
+            3,
+            3.875
+          ],
+          "frame_sha256": [
+            "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+            "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+            "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+            "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+            "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+          ],
+          "meta_sha256": "ba3438e4973166276591efea693838df99841ac34eac732f433c0c5cfcefe8fa",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.008738,
+        "error": "The output correctly identifies the red-to-blue color change, the static framing, navy background, and provides good frame-grounded evidence. However, it critically misclassifies continuity as 'intact' when the reference requires 'broken' (the color change is a continuity break). It also invents a tone tag ('detached'), invents a motion tag ('stillness'), and misses the 'wide_master' camera tag. The continuity status error is a major analytical failure that significantly reduces the score.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.49085,
+          "reason": "The output correctly identifies the red-to-blue color change, the static framing, navy background, and provides good frame-grounded evidence. However, it critically misclassifies continuity as 'intact' when the reference requires 'broken' (the color change is a continuity break). It also invents a tone tag ('detached'), invents a motion tag ('stillness'), and misses the 'wide_master' camera tag. The continuity status error is a major analytical failure that significantly reduces the score.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1457,
+            "prompt": 738,
+            "completion": 719,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.5017,
+              "reason": "raw_score=0.5017 | overall=0.502 | uncertainty=0.140 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.67 | motion=0.00 | continuity=0.25 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: rectangle | tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+              },
+              "pass": false,
+              "score": 0.48,
+              "reason": "The output correctly identifies the red-to-blue color change, the static framing, navy background, and provides good frame-grounded evidence. However, it critically misclassifies continuity as 'intact' when the reference requires 'broken' (the color change is a continuity break). It also invents a tone tag ('detached'), invents a motion tag ('stillness'), and misses the 'wide_master' camera tag. The continuity status error is a major analytical failure that significantly reduces the score.",
+              "tokensUsed": {
+                "total": 1457,
+                "prompt": 738,
+                "completion": 719,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"vfp_active_004\\\",\\\"summary\\\":\\\"A centered red button sits against a muted brown platform and dark navy background, then changes to blue in the later frames. The framing and surrounding geometry remain fixed throughout the sequence.\\\",\\\"tone_tags\\\":[\\\"detached\\\"],\\\"emotion_tags\\\":[],\\\"color_tags\\\":[\\\"navy\\\",\\\"red\\\"],\\\"camera_tags\\\":[\\\"static\\\"],\\\"motion_tags\\\":[\\\"stillness\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":[\\\"The platform and background remain fixed while the central button changes from red in frames 0-1 to blue in frames 2-4.\\\"],\\\"audio_tags\\\":[],\\\"audio_notes\\\":[],\\\"evidence\\\":[{\\\"frame_index\\\":0,\\\"cue\\\":\\\"A red rounded rectangle with a pale outline is centered on a brown platform.\\\"},{\\\"frame_index\\\":2,\\\"cue\\\":\\\"The same centered button is now blue while the platform and framing remain unchanged.\\\"},{\\\"frame_index\\\":4,\\\"cue\\\":\\\"The blue button remains centered against the unchanged navy background and brown platform.\\\"}],\\\"overall_confidence\\\":0.86}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured analysis against the ordered-frame\\nreference below.\\n\\nReference analysis:\\n# Ordered JPEG frame-packet reference\\n\\n- Summary: A static table composition contains a small rectangle that is red in the first two samples and blue in the final three.\\n- Tone: [none]\\n- Emotion: [none]\\n- Color / grade: navy\\n- Camera language inferable from the ordered samples: static, wide_master\\n- Motion inferable from the ordered samples: [none]\\n- Continuity: broken - The tabletop rectangle changes from red to blue between the second and third samples.\\n- Audio: unavailable to the subject and excluded from scoring\\n\\nThe subject received only five ordered JPEG samples plus neutral timing facts and\\nan opaque identifier. It did not receive the semantic clip ID, title, target,\\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\\nIgnore every audio line in the reference and require empty audio fields; do not\\nreward a claim of silence. Accept semantically equivalent visual wording, but\\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\\ninvented actions, edits, camera movement, continuity changes, identities, props,\\nlocations, or story meaning that the ordered samples do not show.\\nPass only at score >= 0.8.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: A static table composition contains a small rectangle that is red in the first two samples and blue in the final three.\n- Tone: [none]\n- Emotion: [none]\n- Color / grade: navy\n- Camera language inferable from the ordered samples: static, wide_master\n- Motion inferable from the ordered samples: [none]\n- Continuity: broken - The tabletop rectangle changes from red to blue between the second and third samples.\n- Audio: unavailable to the subject and excluded from scoring\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+              }
+            }
+          ]
+        },
+        "id": "cb28954d-0804-41e5-94fb-56ccd7a3d00c",
+        "latencyMs": 15714,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/video-understanding.txt: You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "72459b03b2f28285007a43815d4e5c155ee504b39388b111860355eda47487e4",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Grok 4.7"
+        },
+        "response": {
+          "output": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A centered red button sits against a muted brown platform and dark navy background, then changes to blue in the later frames. The framing and surrounding geometry remain fixed throughout the sequence.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The platform and background remain fixed while the central button changes from red in frames 0-1 to blue in frames 2-4.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A red rounded rectangle with a pale outline is centered on a brown platform.\"},{\"frame_index\":2,\"cue\":\"The same centered button is now blue while the platform and framing remain unchanged.\"},{\"frame_index\":4,\"cue\":\"The blue button remains centered against the unchanged navy background and brown platform.\"}],\"overall_confidence\":0.86}",
+          "tokenUsage": {
+            "total": 4651,
+            "prompt": 4360,
+            "completion": 235,
+            "completionDetails": {
+              "reasoning": 56
+            },
+            "numRequests": 1
+          },
+          "cost": 0.008738,
+          "latencyMs": 15714,
+          "cached": false,
+          "metadata": {
+            "clip_id": "prop_swap_continuity_break",
+            "evaluation_id": "vfp_active_004",
+            "candidate_variant": null,
+            "prompt_version": "video-understanding-frame-packet-v3",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "grok-4.7",
+            "requested_model": "grok-4.7",
+            "returned_model": "grok-4.7",
+            "request_id": "df3adfad-f0c0-92da-971e-1d5169034185",
+            "provider": "xai",
+            "cost_estimated": false,
+            "modality": "ordered_jpeg_frame_packet",
+            "audio_submitted": false,
+            "frame_count": 5,
+            "sample_times_seconds": [
+              0,
+              1,
+              2,
+              3,
+              3.875
+            ],
+            "frame_sha256": [
+              "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+              "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+              "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+              "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+              "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+            ],
+            "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48"
+          },
+          "raw": {
+            "id": "df3adfad-f0c0-92da-971e-1d5169034185",
+            "model": "grok-4.7",
+            "status": "completed",
+            "usage": {
+              "input_tokens": 4360,
+              "input_tokens_details": {
+                "cached_tokens": 1152
+              },
+              "output_tokens": 291,
+              "output_tokens_details": {
+                "reasoning_tokens": 56
+              },
+              "total_tokens": 4651,
+              "num_sources_used": 0,
+              "num_server_side_tools_used": 0,
+              "cost_in_usd_ticks": 87380000,
+              "context_details": {
+                "input_tokens": 4360,
+                "output_tokens": 300
+              }
+            },
+            "x_zero_data_retention": "false"
+          }
+        },
+        "score": 0.49085,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "clip_id": "prop_swap_continuity_break",
+            "evaluation_id": "vfp_active_004",
+            "clip_dir": "../video_understanding/prop_swap_continuity_break",
+            "target_path": "video_understanding/prop_swap_continuity_break/target.json",
+            "target_markdown": "file://../video_understanding/prop_swap_continuity_break/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 3,
+        "vars": {
+          "clip_id": "prop_swap_continuity_break",
+          "evaluation_id": "vfp_active_004",
+          "clip_dir": "../video_understanding/prop_swap_continuity_break",
+          "target_path": "video_understanding/prop_swap_continuity_break/target.json",
+          "target_markdown": "file://../video_understanding/prop_swap_continuity_break/target.md"
+        },
+        "metadata": {
+          "clip_id": "prop_swap_continuity_break",
+          "evaluation_id": "vfp_active_004",
+          "candidate_variant": null,
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "grok-4.7",
+          "requested_model": "grok-4.7",
+          "returned_model": "grok-4.7",
+          "request_id": "df3adfad-f0c0-92da-971e-1d5169034185",
+          "provider": "xai",
+          "cost_estimated": false,
+          "modality": "ordered_jpeg_frame_packet",
+          "audio_submitted": false,
+          "frame_count": 5,
+          "sample_times_seconds": [
+            0,
+            1,
+            2,
+            3,
+            3.875
+          ],
+          "frame_sha256": [
+            "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+            "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+            "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+            "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+            "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+          ],
+          "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.008936,
+        "error": "The output correctly identifies camera (static, wide_master), continuity (intact), colors (navy, amber), and the general scene of a figure crossing a gap over dark blocks. However, it invents emotion tags (isolation, vulnerability, resolve) when the reference specifies none, misses 'urgent' tone replacing it with 'detached', substitutes 'measured' for 'escalating' in motion (contradictory qualities), and doesn't capture the figure growing larger. The invented emotions are a significant penalty per rubric guidelines. Audio fields are correctly empty. Evidence is frame-grounded. Overall, core visual elements are captured but the invented emotional content and missed dynamic qualities bring the score below threshold.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.59385,
+          "reason": "The output correctly identifies camera (static, wide_master), continuity (intact), colors (navy, amber), and the general scene of a figure crossing a gap over dark blocks. However, it invents emotion tags (isolation, vulnerability, resolve) when the reference specifies none, misses 'urgent' tone replacing it with 'detached', substitutes 'measured' for 'escalating' in motion (contradictory qualities), and doesn't capture the figure growing larger. The invented emotions are a significant penalty per rubric guidelines. Audio fields are correctly empty. Evidence is frame-grounded. Overall, core visual elements are captured but the invented emotional content and missed dynamic qualities bring the score below threshold.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1602,
+            "prompt": 776,
+            "completion": 826,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.6077,
+              "reason": "raw_score=0.6077 | overall=0.608 | uncertainty=0.140 | summary=0.33 | tone=0.50 | emotion=0.00 | color=0.80 | camera=1.00 | motion=0.50 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, larger | tone: urgent, unexpected=detached | emotion: unexpected=isolation, unexpected=resolve, unexpected=vulnerability | color: unexpected=gold | motion: escalating, unexpected=measured | continuity: The small yellow rectangle stays beside the runner while crossing the rooftop gap., unexpected=The figure advances consistently from left to right across all five ordered frames., unexpected=The platform gap, diagonal streaks, and framing remain aligned throughout the sequence.",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+              },
+              "pass": false,
+              "score": 0.58,
+              "reason": "The output correctly identifies camera (static, wide_master), continuity (intact), colors (navy, amber), and the general scene of a figure crossing a gap over dark blocks. However, it invents emotion tags (isolation, vulnerability, resolve) when the reference specifies none, misses 'urgent' tone replacing it with 'detached', substitutes 'measured' for 'escalating' in motion (contradictory qualities), and doesn't capture the figure growing larger. The invented emotions are a significant penalty per rubric guidelines. Audio fields are correctly empty. Evidence is frame-grounded. Overall, core visual elements are captured but the invented emotional content and missed dynamic qualities bring the score below threshold.",
+              "tokensUsed": {
+                "total": 1602,
+                "prompt": 776,
+                "completion": 826,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"vfp_active_005\\\",\\\"summary\\\":\\\"A flat yellow figure with a small white rectangle travels steadily rightward above a dark platform and across a narrow gap. Diagonal white streaks remain fixed over the navy background, making the figure’s measured crossing the main action.\\\",\\\"tone_tags\\\":[\\\"tense\\\",\\\"detached\\\"],\\\"emotion_tags\\\":[\\\"isolation\\\",\\\"vulnerability\\\",\\\"resolve\\\"],\\\"color_tags\\\":[\\\"navy\\\",\\\"gold\\\",\\\"amber\\\"],\\\"camera_tags\\\":[\\\"static\\\",\\\"wide_master\\\"],\\\"motion_tags\\\":[\\\"measured\\\",\\\"fast_lateral\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":[\\\"The figure advances consistently from left to right across all five ordered frames.\\\",\\\"The platform gap, diagonal streaks, and framing remain aligned throughout the sequence.\\\"],\\\"audio_tags\\\":[],\\\"audio_notes\\\":[],\\\"evidence\\\":[{\\\"frame_index\\\":0,\\\"cue\\\":\\\"The yellow figure is at the upper left, above the left side of the dark platform.\\\"},{\\\"frame_index\\\":2,\\\"cue\\\":\\\"The figure has moved toward center, positioned over the platform gap.\\\"},{\\\"frame_index\\\":4,\\\"cue\\\":\\\"The figure reaches the upper right, having crossed to the opposite side of the gap.\\\"}],\\\"overall_confidence\\\":0.86}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured analysis against the ordered-frame\\nreference below.\\n\\nReference analysis:\\n# Ordered JPEG frame-packet reference\\n\\n- Summary: An amber abstract runner rises over a visible gap between dark rooftop blocks while growing larger from left to right.\\n- Tone: urgent, tense\\n- Emotion: [none]\\n- Color / grade: amber, navy\\n- Camera language inferable from the ordered samples: static, wide_master\\n- Motion inferable from the ordered samples: escalating, fast_lateral\\n- Continuity: intact - The small yellow rectangle stays beside the runner while crossing the rooftop gap.\\n- Audio: unavailable to the subject and excluded from scoring\\n\\nThe subject received only five ordered JPEG samples plus neutral timing facts and\\nan opaque identifier. It did not receive the semantic clip ID, title, target,\\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\\nIgnore every audio line in the reference and require empty audio fields; do not\\nreward a claim of silence. Accept semantically equivalent visual wording, but\\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\\ninvented actions, edits, camera movement, continuity changes, identities, props,\\nlocations, or story meaning that the ordered samples do not show.\\nPass only at score >= 0.8.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: An amber abstract runner rises over a visible gap between dark rooftop blocks while growing larger from left to right.\n- Tone: urgent, tense\n- Emotion: [none]\n- Color / grade: amber, navy\n- Camera language inferable from the ordered samples: static, wide_master\n- Motion inferable from the ordered samples: escalating, fast_lateral\n- Continuity: intact - The small yellow rectangle stays beside the runner while crossing the rooftop gap.\n- Audio: unavailable to the subject and excluded from scoring\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+              }
+            }
+          ]
+        },
+        "id": "8c63b5d0-6d9e-4948-8563-380ecbdc9a60",
+        "latencyMs": 7368,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/video-understanding.txt: You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "72459b03b2f28285007a43815d4e5c155ee504b39388b111860355eda47487e4",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Grok 4.7"
+        },
+        "response": {
+          "output": "{\"clip_id\":\"vfp_active_005\",\"summary\":\"A flat yellow figure with a small white rectangle travels steadily rightward above a dark platform and across a narrow gap. Diagonal white streaks remain fixed over the navy background, making the figure’s measured crossing the main action.\",\"tone_tags\":[\"tense\",\"detached\"],\"emotion_tags\":[\"isolation\",\"vulnerability\",\"resolve\"],\"color_tags\":[\"navy\",\"gold\",\"amber\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"measured\",\"fast_lateral\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The figure advances consistently from left to right across all five ordered frames.\",\"The platform gap, diagonal streaks, and framing remain aligned throughout the sequence.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The yellow figure is at the upper left, above the left side of the dark platform.\"},{\"frame_index\":2,\"cue\":\"The figure has moved toward center, positioned over the platform gap.\"},{\"frame_index\":4,\"cue\":\"The figure reaches the upper right, having crossed to the opposite side of the gap.\"}],\"overall_confidence\":0.86}",
+          "tokenUsage": {
+            "total": 4684,
+            "prompt": 4360,
+            "completion": 266,
+            "completionDetails": {
+              "reasoning": 58
+            },
+            "numRequests": 1
+          },
+          "cost": 0.008936,
+          "latencyMs": 7368,
+          "cached": false,
+          "metadata": {
+            "clip_id": "rooftop_escape_crash_zoom",
+            "evaluation_id": "vfp_active_005",
+            "candidate_variant": null,
+            "prompt_version": "video-understanding-frame-packet-v3",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "grok-4.7",
+            "requested_model": "grok-4.7",
+            "returned_model": "grok-4.7",
+            "request_id": "7fa126aa-ebfd-9a5c-8759-2194e65c6644",
+            "provider": "xai",
+            "cost_estimated": false,
+            "modality": "ordered_jpeg_frame_packet",
+            "audio_submitted": false,
+            "frame_count": 5,
+            "sample_times_seconds": [
+              0,
+              1,
+              2,
+              3,
+              3.875
+            ],
+            "frame_sha256": [
+              "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d",
+              "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8",
+              "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd",
+              "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236",
+              "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+            ],
+            "meta_sha256": "82b8bbbdf804d1a9d8975e8952659d5455986fc2e4c3482d33f274227a715410"
+          },
+          "raw": {
+            "id": "7fa126aa-ebfd-9a5c-8759-2194e65c6644",
+            "model": "grok-4.7",
+            "status": "completed",
+            "usage": {
+              "input_tokens": 4360,
+              "input_tokens_details": {
+                "cached_tokens": 1152
+              },
+              "output_tokens": 324,
+              "output_tokens_details": {
+                "reasoning_tokens": 58
+              },
+              "total_tokens": 4684,
+              "num_sources_used": 0,
+              "num_server_side_tools_used": 0,
+              "cost_in_usd_ticks": 89360000,
+              "context_details": {
+                "input_tokens": 4360,
+                "output_tokens": 333
+              }
+            },
+            "x_zero_data_retention": "false"
+          }
+        },
+        "score": 0.59385,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "clip_id": "rooftop_escape_crash_zoom",
+            "evaluation_id": "vfp_active_005",
+            "clip_dir": "../video_understanding/rooftop_escape_crash_zoom",
+            "target_path": "video_understanding/rooftop_escape_crash_zoom/target.json",
+            "target_markdown": "file://../video_understanding/rooftop_escape_crash_zoom/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 4,
+        "vars": {
+          "clip_id": "rooftop_escape_crash_zoom",
+          "evaluation_id": "vfp_active_005",
+          "clip_dir": "../video_understanding/rooftop_escape_crash_zoom",
+          "target_path": "video_understanding/rooftop_escape_crash_zoom/target.json",
+          "target_markdown": "file://../video_understanding/rooftop_escape_crash_zoom/target.md"
+        },
+        "metadata": {
+          "clip_id": "rooftop_escape_crash_zoom",
+          "evaluation_id": "vfp_active_005",
+          "candidate_variant": null,
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "grok-4.7",
+          "requested_model": "grok-4.7",
+          "returned_model": "grok-4.7",
+          "request_id": "7fa126aa-ebfd-9a5c-8759-2194e65c6644",
+          "provider": "xai",
+          "cost_estimated": false,
+          "modality": "ordered_jpeg_frame_packet",
+          "audio_submitted": false,
+          "frame_count": 5,
+          "sample_times_seconds": [
+            0,
+            1,
+            2,
+            3,
+            3.875
+          ],
+          "frame_sha256": [
+            "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d",
+            "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8",
+            "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd",
+            "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236",
+            "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+          ],
+          "meta_sha256": "82b8bbbdf804d1a9d8975e8952659d5455986fc2e4c3482d33f274227a715410",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0.008894,
+        "error": "Color tags match well (navy/teal). Continuity status 'intact' is correct. Basic lateral movement direction is captured. Audio fields are properly empty. However, significant mismatches exist: tone (detached/surreal vs urgent/tense), emotion (isolation invented vs none), motion (measured/slow_drift vs fast_lateral - contradictory), camera (lateral_track implies movement not supported by reference; missing wide_master), and the key continuity detail about the small cyan rectangle beside the runner is completely missed. The overall characterization of the scene as 'detached' and 'slow' contradicts the reference's 'urgent/tense' and 'fast_lateral' assessment.",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.3775,
+          "reason": "Color tags match well (navy/teal). Continuity status 'intact' is correct. Basic lateral movement direction is captured. Audio fields are properly empty. However, significant mismatches exist: tone (detached/surreal vs urgent/tense), emotion (isolation invented vs none), motion (measured/slow_drift vs fast_lateral - contradictory), camera (lateral_track implies movement not supported by reference; missing wide_master), and the key continuity detail about the small cyan rectangle beside the runner is completely missed. The overall characterization of the scene as 'detached' and 'slow' contradicts the reference's 'urgent/tense' and 'fast_lateral' assessment.",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 1525,
+            "prompt": 751,
+            "completion": 774,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0.375,
+              "reason": "raw_score=0.3750 | overall=0.375 | uncertainty=0.140 | summary=0.00 | tone=0.00 | emotion=0.00 | color=1.00 | camera=0.50 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | camera: wide_master, unexpected=lateral_track | motion: fast_lateral, unexpected=measured, unexpected=slow_drift | continuity: The small cyan rectangle stays beside the runner across all five samples., unexpected=The icon progresses smoothly rightward across all five ordered frames while the arch and diagonal lines remain fixed.",
+              "assertion": {
+                "type": "python",
+                "value": "file://../scorers/video_understanding_scorer.py"
+              }
+            },
+            {
+              "assertion": {
+                "type": "llm-rubric",
+                "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+              },
+              "pass": false,
+              "score": 0.38,
+              "reason": "Color tags match well (navy/teal). Continuity status 'intact' is correct. Basic lateral movement direction is captured. Audio fields are properly empty. However, significant mismatches exist: tone (detached/surreal vs urgent/tense), emotion (isolation invented vs none), motion (measured/slow_drift vs fast_lateral - contradictory), camera (lateral_track implies movement not supported by reference; missing wide_master), and the key continuity detail about the small cyan rectangle beside the runner is completely missed. The overall characterization of the scene as 'detached' and 'slow' contradicts the reference's 'urgent/tense' and 'fast_lateral' assessment.",
+              "tokensUsed": {
+                "total": 1525,
+                "prompt": 751,
+                "completion": 774,
+                "cached": 0,
+                "numRequests": 0,
+                "completionDetails": {
+                  "reasoning": 0,
+                  "acceptedPrediction": 0,
+                  "rejectedPrediction": 0
+                }
+              },
+              "metadata": {
+                "renderedGradingPrompt": "[{\"role\":\"system\",\"content\":\"You are grading output according to a user-specified rubric. If the statement in the rubric is true, then the output passes the test. You respond with a JSON object with this structure: {reason: string, pass: boolean, score: number}\\n\\nExamples:\\n\\n<Output>Hello world</Output>\\n<Rubric>Content contains a greeting</Rubric>\\n{\\\"reason\\\": \\\"the content contains the word 'Hello'\\\", \\\"pass\\\": true, \\\"score\\\": 1.0}\\n\\n<Output>Avast ye swabs, repel the invaders!</Output>\\n<Rubric>Does not speak like a pirate</Rubric>\\n{\\\"reason\\\": \\\"'avast ye' is a common pirate term\\\", \\\"pass\\\": false, \\\"score\\\": 0.0}\"},{\"role\":\"user\",\"content\":\"<Output>\\n{\\\"clip_id\\\":\\\"vfp_active_006\\\",\\\"summary\\\":\\\"A cyan person icon travels steadily from the left side toward the right beneath a fixed arched line. The navy background and diagonal line field remain unchanged, giving the abstract diagram a detached, surreal quality.\\\",\\\"tone_tags\\\":[\\\"detached\\\",\\\"surreal\\\"],\\\"emotion_tags\\\":[\\\"isolation\\\"],\\\"color_tags\\\":[\\\"navy\\\",\\\"teal\\\"],\\\"camera_tags\\\":[\\\"static\\\",\\\"lateral_track\\\"],\\\"motion_tags\\\":[\\\"measured\\\",\\\"slow_drift\\\"],\\\"continuity_status\\\":\\\"intact\\\",\\\"continuity_notes\\\":[\\\"The icon progresses smoothly rightward across all five ordered frames while the arch and diagonal lines remain fixed.\\\"],\\\"audio_tags\\\":[],\\\"audio_notes\\\":[],\\\"evidence\\\":[{\\\"frame_index\\\":0,\\\"cue\\\":\\\"The cyan person icon is near the left edge beneath the arch.\\\"},{\\\"frame_index\\\":2,\\\"cue\\\":\\\"The icon has advanced toward the center while the background geometry stays fixed.\\\"},{\\\"frame_index\\\":4,\\\"cue\\\":\\\"The icon is on the right side, completing a steady left-to-right movement.\\\"}],\\\"overall_confidence\\\":0.86}\\n</Output>\\n<Rubric>\\nEvaluate this model's structured analysis against the ordered-frame\\nreference below.\\n\\nReference analysis:\\n# Ordered JPEG frame-packet reference\\n\\n- Summary: A cyan abstract runner moves laterally through a blue tunnel as repeated rain-like streaks shift across the ordered frames.\\n- Tone: urgent, tense\\n- Emotion: [none]\\n- Color / grade: teal, navy\\n- Camera language inferable from the ordered samples: static, wide_master\\n- Motion inferable from the ordered samples: fast_lateral\\n- Continuity: intact - The small cyan rectangle stays beside the runner across all five samples.\\n- Audio: unavailable to the subject and excluded from scoring\\n\\nThe subject received only five ordered JPEG samples plus neutral timing facts and\\nan opaque identifier. It did not receive the semantic clip ID, title, target,\\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\\nIgnore every audio line in the reference and require empty audio fields; do not\\nreward a claim of silence. Accept semantically equivalent visual wording, but\\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\\ninvented actions, edits, camera movement, continuity changes, identities, props,\\nlocations, or story meaning that the ordered samples do not show.\\nPass only at score >= 0.8.\\n\\n</Rubric>\"}]",
+                "renderedAssertionValue": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: A cyan abstract runner moves laterally through a blue tunnel as repeated rain-like streaks shift across the ordered frames.\n- Tone: urgent, tense\n- Emotion: [none]\n- Color / grade: teal, navy\n- Camera language inferable from the ordered samples: static, wide_master\n- Motion inferable from the ordered samples: fast_lateral\n- Continuity: intact - The small cyan rectangle stays beside the runner across all five samples.\n- Audio: unavailable to the subject and excluded from scoring\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+              }
+            }
+          ]
+        },
+        "id": "61db9e5c-67bf-426d-96b0-f488375fecb7",
+        "latencyMs": 5586,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "label": "prompts/video-understanding.txt: You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.",
+          "config": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          }
+        },
+        "promptId": "72459b03b2f28285007a43815d4e5c155ee504b39388b111860355eda47487e4",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://../providers/video_understanding_provider.py",
+          "label": "Grok 4.7"
+        },
+        "response": {
+          "output": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"A cyan person icon travels steadily from the left side toward the right beneath a fixed arched line. The navy background and diagonal line field remain unchanged, giving the abstract diagram a detached, surreal quality.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\",\"lateral_track\"],\"motion_tags\":[\"measured\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The icon progresses smoothly rightward across all five ordered frames while the arch and diagonal lines remain fixed.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The cyan person icon is near the left edge beneath the arch.\"},{\"frame_index\":2,\"cue\":\"The icon has advanced toward the center while the background geometry stays fixed.\"},{\"frame_index\":4,\"cue\":\"The icon is on the right side, completing a steady left-to-right movement.\"}],\"overall_confidence\":0.86}",
+          "tokenUsage": {
+            "total": 4677,
+            "prompt": 4360,
+            "completion": 244,
+            "completionDetails": {
+              "reasoning": 73
+            },
+            "numRequests": 1
+          },
+          "cost": 0.008894,
+          "latencyMs": 5586,
+          "cached": false,
+          "metadata": {
+            "clip_id": "storm_tunnel_lateral_run",
+            "evaluation_id": "vfp_active_006",
+            "candidate_variant": null,
+            "prompt_version": "video-understanding-frame-packet-v3",
+            "frame_policy": "five_evenly_spaced_jpegs_v1",
+            "model": "grok-4.7",
+            "requested_model": "grok-4.7",
+            "returned_model": "grok-4.7",
+            "request_id": "85cda36f-d722-9bb9-8273-a465fe0ca375",
+            "provider": "xai",
+            "cost_estimated": false,
+            "modality": "ordered_jpeg_frame_packet",
+            "audio_submitted": false,
+            "frame_count": 5,
+            "sample_times_seconds": [
+              0,
+              1,
+              2,
+              3,
+              3.875
+            ],
+            "frame_sha256": [
+              "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+              "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+              "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+              "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+              "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+            ],
+            "meta_sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13"
+          },
+          "raw": {
+            "id": "85cda36f-d722-9bb9-8273-a465fe0ca375",
+            "model": "grok-4.7",
+            "status": "completed",
+            "usage": {
+              "input_tokens": 4360,
+              "input_tokens_details": {
+                "cached_tokens": 1152
+              },
+              "output_tokens": 317,
+              "output_tokens_details": {
+                "reasoning_tokens": 73
+              },
+              "total_tokens": 4677,
+              "num_sources_used": 0,
+              "num_server_side_tools_used": 0,
+              "cost_in_usd_ticks": 88940000,
+              "context_details": {
+                "input_tokens": 4360,
+                "output_tokens": 326
+              }
+            },
+            "x_zero_data_retention": "false"
+          }
+        },
+        "score": 0.3775,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "clip_id": "storm_tunnel_lateral_run",
+            "evaluation_id": "vfp_active_006",
+            "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+            "target_path": "video_understanding/storm_tunnel_lateral_run/target.json",
+            "target_markdown": "file://../video_understanding/storm_tunnel_lateral_run/target.md"
+          },
+          "assert": [
+            {
+              "type": "python",
+              "value": "file://../scorers/video_understanding_scorer.py"
+            },
+            {
+              "type": "llm-rubric",
+              "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+            }
+          ],
+          "options": {
+            "provider": "anthropic:messages:claude-opus-4-6"
+          },
+          "metadata": {}
+        },
+        "testIdx": 5,
+        "vars": {
+          "clip_id": "storm_tunnel_lateral_run",
+          "evaluation_id": "vfp_active_006",
+          "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+          "target_path": "video_understanding/storm_tunnel_lateral_run/target.json",
+          "target_markdown": "file://../video_understanding/storm_tunnel_lateral_run/target.md"
+        },
+        "metadata": {
+          "clip_id": "storm_tunnel_lateral_run",
+          "evaluation_id": "vfp_active_006",
+          "candidate_variant": null,
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "model": "grok-4.7",
+          "requested_model": "grok-4.7",
+          "returned_model": "grok-4.7",
+          "request_id": "85cda36f-d722-9bb9-8273-a465fe0ca375",
+          "provider": "xai",
+          "cost_estimated": false,
+          "modality": "ordered_jpeg_frame_packet",
+          "audio_submitted": false,
+          "frame_count": 5,
+          "sample_times_seconds": [
+            0,
+            1,
+            2,
+            3,
+            3.875
+          ],
+          "frame_sha256": [
+            "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+            "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+            "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+            "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+            "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+          ],
+          "meta_sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13",
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      }
+    ],
+    "stats": {
+      "successes": 0,
+      "failures": 6,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 26160,
+        "completion": 1502,
+        "cached": 0,
+        "total": 28469,
+        "numRequests": 6,
+        "completionDetails": {
+          "reasoning": 807,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 9411,
+          "prompt": 4550,
+          "completion": 4861,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 167302,
+      "evaluationDurationMs": 167302
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Ordered-JPEG frame understanding — six source-backed synthetic controls",
+    "prompts": [
+      "file:///Users/cam/.codex/worktrees/grok47-eval-20260922/cine-forge/benchmarks/prompts/video-understanding.txt"
+    ],
+    "providers": [
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "GPT-5.4",
+        "config": {
+          "provider": "openai",
+          "model": "gpt-5.4",
+          "temperature": 0,
+          "max_tokens": 1400,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Claude Sonnet 4.6",
+        "config": {
+          "provider": "anthropic",
+          "model": "claude-sonnet-4-6",
+          "temperature": 0,
+          "max_tokens": 1400,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Grok 4.3",
+        "config": {
+          "provider": "xai",
+          "model": "grok-4.3",
+          "temperature": 0,
+          "max_tokens": 1400,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Grok 4.5",
+        "config": {
+          "provider": "xai",
+          "model": "grok-4.5",
+          "max_tokens": 1400,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Grok 4.7",
+        "config": {
+          "provider": "xai",
+          "model": "grok-4.7",
+          "transport": "responses_strict",
+          "reasoning_effort": "low",
+          "max_tokens": 8192,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Gemini 2.5 Pro",
+        "config": {
+          "provider": "google",
+          "model": "gemini-2.5-pro",
+          "max_tokens": 65536,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Gemini 2.5 Flash",
+        "config": {
+          "provider": "google",
+          "model": "gemini-2.5-flash",
+          "max_tokens": 65536,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Gemini 3.1 Pro Preview",
+        "config": {
+          "provider": "google",
+          "model": "gemini-3.1-pro-preview",
+          "max_tokens": 65536,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Gemini 3 Flash Preview",
+        "config": {
+          "provider": "google",
+          "model": "gemini-3-flash-preview",
+          "max_tokens": 65536,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Gemini 3.5 Flash",
+        "config": {
+          "provider": "google",
+          "model": "gemini-3.5-flash",
+          "max_tokens": 65536,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Gemini 3.5 Flash-Lite",
+        "config": {
+          "provider": "google",
+          "model": "gemini-3.5-flash-lite",
+          "max_tokens": 65536,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Gemini 3.6 Flash",
+        "config": {
+          "provider": "google",
+          "model": "gemini-3.6-flash",
+          "max_tokens": 65536,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      },
+      {
+        "id": "file://../providers/video_understanding_provider.py",
+        "label": "Gemini 3.7 Flash",
+        "config": {
+          "provider": "google",
+          "model": "gemini-3.7-flash",
+          "max_tokens": 65536,
+          "max_frames": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "pythonExecutable": "python",
+          "timeout": 300000
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "clip_id": "dialogue_confession_push_in",
+          "evaluation_id": "vfp_active_001",
+          "clip_dir": "../video_understanding/dialogue_confession_push_in",
+          "target_path": "video_understanding/dialogue_confession_push_in/target.json",
+          "target_markdown": "file://../video_understanding/dialogue_confession_push_in/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "alarm_chase_whip_pan",
+          "evaluation_id": "vfp_active_002",
+          "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+          "target_path": "video_understanding/alarm_chase_whip_pan/target.json",
+          "target_markdown": "file://../video_understanding/alarm_chase_whip_pan/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "quiet_bedside_vigil",
+          "evaluation_id": "vfp_active_003",
+          "clip_dir": "../video_understanding/quiet_bedside_vigil",
+          "target_path": "video_understanding/quiet_bedside_vigil/target.json",
+          "target_markdown": "file://../video_understanding/quiet_bedside_vigil/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "prop_swap_continuity_break",
+          "evaluation_id": "vfp_active_004",
+          "clip_dir": "../video_understanding/prop_swap_continuity_break",
+          "target_path": "video_understanding/prop_swap_continuity_break/target.json",
+          "target_markdown": "file://../video_understanding/prop_swap_continuity_break/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "rooftop_escape_crash_zoom",
+          "evaluation_id": "vfp_active_005",
+          "clip_dir": "../video_understanding/rooftop_escape_crash_zoom",
+          "target_path": "video_understanding/rooftop_escape_crash_zoom/target.json",
+          "target_markdown": "file://../video_understanding/rooftop_escape_crash_zoom/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+          }
+        ]
+      },
+      {
+        "vars": {
+          "clip_id": "storm_tunnel_lateral_run",
+          "evaluation_id": "vfp_active_006",
+          "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+          "target_path": "video_understanding/storm_tunnel_lateral_run/target.json",
+          "target_markdown": "file://../video_understanding/storm_tunnel_lateral_run/target.md"
+        },
+        "assert": [
+          {
+            "type": "python",
+            "value": "file://../scorers/video_understanding_scorer.py"
+          },
+          {
+            "type": "llm-rubric",
+            "value": "Evaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n{{target_markdown}}\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "options": {
+        "provider": "anthropic:messages:claude-opus-4-6"
+      },
+      "vars": {},
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "results/video-understanding-grok47-v3-2026-09-22.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.121.1",
+    "nodeVersion": "v24.13.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-09-22T23:11:03.981Z",
+    "evaluationCreatedAt": "2026-09-22T23:08:16.587Z"
+  }
+}

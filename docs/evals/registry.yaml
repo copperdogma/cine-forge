@@ -2050,6 +2050,7 @@ evals:
       - "030"
       - "208"
       - "213"
+      - "220"
     category_refs:
       - spec:7
       - spec:8
@@ -2091,6 +2092,20 @@ evals:
       note: "Fresh results on the repaired six-case frame-only task are required before any default decision; every historical row below is harness-contaminated and non-decision-grade."
 
     scores:
+      - model: "Grok 4.7"
+        evidence_status: bounded-six-case-decision-grade-rejection
+        metrics:
+          overall: 0.4816
+          deterministic: 0.4982
+          rubric: 0.465
+        latency_ms: 8608
+        cost_usd: 0.008501
+        cost_estimated: false
+        measured: 2026-09-22
+        git_sha: "bdcea8d+story220-hash-manifest"
+        result_file: benchmarks/results/video-understanding-grok47-v3-2026-09-22.json
+        contract_manifest: docs/evals/story-220-grok47-contract-manifest.json
+        note: "Attempt 038 direct xAI Responses low-reasoning strict-schema result. All six maintained repo-owned synthetic ordered-five-JPEG controls returned exact grok-4.7 identity, terminal provider-strict JSON, raw usage, and no audio. Aggregate quality 0.4816 failed the 0.80 gate despite 8,608 ms average latency and $0.008501 provider-reported average subject cost. The six semantic video-analysis misses are model-wrong; no schema, image-parity, identity, usage, or transport defect was found. The fresh Gemini comparator was correctly not run. Do not adopt."
       - model: "Gemini 3.6 Flash"
         metrics:
           overall: 0.4397
@@ -2277,6 +2292,24 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "038"
+        story: attempts/038-grok47-video-and-script-bible.md
+        date: 2026-09-22
+        status: failed
+        approach: "Qualified direct Grok 4.7 Responses strict five-JPEG output, then ran all six maintained synthetic ordered-frame controls serially before stopping on the 0.80 quality gate."
+        worker_model: "Codex (GPT-6)"
+        worker_model_date: 2026-09-22
+        subject_model: "Grok 4.7"
+        score_before: null
+        score_after: 0.4816
+        latency_before: null
+        latency_after: 8608
+        cost_before: null
+        cost_after: 0.008501
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: materially-improved-exact-model-and-fresh-approval
+            note: "Do not rerun unchanged Grok 4.7 low-reasoning ordered-five-JPEG controls. Reopen only with explicit approval and evidence of a material model or route change."
       - id: "002"
         story: attempts/002-video-understanding-google-max-output-budget.md
         date: 2026-03-19
@@ -4025,6 +4058,7 @@ evals:
       - "217"
       - "218"
       - "219"
+      - "220"
     category_refs:
       - spec:2
       - spec:8
@@ -4071,6 +4105,22 @@ evals:
       cost_usd_max: 0.01
 
     scores:
+      - model: "Grok 4.7 Low"
+        evidence_status: bounded-one-case-decision-grade-rejection
+        metrics:
+          overall: 0.80995
+          deterministic: 0.6999
+          deterministic_raw: 0.8967
+          rubric: 0.92
+        latency_ms: 25533
+        cost_usd: 0.015042
+        cost_estimated: false
+        measured: 2026-09-22
+        git_sha: "bdcea8d+story220-hash-manifest"
+        result_file: benchmarks/results/script-bible-grok47-low-open-frequency-2026-09-22.json
+        contract_manifest: docs/evals/story-220-grok47-contract-manifest.json
+        offline_adjudication: docs/evals/story-220-grok47-script-bible-offline-adjudication-v1.json
+        note: "Attempt 038 exact-runtime synthetic Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.7 identity, terminal provider-strict ScriptBible JSON, low reasoning, store=false, and reconciled provider-reported cost. The recorded aggregate 0.80995 is below 0.90. Offline source adjudication replayed the unchanged scorer at 0.6999 hard / 0.8967 raw: four theme deductions are faithful paraphrases or source-supported compression, but a safe general relaxation would admit invented relations; the journey wording is partly interpretive and has no frozen anchors. No scorer/golden repair or score rewrite was justified. Latency was 25,533 ms, while $0.015042 is 50.4% above the hard $0.01 subject-cost gate. This actual cost miss independently rejects the lane. No fresh Gemini comparator or second corpus. Do not adopt."
       - model: "GPT-6 Astra Low"
         evidence_status: bounded-one-case-decision-grade-rejection
         metrics:
@@ -4371,6 +4421,24 @@ evals:
         note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
     attempts:
+      - id: "038"
+        story: attempts/038-grok47-video-and-script-bible.md
+        date: 2026-09-22
+        status: failed
+        approach: "Qualified direct Grok 4.7 Responses strict output, then ran one frozen low-reasoning exact-runtime synthetic Open Frequency case before stopping on the decisive hard subject-cost gate; the recorded quality hard score has a source-reviewed scorer-contract ambiguity."
+        worker_model: "Codex (GPT-6)"
+        worker_model_date: 2026-09-22
+        subject_model: "Grok 4.7"
+        score_before: null
+        score_after: 0.80995
+        latency_before: null
+        latency_after: 25533
+        cost_before: null
+        cost_after: 0.015042
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: materially-cheaper-exact-model-and-fresh-approval
+            note: "Do not rerun unchanged Grok 4.7 low-reasoning Open Frequency. Reopen only with explicit approval and evidence that the exact subject can plausibly clear the $0.01 gate."
       - id: "036"
         story: attempts/036-script-bible-qwen38-flash-force-fresh.md
         date: 2026-09-13

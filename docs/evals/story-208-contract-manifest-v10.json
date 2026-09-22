@@ -33,7 +33,7 @@
     ]
   },
   "file_count": 932,
-  "bundle_sha256": "f99ee5fba0ac0c2392a996ccdc7d2fbd980899b33ac2b6a709716355ee2878e8",
+  "bundle_sha256": "079240f1c7bf590f12016e2d399412fc66b4e35db37c6c86831d8755ed1a9152",
   "files": [
     {
       "path": ".agents/skills/create-eval/SKILL.md",
@@ -57,8 +57,8 @@
     },
     {
       "path": "AGENTS.md",
-      "sha256": "198e6b13ee5af5f130520870e5ab35ae249098bc6fa9a3b639dd1aa981717911",
-      "bytes": 78180
+      "sha256": "f42d6148943262927a7b7436a825d1a086fe70e25d07cb31806aa5c16d8fab81",
+      "bytes": 78640
     },
     {
       "path": "Makefile",
@@ -1292,8 +1292,8 @@
     },
     {
       "path": "benchmarks/providers/script_bible_runtime_provider.py",
-      "sha256": "38480b2ac63f7273e5109e7f2602ecbbe5ab73d7cacedce7a5bb1a4306c3fef0",
-      "bytes": 33376
+      "sha256": "71d5f403cd2379eb945f1ec1ce78ddca62c0c039ce9fe77928d9601f702a4828",
+      "bytes": 33500
     },
     {
       "path": "benchmarks/providers/storyboard_understanding_packet.py",
@@ -1312,13 +1312,13 @@
     },
     {
       "path": "benchmarks/providers/video_understanding_provider.py",
-      "sha256": "a9bd4d5abe48a64bc117f6fe536cce1affcb2974031a9fb21384e116bd319fbb",
-      "bytes": 12132
+      "sha256": "8e59610719ef0d36d589f703ef1ac7f5b19e551d5b16cceb62b1bf9a38c22fab",
+      "bytes": 17786
     },
     {
       "path": "benchmarks/providers/video_understanding_provider_support.py",
-      "sha256": "0cd45d3aa39d57bfa55ef5029ca5907ae56af3ace44efe89b25e9e51e6c1c51b",
-      "bytes": 8988
+      "sha256": "f33a8f7b2386fe877e5d4e1a5cda2b690dec266892bd80e05d60326e6425a4e3",
+      "bytes": 9204
     },
     {
       "path": "benchmarks/providers/video_understanding_transport.py",
@@ -1742,8 +1742,8 @@
     },
     {
       "path": "benchmarks/tasks/video-understanding.yaml",
-      "sha256": "f21176d56239c515519d6e80718853677f3ecea2c526ad6df856b955e2a0d9eb",
-      "bytes": 7965
+      "sha256": "a57dcb1d48d73ff6f5d4beba892607eb3aabb9c9ad73e8fbe950f7c988cd4de3",
+      "bytes": 8366
     },
     {
       "path": "benchmarks/video_understanding/README.md",
@@ -2664,8 +2664,8 @@
       "path": "docs/evals/registry.yaml#contract-projection",
       "source_path": "docs/evals/registry.yaml",
       "projection": "all eval fields except mutable scores and attempts",
-      "sha256": "33afbeef914c5528a7e7135eeefe36249380403ab4d0f294b69bb68021c51761",
-      "bytes": 40040
+      "sha256": "5b732c98ed4f6c0859139dfeaa9da07a9e57594cfbd5b841f58fa6fefebe0bf3",
+      "bytes": 40052
     },
     {
       "path": "docs/evals/truth-audit-ledger.yaml",
@@ -2674,8 +2674,8 @@
     },
     {
       "path": "docs/methodology/state.yaml",
-      "sha256": "c8ee4bedf0e5e2f24d83c39ec229ef84aa7bba49ad527be310d4c99211dc75d0",
-      "bytes": 32801
+      "sha256": "0ed66fadb56aec993a18d01269195cf61baff99be4482916ef407f4006f275b8",
+      "bytes": 32815
     },
     {
       "path": "docs/runbooks/create-eval.md",
@@ -2729,8 +2729,8 @@
     },
     {
       "path": "scripts/methodology-graph.js",
-      "sha256": "f4bcc72c943430fd8f4e33b1dc03996eb4782a9c5552d0483d522b79b989e427",
-      "bytes": 78362
+      "sha256": "8a95c3ba052976f6c256b90cb8b40e147950ec6bb75f9dcca98cb2f1f6d5a77a",
+      "bytes": 78356
     },
     {
       "path": "scripts/post_rollout_breakdown_contract.py",
@@ -4634,8 +4634,8 @@
     },
     {
       "path": "tests/unit/test_video_understanding_benchmark.py",
-      "sha256": "bfa9af3455cdc4d18df25aca4649f7b0844f6ce4b93aad70eca91dcfaef34e35",
-      "bytes": 24047
+      "sha256": "56635f8e7bfe6fada6c33296027504c49923e2ef6c97df176468f3d7ae057686",
+      "bytes": 26673
     },
     {
       "path": "tests/unit/test_video_understanding_dataset.py",
@@ -4659,8 +4659,8 @@
     },
     {
       "path": "tests/unit/test_xai_script_bible_provider.py",
-      "sha256": "d5cc34eb7acb89eaaa18d2db0303216c054780554cd7ee2e6c985d78aa446b09",
-      "bytes": 5660
+      "sha256": "199848d4f75ae6495804752a1935c10ed38bb1001e1414aa45997d471350dd8f",
+      "bytes": 7114
     },
     {
       "path": "ui/package.json",

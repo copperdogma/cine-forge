@@ -327,6 +327,85 @@ def test_provider_xai_call_uses_openai_compatible_payload(
 
 
 @pytest.mark.unit
+def test_provider_xai_responses_strict_keeps_all_images_schema_and_usage(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seen: dict[str, object] = {}
+    output = json.dumps(
+        {
+            "clip_id": "opaque_001",
+            "summary": "A blue figure remains in a two-shot.",
+            "tone_tags": ["intimate"],
+            "emotion_tags": [],
+            "color_tags": ["navy"],
+            "camera_tags": ["locked_two_shot"],
+            "motion_tags": ["measured"],
+            "continuity_status": "intact",
+            "continuity_notes": ["The pale rectangle remains visible."],
+            "audio_tags": [],
+            "audio_notes": [],
+            "evidence": [{"frame_index": 0, "cue": "Blue two-shot."}],
+            "overall_confidence": 0.8,
+        }
+    )
+
+    def fake_request(payload: dict[str, object]):
+        seen["payload"] = payload
+        return (
+            {
+                "id": "resp-grok47-video",
+                "model": "grok-4.7",
+                "status": "completed",
+                "incomplete_details": None,
+                "output": [{"content": [{"type": "output_text", "text": output}]}],
+                "usage": {
+                    "input_tokens": 100,
+                    "output_tokens": 70,
+                    "total_tokens": 170,
+                    "cost_in_usd_ticks": 5600000,
+                    "output_tokens_details": {"reasoning_tokens": 20},
+                },
+            },
+            "false",
+        )
+
+    monkeypatch.setattr(provider, "_request_xai_responses_json", fake_request)
+    result = provider._call_xai_responses_strict(
+        model="grok-4.7",
+        user_text="Inspect the ordered frames.",
+        frames=[
+            {"mime_type": "image/jpeg", "base64": "abc"},
+            {"mime_type": "image/jpeg", "base64": "def"},
+        ],
+        max_tokens=8192,
+        reasoning_effort="low",
+    )
+
+    payload = seen["payload"]
+    assert isinstance(payload, dict)
+    assert payload["store"] is False
+    assert payload["reasoning"] == {"effort": "low"}
+    assert payload["text"]["format"]["strict"] is True
+    content = payload["input"][0]["content"]
+    assert [item["type"] for item in content] == [
+        "input_text",
+        "input_text",
+        "input_image",
+        "input_text",
+        "input_image",
+    ]
+    assert result["token_usage"] == {
+        "prompt": 100,
+        "completion": 50,
+        "total": 170,
+        "billed_completion": 70,
+        "reasoning_completion": 20,
+    }
+    assert result["reported_cost_usd"] == 0.00056
+    assert result["cost_estimated"] is False
+
+
+@pytest.mark.unit
 @pytest.mark.parametrize("missing", ["responseId", "modelVersion"])
 def test_gemini_video_transport_requires_returned_call_and_model_identity(
     monkeypatch: pytest.MonkeyPatch,

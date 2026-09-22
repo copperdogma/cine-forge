@@ -15,6 +15,9 @@ _subject_contract = importlib.import_module("final_render_provider_floor_subject
 
 
 def response_cost(request: dict[str, Any], response: dict[str, Any]) -> float | None:
+    reported_cost = response.get("reported_cost_usd")
+    if isinstance(reported_cost, (int, float)) and not isinstance(reported_cost, bool):
+        return float(reported_cost)
     token_usage = response.get("token_usage")
     if not isinstance(token_usage, dict):
         return None
@@ -169,7 +172,7 @@ def build_promptfoo_response(
         "returned_model": returned_model.strip(),
         "request_id": request_id.strip(),
         "provider": request["provider"],
-        "cost_estimated": cost_usd is not None,
+        "cost_estimated": bool(response.get("cost_estimated", cost_usd is not None)),
         "modality": "ordered_jpeg_frame_packet",
         "audio_submitted": False,
         "frame_count": packet["frame_count"],

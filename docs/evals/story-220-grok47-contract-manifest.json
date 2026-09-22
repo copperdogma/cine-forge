@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "story": "220",
+  "attempt": "038",
+  "date": "2026-09-22",
+  "base_git_sha": "bdcea8d5b9fafe9f358274ee57ccf3987a07f49f",
+  "execution_state": "isolated-uncommitted-worktree",
+  "subject": {
+    "provider": "xAI direct Responses",
+    "requested_model": "grok-4.7",
+    "returned_model": "grok-4.7",
+    "reasoning_effort": "low",
+    "store": false,
+    "x_zero_data_retention": false,
+    "synthetic_only": true,
+    "strict_schema": true,
+    "terminal_calls_only": true
+  },
+  "lanes": {
+    "video_understanding": {
+      "fixture_contract": "six maintained repo-owned synthetic controls; five ordered JPEGs per control; no audio, MP4, transcript, semantic title, or quarantined case",
+      "result": {
+        "overall": 0.4816,
+        "deterministic": 0.4982,
+        "rubric": 0.465,
+        "average_latency_ms": 8608,
+        "average_subject_cost_usd": 0.008501,
+        "quality_gate_passed": false,
+        "latency_gate_passed": true,
+        "cost_gate_passed": true,
+        "comparator_run": false
+      },
+      "spend_usd": {
+        "xai_actual_probes": 0.018496,
+        "xai_actual_subjects": 0.051006,
+        "judge_estimated": 0.432825,
+        "accounted_total": 0.502327,
+        "cap": 0.75,
+        "unresolved_upper_exposure": 0.0
+      }
+    },
+    "script_bible": {
+      "fixture_contract": "one repo-authored synthetic Open Frequency exact-runtime ScriptBible case",
+      "result": {
+        "overall": 0.80995,
+        "deterministic_hard": 0.6999,
+        "deterministic_raw": 0.8967,
+        "rubric": 0.92,
+        "latency_ms": 25533,
+        "subject_cost_usd": 0.015042,
+        "quality_gate_passed": false,
+        "quality_gate_interpretation": "recorded maintained hard score fails; source-reviewed keyword-grounding ambiguity means the raw deterministic-plus-rubric average would clear",
+        "latency_gate_passed": true,
+        "cost_gate_passed": false,
+        "comparator_run": false,
+        "second_corpus_run": false
+      },
+      "spend_usd": {
+        "xai_actual_probes": 0.020886,
+        "xai_actual_subject": 0.015042,
+        "judge_estimated": 0.132765,
+        "accounted_total": 0.168693,
+        "cap": 0.35,
+        "unresolved_upper_exposure": 0.0
+      }
+    }
+  },
+  "aggregate_spend_usd": {
+    "xai_actual": 0.10543,
+    "judge_estimated": 0.56559,
+    "accounted_total": 0.67102,
+    "cap": 1.1,
+    "unresolved_upper_exposure": 0.0
+  },
+  "offline_adjudication": {
+    "path": "docs/evals/story-220-grok47-script-bible-offline-adjudication-v1.json",
+    "sha256": "0da878c3b6f0e0a650924b5e32b66f2b17e967675652658b4560fa5bbeb7a346",
+    "provider_calls": 0,
+    "judge_calls": 0,
+    "score_rewrite": false
+  },
+  "artifacts": {
+    "benchmarks/providers/video_understanding_provider.py": "8e59610719ef0d36d589f703ef1ac7f5b19e551d5b16cceb62b1bf9a38c22fab",
+    "benchmarks/providers/video_understanding_provider_support.py": "f33a8f7b2386fe877e5d4e1a5cda2b690dec266892bd80e05d60326e6425a4e3",
+    "benchmarks/providers/script_bible_runtime_provider.py": "71d5f403cd2379eb945f1ec1ce78ddca62c0c039ce9fe77928d9601f702a4828",
+    "benchmarks/tasks/video-understanding.yaml": "a57dcb1d48d73ff6f5d4beba892607eb3aabb9c9ad73e8fbe950f7c988cd4de3",
+    "benchmarks/runtime_tasks/script-bible-runtime.yaml": "a63892417bd70dc7dece148c8a51b4b655fe6292b08fc7c643fccbcfb090d095",
+    "benchmarks/scorers/video_understanding_scorer.py": "77c81f2b4eb086fc3c3e1a5d244a9200688d780f53611bb206932d3a2c2c5d27",
+    "benchmarks/scorers/script_bible_scorer.py": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+    "benchmarks/golden/open-frequency-script-bible.json": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
+    "tests/fixtures/ingest_inputs/open_frequency_short.fountain": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "benchmarks/results/video-understanding-grok47-v3-2026-09-22.json": "e35fac351e5f3b064468121d7910b5c56c8797a34cd09f75044b17a00c50902b",
+    "benchmarks/results/video-understanding-grok47-v3-2026-09-22-report.json": "41207f1db5a7f52c273a319c77ac12094a32ec240fc1225847d6bfbe04e7a7f9",
+    "benchmarks/results/video-understanding-grok47-v3-2026-09-22-report.md": "82a4e363b8529a37118a92d0b46e225f0b92e69a429835c2c2ffe7168b2bcb40",
+    "benchmarks/results/script-bible-grok47-low-open-frequency-2026-09-22.json": "6385e087bab7b312748f361ecb898933f08208d7584e139937302ac1e55737f4"
+  },
+  "protected_probe_artifacts": {
+    "output/evals/grok47-20260922/video-native-strict-five-jpeg-probe.json": {"sha256": "dc4d9bf2f8bec1f9295ba06122b5df478c763686a7206e5ebdcd7c64106a0dac", "bytes": 2860},
+    "output/evals/grok47-20260922/video-harness-parity-five-jpeg-probe.json": {"sha256": "a93d14f1fd2272d02db283fdad6f39f1f743a565cd078e0a19cdf1b328489bcd", "bytes": 3552},
+    "output/evals/grok47-20260922/script-bible-native-strict-probe.json": {"sha256": "d0f40bef55dcab022fa099c32b5a210889f5c51a9caaf014ac27a625abb7f027", "bytes": 3500},
+    "output/evals/grok47-20260922/script-bible-harness-parity-probe.json": {"sha256": "48c47fa16b7961be9b15e99ac77bde4b15ce6c7b592adf2264f5f637f8d1c586", "bytes": 3890},
+    "output/evals/grok47-20260922/script-bible-harness-parity-probe-repaired.json": {"sha256": "1060b617157ffe1f5d1524d94536d6d9e96192cf3b98dbde9db5562343e26aed", "bytes": 3928}
+  },
+  "decision": "reject-grok-4.7-video-for-quality-and-script-bible-for-actual-cost; retain-provisional-defaults; no-comparator-no-expansion"
+}

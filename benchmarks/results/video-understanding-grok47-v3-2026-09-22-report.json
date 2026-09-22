@@ -1,0 +1,64 @@
+{
+  "eval_id": "video-understanding",
+  "prompt_version": "video-understanding-frame-packet-v3",
+  "expected_cases": [
+    "alarm_chase_whip_pan",
+    "dialogue_confession_push_in",
+    "prop_swap_continuity_break",
+    "quiet_bedside_vigil",
+    "rooftop_escape_crash_zoom",
+    "storm_tunnel_lateral_run"
+  ],
+  "models": [
+    {
+      "model": "Grok 4.7",
+      "python_overall": 0.4982,
+      "rubric_overall": 0.465,
+      "overall": 0.4816,
+      "latency_ms": 8608,
+      "cost_usd": 0.008501,
+      "value_score_per_dollar": 56.65,
+      "dimension_scores": {
+        "audio": 0.0,
+        "camera": 0.7222,
+        "color": 0.6889,
+        "continuity": 0.6667,
+        "emotion": 0.1667,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 0.3333,
+        "summary": 0.3889,
+        "tone": 0.0833
+      },
+      "calls": 6,
+      "observed_cases": [
+        "alarm_chase_whip_pan",
+        "dialogue_confession_push_in",
+        "prop_swap_continuity_break",
+        "quiet_bedside_vigil",
+        "rooftop_escape_crash_zoom",
+        "storm_tunnel_lateral_run"
+      ],
+      "missing_cases": [],
+      "extra_cases": [],
+      "duplicate_cases": [],
+      "incomplete_cases": [],
+      "failed_cases": [
+        "alarm_chase_whip_pan",
+        "dialogue_confession_push_in",
+        "prop_swap_continuity_break",
+        "quiet_bedside_vigil",
+        "rooftop_escape_crash_zoom",
+        "storm_tunnel_lateral_run"
+      ],
+      "contract_errors": [],
+      "regrade_errors": [],
+      "data_complete": true,
+      "previous_overall": null
+    }
+  ],
+  "recommendation": {
+    "decision": "retest",
+    "rationale": "A decision requires at least one complete baseline and challenger that both clear the dual quality gates."
+  }
+}

@@ -60,7 +60,7 @@ DEEPSEEK_V4_PRO_OPENROUTER_MODEL = "deepseek/deepseek-v4-pro"
 DEEPSEEK_V4_PRO_OPENROUTER_PROVIDER = "Baidu"
 OX_ALPHA_OPENROUTER_MODEL = "stealth/ox-alpha"
 HY4_PREVIEW_OPENROUTER_MODEL = "tencent/hy4-preview"
-GROK_46_MODEL = "grok-4.6"
+GROK_RESPONSES_MODELS = frozenset({"grok-4.6", "grok-4.7"})
 GPT6_ASTRA_MODEL = "gpt-6-astra"
 GPT6_ASTRA_INPUT_PER_M = 10.0
 GPT6_ASTRA_CACHED_INPUT_PER_M = 1.0
@@ -140,8 +140,9 @@ def call_api(prompt: str, options: dict, context: dict) -> dict:
                 timeout_seconds=call_options["request_timeout_seconds"],
                 reasoning_effort=str(config.get("reasoning_effort") or "low"),
             )
-        elif bare_model == GROK_46_MODEL:
+        elif bare_model in GROK_RESPONSES_MODELS:
             output, metadata = _call_xai_responses_strict(
+                model=bare_model,
                 prompt=call_options["prompt"],
                 max_tokens=max_tokens,
                 timeout_seconds=call_options["request_timeout_seconds"],
@@ -504,6 +505,7 @@ def _diagnostic_json_content(
 
 def _call_xai_responses_strict(
     *,
+    model: str,
     prompt: str,
     max_tokens: int,
     timeout_seconds: float,
@@ -511,7 +513,7 @@ def _call_xai_responses_strict(
 ) -> tuple[ScriptBible, dict[str, Any]]:
     """Call Grok 4.6 through native Responses with strict JSON and no storage."""
     payload = {
-        "model": GROK_46_MODEL,
+        "model": model,
         "input": [
             {
                 "role": "user",
@@ -538,7 +540,7 @@ def _call_xai_responses_strict(
     latency_seconds = time.perf_counter() - started
     identity = validate_provider_response_identity(
         provider="xai",
-        requested_model=GROK_46_MODEL,
+        requested_model=model,
         returned_model=raw.get("model"),
         request_id=raw.get("id"),
         require_returned=True,
@@ -593,6 +595,7 @@ def _call_xai_responses_strict(
         "cost_estimated": False,
         "latency_seconds": latency_seconds,
         "reasoning_effort": reasoning_effort,
+        "schema_enforcement": "provider-strict",
         "store": False,
         "x_zero_data_retention": x_zero_data_retention,
         "zdr": x_zero_data_retention == "true",

@@ -30,6 +30,7 @@ load_cine_forge_dotenv(REPO_ROOT)
 _llm = importlib.import_module("cine_forge.ai.llm")
 estimate_cost_usd = _llm.estimate_cost_usd
 _to_gemini_schema = _llm._to_gemini_schema
+_to_openai_strict_schema = _llm._to_openai_strict_schema
 require_env = importlib.import_module("cine_forge.env").require_env
 VideoAnalysisPrediction = importlib.import_module(
     "cine_forge.schemas"
@@ -66,6 +67,7 @@ _subject_contract_fingerprint = _subject_contract.subject_contract_fingerprint
 
 OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions"
 XAI_CHAT_URL = "https://api.x.ai/v1/chat/completions"
+XAI_RESPONSES_URL = "https://api.x.ai/v1/responses"
 ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages"
 GEMINI_MODELS_URL = "https://generativelanguage.googleapis.com/v1beta/models"
 
@@ -105,6 +107,16 @@ def _dispatch_subject_request(request: dict[str, Any]) -> dict[str, Any]:
     if provider == "openai":
         return _call_openai(**common, temperature=request["temperature"])
     if provider == "xai":
+        if request["config"].get("transport") == "responses_strict":
+            return _call_xai_responses_strict(
+                model=request["model"],
+                user_text=request["user_text"],
+                frames=request["packet"]["frames"],
+                max_tokens=request["max_tokens"],
+                reasoning_effort=str(
+                    request["config"].get("reasoning_effort") or "low"
+                ),
+            )
         return _call_xai(**common, temperature=request["temperature"])
     if provider == "anthropic":
         return _call_anthropic(**common, temperature=request["temperature"])
@@ -189,6 +201,102 @@ def _call_xai(
         provider="xai",
         requested_model=model,
     )
+
+
+def _call_xai_responses_strict(
+    *,
+    model: str,
+    user_text: str,
+    frames: list[dict[str, str]],
+    max_tokens: int,
+    reasoning_effort: str,
+) -> dict[str, Any]:
+    """Call an xAI vision model through Responses with strict output schema."""
+    content: list[dict[str, str]] = [{"type": "input_text", "text": user_text}]
+    for index, frame in enumerate(frames):
+        content.append({"type": "input_text", "text": f"frame_index: {index}"})
+        content.append(
+            {
+                "type": "input_image",
+                "image_url": f"data:{frame['mime_type']};base64,{frame['base64']}",
+            }
+        )
+    payload = {
+        "model": model,
+        "input": [{"role": "user", "content": content}],
+        "reasoning": {"effort": reasoning_effort},
+        "store": False,
+        "max_output_tokens": max_tokens,
+        "text": {
+            "format": {
+                "type": "json_schema",
+                "name": "video_analysis_prediction",
+                "strict": True,
+                "schema": _to_openai_strict_schema(
+                    VideoAnalysisPrediction.model_json_schema()
+                ),
+            }
+        },
+    }
+    raw, x_zero_data_retention = _request_xai_responses_json(payload)
+    identity = validate_provider_response_identity(
+        provider="xai",
+        requested_model=model,
+        returned_model=raw.get("model"),
+        request_id=raw.get("id"),
+        require_returned=True,
+    )
+    if raw.get("status") != "completed" or raw.get("incomplete_details") is not None:
+        raise RuntimeError(
+            "xAI Responses request did not complete: "
+            f"status={raw.get('status')!r}, incomplete={raw.get('incomplete_details')!r}"
+        )
+    output = "".join(
+        part.get("text", "")
+        for item in raw.get("output", [])
+        if isinstance(item, dict)
+        for part in item.get("content", [])
+        if isinstance(part, dict) and part.get("type") == "output_text"
+    )
+    if not output.strip():
+        raise RuntimeError("xAI Responses transport returned no output text")
+    VideoAnalysisPrediction.model_validate_json(output)
+    usage = raw.get("usage")
+    if not isinstance(usage, dict):
+        raise RuntimeError("xAI Responses usage must be a mapping")
+    input_tokens = _token_count(usage.get("input_tokens"), "input_tokens")
+    output_tokens = _token_count(usage.get("output_tokens"), "output_tokens")
+    total_tokens = _token_count(usage.get("total_tokens"), "total_tokens")
+    if total_tokens != input_tokens + output_tokens:
+        raise RuntimeError("xAI Responses total_tokens does not reconcile")
+    output_details = usage.get("output_tokens_details")
+    if not isinstance(output_details, dict):
+        raise RuntimeError("xAI Responses output_tokens_details must be a mapping")
+    reasoning_tokens = _token_count(
+        output_details.get("reasoning_tokens"), "reasoning_tokens"
+    )
+    if reasoning_tokens > output_tokens:
+        raise RuntimeError("xAI Responses reasoning_tokens exceeds output_tokens")
+    cost_ticks = _token_count(usage.get("cost_in_usd_ticks"), "cost_in_usd_ticks")
+    return {
+        "output": output,
+        "token_usage": {
+            "prompt": input_tokens,
+            "completion": output_tokens - reasoning_tokens,
+            "total": total_tokens,
+            "billed_completion": output_tokens,
+            "reasoning_completion": reasoning_tokens,
+        },
+        "reported_cost_usd": cost_ticks / 10_000_000_000,
+        "cost_estimated": False,
+        "raw": {
+            "id": identity.request_id,
+            "model": identity.returned_model,
+            "status": raw.get("status"),
+            "usage": usage,
+            "x_zero_data_retention": x_zero_data_retention,
+        },
+    }
 
 
 def _call_anthropic(
@@ -357,6 +465,36 @@ def _request_json(url: str, *, headers: dict[str, str], body: dict[str, Any]) ->
         raise RuntimeError(f"{url} returned HTTP {exc.code}: {payload}") from exc
     except urllib.error.URLError as exc:
         raise RuntimeError(f"{url} request failed: {exc}") from exc
+
+
+def _request_xai_responses_json(payload: dict[str, Any]) -> tuple[dict[str, Any], str | None]:
+    request = urllib.request.Request(
+        XAI_RESPONSES_URL,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {_require_env('XAI_API_KEY')}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=180) as response:  # noqa: S310
+            raw = json.loads(response.read().decode("utf-8"))
+            x_zero_data_retention = response.headers.get("x-zero-data-retention")
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise RuntimeError(f"xAI Responses HTTP {exc.code}: {detail}") from exc
+    except urllib.error.URLError as exc:
+        raise RuntimeError(f"xAI Responses request failed: {exc}") from exc
+    if not isinstance(raw, dict):
+        raise RuntimeError("xAI Responses response must be a mapping")
+    return raw, x_zero_data_retention
+
+
+def _token_count(value: object, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise RuntimeError(f"xAI Responses {name} must be a nonnegative integer")
+    return value
 
 
 def _require_env(name: str) -> str:

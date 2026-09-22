@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "kind": "offline-source-adjudication",
+  "date": "2026-09-22",
+  "story": "220",
+  "attempt": "038",
+  "scope": "Saved Grok 4.7 Open Frequency response only; no provider or judge call.",
+  "source_result": {
+    "path": "benchmarks/results/script-bible-grok47-low-open-frequency-2026-09-22.json",
+    "sha256": "6385e087bab7b312748f361ecb898933f08208d7584e139937302ac1e55737f4",
+    "provider_measurement_immutable": true,
+    "recorded_deterministic": 0.6999,
+    "recorded_deterministic_raw": 0.8967,
+    "recorded_rubric": 0.92,
+    "recorded_overall": 0.80995,
+    "recorded_subject_cost_usd": 0.015042
+  },
+  "offline_replay": {
+    "method": "Import the saved response into the unchanged maintained deterministic scorer with the frozen Open Frequency golden and screenplay.",
+    "scorer_path": "benchmarks/scorers/script_bible_scorer.py",
+    "scorer_sha256": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+    "golden_path": "benchmarks/golden/open-frequency-script-bible.json",
+    "golden_sha256": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
+    "source_path": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+    "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "result": {
+      "pass": false,
+      "score": 0.6999,
+      "raw_score": 0.8967,
+      "theme_evidence_grounding": 0.67,
+      "journey_grounding": 0.0
+    },
+    "measurement_note": "This is a deterministic replay of saved output, not a new subject or judge measurement."
+  },
+  "theme_evidence_adjudication": [
+    {
+      "candidate_evidence": "June says if they are naming roads and insulin drops, they can name dogs.",
+      "source_citation": "tests/fixtures/ingest_inputs/open_frequency_short.fountain:72-73",
+      "classification": "source-faithful paraphrase rejected by lexical matcher",
+      "reason": "The source gives the same June dialogue with contraction and pronoun changes only."
+    },
+    {
+      "candidate_evidence": "The morning bulletin includes both the open road and the recovered dog.",
+      "source_citation": "tests/fixtures/ingest_inputs/open_frequency_short.fountain:109-112",
+      "classification": "source-faithful paraphrase rejected by lexical matcher",
+      "reason": "June's bulletin explicitly states the open road and recovered missing dog."
+    },
+    {
+      "candidate_evidence": "Aria asks June if she copies; June answers, Loud enough to make me useful.",
+      "source_citation": "tests/fixtures/ingest_inputs/open_frequency_short.fountain:53-57",
+      "classification": "source-faithful paraphrase rejected by lexical matcher",
+      "reason": "The source contains Aria's copy check and June's quoted reply in sequence."
+    },
+    {
+      "candidate_evidence": "Noah's update about the east road reaches the shelter by tabletop radio.",
+      "source_citation": "tests/fixtures/ingest_inputs/open_frequency_short.fountain:63-66,81-86",
+      "classification": "source-supported compression; relational wording is inferred",
+      "reason": "Noah's tabletop-radio update occurs in the shelter scene, but 'reaches the shelter' is a summary relation rather than a quotation."
+    }
+  ],
+  "journey_adjudication": {
+    "candidate_text": "The volunteer crew, led on air by June and technically by Aria, moves from scrambling under dead power to a coordinated public voice. Aria's plea for a miracle becomes earned competence, while June learns to balance triage with tenderness, ending the night as the steady narrator of a town that can hear itself again.",
+    "golden_keywords": ["signal", "broadcast", "community", "useful", "hope", "work", "connect"],
+    "classification": "ambiguous, non-hard weighted dimension",
+    "source_citations": [
+      "tests/fixtures/ingest_inputs/open_frequency_short.fountain:4-30",
+      "tests/fixtures/ingest_inputs/open_frequency_short.fountain:46-59",
+      "tests/fixtures/ingest_inputs/open_frequency_short.fountain:63-89",
+      "tests/fixtures/ingest_inputs/open_frequency_short.fountain:96-122"
+    ],
+    "reason": "The field tracks the source's power failure, technical work, public updates, and return to work, but phrases such as 'learns to balance triage with tenderness' and 'town that can hear itself again' are interpretive. It contains none of the frozen keyword anchors, so its zero is explainable under the existing deterministic contract. Whether to accept that interpretation needs a human-owned semantic criterion, not a one-output golden or lexical-rule change."
+  },
+  "decision": {
+    "scorer_repair": "not applied",
+    "reason": "A generalized relaxation of the 80 percent coverage and three-token-run rule would admit source vocabulary with invented relations. The existing contract already accepts direct quotations and annotated citations. This source review identifies a lexical sensitivity, not a safely general deterministic repair.",
+    "original_scores_preserved": true,
+    "cost_rejection_remains_decisive": true,
+    "no_provider_calls": true,
+    "no_judge_calls": true,
+    "no_runtime_default_change": true
+  }
+}
