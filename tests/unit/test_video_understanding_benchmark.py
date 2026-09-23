@@ -406,6 +406,108 @@ def test_provider_xai_responses_strict_keeps_all_images_schema_and_usage(
 
 
 @pytest.mark.unit
+def test_openrouter_video_transport_pins_deepinfra_strict_schema_and_raw_envelope(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    seen: dict[str, object] = {}
+    output = json.dumps(
+        {
+            "clip_id": "opaque_001",
+            "summary": "A blue figure remains in a two-shot.",
+            "tone_tags": ["intimate"],
+            "emotion_tags": [],
+            "color_tags": ["navy"],
+            "camera_tags": ["locked_two_shot"],
+            "motion_tags": ["measured"],
+            "continuity_status": "intact",
+            "continuity_notes": ["The pale rectangle remains visible."],
+            "audio_tags": [],
+            "audio_notes": [],
+            "evidence": [{"frame_index": 0, "cue": "Blue two-shot."}],
+            "overall_confidence": 0.8,
+        }
+    )
+
+    def fake_request_json(*_args: object, **kwargs: object) -> dict[str, object]:
+        seen["body"] = kwargs["body"]
+        return {
+            "id": "or-mimo-video",
+            "model": "xiaomi/mimo-v2.6-flash",
+            "provider": "DeepInfra",
+            "choices": [{"finish_reason": "stop", "message": {"content": output}}],
+            "usage": {
+                "prompt_tokens": 100,
+                "completion_tokens": 50,
+                "total_tokens": 150,
+                "cost": 0.000028,
+            },
+        }
+
+    monkeypatch.setattr(provider, "_require_env", lambda _: "test-key")
+    monkeypatch.setattr(provider, "_request_json", fake_request_json)
+    raw_path = REPO_ROOT / "output" / ".test-mimo-raw.json"
+    raw_path.unlink(missing_ok=True)
+    result = provider._call_openrouter_strict(
+        model="xiaomi/mimo-v2.6-flash",
+        user_text="Inspect ordered frames.",
+        frames=[{"mime_type": "image/jpeg", "base64": "abc"}],
+        max_tokens=1400,
+        upstream_provider="DeepInfra",
+        raw_output_path=raw_path,
+        timeout_seconds=15,
+    )
+
+    body = seen["body"]
+    assert isinstance(body, dict)
+    assert body["provider"] == {
+        "order": ["DeepInfra"],
+        "allow_fallbacks": False,
+        "require_parameters": True,
+    }
+    assert "fp8" not in str(body["provider"])
+    assert body["response_format"]["json_schema"]["strict"] is True
+    assert raw_path.exists()
+    assert result["reported_cost_usd"] == pytest.approx(0.000028)
+    assert result["raw"]["provider"] == "DeepInfra"
+    assert result["raw"]["raw_envelope_sha256"]
+    raw_path.unlink()
+
+
+@pytest.mark.unit
+def test_openrouter_video_transport_retains_error_envelope_before_reraising(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    raw_path = REPO_ROOT / "output" / ".test-mimo-error-envelope.json"
+    raw_path.unlink(missing_ok=True)
+
+    def fail(*_args: object, **_kwargs: object) -> dict[str, object]:
+        raise provider.ProviderHTTPError(
+            url=provider.OPENROUTER_CHAT_URL,
+            status_code=400,
+            body='{"error":{"message":"Too many images in request: 5 > 4"}}',
+        )
+
+    monkeypatch.setattr(provider, "_require_env", lambda _: "test-key")
+    monkeypatch.setattr(provider, "_request_json", fail)
+    with pytest.raises(provider.ProviderHTTPError, match="Too many images"):
+        provider._call_openrouter_strict(
+            model="xiaomi/mimo-v2.6-flash",
+            user_text="Inspect ordered frames.",
+            frames=[{"mime_type": "image/jpeg", "base64": "abc"}],
+            max_tokens=1400,
+            upstream_provider="DeepInfra",
+            raw_output_path=raw_path,
+            timeout_seconds=15,
+        )
+
+    saved = json.loads(raw_path.read_text())
+    assert saved["response_error"]["status"] == 400
+    assert "5 > 4" in saved["response_error"]["body"]
+    assert saved["request"]["provider"]["order"] == ["DeepInfra"]
+    raw_path.unlink()
+
+
+@pytest.mark.unit
 @pytest.mark.parametrize("missing", ["responseId", "modelVersion"])
 def test_gemini_video_transport_requires_returned_call_and_model_identity(
     monkeypatch: pytest.MonkeyPatch,

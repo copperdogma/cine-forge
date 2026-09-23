@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-22",
+  "type": "post-stop-provenance-repair",
+  "applies_to_attempt": "039",
+  "historical_attempt_mutated": false,
+  "route_identity_correction": {
+    "actual_request_pin": {
+      "provider.order": ["DeepInfra"],
+      "provider.allow_fallbacks": false,
+      "provider.require_parameters": true
+    },
+    "catalog_only_observation": {
+      "endpoint_tag": "deepinfra/fp8",
+      "quantization": "fp8",
+      "meaning": "Contemporaneous OpenRouter endpoint metadata; not a request-level pin or served-route proof."
+    },
+    "mocked_request_check": "tests/unit/test_video_understanding_benchmark.py::test_openrouter_video_transport_pins_deepinfra_strict_schema_and_raw_envelope"
+  },
+  "raw_response_provenance": {
+    "requirement_status": "not satisfied for the two historical HTTP 400 calls",
+    "loss": "The adapter at call time raised exception text without first writing an error envelope. Only the task transcript's exception text survived; it is not claimed as a retained raw response body.",
+    "paid_recollection": false,
+    "reconstructed_body_claimed_raw": false,
+    "forward_fix": "The adapter now writes the full safe synthetic request plus HTTP error response body to ignored output before reraising; the mocked error-envelope test verifies this path. No new provider call was made."
+  },
+  "source_snapshot": {
+    "base_git_sha": "5d40a20ed3ead9a97938469a47eb379ab4eecb43",
+    "worktree": "/Users/cam/.codex/worktrees/mimo26-eval-20260922/cine-forge",
+    "branch": "codex/mimo26-eval-20260922",
+    "commands": [
+      "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m pytest tests/unit/test_video_understanding_benchmark.py -q",
+      "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m ruff check benchmarks/providers/video_understanding_provider.py tests/unit/test_video_understanding_benchmark.py",
+      "/Users/cam/Documents/Projects/cine-forge/.venv/bin/python scripts/check_eval_registry.py",
+      "git diff --check"
+    ],
+    "files": {
+      "benchmarks/tasks/video-understanding.yaml": "362d136363a20174d13e1dc711245ba9d1e0c53c84a99bee5f3d32464a7dd06f",
+      "benchmarks/providers/video_understanding_provider.py": "4915d3c4b0e037434ff77cb4c24035889831e378d3e83258b6dce009a75b562e",
+      "benchmarks/providers/video_understanding_provider_support.py": "f33a8f7b2386fe877e5d4e1a5cda2b690dec266892bd80e05d60326e6425a4e3",
+      "benchmarks/scorers/video_understanding_scorer.py": "77c81f2b4eb086fc3c3e1a5d244a9200688d780f53611bb206932d3a2c2c5d27",
+      "benchmarks/prompts/video-understanding.txt": "53ea0b8ef7487d8dcaea352c0eb133100e18eb45d78b953f2007f14148beb6e2",
+      "benchmarks/video_understanding/manifest.json": "8022c2dffb4a4c8c856f92bf735b465f580c4a2545129788ee4883a8f7f6af7a",
+      "tests/unit/test_video_understanding_benchmark.py": "acf13de98931065c27d4973f71af87e0f5d7824264603852cb3bd9ddc8981b00"
+    },
+    "worktree_patch_sha256": "0f8c692c4e8a5a8c8cd8d5f8f3bafb991718cb9ff8019f35e788ee613e00095e"
+  },
+  "cost_accounting": {
+    "known_attributed_usd": 0.0,
+    "actual_cost_usd": "unknown; no usage or provider receipt",
+    "finite_request_upper_bounds_usd": {
+      "xiaomi/mimo-v2.6-flash": 0.14699664,
+      "xiaomi/mimo-v2.6-pro": 0.45673956,
+      "combined": 0.6037362
+    },
+    "bound_basis": "Each request was limited to 1,048,576 context tokens and 1,400 completion tokens. The documented DeepInfra list rates were applied conservatively to 1,047,176 possible input tokens plus 1,400 output tokens: Flash $0.14/$0.28 per M and Pro $0.435/$0.87 per M.",
+    "approved_cap_usd": 1.5,
+    "remaining_unspent_budget_under_bound_usd": 0.8962638
+  }
+}

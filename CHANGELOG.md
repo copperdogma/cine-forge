@@ -1,5 +1,10 @@
 # Changelog
 
+## [2026-09-22-01] — Record MiMo V2.6 frame transport stop
+
+### Added
+- Preserve both five-JPEG request rejections on the DeepInfra-only route, bounded cost exposure, and the lost raw HTTP bodies. No frame score or Gemini comparison was obtained.
+
 ## [2026-09-13-02] — Unify close-out and landing guidance
 
 ### Changed

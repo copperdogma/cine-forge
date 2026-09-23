@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "story": "221",
+  "attempt": "039",
+  "date": "2026-09-22",
+  "base_git_sha": "5d40a20ed3ead9a97938469a47eb379ab4eecb43",
+  "execution_state": "isolated-uncommitted-worktree",
+  "lane": {
+    "id": "video-understanding",
+    "fixture_contract": "six maintained repo-owned synthetic controls; five ordered JPEGs per control; no audio, MP4, transcript, semantic title, or quarantined case",
+    "quality_floor": 0.8,
+    "latency_ms_max": 15000,
+    "cost_usd_max": 0.02,
+    "comparator": "Gemini 3.5 Flash-Lite",
+    "comparator_status": "not rerun because neither candidate cleared transport"
+  },
+  "candidates": [
+    {
+      "requested_model": "xiaomi/mimo-v2.6-flash",
+      "route": "OpenRouter / DeepInfra / deepinfra/fp8",
+      "fallbacks": false,
+      "strict_schema": true,
+      "native_result": "HTTP 400 before inference: Too many images in request: 5 > 4",
+      "served_identity_usage_cost": "absent",
+      "verdict": "transport-blocked; capability-not-measured"
+    },
+    {
+      "requested_model": "xiaomi/mimo-v2.6-pro",
+      "route": "OpenRouter / DeepInfra / deepinfra/fp8",
+      "fallbacks": false,
+      "strict_schema": true,
+      "native_result": "HTTP 400 before inference: Too many images in request: 5 > 4",
+      "served_identity_usage_cost": "absent",
+      "verdict": "transport-blocked; capability-not-measured"
+    }
+  ],
+  "spend_usd": {
+    "confirmed": 0.0,
+    "judge": 0.0,
+    "unresolved_upper_exposure": 1.5,
+    "cap": 1.5,
+    "basis": "Pre-inference errors returned no usage or receipt; missing usage is not treated as zero billing."
+  },
+  "source_hashes": {
+    "benchmarks/tasks/video-understanding.yaml": "92cb8d240a1660ba8ae2237302000b4cf8f95c783439a0c86f38bc1a29ef8341",
+    "benchmarks/providers/video_understanding_provider.py": "71dc2c7124e3f473bdbdcc40313b5e2b5ee8cb01d092dc567328ff7430480b40",
+    "benchmarks/providers/video_understanding_provider_support.py": "f33a8f7b2386fe877e5d4e1a5cda2b690dec266892bd80e05d60326e6425a4e3",
+    "benchmarks/scorers/video_understanding_scorer.py": "77c81f2b4eb086fc3c3e1a5d244a9200688d780f53611bb206932d3a2c2c5d27",
+    "benchmarks/prompts/video-understanding.txt": "53ea0b8ef7487d8dcaea352c0eb133100e18eb45d78b953f2007f14148beb6e2",
+    "benchmarks/video_understanding/manifest.json": "8022c2dffb4a4c8c856f92bf735b465f580c4a2545129788ee4883a8f7f6af7a"
+  },
+  "preparse_evidence": {
+    "raw_success_envelopes": "none; both routes returned errors before a provider response envelope existed",
+    "safe_error_classification": "OpenRouter HTTP 400, DeepInfra, too many images: 5 > 4",
+    "worktree_patch_sha256_before_doc_artifacts": "d9b6bc8f099248aabeb2cfbbefbb124a1204bd53f74115d01161225b6eb719ca"
+  },
+  "decision": "defer-both-candidates-for-five-image-transport-incompatibility; no-comparator-no-default-change"
+}

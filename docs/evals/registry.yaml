@@ -2292,6 +2292,20 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "039"
+        story: attempts/039-video-understanding-mimo-v26-deepinfra-five-image-stop.md
+        date: 2026-09-22
+        status: inconclusive
+        approach: "Approved OpenRouter DeepInfra-only strict-schema native five-JPEG probes; FP8 was catalog-only and not enforced for MiMo V2.6 Flash and Pro both stopped before inference because the pinned provider accepts at most four images."
+        worker_model: "Codex (GPT-6)"
+        worker_model_date: 2026-09-22
+        subject_model: "xiaomi/mimo-v2.6-flash and xiaomi/mimo-v2.6-pro"
+        score_before: null
+        score_after: null
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: route-contract-change-and-fresh-approval
+            note: "Do not retry either unchanged DeepInfra fp8 arm or reduce the packet to four images. Reopen only with route-specific proof that the exact pinned endpoint accepts the maintained five-JPEG contract, or separate approval for a changed benchmark contract."
       - id: "038"
         story: attempts/038-grok47-video-and-script-bible.md
         date: 2026-09-22

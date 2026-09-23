@@ -17,6 +17,36 @@ prompts:
 
 providers:
   - id: file://../providers/video_understanding_provider.py
+    label: "MiMo V2.6 Flash / DeepInfra (catalog fp8)"
+    config:
+      provider: openrouter
+      model: xiaomi/mimo-v2.6-flash
+      upstream_provider: DeepInfra
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: video-understanding-frame-packet-v3
+      raw_output_dir: output/evals/mimo26-20260922/flash
+      request_timeout_seconds: 15
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
+    label: "MiMo V2.6 Pro / DeepInfra (catalog fp8)"
+    config:
+      provider: openrouter
+      model: xiaomi/mimo-v2.6-pro
+      upstream_provider: DeepInfra
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: video-understanding-frame-packet-v3
+      raw_output_dir: output/evals/mimo26-20260922/pro
+      request_timeout_seconds: 15
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
     label: "GPT-5.4"
     config:
       provider: openai

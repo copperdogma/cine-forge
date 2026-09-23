@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import importlib
 import json
 import sys
@@ -68,8 +69,19 @@ _subject_contract_fingerprint = _subject_contract.subject_contract_fingerprint
 OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions"
 XAI_CHAT_URL = "https://api.x.ai/v1/chat/completions"
 XAI_RESPONSES_URL = "https://api.x.ai/v1/responses"
+OPENROUTER_CHAT_URL = "https://openrouter.ai/api/v1/chat/completions"
 ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages"
 GEMINI_MODELS_URL = "https://generativelanguage.googleapis.com/v1beta/models"
+
+
+class ProviderHTTPError(RuntimeError):
+    """A provider failure whose safe response body can be durably retained."""
+
+    def __init__(self, *, url: str, status_code: int, body: str) -> None:
+        super().__init__(f"{url} returned HTTP {status_code}: {body}")
+        self.url = url
+        self.status_code = status_code
+        self.body = body
 
 
 def call_api(prompt: str, options: dict, context: dict) -> dict:
@@ -122,7 +134,26 @@ def _dispatch_subject_request(request: dict[str, Any]) -> dict[str, Any]:
         return _call_anthropic(**common, temperature=request["temperature"])
     if provider == "google":
         return _call_gemini(**common)
+    if provider == "openrouter":
+        return _call_openrouter_strict(
+            **common,
+            upstream_provider=str(request["config"].get("upstream_provider") or ""),
+            raw_output_path=_openrouter_raw_output_path(request),
+            timeout_seconds=float(request["config"].get("request_timeout_seconds") or 15),
+        )
     raise RuntimeError(f"Unsupported provider: {provider}")
+
+
+def _openrouter_raw_output_path(request: dict[str, Any]) -> Path:
+    """Use ignored output storage for complete synthetic raw envelopes."""
+    configured_dir = request["config"].get("raw_output_dir")
+    if not isinstance(configured_dir, str) or not configured_dir.strip():
+        raise RuntimeError("OpenRouter video evaluation requires raw_output_dir")
+    target_dir = (REPO_ROOT / configured_dir).resolve()
+    output_root = (REPO_ROOT / "output").resolve()
+    if output_root not in target_dir.parents and target_dir != output_root:
+        raise RuntimeError("OpenRouter raw_output_dir must stay under repo output/")
+    return target_dir / f"{request['evaluation_id']}-raw-envelope.json"
 
 
 def _current_subject_contract(request: dict[str, Any]) -> str | None:
@@ -418,6 +449,122 @@ def _call_gemini(
     }
 
 
+def _call_openrouter_strict(
+    *,
+    model: str,
+    user_text: str,
+    frames: list[dict[str, str]],
+    max_tokens: int,
+    upstream_provider: str,
+    raw_output_path: Path,
+    timeout_seconds: float,
+) -> dict[str, Any]:
+    """Call an exact OpenRouter provider with strict JSON and no fallback."""
+    if not upstream_provider:
+        raise RuntimeError("OpenRouter video evaluation requires upstream_provider")
+    payload = _build_openai_payload(
+        model=model,
+        user_text=user_text,
+        frames=frames,
+        max_tokens=max_tokens,
+    )
+    payload["provider"] = {
+        "order": [upstream_provider],
+        "allow_fallbacks": False,
+        "require_parameters": True,
+    }
+    payload["response_format"] = {
+        "type": "json_schema",
+        "json_schema": {
+            "name": "video_analysis_prediction",
+            "strict": True,
+            "schema": _to_openai_strict_schema(
+                VideoAnalysisPrediction.model_json_schema()
+            ),
+        },
+    }
+    try:
+        response = _request_json(
+            OPENROUTER_CHAT_URL,
+            headers={
+                "Authorization": f"Bearer {_require_env('OPENROUTER_API_KEY')}",
+                "Content-Type": "application/json",
+            },
+            body=payload,
+            timeout_seconds=timeout_seconds,
+        )
+    except ProviderHTTPError as exc:
+        _write_raw_envelope(
+            raw_output_path,
+            {"request": payload, "response_error": {"status": exc.status_code, "body": exc.body}},
+        )
+        raise
+    # Persist the complete safe/synthetic envelope before reading semantic text.
+    _write_raw_envelope(raw_output_path, response)
+    raw_bytes = raw_output_path.read_bytes()
+    identity = validate_provider_response_identity(
+        provider="openrouter",
+        requested_model=model,
+        returned_model=response.get("model"),
+        request_id=response.get("id"),
+        require_returned=True,
+    )
+    returned_provider = response.get("provider")
+    if returned_provider != upstream_provider:
+        raise RuntimeError(
+            "OpenRouter response provider does not match pinned provider: "
+            f"expected {upstream_provider}, received {returned_provider!r}"
+        )
+    choices = response.get("choices")
+    if not isinstance(choices, list) or len(choices) != 1:
+        raise RuntimeError("OpenRouter response must contain exactly one choice")
+    choice = choices[0]
+    if not isinstance(choice, dict) or choice.get("finish_reason") != "stop":
+        raise RuntimeError("OpenRouter response did not complete")
+    message = choice.get("message")
+    content = message.get("content") if isinstance(message, dict) else None
+    if not isinstance(content, str) or not content.strip():
+        raise RuntimeError("OpenRouter response returned no output text")
+    VideoAnalysisPrediction.model_validate_json(content)
+    usage = response.get("usage")
+    if not isinstance(usage, dict):
+        raise RuntimeError("OpenRouter response usage must be a mapping")
+    prompt_tokens = _token_count(usage.get("prompt_tokens"), "prompt_tokens")
+    completion_tokens = _token_count(
+        usage.get("completion_tokens"), "completion_tokens"
+    )
+    total_tokens = _token_count(usage.get("total_tokens"), "total_tokens")
+    if total_tokens != prompt_tokens + completion_tokens:
+        raise RuntimeError("OpenRouter total_tokens does not reconcile")
+    reported_cost = usage.get("cost")
+    if isinstance(reported_cost, bool) or not isinstance(reported_cost, (int, float)):
+        raise RuntimeError("OpenRouter usage.cost must be a number")
+    return {
+        "output": content,
+        "token_usage": {
+            "prompt": prompt_tokens,
+            "completion": completion_tokens,
+            "total": total_tokens,
+        },
+        "reported_cost_usd": float(reported_cost),
+        "cost_estimated": False,
+        "raw": {
+            "id": identity.request_id,
+            "model": identity.returned_model,
+            "provider": returned_provider,
+            "usage": usage,
+            "raw_envelope_path": raw_output_path.relative_to(REPO_ROOT).as_posix(),
+            "raw_envelope_sha256": hashlib.sha256(raw_bytes).hexdigest(),
+            "raw_envelope_bytes": len(raw_bytes),
+        },
+    }
+
+
+def _write_raw_envelope(path: Path, envelope: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(envelope, indent=2, sort_keys=True), encoding="utf-8")
+
+
 def _openai_compatible_result(
     *,
     response: dict[str, Any],
@@ -454,15 +601,23 @@ def _openai_compatible_result(
     }
 
 
-def _request_json(url: str, *, headers: dict[str, str], body: dict[str, Any]) -> dict[str, Any]:
+def _request_json(
+    url: str,
+    *,
+    headers: dict[str, str],
+    body: dict[str, Any],
+    timeout_seconds: float = 180,
+) -> dict[str, Any]:
     data = json.dumps(body).encode("utf-8")
     request = urllib.request.Request(url, data=data, headers=headers, method="POST")
     try:
-        with urllib.request.urlopen(request, timeout=180) as response:
+        with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
             return json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
         payload = exc.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"{url} returned HTTP {exc.code}: {payload}") from exc
+        raise ProviderHTTPError(
+            url=url, status_code=exc.code, body=payload
+        ) from exc
     except urllib.error.URLError as exc:
         raise RuntimeError(f"{url} request failed: {exc}") from exc
 
