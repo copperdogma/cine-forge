@@ -28,6 +28,30 @@ def _task() -> dict:
 
 
 @pytest.mark.unit
+@pytest.mark.parametrize(
+    "relative",
+    (
+        "benchmarks/providers/video_understanding_provider_anthropic.py",
+        "benchmarks/providers/video_understanding_provider_vision.py",
+    ),
+)
+def test_extracted_transport_mutation_changes_subject_fingerprint(
+    tmp_path: Path, relative: str
+) -> None:
+    config = _task()["providers"][0]["config"]
+    for implementation in subject_contract.IMPLEMENTATION_FILES:
+        target = tmp_path / implementation
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((REPO_ROOT / implementation).read_bytes())
+    original = subject_contract.subject_contract_fingerprint(config, repo_root=tmp_path)
+    assert original is not None
+    with (tmp_path / relative).open("ab") as handle:
+        handle.write(b"\n# changed transport behavior\n")
+    changed = subject_contract.subject_contract_fingerprint(config, repo_root=tmp_path)
+    assert changed is not None and changed != original
+
+
+@pytest.mark.unit
 def test_task_binds_each_subject_request_to_exact_config_and_implementation() -> None:
     task = _task()
     contract = task_contract.load_task_contract(TASK_PATH)

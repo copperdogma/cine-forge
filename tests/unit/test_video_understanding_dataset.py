@@ -130,14 +130,9 @@ def test_registry_declares_active_policy_and_quarantines_historical_scores() -> 
     assert "filter-first-n" not in entry["command"]
     assert entry["scores"]
     decision_rows = [
-        score
-        for score in entry["scores"]
-        if score["evidence_status"] == "decision-grade"
+        score for score in entry["scores"] if score["evidence_status"] == "decision-grade"
     ]
-    assert {
-        (score["model"], score["result_file"])
-        for score in decision_rows
-    } == {
+    assert {(score["model"], score["result_file"]) for score in decision_rows} == {
         (
             "Gemini 3.6 Flash",
             "benchmarks/results/video-understanding-story-208-post-repair-v3-2026-07-22.json",
@@ -147,10 +142,18 @@ def test_registry_declares_active_policy_and_quarantines_historical_scores() -> 
             "benchmarks/results/video-understanding-story-208-post-repair-v3-2026-07-22.json",
         ),
     }
+    recent_rejections = [
+        score
+        for score in entry["scores"]
+        if score["evidence_status"] == "bounded-six-case-decision-grade-rejection"
+    ]
+    assert [(score["model"], score["metrics"]["overall"]) for score in recent_rejections] == [
+        ("Grok 4.7", 0.4816)
+    ]
     assert all(
         score["evidence_status"] == "contaminated-non-decision-grade"
         for score in entry["scores"]
-        if score not in decision_rows
+        if score not in decision_rows + recent_rejections
     )
 
 

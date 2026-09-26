@@ -1,0 +1,40 @@
+# Attempt 040 — Opus 5.5 ordered-frame economic stop
+
+Date: 2026-09-26. Owner: Story 221, `video-understanding` v3. Status: stopped after one native direct Anthropic call. Total known spend: **USD0.034948** against the approved USD2.00 ceiling; no retry or other paid call. The all-in reserve for this call was USD0.055 (4,512 counted input tokens at $4/M plus 1,400 maximum output at $20/M, with input margin). The unused reserve was released after full terminal usage was read.
+
+Direct `GET /v1/models/claude-opus-5-5` returned HTTP 200 and exact ID. The first synthetic `dialogue_confession_push_in` case then sent all five ordered 640x360 JPEGs, the unchanged v3 prompt and neutral timing metadata to `POST /v1/messages`, with exact `claude-opus-5-5`, `output_config.effort=medium`, provider JSON schema, `max_tokens=1400`, and no cache controls. The schema is an explicit supported projection of the prompt's exact 13-key output: all prompt-required fields and both evidence keys are required, unsupported numeric/string limits are retained in descriptions and enforced locally by `VideoAnalysisPrediction`. No semantic prompt, frame, target or scorer changed.
+
+Native result: exact served model, request `msg_011CfS8KCnwgMu2E4Dsgk8wV`, `end_turn`, one thinking and one text block, strict JSON with all 13 keys, local Pydantic validation passed. Provider usage: 4,512 input, 845 output including 303 thinking, zero cache read/write tokens, standard tier/global inference. Wall latency 11,688 ms. Standard price estimate: `4512 * $4/M + 845 * $20/M = $0.034948`. This exceeds the maintained **$0.02 per subject call** gate by $0.014948 (74.74%). The first-case operational/value gate therefore stopped the run. No harness parity, rubric judge, full six-case matrix, or fresh Gemini 3.5 Flash-Lite control was called. Structural/semantic quality and a contemporary relative result are **not measured**. Transport is native-qualified but harness parity unverified; adoption for this value slot is **do not adopt at current pricing**. This does not judge other CineForge lanes.
+
+The full synthetic response envelope was saved before parsing at ignored `output/evals/opus55-20260926/native-vfp_active_001-raw-envelope.json` (4,256 bytes; SHA-256 `ea04feda9a78fcaf4c3ab853e25d0696e60976c21fc3827f0d9d504acd255187`). It includes thinking and text blocks; do not move it to a public artifact without reviewing contents. The raw pointer is durable in this preserved worktree. Regenerate the exact request from the prompt and `benchmarks/video_understanding/dialogue_confession_push_in/{meta.json,frames/*.jpg}` using `video_understanding_transport.load_clip_packet`, `build_user_text` with opaque `vfp_active_001`, and `build_anthropic_payload`, then attach the recorded schema and medium effort. Regeneration is documentation, **not** permission to re-call the provider.
+
+Exact native invocation, run once from the worktree root (retained for audit; do not rerun under this approval):
+
+```bash
+/Users/cam/Documents/Projects/cine-forge/.venv/bin/python scripts/with_cine_forge_provider_env.py /Users/cam/Documents/Projects/cine-forge/.venv/bin/python - <<'PY'
+import json,sys,time,hashlib
+from pathlib import Path
+sys.path.insert(0,str(Path('benchmarks/providers').resolve()))
+import video_understanding_transport as tr
+import video_understanding_provider as provider
+p=Path('benchmarks/video_understanding/dialogue_confession_push_in')
+packet=tr.load_clip_packet(p,max_frames=5)
+prompt=Path('benchmarks/prompts/video-understanding.txt').read_text()
+text=tr.build_user_text(prompt,packet['meta'],evaluation_id='vfp_active_001',prompt_version='video-understanding-frame-packet-v3',frame_count=5,sample_times=packet['sample_times_seconds'])
+raw=Path('output/evals/opus55-20260926/native-vfp_active_001-raw-envelope.json')
+started=time.perf_counter()
+try:
+ result=provider._call_anthropic(model='claude-opus-5-5',user_text=text,frames=packet['frames'],max_tokens=1400,temperature=None,effort='medium',raw_output_path=raw)
+ print(json.dumps({'status':'completed','latency_ms':round((time.perf_counter()-started)*1000),'model':result['raw']['model'],'id':result['raw']['id'],'stop_reason':result['raw']['stop_reason'],'usage':result['raw']['usage'],'estimated_cost_usd':result['reported_cost_usd'],'raw_path':str(raw),'raw_sha256':result['raw']['raw_envelope_sha256'],'raw_bytes':result['raw']['raw_envelope_bytes']}))
+except Exception as exc:
+ print(json.dumps({'status':'failed','latency_ms':round((time.perf_counter()-started)*1000),'error_type':type(exc).__name__,'error':str(exc)[:500],'raw_exists':raw.exists(),'raw_sha256':hashlib.sha256(raw.read_bytes()).hexdigest() if raw.exists() else None,'raw_bytes':raw.stat().st_size if raw.exists() else None}))
+PY
+```
+
+Provenance: worktree `/Users/cam/.codex/worktrees/opus55-eval-20260926/cine-forge`, branch `codex/opus55-eval-20260926`, current `origin/main` base `cb388508df4bac0e54f3b61ca24c432112e2dcc5`. Unchanged SHA-256: prompt `53ea0b8ef7487d8dcaea352c0eb133100e18eb45d78b953f2007f14148beb6e2`, scorer `77c81f2b4eb086fc3c3e1a5d244a9200688d780f53611bb206932d3a2c2c5d27`, manifest `8022c2dffb4a4c8c856f92bf735b465f580c4a2545129788ee4883a8f7f6af7a`, first target `49b84bca458de2acf43464eb6b2c441c90670e32ebcda8db46e8985e4fb3949d`, transport `7236575192c38cc4b5cda3df2b543f84dcb88d3c2bb4ceff86cacc97a441ba1d`, support `f33a8f7b2386fe877e5d4e1a5cda2b690dec266892bd80e05d60326e6425a4e3`. The dirty provider at call time had SHA-256 `84c5dfe405474c973043e5e9613cae3c3b94a0d2ad0b851e1ff4dedf22ca579d`; an offline metadata-only repair after the call changed it to `783b2609d39981306f214f4b1497d531b1dbacf34c28d114f0cfa81a67bfedda`. That repair resolved a relative-path exception after the complete response had already been retained and locally validated; it did not produce the observed response. No call was repeated. The focused offline contract tests passed 3/3 after the repair.
+
+Retry rule: no automatic retry. Reopen only if a material price/value gate change or separately approved decision question makes this exact route worth evaluating again. Preserve this raw evidence and spend in any later comparison.
+
+Validation: `.../.venv/bin/python -m pytest tests/unit/test_video_understanding_opus55_contract.py -q` passed 3/3. The focused provider/report contract command over that file plus `test_video_understanding_benchmark.py`, `test_video_understanding_report_contract.py`, and `test_visual_frame_eval_contract.py` passed 47/47. The broader five-file command including `test_video_understanding_dataset.py` passed 60 and failed one assertion that predates this work: it assumes every non-Gemini score is contaminated, while base `origin/main` already contains Story 220's decision-grade Grok rejection. `PATH=/Users/cam/Documents/Projects/cine-forge/.venv/bin:$PATH make test-unit` passed 2,182 and failed three pre-existing stale checks: that same Grok assertion; Story 213's registry hash already differs from base `origin/main` (manifest has `c0f56...`, base registry hashes `2c1ff...`); and a final-render size assertion requires the video provider below 400 lines although base has 656. Plain `make test-unit` first used system Python without pytest, so the repo venv was selected for the actual suite. These failures are unrelated to the native result or the narrow transport patch. `git diff --check` passed.
+
+Closeout validation, 2026-09-26: The three stale checks above were repaired offline without changing the measured call. The provider was split into bounded modules, both new executable modules entered the prospective subject fingerprint, and mutation tests prove each changes that fingerprint. The historical Story 213 and Story 208 manifest bytes remain intact; current contracts rolled to Story 208 v11. Five focused suites passed 135 tests; touched Python files passed Ruff; `make check-evals` passed registry, truth-ledger and v11-manifest checks; the complete unit suite passed 2,187 tests. `pnpm methodology:compile` regenerated the owner views. These validations concern the closeout code, not unmeasured Anthropic harness parity or quality.

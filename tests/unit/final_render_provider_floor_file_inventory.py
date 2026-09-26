@@ -2,6 +2,8 @@
 
 TOUCHED_PYTHON_FILES = (
     "benchmarks/providers/video_understanding_provider.py",
+    "benchmarks/providers/video_understanding_provider_anthropic.py",
+    "benchmarks/providers/video_understanding_provider_vision.py",
     "benchmarks/providers/video_understanding_provider_support.py",
     "benchmarks/providers/video_understanding_transport.py",
     "benchmarks/scripts/generate_final_render_provider_floor_dataset.py",

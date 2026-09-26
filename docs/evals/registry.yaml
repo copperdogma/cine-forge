@@ -2051,6 +2051,7 @@ evals:
       - "208"
       - "213"
       - "220"
+      - "221"
     category_refs:
       - spec:7
       - spec:8
@@ -2292,6 +2293,23 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "040"
+        story: attempts/040-opus55-video-understanding-cost-stop.md
+        date: 2026-09-26
+        status: failed
+        approach: "Direct Anthropic Opus 5.5 medium-effort strict five-JPEG native first case passed identity, schema and terminal checks but cost $0.034948 versus the $0.02 subject-call gate; stopped before harness parity, rubric, six cases or fresh Gemini control."
+        worker_model: "Codex (GPT-6)"
+        worker_model_date: 2026-09-26
+        subject_model: "Claude Opus 5.5"
+        score_before: null
+        score_after: null
+        latency_after: 11688
+        cost_after: 0.034948
+        git_sha: "cb388508df4bac0e54f3b61ca24c432112e2dcc5+dirty-provider-sha256-84c5dfe405474c973043e5e9613cae3c3b94a0d2ad0b851e1ff4dedf22ca579d"
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: material-price-or-value-gate-change-and-fresh-approval
+            note: "No unchanged retry or router substitution. Reopen only for a changed direct route price/value gate or separately approved decision question."
       - id: "039"
         story: attempts/039-video-understanding-mimo-v26-deepinfra-five-image-stop.md
         date: 2026-09-22

@@ -30,20 +30,32 @@ def test_story_213_manifest_is_hash_complete_for_final_qa_contract() -> None:
     assert payload["attempts"] == ["024", "025", "026"]
     assert required <= set(payload["files"])
     assert payload["evidence_status"] == "final-contract-hash-complete-fresh-parity-unmeasured"
+    # Story 213's versioned bundle is immutable. These five paths evolved in
+    # later work; all other source bytes still match the historical record.
+    expected_evolved = {
+        "docs/evals/registry.yaml",
+        "benchmarks/providers/script_bible_runtime_provider.py",
+        "benchmarks/runtime_tasks/script-bible-runtime.yaml",
+        "docs/evals/truth-audit-ledger.yaml",
+        "tests/unit/test_eval_contract_manifest.py",
+    }
+    drifted = set()
     for relative, expected in payload["files"].items():
         actual = hashlib.sha256((REPO_ROOT / relative).read_bytes()).hexdigest()
-        assert actual == expected, relative
+        if actual != expected:
+            drifted.add(relative)
+    assert drifted == expected_evolved
 
 
 @pytest.mark.unit
-def test_current_story_208_manifest_rolls_forward_without_rewriting_v1() -> None:
-    assert manifest.DEFAULT_OUTPUT.name == "story-208-contract-manifest-v10.json"
+def test_current_story_208_manifest_rolls_forward_without_rewriting_history() -> None:
+    assert manifest.DEFAULT_OUTPUT.name == "story-208-contract-manifest-v11.json"
     payload = manifest.build_manifest(
         REPO_ROOT,
         manifest.DEFAULT_LEDGER,
         manifest.DEFAULT_OUTPUT,
     )
-    assert payload["manifest_id"] == "story-208-eval-contracts-v9"
+    assert payload["manifest_id"] == "story-208-eval-contracts-v11"
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v1.json").exists()
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v2.json").exists()
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v3.json").exists()
@@ -52,6 +64,8 @@ def test_current_story_208_manifest_rolls_forward_without_rewriting_v1() -> None
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v6.json").exists()
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v7.json").exists()
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v8.json").exists()
+    assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v9.json").exists()
+    assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v10.json").exists()
 
 
 @pytest.mark.unit

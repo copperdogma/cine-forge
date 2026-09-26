@@ -967,7 +967,8 @@
           "204",
           "207",
           "208",
-          "220"
+          "220",
+          "221"
         ],
         "adrIds": [
           "ADR-002",
@@ -1106,7 +1107,8 @@
           "217",
           "218",
           "219",
-          "220"
+          "220",
+          "221"
         ],
         "adrIds": [
           "ADR-001",
@@ -1193,7 +1195,8 @@
           "126",
           "131",
           "182",
-          "220"
+          "220",
+          "221"
         ],
         "adrIds": [
           "ADR-002",
@@ -14549,9 +14552,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260922-0050",
+        "timestamp": "20260922-0115",
         "date": "2026-09-22",
-        "summary": "Recorded the two rejections in Attempt 038, the registry, and"
+        "summary": "User-approved offline source adjudication replayed the saved"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -14561,12 +14564,70 @@
         "sourcePath": "docs/stories/story-220-grok-47-bounded-video-and-script-bible-evals.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "Recorded the two rejections in Attempt 038, the registry, and",
+        "whyNow": "User-approved offline source adjudication replayed the saved",
         "lastRelevantAction": {
           "date": "2026-09-22",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-220-grok-47-bounded-video-and-script-bible-evals.md",
-          "summary": "Recorded the two rejections in Attempt 038, the registry, and"
+          "summary": "User-approved offline source adjudication replayed the saved"
+        }
+      }
+    },
+    {
+      "id": "221",
+      "title": "Opus 5.5 Ordered-Frame Evaluation",
+      "path": "docs/stories/story-221-opus55-ordered-frame-evaluation.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12 (transparency & control)",
+        "R18 (model improvements collapse scaffolding)"
+      ],
+      "specRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "208"
+      ],
+      "categoryRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "anthropic",
+        "evals",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "221",
+        "sourcePath": "docs/stories/story-221-opus55-ordered-frame-evaluation.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-221-opus55-ordered-frame-evaluation.md",
+          "summary": ""
         }
       }
     }
@@ -16197,7 +16258,7 @@
         {
           "id": "038",
           "date": "2026-09-22",
-          "approach": "Qualified direct Grok 4.7 Responses strict output, then ran one frozen low-reasoning exact-runtime synthetic Open Frequency case before stopping on quality and the hard subject-cost gate.",
+          "approach": "Qualified direct Grok 4.7 Responses strict output, then ran one frozen low-reasoning exact-runtime synthetic Open Frequency case before stopping on the decisive hard subject-cost gate; the recorded quality hard score has a source-reviewed scorer-contract ambiguity.",
           "note": "",
           "retryStatus": "exhausted-until-new-trigger",
           "retryWhen": [
@@ -16377,7 +16438,7 @@
           "overall": 0.80995
         },
         "evidenceStatus": "bounded-one-case-decision-grade-rejection",
-        "note": "Attempt 038 exact-runtime synthetic Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.7 identity, terminal provider-strict ScriptBible JSON, low reasoning, store=false, and reconciled provider-reported cost. The aggregate 0.80995 and raw deterministic 0.8967 both miss the 0.90 gate; 25,533 ms meets latency, while $0.015042 is 50.4% above the hard $0.01 subject-cost gate.…"
+        "note": "Attempt 038 exact-runtime synthetic Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.7 identity, terminal provider-strict ScriptBible JSON, low reasoning, store=false, and reconciled provider-reported cost. The recorded aggregate 0.80995 is below 0.90. Offline source adjudication replayed the unchanged scorer at 0.6999 hard / 0.8967 raw: four theme deductions are faithf…"
       },
       "historicalEvidenceStatus": "pre-open-frequency-corpus-non-decision-grade",
       "excludedScoreCount": 25,
@@ -16415,7 +16476,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "trigger-exhausted",
-        "whyNow": "Attempt 038 exact-runtime synthetic Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.7 identity, terminal provider-strict ScriptBible JSON, low reasoning, store=false, and reconciled provider-reported cost. The aggregate 0.80995 and raw deterministic 0.8967 both miss the 0.90 gate; 25,533 ms meets latency, while $0.015042 is 50.4% above the hard $0.01 subject-cost gate.…",
+        "whyNow": "Attempt 038 exact-runtime synthetic Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.7 identity, terminal provider-strict ScriptBible JSON, low reasoning, store=false, and reconciled provider-reported cost. The recorded aggregate 0.80995 is below 0.90. Offline source adjudication replayed the unchanged scorer at 0.6999 hard / 0.8967 raw: four theme deductions are faithf…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
           "materially-cheaper-exact-model-and-fresh-approval"
@@ -16425,7 +16486,7 @@
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
           "sourceId": "038",
-          "summary": "Qualified direct Grok 4.7 Responses strict output, then ran one frozen low-reasoning exact-runtime synthetic Open Frequency case before stopping on quality and the hard subject-cost gate."
+          "summary": "Qualified direct Grok 4.7 Responses strict output, then ran one frozen low-reasoning exact-runtime synthetic Open Frequency case before stopping on the decisive hard subject-cost gate; the recorded quality hard score has a source-reviewed scorer-contract ambiguity."
         }
       }
     },
@@ -16581,7 +16642,8 @@
         "030",
         "208",
         "213",
-        "220"
+        "220",
+        "221"
       ],
       "categoryRefs": [
         "spec:7",
@@ -16591,6 +16653,26 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "040",
+          "date": "2026-09-26",
+          "approach": "Direct Anthropic Opus 5.5 medium-effort strict five-JPEG native first case passed identity, schema and terminal checks but cost $0.034948 versus the $0.02 subject-call gate; stopped before harness parity, rubric, six cases or fresh Gemini control.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "material-price-or-value-gate-change-and-fresh-approval"
+          ]
+        },
+        {
+          "id": "039",
+          "date": "2026-09-22",
+          "approach": "Approved OpenRouter DeepInfra-only strict-schema native five-JPEG probes; FP8 was catalog-only and not enforced for MiMo V2.6 Flash and Pro both stopped before inference because the pinned provider accepts at most four images.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "route-contract-change-and-fresh-approval"
+          ]
+        },
         {
           "id": "038",
           "date": "2026-09-22",
@@ -16650,7 +16732,8 @@
         "030",
         "208",
         "213",
-        "220"
+        "220",
+        "221"
       ],
       "declaredCategoryRefs": [
         "spec:7",
@@ -16673,14 +16756,14 @@
         "whyNow": "Attempt 038 direct xAI Responses low-reasoning strict-schema result. All six maintained repo-owned synthetic ordered-five-JPEG controls returned exact grok-4.7 identity, terminal provider-strict JSON, raw usage, and no audio. Aggregate quality 0.4816 failed the 0.80 gate despite 8,608 ms average latency and $0.008501 provider-reported average subject cost. The six semantic video-analysis misses a…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
-          "materially-improved-exact-model-and-fresh-approval"
+          "material-price-or-value-gate-change-and-fresh-approval"
         ],
         "lastRelevantAction": {
-          "date": "2026-09-22",
+          "date": "2026-09-26",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "038",
-          "summary": "Qualified direct Grok 4.7 Responses strict five-JPEG output, then ran all six maintained synthetic ordered-frame controls serially before stopping on the 0.80 quality gate."
+          "sourceId": "040",
+          "summary": "Direct Anthropic Opus 5.5 medium-effort strict five-JPEG native first case passed identity, schema and terminal checks but cost $0.034948 versus the $0.02 subject-call gate; stopped before harness parity, rubric, six cases or fresh Gemini control."
         }
       }
     }
@@ -17302,7 +17385,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: ingest_and_world_building, api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 163 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 167 days old against a 14-day cadence"
     ]
   }
 }

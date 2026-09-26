@@ -24,6 +24,8 @@ SUBJECT_CONFIG_KEYS = (
 )
 IMPLEMENTATION_FILES = (
     "benchmarks/providers/video_understanding_provider.py",
+    "benchmarks/providers/video_understanding_provider_anthropic.py",
+    "benchmarks/providers/video_understanding_provider_vision.py",
     "benchmarks/providers/video_understanding_provider_support.py",
     "benchmarks/providers/video_understanding_transport.py",
     "benchmarks/scripts/final_render_provider_floor_subject_contract.py",

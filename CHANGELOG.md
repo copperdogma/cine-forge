@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-09-26-01] — Record Opus 5.5 frame-value stop (Story 221)
+
+### Added
+- Preserved the direct five-JPEG strict-schema Opus 5.5 first-case envelope,
+  exact execution provenance, and USD0.034948 cost against the USD0.02 subject
+  gate. The six-case score and Gemini control remain unmeasured.
+
+### Fixed
+- Included extracted video transports in the final-render subject fingerprint
+  and updated historical eval checks to respect immutable evidence snapshots.
+
 ## [2026-09-22-01] — Record MiMo V2.6 frame transport stop
 
 ### Added
