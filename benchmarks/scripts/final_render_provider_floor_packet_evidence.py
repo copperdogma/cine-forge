@@ -257,6 +257,15 @@ def _valid_target_files(
                 if path_key == "target_path"
                 else expected_provenance_payload
             )
+            # The source fixture omits this empty schema default. Its bytes are
+            # already checked above; compare the normalized value as well.
+            if (
+                path_key == "target_path"
+                and isinstance(payload, dict)
+                and "excluded_dimensions" not in payload
+                and expected.get("excluded_dimensions") == []
+            ):
+                payload = {**payload, "excluded_dimensions": []}
             if payload != expected:
                 return False
     return True
@@ -328,7 +337,7 @@ def _validated_packet(
         return None
     runtime_snapshot = validated_runtime_snapshot(
         value.get("runtime_evidence"),
-        dataset_root=dataset_root,
+        dataset_root=dataset_root.resolve(),
         variant=str(variant),
         case_id=case_id,
         fixture_case=fixture_case,

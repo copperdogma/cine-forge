@@ -1348,7 +1348,8 @@
           "156",
           "172",
           "203",
-          "209"
+          "209",
+          "223"
         ],
         "adrIds": [],
         "evalIds": []
@@ -14689,6 +14690,54 @@
           "sourceType": "story-status",
           "source": "docs/stories/story-222-gpt6-sol-luna-ordered-frame-evaluation.md",
           "summary": ""
+        }
+      }
+    },
+    {
+      "id": "223",
+      "title": "Use pnpm for root and UI dependency installs",
+      "path": "docs/stories/story-223-pnpm-package-manager-migration.md",
+      "status": "In Progress",
+      "priority": "Medium",
+      "idealRefs": [],
+      "specRefs": [
+        "spec:11.4"
+      ],
+      "adrIds": [],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:11"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [
+        "dependency-management",
+        "tooling"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260927-1900",
+        "date": "2026-09-27",
+        "summary": "Close-out validation repaired five existing provider-floor unit failures and exercised the changed Docker stage. No provider evaluation or model-quality measurement was run."
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "223",
+        "sourcePath": "docs/stories/story-223-pnpm-package-manager-migration.md",
+        "recommendedNow": true,
+        "posture": "in-progress",
+        "whyNow": "Close-out validation repaired five existing provider-floor unit failures and exercised the changed Docker stage. No provider evaluation or model-quality measurement was run.",
+        "lastRelevantAction": {
+          "date": "2026-09-27",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-223-pnpm-package-manager-migration.md",
+          "summary": "Close-out validation repaired five existing provider-floor unit failures and exercised the changed Docker stage. No provider evaluation or model-quality measurement was run."
         }
       }
     }

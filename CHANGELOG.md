@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-09-27-01] — Use pnpm for root and UI dependency installs (Story 223)
+
+### Changed
+- Pinned pnpm 10.34.5 for independent root and UI installs while preserving
+  the selected package versions, seven-day release-age policy, and build paths.
+- Updated setup, Docker frontend, local launch, and project commands for pnpm.
+
+### Fixed
+- Restored provider-floor contract checks by reconciling an omitted empty target
+  default and macOS canonical paths, while retaining byte-bound evidence checks.
+- Split oversized provider transport code and made standalone provider imports
+  deterministic; no historical provider score or runtime default changed.
+
 ## [2026-09-26-02] — Qualify GPT-6 Luna for ordered-frame reference analysis (Story 222)
 
 ### Added

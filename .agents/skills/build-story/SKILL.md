@@ -157,7 +157,7 @@ context. Keep routine small stories single-threaded.
    - If the story status is `Pending`, set it to `In Progress` before implementation starts, then run `pnpm methodology:compile`
    - Mark task as in progress in the story file
    - Do the work
-   - Run relevant project checks after meaningful changes (backend: unit tests + Ruff; UI: `pnpm --dir ui run lint` and `cd ui && npx tsc -b`)
+   - Run relevant project checks after meaningful changes (backend: unit tests + Ruff; UI: `pnpm --dir ui run lint` and `pnpm --dir ui exec tsc -b`)
    - For significant UI changes, use browser tools during the build loop when possible in both desktop and mobile views (screenshot + console check), not only at the end
    - Run relevant tests
    - Mark task complete with brief evidence
@@ -165,7 +165,7 @@ context. Keep routine small stories single-threaded.
 
 13a. **Static verification** — Run the project's full validation suite:
    - Backend: `make test-unit PYTHON=.venv/bin/python` and `.venv/bin/python -m ruff check src/ tests/`
-   - UI: `pnpm --dir ui run lint` and `cd ui && npx tsc -b`
+   - UI: `pnpm --dir ui run lint` and `pnpm --dir ui exec tsc -b`
    - `pnpm --dir ui run build` (catches errors typecheck misses)
    - Methodology surfaces (if story metadata, ADR metadata, AGENTS, runbooks,
      or skills changed): `pnpm methodology:check`

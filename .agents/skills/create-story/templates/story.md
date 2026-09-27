@@ -62,7 +62,7 @@ legacy_system: ""
 - [ ] Run required checks for touched scope:
   - [ ] Backend minimum: `make test-unit PYTHON=.venv/bin/python`
   - [ ] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
-  - [ ] UI (if touched): `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and `pnpm --dir ui run build`
+  - [ ] UI (if touched): `pnpm --dir ui run lint`, `pnpm --dir ui exec tsc -b`, and `pnpm --dir ui run build`
 - [ ] If agent tooling or project instructions are touched: `make skills-check`
 - [ ] If story metadata, ADR metadata, or methodology state changes: `pnpm methodology:compile`
 - [ ] If evals or goldens are changed: run `/improve-eval` or equivalent mismatch investigation, classify all mismatches, and update `docs/evals/registry.yaml`

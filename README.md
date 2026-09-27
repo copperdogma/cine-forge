@@ -61,6 +61,14 @@ python3 -m pip install -e ".[dev]"
 The `pip` fallback bypasses the repo-local freshness delay. Direct `uv` commands do too unless
 you pass `--exclude-newer` yourself. Use those paths only if you intentionally want to opt out.
 
+Install pnpm 10.34.5 for the Node tools, then restore the two independently locked
+projects:
+
+```bash
+pnpm install --frozen-lockfile
+pnpm --dir ui install --frozen-lockfile
+```
+
 ## Quick Start (Agentic Development)
 
 - Read `AGENTS.md` first; it is the project-wide source of truth for AI agents.
@@ -136,7 +144,7 @@ Per-run execution state is written to `output/runs/<run_id>/`:
 Use the local launcher for day-to-day app work:
 
 ```bash
-npm run local:app
+pnpm run local:app
 ```
 
 Primary checkout ports remain **http://localhost:8000** for the API and
@@ -148,9 +156,9 @@ derive ports inside CineForge's reserved ranges: UI `5300-5399`, services
 When testing an unlanded Conductor worktree, set
 `CONDUCTOR_LOCAL_DEV_PORTS_FILE=/path/to/local-dev-ports.json` before launching.
 
-Use `npm run local:status` to inspect port ownership and health, and
-`npm run local:stop` to stop same-checkout services. The compatibility command
-`npm run dev:local` delegates to the same launcher.
+Use `pnpm run local:status` to inspect port ownership and health, and
+`pnpm run local:stop` to stop same-checkout services. The `pnpm run dev:local`
+command delegates to the same launcher.
 
 The lower-level manual commands still work when you explicitly want one raw
 process:
@@ -160,14 +168,15 @@ process:
 PYTHONPATH=src python -m cine_forge.api
 
 # UI only
-cd ui && npm ci && npm run dev
+cd ui && pnpm install --frozen-lockfile && pnpm run dev
 ```
 
 ## Dependency Freshness Hardening
 
-- Node installs are delayed by 7 days via repo-local npm/pnpm config. `npm` uses `.npmrc` and
-  needs version `11.10.0+` for `min-release-age`; `pnpm` uses `ui/pnpm-workspace.yaml` and needs
-  `10.16.0+` for `minimumReleaseAge`. Older releases ignore these settings.
+- Node installs use pnpm 10.34.5, pinned in both package manifests. Root and UI
+  have separate lockfiles and `pnpm-workspace.yaml` files; each enforces a 7-day
+  `minimumReleaseAge` for new package resolution. Use `pnpm install --frozen-lockfile`
+  at the root and again in `ui/` after checkout.
 - Python installs are delayed by 7 days when they go through `./scripts/uv-safe.sh ...`, which
   computes a fresh `uv --exclude-newer` cutoff at runtime.
 - These guards reduce exposure to brand-new malicious publishes. They do not help if a bad

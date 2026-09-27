@@ -8,9 +8,9 @@ script = "./scripts/codex-setup"
 [[actions]]
 name = "Run"
 icon = "run"
-command = "npm run local:app"
+command = "pnpm run local:app"
 
 [[actions]]
 name = "Local Status"
 icon = "tool"
-command = "npm run local:status"
+command = "pnpm run local:status"

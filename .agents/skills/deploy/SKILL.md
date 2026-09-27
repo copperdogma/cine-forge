@@ -51,7 +51,7 @@ After successful deploy:
      - Backend lint: `.venv/bin/python -m ruff check src/ tests/`
      - UI if touched:
        - `pnpm --dir ui run lint`
-       - `cd ui && npx tsc -b` (use `-b`, not `--noEmit`)
+       - `pnpm --dir ui exec tsc -b` (use `-b`, not `--noEmit`)
    - Fly status:
      - `fly status -a cineforge-app`
    - Fly secrets:

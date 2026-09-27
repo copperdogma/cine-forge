@@ -46,11 +46,11 @@ echo "Restoring Python dependencies into .venv using $PYTHON_BIN..."
 without_conda_env .venv/bin/python -m pip install --upgrade pip
 without_conda_env .venv/bin/python -m pip install -e '.[dev]'
 
-echo "Restoring root Node dependencies with npm ci..."
-npm ci
+echo "Restoring root Node dependencies with pnpm..."
+pnpm install --frozen-lockfile
 
-echo "Restoring UI Node dependencies with npm ci..."
-(cd ui && npm ci)
+echo "Restoring UI Node dependencies with pnpm..."
+(cd ui && pnpm install --frozen-lockfile)
 
 after="$(tracked_status)"
 if [[ "$before" != "$after" ]]; then

@@ -12,15 +12,15 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-import video_understanding_provider_anthropic as _anthropic
-import video_understanding_provider_vision as _vision
-
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_ROOT = REPO_ROOT / "src"
 SCRIPT_ROOT = REPO_ROOT / "benchmarks" / "scripts"
 for import_root in (SRC_ROOT, SCRIPT_ROOT):
     if str(import_root) not in sys.path:
         sys.path.insert(0, str(import_root))
+
+import video_understanding_provider_anthropic as _anthropic  # noqa: E402
+import video_understanding_provider_vision as _vision  # noqa: E402
 
 from cine_forge.ai.model_identity import (  # noqa: E402
     validate_provider_response_identity,

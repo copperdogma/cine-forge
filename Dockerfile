@@ -1,10 +1,11 @@
 # Stage 1: Build frontend
 FROM node:24-slim AS frontend
 WORKDIR /app/ui
-COPY ui/package.json ui/package-lock.json ./
-RUN npm ci
+RUN npm install -g pnpm@10.34.5
+COPY ui/package.json ui/pnpm-lock.yaml ui/pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
 COPY ui/ ./
-RUN npm run build
+RUN pnpm run build
 
 # Stage 2: Python runtime
 FROM python:3.12-slim AS runtime

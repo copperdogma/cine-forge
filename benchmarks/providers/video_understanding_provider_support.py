@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib
 import math
+import urllib.parse
 from pathlib import Path
 from typing import Any
 
@@ -216,3 +217,136 @@ def _nonnegative_integer(value: object, *, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value < 0:
         raise RuntimeError(f"{name} must be a nonnegative integer")
     return value
+
+def call_gemini(
+    scope: dict[str, Any],
+    *,
+    model: str,
+    user_text: str,
+    frames: list[dict[str, str]],
+    max_tokens: int,
+    temperature: float | None = None,
+) -> dict[str, Any]:
+    _require_env = scope["_require_env"]
+    _build_gemini_payload = scope["_build_gemini_payload"]
+    _VIDEO_ANALYSIS_RESPONSE_SCHEMA = scope["_VIDEO_ANALYSIS_RESPONSE_SCHEMA"]
+    GEMINI_MODELS_URL = scope["GEMINI_MODELS_URL"]
+    _request_json = scope["_request_json"]
+    validate_provider_response_identity = scope["validate_provider_response_identity"]
+    _token_count = scope["_token_count"]
+    api_key = _require_env("GEMINI_API_KEY")
+    payload = _build_gemini_payload(
+        user_text=user_text,
+        frames=frames,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        response_schema=_VIDEO_ANALYSIS_RESPONSE_SCHEMA,
+    )
+    url = f"{GEMINI_MODELS_URL}/{urllib.parse.quote(model, safe='')}:generateContent?key={api_key}"
+    response = _request_json(
+        url,
+        headers={"Content-Type": "application/json"},
+        body=payload,
+    )
+    candidates = response.get("candidates", [])
+    parts = candidates[0].get("content", {}).get("parts", []) if candidates else []
+    output = "\n".join(part.get("text", "") for part in parts if "text" in part)
+    usage = response.get("usageMetadata", {})
+    if not isinstance(usage, dict):
+        raise ValueError("Gemini usageMetadata must be a mapping")
+    optional_usage: dict[str, object] = {}
+    if "totalTokenCount" in usage:
+        optional_usage["total_tokens"] = usage["totalTokenCount"]
+    if "thoughtsTokenCount" in usage:
+        optional_usage["reasoning_completion_tokens"] = usage["thoughtsTokenCount"]
+    token_usage = validate_gemini_token_usage(
+        prompt_tokens=usage.get("promptTokenCount"),
+        visible_completion_tokens=usage.get("candidatesTokenCount"),
+        **optional_usage,
+    )
+    normalized_usage = {
+        "prompt": token_usage.prompt,
+        "completion": token_usage.visible_completion,
+        "total": token_usage.total,
+        "billed_completion": token_usage.billed_completion,
+    }
+    if token_usage.reported_reasoning_completion is not None:
+        normalized_usage["reasoning_completion"] = token_usage.reported_reasoning_completion
+    identity = validate_provider_response_identity(
+        provider="google",
+        requested_model=model,
+        returned_model=response.get("modelVersion"),
+        request_id=response.get("responseId"),
+        require_returned=True,
+    )
+    raw_evidence = {
+        "responseId": identity.request_id,
+        "modelVersion": identity.returned_model,
+        "usageMetadata": usage,
+    }
+    return {
+        "output": output,
+        "token_usage": normalized_usage,
+        "raw": raw_evidence,
+    }
+
+
+def openai_usage_and_cost(
+    scope: dict[str, Any], response: dict[str, Any], model: str
+) -> tuple[dict[str, Any], int, int, int, int, int | None, float]:
+    usage = response.get("usage")
+    if not isinstance(usage, dict):
+        raise RuntimeError("OpenAI Responses usage must be a mapping")
+    count = scope["_token_count"]
+    input_tokens = count(usage.get("input_tokens"), "input_tokens")
+    output_tokens = count(usage.get("output_tokens"), "output_tokens")
+    total_tokens = count(usage.get("total_tokens"), "total_tokens")
+    if total_tokens != input_tokens + output_tokens:
+        raise RuntimeError("OpenAI Responses token totals do not reconcile")
+    input_details = usage.get("input_tokens_details") or {}
+    output_details = usage.get("output_tokens_details") or {}
+    if not isinstance(input_details, dict) or not isinstance(output_details, dict):
+        raise RuntimeError("OpenAI Responses token details must be mappings")
+    cached_tokens = count(input_details.get("cached_tokens", 0), "cached_tokens")
+    write_count = input_details.get("cache_write_tokens")
+    written_tokens = (
+        count(write_count, "cache_write_tokens") if write_count is not None else None
+    )
+    reasoning_tokens = count(output_details.get("reasoning_tokens", 0), "reasoning_tokens")
+    if (cached_tokens > input_tokens or reasoning_tokens > output_tokens or
+            (written_tokens is not None and cached_tokens + written_tokens > input_tokens)):
+        raise RuntimeError("OpenAI Responses token details exceed total tokens")
+    input_rate, cached_rate, write_rate, output_rate = {
+        "gpt-6-sol": (2.0, 0.2, 2.5, 10.0),
+        "gpt-6-luna": (0.1, 0.01, 0.125, 0.5),
+    }[model]
+    # If write telemetry is absent, charge every non-cached input token at the
+    # higher write rate. This is an upper bound, not a billed-cost claim.
+    charged_writes = (
+        written_tokens if written_tokens is not None else input_tokens - cached_tokens
+    )
+    ordinary_tokens = input_tokens - cached_tokens - charged_writes
+    estimated_cost = (
+        ordinary_tokens * input_rate
+        + cached_tokens * cached_rate
+        + charged_writes * write_rate
+        + output_tokens * output_rate
+    ) / 1_000_000
+    return (
+        usage, input_tokens, output_tokens, total_tokens,
+        reasoning_tokens, written_tokens, estimated_cost,
+    )
+
+
+def openai_frame_content(
+    user_text: str, frames: list[dict[str, str]]
+) -> list[dict[str, Any]]:
+    content: list[dict[str, Any]] = [{"type": "input_text", "text": user_text}]
+    for index, frame in enumerate(frames):
+        content.append({"type": "input_text", "text": f"frame_index: {index}"})
+        content.append({
+            "type": "input_image",
+            "image_url": f"data:{frame['mime_type']};base64,{frame['base64']}",
+            "detail": "high",
+        })
+    return content

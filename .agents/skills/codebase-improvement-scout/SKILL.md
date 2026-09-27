@@ -63,7 +63,7 @@ Run the strongest available deterministic checks first. Verify tools exist befor
    - Backend: `.venv/bin/python -m ruff check src/ tests/`
    - Backend tests when relevant: `make test-unit PYTHON=.venv/bin/python`
    - UI: `pnpm --dir ui run lint`
-   - UI typecheck: `cd ui && npx tsc -b`
+   - UI typecheck: `pnpm --dir ui exec tsc -b`
    - UI duplication lint if available: `pnpm --dir ui run lint:duplication`
    - Skill sync when agent surfaces are involved: `./scripts/sync-agent-skills.sh --check` if `AGENTS.md` or `.agents/skills/` are under review
 

@@ -85,7 +85,7 @@ environment, and check configuration still apply.
      - relevant integration or full suites when the dependency path warrants it.
    - **UI files**:
      - `pnpm --dir ui run lint`
-     - `cd ui && npx tsc -b`
+     - `pnpm --dir ui exec tsc -b`
      - `pnpm --dir ui run build`
    - **Agent/process surfaces**:
       - If `AGENTS.md` or `.agents/skills/` changed: `./scripts/sync-agent-skills.sh --check`

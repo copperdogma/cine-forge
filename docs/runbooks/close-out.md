@@ -30,7 +30,7 @@ sibling checkout.
   from focused checks to `make test-unit PYTHON=.venv/bin/python`, full relevant
   Ruff paths, integration checks, and affected consumers when warranted
 - agent skill changes: `make skills-check`
-- UI changes: `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and
+- UI changes: `pnpm --dir ui run lint`, `pnpm --dir ui exec tsc -b`, and
   `pnpm --dir ui run build`; behavior changes also require desktop and mobile
   browser verification with clean console output or a documented blocker
 - pipeline or artifact changes: run the narrowest real driver/API path, validate

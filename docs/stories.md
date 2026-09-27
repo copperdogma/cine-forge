@@ -382,6 +382,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
+| 223 | Use pnpm for root and UI dependency installs | Medium | In Progress | — | spec:11 | — | [story-223](stories/story-223-pnpm-package-manager-migration.md) |
 | 103 | AGENTS.md Runbook Extraction (300-Line Cap) | Medium | Draft | — | spec:11 | — | [story-103](stories/story-103-agents-md-runbook-extraction.md) |
 | 053 | Cross-CLI Skills/Prompts Unification | High | Done | — | spec:11 | — | [story-053](stories/story-053-cross-cli-skills-unification.md) |
 | 125 | Agent Workflow Hardening Meta Upgrade | High | Done | — | spec:11 | — | [story-125](stories/story-125-agent-workflow-hardening-meta-upgrade.md) |

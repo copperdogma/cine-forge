@@ -42,7 +42,7 @@ const SERVICES = {
     host: HOST,
     healthPath: "/",
     openPath: "/",
-    command: () => [PNPM, ["run", "dev", "--", "--host", HOST]],
+    command: () => [PNPM, ["run", "dev", "--host", HOST]],
     cwd: resolve(ROOT, "ui"),
     env: () => ({
       CINE_FORGE_UI_PORT: String(runtime.ports.ui),
@@ -67,9 +67,9 @@ function usage() {
   node scripts/local-service.mjs stop [app|api|ui|all] [--force]
 
 Recommended commands:
-  npm run local:app
-  npm run local:status
-  npm run local:stop`);
+  pnpm run local:app
+  pnpm run local:status
+  pnpm run local:stop`);
 }
 
 function serviceUrl(service, route = "") {
