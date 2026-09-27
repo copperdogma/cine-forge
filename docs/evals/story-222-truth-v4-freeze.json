@@ -1,0 +1,150 @@
+{
+  "date": "2026-09-26",
+  "story": "222",
+  "base_sha": "163bcb1ecd36de97b76e5ad83298048c9211a4d7",
+  "branch": "codex/gpt6-sol-luna-eval-20260926",
+  "scope": "Six active synthetic five-JPEG ordered-frame cases, no new subject calls, original v3 source frames/prompt/subject results preserved.",
+  "correction": "v4 source-backed overlay; camera excluded only for ambiguous dialogue mechanism; bedside interpretation neutral; rooftop constant-size/no-acceleration truth.",
+  "candidate_results": [
+    {
+      "path": "benchmarks/results/video-understanding-gpt6-luna-six-repaired-20260926.json",
+      "bytes": 164401,
+      "sha256": "8b6f0230a30e199f8bdaf3fc24462d54c391f9940be0ff5b967767e71d1c2ca1"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gemini35-lite-six-gpt6-control-20260926.json",
+      "bytes": 164748,
+      "sha256": "2a6105d5b14f9d968fc4b88e76c39ad481f6b5054d611f923d440280130b86aa"
+    }
+  ],
+  "frozen_contract_files": [
+    {
+      "path": "benchmarks/scripts/build_video_understanding_truth_v4.py",
+      "bytes": 6589,
+      "sha256": "6e5c23c1670f056d2a4e393ada946b40f06a3792e1102d5567767df6b9059979"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/manifest.json",
+      "bytes": 5893,
+      "sha256": "61008dfc76f9cd75ee8fdebdbce1b0968c81fc88995912135d7014c7f1d030e8"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/README.md",
+      "bytes": 1528,
+      "sha256": "46eb3c10df8c912ce62c9bc0aa831dfe5a0a8c36d9a41fb50ce8c9756022ca47"
+    },
+    {
+      "path": "benchmarks/tasks/video-understanding.yaml",
+      "bytes": 10510,
+      "sha256": "34b326eda07d88ab3cbbf9f6340ecea36f622b9955b4d924bda6f45dd95ada1e"
+    },
+    {
+      "path": "benchmarks/prompts/video-understanding.txt",
+      "bytes": 3101,
+      "sha256": "53ea0b8ef7487d8dcaea352c0eb133100e18eb45d78b953f2007f14148beb6e2"
+    },
+    {
+      "path": "benchmarks/scorers/video_understanding_scorer.py",
+      "bytes": 8790,
+      "sha256": "0b353a7ff30ee4b5eea7961ab91a3961d830465184246a9c36ab65be95494b97"
+    },
+    {
+      "path": "benchmarks/scorers/video_understanding_dimensions.py",
+      "bytes": 12123,
+      "sha256": "3bd49dbcf285408f367208a189428d38fb38144cd75a2cab367f147f75507fe2"
+    },
+    {
+      "path": "src/cine_forge/schemas/video_analysis.py",
+      "bytes": 7132,
+      "sha256": "dc92b71ebc183ee15e1a92aaac814317bca1f1a9c76ae075164071edfbee5a36"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/dialogue_confession_push_in/target.json",
+      "bytes": 1353,
+      "sha256": "04d1a434d029604a61933ccc69ca85b821acbf0e74ede054389243476fd5fc36"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+      "bytes": 803,
+      "sha256": "b8a723c5e68b6ac65f65f76b9aaba4e15257bbc3d497e457ec8cd75480b3a160"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/alarm_chase_whip_pan/target.json",
+      "bytes": 1251,
+      "sha256": "bdeebb0075f458a1c87033300b1be9fce6bb66b3104362b35612e0a899d4f621"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/alarm_chase_whip_pan/target.md",
+      "bytes": 530,
+      "sha256": "47f79d984b17bb23b3b8e494b0ea83a4bfabb09140c56f81607225e6f2f0dc1d"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/quiet_bedside_vigil/target.json",
+      "bytes": 1279,
+      "sha256": "fb1d0e1cc26ff665b85d8086d68ac9a057a6f5408f586e78dc219c1ff2fadfcf"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/quiet_bedside_vigil/target.md",
+      "bytes": 805,
+      "sha256": "d7df7986a4611e5c1b40a96d9a99414b976f03fc4ea590aa517793005aa0b310"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/prop_swap_continuity_break/target.json",
+      "bytes": 1221,
+      "sha256": "9f14e1f173f5d818b8f915016c498be241206814cfd6cf36d4b68cacdb875be8"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+      "bytes": 522,
+      "sha256": "8a68446af7b9d7d8ef09e31d8ad8bb87ce064dd810da4fd6e251edd8ac4f4eba"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/rooftop_escape_crash_zoom/target.json",
+      "bytes": 1268,
+      "sha256": "a580fe31488479466d695125959701d6e3b7a6f481274bfad99e2bd1f95dde88"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/rooftop_escape_crash_zoom/target.md",
+      "bytes": 685,
+      "sha256": "80b64c09ebf888dd089dbf3b15980ceffdc8187aa628d11de8c3640580b84599"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.json",
+      "bytes": 1270,
+      "sha256": "7d0a40d274599f17dd2242134c26d0f13c70430bca3ba49428c041d8bbf7d82e"
+    },
+    {
+      "path": "benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+      "bytes": 533,
+      "sha256": "66eca2cb744f84f549136615e834ee8e6843bf61d1dfdf1f13b28a7f0101bc3f"
+    },
+    {
+      "path": "benchmarks/scripts/rejudge_video_understanding_truth_v4.py",
+      "bytes": 7512,
+      "sha256": "da3e4128b08cbc033f196e68eec814b89b6b720e95b7b354620793aec499eeb8"
+    }
+  ],
+  "judge_plan": {
+    "provider": "anthropic:messages:claude-opus-4-6",
+    "saved_subjects": "Luna and Gemini 3.5 Flash-Lite full-six results",
+    "rejudge_cases": [
+      "dialogue_confession_push_in",
+      "quiet_bedside_vigil",
+      "rooftop_escape_crash_zoom"
+    ],
+    "unchanged_reference_cases": [
+      "alarm_chase_whip_pan",
+      "prop_swap_continuity_break",
+      "storm_tunnel_lateral_run"
+    ],
+    "total_calls_max": 6,
+    "input_reserve_tokens_each": 10000,
+    "output_reserve_tokens_each": 1024,
+    "judge_price_usd_per_m_input": 5,
+    "judge_price_usd_per_m_output": 25,
+    "max_reserved_incremental_usd": 0.4536,
+    "campaign_total_spent_before": "0.390639095",
+    "campaign_ceiling": "1.5"
+  },
+  "original_evidence": "docs/evals/story-222-gpt6-sol-luna-video-evidence-v2.json"
+}

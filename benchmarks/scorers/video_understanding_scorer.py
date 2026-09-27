@@ -130,6 +130,23 @@ def score_prediction_against_target(
             dimension="summary",
             haystack=prediction.summary,
             required=_observable_required_keywords(target),
+            equivalents=(
+                {"closer": (
+                    r"\b(?:become|becomes|became|appear|appears|look|looks)\s+(?:(?:slightly|gradually|progressively|visibly)\s+)*(?:larger|bigger)\b",
+                    r"\benlarg\w*\s+across\s+(?:the\s+)?(?:ordered\s+)?(?:frames|samples)\b",
+                    r"\bacross\s+(?:the\s+)?(?:ordered\s+)?(?:frames|samples)\b.{0,80}\benlarg\w*\b",
+                    r"\bacross\s+(?:the\s+)?(?:ordered\s+)?(?:frames|samples)\b.{0,100}\b(?:grow|grows|grew)\s+(?:slightly|gradually|visibly|progressively|larger|bigger)\b",
+                    r"\b(?:camera|framing|shot)\s+push(?:es|ed|ing)?\s+in\b",
+                )}
+                if "slow_push_in" in target.camera_tags else
+                {"static": (
+                    r"\b(?:composition|arrangement|positions?|scene|frame)\s+"
+                    r"(?:remains?|stays?)\s+(?:visually\s+|completely\s+)?"
+                    r"(?:unchanged|fixed)\b",
+                    r"\bno\s+(?:visible\s+)?(?:motion|movement|change)\b",
+                )}
+                if "static" in target.required_keywords else None
+            ),
         ),
         "tone": _score_tag_dimension("tone", prediction.tone_tags, target.tone_tags),
         "emotion": _score_tag_dimension(
@@ -149,11 +166,14 @@ def score_prediction_against_target(
     )
 
     raw_weights = target.weights.model_dump()
-    observable_weight = sum(raw_weights[name] for name in _OBSERVABLE_DIMENSIONS)
+    scored_dimensions = tuple(
+        name for name in _OBSERVABLE_DIMENSIONS if name not in target.excluded_dimensions
+    )
+    observable_weight = sum(raw_weights[name] for name in scored_dimensions)
     if observable_weight <= 0:
         raise ValueError("Target assigns no weight to observable frame dimensions")
     overall_score = sum(
-        dimensions[name].score * raw_weights[name] for name in _OBSERVABLE_DIMENSIONS
+        dimensions[name].score * raw_weights[name] for name in scored_dimensions
     ) / observable_weight
     if not hard_dimension.score:
         overall_score *= 0.5
@@ -173,7 +193,7 @@ def score_prediction_against_target(
     missed = [
         f"{dimension.dimension}: {', '.join(dimension.missed)}"
         for dimension in ordered_dimensions
-        if dimension.missed
+        if dimension.missed and dimension.dimension not in target.excluded_dimensions
     ]
     uncertainty = min(
         1.0,

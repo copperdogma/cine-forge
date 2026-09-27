@@ -156,6 +156,7 @@ class VideoAnalysisTarget(BaseModel):
     audio_description: str | None = None
     summary_reference: str = Field(min_length=1)
     required_keywords: list[str] = Field(default_factory=list)
+    excluded_dimensions: list[VideoAnalysisDimension] = Field(default_factory=list)
     tone_tags: list[ToneTag] = Field(default_factory=list)
     emotion_tags: list[EmotionTag] = Field(default_factory=list)
     color_tags: list[ColorTag] = Field(default_factory=list)
@@ -167,6 +168,18 @@ class VideoAnalysisTarget(BaseModel):
     clip_tags: list[str] = Field(default_factory=list)
     anchor_subset: bool = False
     weights: VideoAnalysisWeights = Field(default_factory=VideoAnalysisWeights)
+
+    @model_validator(mode="after")
+    def _validate_scoring_exclusions(self) -> VideoAnalysisTarget:
+        allowed = {
+            "summary", "tone", "emotion", "color", "camera", "motion",
+            "continuity", "evidence",
+        }
+        if len(set(self.excluded_dimensions)) != len(self.excluded_dimensions):
+            raise ValueError("excluded_dimensions must be unique")
+        if invalid := set(self.excluded_dimensions) - allowed:
+            raise ValueError(f"excluded_dimensions cannot mask {sorted(invalid)}")
+        return self
 
     @model_validator(mode="after")
     def _validate_audio_contract(self) -> VideoAnalysisTarget:

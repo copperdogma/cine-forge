@@ -66,6 +66,7 @@ _subject_contract_fingerprint = _subject_contract.subject_contract_fingerprint
 
 
 OPENAI_CHAT_URL = "https://api.openai.com/v1/chat/completions"
+OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses"
 XAI_CHAT_URL = "https://api.x.ai/v1/chat/completions"
 XAI_RESPONSES_URL = "https://api.x.ai/v1/responses"
 OPENROUTER_CHAT_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -116,6 +117,16 @@ def _dispatch_subject_request(request: dict[str, Any]) -> dict[str, Any]:
     }
     provider = request["provider"]
     if provider == "openai":
+        if request["config"].get("transport") == "responses_strict":
+            return _vision.call_openai_responses_strict(
+                globals(),
+                model=request["model"],
+                user_text=request["user_text"],
+                frames=request["packet"]["frames"],
+                max_tokens=request["max_tokens"],
+                reasoning_effort=str(request["config"].get("reasoning_effort") or "low"),
+                raw_output_path=_openai_raw_output_path(request),
+            )
         return _call_openai(**common, temperature=request["temperature"])
     if provider == "xai":
         if request["config"].get("transport") == "responses_strict":
@@ -155,6 +166,17 @@ def _openrouter_raw_output_path(request: dict[str, Any]) -> Path:
     output_root = (REPO_ROOT / "output").resolve()
     if output_root not in target_dir.parents and target_dir != output_root:
         raise RuntimeError("OpenRouter raw_output_dir must stay under repo output/")
+    return target_dir / f"{request['evaluation_id']}-raw-envelope.json"
+
+
+def _openai_raw_output_path(request: dict[str, Any]) -> Path:
+    configured_dir = request["config"].get("raw_output_dir")
+    if not isinstance(configured_dir, str) or not configured_dir.strip():
+        raise RuntimeError("OpenAI Responses video evaluation requires raw_output_dir")
+    target_dir = (REPO_ROOT / configured_dir).resolve()
+    output_root = (REPO_ROOT / "output").resolve()
+    if target_dir != output_root and output_root not in target_dir.parents:
+        raise RuntimeError("OpenAI raw_output_dir must stay under repo output/")
     return target_dir / f"{request['evaluation_id']}-raw-envelope.json"
 
 
@@ -314,12 +336,17 @@ def _request_json(
     headers: dict[str, str],
     body: dict[str, Any],
     timeout_seconds: float = 180,
+    raw_output_path: Path | None = None,
 ) -> dict[str, Any]:
     data = json.dumps(body).encode("utf-8")
     request = urllib.request.Request(url, data=data, headers=headers, method="POST")
     try:
         with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
-            return json.loads(response.read().decode("utf-8"))
+            raw_bytes = response.read()
+            if raw_output_path is not None:
+                raw_output_path.parent.mkdir(parents=True, exist_ok=True)
+                raw_output_path.write_bytes(raw_bytes)
+            return json.loads(raw_bytes.decode("utf-8"))
     except urllib.error.HTTPError as exc:
         payload = exc.read().decode("utf-8", errors="replace")
         raise ProviderHTTPError(url=url, status_code=exc.code, body=payload) from exc

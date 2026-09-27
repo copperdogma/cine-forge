@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-26",
+  "story": "222",
+  "base_sha": "163bcb1ecd36de97b76e5ad83298048c9211a4d7",
+  "branch": "codex/gpt6-sol-luna-eval-20260926",
+  "evidence_status": "bounded-six-case-uncommitted-v4-saved-subject-derived",
+  "decision_scope": "maintained headless ordered-frame reference model only; no product inference integration or autonomous QA/default adoption",
+  "freeze": {
+    "path": "docs/evals/story-222-truth-v4-freeze.json",
+    "bytes": 5948,
+    "sha256": "7ec0eb8f274d74f2a742802d5964d810295d88107ccef4215d07d5f153be0b7c"
+  },
+  "prior_campaign_evidence": {
+    "path": "docs/evals/story-222-gpt6-sol-luna-video-evidence-v2.json",
+    "bytes": 31310,
+    "sha256": "d510adf7b46a8cf5b9d5bac9c426929bf9ffe26f9f882cc36ae6f12edc5ffdf6"
+  },
+  "derived_result": {
+    "path": "benchmarks/results/video-understanding-truth-v4-saved-subject-regrade-20260926.json",
+    "bytes": 34756,
+    "sha256": "ff2a5ae0da2444b0ea76ad3faa6eb115f8511eee95cc102dba44d4536428217f"
+  },
+  "candidate_results": [
+    {
+      "path": "benchmarks/results/video-understanding-gpt6-luna-six-repaired-20260926.json",
+      "bytes": 164401,
+      "sha256": "8b6f0230a30e199f8bdaf3fc24462d54c391f9940be0ff5b967767e71d1c2ca1"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gemini35-lite-six-gpt6-control-20260926.json",
+      "bytes": 164748,
+      "sha256": "2a6105d5b14f9d968fc4b88e76c39ad481f6b5054d611f923d440280130b86aa"
+    }
+  ],
+  "target_overlay": {
+    "path": "benchmarks/video_understanding_truth_v4/manifest.json",
+    "bytes": 5893,
+    "sha256": "61008dfc76f9cd75ee8fdebdbce1b0968c81fc88995912135d7014c7f1d030e8"
+  },
+  "judge_plan": {
+    "provider": "anthropic:messages:claude-opus-4-6",
+    "saved_subjects": "Luna and Gemini 3.5 Flash-Lite full-six results",
+    "rejudge_cases": [
+      "dialogue_confession_push_in",
+      "quiet_bedside_vigil",
+      "rooftop_escape_crash_zoom"
+    ],
+    "unchanged_reference_cases": [
+      "alarm_chase_whip_pan",
+      "prop_swap_continuity_break",
+      "storm_tunnel_lateral_run"
+    ],
+    "total_calls_max": 6,
+    "input_reserve_tokens_each": 10000,
+    "output_reserve_tokens_each": 1024,
+    "judge_price_usd_per_m_input": 5,
+    "judge_price_usd_per_m_output": 25,
+    "max_reserved_incremental_usd": 0.4536,
+    "campaign_total_spent_before": "0.390639095",
+    "campaign_ceiling": "1.5"
+  },
+  "judge_receipts": [
+    {
+      "case": "dialogue_confession_push_in",
+      "arm": "luna",
+      "raw": {
+        "path": "output/evals/gpt6-sol-luna-20260926/truth-v4-judge/dialogue_confession_push_in-luna-raw.json",
+        "bytes": 4014,
+        "sha256": "9cf73438a6ce3699325bddd5ba55b3a261729b3c57cf11ec049a4db1aed25c11"
+      },
+      "judge_id": "msg_011CfTAQb1JvnCaL74WSCQ9E",
+      "returned_model": "claude-opus-4-6",
+      "stop_reason": "end_turn",
+      "service_tier": "standard",
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "input_tokens": 771,
+      "output_tokens": 795,
+      "rendered_system_plus_user_bytes": 3085,
+      "score": 0.62,
+      "estimated_cost_usd": "0.023730"
+    },
+    {
+      "case": "dialogue_confession_push_in",
+      "arm": "gemini",
+      "raw": {
+        "path": "output/evals/gpt6-sol-luna-20260926/truth-v4-judge/dialogue_confession_push_in-gemini-raw.json",
+        "bytes": 4137,
+        "sha256": "b38c690c7540ba75904eb4a5cdd3271b6b936fd8095a75b2919e0e805d93860e"
+      },
+      "judge_id": "msg_011CfTARxV9mBzxsot3CDrDh",
+      "returned_model": "claude-opus-4-6",
+      "stop_reason": "end_turn",
+      "service_tier": "standard",
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "input_tokens": 730,
+      "output_tokens": 823,
+      "rendered_system_plus_user_bytes": 2897,
+      "score": 0.25,
+      "estimated_cost_usd": "0.024225"
+    },
+    {
+      "case": "quiet_bedside_vigil",
+      "arm": "luna",
+      "raw": {
+        "path": "output/evals/gpt6-sol-luna-20260926/truth-v4-judge/quiet_bedside_vigil-luna-raw.json",
+        "bytes": 3576,
+        "sha256": "0ef2fbbe534d4e42012e0922aa1cc8e902b2a962051bcaccd5f7b7aca01d0a9f"
+      },
+      "judge_id": "msg_011CfTATLxHq1hGni5BGSUK4",
+      "returned_model": "claude-opus-4-6",
+      "stop_reason": "end_turn",
+      "service_tier": "standard",
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "input_tokens": 773,
+      "output_tokens": 713,
+      "rendered_system_plus_user_bytes": 3045,
+      "score": 0.55,
+      "estimated_cost_usd": "0.021690"
+    },
+    {
+      "case": "quiet_bedside_vigil",
+      "arm": "gemini",
+      "raw": {
+        "path": "output/evals/gpt6-sol-luna-20260926/truth-v4-judge/quiet_bedside_vigil-gemini-raw.json",
+        "bytes": 3588,
+        "sha256": "82e686561a29bd45894e6d6d1cb9629c44cd1363e01365db49ab2646d6e5f198"
+      },
+      "judge_id": "msg_011CfTAUYB1hxVD7poX4ifVu",
+      "returned_model": "claude-opus-4-6",
+      "stop_reason": "end_turn",
+      "service_tier": "standard",
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "input_tokens": 771,
+      "output_tokens": 721,
+      "rendered_system_plus_user_bytes": 3051,
+      "score": 0.3,
+      "estimated_cost_usd": "0.021880"
+    },
+    {
+      "case": "rooftop_escape_crash_zoom",
+      "arm": "luna",
+      "raw": {
+        "path": "output/evals/gpt6-sol-luna-20260926/truth-v4-judge/rooftop_escape_crash_zoom-luna-raw.json",
+        "bytes": 4477,
+        "sha256": "70837bebe544079afe874760412d9b96e1002e5b7850cb6a8277eb5e2c6ebdd0"
+      },
+      "judge_id": "msg_011CfTAVj6rf12d8UyzxStcZ",
+      "returned_model": "claude-opus-4-6",
+      "stop_reason": "end_turn",
+      "service_tier": "standard",
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "input_tokens": 747,
+      "output_tokens": 907,
+      "rendered_system_plus_user_bytes": 2896,
+      "score": 0.68,
+      "estimated_cost_usd": "0.026410"
+    },
+    {
+      "case": "rooftop_escape_crash_zoom",
+      "arm": "gemini",
+      "raw": {
+        "path": "output/evals/gpt6-sol-luna-20260926/truth-v4-judge/rooftop_escape_crash_zoom-gemini-raw.json",
+        "bytes": 3812,
+        "sha256": "62dc2c0db79e660d70d012a784038bbf03bec9243ea877dbd8b824512dde7e81"
+      },
+      "judge_id": "msg_011CfTAX7bExJqqM5ct4UmdS",
+      "returned_model": "claude-opus-4-6",
+      "stop_reason": "end_turn",
+      "service_tier": "standard",
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "input_tokens": 731,
+      "output_tokens": 776,
+      "rendered_system_plus_user_bytes": 2814,
+      "score": 0.55,
+      "estimated_cost_usd": "0.023055"
+    }
+  ],
+  "all_judge_receipts": "exact claude-opus-4-6, end_turn, standard tier, zero cache creation/read, unique IDs, valid score and usage",
+  "cost_ledger_usd": {
+    "previous_campaign_accounted": "0.390639095",
+    "incremental_judge_estimated": "0.140990",
+    "campaign_accounted": "0.531629095",
+    "campaign_ceiling": "1.50",
+    "remaining": "0.968370905",
+    "pricing": "Opus 4.6 standard USD5/M input and USD25/M output; returned cache read/create zero; provider billed dollars unavailable"
+  },
+  "score_summary": {
+    "luna": {
+      "structural_mean": 0.6239,
+      "rubric_mean": 0.5733,
+      "combined_mean": 0.5986,
+      "case_passes": 0,
+      "case_count": 6,
+      "latency_ms_mean_subject": 3675,
+      "cost_usd_mean_subject": "0.0004813408333333332866666666667"
+    },
+    "gemini": {
+      "structural_mean": 0.4709,
+      "rubric_mean": 0.3917,
+      "combined_mean": 0.4313,
+      "case_passes": 0,
+      "case_count": 6,
+      "latency_ms_mean_subject": 2470,
+      "cost_usd_mean_subject": "0.002731066666666666666666666667"
+    }
+  },
+  "pairwise_luna_wins": 6,
+  "quality_gate": "both arms 0/6 at 0.80; no autonomous QA/default adoption",
+  "source_limitations": [
+    "six abstract synthetic cases",
+    "dialogue body enlargement visible, camera mechanism ambiguous",
+    "rooftop target corrected for same-size constant-speed figure",
+    "bedside shape identity and tone remain interpretive",
+    "revised Opus judge penalizes some plausible bedside readings and visible ground-line mention"
+  ],
+  "provenance_limitations": [
+    "uncommitted worktree evidence, no immutable Git commit",
+    "original Attempt 041 first Luna parity raw envelope overwritten; full-six raw and all six new judge receipts intact"
+  ],
+  "commands": [
+    "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python benchmarks/scripts/build_video_understanding_truth_v4.py --check",
+    "/Users/cam/Documents/Projects/cine-forge/.venv/bin/python benchmarks/scripts/rejudge_video_understanding_truth_v4.py --preflight",
+    "/Users/cam/Documents/Projects/cine-forge/.venv/bin/python scripts/with_cine_forge_provider_env.py /Users/cam/Documents/Projects/cine-forge/.venv/bin/python benchmarks/scripts/rejudge_video_understanding_truth_v4.py --run",
+    "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python benchmarks/scripts/regrade_video_understanding_truth_v4.py"
+  ],
+  "no_new_subject_calls": true
+}

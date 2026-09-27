@@ -14,6 +14,148 @@ from typing import Any
 from cine_forge.ai.token_usage import validate_gemini_token_usage
 
 
+def call_openai_responses_strict(
+    scope: dict[str, Any],
+    *,
+    model: str,
+    user_text: str,
+    frames: list[dict[str, str]],
+    max_tokens: int,
+    reasoning_effort: str,
+    raw_output_path: Path,
+) -> dict[str, Any]:
+    """Direct foreground Responses, with raw retention before validation."""
+    if model not in {"gpt-6-sol", "gpt-6-luna"} or reasoning_effort != "low":
+        raise RuntimeError("This bounded lane requires GPT-6 Sol/Luna at low effort")
+    if len(frames) != 5:
+        raise RuntimeError("Five ordered JPEGs are required")
+    content: list[dict[str, Any]] = [{"type": "input_text", "text": user_text}]
+    for index, frame in enumerate(frames):
+        content.append({"type": "input_text", "text": f"frame_index: {index}"})
+        content.append({
+            "type": "input_image",
+            "image_url": f"data:{frame['mime_type']};base64,{frame['base64']}",
+            "detail": "high",
+        })
+    payload = {
+        "model": model,
+        "input": [{"role": "user", "content": content}],
+        "reasoning": {"effort": reasoning_effort},
+        "store": False,
+        "service_tier": "default",
+        "max_output_tokens": max_tokens,
+        "text": {"format": {
+            "type": "json_schema", "name": "video_analysis_prediction", "strict": True,
+            "schema": scope["_anthropic_video_schema"](),
+        }},
+    }
+    try:
+        response = scope["_request_json"](
+            scope["OPENAI_RESPONSES_URL"],
+            headers={
+                "Authorization": f"Bearer {scope['_require_env']('OPENAI_API_KEY')}",
+                "Content-Type": "application/json",
+            },
+            body=payload,
+            raw_output_path=raw_output_path,
+        )
+    except scope["ProviderHTTPError"] as exc:
+        scope["_write_raw_envelope"](raw_output_path, {
+            "request": payload,
+            "response_error": {"status": exc.status_code, "body": exc.body},
+        })
+        raise
+    scope["_write_raw_envelope"](raw_output_path, response)
+    raw_bytes = raw_output_path.read_bytes()
+    identity = scope["validate_provider_response_identity"](
+        provider="openai", requested_model=model, returned_model=response.get("model"),
+        request_id=response.get("id"), require_returned=True,
+    )
+    if (response.get("status") != "completed" or response.get("incomplete_details") is not None
+            or response.get("error") is not None):
+        raise RuntimeError(
+            f"OpenAI Responses did not complete: {response.get('status')!r}, "
+            f"{response.get('incomplete_details')!r}, error={response.get('error')!r}"
+        )
+    if response.get("service_tier") != "default":
+        raise RuntimeError("OpenAI Responses did not report Standard/default tier")
+    output_items = response.get("output")
+    if not isinstance(output_items, list):
+        raise RuntimeError("OpenAI Responses output must be a list")
+    messages = [item for item in output_items if isinstance(item, dict)
+                and item.get("type") == "message"]
+    if len(messages) != 1 or messages[0].get("status") != "completed":
+        raise RuntimeError("OpenAI Responses requires one completed assistant message")
+    texts = [
+        part.get("text")
+        for item in output_items if isinstance(item, dict)
+        for part in item.get("content", []) if isinstance(part, dict)
+        and part.get("type") == "output_text"
+    ]
+    if len(texts) != 1 or not isinstance(texts[0], str) or not texts[0].strip():
+        raise RuntimeError("OpenAI Responses requires one complete output_text")
+    output = texts[0]
+    scope["VideoAnalysisPrediction"].model_validate_json(output)
+    usage = response.get("usage")
+    if not isinstance(usage, dict):
+        raise RuntimeError("OpenAI Responses usage must be a mapping")
+    count = scope["_token_count"]
+    input_tokens = count(usage.get("input_tokens"), "input_tokens")
+    output_tokens = count(usage.get("output_tokens"), "output_tokens")
+    total_tokens = count(usage.get("total_tokens"), "total_tokens")
+    if total_tokens != input_tokens + output_tokens:
+        raise RuntimeError("OpenAI Responses token totals do not reconcile")
+    input_details = usage.get("input_tokens_details") or {}
+    output_details = usage.get("output_tokens_details") or {}
+    if not isinstance(input_details, dict) or not isinstance(output_details, dict):
+        raise RuntimeError("OpenAI Responses token details must be mappings")
+    cached_tokens = count(input_details.get("cached_tokens", 0), "cached_tokens")
+    write_count = input_details.get("cache_write_tokens")
+    written_tokens = (
+        count(write_count, "cache_write_tokens") if write_count is not None else None
+    )
+    reasoning_tokens = count(output_details.get("reasoning_tokens", 0), "reasoning_tokens")
+    if (cached_tokens > input_tokens or reasoning_tokens > output_tokens or
+            (written_tokens is not None and cached_tokens + written_tokens > input_tokens)):
+        raise RuntimeError("OpenAI Responses token details exceed total tokens")
+    input_rate, cached_rate, write_rate, output_rate = {
+        "gpt-6-sol": (2.0, 0.2, 2.5, 10.0),
+        "gpt-6-luna": (0.1, 0.01, 0.125, 0.5),
+    }[model]
+    # If write telemetry is absent, charge every non-cached input token at the
+    # higher write rate. This is an upper bound, not a billed-cost claim.
+    charged_writes = (
+        written_tokens if written_tokens is not None else input_tokens - cached_tokens
+    )
+    ordinary_tokens = input_tokens - cached_tokens - charged_writes
+    estimated_cost = (
+        ordinary_tokens * input_rate
+        + cached_tokens * cached_rate
+        + charged_writes * write_rate
+        + output_tokens * output_rate
+    ) / 1_000_000
+    repo_root = scope["REPO_ROOT"]
+    return {
+        "output": output,
+        "token_usage": {
+            "prompt": input_tokens, "completion": output_tokens - reasoning_tokens,
+            "total": total_tokens, "billed_completion": output_tokens,
+            "reasoning_completion": reasoning_tokens,
+        },
+        "reported_cost_usd": estimated_cost,
+        "cost_estimated": True,
+        "raw": {
+            "id": identity.request_id, "model": identity.returned_model,
+            "status": response["status"], "service_tier": response["service_tier"],
+            "usage": usage,
+            "cache_write_count_known": written_tokens is not None,
+            "raw_envelope_path": raw_output_path.relative_to(repo_root).as_posix(),
+            "raw_envelope_sha256": hashlib.sha256(raw_bytes).hexdigest(),
+            "raw_envelope_bytes": len(raw_bytes),
+        },
+    }
+
+
 def call_xai_responses_strict(
     scope: dict[str, Any],
     *,

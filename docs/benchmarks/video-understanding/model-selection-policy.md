@@ -25,6 +25,12 @@ Recommend `hold` when:
 - leader is meaningfully better than peers, but not good enough to drive a default switch
 - quality win exists only on cost/latency terms that are unacceptable for normal reruns
 
+`hold` applies to autonomous QA and any default switch. A bounded same-input
+comparison can still name a preferred model for inspected headless reference
+runs below the gate, with its score and unresolved truth limits disclosed. It
+does not establish a product integration where no ordered-frame runtime call
+exists.
+
 ## Retest
 
 Recommend `retest` when:

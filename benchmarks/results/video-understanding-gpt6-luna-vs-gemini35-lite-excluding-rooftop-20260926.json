@@ -1,0 +1,58 @@
+{
+  "kind": "offline_sensitivity_no_provider_calls",
+  "date": "2026-09-26",
+  "owner": "CineForge Story 222 Attempt 042",
+  "exclusion": "rooftop_escape_crash_zoom only; source runner has same pixel-size bounds in frame00 and frame04 but target/judge require larger",
+  "method": "Arithmetic mean of retained, unmodified five Promptfoo combined scores; existing judge penalties in other cases remain; this is a sensitivity view, not a canonical task result or replacement rubric.",
+  "arms": {
+    "luna": {
+      "source": "video-understanding-gpt6-luna-six-repaired-20260926.json",
+      "source_sha256": "8b6f0230a30e199f8bdaf3fc24462d54c391f9940be0ff5b967767e71d1c2ca1",
+      "included_cases": [
+        "dialogue_confession_push_in",
+        "alarm_chase_whip_pan",
+        "quiet_bedside_vigil",
+        "prop_swap_continuity_break",
+        "storm_tunnel_lateral_run"
+      ],
+      "combined_mean": "0.52432",
+      "passing_0_8": 0,
+      "mean_latency_ms": "3623.2",
+      "mean_subject_cost_usd": "0.000465173999999999964",
+      "case_scores": {
+        "dialogue_confession_push_in": 0.52915,
+        "alarm_chase_whip_pan": 0.5925,
+        "quiet_bedside_vigil": 0.45915,
+        "prop_swap_continuity_break": 0.54165,
+        "storm_tunnel_lateral_run": 0.49915
+      }
+    },
+    "gemini": {
+      "source": "video-understanding-gemini35-lite-six-gpt6-control-20260926.json",
+      "source_sha256": "2a6105d5b14f9d968fc4b88e76c39ad481f6b5054d611f923d440280130b86aa",
+      "included_cases": [
+        "dialogue_confession_push_in",
+        "alarm_chase_whip_pan",
+        "quiet_bedside_vigil",
+        "prop_swap_continuity_break",
+        "storm_tunnel_lateral_run"
+      ],
+      "combined_mean": "0.42334000000000002",
+      "passing_0_8": 0,
+      "mean_latency_ms": "2444.0",
+      "mean_subject_cost_usd": "0.0027399",
+      "case_scores": {
+        "dialogue_confession_push_in": 0.3625,
+        "alarm_chase_whip_pan": 0.5475000000000001,
+        "quiet_bedside_vigil": 0.47085,
+        "prop_swap_continuity_break": 0.34335,
+        "storm_tunnel_lateral_run": 0.3925
+      }
+    }
+  },
+  "comparison": {
+    "luna_minus_gemini_combined": "0.10097999999999998",
+    "luna_case_wins": 4,
+    "neither_passes_absolute_case_gate": true
+  }
+}

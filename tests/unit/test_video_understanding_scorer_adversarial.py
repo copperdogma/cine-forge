@@ -15,6 +15,87 @@ if str(SCORER_ROOT) not in sys.path:
 
 contract = importlib.import_module("video_understanding_contract")
 scorer = importlib.import_module("video_understanding_scorer")
+dimensions = importlib.import_module("video_understanding_dimensions")
+
+
+@pytest.mark.unit
+def test_push_in_summary_accepts_visible_enlargement_wording() -> None:
+    aliases = {"closer": (
+        r"\b(?:become|becomes|became)\s+(?:(?:slightly|gradually)\s+)*(?:larger|bigger)\b",
+    )}
+    positive = dimensions.score_keywords(
+        dimension="summary",
+        haystack="Both figures gradually become slightly larger across the samples.",
+        required=["closer"],
+        equivalents=aliases,
+    )
+    static = dimensions.score_keywords(
+        dimension="summary",
+        haystack="Both figures remain at unchanged scale across the samples.",
+        required=["closer"],
+        equivalents=aliases,
+    )
+    negated = dimensions.score_keywords(
+        dimension="summary",
+        haystack="The figures do not become larger across the samples.",
+        required=["closer"],
+        equivalents=aliases,
+    )
+    relative_size = dimensions.score_keywords(
+        dimension="summary",
+        haystack="A larger figure stands beside a smaller figure throughout.",
+        required=["closer"],
+        equivalents=aliases,
+    )
+    assert positive.score == 1.0
+    assert static.score == 0.0
+    assert negated.score == 0.0
+    assert relative_size.score == 0.0
+
+
+@pytest.mark.unit
+def test_temporal_enlargement_does_not_credit_a_static_or_negated_claim() -> None:
+    alias = {"closer": (r"\bacross\s+(?:the\s+)?samples\b.{0,80}\benlarg\w*\b",)}
+    def score(text: str) -> float:
+        return dimensions.score_keywords(
+            dimension="summary", haystack=text, required=["closer"], equivalents=alias
+        ).score
+    assert score("Across the samples, both figures subtly enlarge.") == 1.0
+    assert score("Across the samples, both figures do not enlarge.") == 0.0
+    assert score("A larger man stands still beside a smaller woman.") == 0.0
+
+
+@pytest.mark.unit
+def test_static_and_temporal_growth_equivalents_are_source_constrained() -> None:
+    static_alias = {"static": (
+        r"\b(?:composition|arrangement|positions?|scene|frame)\s+"
+        r"(?:remains?|stays?)\s+(?:visually\s+|completely\s+)?"
+        r"(?:unchanged|fixed)\b",
+        r"\bno\s+(?:visible\s+)?(?:motion|movement|change)\b",
+    )}
+    def static_score(value: str) -> float:
+        return dimensions.score_keywords(
+            dimension="summary", haystack=value, required=["static"],
+            equivalents=static_alias,
+        ).score
+    assert static_score("The composition remains unchanged across all five samples.") == 1.0
+    assert static_score("The camera is static.") == 1.0
+    assert static_score("The camera is not static.") == 0.0
+    assert static_score("There is no motion across the samples.") == 1.0
+    assert static_score("Positions changed while color remained unchanged.") == 0.0
+
+    growth_alias = {"closer": (
+        r"\bacross\s+(?:the\s+)?(?:ordered\s+)?(?:frames|samples)\b.{0,100}"
+        r"\b(?:grow|grows|grew)\s+(?:slightly|gradually|visibly|progressively|larger|bigger)\b",
+    )}
+    def growth_score(value: str) -> float:
+        return dimensions.score_keywords(
+            dimension="summary", haystack=value, required=["closer"],
+            equivalents=growth_alias,
+        ).score
+    assert growth_score("Across the samples, both figures grow slightly.") == 1.0
+    assert growth_score("Across the samples, figures do not grow slightly.") == 0.0
+    assert growth_score("One larger figure stands beside another throughout.") == 0.0
 
 
 def _write_target(tmp_path: Path) -> Path:
@@ -146,6 +227,41 @@ def test_perfect_frame_only_control_passes_without_audio_credit_or_requirement(
     assert score.hard_constraints_passed is True
     assert score.overall_score == pytest.approx(1.0)
     assert dimensions["audio"] == 0.0
+
+
+@pytest.mark.unit
+def test_excluded_ambiguous_camera_renormalizes_without_bypassing_hard_constraints(
+    tmp_path: Path,
+) -> None:
+    target_path = _write_target(tmp_path)
+    target = json.loads(target_path.read_text())
+    target["excluded_dimensions"] = ["camera"]
+    target_path.write_text(json.dumps(target))
+    prediction = _perfect_prediction()
+    prediction["camera_tags"] = []
+    score = scorer.score_output_against_target(
+        output=prediction, target_path=target_path,
+        model_label="Control", prompt_version="frame-packet-v3",
+    )
+    assert score.overall_score == pytest.approx(1.0)
+    assert next(x for x in score.dimensions if x.dimension == "camera").score == 0.0
+
+    wrong_id = scorer.score_output_against_target(
+        output=prediction, target_path=target_path,
+        model_label="Control", prompt_version="frame-packet-v3",
+        expected_clip_id="other-evaluation",
+    )
+    assert wrong_id.hard_constraints_passed is False
+    assert wrong_id.overall_score < score.overall_score
+    assert "hard_constraints" in wrong_id.rationale
+
+    target["excluded_dimensions"] = ["hard_constraints"]
+    target_path.write_text(json.dumps(target))
+    with pytest.raises(ValueError, match="cannot mask"):
+        scorer.score_output_against_target(
+            output=prediction, target_path=target_path,
+            model_label="Control", prompt_version="frame-packet-v3",
+        )
 
 
 @pytest.mark.unit

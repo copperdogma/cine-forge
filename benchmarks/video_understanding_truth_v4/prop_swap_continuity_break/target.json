@@ -1,0 +1,49 @@
+{
+  "anchor_subset": true,
+  "audio_description": null,
+  "audio_tags": [],
+  "camera_tags": [
+    "static",
+    "wide_master"
+  ],
+  "clip_id": "prop_swap_continuity_break",
+  "clip_tags": [
+    "continuity",
+    "prop"
+  ],
+  "color_tags": [
+    "navy"
+  ],
+  "continuity_notes": [
+    "The tabletop rectangle changes from red to blue between the second and third samples."
+  ],
+  "continuity_status": "broken",
+  "duration_seconds": 4.0,
+  "emotion_tags": [],
+  "has_audio": false,
+  "motion_tags": [],
+  "required_keywords": [
+    "rectangle",
+    "red",
+    "blue"
+  ],
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "A static table composition contains a small rectangle that is red in the first two samples and blue in the final three.",
+  "title": "Tabletop color discontinuity",
+  "tone_tags": [],
+  "transcript": null,
+  "weights": {
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
+  }
+}

@@ -1,0 +1,788 @@
+{
+  "schema_version": 1,
+  "kind": "saved_subject_derived_v4_score_not_new_subject_call",
+  "date": "2026-09-26",
+  "freeze": {
+    "path": "docs/evals/story-222-truth-v4-freeze.json",
+    "bytes": 5948,
+    "sha256": "7ec0eb8f274d74f2a742802d5964d810295d88107ccef4215d07d5f153be0b7c"
+  },
+  "source_results": [
+    {
+      "path": "benchmarks/results/video-understanding-gpt6-luna-six-repaired-20260926.json",
+      "bytes": 164401,
+      "sha256": "8b6f0230a30e199f8bdaf3fc24462d54c391f9940be0ff5b967767e71d1c2ca1"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gemini35-lite-six-gpt6-control-20260926.json",
+      "bytes": 164748,
+      "sha256": "2a6105d5b14f9d968fc4b88e76c39ad481f6b5054d611f923d440280130b86aa"
+    }
+  ],
+  "target_overlay": {
+    "path": "benchmarks/video_understanding_truth_v4/manifest.json",
+    "bytes": 5893,
+    "sha256": "61008dfc76f9cd75ee8fdebdbce1b0968c81fc88995912135d7014c7f1d030e8"
+  },
+  "method": "Same 12 saved subject outputs and JPEG bytes. Current v4 deterministic scorer on all six; pinned Opus 4.6 rejudge only dialogue, bedside, rooftop for both arms; reuse original judge scores for three byte-identical references. No subject calls.",
+  "judge_cost_incremental_estimated_usd": "0.140990",
+  "campaign_accounted_usd": "0.531629095",
+  "summary": {
+    "luna": {
+      "structural_mean": 0.6239,
+      "rubric_mean": 0.5733,
+      "combined_mean": 0.5986,
+      "case_passes": 0,
+      "case_count": 6,
+      "latency_ms_mean_subject": 3675,
+      "cost_usd_mean_subject": "0.0004813408333333332866666666667"
+    },
+    "gemini": {
+      "structural_mean": 0.4709,
+      "rubric_mean": 0.3917,
+      "combined_mean": 0.4313,
+      "case_passes": 0,
+      "case_count": 6,
+      "latency_ms_mean_subject": 2470,
+      "cost_usd_mean_subject": "0.002731066666666666666666666667"
+    }
+  },
+  "case_rows": {
+    "luna": [
+      {
+        "case": "dialogue_confession_push_in",
+        "evaluation_id": "vfp_active_001",
+        "source_response_id": "resp_00cab0707af2c316016ab864a8d41487d0946143e70506f7fb",
+        "returned_model": "gpt-6-luna",
+        "source_output_sha256": "33713519945d309bfade825034c2d11a0cda0524873104b2b01f7bd750bf5117",
+        "target": {
+          "path": "benchmarks/video_understanding_truth_v4/dialogue_confession_push_in/target.json",
+          "bytes": 1353,
+          "sha256": "04d1a434d029604a61933ccc69ca85b821acbf0e74ede054389243476fd5fc36"
+        },
+        "target_md_sha256": "b8a723c5e68b6ac65f65f76b9aaba4e15257bbc3d497e457ec8cd75480b3a160",
+        "frame_sha256": [
+          "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+          "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+          "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+          "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+          "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+        ],
+        "structural_raw": 0.75,
+        "structural_effective": 0.75,
+        "structural_pass": true,
+        "hard_constraints_passed": true,
+        "dimensions": {
+          "summary": 1.0,
+          "tone": 0.0,
+          "emotion": 1.0,
+          "color": 0.5,
+          "camera": 0.0,
+          "motion": 1.0,
+          "continuity": 0.75,
+          "audio": 0.0,
+          "evidence": 1.0,
+          "hard_constraints": 1.0
+        },
+        "rubric_score": 0.62,
+        "rubric_pass": false,
+        "rubric_receipt": {
+          "path": "output/evals/gpt6-sol-luna-20260926/truth-v4-judge/dialogue_confession_push_in-luna-raw.json",
+          "bytes": 4014,
+          "sha256": "9cf73438a6ce3699325bddd5ba55b3a261729b3c57cf11ec049a4db1aed25c11",
+          "kind": "v4_rejudged",
+          "score": 0.62,
+          "pass": false,
+          "reason": "The output correctly identifies the two abstract figures, their enlargement across frames, the rectangle prop on the right/blue figure, navy background, measured motion, intact continuity, and empty audio fields. Evidence is frame-grounded and concrete. However, tone is 'detached' vs reference 'intimate' (significant mismatch), and color includes 'gold' instead of 'teal' (notable color error). These two substantive mismatches bring the score below the 0.8 threshold.",
+          "judge_id": "msg_011CfTAQb1JvnCaL74WSCQ9E",
+          "returned_model": "claude-opus-4-6",
+          "stop_reason": "end_turn",
+          "usage": {
+            "input_tokens": 771,
+            "output_tokens": 795
+          },
+          "cost_estimated_usd": "0.023730"
+        },
+        "combined": 0.685,
+        "case_pass": false,
+        "latency_ms_subject": 4126,
+        "cost_usd_subject": "0.00023667000000000002"
+      },
+      {
+        "case": "alarm_chase_whip_pan",
+        "evaluation_id": "vfp_active_002",
+        "source_response_id": "resp_08833e3c069ec5af016ab864be16fc87d087f2ba75b47c5ad8",
+        "returned_model": "gpt-6-luna",
+        "source_output_sha256": "31cca4bb9861c47a5d076be0e4c18678e0cdcf0f6edb26d273fb7f9bc448d676",
+        "target": {
+          "path": "benchmarks/video_understanding_truth_v4/alarm_chase_whip_pan/target.json",
+          "bytes": 1251,
+          "sha256": "bdeebb0075f458a1c87033300b1be9fce6bb66b3104362b35612e0a899d4f621"
+        },
+        "target_md_sha256": "47f79d984b17bb23b3b8e494b0ea83a4bfabb09140c56f81607225e6f2f0dc1d",
+        "frame_sha256": [
+          "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a",
+          "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039",
+          "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655",
+          "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b",
+          "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+        ],
+        "structural_raw": 0.565,
+        "structural_effective": 0.565,
+        "structural_pass": false,
+        "hard_constraints_passed": true,
+        "dimensions": {
+          "summary": 0.3333333333333333,
+          "tone": 0.0,
+          "emotion": 1.0,
+          "color": 0.6666666666666666,
+          "camera": 0.6666666666666666,
+          "motion": 0.5,
+          "continuity": 0.75,
+          "audio": 0.0,
+          "evidence": 1.0,
+          "hard_constraints": 1.0
+        },
+        "rubric_score": 0.62,
+        "rubric_pass": false,
+        "rubric_receipt": {
+          "kind": "retained_v3_unchanged_reference",
+          "source_result": {
+            "path": "benchmarks/results/video-understanding-gpt6-luna-six-repaired-20260926.json",
+            "bytes": 164401,
+            "sha256": "8b6f0230a30e199f8bdaf3fc24462d54c391f9940be0ff5b967767e71d1c2ca1"
+          },
+          "usage": {
+            "total": 1567,
+            "prompt": 728,
+            "completion": 839,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          }
+        },
+        "combined": 0.5925,
+        "case_pass": false,
+        "latency_ms_subject": 3726,
+        "cost_usd_subject": "0.0005301749999999999"
+      },
+      {
+        "case": "quiet_bedside_vigil",
+        "evaluation_id": "vfp_active_003",
+        "source_response_id": "resp_06924a7522cd9e28016ab864d4760087d0b87b80a8c773aa81",
+        "returned_model": "gpt-6-luna",
+        "source_output_sha256": "7560bde97925bafd8c2a848fe7340eba90f3a9765c0bfb6b6700f99671842d67",
+        "target": {
+          "path": "benchmarks/video_understanding_truth_v4/quiet_bedside_vigil/target.json",
+          "bytes": 1279,
+          "sha256": "fb1d0e1cc26ff665b85d8086d68ac9a057a6f5408f586e78dc219c1ff2fadfcf"
+        },
+        "target_md_sha256": "d7df7986a4611e5c1b40a96d9a99414b976f03fc4ea590aa517793005aa0b310",
+        "frame_sha256": [
+          "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+          "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+          "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+          "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+          "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+        ],
+        "structural_raw": 0.7183,
+        "structural_effective": 0.7183,
+        "structural_pass": true,
+        "hard_constraints_passed": true,
+        "dimensions": {
+          "summary": 1.0,
+          "tone": 0.0,
+          "emotion": 0.0,
+          "color": 1.0,
+          "camera": 0.6666666666666666,
+          "motion": 1.0,
+          "continuity": 0.75,
+          "audio": 0.0,
+          "evidence": 1.0,
+          "hard_constraints": 1.0
+        },
+        "rubric_score": 0.55,
+        "rubric_pass": false,
+        "rubric_receipt": {
+          "path": "output/evals/gpt6-sol-luna-20260926/truth-v4-judge/quiet_bedside_vigil-luna-raw.json",
+          "bytes": 3576,
+          "sha256": "0ef2fbbe534d4e42012e0922aa1cc8e902b2a962051bcaccd5f7b7aca01d0a9f",
+          "kind": "v4_rejudged",
+          "score": 0.55,
+          "pass": false,
+          "reason": "Color tags, motion tags, continuity status, and audio fields are correct. Evidence is frame-grounded with concrete observations. However, tone is wrong ('detached' vs reference 'intimate'), emotion 'isolation' is invented (reference says none), camera tag 'wide_master' is missing, and the right figure is described as 'block-shaped' when the reference says 'round-topped.' The 'barrier' interpretation is borderline acceptable. The tone and emotion errors together represent significant inaccuracies.",
+          "judge_id": "msg_011CfTATLxHq1hGni5BGSUK4",
+          "returned_model": "claude-opus-4-6",
+          "stop_reason": "end_turn",
+          "usage": {
+            "input_tokens": 773,
+            "output_tokens": 713
+          },
+          "cost_estimated_usd": "0.021690"
+        },
+        "combined": 0.63415,
+        "case_pass": false,
+        "latency_ms_subject": 3222,
+        "cost_usd_subject": "0.000527175"
+      },
+      {
+        "case": "prop_swap_continuity_break",
+        "evaluation_id": "vfp_active_004",
+        "source_response_id": "resp_0201ebc5b6662633016ab864e8c1c087d08416d5eb2b032f72",
+        "returned_model": "gpt-6-luna",
+        "source_output_sha256": "15c82029e014b82f6e32b385ee63574c0c62a32b67bcbb2cc4068035ecd6edbd",
+        "target": {
+          "path": "benchmarks/video_understanding_truth_v4/prop_swap_continuity_break/target.json",
+          "bytes": 1221,
+          "sha256": "9f14e1f173f5d818b8f915016c498be241206814cfd6cf36d4b68cacdb875be8"
+        },
+        "target_md_sha256": "8a68446af7b9d7d8ef09e31d8ad8bb87ce064dd810da4fd6e251edd8ac4f4eba",
+        "frame_sha256": [
+          "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+          "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+          "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+          "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+          "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+        ],
+        "structural_raw": 0.6333,
+        "structural_effective": 0.6333,
+        "structural_pass": false,
+        "hard_constraints_passed": true,
+        "dimensions": {
+          "summary": 1.0,
+          "tone": 0.0,
+          "emotion": 1.0,
+          "color": 0.5,
+          "camera": 0.6666666666666666,
+          "motion": 1.0,
+          "continuity": 0.0,
+          "audio": 0.0,
+          "evidence": 1.0,
+          "hard_constraints": 1.0
+        },
+        "rubric_score": 0.45,
+        "rubric_pass": false,
+        "rubric_receipt": {
+          "kind": "retained_v3_unchanged_reference",
+          "source_result": {
+            "path": "benchmarks/results/video-understanding-gpt6-luna-six-repaired-20260926.json",
+            "bytes": 164401,
+            "sha256": "8b6f0230a30e199f8bdaf3fc24462d54c391f9940be0ff5b967767e71d1c2ca1"
+          },
+          "usage": {
+            "total": 1451,
+            "prompt": 717,
+            "completion": 734,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          }
+        },
+        "combined": 0.54165,
+        "case_pass": false,
+        "latency_ms_subject": 3808,
+        "cost_usd_subject": "0.000504175"
+      },
+      {
+        "case": "rooftop_escape_crash_zoom",
+        "evaluation_id": "vfp_active_005",
+        "source_response_id": "resp_04977d3a06f7587e016ab864fe999087d0bd56f180c92e12c9",
+        "returned_model": "gpt-6-luna",
+        "source_output_sha256": "8fd10878b8d4c6b8943c968ee3dc68ec2ba0e8aeed4e5b70ac4ba9889f703cb7",
+        "target": {
+          "path": "benchmarks/video_understanding_truth_v4/rooftop_escape_crash_zoom/target.json",
+          "bytes": 1268,
+          "sha256": "a580fe31488479466d695125959701d6e3b7a6f481274bfad99e2bd1f95dde88"
+        },
+        "target_md_sha256": "80b64c09ebf888dd089dbf3b15980ceffdc8187aa628d11de8c3640580b84599",
+        "frame_sha256": [
+          "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d",
+          "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8",
+          "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd",
+          "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236",
+          "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+        ],
+        "structural_raw": 0.5983,
+        "structural_effective": 0.5983,
+        "structural_pass": false,
+        "hard_constraints_passed": true,
+        "dimensions": {
+          "summary": 0.5,
+          "tone": 0.6666666666666666,
+          "emotion": 1.0,
+          "color": 0.5,
+          "camera": 0.6666666666666666,
+          "motion": 0.0,
+          "continuity": 0.75,
+          "audio": 0.0,
+          "evidence": 1.0,
+          "hard_constraints": 1.0
+        },
+        "rubric_score": 0.68,
+        "rubric_pass": false,
+        "rubric_receipt": {
+          "path": "output/evals/gpt6-sol-luna-20260926/truth-v4-judge/rooftop_escape_crash_zoom-luna-raw.json",
+          "bytes": 4477,
+          "sha256": "70837bebe544079afe874760412d9b96e1002e5b7850cb6a8277eb5e2c6ebdd0",
+          "kind": "v4_rejudged",
+          "score": 0.68,
+          "pass": false,
+          "reason": "The summary accurately captures the yellow figure moving left-to-right across a gap between platforms with the rectangular object. Color, emotion, continuity status, and audio fields are correct. Evidence is concrete and frame-grounded. However, the motion tag 'measured' contradicts the reference 'fast_lateral' (significant error), 'urgent' tone is missing, and 'wide_master' camera tag is absent. No invented content, but cumulative omissions and the motion mismatch bring the score below 0.8.",
+          "judge_id": "msg_011CfTAVj6rf12d8UyzxStcZ",
+          "returned_model": "claude-opus-4-6",
+          "stop_reason": "end_turn",
+          "usage": {
+            "input_tokens": 747,
+            "output_tokens": 907
+          },
+          "cost_estimated_usd": "0.026410"
+        },
+        "combined": 0.63915,
+        "case_pass": false,
+        "latency_ms_subject": 3936,
+        "cost_usd_subject": "0.0005621749999999999"
+      },
+      {
+        "case": "storm_tunnel_lateral_run",
+        "evaluation_id": "vfp_active_006",
+        "source_response_id": "resp_014a3d2a4a0fa8ce016ab86512623887d098dc4a2e0b750f14",
+        "returned_model": "gpt-6-luna",
+        "source_output_sha256": "5aa690aef2729b4ec5ddc8a96682a970a601bf963377a8c0a8666cd845f1dc6f",
+        "target": {
+          "path": "benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.json",
+          "bytes": 1270,
+          "sha256": "7d0a40d274599f17dd2242134c26d0f13c70430bca3ba49428c041d8bbf7d82e"
+        },
+        "target_md_sha256": "66eca2cb744f84f549136615e834ee8e6843bf61d1dfdf1f13b28a7f0101bc3f",
+        "frame_sha256": [
+          "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+          "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+          "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+          "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+          "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+        ],
+        "structural_raw": 0.4783,
+        "structural_effective": 0.4783,
+        "structural_pass": false,
+        "hard_constraints_passed": true,
+        "dimensions": {
+          "summary": 0.0,
+          "tone": 0.0,
+          "emotion": 1.0,
+          "color": 1.0,
+          "camera": 0.6666666666666666,
+          "motion": 0.0,
+          "continuity": 0.75,
+          "audio": 0.0,
+          "evidence": 1.0,
+          "hard_constraints": 1.0
+        },
+        "rubric_score": 0.52,
+        "rubric_pass": false,
+        "rubric_receipt": {
+          "kind": "retained_v3_unchanged_reference",
+          "source_result": {
+            "path": "benchmarks/results/video-understanding-gpt6-luna-six-repaired-20260926.json",
+            "bytes": 164401,
+            "sha256": "8b6f0230a30e199f8bdaf3fc24462d54c391f9940be0ff5b967767e71d1c2ca1"
+          },
+          "usage": {
+            "total": 1412,
+            "prompt": 714,
+            "completion": 698,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          }
+        },
+        "combined": 0.49915,
+        "case_pass": false,
+        "latency_ms_subject": 3234,
+        "cost_usd_subject": "0.0005276749999999999"
+      }
+    ],
+    "gemini": [
+      {
+        "case": "dialogue_confession_push_in",
+        "evaluation_id": "vfp_active_001",
+        "source_response_id": "RmW4aoS4KfeCmtkP-O3P2A0",
+        "returned_model": "gemini-3.5-flash-lite",
+        "source_output_sha256": "267579b424cfd8bdef1281b6fcc5a1650bf2e43194b3a33b9c246dee512f6f72",
+        "target": {
+          "path": "benchmarks/video_understanding_truth_v4/dialogue_confession_push_in/target.json",
+          "bytes": 1353,
+          "sha256": "04d1a434d029604a61933ccc69ca85b821acbf0e74ede054389243476fd5fc36"
+        },
+        "target_md_sha256": "b8a723c5e68b6ac65f65f76b9aaba4e15257bbc3d497e457ec8cd75480b3a160",
+        "frame_sha256": [
+          "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+          "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+          "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+          "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+          "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+        ],
+        "structural_raw": 0.3857,
+        "structural_effective": 0.3857,
+        "structural_pass": false,
+        "hard_constraints_passed": true,
+        "dimensions": {
+          "summary": 0.3333333333333333,
+          "tone": 0.0,
+          "emotion": 0.0,
+          "color": 0.6666666666666666,
+          "camera": 0.6666666666666666,
+          "motion": 0.0,
+          "continuity": 0.75,
+          "audio": 0.0,
+          "evidence": 1.0,
+          "hard_constraints": 1.0
+        },
+        "rubric_score": 0.25,
+        "rubric_pass": false,
+        "rubric_receipt": {
+          "path": "output/evals/gpt6-sol-luna-20260926/truth-v4-judge/dialogue_confession_push_in-gemini-raw.json",
+          "bytes": 4137,
+          "sha256": "b38c690c7540ba75904eb4a5cdd3271b6b936fd8095a75b2919e0e805d93860e",
+          "kind": "v4_rejudged",
+          "score": 0.25,
+          "pass": false,
+          "reason": "The model correctly identifies two figures against a dark background with continuity intact and empty audio fields. However, it critically fails to detect the observable size increase of the figures across frames, instead claiming complete stillness and no changes. Tone ('detached' vs 'intimate') is wrong. Emotion ('isolation') is invented when reference specifies none. Color captures 'navy' but misses 'teal'. Motion ('stillness') contradicts the reference's 'measured' enlargement. Evidence at frame 4 incorrectly claims unchanged composition. The pale rectangle is noted in frame 0 evidence but not tracked as a continuity observation. Multiple significant errors.",
+          "judge_id": "msg_011CfTARxV9mBzxsot3CDrDh",
+          "returned_model": "claude-opus-4-6",
+          "stop_reason": "end_turn",
+          "usage": {
+            "input_tokens": 730,
+            "output_tokens": 823
+          },
+          "cost_estimated_usd": "0.024225"
+        },
+        "combined": 0.31785,
+        "case_pass": false,
+        "latency_ms_subject": 1908,
+        "cost_usd_subject": "0.0026394"
+      },
+      {
+        "case": "alarm_chase_whip_pan",
+        "evaluation_id": "vfp_active_002",
+        "source_response_id": "WmW4as2lHuj9qtsP8d21yA8",
+        "returned_model": "gemini-3.5-flash-lite",
+        "source_output_sha256": "fb2504b279a14ab335d56066485b8b08ca9953cc0a63dd54c82f2be56ad0bfff",
+        "target": {
+          "path": "benchmarks/video_understanding_truth_v4/alarm_chase_whip_pan/target.json",
+          "bytes": 1251,
+          "sha256": "bdeebb0075f458a1c87033300b1be9fce6bb66b3104362b35612e0a899d4f621"
+        },
+        "target_md_sha256": "47f79d984b17bb23b3b8e494b0ea83a4bfabb09140c56f81607225e6f2f0dc1d",
+        "frame_sha256": [
+          "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a",
+          "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039",
+          "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655",
+          "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b",
+          "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+        ],
+        "structural_raw": 0.545,
+        "structural_effective": 0.545,
+        "structural_pass": false,
+        "hard_constraints_passed": true,
+        "dimensions": {
+          "summary": 0.3333333333333333,
+          "tone": 0.0,
+          "emotion": 0.0,
+          "color": 1.0,
+          "camera": 0.6666666666666666,
+          "motion": 0.6666666666666666,
+          "continuity": 0.75,
+          "audio": 0.0,
+          "evidence": 1.0,
+          "hard_constraints": 1.0
+        },
+        "rubric_score": 0.55,
+        "rubric_pass": false,
+        "rubric_receipt": {
+          "kind": "retained_v3_unchanged_reference",
+          "source_result": {
+            "path": "benchmarks/results/video-understanding-gemini35-lite-six-gpt6-control-20260926.json",
+            "bytes": 164748,
+            "sha256": "2a6105d5b14f9d968fc4b88e76c39ad481f6b5054d611f923d440280130b86aa"
+          },
+          "usage": {
+            "total": 1503,
+            "prompt": 730,
+            "completion": 773,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          }
+        },
+        "combined": 0.5475,
+        "case_pass": false,
+        "latency_ms_subject": 2617,
+        "cost_usd_subject": "0.0027694"
+      },
+      {
+        "case": "quiet_bedside_vigil",
+        "evaluation_id": "vfp_active_003",
+        "source_response_id": "bWW4arimDuydz7IPjsrImQE",
+        "returned_model": "gemini-3.5-flash-lite",
+        "source_output_sha256": "a27a79e636d0926a0acd9dd3e6075f3d7bf4a1001d65a1b22e9044004b50d62d",
+        "target": {
+          "path": "benchmarks/video_understanding_truth_v4/quiet_bedside_vigil/target.json",
+          "bytes": 1279,
+          "sha256": "fb1d0e1cc26ff665b85d8086d68ac9a057a6f5408f586e78dc219c1ff2fadfcf"
+        },
+        "target_md_sha256": "d7df7986a4611e5c1b40a96d9a99414b976f03fc4ea590aa517793005aa0b310",
+        "frame_sha256": [
+          "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+          "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+          "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+          "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+          "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+        ],
+        "structural_raw": 0.6583,
+        "structural_effective": 0.6583,
+        "structural_pass": false,
+        "hard_constraints_passed": true,
+        "dimensions": {
+          "summary": 1.0,
+          "tone": 0.0,
+          "emotion": 0.0,
+          "color": 0.5,
+          "camera": 0.6666666666666666,
+          "motion": 1.0,
+          "continuity": 0.75,
+          "audio": 0.0,
+          "evidence": 1.0,
+          "hard_constraints": 1.0
+        },
+        "rubric_score": 0.3,
+        "rubric_pass": false,
+        "rubric_receipt": {
+          "path": "output/evals/gpt6-sol-luna-20260926/truth-v4-judge/quiet_bedside_vigil-gemini-raw.json",
+          "bytes": 3588,
+          "sha256": "82e686561a29bd45894e6d6d1cb9629c44cd1363e01365db49ab2646d6e5f198",
+          "kind": "v4_rejudged",
+          "score": 0.3,
+          "pass": false,
+          "reason": "The output correctly identifies stillness, static camera, intact continuity, and empty audio fields. However, it significantly misidentifies the color palette as 'navy' instead of 'amber'; assigns incorrect tone ('detached, surreal' vs. 'intimate'); invents an emotion ('isolation') where the reference has none; fixes the object identity as a 'bed frame and headboard' when the reference explicitly says not to score one fixed identity; and fails to describe the two round-topped forms flanking the horizontal rectangle. These are substantial errors in core observable properties.",
+          "judge_id": "msg_011CfTAUYB1hxVD7poX4ifVu",
+          "returned_model": "claude-opus-4-6",
+          "stop_reason": "end_turn",
+          "usage": {
+            "input_tokens": 771,
+            "output_tokens": 721
+          },
+          "cost_estimated_usd": "0.021880"
+        },
+        "combined": 0.47915,
+        "case_pass": false,
+        "latency_ms_subject": 2672,
+        "cost_usd_subject": "0.0027569"
+      },
+      {
+        "case": "prop_swap_continuity_break",
+        "evaluation_id": "vfp_active_004",
+        "source_response_id": "fmW4apyrBY-cz7IP4sjlsAQ",
+        "returned_model": "gemini-3.5-flash-lite",
+        "source_output_sha256": "e61dc2d50f1b6e3ccf420ad069ea77f0eb105e4eb8de0d424637126bac587246",
+        "target": {
+          "path": "benchmarks/video_understanding_truth_v4/prop_swap_continuity_break/target.json",
+          "bytes": 1221,
+          "sha256": "9f14e1f173f5d818b8f915016c498be241206814cfd6cf36d4b68cacdb875be8"
+        },
+        "target_md_sha256": "8a68446af7b9d7d8ef09e31d8ad8bb87ce064dd810da4fd6e251edd8ac4f4eba",
+        "frame_sha256": [
+          "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+          "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+          "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+          "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+          "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+        ],
+        "structural_raw": 0.3867,
+        "structural_effective": 0.3867,
+        "structural_pass": false,
+        "hard_constraints_passed": true,
+        "dimensions": {
+          "summary": 0.6666666666666666,
+          "tone": 0.0,
+          "emotion": 0.0,
+          "color": 0.6666666666666666,
+          "camera": 0.6666666666666666,
+          "motion": 0.0,
+          "continuity": 0.0,
+          "audio": 0.0,
+          "evidence": 1.0,
+          "hard_constraints": 1.0
+        },
+        "rubric_score": 0.3,
+        "rubric_pass": false,
+        "rubric_receipt": {
+          "kind": "retained_v3_unchanged_reference",
+          "source_result": {
+            "path": "benchmarks/results/video-understanding-gemini35-lite-six-gpt6-control-20260926.json",
+            "bytes": 164748,
+            "sha256": "2a6105d5b14f9d968fc4b88e76c39ad481f6b5054d611f923d440280130b86aa"
+          },
+          "usage": {
+            "total": 1511,
+            "prompt": 711,
+            "completion": 800,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          }
+        },
+        "combined": 0.34335,
+        "case_pass": false,
+        "latency_ms_subject": 2358,
+        "cost_usd_subject": "0.0027569"
+      },
+      {
+        "case": "rooftop_escape_crash_zoom",
+        "evaluation_id": "vfp_active_005",
+        "source_response_id": "kWW4avCuKsnyz7IPraGl6Qo",
+        "returned_model": "gemini-3.5-flash-lite",
+        "source_output_sha256": "7f56960d9e47fca24b31ccdb20fd38fd42547b7680878219d551f2e2900e9565",
+        "target": {
+          "path": "benchmarks/video_understanding_truth_v4/rooftop_escape_crash_zoom/target.json",
+          "bytes": 1268,
+          "sha256": "a580fe31488479466d695125959701d6e3b7a6f481274bfad99e2bd1f95dde88"
+        },
+        "target_md_sha256": "80b64c09ebf888dd089dbf3b15980ceffdc8187aa628d11de8c3640580b84599",
+        "frame_sha256": [
+          "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d",
+          "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8",
+          "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd",
+          "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236",
+          "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+        ],
+        "structural_raw": 0.465,
+        "structural_effective": 0.465,
+        "structural_pass": false,
+        "hard_constraints_passed": true,
+        "dimensions": {
+          "summary": 0.5,
+          "tone": 0.0,
+          "emotion": 0.0,
+          "color": 0.5,
+          "camera": 0.0,
+          "motion": 1.0,
+          "continuity": 0.75,
+          "audio": 0.0,
+          "evidence": 1.0,
+          "hard_constraints": 1.0
+        },
+        "rubric_score": 0.55,
+        "rubric_pass": false,
+        "rubric_receipt": {
+          "path": "output/evals/gpt6-sol-luna-20260926/truth-v4-judge/rooftop_escape_crash_zoom-gemini-raw.json",
+          "bytes": 3812,
+          "sha256": "62dc2c0db79e660d70d012a784038bbf03bec9243ea877dbd8b824512dde7e81",
+          "kind": "v4_rejudged",
+          "score": 0.55,
+          "pass": false,
+          "reason": "The model correctly identifies the yellow figure's left-to-right movement across a gap, fast_lateral motion, intact continuity, navy color, and provides frame-grounded evidence. However, it commits several significant errors: (1) claims 'lateral_track' camera movement when the reference shows static/wide_master — this is an invented camera movement; (2) tone tags ('detached', 'surreal') completely miss the reference ('urgent', 'tense'); (3) invents an emotion tag ('isolation') when none is warranted; (4) 'gold' vs 'amber' is borderline acceptable but the camera and tone errors are substantial enough to bring the score below 0.8.",
+          "judge_id": "msg_011CfTAX7bExJqqM5ct4UmdS",
+          "returned_model": "claude-opus-4-6",
+          "stop_reason": "end_turn",
+          "usage": {
+            "input_tokens": 731,
+            "output_tokens": 776
+          },
+          "cost_estimated_usd": "0.023055"
+        },
+        "combined": 0.5075,
+        "case_pass": false,
+        "latency_ms_subject": 2597,
+        "cost_usd_subject": "0.0026869"
+      },
+      {
+        "case": "storm_tunnel_lateral_run",
+        "evaluation_id": "vfp_active_006",
+        "source_response_id": "pGW4atOrJ8bjz7IPto6DuQM",
+        "returned_model": "gemini-3.5-flash-lite",
+        "source_output_sha256": "0eaf81839ada55640b55246a7e416b43b086e71ff300a6cbb8bfe2f2c3e1b234",
+        "target": {
+          "path": "benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.json",
+          "bytes": 1270,
+          "sha256": "7d0a40d274599f17dd2242134c26d0f13c70430bca3ba49428c041d8bbf7d82e"
+        },
+        "target_md_sha256": "66eca2cb744f84f549136615e834ee8e6843bf61d1dfdf1f13b28a7f0101bc3f",
+        "frame_sha256": [
+          "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+          "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+          "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+          "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+          "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+        ],
+        "structural_raw": 0.385,
+        "structural_effective": 0.385,
+        "structural_pass": false,
+        "hard_constraints_passed": true,
+        "dimensions": {
+          "summary": 0.0,
+          "tone": 0.0,
+          "emotion": 0.0,
+          "color": 1.0,
+          "camera": 0.0,
+          "motion": 0.6666666666666666,
+          "continuity": 0.75,
+          "audio": 0.0,
+          "evidence": 1.0,
+          "hard_constraints": 1.0
+        },
+        "rubric_score": 0.4,
+        "rubric_pass": false,
+        "rubric_receipt": {
+          "kind": "retained_v3_unchanged_reference",
+          "source_result": {
+            "path": "benchmarks/results/video-understanding-gemini35-lite-six-gpt6-control-20260926.json",
+            "bytes": 164748,
+            "sha256": "2a6105d5b14f9d968fc4b88e76c39ad481f6b5054d611f923d440280130b86aa"
+          },
+          "usage": {
+            "total": 1534,
+            "prompt": 720,
+            "completion": 814,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          }
+        },
+        "combined": 0.3925,
+        "case_pass": false,
+        "latency_ms_subject": 2665,
+        "cost_usd_subject": "0.0027769"
+      }
+    ]
+  },
+  "recommendation": "Luna preferred headless ordered-frame reference; hold autonomous QA/default gate",
+  "limits": [
+    "Six abstract synthetic cases; no product ordered-frame inference call exists.",
+    "Rooftop and dialogue source-backed corrections are explicit; bedside objects and tone remain interpretive.",
+    "Revised Opus rubric still penalizes some plausible bedside readings; numerical scores are bounded, not fully truth-clean."
+  ]
+}

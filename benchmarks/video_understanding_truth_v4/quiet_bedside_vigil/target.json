@@ -1,0 +1,52 @@
+{
+  "anchor_subset": true,
+  "audio_description": null,
+  "audio_tags": [],
+  "camera_tags": [
+    "static",
+    "wide_master"
+  ],
+  "clip_id": "quiet_bedside_vigil",
+  "clip_tags": [
+    "quiet_emotion",
+    "interior"
+  ],
+  "color_tags": [
+    "amber",
+    "desaturated"
+  ],
+  "continuity_notes": [
+    "The gray horizontal rectangle and both round-topped forms keep the same positions in every frame."
+  ],
+  "continuity_status": "intact",
+  "duration_seconds": 4.0,
+  "emotion_tags": [],
+  "has_audio": true,
+  "motion_tags": [
+    "stillness"
+  ],
+  "required_keywords": [
+    "static"
+  ],
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "A warm static arrangement holds a horizontal gray rectangle between a narrow round-topped form at left and a broader round-topped figure at right.",
+  "title": "Warm bedside hold",
+  "tone_tags": [
+    "intimate"
+  ],
+  "transcript": null,
+  "weights": {
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
+  }
+}

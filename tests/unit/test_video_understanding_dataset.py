@@ -150,10 +150,21 @@ def test_registry_declares_active_policy_and_quarantines_historical_scores() -> 
     assert [(score["model"], score["metrics"]["overall"]) for score in recent_rejections] == [
         ("Grok 4.7", 0.4816)
     ]
+    current_bounded = [
+        score
+        for score in entry["scores"]
+        if score["evidence_status"].startswith("bounded-six-case-uncommitted-")
+    ]
+    assert {(score["model"], score["metrics"]["overall"]) for score in current_bounded} == {
+        ("GPT-6 Luna / direct Responses low", 0.5986),
+        ("Gemini 3.5 Flash-Lite", 0.4313),
+        ("GPT-6 Luna / direct Responses low", 0.5299),
+        ("Gemini 3.5 Flash-Lite", 0.4188),
+    }
     assert all(
         score["evidence_status"] == "contaminated-non-decision-grade"
         for score in entry["scores"]
-        if score not in decision_rows + recent_rejections
+        if score not in decision_rows + recent_rejections + current_bounded
     )
 
 

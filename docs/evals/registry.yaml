@@ -2052,16 +2052,19 @@ evals:
       - "213"
       - "220"
       - "221"
+      - "222"
     category_refs:
       - spec:7
       - spec:8
       - spec:9
     compromise_refs: []
     description: >
-      Frame-only QA of generated scene imagery using five ordered JPEGs plus
+      Headless frame-only analysis of generated scene imagery using five ordered JPEGs plus
       neutral timing facts and an opaque subject identifier. Measures only
       visual tone, emotion, color, inferable shot language, inferable motion,
-      continuity, and frame-grounded evidence across six source-backed controls.
+      continuity, and frame-grounded evidence across six active controls with
+      a source-reviewed v4 scoring overlay. There is no product ordered-frame
+      inference call; this task is not an autonomous QA integration.
       Audio, transcript, MP4 content, semantic titles, and quarantined synthetic
       cases are not submitted or scored.
     pipeline_stage: qa
@@ -2070,8 +2073,9 @@ evals:
     script: benchmarks/scripts/video_understanding_report.py
     config: benchmarks/tasks/video-understanding.yaml
     scorer: benchmarks/scorers/video_understanding_scorer.py
-    golden: benchmarks/video_understanding/manifest.json
-    generator: benchmarks/scripts/generate_video_understanding_dataset.py
+    golden: benchmarks/video_understanding_truth_v4/manifest.json
+    generator: benchmarks/scripts/build_video_understanding_truth_v4.py
+    source_media_manifest: benchmarks/video_understanding/manifest.json
     test_cases: 6
     test_case_policy:
       mode: explicit_manifest_active_cases
@@ -2090,9 +2094,65 @@ evals:
       value: 0.80
       latency_ms_max: 15000
       cost_usd_max: 0.02
-      note: "Fresh results on the repaired six-case frame-only task are required before any default decision; every historical row below is harness-contaminated and non-decision-grade."
+      note: "Fresh six-case frame-only results, source-backed truth review, and the 0.80 quality gate are required before any autonomous QA/default decision. A below-gate paired result may still identify a preferred headless reference model; use each row's evidence status."
 
     scores:
+      - model: "GPT-6 Luna / direct Responses low"
+        evidence_status: bounded-six-case-uncommitted-v4-derived
+        metrics:
+          overall: 0.5986
+          deterministic: 0.6239
+          rubric: 0.5733
+        latency_ms: 3675
+        cost_usd: 0.000481
+        cost_estimated: true
+        measured: 2026-09-26
+        git_sha: "163bcb1ecd36de97b76e5ad83298048c9211a4d7+story222-v4-hash-freeze"
+        result_file: benchmarks/results/video-understanding-truth-v4-saved-subject-regrade-20260926.json
+        contract_manifest: docs/evals/story-222-truth-v4-evidence.json
+        note: "Attempt 043 derived regrade of the same six saved direct Responses low-reasoning subject outputs; zero new subject calls. V4 source-checked truth overlay corrects rooftop size, bedside object ambiguity, and dialogue camera-mechanism ambiguity. The deterministic scorer is applied symmetrically to both arms and only three changed references are rejudged with Opus 4.6; three unchanged reference judgments are retained. Luna leads matched fresh Gemini 0.5986 to 0.4313 and wins all six paired cases at about 5.7x lower subject cost. Both pass 0/6 at 0.80. Bedside/object and tone penalties still have judge ambiguity, so score magnitude is bounded. Luna is the preferred model for headless ordered-frame reference analysis only; no autonomous QA pass or product runtime integration exists. Hash-pinned worktree evidence is uncommitted."
+      - model: "Gemini 3.5 Flash-Lite"
+        evidence_status: bounded-six-case-uncommitted-v4-derived-control
+        metrics:
+          overall: 0.4313
+          deterministic: 0.4709
+          rubric: 0.3917
+        latency_ms: 2470
+        cost_usd: 0.002731
+        cost_estimated: true
+        measured: 2026-09-26
+        git_sha: "163bcb1ecd36de97b76e5ad83298048c9211a4d7+story222-v4-hash-freeze"
+        result_file: benchmarks/results/video-understanding-truth-v4-saved-subject-regrade-20260926.json
+        contract_manifest: docs/evals/story-222-truth-v4-evidence.json
+        note: "Attempt 043 same-input fresh Gemini reference regraded from saved outputs under exactly the same v4 scorer and changed-reference judge topology as Luna. It trails Luna in all six paired cases and passes 0/6 at 0.80. Not a passing incumbent. Judge ambiguity still limits absolute quality claims; uncommitted hash-pinned evidence."
+      - model: "GPT-6 Luna / direct Responses low"
+        evidence_status: bounded-six-case-uncommitted-comparison
+        metrics:
+          overall: 0.5299
+          deterministic: 0.5564
+          rubric: 0.5033
+        latency_ms: 3675
+        cost_usd: 0.000481
+        cost_estimated: true
+        measured: 2026-09-26
+        git_sha: "163bcb1ecd36de97b76e5ad83298048c9211a4d7+story222-v2-hash-manifest"
+        result_file: benchmarks/results/video-understanding-gpt6-luna-six-repaired-20260926.json
+        contract_manifest: docs/evals/story-222-gpt6-sol-luna-video-evidence-v2.json
+        note: "Attempt 042 exact direct Responses Standard low-reasoning strict-schema run on all six active synthetic ordered-five-JPEG cases. Complete served identity, output, usage, and raw envelopes; 0/6 passed the 0.80 quality gate. Historical maintained six-case aggregate is 0.5299 versus fresh same-input Gemini 0.4188; rooftop has a confirmed golden size error, so an excluding-rooftop saved-output sensitivity gives 0.52432 versus 0.42334 with both 0/5 passing. No default adoption; preferred research comparator pending targeted truth/rubric repair. Uncommitted worktree evidence is hash-pinned but not promoted as commit-identified decision-grade."
+      - model: "Gemini 3.5 Flash-Lite"
+        evidence_status: bounded-six-case-uncommitted-control
+        metrics:
+          overall: 0.4188
+          deterministic: 0.4542
+          rubric: 0.3833
+        latency_ms: 2470
+        cost_usd: 0.002731
+        cost_estimated: true
+        measured: 2026-09-26
+        git_sha: "163bcb1ecd36de97b76e5ad83298048c9211a4d7+story222-v2-hash-manifest"
+        result_file: benchmarks/results/video-understanding-gemini35-lite-six-gpt6-control-20260926.json
+        contract_manifest: docs/evals/story-222-gpt6-sol-luna-video-evidence-v2.json
+        note: "Attempt 042 fresh exact-model same-input six-case reference under the repaired scorer and frozen Opus 4.6 rubric. 0/6 passed 0.80; retained only as a contemporary comparator, not a passing incumbent. Hash-pinned uncommitted evidence."
       - model: "Grok 4.7"
         evidence_status: bounded-six-case-decision-grade-rejection
         metrics:
@@ -2293,6 +2353,57 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "043"
+        story: attempts/043-video-understanding-source-truth-v4-headless-qualification.md
+        date: 2026-09-26
+        status: succeeded
+        approach: "Freeze source-checked v4 scoring references while preserving the same 12 saved subject outputs; symmetrically regrade six deterministic rows and rejudge only three changed references per arm. Luna 0.5986 versus matched Gemini 0.4313, six of six paired wins, zero of six above 0.80. Select Luna for headless reference analysis, hold autonomous QA/default; product ordered-frame integration does not exist."
+        worker_model: "Codex (GPT-6)"
+        worker_model_date: 2026-09-26
+        subject_model: "saved gpt-6-luna low and gemini-3.5-flash-lite control; no new subject calls"
+        score_before: 0.5299
+        score_after: 0.5986
+        latency_after: 3675
+        cost_after: 0.531629095
+        git_sha: "163bcb1ecd36de97b76e5ad83298048c9211a4d7+story222-v4-hash-freeze"
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-source-backed-corpus-or-reviewed-product-integration
+            note: "Do not rejudge this same slice simply to chase 0.80. The headless reference role is selected; autonomous QA remains below gate and would need a distinct product feature and validation."
+      - id: "042"
+        story: attempts/042-gpt6-luna-repaired-six-case-comparison.md
+        date: 2026-09-26
+        status: succeeded
+        approach: "Source-backed temporal-enlargement matcher repair, independent offline first-response regrade, one Luna native Opus 4.6 judge and first owner parity, then full six exact Luna and fresh Gemini 3.5 Flash-Lite comparison. Luna 0.5299 versus Gemini 0.4188, but both 0/6 at 0.80; no default adoption."
+        worker_model: "Codex (GPT-6)"
+        worker_model_date: 2026-09-26
+        subject_model: "gpt-6-luna; fresh gemini-3.5-flash-lite control; gpt-6-sol first-case retained"
+        score_before: 0.4188
+        score_after: 0.5299
+        latency_after: 3675
+        cost_after: 0.390639095
+        git_sha: "163bcb1ecd36de97b76e5ad83298048c9211a4d7+story222-v2-hash-manifest"
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: source-backed-target-or-rubric-correction-and-new-decision
+            note: "No automatic rerun or default change. Repair ambiguous bedside/rooftop truth before using fine-grained score claims; preserve the clear prop-continuity miss."
+      - id: "041"
+        story: attempts/041-gpt6-sol-luna-video-understanding-first-case-stop.md
+        date: 2026-09-26
+        status: inconclusive
+        approach: "Direct GPT-6 Sol and Luna low-reasoning five-JPEG strict Responses native first cases passed transport. Sol owner parity and Opus 4.6 rubric scored 0.39415; Luna's native structural 0.5983 cannot reach 0.80 even with a perfect rubric. Both stopped before six cases or fresh Gemini control; source review found grounded scale/camera misses and target/scorer ambiguity."
+        worker_model: "Codex (GPT-6)"
+        worker_model_date: 2026-09-26
+        subject_model: "gpt-6-sol and gpt-6-luna"
+        score_before: null
+        score_after: null
+        latency_after: null
+        cost_after: 0.035800575
+        git_sha: "163bcb1ecd36de97b76e5ad83298048c9211a4d7+dirty-contract-see-story-222-manifest"
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: source-verified-scorer-or-target-change-and-fresh-approval
+            note: "No unchanged subject rerun, six-case run, or default change. Reopen only after correcting the source-verified ambiguous deductions or separately approving a changed evaluation plan."
       - id: "040"
         story: attempts/040-opus55-video-understanding-cost-stop.md
         date: 2026-09-26

@@ -1,0 +1,796 @@
+{
+  "schema_version": 2,
+  "date": "2026-09-26",
+  "owner": "CineForge",
+  "story": "222",
+  "attempt": "042",
+  "approved_source": "Conductor Scout 076 item 3; Cam yes; updated evaluate-model continuation",
+  "branch": "codex/gpt6-sol-luna-eval-20260926",
+  "base_sha": "163bcb1ecd36de97b76e5ad83298048c9211a4d7",
+  "scope": "video-understanding v3 only; six active repo-owned synthetic five-ordered-JPEG cases; no audio or native video",
+  "contract_files_at_continuation_close": [
+    {
+      "path": "benchmarks/providers/video_understanding_provider.py",
+      "bytes": 14661,
+      "sha256": "af04d8bfd9d274bab234ea3719370f492667c195707cb35278e844c7e0d4d0b6"
+    },
+    {
+      "path": "benchmarks/providers/video_understanding_provider_vision.py",
+      "bytes": 19360,
+      "sha256": "cea80d4afa12fe333bbbbad2e4d022fa73ac2033c179859e1fc66305fe61c0e8"
+    },
+    {
+      "path": "benchmarks/providers/video_understanding_provider_support.py",
+      "bytes": 9204,
+      "sha256": "f33a8f7b2386fe877e5d4e1a5cda2b690dec266892bd80e05d60326e6425a4e3"
+    },
+    {
+      "path": "benchmarks/providers/video_understanding_transport.py",
+      "bytes": 8149,
+      "sha256": "7236575192c38cc4b5cda3df2b543f84dcb88d3c2bb4ceff86cacc97a441ba1d"
+    },
+    {
+      "path": "benchmarks/scorers/video_understanding_scorer.py",
+      "bytes": 8056,
+      "sha256": "9f470798024545f6c525ca3df2147d82ed27d5aaede8317cab6145a7775e55e9"
+    },
+    {
+      "path": "benchmarks/scorers/video_understanding_dimensions.py",
+      "bytes": 11592,
+      "sha256": "97857f63cb2a0233303d933e5a051bccc88f9b64d01f44a9d813aec2af029419"
+    },
+    {
+      "path": "benchmarks/tasks/video-understanding.yaml",
+      "bytes": 10383,
+      "sha256": "ccbaad3f096e8fcb97bb0b22577734c1272f61fe6c0b975f8a2ea61c6e81f2df"
+    },
+    {
+      "path": "benchmarks/prompts/video-understanding.txt",
+      "bytes": 3101,
+      "sha256": "53ea0b8ef7487d8dcaea352c0eb133100e18eb45d78b953f2007f14148beb6e2"
+    },
+    {
+      "path": "benchmarks/video_understanding/manifest.json",
+      "bytes": 20443,
+      "sha256": "8022c2dffb4a4c8c856f92bf735b465f580c4a2545129788ee4883a8f7f6af7a"
+    },
+    {
+      "path": "benchmarks/scripts/video_understanding_report.py",
+      "bytes": 7581,
+      "sha256": "2e23f0ff904d33d9bac9af0cc2698e33180f45a0f675ffb8d6e7f8c32c5a8f2a"
+    },
+    {
+      "path": "docs/evals/story-208-contract-manifest-v13.json",
+      "bytes": 184583,
+      "sha256": "f388dc62793846707bfdeaaa41c6798518f6981baa00936304c440151b7ebbb7"
+    }
+  ],
+  "case_targets_and_frames": [
+    {
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/target.json",
+      "bytes": 1284,
+      "sha256": "49b84bca458de2acf43464eb6b2c441c90670e32ebcda8db46e8985e4fb3949d"
+    },
+    {
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_00.jpg",
+      "bytes": 12984,
+      "sha256": "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84"
+    },
+    {
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_01.jpg",
+      "bytes": 12943,
+      "sha256": "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5"
+    },
+    {
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_02.jpg",
+      "bytes": 13273,
+      "sha256": "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24"
+    },
+    {
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_03.jpg",
+      "bytes": 13223,
+      "sha256": "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576"
+    },
+    {
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_04.jpg",
+      "bytes": 13602,
+      "sha256": "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+    },
+    {
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/target.json",
+      "bytes": 1251,
+      "sha256": "bdeebb0075f458a1c87033300b1be9fce6bb66b3104362b35612e0a899d4f621"
+    },
+    {
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_00.jpg",
+      "bytes": 38344,
+      "sha256": "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a"
+    },
+    {
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_01.jpg",
+      "bytes": 37597,
+      "sha256": "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039"
+    },
+    {
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_02.jpg",
+      "bytes": 35584,
+      "sha256": "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655"
+    },
+    {
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_03.jpg",
+      "bytes": 36187,
+      "sha256": "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b"
+    },
+    {
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_04.jpg",
+      "bytes": 37453,
+      "sha256": "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+    },
+    {
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/target.json",
+      "bytes": 1250,
+      "sha256": "20bbf829deb5618ff63ba77000f34998f5eb6d37cf0cfd58ec086beced7a3ea4"
+    },
+    {
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_00.jpg",
+      "bytes": 13097,
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_01.jpg",
+      "bytes": 13097,
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_02.jpg",
+      "bytes": 13097,
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_03.jpg",
+      "bytes": 13097,
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_04.jpg",
+      "bytes": 13097,
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/target.json",
+      "bytes": 1221,
+      "sha256": "9f14e1f173f5d818b8f915016c498be241206814cfd6cf36d4b68cacdb875be8"
+    },
+    {
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_00.jpg",
+      "bytes": 11104,
+      "sha256": "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e"
+    },
+    {
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_01.jpg",
+      "bytes": 11104,
+      "sha256": "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e"
+    },
+    {
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_02.jpg",
+      "bytes": 11120,
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_03.jpg",
+      "bytes": 11120,
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_04.jpg",
+      "bytes": 11120,
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/target.json",
+      "bytes": 1297,
+      "sha256": "8d92cadec6a999e0d846a38cf5689fe63d45e83078cd62b45f57d1c5853057de"
+    },
+    {
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_00.jpg",
+      "bytes": 27600,
+      "sha256": "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d"
+    },
+    {
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_01.jpg",
+      "bytes": 27995,
+      "sha256": "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8"
+    },
+    {
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_02.jpg",
+      "bytes": 26221,
+      "sha256": "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd"
+    },
+    {
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_03.jpg",
+      "bytes": 27384,
+      "sha256": "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236"
+    },
+    {
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_04.jpg",
+      "bytes": 27098,
+      "sha256": "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+    },
+    {
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/target.json",
+      "bytes": 1270,
+      "sha256": "7d0a40d274599f17dd2242134c26d0f13c70430bca3ba49428c041d8bbf7d82e"
+    },
+    {
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_00.jpg",
+      "bytes": 45585,
+      "sha256": "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81"
+    },
+    {
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_01.jpg",
+      "bytes": 45840,
+      "sha256": "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7"
+    },
+    {
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_02.jpg",
+      "bytes": 44751,
+      "sha256": "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d"
+    },
+    {
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_03.jpg",
+      "bytes": 45573,
+      "sha256": "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef"
+    },
+    {
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_04.jpg",
+      "bytes": 45193,
+      "sha256": "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+    }
+  ],
+  "tracked_results": [
+    {
+      "path": "benchmarks/results/video-understanding-gpt6-luna-first-repaired-20260926.json",
+      "bytes": 50024,
+      "sha256": "200c34c7eb5aa7c3fae4e12c705396e1abf13628e3bae3157dca71273be0e3b0"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gpt6-luna-first-repaired-20260926-report.json",
+      "bytes": 1657,
+      "sha256": "8ae665441e04bf85b4e37a1a058f425ce5148127e115124d900e65665c568153"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gemini35-lite-first-gpt6-control-20260926.json",
+      "bytes": 50384,
+      "sha256": "7c05740dd0b1e865bf32bf22e6f5ae6f7e01c480048348db62c37f1f441a63ed"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gpt6-luna-six-repaired-20260926.json",
+      "bytes": 164401,
+      "sha256": "8b6f0230a30e199f8bdaf3fc24462d54c391f9940be0ff5b967767e71d1c2ca1"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gemini35-lite-six-gpt6-control-20260926.json",
+      "bytes": 164748,
+      "sha256": "2a6105d5b14f9d968fc4b88e76c39ad481f6b5054d611f923d440280130b86aa"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gpt6-luna-six-repaired-20260926-report.json",
+      "bytes": 1796,
+      "sha256": "fcccbbb4a0f1a3955da1ba480537cc04c802c1b28a39c3390df07e31bda80314"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gpt6-luna-vs-gemini35-lite-six-20260926-report.json",
+      "bytes": 3019,
+      "sha256": "c34b32af902d3f222a82eab9bc95e31cdc82f42b03f4d9121ad18a19ff55c492"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gpt6-luna-six-repaired-20260926-report.md",
+      "bytes": 602,
+      "sha256": "4af4f438485d838df0c3a9aa7ec50b636adae651e3002fc7a545ac95bd2b401c"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gpt6-luna-vs-gemini35-lite-six-20260926-report.md",
+      "bytes": 839,
+      "sha256": "7f1c602d4fcde12670686a9ce22a327b7acb43a661c982d012be7ab390e042f9"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gpt6-luna-first-repaired-20260926-report.md",
+      "bytes": 652,
+      "sha256": "fc382669224b4a6748f668a6712905a30829aa9f7556a90599cc3bcbcfe7da32"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gpt6-luna-vs-gemini35-lite-excluding-rooftop-20260926.json",
+      "bytes": 2267,
+      "sha256": "15d12b83e44a709b5f517ab4dcf10acddf0efc04a90f23ec1ed673b9add55728"
+    }
+  ],
+  "result_receipts": {
+    "video-understanding-gpt6-luna-first-repaired-20260926.json": {
+      "cases": 1,
+      "subject_cost_usd": "0.000582175",
+      "judge_usage": {
+        "input_tokens": 745,
+        "output_tokens": 708
+      },
+      "judge_cost_estimated_usd": "0.021425",
+      "returned_models": [
+        "gpt-6-luna"
+      ],
+      "score_mean_at_call": "0.54915",
+      "raw_receipts": [
+        {
+          "id": "resp_0e20c5f92b6c2b45016ab86413c31c87d0ac318c6a4a03eea8",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 442,
+            "output_tokens_details": {
+              "reasoning_tokens": 221
+            },
+            "total_tokens": 3332
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-sol-luna-20260926/luna/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "8349a7113fd13f550b749dd4ad83dab4c4a073d016f9d8d35538574571cb3c0c",
+          "raw_envelope_bytes": 11073
+        }
+      ]
+    },
+    "video-understanding-gemini35-lite-first-gpt6-control-20260926.json": {
+      "cases": 1,
+      "subject_cost_usd": "0.0027519",
+      "judge_usage": {
+        "input_tokens": 723,
+        "output_tokens": 741
+      },
+      "judge_cost_estimated_usd": "0.022140",
+      "returned_models": [
+        "gemini-3.5-flash-lite"
+      ],
+      "score_mean_at_call": "0.2306",
+      "raw_receipts": [
+        {
+          "responseId": "XWS4avPhM4rAz7IP2Pjv2Ao",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 321,
+            "totalTokenCount": 6819,
+            "promptTokensDetails": [
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              },
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        }
+      ]
+    },
+    "video-understanding-gpt6-luna-six-repaired-20260926.json": {
+      "cases": 6,
+      "subject_cost_usd": "0.00288804499999999972",
+      "judge_usage": {
+        "input_tokens": 4333,
+        "output_tokens": 4411
+      },
+      "judge_cost_estimated_usd": "0.131940",
+      "returned_models": [
+        "gpt-6-luna"
+      ],
+      "score_mean_at_call": "0.52985",
+      "raw_receipts": [
+        {
+          "id": "resp_00cab0707af2c316016ab864a8d41487d0946143e70506f7fb",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 2887
+            },
+            "output_tokens": 415,
+            "output_tokens_details": {
+              "reasoning_tokens": 204
+            },
+            "total_tokens": 3305
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-sol-luna-20260926/luna/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "5e179863e7371e60122d3b172a2a31a5650474eff5f2c9e3151e4d46a5d1db1e",
+          "raw_envelope_bytes": 10930
+        },
+        {
+          "id": "resp_08833e3c069ec5af016ab864be16fc87d087f2ba75b47c5ad8",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 338,
+            "output_tokens_details": {
+              "reasoning_tokens": 127
+            },
+            "total_tokens": 3228
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-sol-luna-20260926/luna/vfp_active_002-raw-envelope.json",
+          "raw_envelope_sha256": "0969074dcdd68b046ddbe1244f69f7f8c177475712d74fb4d8acf439818409d5",
+          "raw_envelope_bytes": 10412
+        },
+        {
+          "id": "resp_06924a7522cd9e28016ab864d4760087d0b87b80a8c773aa81",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 332,
+            "output_tokens_details": {
+              "reasoning_tokens": 131
+            },
+            "total_tokens": 3222
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-sol-luna-20260926/luna/vfp_active_003-raw-envelope.json",
+          "raw_envelope_sha256": "3cf407eaba50b7e3fce331439ca37adbec12af7983cf862cfbc0df2ded5c677a",
+          "raw_envelope_bytes": 10508
+        },
+        {
+          "id": "resp_0201ebc5b6662633016ab864e8c1c087d08416d5eb2b032f72",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 286,
+            "output_tokens_details": {
+              "reasoning_tokens": 84
+            },
+            "total_tokens": 3176
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-sol-luna-20260926/luna/vfp_active_004-raw-envelope.json",
+          "raw_envelope_sha256": "c6e4ed8039849a9c183fd09bc2f69c762d3b5c9751d2e65736f00e20fcdfdddb",
+          "raw_envelope_bytes": 10066
+        },
+        {
+          "id": "resp_04977d3a06f7587e016ab864fe999087d0bd56f180c92e12c9",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 402,
+            "output_tokens_details": {
+              "reasoning_tokens": 202
+            },
+            "total_tokens": 3292
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-sol-luna-20260926/luna/vfp_active_005-raw-envelope.json",
+          "raw_envelope_sha256": "7b557246748042b3ac7465f05b02aba3715e9099a879872a01b3542f0cbf4d30",
+          "raw_envelope_bytes": 10881
+        },
+        {
+          "id": "resp_014a3d2a4a0fa8ce016ab86512623887d098dc4a2e0b750f14",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 333,
+            "output_tokens_details": {
+              "reasoning_tokens": 133
+            },
+            "total_tokens": 3223
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-sol-luna-20260926/luna/vfp_active_006-raw-envelope.json",
+          "raw_envelope_sha256": "aa570e3175cc66190fc427bcf274e16518768dcf39cec5813a3f7dedb38de4e3",
+          "raw_envelope_bytes": 10430
+        }
+      ]
+    },
+    "video-understanding-gemini35-lite-six-gpt6-control-20260926.json": {
+      "cases": 6,
+      "subject_cost_usd": "0.0163864",
+      "judge_usage": {
+        "input_tokens": 4276,
+        "output_tokens": 4579
+      },
+      "judge_cost_estimated_usd": "0.135855",
+      "returned_models": [
+        "gemini-3.5-flash-lite"
+      ],
+      "score_mean_at_call": "0.4187583333333333566666666667",
+      "raw_receipts": [
+        {
+          "responseId": "RmW4aoS4KfeCmtkP-O3P2A0",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 276,
+            "totalTokenCount": 6774,
+            "promptTokensDetails": [
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              },
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        },
+        {
+          "responseId": "WmW4as2lHuj9qtsP8d21yA8",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 328,
+            "totalTokenCount": 6826,
+            "promptTokensDetails": [
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              },
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        },
+        {
+          "responseId": "bWW4arimDuydz7IPjsrImQE",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 323,
+            "totalTokenCount": 6821,
+            "promptTokensDetails": [
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              },
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        },
+        {
+          "responseId": "fmW4apyrBY-cz7IP4sjlsAQ",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 323,
+            "totalTokenCount": 6821,
+            "promptTokensDetails": [
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              },
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        },
+        {
+          "responseId": "kWW4avCuKsnyz7IPraGl6Qo",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 295,
+            "totalTokenCount": 6793,
+            "promptTokensDetails": [
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              },
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        },
+        {
+          "responseId": "pGW4atOrJ8bjz7IPto6DuQM",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 331,
+            "totalTokenCount": 6829,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              },
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        }
+      ]
+    }
+  },
+  "raw_envelopes_ignored_local": [
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/luna/native-vfp_active_001-judge-opus46-raw.json",
+      "bytes": 3381,
+      "sha256": "e99ab4513ed2fc5a37b2820d34415ebcb1e285dd8e7fc99990aa6ffca3bf33c7"
+    },
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/luna/full6-vfp_active_001-raw-envelope.json",
+      "bytes": 10930,
+      "sha256": "5e179863e7371e60122d3b172a2a31a5650474eff5f2c9e3151e4d46a5d1db1e"
+    },
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/luna/full6-vfp_active_002-raw-envelope.json",
+      "bytes": 10412,
+      "sha256": "0969074dcdd68b046ddbe1244f69f7f8c177475712d74fb4d8acf439818409d5"
+    },
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/luna/full6-vfp_active_003-raw-envelope.json",
+      "bytes": 10508,
+      "sha256": "3cf407eaba50b7e3fce331439ca37adbec12af7983cf862cfbc0df2ded5c677a"
+    },
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/luna/full6-vfp_active_004-raw-envelope.json",
+      "bytes": 10066,
+      "sha256": "c6e4ed8039849a9c183fd09bc2f69c762d3b5c9751d2e65736f00e20fcdfdddb"
+    },
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/luna/full6-vfp_active_005-raw-envelope.json",
+      "bytes": 10881,
+      "sha256": "7b557246748042b3ac7465f05b02aba3715e9099a879872a01b3542f0cbf4d30"
+    },
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/luna/full6-vfp_active_006-raw-envelope.json",
+      "bytes": 10430,
+      "sha256": "aa570e3175cc66190fc427bcf274e16518768dcf39cec5813a3f7dedb38de4e3"
+    },
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/sol/native-vfp_active_001-raw-envelope.json",
+      "bytes": 8238,
+      "sha256": "e3e2e3571c65c1b551d86aea14196a0993e5ada6c644ef4ddd8c0889e38720d4"
+    },
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/sol/vfp_active_001-raw-envelope.json",
+      "bytes": 8294,
+      "sha256": "a01200aff845e7dc6141b2abf70d08f721e977119f1c2ab5791729a61a65b6f8"
+    },
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/luna/native-vfp_active_001-raw-envelope.json",
+      "bytes": 10678,
+      "sha256": "c760545df9d9aeecb26d1a73315d03d5ee3c6dd92a4a65d823572cb3a3e300f6"
+    }
+  ],
+  "lost_first_parity_raw": {
+    "path": "output/evals/gpt6-sol-luna-20260926/luna/vfp_active_001-raw-envelope.json",
+    "sha256": "8349a7113fd13f550b749dd4ad83dab4c4a073d016f9d8d35538574571cb3c0c",
+    "bytes": 11073,
+    "response_id": "resp_0e20c5f92b6c2b45016ab86413c31c87d0ac318c6a4a03eea8",
+    "returned_model": "gpt-6-luna",
+    "status": "completed",
+    "service_tier": "default",
+    "usage": {
+      "input_tokens": 2890,
+      "input_tokens_details": {
+        "cache_write_tokens": 2887,
+        "cached_tokens": 0
+      },
+      "output_tokens": 442,
+      "output_tokens_details": {
+        "reasoning_tokens": 221
+      },
+      "total_tokens": 3332
+    },
+    "reason": "Full-six first Luna call reused same raw path; first tracked result retains receipt and full output, but original full envelope was overwritten."
+  },
+  "correction": {
+    "scope": "Literal closer summary matcher admits source-backed temporal-enlargement phrasing only for slow_push_in targets; original call-time scores retained; offline regrade report separate.",
+    "original_manifest": "docs/evals/story-222-gpt6-sol-luna-video-evidence.json",
+    "first_luna_structural_at_call": "0.5783",
+    "first_luna_structural_regraded": "0.6450",
+    "first_luna_combined_at_call": "0.54915",
+    "first_luna_combined_regraded": "0.5825"
+  },
+  "all_provider_spend_usd": {
+    "components": {
+      "attempt041_total": "0.035800575",
+      "luna_native_judge_estimated": "0.020870",
+      "luna_first_subject": "0.000582175",
+      "luna_first_judge_estimated": "0.021425",
+      "gemini_first_subject": "0.0027519",
+      "gemini_first_judge_estimated": "0.022140",
+      "luna_six_subject": "0.002888045",
+      "luna_six_judge_estimated": "0.131940",
+      "gemini_six_subject": "0.0163864",
+      "gemini_six_judge_estimated": "0.135855"
+    },
+    "accounted_total": "0.390639095",
+    "ceiling": "1.50",
+    "remaining": "1.109360905",
+    "judge_cost_status": "Estimated from returned token usage at checked Opus 4.6 $5/$25 per million; no account-level billed dollars available.",
+    "by_model_arm_including_judges": {
+      "gpt-6-sol": "0.0352519",
+      "gpt-6-luna": "0.178253895",
+      "gemini-3.5-flash-lite": "0.1771333"
+    }
+  },
+  "command_shape": {
+    "working_directory": "benchmarks",
+    "environment": "Node 24; PROMPTFOO_PYTHON=/Users/cam/Documents/Projects/cine-forge/.venv/bin/python; owner presence-only with_cine_forge_provider_env.py wrapper",
+    "luna_first": "promptfoo eval -c tasks/video-understanding.yaml --filter-providers \"GPT-6 Luna / direct Responses low\" --filter-first-n 1 --no-cache -j 1 --output results/video-understanding-gpt6-luna-first-repaired-20260926.json --no-table",
+    "gemini_first": "promptfoo eval -c tasks/video-understanding.yaml --filter-providers \"Gemini 3.5 Flash-Lite\" --filter-first-n 1 --no-cache -j 1 --output results/video-understanding-gemini35-lite-first-gpt6-control-20260926.json --no-table",
+    "luna_six": "promptfoo eval -c tasks/video-understanding.yaml --filter-providers \"GPT-6 Luna / direct Responses low\" --no-cache -j 1 --output results/video-understanding-gpt6-luna-six-repaired-20260926.json --no-table",
+    "gemini_six": "promptfoo eval -c tasks/video-understanding.yaml --filter-providers \"Gemini 3.5 Flash-Lite\" --no-cache -j 1 --output results/video-understanding-gemini35-lite-six-gpt6-control-20260926.json --no-table"
+  },
+  "verdict": {
+    "luna": "0/6 >=.80; no default adoption; preferred research/reference challenger to fresh Gemini",
+    "sol": "first owner case 0.39415 with source-grounded scale miss; no full six",
+    "gemini": "fresh 0/6 >=.80; comparative incumbent control only"
+  },
+  "source_review": {
+    "dialogue": "frame00 and frame04 show figures enlarging at roughly fixed centers; omitted static/push-in tags are grounded camera errors, while intimate tone is interpretive.",
+    "prop_swap": "tabletop rectangle is visibly red in frame00 and blue in frame04; Luna summary states color change but classifies continuity intact where owner target requires broken.",
+    "bedside": "left lamp-like block has a round top and thin vertical shaft; Luna two-figure reading is ambiguous on abstract source, not an unequivocal hallucination.",
+    "rooftop": "yellow runner mask under RGB threshold r>180,g>120,b<105,r>1.05*g spans x81..203,y120..244 in frame00 and x401..523,y120..244 in frame04, both 123x125 bbox and 8552/8554 pixels; target/judge growing-larger claim contradicts this source measurement."
+  },
+  "sensitivity": {
+    "artifact": "benchmarks/results/video-understanding-gpt6-luna-vs-gemini35-lite-excluding-rooftop-20260926.json",
+    "method": "Saved-output arithmetic mean excluding rooftop only; no provider calls or modified judge results.",
+    "luna_combined": "0.52432",
+    "gemini_combined": "0.42334",
+    "luna_case_wins": "4/5",
+    "case_gate_passes": "0/5 each",
+    "status": "Bounded diagnostic, not corrected full contract."
+  }
+}

@@ -1,0 +1,168 @@
+#!/usr/bin/env python3
+"""Build the source-corrected v4 targets without changing historical v3 pixels."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE = ROOT / "video_understanding"
+DEST = ROOT / "video_understanding_truth_v4"
+CASES = (
+    "dialogue_confession_push_in",
+    "alarm_chase_whip_pan",
+    "quiet_bedside_vigil",
+    "prop_swap_continuity_break",
+    "rooftop_escape_crash_zoom",
+    "storm_tunnel_lateral_run",
+)
+INTERPRETATION_NOTES = {
+    "dialogue_confession_push_in": (
+        "The figures enlarge at nearly fixed centers while the prop and background "
+        "do not scale. Figure-size change is observable; physical approach or a "
+        "specific camera mechanism is not established."
+    ),
+    "quiet_bedside_vigil": (
+        "The narrow round-topped left form may read as a lamp or second abstract "
+        "figure, and the horizontal rectangle as a bed or barrier. Score fixed "
+        "geometry and stillness, not one hidden object identity."
+    ),
+    "rooftop_escape_crash_zoom": (
+        "The runner crosses the gap at constant pixel size and constant lateral "
+        "speed. Do not require growth or acceleration."
+    ),
+}
+
+
+def _sha(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def _corrected_target(case: str, source: dict) -> dict:
+    target = dict(source)
+    if case == "dialogue_confession_push_in":
+        target["summary_reference"] = (
+            "Two abstract figures hold fixed left-right centers in blue light while "
+            "both appear larger across the ordered frames; a pale rectangle stays "
+            "on the right figure."
+        )
+        target["excluded_dimensions"] = ["camera"]
+    elif case == "quiet_bedside_vigil":
+        target["summary_reference"] = (
+            "A warm static arrangement holds a horizontal gray rectangle between "
+            "a narrow round-topped form at left and a broader round-topped figure "
+            "at right."
+        )
+        target["required_keywords"] = ["static"]
+        target["continuity_notes"] = [
+            "The gray horizontal rectangle and both round-topped forms keep the "
+            "same positions in every frame."
+        ]
+    elif case == "rooftop_escape_crash_zoom":
+        target["summary_reference"] = (
+            "A yellow abstract runner moves from left to right in an arc over a "
+            "gap between dark rooftop blocks without changing size."
+        )
+        target["required_keywords"] = ["runner", "gap"]
+        target["motion_tags"] = ["fast_lateral"]
+    return target
+
+
+def _target_markdown(case: str, target: dict) -> str:
+    def tags(key: str) -> str:
+        return ", ".join(target[key]) if target[key] else "[none]"
+
+    camera = (
+        "ambiguous; camera tags excluded from scoring"
+        if "camera" in target.get("excluded_dimensions", [])
+        else tags("camera_tags")
+    )
+    lines = [
+        "# Ordered JPEG frame-packet reference",
+        "",
+        f"- Summary: {target['summary_reference']}",
+        f"- Tone: {tags('tone_tags')}",
+        f"- Emotion: {tags('emotion_tags')}",
+        f"- Color / grade: {tags('color_tags')}",
+        f"- Camera language inferable from the ordered samples: {camera}",
+        f"- Motion inferable from the ordered samples: {tags('motion_tags')}",
+        f"- Continuity: {target['continuity_status']} - {tags('continuity_notes')}",
+        "- Audio: unavailable to the subject and excluded from scoring",
+        f"- Interpretation boundary: {INTERPRETATION_NOTES[case]}",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def expected_files() -> dict[Path, bytes]:
+    files: dict[Path, bytes] = {}
+    source_manifest = (SOURCE / "manifest.json").read_bytes()
+    manifest: dict[str, object] = {
+        "schema_version": 1,
+        "version": "frame-truth-target-overlay-v4",
+        "purpose": (
+            "Correct source-backed target/rubric defects while preserving all v3 "
+            "synthetic media, neutral subject metadata, prompts, and historical results."
+        ),
+        "historical_generator": "benchmarks/scripts/generate_video_understanding_dataset.py",
+        "historical_source_manifest_sha256": _sha(source_manifest),
+        "builder": "benchmarks/scripts/build_video_understanding_truth_v4.py",
+        "cases": [],
+    }
+    for case in CASES:
+        source_dir = SOURCE / case
+        source_json = (source_dir / "target.json").read_bytes()
+        source_md = (source_dir / "target.md").read_bytes()
+        target = _corrected_target(case, json.loads(source_json))
+        json_bytes = (
+            json.dumps(target, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
+        ).encode()
+        md_bytes = (
+            _target_markdown(case, target).encode()
+            if case in INTERPRETATION_NOTES else source_md
+        )
+        files[DEST / case / "target.json"] = json_bytes
+        files[DEST / case / "target.md"] = md_bytes
+        frame_hashes = [
+            _sha((source_dir / "frames" / f"frame_{index:02d}.jpg").read_bytes())
+            for index in range(5)
+        ]
+        manifest["cases"].append({
+            "clip_id": case,
+            "source_target_json_sha256": _sha(source_json),
+            "source_target_md_sha256": _sha(source_md),
+            "target_json_sha256": _sha(json_bytes),
+            "target_md_sha256": _sha(md_bytes),
+            "sampled_frame_sha256": frame_hashes,
+            "corrected": case in INTERPRETATION_NOTES,
+        })
+    files[DEST / "manifest.json"] = (
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n"
+    ).encode()
+    return files
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--write", action="store_true")
+    mode.add_argument("--check", action="store_true")
+    args = parser.parse_args()
+    files = expected_files()
+    if args.write:
+        for path, data in files.items():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+        print(f"Wrote {len(files)} v4 truth files")
+        return
+    mismatches = [str(path) for path, data in files.items() if not path.exists() or path.read_bytes() != data]
+    if mismatches:
+        raise SystemExit("V4 truth overlay differs: " + ", ".join(mismatches))
+    print(f"V4 truth overlay: {len(files)} files match source media and frozen corrections")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,60 @@
+{
+  "eval_id": "video-understanding",
+  "prompt_version": "video-understanding-frame-packet-v3",
+  "expected_cases": [
+    "alarm_chase_whip_pan",
+    "dialogue_confession_push_in",
+    "prop_swap_continuity_break",
+    "quiet_bedside_vigil",
+    "rooftop_escape_crash_zoom",
+    "storm_tunnel_lateral_run"
+  ],
+  "models": [
+    {
+      "model": "GPT-6 Luna / direct Responses low",
+      "python_overall": 0.645,
+      "rubric_overall": 0.52,
+      "overall": 0.5825,
+      "latency_ms": 4984,
+      "cost_usd": 0.000582,
+      "value_score_per_dollar": 1000.86,
+      "dimension_scores": {
+        "audio": 0.0,
+        "camera": 0.0,
+        "color": 0.5,
+        "continuity": 0.75,
+        "emotion": 1.0,
+        "evidence": 1.0,
+        "hard_constraints": 1.0,
+        "motion": 1.0,
+        "summary": 1.0,
+        "tone": 0.0
+      },
+      "calls": 1,
+      "observed_cases": [
+        "dialogue_confession_push_in"
+      ],
+      "missing_cases": [
+        "alarm_chase_whip_pan",
+        "prop_swap_continuity_break",
+        "quiet_bedside_vigil",
+        "rooftop_escape_crash_zoom",
+        "storm_tunnel_lateral_run"
+      ],
+      "extra_cases": [],
+      "duplicate_cases": [],
+      "incomplete_cases": [],
+      "failed_cases": [
+        "dialogue_confession_push_in"
+      ],
+      "contract_errors": [],
+      "regrade_errors": [],
+      "data_complete": false,
+      "previous_overall": null
+    }
+  ],
+  "recommendation": {
+    "decision": "retest",
+    "rationale": "No adoption decision is valid until every model has one complete dual-scored result for every expected case. Incomplete: GPT-6 Luna / direct Responses low."
+  }
+}

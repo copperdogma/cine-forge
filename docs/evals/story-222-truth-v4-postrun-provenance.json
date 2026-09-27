@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-26",
+  "story": "222",
+  "purpose": "Map paid-call frozen script identities to byte-exact archives after Ruff cleanup of active scripts. Original freeze/evidence and subject/judge receipts remain unchanged.",
+  "base_sha": "163bcb1ecd36de97b76e5ad83298048c9211a4d7",
+  "original_freeze": {
+    "path": "docs/evals/story-222-truth-v4-freeze.json",
+    "bytes": 5948,
+    "sha256": "7ec0eb8f274d74f2a742802d5964d810295d88107ccef4215d07d5f153be0b7c"
+  },
+  "original_evidence": {
+    "path": "docs/evals/story-222-truth-v4-evidence.json",
+    "bytes": 9169,
+    "sha256": "1f69fab49fc06142bbe0500741f7e8fdda7dcaeacbbadbf0b1d9aa0b29e8a8a9"
+  },
+  "derived_result": {
+    "path": "benchmarks/results/video-understanding-truth-v4-saved-subject-regrade-20260926.json",
+    "bytes": 34756,
+    "sha256": "ff2a5ae0da2444b0ea76ad3faa6eb115f8511eee95cc102dba44d4536428217f"
+  },
+  "archive_mapping": [
+    {
+      "original_freeze_path": "benchmarks/scripts/build_video_understanding_truth_v4.py",
+      "call_time_archive": {
+        "path": "docs/evals/snapshots/story-222-v4-calltime-overlay-builder.py.txt",
+        "bytes": 6589,
+        "sha256": "6e5c23c1670f056d2a4e393ada946b40f06a3792e1102d5567767df6b9059979"
+      },
+      "post_run_active": {
+        "path": "benchmarks/scripts/build_video_understanding_truth_v4.py",
+        "bytes": 6631,
+        "sha256": "f686c4615c463b06da2b2c4dbc333ec5932fad93a3192f596641189672ce8b56"
+      },
+      "change_class": "Ruff mechanical formatting; judge runner additionally uses archive-aware freeze resolution and exception chaining"
+    },
+    {
+      "original_freeze_path": "benchmarks/scripts/rejudge_video_understanding_truth_v4.py",
+      "call_time_archive": {
+        "path": "docs/evals/snapshots/story-222-v4-calltime-judge-runner.py.txt",
+        "bytes": 7512,
+        "sha256": "da3e4128b08cbc033f196e68eec814b89b6b720e95b7b354620793aec499eeb8"
+      },
+      "post_run_active": {
+        "path": "benchmarks/scripts/rejudge_video_understanding_truth_v4.py",
+        "bytes": 8077,
+        "sha256": "696bacb123f295a0029cc120d70b9d2819b47c659d5e9edf3988598ba54adffa"
+      },
+      "change_class": "Ruff mechanical formatting; judge runner additionally uses archive-aware freeze resolution and exception chaining"
+    }
+  ],
+  "verification_rule": "The active rejudge _check_freeze resolves only these two historical paths to archived byte copies and verifies every frozen size/hash; all other frozen paths remain live. Current active scripts are pinned separately here.",
+  "offline_regrade": "The post-run active scripts regenerated a byte-identical saved-subject derived result; no provider request was made.",
+  "paid_call_count_after_archive": 0,
+  "selection_unchanged": "Luna preferred for inspected headless reference, autonomous QA/default held"
+}

@@ -1,0 +1,57 @@
+{
+  "anchor_subset": true,
+  "audio_description": null,
+  "audio_tags": [],
+  "camera_tags": [
+    "locked_two_shot",
+    "slow_push_in"
+  ],
+  "clip_id": "dialogue_confession_push_in",
+  "clip_tags": [
+    "dialogue",
+    "quiet_emotion"
+  ],
+  "color_tags": [
+    "navy",
+    "teal"
+  ],
+  "continuity_notes": [
+    "The pale rectangle stays beside the right figure across all five frames."
+  ],
+  "continuity_status": "intact",
+  "duration_seconds": 4.0,
+  "emotion_tags": [],
+  "excluded_dimensions": [
+    "camera"
+  ],
+  "has_audio": true,
+  "motion_tags": [
+    "measured"
+  ],
+  "required_keywords": [
+    "figures",
+    "blue",
+    "closer"
+  ],
+  "resolution": "640x360",
+  "rights": "Project-owned synthetic benchmark asset",
+  "source_description": "Generated locally by the versioned CineForge frame-truth generator.",
+  "source_type": "synthetic_previz",
+  "summary_reference": "Two abstract figures hold fixed left-right centers in blue light while both appear larger across the ordered frames; a pale rectangle stays on the right figure.",
+  "title": "Cool two-shot push-in",
+  "tone_tags": [
+    "intimate"
+  ],
+  "transcript": null,
+  "weights": {
+    "audio": 0.0,
+    "camera": 0.14,
+    "color": 0.12,
+    "continuity": 0.14,
+    "emotion": 0.08,
+    "evidence": 0.08,
+    "motion": 0.12,
+    "summary": 0.2,
+    "tone": 0.12
+  }
+}

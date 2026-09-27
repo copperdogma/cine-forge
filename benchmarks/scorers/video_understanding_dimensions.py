@@ -55,11 +55,20 @@ def score_keywords(
     dimension: str,
     haystack: str,
     required: list[str],
+    equivalents: dict[str, tuple[str, ...]] | None = None,
 ) -> VideoAnalysisDimensionScore:
     if not required:
         return _dimension(dimension, 1.0, rationale="No target keywords are required.")
     lowered = haystack.lower()
-    matched = [keyword for keyword in required if keyword.lower() in lowered]
+    matched = []
+    for keyword in required:
+        patterns = (re.escape(keyword.lower()), *(equivalents or {}).get(keyword, ()))
+        if any(
+            _affirmative_match(lowered, match)
+            for pattern in patterns
+            for match in re.finditer(pattern, lowered)
+        ):
+            matched.append(keyword)
     missed = [keyword for keyword in required if keyword not in matched]
     return _dimension(
         dimension,
@@ -72,6 +81,23 @@ def score_keywords(
             else f"Missing summary cues: {', '.join(missed)}"
         ),
     )
+
+
+def _affirmative_match(text: str, match: re.Match[str]) -> bool:
+    """Do not credit a nearby explicit negation of a summary cue."""
+    prefix = re.split(r"[.!?;]", text[max(0, match.start() - 45):match.start()])[-1]
+    if re.search(
+        r"\b(?:not|never|without|doesn't|don't|didn't|isn't|aren't|wasn't|weren't)\b"
+        r"(?:[\w,\s-]{0,20})$",
+        prefix,
+    ):
+        return False
+    if re.search(r"\bno(?:\s+\w+){0,2}\s+$", prefix):
+        return False
+    return not bool(re.search(
+        r"\b(?:not|never|without|doesn't|don't|didn't|isn't|aren't|wasn't|weren't)\b",
+        match.group(),
+    ))
 
 
 def observable_required_keywords(target: VideoAnalysisTarget) -> list[str]:

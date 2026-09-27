@@ -6,7 +6,7 @@
 #   promptfoo eval -c tasks/video-understanding.yaml --no-cache -j 2 \
 #     --output results/video-understanding-pilot-2026-03-19.json
 
-description: "Ordered-JPEG frame understanding — six source-backed synthetic controls"
+description: "Ordered-JPEG frame understanding — six synthetic controls with v4 source-corrected targets"
 
 defaultTest:
   options:
@@ -56,6 +56,36 @@ providers:
       max_frames: 5
       frame_policy: five_evenly_spaced_jpegs_v1
       prompt_version: video-understanding-frame-packet-v3
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
+    label: "GPT-6 Sol / direct Responses low"
+    config:
+      provider: openai
+      model: gpt-6-sol
+      transport: responses_strict
+      reasoning_effort: low
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: video-understanding-frame-packet-v3
+      raw_output_dir: output/evals/gpt6-sol-luna-20260926/sol
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
+    label: "GPT-6 Luna / direct Responses low"
+    config:
+      provider: openai
+      model: gpt-6-luna
+      transport: responses_strict
+      reasoning_effort: low
+      max_tokens: 1400
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: video-understanding-frame-packet-v3
+      raw_output_dir: output/evals/gpt6-sol-luna-20260926/luna
       pythonExecutable: python
       timeout: 300000
 
@@ -211,8 +241,8 @@ tests:
       clip_id: dialogue_confession_push_in
       evaluation_id: vfp_active_001
       clip_dir: ../video_understanding/dialogue_confession_push_in
-      target_path: video_understanding/dialogue_confession_push_in/target.json
-      target_markdown: file://../video_understanding/dialogue_confession_push_in/target.md
+      target_path: video_understanding_truth_v4/dialogue_confession_push_in/target.json
+      target_markdown: file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md
     assert: &video_assertions
       - type: python
         value: file://../scorers/video_understanding_scorer.py
@@ -238,38 +268,38 @@ tests:
       clip_id: alarm_chase_whip_pan
       evaluation_id: vfp_active_002
       clip_dir: ../video_understanding/alarm_chase_whip_pan
-      target_path: video_understanding/alarm_chase_whip_pan/target.json
-      target_markdown: file://../video_understanding/alarm_chase_whip_pan/target.md
+      target_path: video_understanding_truth_v4/alarm_chase_whip_pan/target.json
+      target_markdown: file://../video_understanding_truth_v4/alarm_chase_whip_pan/target.md
     assert: *video_assertions
 
   - vars:
       clip_id: quiet_bedside_vigil
       evaluation_id: vfp_active_003
       clip_dir: ../video_understanding/quiet_bedside_vigil
-      target_path: video_understanding/quiet_bedside_vigil/target.json
-      target_markdown: file://../video_understanding/quiet_bedside_vigil/target.md
+      target_path: video_understanding_truth_v4/quiet_bedside_vigil/target.json
+      target_markdown: file://../video_understanding_truth_v4/quiet_bedside_vigil/target.md
     assert: *video_assertions
 
   - vars:
       clip_id: prop_swap_continuity_break
       evaluation_id: vfp_active_004
       clip_dir: ../video_understanding/prop_swap_continuity_break
-      target_path: video_understanding/prop_swap_continuity_break/target.json
-      target_markdown: file://../video_understanding/prop_swap_continuity_break/target.md
+      target_path: video_understanding_truth_v4/prop_swap_continuity_break/target.json
+      target_markdown: file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md
     assert: *video_assertions
 
   - vars:
       clip_id: rooftop_escape_crash_zoom
       evaluation_id: vfp_active_005
       clip_dir: ../video_understanding/rooftop_escape_crash_zoom
-      target_path: video_understanding/rooftop_escape_crash_zoom/target.json
-      target_markdown: file://../video_understanding/rooftop_escape_crash_zoom/target.md
+      target_path: video_understanding_truth_v4/rooftop_escape_crash_zoom/target.json
+      target_markdown: file://../video_understanding_truth_v4/rooftop_escape_crash_zoom/target.md
     assert: *video_assertions
 
   - vars:
       clip_id: storm_tunnel_lateral_run
       evaluation_id: vfp_active_006
       clip_dir: ../video_understanding/storm_tunnel_lateral_run
-      target_path: video_understanding/storm_tunnel_lateral_run/target.json
-      target_markdown: file://../video_understanding/storm_tunnel_lateral_run/target.md
+      target_path: video_understanding_truth_v4/storm_tunnel_lateral_run/target.json
+      target_markdown: file://../video_understanding_truth_v4/storm_tunnel_lateral_run/target.md
     assert: *video_assertions

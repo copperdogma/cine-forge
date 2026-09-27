@@ -1,0 +1,115 @@
+{
+  "date": "2026-09-26",
+  "owner": "CineForge",
+  "story": "222",
+  "attempt": "041",
+  "branch": "codex/gpt6-sol-luna-eval-20260926",
+  "base_sha": "163bcb1ecd36de97b76e5ad83298048c9211a4d7",
+  "scope": "video-understanding v3 first active synthetic five-JPEG case only; no audio/native video",
+  "models": [
+    "gpt-6-sol",
+    "gpt-6-luna"
+  ],
+  "route": "direct OpenAI Responses Standard/default, low reasoning, strict JSON Schema, store false, max_output_tokens 1400",
+  "judge": "anthropic:messages:claude-opus-4-6 via frozen task defaultTest; Sol parity only",
+  "cache": "no Promptfoo subject cache; OpenAI provider prompt cache writes/reads billed from usage",
+  "concurrency": 1,
+  "case_id": "vfp_active_001",
+  "contracts": [
+    {
+      "path": "benchmarks/providers/video_understanding_provider.py",
+      "bytes": 14661,
+      "sha256": "af04d8bfd9d274bab234ea3719370f492667c195707cb35278e844c7e0d4d0b6"
+    },
+    {
+      "path": "benchmarks/providers/video_understanding_provider_vision.py",
+      "bytes": 19360,
+      "sha256": "cea80d4afa12fe333bbbbad2e4d022fa73ac2033c179859e1fc66305fe61c0e8"
+    },
+    {
+      "path": "benchmarks/providers/video_understanding_provider_support.py",
+      "bytes": 9204,
+      "sha256": "f33a8f7b2386fe877e5d4e1a5cda2b690dec266892bd80e05d60326e6425a4e3"
+    },
+    {
+      "path": "benchmarks/providers/video_understanding_provider_anthropic.py",
+      "bytes": 6998,
+      "sha256": "d17bad4ca95f4853a0ef5fb7a0abe76508a3bdf3ddbe1bfc970f9df2f233f1ca"
+    },
+    {
+      "path": "benchmarks/providers/video_understanding_transport.py",
+      "bytes": 8149,
+      "sha256": "7236575192c38cc4b5cda3df2b543f84dcb88d3c2bb4ceff86cacc97a441ba1d"
+    },
+    {
+      "path": "benchmarks/tasks/video-understanding.yaml",
+      "bytes": 10383,
+      "sha256": "ccbaad3f096e8fcb97bb0b22577734c1272f61fe6c0b975f8a2ea61c6e81f2df"
+    },
+    {
+      "path": "benchmarks/prompts/video-understanding.txt",
+      "bytes": 3101,
+      "sha256": "53ea0b8ef7487d8dcaea352c0eb133100e18eb45d78b953f2007f14148beb6e2"
+    },
+    {
+      "path": "benchmarks/scorers/video_understanding_scorer.py",
+      "bytes": 7475,
+      "sha256": "77c81f2b4eb086fc3c3e1a5d244a9200688d780f53611bb206932d3a2c2c5d27"
+    },
+    {
+      "path": "benchmarks/video_understanding/manifest.json",
+      "bytes": 20443,
+      "sha256": "8022c2dffb4a4c8c856f92bf735b465f580c4a2545129788ee4883a8f7f6af7a"
+    },
+    {
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/target.json",
+      "bytes": 1284,
+      "sha256": "49b84bca458de2acf43464eb6b2c441c90670e32ebcda8db46e8985e4fb3949d"
+    },
+    {
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/target.md",
+      "bytes": 546,
+      "sha256": "e19292c5d3a02fd816ba279d937fb93ed90bd561734678d94aaaf06d39f69491"
+    }
+  ],
+  "raw_envelopes_ignored_owner_output": [
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/sol/native-vfp_active_001-raw-envelope.json",
+      "bytes": 8238,
+      "sha256": "e3e2e3571c65c1b551d86aea14196a0993e5ada6c644ef4ddd8c0889e38720d4"
+    },
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/sol/vfp_active_001-raw-envelope.json",
+      "bytes": 8294,
+      "sha256": "a01200aff845e7dc6141b2abf70d08f721e977119f1c2ab5791729a61a65b6f8"
+    },
+    {
+      "path": "output/evals/gpt6-sol-luna-20260926/luna/native-vfp_active_001-raw-envelope.json",
+      "bytes": 10678,
+      "sha256": "c760545df9d9aeecb26d1a73315d03d5ee3c6dd92a4a65d823572cb3a3e300f6"
+    }
+  ],
+  "tracked_result": {
+    "path": "benchmarks/results/video-understanding-gpt6-sol-first-20260926.json",
+    "bytes": 50710,
+    "sha256": "733be15391d443374c153980d52a567f2c3d5afd3492236dc9bd8eb8360f5260"
+  },
+  "spend_usd": {
+    "sol_native": 0.0092935,
+    "sol_parity": 0.0027934,
+    "luna_native": 0.000548675,
+    "opus46_judge_estimated": 0.023165,
+    "total_accounted": 0.035800575,
+    "ceiling": 1.5
+  },
+  "reservations_usd": {
+    "sol_subject": 0.064,
+    "luna_subject": 0.0032,
+    "opus46_judge": 0.0756,
+    "unused_gemini_control": 0.16984
+  },
+  "stopped": {
+    "sol": "0.39415 first-case combined; six and Gemini not run",
+    "luna": "0.5983 native deterministic; maximum combined with perfect rubric 0.79915; parity, judge, six and Gemini not run"
+  }
+}

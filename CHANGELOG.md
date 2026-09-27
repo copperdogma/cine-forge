@@ -1,5 +1,22 @@
 # Changelog
 
+## [2026-09-26-02] — Qualify GPT-6 Luna for ordered-frame reference analysis (Story 222)
+
+### Added
+- Preserved direct GPT-6 Sol and Luna five-JPEG transport evidence, fresh
+  same-input Gemini 3.5 Flash-Lite controls, bounded judge receipts, and the
+  source-checked v4 truth overlay with separate call-time code snapshots.
+
+### Changed
+- Selected Luna as the preferred model for inspected headless ordered-frame
+  reference runs after a saved-subject six-case comparison. Both models remain
+  below the 0.80 autonomous-QA gate; no product inference integration or runtime
+  default changes were made.
+
+### Fixed
+- Corrected source-wrong rooftop size and ambiguous bedside/camera scoring
+  claims while preserving historical targets, outputs, and evidence hashes.
+
 ## [2026-09-26-01] — Record Opus 5.5 frame-value stop (Story 221)
 
 ### Added

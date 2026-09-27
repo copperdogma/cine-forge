@@ -15,7 +15,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LEDGER = REPO_ROOT / "docs/evals/truth-audit-ledger.yaml"
-DEFAULT_OUTPUT = REPO_ROOT / "docs/evals/story-208-contract-manifest-v11.json"
+DEFAULT_OUTPUT = REPO_ROOT / "docs/evals/story-208-contract-manifest-v15.json"
 REGISTRY_RELATIVE_PATH = "docs/evals/registry.yaml"
 REGISTRY_HISTORY_KEYS = {"scores", "attempts"}
 
@@ -44,6 +44,8 @@ ALLOWED_PREFIXES = (
     "benchmarks/input/",
     "benchmarks/fixtures/",
     "benchmarks/video_understanding/",
+    "benchmarks/video_understanding_truth_v4/",
+    "docs/evals/snapshots/",
     "benchmarks/previz_usefulness/",
     "benchmarks/final_render_provider_floor/",
     "benchmarks/scripts/",
@@ -63,6 +65,7 @@ ALLOWED_EXACT = {
     "ui/package.json",
     "docs/evals/registry.yaml",
     "docs/evals/truth-audit-ledger.yaml",
+    "docs/evals/story-222-truth-v4-postrun-provenance.json",
     "docs/methodology/state.yaml",
 }
 EXCLUDED_PREFIXES = (
@@ -189,7 +192,7 @@ def build_manifest(repo_root: Path, ledger_path: Path, output_path: Path) -> dic
     ).encode("utf-8")
     return {
         "schema_version": 1,
-        "manifest_id": "story-208-eval-contracts-v11",
+        "manifest_id": "story-208-eval-contracts-v15",
         "as_of": str(ledger.get("as_of", "")),
         "commit_identity_policy": (
             "the immutable Git commit containing this manifest identifies these "
