@@ -382,7 +382,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 223 | Use pnpm for root and UI dependency installs | Medium | In Progress | — | spec:11 | — | [story-223](stories/story-223-pnpm-package-manager-migration.md) |
 | 103 | AGENTS.md Runbook Extraction (300-Line Cap) | Medium | Draft | — | spec:11 | — | [story-103](stories/story-103-agents-md-runbook-extraction.md) |
 | 053 | Cross-CLI Skills/Prompts Unification | High | Done | — | spec:11 | — | [story-053](stories/story-053-cross-cli-skills-unification.md) |
 | 125 | Agent Workflow Hardening Meta Upgrade | High | Done | — | spec:11 | — | [story-125](stories/story-125-agent-workflow-hardening-meta-upgrade.md) |
@@ -394,3 +393,4 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 172 | Methodology Actionability Truth and Audit Freshness | High | Done | — | spec:11 | 154 | [story-172](stories/story-172-methodology-actionability-truth-and-audit-freshness.md) |
 | 109 | Golden Build Runbook | Medium | Done | — | spec:11 | — | [story-109](stories/story-109-golden-build-runbook.md) |
 | 115 | Pipeline Architecture Refactor Plan | Medium | Done | — | spec:1, spec:11 | — | [story-115](stories/story-115-pipeline-architecture-refactor-plan.md) |
+| 223 | Use pnpm for root and UI dependency installs | Medium | Done | — | spec:11 | — | [story-223](stories/story-223-pnpm-package-manager-migration.md) |

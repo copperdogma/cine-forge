@@ -1,7 +1,7 @@
 ---
 id: "223"
 title: "Use pnpm for root and UI dependency installs"
-status: "In Progress"
+status: "Done"
 priority: "Medium"
 ideal_refs: []
 spec_refs:
@@ -38,7 +38,15 @@ This is execution infrastructure under `spec:11.4` and the execution ideal. The 
 - [x] The existing `afterwriting` PDF export path works after the root pnpm install.
 - [x] Required UI checks and focused PDF export tests pass.
 - [x] The changed Docker frontend stage builds in an available Docker daemon.
-- [ ] Review and land through the normal validation/close-out flow when authorized.
+- [x] Review and land through the normal validation/close-out flow when authorized.
+
+## Workflow gates
+
+- [x] Build complete.
+- [x] Validation complete: prior frozen installs/UI checks reused; changed provider checks, full unit suite, and actual Docker frontend build pass.
+- [x] Tenet verification: preserved independent project ownership, locked versions, freshness policy, and provider evidence boundaries.
+- [x] Documentation updated: current setup/runbooks, changelog, and generated views.
+- [x] Story marked done via `/mark-story-done` after remote implementation landing verification.
 
 ## Work Log
 
@@ -59,6 +67,14 @@ This is execution infrastructure under `spec:11.4` and the execution ideal. The 
 - The fifth failure was an existing size gate: `video_understanding_provider_vision.py` was 466 lines with a 140-line OpenAI function. Moved its Gemini transport and the OpenAI frame builder and token/cost calculation into the already fingerprinted provider-support module. The public vision callable remains available. Moved request and cost logic preserves the prior behavior; the changed subject implementation fingerprint identifies the new source layout for future runs, while historical model evidence remains historical.
 - `make test-unit PYTHON=/Users/cam/Documents/Projects/cine-forge/.venv/bin/python PYTEST_ADDOPTS='-q --tb=short'` passed after the provider-floor repairs. Standalone `test_video_understanding_gpt6_contract.py`, `test_video_understanding_benchmark.py`, and `test_non_gemini_token_metrics.py` passed after moving provider imports below path setup, exercising strict request shape, retained raw response, and cost reconciliation. Ruff on the four changed Python files and `git diff --check` passed. No scored eval was run, so the eval registry has no new result to record.
 
-## Next action
+2026-09-27 — Closed via `/mark-story-done` under the approved `/finish-and-push` flow.
+Implementation commit `3e0e16a62207f624abafcf70504df714e5297520` was pushed and
+verified at remote `main`. Every acceptance criterion is met. No model-quality
+eval or deployment was performed. Only closure metadata changes after validation;
+applicable source/build evidence is reused under the proportional policy.
 
-Review the scoped diff and land the validated candidate through the approved close-out flow. Keep the landing acceptance open until the remote main commit is verified. No commit, push, deployment, or paid-provider run was performed in this worktree yet.
+## Where to verify
+
+Review implementation commit `3e0e16a` and this work log. Conductor Alignment 048
+records cross-repo storage measurements and final landing identities. Primary
+checkouts and existing npm installations remain untouched.

@@ -14697,7 +14697,7 @@
       "id": "223",
       "title": "Use pnpm for root and UI dependency installs",
       "path": "docs/stories/story-223-pnpm-package-manager-migration.md",
-      "status": "In Progress",
+      "status": "Done",
       "priority": "Medium",
       "idealRefs": [],
       "specRefs": [
@@ -14730,8 +14730,8 @@
         "sourceKind": "story",
         "sourceId": "223",
         "sourcePath": "docs/stories/story-223-pnpm-package-manager-migration.md",
-        "recommendedNow": true,
-        "posture": "in-progress",
+        "recommendedNow": false,
+        "posture": "completed",
         "whyNow": "Close-out validation repaired five existing provider-floor unit failures and exercised the changed Docker stage. No provider evaluation or model-quality measurement was run.",
         "lastRelevantAction": {
           "date": "2026-09-27",
