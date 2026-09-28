@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-27",
+  "base_sha": "f4a0decd9b89a18756bfcf4a78b44fba5e71e58d",
+  "branch": "codex/gpt6-image-rerun-20260927",
+  "status": "uncommitted-hash-pinned-fresh-replication",
+  "result": {
+    "path": "benchmarks/results/video-understanding-gpt6-image-rerun-20260927.json",
+    "bytes": 172654,
+    "sha256": "35023d2192a7b5d627e2dec179436ae54ee96bc7e22ec4db733ab5e03d8a1a91"
+  },
+  "freeze": {
+    "path": "docs/evals/gpt6-image-rerun-20260927-freeze.json",
+    "bytes": 15891,
+    "sha256": "3a399b55e0eada18de86bd4a54e4f0ed9abf31d5df9ff8db6a0b43d0043a9331"
+  },
+  "calltime_runner": {
+    "path": "docs/evals/snapshots/gpt6-image-rerun-20260927-calltime.py.txt",
+    "bytes": 13579,
+    "sha256": "bce73f1136df79b190e5d3b1cdee6d2eab38287555deb9801d5e5393d0fa9a0b"
+  },
+  "postrun_runner": {
+    "path": "benchmarks/scripts/gpt6_image_rerun_20260927.py",
+    "bytes": 16160,
+    "sha256": "d7b145c33ac21583d1f1285a9fdb32c2f48786dfaf822cefb1a06b9fc147ce58"
+  },
+  "postrun_change": "Formatting/import order, synchronous parity closure binding, archive-aware freeze verification and immutable preflight/report guards; zero new provider calls. Original freeze and result are unchanged.",
+  "provider_requests": 36,
+  "subject_requests": 18,
+  "judge_requests": 18,
+  "retries": 0,
+  "unknown_reservations_usd": "0",
+  "token_derived_exact_usd": "0.505742950",
+  "subjects_usd": "0.076807950",
+  "judges_usd": "0.428935",
+  "ceiling_usd": "1.50",
+  "remaining_usd": "0.994257050",
+  "pricing": "OpenAI explicit cache-write/read buckets; Gemini billed visible+thinking; Anthropic cache buckets zero. Not provider invoiced dollars. Original ledger float representation differs by <1e-18 USD.",
+  "docs_checked_by_conductor_2026_09_27": [
+    "https://developers.openai.com/api/docs/changelog",
+    "https://developers.openai.com/api/docs/models/gpt-6-sol",
+    "https://developers.openai.com/api/docs/models/gpt-6-luna"
+  ],
+  "official_fix": "Sep25 notice verified after preflight; Sep26 prior evidence already postdates notice, so fresh replication is not causal before/after evidence."
+}

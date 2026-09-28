@@ -1,0 +1,35 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"clip_id\": \"vfp_active_003\",\n  \"summary\": \"A minimalist, static illustration shows a simple bed against a dark gradient background. The visual composition remains completely unchanged across all frames.\",\n  \"tone_tags\": [\n    \"detached\",\n    \"surreal\"\n  ],\n  \"emotion_tags\": [\n    \"isolation\"\n  ],\n  \"color_tags\": [\n    \"desaturated\",\n    \"navy\"\n  ],\n  \"camera_tags\": [\n    \"static\"\n  ],\n  \"motion_tags\": [\n    \"stillness\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A minimalist graphic of a bed with a brown headboard and blue mattress against a dark background.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"Identical minimalist graphic of a bed showing zero visual movement or composition change.\"\n    }\n  ],\n  \"overall_confidence\": 1.0\n}",
+            "thoughtSignature": "EmAKXgFpFH0T1P2QIGXpJCcdDQ4jWtkXhIvR1oDf3RevrfRzkqqf7o45kOnFt9K/6rW74O7a8O5TfQY/R4h7pvwxNBrrGNQLF4OqrnudjAROR4ZekPuEMYWfzr9ISXseNdM="
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 6498,
+    "candidatesTokenCount": 277,
+    "totalTokenCount": 6775,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 998
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.5-flash-lite",
+  "responseId": "qdy5ap-4PL2dz7IPwaibiA4"
+}

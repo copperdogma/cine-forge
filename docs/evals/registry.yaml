@@ -2053,6 +2053,7 @@ evals:
       - "220"
       - "221"
       - "222"
+      - "224"
     category_refs:
       - spec:7
       - spec:8
@@ -2353,6 +2354,23 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "044"
+        story: attempts/044-gpt6-image-fresh-v4-rerun.md
+        date: 2026-09-27
+        status: succeeded
+        approach: "Fresh unchanged-v4 six-case Sol/Luna low-reasoning high-detail image matrix with fresh Gemini3.5FlashLite and 18 Opus4.6 judges. Sol 0.6080, Luna 0.5902, Gemini 0.3861. Luna wins all six versus Gemini at 5x lower subject cost; Sol's small rubric-sensitive lead costs 17.4x Luna. No combined case reaches 0.80; all three mislabel visible prop-color continuity. Prefer inspected headless Luna value; hold autonomous QA/default. Official Sep25 image-fix notice predates prior Sep26 evidence, so this is fresh replication not causal fix proof. Full cost USD0.50574295; zero unknown reservations/retries. Hash-pinned call-time attempt history with tracked native receipts; closeout commit does not promote current scores."
+        worker_model: "Codex (GPT-6)"
+        worker_model_date: 2026-09-27
+        subject_model: "gpt-6-sol low; gpt-6-luna low; fresh gemini-3.5-flash-lite"
+        score_before: 0.5986
+        score_after: 0.5902
+        latency_after: 3876
+        cost_after: 0.50574295
+        git_sha: "f4a0decd9b89a18756bfcf4a78b44fba5e71e58d+gpt6-image-rerun-20260927-freeze"
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-source-backed-corpus-or-reviewed-product-integration
+            note: "Full fresh matrix completed; no further calls to chase the same-slice 0.80 target."
       - id: "043"
         story: attempts/043-video-understanding-source-truth-v4-headless-qualification.md
         date: 2026-09-26

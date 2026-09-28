@@ -1,0 +1,35 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"clip_id\": \"vfp_active_001\",\n  \"summary\": \"Two minimalist figures stand motionless against a dark navy background across all frames. The composition remains completely static with no visible motion or changes.\",\n  \"tone_tags\": [\n    \"detached\",\n    \"surreal\"\n  ],\n  \"emotion_tags\": [\n    \"isolation\"\n  ],\n  \"color_tags\": [\n    \"navy\",\n    \"desaturated\"\n  ],\n  \"camera_tags\": [\n    \"static\"\n  ],\n  \"motion_tags\": [\n    \"stillness\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A light beige stylized figure stands on the left against a dark blue background.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"A light blue stylized figure with a white rectangular marking stands on the right in a static shot.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The identical framing and unchanged positions of both figures persist into the final frame.\"\n    }\n  ],\n  \"overall_confidence\": 1.0\n}",
+            "thoughtSignature": "EmAKXgFpFH0TJnZf7Ly6iZdq/T4NBfNQX5eAJ2YraUS0LRUxP2iQSf9D3mT7xdABudxe+YedRdY9uCluVKsltAW4Qh8tkTT1kqJWrvetpd39FfzQ996Moo9a4ihhjsSMUSY="
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 6498,
+    "candidatesTokenCount": 315,
+    "totalTokenCount": 6813,
+    "promptTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      },
+      {
+        "modality": "TEXT",
+        "tokenCount": 998
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.5-flash-lite",
+  "responseId": "iNy5aqCmGumP6dkPpaaV6Aw"
+}

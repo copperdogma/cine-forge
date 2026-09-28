@@ -1,0 +1,297 @@
+{
+  "id": "resp_09c5e5af7fee4fcb016ab9dcbe980487d0aab27aef445116da",
+  "object": "response",
+  "created_at": 1790565566,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1790565570,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 1400,
+  "max_tool_calls": null,
+  "model": "gpt-6-luna",
+  "moderation": null,
+  "output": [
+    {
+      "id": "rs_09c5e5af7fee4fcb016ab9dcbf285887d085ae93568d9b6ba3",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqudzCsv8pF_1mMc0IzWwP7O5Gl_hP6ea4pREhn25CEusQ3nobQyiVpih5DJnq7VUKWPH6lTtQZ4pot2wLmV4JmLUSCGBvWlWLVoqbCrMcKQYd_QzfQvbS_S93KB_PqhIRZRrGCRjcIlFvuJJ96cpxCUL4oOuuIEQNDq2x-r6wbPNQA9dIsoGV4LvXFgNZD-ovofTjyJCXdu08r5-CMsiBgZDu7sXlzMeuOBwB_wK5JgazDY4ZytrFCJmPgbYG6RNBtp6fbdKldsRRJfZGV7No9sez-3pZm5kp6gBvP2MVi-b6ebRMqlnhbI41MSguqi9ziOQeCk7E9wqTzlqIq3Pv--yhFSFRrFDMVdGAGnhOvxXmhxfN7VZYW_Al5T0MImpKg6bm-nEYQkSS6yBUN7FYegqjnlSaGgmCJH14A_vs4i3J_0qADQ8CBKnk2433qMtK2MsRdrlcN_ZGaqV3z7kAMV9UnErDXwaWC3Xg-jP3DAoERjcxLPTWHTlxu15RLBrq4BUC8iJbauc9gKt2Cq9Nvd-o12WaVxSc91uHAKoPl-eNAzdavuShs1tProgQ5NCYxpD5Fm7RJuv2uOklwTdZaYYCDItY2-vkDt9OXRVUBv-vZhVVPDyHl1RbY0wBBpoYRoOn1MX-bt83-O3UcFyIP7Uj26OsVt2i5Ivz3AOZyUMdwWRgTwS7T5LKTmaYm9d6Sr02bPMjdYYJ_tX8XJfZXbmY7_bfZo06LZYOZiykR0mfpShfzaD15ID7CyQI6iqhl0-58zKsAuWBFInhaHf7LI6164aIKZRj6eUiWillK8ORbodgq7JY_px3Gp66Ru_7cVUAy7NZMZZUqhOOwbdEE0aQZYfdAyv7XokJeKdNK_WUo5VdQBtk4n3_TCirFZ9e1RggDSkTvtaC7jTbvzxEjXg_JaBejY3_42-sVm8Rk2cXJmPu85cAhI3k0rT94qUG_WyNkCxtqLuv1b53_oGsLzrahs_UEKAUa6Hvpor81zdxcgDuthk9QwK9O_xqoJB0lLJS1nbykrkTn2Mc5QBmcRq3FY4RTjxPxP_EmlNw3gma741lbe91SmJCrv7GVgRH7Qco7LT77hUxu93nlqqHd1vYN_rh6cNkyaza9ksD-EEGYt-dS--ibSguTsXH5UZUEkiYDM-SiJ5gwtFMKWD-_T2qgyI2pLyJoQHQpEI_7P9LOyC0GD4NKIP14UdCDXy3icjZ6__eNoF3j3AjuCbRpU5i0S2i6MmT1Z_llAQWWDE_galErWcoFcP7RlGyR7XAsrSp9vKH83UcG0g7261l7u60MjmMA4aHFEb7T2yWjM3z5XqWyGuqFA7PLMjPnP7MoGNcbg3MhB-n93khPRgof2QOwwxC3UQHPvAkcdZrctWWskNe6ECb0pvHa94F5hR2I6_gYGevaQwl__pJVwQOVwDbAhsjQdAv4Mgbs273guAVGRMaVi5HmkMkk8CyGwahkQ_KBpUfYb1CWGXyG7lCBl9Q_FUhGzPjHTGjSuohXSupwfb9UDPV3iT8N0IDBZs1-NfsDn2gWu-ekb7TX1Szq-qe00hd4aBUKIreIATQRes3F2r1peE83QE7pWq5MGc8o_j_hQ15-VJzT09mDIkZurVkhyOpelPPrM5-jrrXY1ujpU37BRQegDbqX6zFjpufWQWOpKeA8PYUvtR3yCuJwqKOdWJnkl_5MWBWTo7ZI7BAUqNiEbi1lx6BNvC9flrMSCuuQTglJwH3ZQCj1QPmnDfY_RK8dM0aebusfXp2GG7wUwWM3B5bY7b-XHRHAf1_RVqYqOwf2a3xlIpkFCKZYtX2lp9XI1dNk8Q1oid4MtC2KWA_T74nT6fsCceP1eTMM0nc5hKtTNV0hkiZoMBAQOLWFQSMa8VVc4VoiOuEwS4CJ-6-_-LeDoo7Dsh6nK2ekUdqOiWBXF9RPBL7pHFzEOBmDr1ydiEVUPU3Erts5lGaFaaBGxdwgZVWSz08FoSq-TyolVFmN7PNJ5Wanh2xVke7IOrOSwhPMNpINuSQKt6OByPteH9Vzo8PNpGQL3dCSN8DX4aXUbsWJONLryLSlgV3thNoo-hxPn4DYHVMsYx9ssNRxwD7AAFNpFBXzXgbmo9rk0wXw_p-4QqKYho-dgzaXeedVCpDxPqpCYCy0-SNspLaokDcGI1ZkQ1rK2QwAuTNaFHEiwaIBbL-tH7_AzvyuKp-abY_leOODuvD3p_ic0d_-m3zitHQ8kOeha64GbL2ZzNS-zCm7J_YDuS_XCqyliZc51bTKQ-NTexKKWDLPsk=",
+      "summary": []
+    },
+    {
+      "id": "msg_09c5e5af7fee4fcb016ab9dcc0c26887d0a1a0d437f26e3d06",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"clip_id\":\"vfp_active_005\",\"summary\":\"A stylized yellow figure carrying a small rectangular object moves from left to right above a narrow gap between dark platforms. The figure rises and then descends as it crosses, while the background remains fixed.\",\"tone_tags\":[\"playful\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"gold\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A yellow figure holding a rectangular object is positioned on the left side above the dark platform edge.\"},{\"frame_index\":2,\"cue\":\"The figure is higher in the frame and nearer the center, above the gap between the platforms.\"},{\"frame_index\":4,\"cue\":\"The figure is farther right and lower, next to the right platform edge.\"}],\"overall_confidence\":0.96}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "video_analysis_prediction",
+      "schema": {
+        "type": "object",
+        "description": "Model output normalized before deterministic scoring.",
+        "properties": {
+          "clip_id": {
+            "type": "string",
+            "description": "Local validation: minLength=1"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Local validation: minLength=1"
+          },
+          "tone_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "detached",
+                "hopeful",
+                "intimate",
+                "mournful",
+                "nostalgic",
+                "ominous",
+                "playful",
+                "regretful",
+                "surreal",
+                "tense",
+                "triumphant",
+                "urgent"
+              ]
+            }
+          },
+          "emotion_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "anger",
+                "grief",
+                "hesitation",
+                "isolation",
+                "nostalgia",
+                "panic",
+                "relief",
+                "resolve",
+                "suspicion",
+                "tenderness",
+                "vulnerability",
+                "wonder"
+              ]
+            }
+          },
+          "color_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "amber",
+                "desaturated",
+                "gold",
+                "green",
+                "magenta",
+                "monochrome",
+                "navy",
+                "neon",
+                "red",
+                "sepia",
+                "teal",
+                "violet"
+              ]
+            }
+          },
+          "camera_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "cross_cut",
+                "crash_zoom",
+                "handheld_jitter",
+                "locked_two_shot",
+                "lateral_track",
+                "overhead_reveal",
+                "profile_closeup",
+                "slow_pull_back",
+                "slow_push_in",
+                "static",
+                "whip_pan",
+                "wide_master"
+              ]
+            }
+          },
+          "motion_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "abrupt_cut",
+                "escalating",
+                "fast_lateral",
+                "jitter",
+                "match_cut",
+                "measured",
+                "pulsing_light",
+                "slow_drift",
+                "spiral_orbit",
+                "stillness"
+              ]
+            }
+          },
+          "continuity_status": {
+            "type": "string",
+            "enum": [
+              "intact",
+              "broken",
+              "ambiguous"
+            ]
+          },
+          "continuity_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "audio_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "alarm",
+                "drone",
+                "heartbeat",
+                "muzak",
+                "percussion",
+                "radio",
+                "silent",
+                "soft_music",
+                "speech",
+                "voiceover"
+              ]
+            }
+          },
+          "audio_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Evidence tied to one submitted image in the ordered frame packet.",
+              "properties": {
+                "frame_index": {
+                  "type": "integer",
+                  "description": "Local validation: minimum=0, maximum=4"
+                },
+                "cue": {
+                  "type": "string",
+                  "description": "Local validation: minLength=1"
+                }
+              },
+              "required": [
+                "frame_index",
+                "cue"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "overall_confidence": {
+            "type": "number",
+            "description": "Local validation: minimum=0.0, maximum=1.0"
+          }
+        },
+        "required": [
+          "clip_id",
+          "summary",
+          "tone_tags",
+          "emotion_tags",
+          "color_tags",
+          "camera_tags",
+          "motion_tags",
+          "continuity_status",
+          "continuity_notes",
+          "audio_tags",
+          "audio_notes",
+          "evidence",
+          "overall_confidence"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2890,
+    "input_tokens_details": {
+      "cache_write_tokens": 2887,
+      "cached_tokens": 0
+    },
+    "output_tokens": 383,
+    "output_tokens_details": {
+      "reasoning_tokens": 177
+    },
+    "total_tokens": 3273
+  },
+  "user": null,
+  "metadata": {}
+}

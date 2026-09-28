@@ -1,0 +1,419 @@
+{
+  "schema_version": 2,
+  "date": "2026-09-27",
+  "base_sha": "f4a0decd9b89a18756bfcf4a78b44fba5e71e58d",
+  "branch": "codex/gpt6-image-rerun-20260927",
+  "status": "prepared-scoped-commit-retained-fresh-replication",
+  "result": {
+    "path": "benchmarks/results/video-understanding-gpt6-image-rerun-20260927.json",
+    "bytes": 172654,
+    "sha256": "35023d2192a7b5d627e2dec179436ae54ee96bc7e22ec4db733ab5e03d8a1a91"
+  },
+  "freeze": {
+    "path": "docs/evals/gpt6-image-rerun-20260927-freeze.json",
+    "bytes": 15891,
+    "sha256": "3a399b55e0eada18de86bd4a54e4f0ed9abf31d5df9ff8db6a0b43d0043a9331"
+  },
+  "calltime_runner": {
+    "path": "docs/evals/snapshots/gpt6-image-rerun-20260927-calltime.py.txt",
+    "bytes": 13579,
+    "sha256": "bce73f1136df79b190e5d3b1cdee6d2eab38287555deb9801d5e5393d0fa9a0b"
+  },
+  "postrun_runner": {
+    "path": "benchmarks/scripts/gpt6_image_rerun_20260927.py",
+    "bytes": 16301,
+    "sha256": "deb01c9a6d8188769346852f26760434f0c94bde93fe26121278fdc08ee2bfa5"
+  },
+  "postrun_change": "Preserves call-time archive; formatting/import order, synchronous parity closure binding, archive freeze, immutable preflight/report guards and completed-run subjects/judges lock. Zero further provider calls.",
+  "provider_requests": 36,
+  "subject_requests": 18,
+  "judge_requests": 18,
+  "retries": 0,
+  "unknown_reservations_usd": "0",
+  "token_derived_exact_usd": "0.505742950",
+  "subjects_usd": "0.076807950",
+  "judges_usd": "0.428935",
+  "ceiling_usd": "1.50",
+  "remaining_usd": "0.994257050",
+  "pricing": "OpenAI explicit cache-write/read buckets; Gemini billed visible+thinking; Anthropic cache buckets zero. Not provider invoiced dollars. Original ledger float representation differs by <1e-18 USD.",
+  "docs_checked_by_conductor_2026_09_27": [
+    "https://developers.openai.com/api/docs/changelog",
+    "https://developers.openai.com/api/docs/models/gpt-6-sol",
+    "https://developers.openai.com/api/docs/models/gpt-6-luna"
+  ],
+  "official_fix": "Sep25 notice verified after preflight; Sep26 prior evidence already postdates notice, so fresh replication is not causal before/after evidence.",
+  "supersedes_manifest": {
+    "path": "docs/evals/gpt6-image-rerun-20260927-evidence.json",
+    "bytes": 2123,
+    "sha256": "d477114a67f817bb491a4c4520c28fc77683755f2f57669ab9a46fbd10ce1cd1"
+  },
+  "retained_raw_receipts": [
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_001-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/sol-vfp_active_001-subject-raw.json",
+        "bytes": 8296,
+        "sha256": "514b666c6fb1abc77c58314a24f99b58d67b0bdb656209613ae99d5f24d7c49d"
+      },
+      "call": "sol-vfp_active_001-subject",
+      "model": "gpt-6-sol"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_001-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/luna-vfp_active_001-subject-raw.json",
+        "bytes": 10591,
+        "sha256": "2cf9f31d490eb8649b515d20078be791fb936d3d7d4d3bfc79f321cd4268be17"
+      },
+      "call": "luna-vfp_active_001-subject",
+      "model": "gpt-6-luna"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_001-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/gemini-vfp_active_001-subject-raw.json",
+        "bytes": 1915,
+        "sha256": "0546e32cac70c00c7fc8367a7ba1b67a4970a20e0e1a26ae05856eacbc1c141c"
+      },
+      "call": "gemini-vfp_active_001-subject",
+      "model": "gemini-3.5-flash-lite"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_002-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/sol-vfp_active_002-subject-raw.json",
+        "bytes": 10039,
+        "sha256": "e0d03f6cf61318c84dbcfee0e3f18a61e81136e08cdb5995bf9bae58a3b9ccb6"
+      },
+      "call": "sol-vfp_active_002-subject",
+      "model": "gpt-6-sol"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_002-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/luna-vfp_active_002-subject-raw.json",
+        "bytes": 10396,
+        "sha256": "dbd4414a442e6d663dc1120a3918a05133fd3cb0ad736dfbdf46814f4974d597"
+      },
+      "call": "luna-vfp_active_002-subject",
+      "model": "gpt-6-luna"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_002-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/gemini-vfp_active_002-subject-raw.json",
+        "bytes": 1976,
+        "sha256": "546d1e2aee42b9289eeba2cf96a6f9c9da704c6640e97e6f63a70c31694f07be"
+      },
+      "call": "gemini-vfp_active_002-subject",
+      "model": "gemini-3.5-flash-lite"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_003-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/sol-vfp_active_003-subject-raw.json",
+        "bytes": 8241,
+        "sha256": "2d284ef87f0af6459690e35f0259a2dcca5dd68b99045ff9be861aa108640e18"
+      },
+      "call": "sol-vfp_active_003-subject",
+      "model": "gpt-6-sol"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_003-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/luna-vfp_active_003-subject-raw.json",
+        "bytes": 10548,
+        "sha256": "28643fe09e6f153345e8758263f5272dc71963bda982eafe8dd3188b13648a6a"
+      },
+      "call": "luna-vfp_active_003-subject",
+      "model": "gpt-6-luna"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_003-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/gemini-vfp_active_003-subject-raw.json",
+        "bytes": 1761,
+        "sha256": "50fe4ced643434d66591783b3ba5834b3f9d49cd5bc0a81b107a1d1abf2e1c20"
+      },
+      "call": "gemini-vfp_active_003-subject",
+      "model": "gemini-3.5-flash-lite"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_004-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/sol-vfp_active_004-subject-raw.json",
+        "bytes": 8395,
+        "sha256": "0e2d6c05f0d4f187536ce026509691db9bc4d2fbab23f19d71f974f54a4e5b43"
+      },
+      "call": "sol-vfp_active_004-subject",
+      "model": "gpt-6-sol"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_004-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/luna-vfp_active_004-subject-raw.json",
+        "bytes": 10711,
+        "sha256": "0dfadde2549bc75353c17f61e928e3eba53f6c0da89bdc85d66ae494cbad68e9"
+      },
+      "call": "luna-vfp_active_004-subject",
+      "model": "gpt-6-luna"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_004-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/gemini-vfp_active_004-subject-raw.json",
+        "bytes": 1864,
+        "sha256": "686c78caac734524b945e62cf058aba4bab285d7d8b4b859dcd35acf59a11319"
+      },
+      "call": "gemini-vfp_active_004-subject",
+      "model": "gemini-3.5-flash-lite"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_005-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/sol-vfp_active_005-subject-raw.json",
+        "bytes": 8197,
+        "sha256": "e83784e108b62b76f7d8598ae77cf6b48264983a7cad4d2f8b1e2456c2d0c42f"
+      },
+      "call": "sol-vfp_active_005-subject",
+      "model": "gpt-6-sol"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_005-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/luna-vfp_active_005-subject-raw.json",
+        "bytes": 10684,
+        "sha256": "c216d87fb015072c09b21a3df058d213f90fd4d69e915f96db7b4de1af06942c"
+      },
+      "call": "luna-vfp_active_005-subject",
+      "model": "gpt-6-luna"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_005-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/gemini-vfp_active_005-subject-raw.json",
+        "bytes": 1895,
+        "sha256": "40d4af914e0be652489b5afae6ce8bc3a58883334f0a80e61b6fe985fe326dc2"
+      },
+      "call": "gemini-vfp_active_005-subject",
+      "model": "gemini-3.5-flash-lite"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_006-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/sol-vfp_active_006-subject-raw.json",
+        "bytes": 9907,
+        "sha256": "273af8bb54ee12516530457d3ddf9b6fd38ce2209ecec11dba986c7c4f450c9c"
+      },
+      "call": "sol-vfp_active_006-subject",
+      "model": "gpt-6-sol"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_006-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/luna-vfp_active_006-subject-raw.json",
+        "bytes": 10656,
+        "sha256": "14a335505a8f449af0eaf42364e8a7fa5ce5091f29c12a89aad9791eecc1e239"
+      },
+      "call": "luna-vfp_active_006-subject",
+      "model": "gpt-6-luna"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_006-subject-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/gemini-vfp_active_006-subject-raw.json",
+        "bytes": 1931,
+        "sha256": "a0441ee5918dc90d30d26db56a79854c0db0b543c3db7110a5be0aeac7539ee9"
+      },
+      "call": "gemini-vfp_active_006-subject",
+      "model": "gemini-3.5-flash-lite"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_001-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/sol-vfp_active_001-judge-raw.json",
+        "bytes": 4970,
+        "sha256": "e003fb9472ebf5b8994fdcbc618096eb576d72a8f8213f8a8213ef1cf733e573"
+      },
+      "call": "sol-vfp_active_001-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_001-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/luna-vfp_active_001-judge-raw.json",
+        "bytes": 3981,
+        "sha256": "1bac65535c69268ebac81bcc68bdd803c530d91fd28ab558ec1e78052d7a1e4a"
+      },
+      "call": "luna-vfp_active_001-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_001-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/gemini-vfp_active_001-judge-raw.json",
+        "bytes": 3854,
+        "sha256": "1dfd67d5c6e1459807815d56c18045f3289d510579256f16a0e2fbf295370474"
+      },
+      "call": "gemini-vfp_active_001-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_002-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/sol-vfp_active_002-judge-raw.json",
+        "bytes": 3802,
+        "sha256": "677f7c2da079c0812dc5b5e86ccd9ffa057e0618a482381eaadea9bde51aacc2"
+      },
+      "call": "sol-vfp_active_002-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_002-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/luna-vfp_active_002-judge-raw.json",
+        "bytes": 3705,
+        "sha256": "d757239cfbc82f2e219a5c2e9a902c5868abb2ea40c559f06136a9ae06f7a7ad"
+      },
+      "call": "luna-vfp_active_002-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_002-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/gemini-vfp_active_002-judge-raw.json",
+        "bytes": 3738,
+        "sha256": "b9dd17d57f8573215f9c6321702cdbb0436544372ceac12433b71cab2930418f"
+      },
+      "call": "gemini-vfp_active_002-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_003-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/sol-vfp_active_003-judge-raw.json",
+        "bytes": 3538,
+        "sha256": "a46262f602a7a7fc8e7a79e913bcd387c127289c20c698e60cfab1656bf82e09"
+      },
+      "call": "sol-vfp_active_003-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_003-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/luna-vfp_active_003-judge-raw.json",
+        "bytes": 4807,
+        "sha256": "27a299ca31eec1a4a386904bb53fd67aaf2d639d1f0423f70ef6e976d7826639"
+      },
+      "call": "luna-vfp_active_003-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_003-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/gemini-vfp_active_003-judge-raw.json",
+        "bytes": 3646,
+        "sha256": "02f56c3294c425f6d007df8bb3e2338ac66d2f1505cb3e2b6a5df09e08fe22a0"
+      },
+      "call": "gemini-vfp_active_003-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_004-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/sol-vfp_active_004-judge-raw.json",
+        "bytes": 3698,
+        "sha256": "d6892c88a3fe13aa5d21b9278f7b8c5c0f8e78cd276a29abfedb07b0a45a7999"
+      },
+      "call": "sol-vfp_active_004-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_004-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/luna-vfp_active_004-judge-raw.json",
+        "bytes": 3290,
+        "sha256": "20d059de13aab1b9c8188076fa2c19efc0370a28e7571f4d39005302f7e13523"
+      },
+      "call": "luna-vfp_active_004-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_004-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/gemini-vfp_active_004-judge-raw.json",
+        "bytes": 4212,
+        "sha256": "ccec8d4121c0ba66264bc6162001a4669f5ca7c971757ee371e0c8558509a59f"
+      },
+      "call": "gemini-vfp_active_004-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_005-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/sol-vfp_active_005-judge-raw.json",
+        "bytes": 4060,
+        "sha256": "0fefee738988817a18c94aa2eb720a35f2d080028a2aab20b5093cf8be47a497"
+      },
+      "call": "sol-vfp_active_005-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_005-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/luna-vfp_active_005-judge-raw.json",
+        "bytes": 3447,
+        "sha256": "a4561ec0bdd53b3dd70b4c0670599b83835c2f568d9cd1b9d93e6051eb8d6e4d"
+      },
+      "call": "luna-vfp_active_005-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_005-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/gemini-vfp_active_005-judge-raw.json",
+        "bytes": 4220,
+        "sha256": "0586ed642a7b9fa59a292a424e97d310e1c96700e37cc9d1b97d83aafe0fb355"
+      },
+      "call": "gemini-vfp_active_005-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_006-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/sol-vfp_active_006-judge-raw.json",
+        "bytes": 3407,
+        "sha256": "db94039b9b197ca60d1b033ad93cb8421854a60bf1d62d487a4d44909d33ce57"
+      },
+      "call": "sol-vfp_active_006-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_006-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/luna-vfp_active_006-judge-raw.json",
+        "bytes": 3675,
+        "sha256": "82b111e05b5874fbe1e379e79b28c0ae5eaf231c530d0dbc35b1ecca3417069f"
+      },
+      "call": "luna-vfp_active_006-judge",
+      "model": "claude-opus-4-6"
+    },
+    {
+      "original_ignored_path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_006-judge-raw.json",
+      "retained": {
+        "path": "docs/evals/receipts/gpt6-image-rerun-20260927/gemini-vfp_active_006-judge-raw.json",
+        "bytes": 4014,
+        "sha256": "0ee0835d4a22a2217d232604c4da0df275d26a121e9b2b9dd1a6b55ecc23837c"
+      },
+      "call": "gemini-vfp_active_006-judge",
+      "model": "claude-opus-4-6"
+    }
+  ],
+  "retained_ledger": {
+    "path": "docs/evals/receipts/gpt6-image-rerun-20260927/ledger.json",
+    "bytes": 15733,
+    "sha256": "b8252d3fe06171f492e0a8fbec0c51bc3d7c824eab184fcf052713932e862e86"
+  },
+  "privacy": "36 safe terminal native receipts from public/synthetic owner fixtures; no requests/auth headers/API keys copied. Original ignored raw receipts remain untouched.",
+  "validation_reuse": "44 focused offline tests cover unchanged frozen providers/scorer; only completed-run lock, archive/receipt identity, lint and records require closeout verification."
+}

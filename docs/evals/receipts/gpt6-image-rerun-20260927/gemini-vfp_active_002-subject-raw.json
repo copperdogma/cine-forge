@@ -1,0 +1,35 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"clip_id\": \"vfp_active_002\",\n  \"summary\": \"An abstract graphic featuring a simplified red figure moving across a gradient background with diagonal lines. The figure smoothly shifts position from left to center and then to the right.\",\n  \"tone_tags\": [\n    \"surreal\",\n    \"detached\"\n  ],\n  \"emotion_tags\": [\n    \"isolation\"\n  ],\n  \"color_tags\": [\n    \"red\"\n  ],\n  \"camera_tags\": [\n    \"static\"\n  ],\n  \"motion_tags\": [\n    \"fast_lateral\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A red figure and small horizontal box shape are positioned on the left side against a dark red gradient background.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The red figure and box shape have moved horizontally to the center, aligned inside a thin outlined rectangle.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The red figure and box shape have moved further right, positioned past the central rectangular outline.\"\n    }\n  ],\n  \"overall_confidence\": 0.95\n}",
+            "thoughtSignature": "EmAKXgFpFH0TwlSVMI/t4pCBkKfFYJic0UsPlaBkumYZk6lpykR3lQdqxGioVlMqkiVt7OkQ+uiS0TEih+pAUji9ti1CY38FGRNqVTmW8+WGMB31V7g5aLYnNA2ZWWrnr10="
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 6498,
+    "candidatesTokenCount": 327,
+    "totalTokenCount": 6825,
+    "promptTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      },
+      {
+        "modality": "TEXT",
+        "tokenCount": 998
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.5-flash-lite",
+  "responseId": "ldy5av_OG4ve_uMP2o_6yAI"
+}

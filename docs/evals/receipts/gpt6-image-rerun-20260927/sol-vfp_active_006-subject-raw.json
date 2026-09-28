@@ -1,0 +1,297 @@
+{
+  "id": "resp_09a235a9b3ff1976016ab9dcc523bc87d09f0f9c4327afa0d9",
+  "object": "response",
+  "created_at": 1790565573,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1790565577,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 1400,
+  "max_tool_calls": null,
+  "model": "gpt-6-sol",
+  "moderation": null,
+  "output": [
+    {
+      "id": "rs_09a235a9b3ff1976016ab9dcc5e5e087d09b08541da48504f9",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqudzJ7NJHnG8R0jr9OqFi2NhRIogx5KvMzOXGAK3KAI3p_60lnWVjR71O95S37hzEM-DRNFFicdz93Caqo5YptbSdo6qFr17s924ASeiC9LBsjlN4aHVCIMVKgSUEFoqIK-z13UkWG-oAjTZuWIzIV3Z90sdEMq7VE6Z1fKUM964x3qozeuP5SOg3fbKPNGoDs2RxAptxFd4YOnNZFW2x2AshxP3HXeSE2cUSlENsfopnEResR6JiVdO1PVUuqDiVveCfkt3ncsD6oJGU5bAcmCsQ4MVxK8tLNsp1r6druhERHOpWBv7sMzkXo1UW1EMj5804y2Qybj_yJuNvuJE_y3otHMDrHJ3Oisp4hccN0LKHUQTADBIg2pPac2-8W4Rdvc0QqRYMPukHJy8TonVquMdJuCbLcRY-zfQEFjf5WPgFKlfOQ0pxGYmH7bl1xZ5GbFFGJ05FwSpw2Fl6LMHcf3m2gaBrBfLfTRJSe5lqBIDIRUUQX4dH9UCHLB4Z9E1CGyljlQqdPfTK7yKIPvOZDwBmNtqCiWl6gZBiH2Ei9UkRsGE76ZiqUDluyEL4Ot2GkmQlrOz3-mz8AKWKR4biaeTb5gY8MnhC5ZinvpX5uReHSZ3c4jDD24LGeQGDkckB-Sad15vOoXVp7olezrHAYBUy-C-bP86GZPyNBaNyPIwOYiAksYn06y9OQ-mI2Lwnps0CaLOtV0flJ0g0_gJ7Zrg7hClALAP4vW7Mj-sVoO6FC5t0NZJJ5J5ER-CCQ0pMoXcag3CQXvINWdy79E7sdnsXLXVMU811usfvHRP4zaEjCtZPVrShLQBitttWxt0Tdn8OJD6pExw7xfyvafuQgXpV1mEr4NPtmvmY3ZLu52bF_ZYVnhECMw3DRXjLxyckAyZr0pX4mvAhdLeqptTYz-dt3AdmoPU39NJ2EgX6vTb7BBHVt1UcVnwMFn83OV-4ql1_KycHNwgrbAqyx-E6GFxVKDW9Jxj0omog6c_rC_Bo53J3pYl_q9SQXkr6W_ViTph-xMExkBSKzFzktzcL56O0gr0MLUFIMb9i1v6yGQH8dA7wtoLu0i5_ejmksCPY786XyiQgJ4nJKygpzMHvRLpRRl5MGqM-1vK_XgVnOm4b-zagli8Mlfc5CitSLh-zG-ubKG1JqqnGazk9W9jW0kq2obYgvzruu5NEz_98FWaJ6i-ssSRVce7wfQLKtoiDBosDy8ezAyrXxNlzk7Vk6aR6l0jfrVJkon1_YeOeQOzhYoeIeoeWLDFReXge8aEQedEIVoHl0Hj2e4PEMVJwX1W6yYr4XxS5CmPhI3HqmomoMPe1w7Erq4GTxBfV9cuaFdbQwddOWMId3w5JPvzLd7Vh51OB8xgh_C5jqBtHj3feosplEG-QRWU29o7DjQ-KLTH1gUqFWbA4z0vNu7I6ZuYLz0GGJRFCok8El9E_LcHuzjBK8RNWBaNmopa_uvxvfamrk_LWY4U-Loj6QxRTKECYmNMx7rI-Wf7XRXCa_8zGkgK1DGeQgm4uGWS8Ytscgt5jCaQBZd2ZZKKObVbe5STjPaMNWPVZQxtHj4rSiM8wqqM=",
+      "summary": []
+    },
+    {
+      "id": "msg_09a235a9b3ff1976016ab9dcc753dc87d09d88d8058f73e04d",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"A light-blue person-shaped icon with a small attached rectangle moves steadily from left to right beneath a fixed arc and diagonal lines.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The light-blue icon sits near the left side beneath a pale arc, with diagonal lines across the dark-blue background.\"},{\"frame_index\":2,\"cue\":\"The icon has moved near the center while the arc remains in the same position.\"},{\"frame_index\":4,\"cue\":\"The icon is on the right side, with its small outlined rectangle still attached.\"}],\"overall_confidence\":0.96}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "video_analysis_prediction",
+      "schema": {
+        "type": "object",
+        "description": "Model output normalized before deterministic scoring.",
+        "properties": {
+          "clip_id": {
+            "type": "string",
+            "description": "Local validation: minLength=1"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Local validation: minLength=1"
+          },
+          "tone_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "detached",
+                "hopeful",
+                "intimate",
+                "mournful",
+                "nostalgic",
+                "ominous",
+                "playful",
+                "regretful",
+                "surreal",
+                "tense",
+                "triumphant",
+                "urgent"
+              ]
+            }
+          },
+          "emotion_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "anger",
+                "grief",
+                "hesitation",
+                "isolation",
+                "nostalgia",
+                "panic",
+                "relief",
+                "resolve",
+                "suspicion",
+                "tenderness",
+                "vulnerability",
+                "wonder"
+              ]
+            }
+          },
+          "color_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "amber",
+                "desaturated",
+                "gold",
+                "green",
+                "magenta",
+                "monochrome",
+                "navy",
+                "neon",
+                "red",
+                "sepia",
+                "teal",
+                "violet"
+              ]
+            }
+          },
+          "camera_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "cross_cut",
+                "crash_zoom",
+                "handheld_jitter",
+                "locked_two_shot",
+                "lateral_track",
+                "overhead_reveal",
+                "profile_closeup",
+                "slow_pull_back",
+                "slow_push_in",
+                "static",
+                "whip_pan",
+                "wide_master"
+              ]
+            }
+          },
+          "motion_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "abrupt_cut",
+                "escalating",
+                "fast_lateral",
+                "jitter",
+                "match_cut",
+                "measured",
+                "pulsing_light",
+                "slow_drift",
+                "spiral_orbit",
+                "stillness"
+              ]
+            }
+          },
+          "continuity_status": {
+            "type": "string",
+            "enum": [
+              "intact",
+              "broken",
+              "ambiguous"
+            ]
+          },
+          "continuity_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "audio_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "alarm",
+                "drone",
+                "heartbeat",
+                "muzak",
+                "percussion",
+                "radio",
+                "silent",
+                "soft_music",
+                "speech",
+                "voiceover"
+              ]
+            }
+          },
+          "audio_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Evidence tied to one submitted image in the ordered frame packet.",
+              "properties": {
+                "frame_index": {
+                  "type": "integer",
+                  "description": "Local validation: minimum=0, maximum=4"
+                },
+                "cue": {
+                  "type": "string",
+                  "description": "Local validation: minLength=1"
+                }
+              },
+              "required": [
+                "frame_index",
+                "cue"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "overall_confidence": {
+            "type": "number",
+            "description": "Local validation: minimum=0.0, maximum=1.0"
+          }
+        },
+        "required": [
+          "clip_id",
+          "summary",
+          "tone_tags",
+          "emotion_tags",
+          "color_tags",
+          "camera_tags",
+          "motion_tags",
+          "continuity_status",
+          "continuity_notes",
+          "audio_tags",
+          "audio_notes",
+          "evidence",
+          "overall_confidence"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2890,
+    "input_tokens_details": {
+      "cache_write_tokens": 2887,
+      "cached_tokens": 0
+    },
+    "output_tokens": 249,
+    "output_tokens_details": {
+      "reasoning_tokens": 55
+    },
+    "total_tokens": 3139
+  },
+  "user": null,
+  "metadata": {}
+}

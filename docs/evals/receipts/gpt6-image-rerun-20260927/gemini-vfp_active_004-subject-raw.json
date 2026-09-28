@@ -1,0 +1,35 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"clip_id\": \"vfp_active_004\",\n  \"summary\": \"A static shot displays a central block with a button interface against a dark background. The button changes color from red to blue between frames two and three.\",\n  \"tone_tags\": [\n    \"detached\",\n    \"tense\"\n  ],\n  \"emotion_tags\": [\n    \"suspicion\",\n    \"hesitation\"\n  ],\n  \"color_tags\": [\n    \"navy\",\n    \"red\"\n  ],\n  \"camera_tags\": [\n    \"static\"\n  ],\n  \"motion_tags\": [\n    \"stillness\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A centered rectangular block with a red button shape against a dark blue background.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The central button shape changes color from red to blue.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The composition remains static with the blue button remaining unchanged.\"\n    }\n  ],\n  \"overall_confidence\": 0.95\n}",
+            "thoughtSignature": "EmAKXgFpFH0Tbf0lF/0i79FwYh5yVraUqtOWkdapV3Pa6Zt4uO60QkQmsO2UAb19jpQJYA+AeEPTcZqvIesqOTiiShTOYP8nbN3YW3oGxZdAenb4ivgnRVR06YfWh4vOi28="
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 6498,
+    "candidatesTokenCount": 313,
+    "totalTokenCount": 6811,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 998
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.5-flash-lite",
+  "responseId": "tty5aqbME_2dz7IPnZDluAM"
+}

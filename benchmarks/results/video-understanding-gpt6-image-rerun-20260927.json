@@ -1,0 +1,4115 @@
+{
+  "date": "2026-09-27",
+  "kind": "fresh-subjects-v4-six-case-low-reasoning-image-rerun",
+  "code_sha": "f4a0dec",
+  "freeze": {
+    "path": "docs/evals/gpt6-image-rerun-20260927-freeze.json",
+    "sha256": "3a399b55e0eada18de86bd4a54e4f0ed9abf31d5df9ff8db6a0b43d0043a9331",
+    "bytes": 15891
+  },
+  "summary": {
+    "sol": {
+      "count": 6,
+      "combined": 0.608,
+      "deterministic": 0.5994,
+      "rubric": 0.6167,
+      "passes": 1,
+      "latency_ms_mean_subject": 7221,
+      "cost_usd_mean_subject": "0.0095235"
+    },
+    "luna": {
+      "count": 6,
+      "combined": 0.5902,
+      "deterministic": 0.6138,
+      "rubric": 0.5667,
+      "passes": 0,
+      "latency_ms_mean_subject": 3876,
+      "cost_usd_mean_subject": "0.00054634166666666665"
+    },
+    "gemini": {
+      "count": 6,
+      "combined": 0.3861,
+      "deterministic": 0.3922,
+      "rubric": 0.38,
+      "passes": 0,
+      "latency_ms_mean_subject": 2637,
+      "cost_usd_mean_subject": "0.002731483333333333333333333333"
+    }
+  },
+  "rows": [
+    {
+      "arm": "sol",
+      "case": "dialogue_confession_push_in",
+      "evaluation_id": "vfp_active_001",
+      "response": {
+        "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified human-shaped figures, one beige and one pale blue, stand apart against a dark blue background. Across the ordered samples, their shapes grow slightly while their positions and spacing remain largely consistent.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\"],\"camera_tags\":[\"slow_push_in\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A beige figure stands on the left and a pale blue figure with a white rectangular patch stands on the right, separated by a broad gap.\"},{\"frame_index\":2,\"cue\":\"Both figures remain in the same left-right arrangement against a navy-to-blue background.\"},{\"frame_index\":4,\"cue\":\"The figures appear slightly larger than in the first sample, with the blue figure's white patch still near its base.\"}],\"overall_confidence\":0.88}",
+        "token_usage": {
+          "prompt": 2890,
+          "completion": 220,
+          "total": 3110,
+          "billed_completion": 220,
+          "reasoning_completion": 0
+        },
+        "reported_cost_usd": 0.0094235,
+        "cost_estimated": true,
+        "raw": {
+          "id": "resp_0a93f50d12ef8e09016ab9dc7ee9f887d0ae5eaddbc9886715",
+          "model": "gpt-6-sol",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 220,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 3110
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-image-rerun-20260927/sol/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "5497e5eab08c19e59b8bc20db5a9d27f71c59d9ab526b8dbe4544cc7ae178cc2",
+          "raw_envelope_bytes": 8296
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.6802,
+        "reason": "raw_score=0.6802 | overall=0.680 | uncertainty=0.120 | summary=1.00 | tone=0.00 | emotion=0.00 | color=0.67 | camera=0.67 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached | emotion: unexpected=isolation | color: teal | continuity: The pale rectangle stays beside the right figure across all five frames."
+      },
+      "dimensions": {
+        "clip_id": "dialogue_confession_push_in",
+        "model_label": "sol",
+        "overall_score": 0.6802,
+        "uncertainty": 0.12,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 1.0,
+            "matched": [
+              "figures",
+              "blue",
+              "closer"
+            ],
+            "missed": [],
+            "rationale": "Summary covered the required observable cues."
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "intimate",
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: intimate, unexpected=detached"
+          },
+          {
+            "dimension": "emotion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=isolation"
+            ],
+            "rationale": "Tag mismatches: unexpected=isolation"
+          },
+          {
+            "dimension": "color",
+            "score": 0.6666666666666666,
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "teal"
+            ],
+            "rationale": "Tag mismatches: teal"
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "slow_push_in"
+            ],
+            "missed": [
+              "locked_two_shot"
+            ],
+            "rationale": "Tag mismatches: locked_two_shot"
+          },
+          {
+            "dimension": "motion",
+            "score": 1.0,
+            "matched": [
+              "measured"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The pale rectangle stays beside the right figure across all five frames."
+            ],
+            "rationale": "Continuity mismatches: The pale rectangle stays beside the right figure across all five frames."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "tone: intimate, unexpected=detached | emotion: unexpected=isolation | color: teal | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.68,
+        "pass": false,
+        "reason": "The summary accurately captures key visual elements (two figures, size increase, fixed positions, pale rectangle/patch). Motion ('measured') and continuity ('intact') match the reference. Audio fields are correctly empty. Evidence is frame-grounded and adequate. However: tone ('detached' vs reference 'intimate') is wrong; emotion tag ('isolation') is invented - no emotion is established by the frames, constituting invented story meaning; 'teal' is missing from color tags; 'slow_push_in' camera tag over-interprets figure enlargement as a specific camera mechanism (though camera is excluded from scoring). The invented emotion and tone mismatch are notable penalties.",
+        "judge_id": "msg_011CfV7hnSXXV8QLL5o9vnK1",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 788,
+          "output_tokens": 1003
+        },
+        "cost_estimated_usd": "0.029015"
+      },
+      "combined": 0.6801,
+      "case_pass": false,
+      "latency_ms_subject": 6074,
+      "cost_usd_subject": "0.0094235"
+    },
+    {
+      "arm": "luna",
+      "case": "dialogue_confession_push_in",
+      "evaluation_id": "vfp_active_001",
+      "response": {
+        "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"A minimalist graphic shows two simplified human figures standing side by side against a dark blue background. Across the samples, both figures shift gradually upward while the framing and background remain steady.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"teal\",\"gold\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Two solid-color simplified figures stand side by side above a dark horizontal ground band.\"},{\"frame_index\":2,\"cue\":\"Both figures' heads and torsos sit higher in the frame than in frame 0, while the ground line stays level.\"},{\"frame_index\":4,\"cue\":\"The two figures remain in the same left-right arrangement, with their bases still aligned to the unchanged ground line.\"}],\"overall_confidence\":0.93}",
+        "token_usage": {
+          "prompt": 2890,
+          "completion": 214,
+          "total": 3268,
+          "billed_completion": 378,
+          "reasoning_completion": 164
+        },
+        "reported_cost_usd": 0.000550175,
+        "cost_estimated": true,
+        "raw": {
+          "id": "resp_0590f3095969df14016ab9dc84438487d0873cbac98d8111cc",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 378,
+            "output_tokens_details": {
+              "reasoning_tokens": 164
+            },
+            "total_tokens": 3268
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-image-rerun-20260927/luna/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "cf5cb42c2967ed7303041170f9fd553d3b11aed699da3a9ec130b389e7d962f7",
+          "raw_envelope_bytes": 10591
+        }
+      },
+      "structural": {
+        "pass": true,
+        "score": 0.7143,
+        "reason": "overall=0.714 | uncertainty=0.070 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.80 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached | color: unexpected=gold | continuity: The pale rectangle stays beside the right figure across all five frames."
+      },
+      "dimensions": {
+        "clip_id": "dialogue_confession_push_in",
+        "model_label": "luna",
+        "overall_score": 0.7143,
+        "uncertainty": 0.07,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 0.6666666666666666,
+            "matched": [
+              "figures",
+              "blue"
+            ],
+            "missed": [
+              "closer"
+            ],
+            "rationale": "Missing summary cues: closer"
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "intimate",
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: intimate, unexpected=detached"
+          },
+          {
+            "dimension": "emotion",
+            "score": 1.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "color",
+            "score": 0.8,
+            "matched": [
+              "navy",
+              "teal"
+            ],
+            "missed": [
+              "unexpected=gold"
+            ],
+            "rationale": "Tag mismatches: unexpected=gold"
+          },
+          {
+            "dimension": "camera",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "locked_two_shot",
+              "slow_push_in",
+              "unexpected=static"
+            ],
+            "rationale": "Tag mismatches: locked_two_shot, slow_push_in, unexpected=static"
+          },
+          {
+            "dimension": "motion",
+            "score": 1.0,
+            "matched": [
+              "measured"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The pale rectangle stays beside the right figure across all five frames."
+            ],
+            "rationale": "Continuity mismatches: The pale rectangle stays beside the right figure across all five frames."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "summary: closer | tone: intimate, unexpected=detached | color: unexpected=gold | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.45,
+        "pass": false,
+        "reason": "The model correctly identifies two figures on a dark blue background, intact continuity, measured motion, and provides empty audio fields. However, it has significant issues: (1) completely misses the pale rectangle/prop on the right figure, which is a key continuity element; (2) mischaracterizes the observable change as figures shifting 'upward' rather than enlarging/appearing larger; (3) tone is 'detached' vs reference 'intimate' — not equivalent; (4) adds 'gold' to color tags without clear basis; (5) evidence descriptions reinforce the incorrect 'upward shift' interpretation. While fundamentals are partially correct, the mischaracterization of the main visual change and the missed prop are substantial errors.",
+        "judge_id": "msg_011CfV7jRTksZZrwjzvxSMng",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 778,
+          "output_tokens": 755
+        },
+        "cost_estimated_usd": "0.022765"
+      },
+      "combined": 0.58215,
+      "case_pass": false,
+      "latency_ms_subject": 4116,
+      "cost_usd_subject": "0.000550175"
+    },
+    {
+      "arm": "gemini",
+      "case": "dialogue_confession_push_in",
+      "evaluation_id": "vfp_active_001",
+      "response": {
+        "output": "{\n  \"clip_id\": \"vfp_active_001\",\n  \"summary\": \"Two minimalist figures stand motionless against a dark navy background across all frames. The composition remains completely static with no visible motion or changes.\",\n  \"tone_tags\": [\n    \"detached\",\n    \"surreal\"\n  ],\n  \"emotion_tags\": [\n    \"isolation\"\n  ],\n  \"color_tags\": [\n    \"navy\",\n    \"desaturated\"\n  ],\n  \"camera_tags\": [\n    \"static\"\n  ],\n  \"motion_tags\": [\n    \"stillness\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A light beige stylized figure stands on the left against a dark blue background.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"A light blue stylized figure with a white rectangular marking stands on the right in a static shot.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The identical framing and unchanged positions of both figures persist into the final frame.\"\n    }\n  ],\n  \"overall_confidence\": 1.0\n}",
+        "token_usage": {
+          "prompt": 6498,
+          "completion": 315,
+          "total": 6813,
+          "billed_completion": 315
+        },
+        "raw": {
+          "responseId": "iNy5aqCmGumP6dkPpaaV6Aw",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 315,
+            "totalTokenCount": 6813,
+            "promptTokensDetails": [
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              },
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.3624,
+        "reason": "raw_score=0.3624 | overall=0.362 | uncertainty=0.000 | summary=0.33 | tone=0.00 | emotion=0.00 | color=0.50 | camera=0.00 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: blue, closer | tone: intimate, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | color: teal, unexpected=desaturated | motion: measured, unexpected=stillness | continuity: The pale rectangle stays beside the right figure across all five frames."
+      },
+      "dimensions": {
+        "clip_id": "dialogue_confession_push_in",
+        "model_label": "gemini",
+        "overall_score": 0.3624,
+        "uncertainty": 0.0,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 0.3333333333333333,
+            "matched": [
+              "figures"
+            ],
+            "missed": [
+              "blue",
+              "closer"
+            ],
+            "rationale": "Missing summary cues: blue, closer"
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "intimate",
+              "unexpected=detached",
+              "unexpected=surreal"
+            ],
+            "rationale": "Tag mismatches: intimate, unexpected=detached, unexpected=surreal"
+          },
+          {
+            "dimension": "emotion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=isolation"
+            ],
+            "rationale": "Tag mismatches: unexpected=isolation"
+          },
+          {
+            "dimension": "color",
+            "score": 0.5,
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "teal",
+              "unexpected=desaturated"
+            ],
+            "rationale": "Tag mismatches: teal, unexpected=desaturated"
+          },
+          {
+            "dimension": "camera",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "locked_two_shot",
+              "slow_push_in",
+              "unexpected=static"
+            ],
+            "rationale": "Tag mismatches: locked_two_shot, slow_push_in, unexpected=static"
+          },
+          {
+            "dimension": "motion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "measured",
+              "unexpected=stillness"
+            ],
+            "rationale": "Tag mismatches: measured, unexpected=stillness"
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The pale rectangle stays beside the right figure across all five frames."
+            ],
+            "rationale": "Continuity mismatches: The pale rectangle stays beside the right figure across all five frames."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "summary: blue, closer | tone: intimate, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | color: teal, unexpected=desaturated | motion: measured, unexpected=stillness | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.35,
+        "pass": false,
+        "reason": "The output correctly identifies two figures, navy background, the pale rectangle on the right figure, and intact continuity status. However, it critically misses the observable enlargement of the figures across frames, instead claiming the scene is 'completely static with no visible motion or changes' — directly contradicting the reference. Tone ('detached/surreal' vs 'intimate'), emotion (invented 'isolation' vs none), motion ('stillness' vs 'measured'), and missing 'teal' color tag are additional errors. While basic scene elements are captured, the fundamental mischaracterization of the scene as static is a significant analytical failure.",
+        "judge_id": "msg_011CfV7kiag93pnGAWg6r2VP",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 869,
+          "output_tokens": 762
+        },
+        "cost_estimated_usd": "0.023395"
+      },
+      "combined": 0.3562,
+      "case_pass": false,
+      "latency_ms_subject": 2564,
+      "cost_usd_subject": "0.00273690"
+    },
+    {
+      "arm": "sol",
+      "case": "alarm_chase_whip_pan",
+      "evaluation_id": "vfp_active_002",
+      "response": {
+        "output": "{\"clip_id\":\"vfp_active_002\",\"summary\":\"A bright red, person-like icon moves steadily from left to right across a dark red geometric background, passing in front of a central outlined rectangle.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[],\"color_tags\":[\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The central outlined rectangle remains in place while the icon progresses rightward across the ordered frames.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The bright red icon sits left of the central outlined rectangle against a dark red field with slanted pale lines.\"},{\"frame_index\":2,\"cue\":\"The icon overlaps the central outlined rectangle, with its small horizontal attachment extending to the right.\"},{\"frame_index\":4,\"cue\":\"The icon is to the right of the central rectangle, which remains near the middle of the image.\"}],\"overall_confidence\":0.94}",
+        "token_usage": {
+          "prompt": 2890,
+          "completion": 220,
+          "total": 3158,
+          "billed_completion": 268,
+          "reasoning_completion": 48
+        },
+        "reported_cost_usd": 0.0099035,
+        "cost_estimated": true,
+        "raw": {
+          "id": "resp_09689918700cb919016ab9dc8b016087d0b13967f66f4c3927",
+          "model": "gpt-6-sol",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 268,
+            "output_tokens_details": {
+              "reasoning_tokens": 48
+            },
+            "total_tokens": 3158
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-image-rerun-20260927/sol/vfp_active_002-raw-envelope.json",
+          "raw_envelope_sha256": "b6de8f512df052ef269ce40af1912ba959a11f9e065ebe9ec58f2a29b0c20315",
+          "raw_envelope_bytes": 10039
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.545,
+        "reason": "raw_score=0.5450 | overall=0.545 | uncertainty=0.060 | summary=0.33 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, pulses | tone: tense, urgent, unexpected=detached, unexpected=surreal | camera: wide_master | motion: fast_lateral, pulsing_light, unexpected=measured | continuity: The small red rectangle stays beside the runner throughout the packet., unexpected=The central outlined rectangle remains in place while the icon progresses rightward across the ordered frames."
+      },
+      "dimensions": {
+        "clip_id": "alarm_chase_whip_pan",
+        "model_label": "sol",
+        "overall_score": 0.545,
+        "uncertainty": 0.06,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 0.3333333333333333,
+            "matched": [
+              "red"
+            ],
+            "missed": [
+              "runner",
+              "pulses"
+            ],
+            "rationale": "Missing summary cues: runner, pulses"
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "tense",
+              "urgent",
+              "unexpected=detached",
+              "unexpected=surreal"
+            ],
+            "rationale": "Tag mismatches: tense, urgent, unexpected=detached, unexpected=surreal"
+          },
+          {
+            "dimension": "emotion",
+            "score": 1.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "color",
+            "score": 1.0,
+            "matched": [
+              "red"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "fast_lateral",
+              "pulsing_light",
+              "unexpected=measured"
+            ],
+            "rationale": "Tag mismatches: fast_lateral, pulsing_light, unexpected=measured"
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The small red rectangle stays beside the runner throughout the packet.",
+              "unexpected=The central outlined rectangle remains in place while the icon progresses rightward across the ordered frames."
+            ],
+            "rationale": "Continuity mismatches: The small red rectangle stays beside the runner throughout the packet., unexpected=The central outlined rectangle remains in place while the icon progresses rightward across the ordered frames."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "summary: runner, pulses | tone: tense, urgent, unexpected=detached, unexpected=surreal | camera: wide_master | motion: fast_lateral, pulsing_light, unexpected=measured | continuity: The small red rectangle stays beside the runner throughout the packet., unexpected=The central outlined rectangle remains in place while the icon progresses rightward across the ordered frames.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.48,
+        "pass": false,
+        "reason": "The model correctly identifies left-to-right movement of a red figure, red color palette, static camera, intact continuity, and empty audio/emotion fields. However, it has significant misses: tone is 'detached/surreal' instead of 'urgent/tense'; motion is 'measured' instead of 'fast_lateral/pulsing_light'; missing 'wide_master' camera tag; continuity note incorrectly describes the rectangle as stationary rather than accompanying the runner. The evidence is frame-grounded but the overall characterization diverges from the reference in several key dimensions.",
+        "judge_id": "msg_011CfV7n1YfqcQPTmNTWu1Lt",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 739,
+          "output_tokens": 754
+        },
+        "cost_estimated_usd": "0.022545"
+      },
+      "combined": 0.5125,
+      "case_pass": false,
+      "latency_ms_subject": 7148,
+      "cost_usd_subject": "0.0099035"
+    },
+    {
+      "arm": "luna",
+      "case": "alarm_chase_whip_pan",
+      "evaluation_id": "vfp_active_002",
+      "response": {
+        "output": "{\n  \"clip_id\": \"vfp_active_002\",\n  \"summary\": \"A bright red person-shaped icon carrying a small outlined rectangle moves steadily from the left side toward the right across a dark red diagram. A peaked line, central outlined box, and slanted background lines remain fixed.\",\n  \"tone_tags\": [\"detached\"],\n  \"emotion_tags\": [],\n  \"color_tags\": [\"red\"],\n  \"camera_tags\": [\"static\"],\n  \"motion_tags\": [\"measured\", \"fast_lateral\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"The red person-shaped icon is on the left, holding a small outlined rectangle.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The icon is near the center, while the peaked line and central rectangular outline remain in place.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The icon and its outlined rectangle are on the right side of the frame.\"\n    }\n  ],\n  \"overall_confidence\": 0.95\n}",
+        "token_usage": {
+          "prompt": 2890,
+          "completion": 266,
+          "total": 3260,
+          "billed_completion": 370,
+          "reasoning_completion": 104
+        },
+        "reported_cost_usd": 0.000546175,
+        "cost_estimated": true,
+        "raw": {
+          "id": "resp_01c7ccfbfd70a19c016ab9dc9222c487d0bdb3fe8a048fb06b",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 370,
+            "output_tokens_details": {
+              "reasoning_tokens": 104
+            },
+            "total_tokens": 3260
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-image-rerun-20260927/luna/vfp_active_002-raw-envelope.json",
+          "raw_envelope_sha256": "6b1ee00dd06435b25be48ba092afbbd60f5ddc4ea6ed9735427d8720d5ec0445",
+          "raw_envelope_bytes": 10396
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.605,
+        "reason": "raw_score=0.6050 | overall=0.605 | uncertainty=0.050 | summary=0.33 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=0.50 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, pulses | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: pulsing_light, unexpected=measured | continuity: The small red rectangle stays beside the runner throughout the packet."
+      },
+      "dimensions": {
+        "clip_id": "alarm_chase_whip_pan",
+        "model_label": "luna",
+        "overall_score": 0.605,
+        "uncertainty": 0.05,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 0.3333333333333333,
+            "matched": [
+              "red"
+            ],
+            "missed": [
+              "runner",
+              "pulses"
+            ],
+            "rationale": "Missing summary cues: runner, pulses"
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "tense",
+              "urgent",
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: tense, urgent, unexpected=detached"
+          },
+          {
+            "dimension": "emotion",
+            "score": 1.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "color",
+            "score": 1.0,
+            "matched": [
+              "red"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 0.5,
+            "matched": [
+              "fast_lateral"
+            ],
+            "missed": [
+              "pulsing_light",
+              "unexpected=measured"
+            ],
+            "rationale": "Tag mismatches: pulsing_light, unexpected=measured"
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The small red rectangle stays beside the runner throughout the packet."
+            ],
+            "rationale": "Continuity mismatches: The small red rectangle stays beside the runner throughout the packet."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "summary: runner, pulses | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: pulsing_light, unexpected=measured | continuity: The small red rectangle stays beside the runner throughout the packet.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.55,
+        "pass": false,
+        "reason": "The output correctly identifies the core left-to-right motion of a red figure, red color palette, static camera, intact continuity, and empty audio fields. However, there are significant issues: (1) Tone is 'detached' instead of 'urgent, tense' — a major mismatch. (2) Motion tags include 'measured' (not in reference) and miss 'pulsing_light'. (3) Camera tags miss 'wide_master'. (4) Summary claims background lines 'remain fixed' when reference indicates diagonal lines shift and illumination pulses. These errors collectively bring the score below the 0.8 threshold.",
+        "judge_id": "msg_011CfV7oHg4PEEUK1dGLQwtg",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 796,
+          "output_tokens": 846
+        },
+        "cost_estimated_usd": "0.025130"
+      },
+      "combined": 0.5775,
+      "case_pass": false,
+      "latency_ms_subject": 3220,
+      "cost_usd_subject": "0.000546175"
+    },
+    {
+      "arm": "gemini",
+      "case": "alarm_chase_whip_pan",
+      "evaluation_id": "vfp_active_002",
+      "response": {
+        "output": "{\n  \"clip_id\": \"vfp_active_002\",\n  \"summary\": \"An abstract graphic featuring a simplified red figure moving across a gradient background with diagonal lines. The figure smoothly shifts position from left to center and then to the right.\",\n  \"tone_tags\": [\n    \"surreal\",\n    \"detached\"\n  ],\n  \"emotion_tags\": [\n    \"isolation\"\n  ],\n  \"color_tags\": [\n    \"red\"\n  ],\n  \"camera_tags\": [\n    \"static\"\n  ],\n  \"motion_tags\": [\n    \"fast_lateral\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A red figure and small horizontal box shape are positioned on the left side against a dark red gradient background.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The red figure and box shape have moved horizontally to the center, aligned inside a thin outlined rectangle.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The red figure and box shape have moved further right, positioned past the central rectangular outline.\"\n    }\n  ],\n  \"overall_confidence\": 0.95\n}",
+        "token_usage": {
+          "prompt": 6498,
+          "completion": 327,
+          "total": 6825,
+          "billed_completion": 327
+        },
+        "raw": {
+          "responseId": "ldy5av_OG4ve_uMP2o_6yAI",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 327,
+            "totalTokenCount": 6825,
+            "promptTokensDetails": [
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              },
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.545,
+        "reason": "raw_score=0.5450 | overall=0.545 | uncertainty=0.050 | summary=0.33 | tone=0.00 | emotion=0.00 | color=1.00 | camera=0.67 | motion=0.67 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, pulses | tone: tense, urgent, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | camera: wide_master | motion: pulsing_light | continuity: The small red rectangle stays beside the runner throughout the packet."
+      },
+      "dimensions": {
+        "clip_id": "alarm_chase_whip_pan",
+        "model_label": "gemini",
+        "overall_score": 0.545,
+        "uncertainty": 0.05,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 0.3333333333333333,
+            "matched": [
+              "red"
+            ],
+            "missed": [
+              "runner",
+              "pulses"
+            ],
+            "rationale": "Missing summary cues: runner, pulses"
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "tense",
+              "urgent",
+              "unexpected=detached",
+              "unexpected=surreal"
+            ],
+            "rationale": "Tag mismatches: tense, urgent, unexpected=detached, unexpected=surreal"
+          },
+          {
+            "dimension": "emotion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=isolation"
+            ],
+            "rationale": "Tag mismatches: unexpected=isolation"
+          },
+          {
+            "dimension": "color",
+            "score": 1.0,
+            "matched": [
+              "red"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 0.6666666666666666,
+            "matched": [
+              "fast_lateral"
+            ],
+            "missed": [
+              "pulsing_light"
+            ],
+            "rationale": "Tag mismatches: pulsing_light"
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The small red rectangle stays beside the runner throughout the packet."
+            ],
+            "rationale": "Continuity mismatches: The small red rectangle stays beside the runner throughout the packet."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "summary: runner, pulses | tone: tense, urgent, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | camera: wide_master | motion: pulsing_light | continuity: The small red rectangle stays beside the runner throughout the packet.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.58,
+        "pass": false,
+        "reason": "The output correctly identifies the red figure moving left-to-right, diagonal lines, red color, static camera, fast_lateral motion, intact continuity, and provides frame-grounded evidence. However, tone tags ('surreal, detached' vs. 'urgent, tense') are significantly wrong, 'isolation' emotion is invented (reference specifies none), and it misses 'wide_master' camera tag and 'pulsing_light' motion tag. The tone and fabricated emotion errors are substantial enough to bring the overall score below the 0.8 threshold.",
+        "judge_id": "msg_011CfV7pWMqJYNHLWj9mQcAA",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 829,
+          "output_tokens": 806
+        },
+        "cost_estimated_usd": "0.024295"
+      },
+      "combined": 0.5625,
+      "case_pass": false,
+      "latency_ms_subject": 2426,
+      "cost_usd_subject": "0.00276690"
+    },
+    {
+      "arm": "sol",
+      "case": "quiet_bedside_vigil",
+      "evaluation_id": "vfp_active_003",
+      "response": {
+        "output": "{\"clip_id\":\"vfp_active_003\",\"summary\":\"A minimalist graphic shows two gold, figure-like shapes on either side of a gray rectangle against a dark background. The composition remains unchanged across the submitted frames.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"gold\",\"navy\",\"desaturated\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The shapes and their positions remain unchanged across all five samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A gold circle atop a brown vertical bar stands to the left of a gray, light-bordered rectangle.\"},{\"frame_index\":2,\"cue\":\"A gold circle atop a rounded gold block sits to the right of the rectangle.\"},{\"frame_index\":4,\"cue\":\"The same shapes retain their positions against the dark gradient background.\"}],\"overall_confidence\":0.97}",
+        "token_usage": {
+          "prompt": 2890,
+          "completion": 205,
+          "total": 3095,
+          "billed_completion": 205,
+          "reasoning_completion": 0
+        },
+        "reported_cost_usd": 0.0092735,
+        "cost_estimated": true,
+        "raw": {
+          "id": "resp_007c3dffb632c451016ab9dc98d0d887d0984da87c56bfed5c",
+          "model": "gpt-6-sol",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 205,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 3095
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-image-rerun-20260927/sol/vfp_active_003-raw-envelope.json",
+          "raw_envelope_sha256": "a0291cc8f497bcde3930f21cd0617d8847a16749007bfa2b1a8b91fff8ddd28b",
+          "raw_envelope_bytes": 8241
+        }
+      },
+      "structural": {
+        "pass": true,
+        "score": 0.7263,
+        "reason": "overall=0.726 | uncertainty=0.030 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.40 | camera=0.67 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached | color: amber, unexpected=gold, unexpected=navy | camera: wide_master | continuity: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame., unexpected=The shapes and their positions remain unchanged across all five samples."
+      },
+      "dimensions": {
+        "clip_id": "quiet_bedside_vigil",
+        "model_label": "sol",
+        "overall_score": 0.7263,
+        "uncertainty": 0.03,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 1.0,
+            "matched": [
+              "static"
+            ],
+            "missed": [],
+            "rationale": "Summary covered the required observable cues."
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "intimate",
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: intimate, unexpected=detached"
+          },
+          {
+            "dimension": "emotion",
+            "score": 1.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "color",
+            "score": 0.4,
+            "matched": [
+              "desaturated"
+            ],
+            "missed": [
+              "amber",
+              "unexpected=gold",
+              "unexpected=navy"
+            ],
+            "rationale": "Tag mismatches: amber, unexpected=gold, unexpected=navy"
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 1.0,
+            "matched": [
+              "stillness"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The gray horizontal rectangle and both round-topped forms keep the same positions in every frame.",
+              "unexpected=The shapes and their positions remain unchanged across all five samples."
+            ],
+            "rationale": "Continuity mismatches: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame., unexpected=The shapes and their positions remain unchanged across all five samples."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "tone: intimate, unexpected=detached | color: amber, unexpected=gold, unexpected=navy | camera: wide_master | continuity: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame., unexpected=The shapes and their positions remain unchanged across all five samples.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.82,
+        "pass": true,
+        "reason": "The model accurately captures the core visual layout (two shapes flanking a gray rectangle), stillness, intact continuity, desaturated color palette, and static camera. Evidence is concrete and frame-grounded with no invented content. Audio fields are correctly empty. Minor issues: tone is 'detached' vs reference 'intimate' (mismatch), 'gold' vs 'amber' (close but not exact), missing 'wide_master' camera tag. No fabricated actions or identities. Overall a solid analysis with one meaningful divergence (tone).",
+        "judge_id": "msg_011CfV7qr2JW23RK4bSP28FX",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 780,
+          "output_tokens": 721
+        },
+        "cost_estimated_usd": "0.021925"
+      },
+      "combined": 0.77315,
+      "case_pass": true,
+      "latency_ms_subject": 14730,
+      "cost_usd_subject": "0.0092735"
+    },
+    {
+      "arm": "luna",
+      "case": "quiet_bedside_vigil",
+      "evaluation_id": "vfp_active_003",
+      "response": {
+        "output": "{\"clip_id\":\"vfp_active_003\",\"summary\":\"A static, minimalist geometric illustration shows two simplified golden figures on either side of a horizontal gray rectangle. The same composition remains unchanged across the sampled frames.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"amber\",\"desaturated\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A pale-gold round-headed figure stands at the left end of a long gray rectangle.\"},{\"frame_index\":2,\"cue\":\"The matching pale-gold figure remains to the right of the rectangle, with the same dark two-tone background.\"},{\"frame_index\":4,\"cue\":\"The figures and rectangle retain the same positions and shapes as in earlier samples.\"}],\"overall_confidence\":0.98}",
+        "token_usage": {
+          "prompt": 2890,
+          "completion": 198,
+          "total": 3232,
+          "billed_completion": 342,
+          "reasoning_completion": 144
+        },
+        "reported_cost_usd": 0.000532175,
+        "cost_estimated": true,
+        "raw": {
+          "id": "resp_0d68650f0ffc22c7016ab9dca676e487d09bf86a953c0633f4",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 342,
+            "output_tokens_details": {
+              "reasoning_tokens": 144
+            },
+            "total_tokens": 3232
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-image-rerun-20260927/luna/vfp_active_003-raw-envelope.json",
+          "raw_envelope_sha256": "0f3f644ae93a30d366200bc62a56e9c5a0a509aae48a29b743c8d0018bde0be8",
+          "raw_envelope_bytes": 10548
+        }
+      },
+      "structural": {
+        "pass": true,
+        "score": 0.7983,
+        "reason": "overall=0.798 | uncertainty=0.020 | summary=1.00 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached | camera: wide_master | continuity: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame."
+      },
+      "dimensions": {
+        "clip_id": "quiet_bedside_vigil",
+        "model_label": "luna",
+        "overall_score": 0.7983,
+        "uncertainty": 0.02,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 1.0,
+            "matched": [
+              "static"
+            ],
+            "missed": [],
+            "rationale": "Summary covered the required observable cues."
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "intimate",
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: intimate, unexpected=detached"
+          },
+          {
+            "dimension": "emotion",
+            "score": 1.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "color",
+            "score": 1.0,
+            "matched": [
+              "amber",
+              "desaturated"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 1.0,
+            "matched": [
+              "stillness"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The gray horizontal rectangle and both round-topped forms keep the same positions in every frame."
+            ],
+            "rationale": "Continuity mismatches: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "tone: intimate, unexpected=detached | camera: wide_master | continuity: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.72,
+        "pass": false,
+        "reason": "The output correctly identifies the key visual elements (two round-topped forms flanking a gray horizontal rectangle), static composition, stillness, amber/desaturated color, intact continuity, and properly empty audio fields. Evidence is frame-grounded at three sample points with no invented actions or false claims. However, the tone tag is wrong ('detached' vs reference 'intimate'), the camera tags miss 'wide_master', and the summary doesn't capture the asymmetry between the narrower left form and broader right figure. These misses on tone and camera tagging collectively reduce the score below the 0.8 threshold.",
+        "judge_id": "msg_011CfV7rzusABbtoa6SL17vJ",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 770,
+          "output_tokens": 979
+        },
+        "cost_estimated_usd": "0.028325"
+      },
+      "combined": 0.75915,
+      "case_pass": false,
+      "latency_ms_subject": 3440,
+      "cost_usd_subject": "0.000532175"
+    },
+    {
+      "arm": "gemini",
+      "case": "quiet_bedside_vigil",
+      "evaluation_id": "vfp_active_003",
+      "response": {
+        "output": "{\n  \"clip_id\": \"vfp_active_003\",\n  \"summary\": \"A minimalist, static illustration shows a simple bed against a dark gradient background. The visual composition remains completely unchanged across all frames.\",\n  \"tone_tags\": [\n    \"detached\",\n    \"surreal\"\n  ],\n  \"emotion_tags\": [\n    \"isolation\"\n  ],\n  \"color_tags\": [\n    \"desaturated\",\n    \"navy\"\n  ],\n  \"camera_tags\": [\n    \"static\"\n  ],\n  \"motion_tags\": [\n    \"stillness\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A minimalist graphic of a bed with a brown headboard and blue mattress against a dark background.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"Identical minimalist graphic of a bed showing zero visual movement or composition change.\"\n    }\n  ],\n  \"overall_confidence\": 1.0\n}",
+        "token_usage": {
+          "prompt": 6498,
+          "completion": 277,
+          "total": 6775,
+          "billed_completion": 277
+        },
+        "raw": {
+          "responseId": "qdy5ap-4PL2dz7IPwaibiA4",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 277,
+            "totalTokenCount": 6775,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              },
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.2892,
+        "reason": "raw_score=0.2892 | overall=0.289 | uncertainty=0.150 | summary=1.00 | tone=0.00 | emotion=0.00 | color=0.50 | camera=0.67 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=0.00 | hard_constraints=0.00 | tone: intimate, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | color: amber, unexpected=navy | camera: wide_master | continuity: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame. | evidence: item 1: cue_not_target_grounded, item 2: cue_not_target_grounded | hard_constraints: evidence_1_cue_not_target_grounded, evidence_2_cue_not_target_grounded"
+      },
+      "dimensions": {
+        "clip_id": "quiet_bedside_vigil",
+        "model_label": "gemini",
+        "overall_score": 0.2892,
+        "uncertainty": 0.15,
+        "hard_constraints_passed": false,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 1.0,
+            "matched": [
+              "static"
+            ],
+            "missed": [],
+            "rationale": "Summary covered the required observable cues."
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "intimate",
+              "unexpected=detached",
+              "unexpected=surreal"
+            ],
+            "rationale": "Tag mismatches: intimate, unexpected=detached, unexpected=surreal"
+          },
+          {
+            "dimension": "emotion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=isolation"
+            ],
+            "rationale": "Tag mismatches: unexpected=isolation"
+          },
+          {
+            "dimension": "color",
+            "score": 0.5,
+            "matched": [
+              "desaturated"
+            ],
+            "missed": [
+              "amber",
+              "unexpected=navy"
+            ],
+            "rationale": "Tag mismatches: amber, unexpected=navy"
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 1.0,
+            "matched": [
+              "stillness"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The gray horizontal rectangle and both round-topped forms keep the same positions in every frame."
+            ],
+            "rationale": "Continuity mismatches: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "item 1: cue_not_target_grounded",
+              "item 2: cue_not_target_grounded"
+            ],
+            "rationale": "Evidence is missing, generic, invented, duplicated, or not tied to a frame."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "evidence_1_cue_not_target_grounded",
+              "evidence_2_cue_not_target_grounded"
+            ],
+            "rationale": "Hard failures: evidence_1_cue_not_target_grounded, evidence_2_cue_not_target_grounded"
+          }
+        ],
+        "rationale": "tone: intimate, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | color: amber, unexpected=navy | camera: wide_master | continuity: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame. | evidence: item 1: cue_not_target_grounded, item 2: cue_not_target_grounded | hard_constraints: evidence_1_cue_not_target_grounded, evidence_2_cue_not_target_grounded",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.3,
+        "pass": false,
+        "reason": "The model correctly identifies stillness, static camera, intact continuity, and empty audio fields. However, it significantly mischaracterizes the color palette (navy vs. amber), applies wrong tone tags (detached/surreal vs. intimate), invents an emotion tag (isolation vs. none), and critically omits key geometric elements (the two round-topped forms flanking the horizontal rectangle). The description of 'brown headboard and blue mattress' doesn't match the reference's gray rectangle and amber tones. While some structural elements are correct, the visual description is substantially inaccurate.",
+        "judge_id": "msg_011CfV7tb9fy33mrnwfzkwkr",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 834,
+          "output_tokens": 727
+        },
+        "cost_estimated_usd": "0.022345"
+      },
+      "combined": 0.2946,
+      "case_pass": false,
+      "latency_ms_subject": 2454,
+      "cost_usd_subject": "0.00264190"
+    },
+    {
+      "arm": "sol",
+      "case": "prop_swap_continuity_break",
+      "evaluation_id": "vfp_active_004",
+      "response": {
+        "output": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A minimalist graphic shows a small outlined rectangle centered on stacked brown blocks against a dark navy background. The rectangle changes from red to blue while the composition remains fixed.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The centered rectangle changes color between adjacent samples 1 and 2; the surrounding shapes remain in place.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A red, white-outlined rectangle sits at the center of a gray-brown block above a darker brown base.\"},{\"frame_index\":1,\"cue\":\"The centered rectangle is still red, with the blocks in the same positions.\"},{\"frame_index\":2,\"cue\":\"The rectangle is blue in the same position against the unchanged blocks and dark background.\"},{\"frame_index\":4,\"cue\":\"The blue rectangle and surrounding block arrangement remain fixed.\"}],\"overall_confidence\":0.96}",
+        "token_usage": {
+          "prompt": 2890,
+          "completion": 236,
+          "total": 3126,
+          "billed_completion": 236,
+          "reasoning_completion": 0
+        },
+        "reported_cost_usd": 0.0095835,
+        "cost_estimated": true,
+        "raw": {
+          "id": "resp_0b87545190d07996016ab9dcac659487d08318569c2c24e09e",
+          "model": "gpt-6-sol",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 236,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 3126
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-image-rerun-20260927/sol/vfp_active_004-raw-envelope.json",
+          "raw_envelope_sha256": "f56e9585464b18594c2bea5fbf464212cfe63efde1876d3c38a014196e7a69dd",
+          "raw_envelope_bytes": 8395
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.5683,
+        "reason": "raw_score=0.5683 | overall=0.568 | uncertainty=0.040 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.67 | motion=0.00 | continuity=0.25 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken"
+      },
+      "dimensions": {
+        "clip_id": "prop_swap_continuity_break",
+        "model_label": "sol",
+        "overall_score": 0.5683,
+        "uncertainty": 0.04,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 1.0,
+            "matched": [
+              "rectangle",
+              "red",
+              "blue"
+            ],
+            "missed": [],
+            "rationale": "Summary covered the required observable cues."
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: unexpected=detached"
+          },
+          {
+            "dimension": "emotion",
+            "score": 1.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "color",
+            "score": 0.6666666666666666,
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "unexpected=red"
+            ],
+            "rationale": "Tag mismatches: unexpected=red"
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=stillness"
+            ],
+            "rationale": "Tag mismatches: unexpected=stillness"
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.25,
+            "matched": [
+              "The tabletop rectangle changes from red to blue between the second and third samples."
+            ],
+            "missed": [
+              "status=broken"
+            ],
+            "rationale": "Continuity mismatches: status=broken"
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 1",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.52,
+        "pass": false,
+        "reason": "The output correctly identifies the key visual elements (rectangle, color change red to blue, navy background, static camera) and provides good frame-grounded evidence. However, there are significant issues: (1) continuity_status is 'intact' when it should be 'broken' - this is a major error; (2) missing 'wide_master' camera tag; (3) invented tone tag 'detached' when reference says none; (4) invented motion tag 'stillness' when reference says none. The continuity misclassification is the most critical error, as it fundamentally mischaracterizes the key observable change.",
+        "judge_id": "msg_011CfV7uiLoVTqpzPJWrhYMk",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 758,
+          "output_tokens": 734
+        },
+        "cost_estimated_usd": "0.022140"
+      },
+      "combined": 0.54415,
+      "case_pass": false,
+      "latency_ms_subject": 5182,
+      "cost_usd_subject": "0.0095835"
+    },
+    {
+      "arm": "luna",
+      "case": "prop_swap_continuity_break",
+      "evaluation_id": "vfp_active_004",
+      "response": {
+        "output": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A small red rounded rectangle sits centered on a panel above a dark base against a navy background. It changes to blue by frame 2 while the composition remains fixed.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The centered rectangle is red in frames 0–1 and blue in frames 2–4; the surrounding layout remains unchanged.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A red rounded rectangle with a white outline is centered on the upper brown panel.\"},{\"frame_index\":2,\"cue\":\"The same centered rounded rectangle is blue with a white outline; the panel and base remain in place.\"},{\"frame_index\":4,\"cue\":\"The blue rectangle and surrounding geometric layout remain in the same positions.\"}],\"overall_confidence\":0.98}",
+        "token_usage": {
+          "prompt": 2890,
+          "completion": 221,
+          "total": 3280,
+          "billed_completion": 390,
+          "reasoning_completion": 169
+        },
+        "reported_cost_usd": 0.000556175,
+        "cost_estimated": true,
+        "raw": {
+          "id": "resp_044006653b7e2009016ab9dcb19f2c87d0b6fdf26f427aa6fc",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 390,
+            "output_tokens_details": {
+              "reasoning_tokens": 169
+            },
+            "total_tokens": 3280
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-image-rerun-20260927/luna/vfp_active_004-raw-envelope.json",
+          "raw_envelope_sha256": "44ddd8677232ee027a3fbe3543c57a64037a16e8813b47269d614aa463b08a6d",
+          "raw_envelope_bytes": 10711
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.5683,
+        "reason": "raw_score=0.5683 | overall=0.568 | uncertainty=0.020 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.67 | motion=0.00 | continuity=0.25 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken"
+      },
+      "dimensions": {
+        "clip_id": "prop_swap_continuity_break",
+        "model_label": "luna",
+        "overall_score": 0.5683,
+        "uncertainty": 0.02,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 1.0,
+            "matched": [
+              "rectangle",
+              "red",
+              "blue"
+            ],
+            "missed": [],
+            "rationale": "Summary covered the required observable cues."
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: unexpected=detached"
+          },
+          {
+            "dimension": "emotion",
+            "score": 1.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "color",
+            "score": 0.6666666666666666,
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "unexpected=red"
+            ],
+            "rationale": "Tag mismatches: unexpected=red"
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=stillness"
+            ],
+            "rationale": "Tag mismatches: unexpected=stillness"
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.25,
+            "matched": [
+              "The tabletop rectangle changes from red to blue between the second and third samples."
+            ],
+            "missed": [
+              "status=broken"
+            ],
+            "rationale": "Continuity mismatches: status=broken"
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.5,
+        "pass": false,
+        "reason": "The output correctly identifies the color change (red→blue), navy background, static camera, and provides good frame-grounded evidence. However, it critically marks continuity as 'intact' when the reference says 'broken' (the color change constitutes a continuity break). It also invents a 'detached' tone tag (reference says none), adds 'stillness' as a motion tag (reference says none), and misses 'wide_master' camera tag. The continuity status error is a significant analytical failure.",
+        "judge_id": "msg_011CfV7vxpy4nDoFRaFE81Ho",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 737,
+          "output_tokens": 656
+        },
+        "cost_estimated_usd": "0.020085"
+      },
+      "combined": 0.53415,
+      "case_pass": false,
+      "latency_ms_subject": 4719,
+      "cost_usd_subject": "0.000556175"
+    },
+    {
+      "arm": "gemini",
+      "case": "prop_swap_continuity_break",
+      "evaluation_id": "vfp_active_004",
+      "response": {
+        "output": "{\n  \"clip_id\": \"vfp_active_004\",\n  \"summary\": \"A static shot displays a central block with a button interface against a dark background. The button changes color from red to blue between frames two and three.\",\n  \"tone_tags\": [\n    \"detached\",\n    \"tense\"\n  ],\n  \"emotion_tags\": [\n    \"suspicion\",\n    \"hesitation\"\n  ],\n  \"color_tags\": [\n    \"navy\",\n    \"red\"\n  ],\n  \"camera_tags\": [\n    \"static\"\n  ],\n  \"motion_tags\": [\n    \"stillness\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A centered rectangular block with a red button shape against a dark blue background.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The central button shape changes color from red to blue.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The composition remains static with the blue button remaining unchanged.\"\n    }\n  ],\n  \"overall_confidence\": 0.95\n}",
+        "token_usage": {
+          "prompt": 6498,
+          "completion": 313,
+          "total": 6811,
+          "billed_completion": 313
+        },
+        "raw": {
+          "responseId": "tty5aqbME_2dz7IPnZDluAM",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 313,
+            "totalTokenCount": 6811,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              },
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.3867,
+        "reason": "raw_score=0.3867 | overall=0.387 | uncertainty=0.050 | summary=0.67 | tone=0.00 | emotion=0.00 | color=0.67 | camera=0.67 | motion=0.00 | continuity=0.00 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: rectangle | tone: unexpected=detached, unexpected=tense | emotion: unexpected=hesitation, unexpected=suspicion | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken, The tabletop rectangle changes from red to blue between the second and third samples."
+      },
+      "dimensions": {
+        "clip_id": "prop_swap_continuity_break",
+        "model_label": "gemini",
+        "overall_score": 0.3867,
+        "uncertainty": 0.05,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 0.6666666666666666,
+            "matched": [
+              "red",
+              "blue"
+            ],
+            "missed": [
+              "rectangle"
+            ],
+            "rationale": "Missing summary cues: rectangle"
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=detached",
+              "unexpected=tense"
+            ],
+            "rationale": "Tag mismatches: unexpected=detached, unexpected=tense"
+          },
+          {
+            "dimension": "emotion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=hesitation",
+              "unexpected=suspicion"
+            ],
+            "rationale": "Tag mismatches: unexpected=hesitation, unexpected=suspicion"
+          },
+          {
+            "dimension": "color",
+            "score": 0.6666666666666666,
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "unexpected=red"
+            ],
+            "rationale": "Tag mismatches: unexpected=red"
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=stillness"
+            ],
+            "rationale": "Tag mismatches: unexpected=stillness"
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "status=broken",
+              "The tabletop rectangle changes from red to blue between the second and third samples."
+            ],
+            "rationale": "Continuity mismatches: status=broken, The tabletop rectangle changes from red to blue between the second and third samples."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "summary: rectangle | tone: unexpected=detached, unexpected=tense | emotion: unexpected=hesitation, unexpected=suspicion | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken, The tabletop rectangle changes from red to blue between the second and third samples.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.35,
+        "pass": false,
+        "reason": "The model correctly identifies the color change from red to blue and the static composition, and provides reasonable frame-grounded evidence. However, it has several significant errors: (1) Continuity is marked 'intact' when it should be 'broken' — the red-to-blue change is a continuity break, which the model even describes but fails to flag; (2) Tone tags ['detached', 'tense'] are invented — reference says none; (3) Emotion tags ['suspicion', 'hesitation'] are invented — reference says none; (4) Motion tag 'stillness' is invented — reference says none; (5) 'Button interface' is an embellishment of what is simply a rectangle; (6) Missing 'wide_master' camera tag. The continuity misclassification and invented tone/emotion tags are major issues.",
+        "judge_id": "msg_011CfV7x6oi3AF27rPHXaoAU",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 813,
+          "output_tokens": 852
+        },
+        "cost_estimated_usd": "0.025365"
+      },
+      "combined": 0.36835,
+      "case_pass": false,
+      "latency_ms_subject": 3092,
+      "cost_usd_subject": "0.00273190"
+    },
+    {
+      "arm": "sol",
+      "case": "rooftop_escape_crash_zoom",
+      "evaluation_id": "vfp_active_005",
+      "response": {
+        "output": "{\"clip_id\":\"vfp_active_005\",\"summary\":\"A simple gold figure carrying a rectangular object moves steadily right across a dark, diagonally streaked scene, passing over a gap between two platforms.\",\"tone_tags\":[\"tense\"],\"emotion_tags\":[],\"color_tags\":[\"gold\",\"navy\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Gold figure stands left of a narrow gap between dark platforms, with a small outlined rectangle extending to its right.\"},{\"frame_index\":2,\"cue\":\"The figure is centered above the gap; the diagonal pale streaks and platform edges remain in the same positions.\"},{\"frame_index\":4,\"cue\":\"The figure is farther right, above the platform beyond the gap, still holding the rectangle.\"}],\"overall_confidence\":0.91}",
+        "token_usage": {
+          "prompt": 2890,
+          "completion": 202,
+          "total": 3092,
+          "billed_completion": 202,
+          "reasoning_completion": 0
+        },
+        "reported_cost_usd": 0.0092435,
+        "cost_estimated": true,
+        "raw": {
+          "id": "resp_06497778c99bab26016ab9dcb963c487d095b2dedd780363c2",
+          "model": "gpt-6-sol",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 202,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 3092
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-image-rerun-20260927/sol/vfp_active_005-raw-envelope.json",
+          "raw_envelope_sha256": "619acae20c6df929249025fcf970691077877ed12a3d711780fb1af314df4a73",
+          "raw_envelope_bytes": 8197
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.5983,
+        "reason": "raw_score=0.5983 | overall=0.598 | uncertainty=0.090 | summary=0.50 | tone=0.67 | emotion=1.00 | color=0.50 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner | tone: urgent | color: amber, unexpected=gold | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small yellow rectangle stays beside the runner while crossing the rooftop gap."
+      },
+      "dimensions": {
+        "clip_id": "rooftop_escape_crash_zoom",
+        "model_label": "sol",
+        "overall_score": 0.5983,
+        "uncertainty": 0.09,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 0.5,
+            "matched": [
+              "gap"
+            ],
+            "missed": [
+              "runner"
+            ],
+            "rationale": "Missing summary cues: runner"
+          },
+          {
+            "dimension": "tone",
+            "score": 0.6666666666666666,
+            "matched": [
+              "tense"
+            ],
+            "missed": [
+              "urgent"
+            ],
+            "rationale": "Tag mismatches: urgent"
+          },
+          {
+            "dimension": "emotion",
+            "score": 1.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "color",
+            "score": 0.5,
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "amber",
+              "unexpected=gold"
+            ],
+            "rationale": "Tag mismatches: amber, unexpected=gold"
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "fast_lateral",
+              "unexpected=measured"
+            ],
+            "rationale": "Tag mismatches: fast_lateral, unexpected=measured"
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The small yellow rectangle stays beside the runner while crossing the rooftop gap."
+            ],
+            "rationale": "Continuity mismatches: The small yellow rectangle stays beside the runner while crossing the rooftop gap."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "summary: runner | tone: urgent | color: amber, unexpected=gold | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small yellow rectangle stays beside the runner while crossing the rooftop gap.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.62,
+        "pass": false,
+        "reason": "The model correctly identifies the key visual elements: gold/yellow figure with rectangular object, rightward movement across a gap between dark platforms, static camera, navy color palette, intact continuity, and empty audio fields. Evidence is frame-grounded and accurate. However, the motion tag 'measured' directly contradicts the reference 'fast_lateral,' the tone is missing 'urgent,' and camera is missing 'wide_master.' The motion speed mischaracterization is a significant error that affects both the motion tag and the summary's 'steadily' description.",
+        "judge_id": "msg_011CfV7yVuoBDuP2e9T64gX2",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 750,
+          "output_tokens": 812
+        },
+        "cost_estimated_usd": "0.024050"
+      },
+      "combined": 0.60915,
+      "case_pass": false,
+      "latency_ms_subject": 5148,
+      "cost_usd_subject": "0.0092435"
+    },
+    {
+      "arm": "luna",
+      "case": "rooftop_escape_crash_zoom",
+      "evaluation_id": "vfp_active_005",
+      "response": {
+        "output": "{\"clip_id\":\"vfp_active_005\",\"summary\":\"A stylized yellow figure carrying a small rectangular object moves from left to right above a narrow gap between dark platforms. The figure rises and then descends as it crosses, while the background remains fixed.\",\"tone_tags\":[\"playful\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"gold\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A yellow figure holding a rectangular object is positioned on the left side above the dark platform edge.\"},{\"frame_index\":2,\"cue\":\"The figure is higher in the frame and nearer the center, above the gap between the platforms.\"},{\"frame_index\":4,\"cue\":\"The figure is farther right and lower, next to the right platform edge.\"}],\"overall_confidence\":0.96}",
+        "token_usage": {
+          "prompt": 2890,
+          "completion": 206,
+          "total": 3273,
+          "billed_completion": 383,
+          "reasoning_completion": 177
+        },
+        "reported_cost_usd": 0.000552675,
+        "cost_estimated": true,
+        "raw": {
+          "id": "resp_09c5e5af7fee4fcb016ab9dcbe980487d0aab27aef445116da",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 383,
+            "output_tokens_details": {
+              "reasoning_tokens": 177
+            },
+            "total_tokens": 3273
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-image-rerun-20260927/luna/vfp_active_005-raw-envelope.json",
+          "raw_envelope_sha256": "406ff838ea513b7e492dbe71055fc0b17fa0ab770bffa180d86e77964405e115",
+          "raw_envelope_bytes": 10684
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.5183,
+        "reason": "raw_score=0.5183 | overall=0.518 | uncertainty=0.040 | summary=0.50 | tone=0.00 | emotion=1.00 | color=0.50 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner | tone: tense, urgent, unexpected=playful | color: amber, unexpected=gold | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small yellow rectangle stays beside the runner while crossing the rooftop gap."
+      },
+      "dimensions": {
+        "clip_id": "rooftop_escape_crash_zoom",
+        "model_label": "luna",
+        "overall_score": 0.5183,
+        "uncertainty": 0.04,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 0.5,
+            "matched": [
+              "gap"
+            ],
+            "missed": [
+              "runner"
+            ],
+            "rationale": "Missing summary cues: runner"
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "tense",
+              "urgent",
+              "unexpected=playful"
+            ],
+            "rationale": "Tag mismatches: tense, urgent, unexpected=playful"
+          },
+          {
+            "dimension": "emotion",
+            "score": 1.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "color",
+            "score": 0.5,
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "amber",
+              "unexpected=gold"
+            ],
+            "rationale": "Tag mismatches: amber, unexpected=gold"
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "fast_lateral",
+              "unexpected=measured"
+            ],
+            "rationale": "Tag mismatches: fast_lateral, unexpected=measured"
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The small yellow rectangle stays beside the runner while crossing the rooftop gap."
+            ],
+            "rationale": "Continuity mismatches: The small yellow rectangle stays beside the runner while crossing the rooftop gap."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "summary: runner | tone: tense, urgent, unexpected=playful | color: amber, unexpected=gold | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small yellow rectangle stays beside the runner while crossing the rooftop gap.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.58,
+        "pass": false,
+        "reason": "The summary accurately captures the yellow figure's arc motion over a gap between dark platforms with the rectangular object. Color tags are close (gold≈amber, navy matches). Emotion and audio fields are correctly empty. Continuity is correctly 'intact.' Evidence is frame-grounded and concrete. However, tone ('playful' vs 'urgent, tense') is wrong, motion ('measured' vs 'fast_lateral') is contradictory, and camera is missing 'wide_master.' These are significant mismatches in key descriptive fields.",
+        "judge_id": "msg_011CfV7zsAGBANhT4byb7Mok",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 751,
+          "output_tokens": 775
+        },
+        "cost_estimated_usd": "0.023130"
+      },
+      "combined": 0.54915,
+      "case_pass": false,
+      "latency_ms_subject": 3846,
+      "cost_usd_subject": "0.000552675"
+    },
+    {
+      "arm": "gemini",
+      "case": "rooftop_escape_crash_zoom",
+      "evaluation_id": "vfp_active_005",
+      "response": {
+        "output": "{\n  \"clip_id\": \"vfp_active_005\",\n  \"summary\": \"A yellow simplified character figure moves across a dark platform background with diagonal lines representing rain or streaks. The camera pans from left to right to track the character's movement across the gap.\",\n  \"tone_tags\": [\n    \"detached\",\n    \"surreal\"\n  ],\n  \"emotion_tags\": [\n    \"isolation\"\n  ],\n  \"color_tags\": [\n    \"navy\",\n    \"gold\"\n  ],\n  \"camera_tags\": [\n    \"lateral_track\"\n  ],\n  \"motion_tags\": [\n    \"fast_lateral\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A yellow character figure stands near the left edge of the platform.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The yellow figure is positioned directly above the gap in the platform.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The yellow figure has moved to the right side of the platform.\"\n    }\n  ],\n  \"overall_confidence\": 0.95\n}",
+        "token_usage": {
+          "prompt": 6498,
+          "completion": 319,
+          "total": 6817,
+          "billed_completion": 319
+        },
+        "raw": {
+          "responseId": "wty5atepHoTpqtsPuYaH6Aw",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 319,
+            "totalTokenCount": 6817,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              },
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.465,
+        "reason": "raw_score=0.4650 | overall=0.465 | uncertainty=0.050 | summary=0.50 | tone=0.00 | emotion=0.00 | color=0.50 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner | tone: tense, urgent, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | color: amber, unexpected=gold | camera: static, wide_master, unexpected=lateral_track | continuity: The small yellow rectangle stays beside the runner while crossing the rooftop gap."
+      },
+      "dimensions": {
+        "clip_id": "rooftop_escape_crash_zoom",
+        "model_label": "gemini",
+        "overall_score": 0.465,
+        "uncertainty": 0.05,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 0.5,
+            "matched": [
+              "gap"
+            ],
+            "missed": [
+              "runner"
+            ],
+            "rationale": "Missing summary cues: runner"
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "tense",
+              "urgent",
+              "unexpected=detached",
+              "unexpected=surreal"
+            ],
+            "rationale": "Tag mismatches: tense, urgent, unexpected=detached, unexpected=surreal"
+          },
+          {
+            "dimension": "emotion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=isolation"
+            ],
+            "rationale": "Tag mismatches: unexpected=isolation"
+          },
+          {
+            "dimension": "color",
+            "score": 0.5,
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "amber",
+              "unexpected=gold"
+            ],
+            "rationale": "Tag mismatches: amber, unexpected=gold"
+          },
+          {
+            "dimension": "camera",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "static",
+              "wide_master",
+              "unexpected=lateral_track"
+            ],
+            "rationale": "Tag mismatches: static, wide_master, unexpected=lateral_track"
+          },
+          {
+            "dimension": "motion",
+            "score": 1.0,
+            "matched": [
+              "fast_lateral"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The small yellow rectangle stays beside the runner while crossing the rooftop gap."
+            ],
+            "rationale": "Continuity mismatches: The small yellow rectangle stays beside the runner while crossing the rooftop gap."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "summary: runner | tone: tense, urgent, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | color: amber, unexpected=gold | camera: static, wide_master, unexpected=lateral_track | continuity: The small yellow rectangle stays beside the runner while crossing the rooftop gap.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.4,
+        "pass": false,
+        "reason": "The model correctly identifies: fast_lateral motion, navy color, intact continuity, empty audio fields, and the general scene of a yellow figure moving across a dark platform with a gap. However, several significant errors exist: (1) Camera tags are wrong — 'lateral_track' is invented when the reference says static/wide_master; (2) The summary reinforces this by claiming camera pans; (3) Tone tags ('detached, surreal') completely miss the reference ('urgent, tense'); (4) An emotion tag ('isolation') is invented when there should be none; (5) The continuity note about the small yellow rectangle beside the runner is missed; (6) 'Diagonal lines representing rain or streaks' may be over-interpretation. The camera fabrication is particularly penalizable as the rubric explicitly warns against invented camera movement.",
+        "judge_id": "msg_011CfV828pN8mQ68jFHgtGiF",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 850,
+          "output_tokens": 827
+        },
+        "cost_estimated_usd": "0.024925"
+      },
+      "combined": 0.4325,
+      "case_pass": false,
+      "latency_ms_subject": 2699,
+      "cost_usd_subject": "0.00274690"
+    },
+    {
+      "arm": "sol",
+      "case": "storm_tunnel_lateral_run",
+      "evaluation_id": "vfp_active_006",
+      "response": {
+        "output": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"A light-blue person-shaped icon with a small attached rectangle moves steadily from left to right beneath a fixed arc and diagonal lines.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The light-blue icon sits near the left side beneath a pale arc, with diagonal lines across the dark-blue background.\"},{\"frame_index\":2,\"cue\":\"The icon has moved near the center while the arc remains in the same position.\"},{\"frame_index\":4,\"cue\":\"The icon is on the right side, with its small outlined rectangle still attached.\"}],\"overall_confidence\":0.96}",
+        "token_usage": {
+          "prompt": 2890,
+          "completion": 194,
+          "total": 3139,
+          "billed_completion": 249,
+          "reasoning_completion": 55
+        },
+        "reported_cost_usd": 0.0097135,
+        "cost_estimated": true,
+        "raw": {
+          "id": "resp_09a235a9b3ff1976016ab9dcc523bc87d09f0f9c4327afa0d9",
+          "model": "gpt-6-sol",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 249,
+            "output_tokens_details": {
+              "reasoning_tokens": 55
+            },
+            "total_tokens": 3139
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-image-rerun-20260927/sol/vfp_active_006-raw-envelope.json",
+          "raw_envelope_sha256": "09b567d430ec21f4d3cb1cde94bb19ad5446d7751300556e39e907e320149a21",
+          "raw_envelope_bytes": 9907
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.4783,
+        "reason": "raw_score=0.4783 | overall=0.478 | uncertainty=0.040 | summary=0.00 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small cyan rectangle stays beside the runner across all five samples."
+      },
+      "dimensions": {
+        "clip_id": "storm_tunnel_lateral_run",
+        "model_label": "sol",
+        "overall_score": 0.4783,
+        "uncertainty": 0.04,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "runner",
+              "tunnel",
+              "streaks"
+            ],
+            "rationale": "Missing summary cues: runner, tunnel, streaks"
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "tense",
+              "urgent",
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: tense, urgent, unexpected=detached"
+          },
+          {
+            "dimension": "emotion",
+            "score": 1.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "color",
+            "score": 1.0,
+            "matched": [
+              "navy",
+              "teal"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "fast_lateral",
+              "unexpected=measured"
+            ],
+            "rationale": "Tag mismatches: fast_lateral, unexpected=measured"
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The small cyan rectangle stays beside the runner across all five samples."
+            ],
+            "rationale": "Continuity mismatches: The small cyan rectangle stays beside the runner across all five samples."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small cyan rectangle stays beside the runner across all five samples.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.58,
+        "pass": false,
+        "reason": "Color tags match perfectly. Continuity, emotion, and audio fields are correct. Summary captures the core visual content but underplays speed. However, tone tags are wrong ('detached' vs 'urgent, tense'), motion tags are contradictory ('measured' vs 'fast_lateral'), and camera tags are incomplete (missing 'wide_master'). The tone and motion errors are significant analytical mischaracterizations that affect the overall quality.",
+        "judge_id": "msg_011CfV83VVMdw5F5Mekk3qjJ",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 712,
+          "output_tokens": 740
+        },
+        "cost_estimated_usd": "0.022060"
+      },
+      "combined": 0.52915,
+      "case_pass": false,
+      "latency_ms_subject": 5045,
+      "cost_usd_subject": "0.0097135"
+    },
+    {
+      "arm": "luna",
+      "case": "storm_tunnel_lateral_run",
+      "evaluation_id": "vfp_active_006",
+      "response": {
+        "output": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"A simplified cyan human figure carrying a small rectangular object moves steadily from left to right beneath a large curved arch. Thin diagonal lines fill the dark blue background throughout.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The cyan figure and attached rectangle are positioned left of center beneath the curved arch.\"},{\"frame_index\":2,\"cue\":\"The same figure and rectangle appear near the horizontal center, with the arch and diagonal background lines still in view.\"},{\"frame_index\":4,\"cue\":\"The figure and rectangle are right of center beneath the same arch.\"}],\"overall_confidence\":0.91}",
+        "token_usage": {
+          "prompt": 2890,
+          "completion": 197,
+          "total": 3249,
+          "billed_completion": 359,
+          "reasoning_completion": 162
+        },
+        "reported_cost_usd": 0.0005406749999999999,
+        "cost_estimated": true,
+        "raw": {
+          "id": "resp_0f965d3287196146016ab9dcca25f487d09a3b2ac0da0b8f97",
+          "model": "gpt-6-luna",
+          "status": "completed",
+          "service_tier": "default",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 359,
+            "output_tokens_details": {
+              "reasoning_tokens": 162
+            },
+            "total_tokens": 3249
+          },
+          "cache_write_count_known": true,
+          "raw_envelope_path": "output/evals/gpt6-image-rerun-20260927/luna/vfp_active_006-raw-envelope.json",
+          "raw_envelope_sha256": "77f6ae2ad2639a9533abf460150e512e3bca4497c2135eacd0ff533b89bfc649",
+          "raw_envelope_bytes": 10656
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.4783,
+        "reason": "raw_score=0.4783 | overall=0.478 | uncertainty=0.090 | summary=0.00 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small cyan rectangle stays beside the runner across all five samples."
+      },
+      "dimensions": {
+        "clip_id": "storm_tunnel_lateral_run",
+        "model_label": "luna",
+        "overall_score": 0.4783,
+        "uncertainty": 0.09,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "runner",
+              "tunnel",
+              "streaks"
+            ],
+            "rationale": "Missing summary cues: runner, tunnel, streaks"
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "tense",
+              "urgent",
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: tense, urgent, unexpected=detached"
+          },
+          {
+            "dimension": "emotion",
+            "score": 1.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "color",
+            "score": 1.0,
+            "matched": [
+              "navy",
+              "teal"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "camera",
+            "score": 0.6666666666666666,
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master"
+          },
+          {
+            "dimension": "motion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "fast_lateral",
+              "unexpected=measured"
+            ],
+            "rationale": "Tag mismatches: fast_lateral, unexpected=measured"
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The small cyan rectangle stays beside the runner across all five samples."
+            ],
+            "rationale": "Continuity mismatches: The small cyan rectangle stays beside the runner across all five samples."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small cyan rectangle stays beside the runner across all five samples.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.6,
+        "pass": false,
+        "reason": "The model correctly identifies the cyan figure, rectangular object, arch/tunnel structure, diagonal lines/rain streaks, navy/teal colors, static camera, intact continuity, and empty audio fields. Evidence is frame-grounded and accurate. However, significant errors exist: tone is 'detached' instead of 'urgent/tense', motion is 'measured' instead of 'fast_lateral', and camera is missing 'wide_master'. The tone and motion mismatches are substantial, as they mischaracterize the dynamic quality of the clip. Overall the visual description is mostly correct but key interpretive tags are wrong.",
+        "judge_id": "msg_011CfV84fsTnYkQjKvP9rwxc",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 712,
+          "output_tokens": 756
+        },
+        "cost_estimated_usd": "0.022460"
+      },
+      "combined": 0.53915,
+      "case_pass": false,
+      "latency_ms_subject": 3918,
+      "cost_usd_subject": "0.0005406749999999999"
+    },
+    {
+      "arm": "gemini",
+      "case": "storm_tunnel_lateral_run",
+      "evaluation_id": "vfp_active_006",
+      "response": {
+        "output": "{\n  \"clip_id\": \"vfp_active_006\",\n  \"summary\": \"A minimalist graphic of a light blue figure moves horizontally across a dark blue background beneath a curved arch. The camera tracks smoothly from left to right following the figure.\",\n  \"tone_tags\": [\n    \"detached\",\n    \"surreal\"\n  ],\n  \"emotion_tags\": [\n    \"isolation\"\n  ],\n  \"color_tags\": [\n    \"navy\",\n    \"teal\"\n  ],\n  \"camera_tags\": [\n    \"lateral_track\"\n  ],\n  \"motion_tags\": [\n    \"slow_drift\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"The light blue figure is positioned near the left side of the frame beneath the arched graphic.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The light blue figure has shifted toward the horizontal center of the frame.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The light blue figure has continued moving and is now positioned on the right side of the frame.\"\n    }\n  ],\n  \"overall_confidence\": 0.98\n}",
+        "token_usage": {
+          "prompt": 6498,
+          "completion": 326,
+          "total": 6824,
+          "billed_completion": 326
+        },
+        "raw": {
+          "responseId": "zty5au2WDfj5qtsP-uCDmAI",
+          "modelVersion": "gemini-3.5-flash-lite",
+          "usageMetadata": {
+            "promptTokenCount": 6498,
+            "candidatesTokenCount": 326,
+            "totalTokenCount": 6824,
+            "promptTokensDetails": [
+              {
+                "modality": "IMAGE",
+                "tokenCount": 5500
+              },
+              {
+                "modality": "TEXT",
+                "tokenCount": 998
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        }
+      },
+      "structural": {
+        "pass": false,
+        "score": 0.305,
+        "reason": "raw_score=0.3050 | overall=0.305 | uncertainty=0.020 | summary=0.00 | tone=0.00 | emotion=0.00 | color=1.00 | camera=0.00 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | camera: static, wide_master, unexpected=lateral_track | motion: fast_lateral, unexpected=slow_drift | continuity: The small cyan rectangle stays beside the runner across all five samples."
+      },
+      "dimensions": {
+        "clip_id": "storm_tunnel_lateral_run",
+        "model_label": "gemini",
+        "overall_score": 0.305,
+        "uncertainty": 0.02,
+        "hard_constraints_passed": true,
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "runner",
+              "tunnel",
+              "streaks"
+            ],
+            "rationale": "Missing summary cues: runner, tunnel, streaks"
+          },
+          {
+            "dimension": "tone",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "tense",
+              "urgent",
+              "unexpected=detached",
+              "unexpected=surreal"
+            ],
+            "rationale": "Tag mismatches: tense, urgent, unexpected=detached, unexpected=surreal"
+          },
+          {
+            "dimension": "emotion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "unexpected=isolation"
+            ],
+            "rationale": "Tag mismatches: unexpected=isolation"
+          },
+          {
+            "dimension": "color",
+            "score": 1.0,
+            "matched": [
+              "navy",
+              "teal"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly."
+          },
+          {
+            "dimension": "camera",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "static",
+              "wide_master",
+              "unexpected=lateral_track"
+            ],
+            "rationale": "Tag mismatches: static, wide_master, unexpected=lateral_track"
+          },
+          {
+            "dimension": "motion",
+            "score": 0.0,
+            "matched": [],
+            "missed": [
+              "fast_lateral",
+              "unexpected=slow_drift"
+            ],
+            "rationale": "Tag mismatches: fast_lateral, unexpected=slow_drift"
+          },
+          {
+            "dimension": "continuity",
+            "score": 0.75,
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The small cyan rectangle stays beside the runner across all five samples."
+            ],
+            "rationale": "Continuity mismatches: The small cyan rectangle stays beside the runner across all five samples."
+          },
+          {
+            "dimension": "audio",
+            "score": 0.0,
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted."
+          },
+          {
+            "dimension": "evidence",
+            "score": 1.0,
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times."
+          },
+          {
+            "dimension": "hard_constraints",
+            "score": 1.0,
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied."
+          }
+        ],
+        "rationale": "summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | camera: static, wide_master, unexpected=lateral_track | motion: fast_lateral, unexpected=slow_drift | continuity: The small cyan rectangle stays beside the runner across all five samples.",
+        "prompt_version": "video-understanding-frame-packet-v3"
+      },
+      "rubric": {
+        "score": 0.3,
+        "pass": false,
+        "reason": "Color tags match perfectly (navy, teal). Continuity status 'intact' is correct. Audio fields are appropriately empty. However, several significant errors: (1) Camera tagged as 'lateral_track' when reference says 'static, wide_master' — this is invented camera movement, explicitly penalized by rubric. (2) Tone is 'detached, surreal' vs reference 'urgent, tense' — wrong. (3) Emotion 'isolation' is invented when reference says none. (4) Motion 'slow_drift' vs 'fast_lateral' — wrong speed. (5) Summary misses rain-like streaks and the cyan rectangle detail. The invented camera movement and multiple incorrect tag categories bring this below threshold.",
+        "judge_id": "msg_011CfV85wkibJmLtzev2rDcx",
+        "returned_model": "claude-opus-4-6",
+        "stop_reason": "end_turn",
+        "usage": {
+          "input_tokens": 831,
+          "output_tokens": 833
+        },
+        "cost_estimated_usd": "0.024980"
+      },
+      "combined": 0.3025,
+      "case_pass": false,
+      "latency_ms_subject": 2588,
+      "cost_usd_subject": "0.00276440"
+    }
+  ],
+  "ledger": {
+    "cap_usd": "1.50",
+    "entries": [
+      {
+        "call": "sol-vfp_active_001-subject",
+        "model": "gpt-6-sol",
+        "reserved_usd": "0.064",
+        "state": "settled",
+        "settled_usd": "0.0094235",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_001-subject-raw.json",
+          "sha256": "514b666c6fb1abc77c58314a24f99b58d67b0bdb656209613ae99d5f24d7c49d",
+          "bytes": 8296
+        },
+        "latency_ms": 6066
+      },
+      {
+        "call": "luna-vfp_active_001-subject",
+        "model": "gpt-6-luna",
+        "reserved_usd": "0.0032",
+        "state": "settled",
+        "settled_usd": "0.000550175",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_001-subject-raw.json",
+          "sha256": "2cf9f31d490eb8649b515d20078be791fb936d3d7d4d3bfc79f321cd4268be17",
+          "bytes": 10591
+        },
+        "latency_ms": 4110
+      },
+      {
+        "call": "gemini-vfp_active_001-subject",
+        "model": "gemini-3.5-flash-lite",
+        "reserved_usd": "0.16984",
+        "state": "settled",
+        "settled_usd": "0.00273690",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_001-subject-raw.json",
+          "sha256": "0546e32cac70c00c7fc8367a7ba1b67a4970a20e0e1a26ae05856eacbc1c141c",
+          "bytes": 1915
+        },
+        "latency_ms": 2561
+      },
+      {
+        "call": "sol-vfp_active_002-subject",
+        "model": "gpt-6-sol",
+        "reserved_usd": "0.064",
+        "state": "settled",
+        "settled_usd": "0.0099035",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_002-subject-raw.json",
+          "sha256": "e0d03f6cf61318c84dbcfee0e3f18a61e81136e08cdb5995bf9bae58a3b9ccb6",
+          "bytes": 10039
+        },
+        "latency_ms": 7141
+      },
+      {
+        "call": "luna-vfp_active_002-subject",
+        "model": "gpt-6-luna",
+        "reserved_usd": "0.0032",
+        "state": "settled",
+        "settled_usd": "0.000546175",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_002-subject-raw.json",
+          "sha256": "dbd4414a442e6d663dc1120a3918a05133fd3cb0ad736dfbdf46814f4974d597",
+          "bytes": 10396
+        },
+        "latency_ms": 3212
+      },
+      {
+        "call": "gemini-vfp_active_002-subject",
+        "model": "gemini-3.5-flash-lite",
+        "reserved_usd": "0.16984",
+        "state": "settled",
+        "settled_usd": "0.00276690",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_002-subject-raw.json",
+          "sha256": "546d1e2aee42b9289eeba2cf96a6f9c9da704c6640e97e6f63a70c31694f07be",
+          "bytes": 1976
+        },
+        "latency_ms": 2422
+      },
+      {
+        "call": "sol-vfp_active_003-subject",
+        "model": "gpt-6-sol",
+        "reserved_usd": "0.064",
+        "state": "settled",
+        "settled_usd": "0.0092735",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_003-subject-raw.json",
+          "sha256": "2d284ef87f0af6459690e35f0259a2dcca5dd68b99045ff9be861aa108640e18",
+          "bytes": 8241
+        },
+        "latency_ms": 14725
+      },
+      {
+        "call": "luna-vfp_active_003-subject",
+        "model": "gpt-6-luna",
+        "reserved_usd": "0.0032",
+        "state": "settled",
+        "settled_usd": "0.000532175",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_003-subject-raw.json",
+          "sha256": "28643fe09e6f153345e8758263f5272dc71963bda982eafe8dd3188b13648a6a",
+          "bytes": 10548
+        },
+        "latency_ms": 3434
+      },
+      {
+        "call": "gemini-vfp_active_003-subject",
+        "model": "gemini-3.5-flash-lite",
+        "reserved_usd": "0.16984",
+        "state": "settled",
+        "settled_usd": "0.00264190",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_003-subject-raw.json",
+          "sha256": "50fe4ced643434d66591783b3ba5834b3f9d49cd5bc0a81b107a1d1abf2e1c20",
+          "bytes": 1761
+        },
+        "latency_ms": 2449
+      },
+      {
+        "call": "sol-vfp_active_004-subject",
+        "model": "gpt-6-sol",
+        "reserved_usd": "0.064",
+        "state": "settled",
+        "settled_usd": "0.0095835",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_004-subject-raw.json",
+          "sha256": "0e2d6c05f0d4f187536ce026509691db9bc4d2fbab23f19d71f974f54a4e5b43",
+          "bytes": 8395
+        },
+        "latency_ms": 5179
+      },
+      {
+        "call": "luna-vfp_active_004-subject",
+        "model": "gpt-6-luna",
+        "reserved_usd": "0.0032",
+        "state": "settled",
+        "settled_usd": "0.000556175",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_004-subject-raw.json",
+          "sha256": "0dfadde2549bc75353c17f61e928e3eba53f6c0da89bdc85d66ae494cbad68e9",
+          "bytes": 10711
+        },
+        "latency_ms": 4715
+      },
+      {
+        "call": "gemini-vfp_active_004-subject",
+        "model": "gemini-3.5-flash-lite",
+        "reserved_usd": "0.16984",
+        "state": "settled",
+        "settled_usd": "0.00273190",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_004-subject-raw.json",
+          "sha256": "686c78caac734524b945e62cf058aba4bab285d7d8b4b859dcd35acf59a11319",
+          "bytes": 1864
+        },
+        "latency_ms": 3088
+      },
+      {
+        "call": "sol-vfp_active_005-subject",
+        "model": "gpt-6-sol",
+        "reserved_usd": "0.064",
+        "state": "settled",
+        "settled_usd": "0.0092435",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_005-subject-raw.json",
+          "sha256": "e83784e108b62b76f7d8598ae77cf6b48264983a7cad4d2f8b1e2456c2d0c42f",
+          "bytes": 8197
+        },
+        "latency_ms": 5142
+      },
+      {
+        "call": "luna-vfp_active_005-subject",
+        "model": "gpt-6-luna",
+        "reserved_usd": "0.0032",
+        "state": "settled",
+        "settled_usd": "0.000552675",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_005-subject-raw.json",
+          "sha256": "c216d87fb015072c09b21a3df058d213f90fd4d69e915f96db7b4de1af06942c",
+          "bytes": 10684
+        },
+        "latency_ms": 3839
+      },
+      {
+        "call": "gemini-vfp_active_005-subject",
+        "model": "gemini-3.5-flash-lite",
+        "reserved_usd": "0.16984",
+        "state": "settled",
+        "settled_usd": "0.00274690",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_005-subject-raw.json",
+          "sha256": "40d4af914e0be652489b5afae6ce8bc3a58883334f0a80e61b6fe985fe326dc2",
+          "bytes": 1895
+        },
+        "latency_ms": 2696
+      },
+      {
+        "call": "sol-vfp_active_006-subject",
+        "model": "gpt-6-sol",
+        "reserved_usd": "0.064",
+        "state": "settled",
+        "settled_usd": "0.0097135",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_006-subject-raw.json",
+          "sha256": "273af8bb54ee12516530457d3ddf9b6fd38ce2209ecec11dba986c7c4f450c9c",
+          "bytes": 9907
+        },
+        "latency_ms": 5041
+      },
+      {
+        "call": "luna-vfp_active_006-subject",
+        "model": "gpt-6-luna",
+        "reserved_usd": "0.0032",
+        "state": "settled",
+        "settled_usd": "0.0005406749999999999",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_006-subject-raw.json",
+          "sha256": "14a335505a8f449af0eaf42364e8a7fa5ce5091f29c12a89aad9791eecc1e239",
+          "bytes": 10656
+        },
+        "latency_ms": 3913
+      },
+      {
+        "call": "gemini-vfp_active_006-subject",
+        "model": "gemini-3.5-flash-lite",
+        "reserved_usd": "0.16984",
+        "state": "settled",
+        "settled_usd": "0.00276440",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_006-subject-raw.json",
+          "sha256": "a0441ee5918dc90d30d26db56a79854c0db0b543c3db7110a5be0aeac7539ee9",
+          "bytes": 1931
+        },
+        "latency_ms": 2582
+      },
+      {
+        "call": "sol-vfp_active_001-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02901500",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_001-judge-raw.json",
+          "sha256": "e003fb9472ebf5b8994fdcbc618096eb576d72a8f8213f8a8213ef1cf733e573",
+          "bytes": 4970
+        },
+        "latency_ms": 22495
+      },
+      {
+        "call": "luna-vfp_active_001-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02276500",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_001-judge-raw.json",
+          "sha256": "1bac65535c69268ebac81bcc68bdd803c530d91fd28ab558ec1e78052d7a1e4a",
+          "bytes": 3981
+        },
+        "latency_ms": 17510
+      },
+      {
+        "call": "gemini-vfp_active_001-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02339500",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_001-judge-raw.json",
+          "sha256": "1dfd67d5c6e1459807815d56c18045f3289d510579256f16a0e2fbf295370474",
+          "bytes": 3854
+        },
+        "latency_ms": 17565
+      },
+      {
+        "call": "sol-vfp_active_002-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02254500",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_002-judge-raw.json",
+          "sha256": "677f7c2da079c0812dc5b5e86ccd9ffa057e0618a482381eaadea9bde51aacc2",
+          "bytes": 3802
+        },
+        "latency_ms": 17313
+      },
+      {
+        "call": "luna-vfp_active_002-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02513000",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_002-judge-raw.json",
+          "sha256": "d757239cfbc82f2e219a5c2e9a902c5868abb2ea40c559f06136a9ae06f7a7ad",
+          "bytes": 3705
+        },
+        "latency_ms": 16570
+      },
+      {
+        "call": "gemini-vfp_active_002-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02429500",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_002-judge-raw.json",
+          "sha256": "b9dd17d57f8573215f9c6321702cdbb0436544372ceac12433b71cab2930418f",
+          "bytes": 3738
+        },
+        "latency_ms": 18118
+      },
+      {
+        "call": "sol-vfp_active_003-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02192500",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_003-judge-raw.json",
+          "sha256": "a46262f602a7a7fc8e7a79e913bcd387c127289c20c698e60cfab1656bf82e09",
+          "bytes": 3538
+        },
+        "latency_ms": 15529
+      },
+      {
+        "call": "luna-vfp_active_003-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02832500",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_003-judge-raw.json",
+          "sha256": "27a299ca31eec1a4a386904bb53fd67aaf2d639d1f0423f70ef6e976d7826639",
+          "bytes": 4807
+        },
+        "latency_ms": 20935
+      },
+      {
+        "call": "gemini-vfp_active_003-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02234500",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_003-judge-raw.json",
+          "sha256": "02f56c3294c425f6d007df8bb3e2338ac66d2f1505cb3e2b6a5df09e08fe22a0",
+          "bytes": 3646
+        },
+        "latency_ms": 15691
+      },
+      {
+        "call": "sol-vfp_active_004-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02214000",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_004-judge-raw.json",
+          "sha256": "d6892c88a3fe13aa5d21b9278f7b8c5c0f8e78cd276a29abfedb07b0a45a7999",
+          "bytes": 3698
+        },
+        "latency_ms": 17255
+      },
+      {
+        "call": "luna-vfp_active_004-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02008500",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_004-judge-raw.json",
+          "sha256": "20d059de13aab1b9c8188076fa2c19efc0370a28e7571f4d39005302f7e13523",
+          "bytes": 3290
+        },
+        "latency_ms": 15434
+      },
+      {
+        "call": "gemini-vfp_active_004-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02536500",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_004-judge-raw.json",
+          "sha256": "ccec8d4121c0ba66264bc6162001a4669f5ca7c971757ee371e0c8558509a59f",
+          "bytes": 4212
+        },
+        "latency_ms": 18910
+      },
+      {
+        "call": "sol-vfp_active_005-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02405000",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_005-judge-raw.json",
+          "sha256": "0fefee738988817a18c94aa2eb720a35f2d080028a2aab20b5093cf8be47a497",
+          "bytes": 4060
+        },
+        "latency_ms": 18544
+      },
+      {
+        "call": "luna-vfp_active_005-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02313000",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_005-judge-raw.json",
+          "sha256": "a4561ec0bdd53b3dd70b4c0670599b83835c2f568d9cd1b9d93e6051eb8d6e4d",
+          "bytes": 3447
+        },
+        "latency_ms": 17025
+      },
+      {
+        "call": "gemini-vfp_active_005-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02492500",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_005-judge-raw.json",
+          "sha256": "0586ed642a7b9fa59a292a424e97d310e1c96700e37cc9d1b97d83aafe0fb355",
+          "bytes": 4220
+        },
+        "latency_ms": 18545
+      },
+      {
+        "call": "sol-vfp_active_006-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02206000",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_006-judge-raw.json",
+          "sha256": "db94039b9b197ca60d1b033ad93cb8421854a60bf1d62d487a4d44909d33ce57",
+          "bytes": 3407
+        },
+        "latency_ms": 15921
+      },
+      {
+        "call": "luna-vfp_active_006-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02246000",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_006-judge-raw.json",
+          "sha256": "82b111e05b5874fbe1e379e79b28c0ae5eaf231c530d0dbc35b1ecca3417069f",
+          "bytes": 3675
+        },
+        "latency_ms": 17310
+      },
+      {
+        "call": "gemini-vfp_active_006-judge",
+        "model": "claude-opus-4-6",
+        "reserved_usd": "0.0756",
+        "state": "settled",
+        "settled_usd": "0.02498000",
+        "raw": {
+          "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_006-judge-raw.json",
+          "sha256": "0ee0835d4a22a2217d232604c4da0df275d26a121e9b2b9dd1a6b55ecc23837c",
+          "bytes": 4014
+        },
+        "latency_ms": 18566
+      }
+    ]
+  },
+  "known_plus_reserved_usd": "0.5057429499999999999",
+  "raw_manifest": [
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_001-judge-parsed.json",
+      "sha256": "79eea5b3a76397a628cb31478fd3f63a15b153fb07921302380d80745bc9b2fe",
+      "bytes": 921
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_001-judge-raw.json",
+      "sha256": "1dfd67d5c6e1459807815d56c18045f3289d510579256f16a0e2fbf295370474",
+      "bytes": 3854
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_001-judge-request.json",
+      "sha256": "a40503e1315b41a4b83adde4888138f2ca66fd0d5e2fe8a70f3eff639d610a1b",
+      "bytes": 3501
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_001-subject-normalized.json",
+      "sha256": "789d513433703823fe5194c8b217a8d5242156d65c37c30523e03e9a98ef9613",
+      "bytes": 5711
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_001-subject-raw.json",
+      "sha256": "0546e32cac70c00c7fc8367a7ba1b67a4970a20e0e1a26ae05856eacbc1c141c",
+      "bytes": 1915
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_001-subject-request.json",
+      "sha256": "26d29d7f85bb0211774d87782a1e2c484c37c8a422b86fb51778375a8d084ba0",
+      "bytes": 97231
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_002-judge-parsed.json",
+      "sha256": "900e916518a5db40233305f9737df14dd1c365e86a575e9341deb60e7f7f79cb",
+      "bytes": 790
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_002-judge-raw.json",
+      "sha256": "b9dd17d57f8573215f9c6321702cdbb0436544372ceac12433b71cab2930418f",
+      "bytes": 3738
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_002-judge-request.json",
+      "sha256": "fa0e333e66c8a400f1265a2579d49958fd341fd745f145ff343a5d95db853d9c",
+      "bytes": 3288
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_002-subject-normalized.json",
+      "sha256": "c3332abb876267cbced916a70c23b24f6a48939106122de9dbe398b348959f99",
+      "bytes": 5798
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_002-subject-raw.json",
+      "sha256": "546d1e2aee42b9289eeba2cf96a6f9c9da704c6640e97e6f63a70c31694f07be",
+      "bytes": 1976
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_002-subject-request.json",
+      "sha256": "8025f5d0b2f7c1c5cb335b852ef9966a46a6d9c9d62516409f2e14fc8d3ac425",
+      "bytes": 256091
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_003-judge-parsed.json",
+      "sha256": "a481ac273ffe03553ef72d898558210a14c3ae4e65aa137702135b9a0ff313bd",
+      "bytes": 871
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_003-judge-raw.json",
+      "sha256": "02f56c3294c425f6d007df8bb3e2338ac66d2f1505cb3e2b6a5df09e08fe22a0",
+      "bytes": 3646
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_003-judge-request.json",
+      "sha256": "b1dea7c4a3175a223ecc8ab2d9116212ae454756b8d21aafa5d8177be251f7f2",
+      "bytes": 3349
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_003-subject-normalized.json",
+      "sha256": "f97ec4d35c10f4834e3280823f6fd70d74f91722a15a0e44c126f543e0af54a6",
+      "bytes": 5363
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_003-subject-raw.json",
+      "sha256": "50fe4ced643434d66591783b3ba5834b3f9d49cd5bc0a81b107a1d1abf2e1c20",
+      "bytes": 1761
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_003-subject-request.json",
+      "sha256": "35a926b55300bdd9c6b58fe90edf5882bd516200ffa8749160f4b2fb245dea58",
+      "bytes": 96511
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_004-judge-parsed.json",
+      "sha256": "d1ef7de89e7af025985bdf476d9fe74ff18d53afda880ca49a13ab73ca4994b6",
+      "bytes": 1032
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_004-judge-raw.json",
+      "sha256": "ccec8d4121c0ba66264bc6162001a4669f5ca7c971757ee371e0c8558509a59f",
+      "bytes": 4212
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_004-judge-request.json",
+      "sha256": "73300df31d95b9aabf05aa4ea0ccf01d660687fd570b902c807d78aca15e670e",
+      "bytes": 3168
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_004-subject-normalized.json",
+      "sha256": "0841b5ac4533df6a91d3cea7cee767b96b86845fc2adf5fd8fa9c5df6dc7fd21",
+      "bytes": 5604
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_004-subject-raw.json",
+      "sha256": "686c78caac734524b945e62cf058aba4bab285d7d8b4b859dcd35acf59a11319",
+      "bytes": 1864
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_004-subject-request.json",
+      "sha256": "27faf1975cd6770d5eb9618fc02433ea49eecb1bf7fac6d8049de8850bd4784d",
+      "bytes": 83291
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_005-judge-parsed.json",
+      "sha256": "68031728ef0707867de37fd854b9469d666072b443742ddf1f3bc26b64366168",
+      "bytes": 1095
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_005-judge-raw.json",
+      "sha256": "0586ed642a7b9fa59a292a424e97d310e1c96700e37cc9d1b97d83aafe0fb355",
+      "bytes": 4220
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_005-judge-request.json",
+      "sha256": "8a80ebd7d362ea89f57b8bd8e7f50b7fb573401559216876a972b01c5d9a3db2",
+      "bytes": 3363
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_005-subject-normalized.json",
+      "sha256": "36210eb2199880aa1b68eaeadf613824cc608056287c75ac6de90112cd84fc58",
+      "bytes": 5661
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_005-subject-raw.json",
+      "sha256": "40d4af914e0be652489b5afae6ce8bc3a58883334f0a80e61b6fe985fe326dc2",
+      "bytes": 1895
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_005-subject-request.json",
+      "sha256": "66e2b5238d50d28a6b01c58fb08fc8bf73f87554f74efbb3b657866f4290dcdf",
+      "bytes": 190927
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_006-judge-parsed.json",
+      "sha256": "454863a4b7982385517bc1c19b67b95ea06b1e2a6353c0b7d3320dc691393fc4",
+      "bytes": 929
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_006-judge-raw.json",
+      "sha256": "0ee0835d4a22a2217d232604c4da0df275d26a121e9b2b9dd1a6b55ecc23837c",
+      "bytes": 4014
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_006-judge-request.json",
+      "sha256": "e605f0882721f726dc68324b6d15fc476f3da694cc16e7b1f9371b6632400ef9",
+      "bytes": 3246
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_006-subject-normalized.json",
+      "sha256": "dbe58d8e1c9b85fee404dd6a60b6f6a8a1c7b582527a67ed411c93f9cd35a86c",
+      "bytes": 5728
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_006-subject-raw.json",
+      "sha256": "a0441ee5918dc90d30d26db56a79854c0db0b543c3db7110a5be0aeac7539ee9",
+      "bytes": 1931
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_006-subject-request.json",
+      "sha256": "90c8251297cadca26d2bec7bdf3e0774c05698b64327bea4750cdf9f0da50c54",
+      "bytes": 311783
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/ledger.json",
+      "sha256": "b8252d3fe06171f492e0a8fbec0c51bc3d7c824eab184fcf052713932e862e86",
+      "bytes": 15733
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_001-judge-parsed.json",
+      "sha256": "c8dd077a466c8a3d7ebcbb989eb6d226a18eb1bad847ce925e39c22e5d3b6607",
+      "bytes": 994
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_001-judge-raw.json",
+      "sha256": "1bac65535c69268ebac81bcc68bdd803c530d91fd28ab558ec1e78052d7a1e4a",
+      "bytes": 3981
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_001-judge-request.json",
+      "sha256": "ec70c7e4d2205a401a988bd1477d0d28fa143c59bbf97e7314bda381b40da1cc",
+      "bytes": 3347
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_001-subject-normalized.json",
+      "sha256": "de0a7110775bbbf80f0eb2891063a8364a8f86e27d7e17a2140082dcfdcbe5f2",
+      "bytes": 6144
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_001-subject-raw.json",
+      "sha256": "2cf9f31d490eb8649b515d20078be791fb936d3d7d4d3bfc79f321cd4268be17",
+      "bytes": 10591
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_001-subject-request.json",
+      "sha256": "fd453fca2a2d586d622ccfc4d959bda4b0c20eb21ab0f7830d4ff1f71c117b30",
+      "bytes": 98420
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_002-judge-parsed.json",
+      "sha256": "009b36ae5ac0ccb8e02236691735dd24732f94ef3689c899945eebecd7cdf3bc",
+      "bytes": 842
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_002-judge-raw.json",
+      "sha256": "d757239cfbc82f2e219a5c2e9a902c5868abb2ea40c559f06136a9ae06f7a7ad",
+      "bytes": 3705
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_002-judge-request.json",
+      "sha256": "5e5b9eb8b50312027dc2d7a93469786703f17cebd900cb60894238c769899570",
+      "bytes": 3178
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_002-subject-normalized.json",
+      "sha256": "6900f88110f61f1ca6339c9c06c0c9cee26d71506d9796757c50c848a56e8306",
+      "bytes": 6319
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_002-subject-raw.json",
+      "sha256": "dbd4414a442e6d663dc1120a3918a05133fd3cb0ad736dfbdf46814f4974d597",
+      "bytes": 10396
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_002-subject-request.json",
+      "sha256": "58087e85360bdd65e745b1e31dfa43ae1a729cc38bcc514bf35dfd9b3545f4b5",
+      "bytes": 257280
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_003-judge-parsed.json",
+      "sha256": "fb730c92cdb7437770a614dc7312a215767c40b3e8cfe7f24c011f8ba859da28",
+      "bytes": 892
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_003-judge-raw.json",
+      "sha256": "27a299ca31eec1a4a386904bb53fd67aaf2d639d1f0423f70ef6e976d7826639",
+      "bytes": 4807
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_003-judge-request.json",
+      "sha256": "3e67d39198c929095debc83f5faf9ef00756a975c40a957a8fe3a28980fae183",
+      "bytes": 3286
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_003-subject-normalized.json",
+      "sha256": "7d0d27a010b6e5c870bc9f9cc92f44a53661de8b760f2f2d53b63ecd02dee675",
+      "bytes": 5978
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_003-subject-raw.json",
+      "sha256": "28643fe09e6f153345e8758263f5272dc71963bda982eafe8dd3188b13648a6a",
+      "bytes": 10548
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_003-subject-request.json",
+      "sha256": "77faf3e8c84a0df27aaadfc558142022b2571ea65a71ed585a40c88738696ac5",
+      "bytes": 97700
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_004-judge-parsed.json",
+      "sha256": "2aeb2e20d11a80e08a6c896b1b942f9eb360275a41989a255fc5a93f23f84d61",
+      "bytes": 762
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_004-judge-raw.json",
+      "sha256": "20d059de13aab1b9c8188076fa2c19efc0370a28e7571f4d39005302f7e13523",
+      "bytes": 3290
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_004-judge-request.json",
+      "sha256": "235d8909658785964e91e0880524389f286a7e45ebd5eda9ef5fd4476ed8f1f2",
+      "bytes": 3075
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_004-subject-normalized.json",
+      "sha256": "1e9786d7a5f80ae1b70b14bdeac2b7edd39b0f9a73d78f1145dd035ed58466f4",
+      "bytes": 6159
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_004-subject-raw.json",
+      "sha256": "0dfadde2549bc75353c17f61e928e3eba53f6c0da89bdc85d66ae494cbad68e9",
+      "bytes": 10711
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_004-subject-request.json",
+      "sha256": "7b70e93787a8102209d051abdf0caec018168da621b11ba9f36c603b6b5c05b4",
+      "bytes": 84480
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_005-judge-parsed.json",
+      "sha256": "3ed63c9f94dbd091a98be0095994907fdfd2254e13765001fb531546243a880c",
+      "bytes": 776
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_005-judge-raw.json",
+      "sha256": "a4561ec0bdd53b3dd70b4c0670599b83835c2f568d9cd1b9d93e6051eb8d6e4d",
+      "bytes": 3447
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_005-judge-request.json",
+      "sha256": "37898ef66c61e0cd3241dc138d6d78857bb9b905fedca29afebbbc60b9020afe",
+      "bytes": 3174
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_005-subject-normalized.json",
+      "sha256": "787474fa164851e8445c3d36f1a147e9a760309067579d0fa2c69b37002e93b9",
+      "bytes": 6024
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_005-subject-raw.json",
+      "sha256": "c216d87fb015072c09b21a3df058d213f90fd4d69e915f96db7b4de1af06942c",
+      "bytes": 10684
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_005-subject-request.json",
+      "sha256": "74fb7f02846ac9535798692783b248f9a551b7190f94147ff895abeaa81bd29f",
+      "bytes": 192116
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_006-judge-parsed.json",
+      "sha256": "5f4076af450ae6a20527e72437602ec221f3e3b1aa25ea1b82339f91ce15730e",
+      "bytes": 863
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_006-judge-raw.json",
+      "sha256": "82b111e05b5874fbe1e379e79b28c0ae5eaf231c530d0dbc35b1ecca3417069f",
+      "bytes": 3675
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_006-judge-request.json",
+      "sha256": "7e00c2b469a9fd806ccae137b3296126c2c57ddb4c52fa7ab083071cc27db480",
+      "bytes": 3013
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_006-subject-normalized.json",
+      "sha256": "b84f45a5a7cfd2fd85ce36dc2dbc2cac7807e9462243d2ca72ac7d040d828c29",
+      "bytes": 6023
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_006-subject-raw.json",
+      "sha256": "14a335505a8f449af0eaf42364e8a7fa5ce5091f29c12a89aad9791eecc1e239",
+      "bytes": 10656
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_006-subject-request.json",
+      "sha256": "8bd422cd9827719cacc56e5598c064855b2f6184ba6f5244d3dd7e6f64cbe212",
+      "bytes": 312972
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_001-judge-parsed.json",
+      "sha256": "f256a44d332cd6c912856d5caedb25ededf9bdcc71691ff8b720589b36d5a84a",
+      "bytes": 944
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_001-judge-raw.json",
+      "sha256": "e003fb9472ebf5b8994fdcbc618096eb576d72a8f8213f8a8213ef1cf733e573",
+      "bytes": 4970
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_001-judge-request.json",
+      "sha256": "7b87eedeeb39577fccfd854a8df046db1256b4dca75b45b4f7994039e256663a",
+      "bytes": 3384
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_001-subject-normalized.json",
+      "sha256": "195d883ae0249523c994b716836afbd9fe729e6c7aad951c9c12f34be9d430eb",
+      "bytes": 6194
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_001-subject-raw.json",
+      "sha256": "514b666c6fb1abc77c58314a24f99b58d67b0bdb656209613ae99d5f24d7c49d",
+      "bytes": 8296
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_001-subject-request.json",
+      "sha256": "d27e8911ed9308d2fd6e3f464338a916960a6e2e1964438f5e0900e86bc20d9f",
+      "bytes": 98419
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_002-judge-parsed.json",
+      "sha256": "b8a7e9f07cf441db651311b0b49a3c927f96a5782b5130c60f5c787ed32bec8f",
+      "bytes": 834
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_002-judge-raw.json",
+      "sha256": "677f7c2da079c0812dc5b5e86ccd9ffa057e0618a482381eaadea9bde51aacc2",
+      "bytes": 3802
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_002-judge-request.json",
+      "sha256": "f578e0ef8169707f1ee56b39e4c18afe91a308807d0d7f72858b86b7b0d6089c",
+      "bytes": 3123
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_002-subject-normalized.json",
+      "sha256": "1b07345ded6525d1640ca8878d52a66bb6078ea2896437b2908f15d23aac099b",
+      "bytes": 6191
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_002-subject-raw.json",
+      "sha256": "e0d03f6cf61318c84dbcfee0e3f18a61e81136e08cdb5995bf9bae58a3b9ccb6",
+      "bytes": 10039
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_002-subject-request.json",
+      "sha256": "24705fb823e81a6aa98089105aadd6cac4a923728a7c7214b1e17dced2318d59",
+      "bytes": 257279
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_003-judge-parsed.json",
+      "sha256": "10adbfd4763941bf8b0473c4bacb8e6e500f759c879942ec67433b5ede01374b",
+      "bytes": 783
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_003-judge-raw.json",
+      "sha256": "a46262f602a7a7fc8e7a79e913bcd387c127289c20c698e60cfab1656bf82e09",
+      "bytes": 3538
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_003-judge-request.json",
+      "sha256": "3e9167334b594b52e813014bb8a7e0d6f0665b1a7147d4212997c39d48b0d651",
+      "bytes": 3331
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_003-subject-normalized.json",
+      "sha256": "70d2117569d60d65e0b23289c97890fd94ee2dd9b3977313f5e92b5f86f55934",
+      "bytes": 6045
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_003-subject-raw.json",
+      "sha256": "2d284ef87f0af6459690e35f0259a2dcca5dd68b99045ff9be861aa108640e18",
+      "bytes": 8241
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_003-subject-request.json",
+      "sha256": "e620a572990a28095fd74cb2451a7861ed80300212944b06b8dcb5540480e7e3",
+      "bytes": 97699
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_004-judge-parsed.json",
+      "sha256": "be8ff982a02e194dabcaa79e7ac5b33aa52c92ced818716552e9fd3701864e65",
+      "bytes": 848
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_004-judge-raw.json",
+      "sha256": "d6892c88a3fe13aa5d21b9278f7b8c5c0f8e78cd276a29abfedb07b0a45a7999",
+      "bytes": 3698
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_004-judge-request.json",
+      "sha256": "212678f23dfbe7bdf2d6d9ea3be94cfb384b2226110d34f06cafc4c1c47ca4ea",
+      "bytes": 3201
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_004-subject-normalized.json",
+      "sha256": "2f8fde57190a181f38a2e296c8e8e0a11caf404dcead8efc39d9ea10d9ea9383",
+      "bytes": 6387
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_004-subject-raw.json",
+      "sha256": "0e2d6c05f0d4f187536ce026509691db9bc4d2fbab23f19d71f974f54a4e5b43",
+      "bytes": 8395
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_004-subject-request.json",
+      "sha256": "b55fbe8a30ddc6d45e0f829f9cf69e77d63356ce443026aa45f9fd73ed0ad0c8",
+      "bytes": 84479
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_005-judge-parsed.json",
+      "sha256": "d8def8421fcdc7ac76212164473e5fc6af0aed9b49d75375ad5cbd4a67c4a6f0",
+      "bytes": 833
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_005-judge-raw.json",
+      "sha256": "0fefee738988817a18c94aa2eb720a35f2d080028a2aab20b5093cf8be47a497",
+      "bytes": 4060
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_005-judge-request.json",
+      "sha256": "7415bd90f010c65b2ff95d7f30bf8bc59719948d5a86a6e9f2d7172292350892",
+      "bytes": 3167
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_005-subject-normalized.json",
+      "sha256": "3e440c457cb5947ce2547bff559851c264994ce6aaedffcd2505e9541d1d5857",
+      "bytes": 5986
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_005-subject-raw.json",
+      "sha256": "e83784e108b62b76f7d8598ae77cf6b48264983a7cad4d2f8b1e2456c2d0c42f",
+      "bytes": 8197
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_005-subject-request.json",
+      "sha256": "7f2b2e0b1614e8abe234bc6f3fa0d1009c6a3edd962c45c3f0a57a318b80d831",
+      "bytes": 192115
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_006-judge-parsed.json",
+      "sha256": "f855db718aec92b8ba81d40331427666fa73a4619d45c051f02f3dd2ea37a873",
+      "bytes": 700
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_006-judge-raw.json",
+      "sha256": "db94039b9b197ca60d1b033ad93cb8421854a60bf1d62d487a4d44909d33ce57",
+      "bytes": 3407
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_006-judge-request.json",
+      "sha256": "351ed747d0ed417dae8ade0de1ea9b9b3c4b258704a878a5d67c489c677ce699",
+      "bytes": 2950
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_006-subject-normalized.json",
+      "sha256": "d55b384813f74820ad4c8d07238e129a162f81bcb5c49cf10ae10d7bab5c57d9",
+      "bytes": 5857
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_006-subject-raw.json",
+      "sha256": "273af8bb54ee12516530457d3ddf9b6fd38ce2209ecec11dba986c7c4f450c9c",
+      "bytes": 9907
+    },
+    {
+      "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_006-subject-request.json",
+      "sha256": "8aa2214682b123a7be76b01fca615cd4c0f624f700440b492de774635dae9aa5",
+      "bytes": 312971
+    }
+  ]
+}

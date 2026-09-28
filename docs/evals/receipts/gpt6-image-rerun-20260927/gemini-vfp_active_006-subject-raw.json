@@ -1,0 +1,35 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"clip_id\": \"vfp_active_006\",\n  \"summary\": \"A minimalist graphic of a light blue figure moves horizontally across a dark blue background beneath a curved arch. The camera tracks smoothly from left to right following the figure.\",\n  \"tone_tags\": [\n    \"detached\",\n    \"surreal\"\n  ],\n  \"emotion_tags\": [\n    \"isolation\"\n  ],\n  \"color_tags\": [\n    \"navy\",\n    \"teal\"\n  ],\n  \"camera_tags\": [\n    \"lateral_track\"\n  ],\n  \"motion_tags\": [\n    \"slow_drift\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"The light blue figure is positioned near the left side of the frame beneath the arched graphic.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The light blue figure has shifted toward the horizontal center of the frame.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The light blue figure has continued moving and is now positioned on the right side of the frame.\"\n    }\n  ],\n  \"overall_confidence\": 0.98\n}",
+            "thoughtSignature": "EmAKXgFpFH0TEl4EyZMMwRlZUsQHlm2+9lhYpvT7riab8khCcEdIeUBLxjKCAe92M2+FgXvYUHY1gkgQMaIlSmJz1v8gaQ5VR5D/pSYqAmmgQmmdlGweQ91j88F8/Pa0uoc="
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 6498,
+    "candidatesTokenCount": 326,
+    "totalTokenCount": 6824,
+    "promptTokensDetails": [
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      },
+      {
+        "modality": "TEXT",
+        "tokenCount": 998
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.5-flash-lite",
+  "responseId": "zty5au2WDfj5qtsP-uCDmAI"
+}

@@ -1,0 +1,473 @@
+{
+  "cap_usd": "1.50",
+  "entries": [
+    {
+      "call": "sol-vfp_active_001-subject",
+      "model": "gpt-6-sol",
+      "reserved_usd": "0.064",
+      "state": "settled",
+      "settled_usd": "0.0094235",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_001-subject-raw.json",
+        "sha256": "514b666c6fb1abc77c58314a24f99b58d67b0bdb656209613ae99d5f24d7c49d",
+        "bytes": 8296
+      },
+      "latency_ms": 6066
+    },
+    {
+      "call": "luna-vfp_active_001-subject",
+      "model": "gpt-6-luna",
+      "reserved_usd": "0.0032",
+      "state": "settled",
+      "settled_usd": "0.000550175",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_001-subject-raw.json",
+        "sha256": "2cf9f31d490eb8649b515d20078be791fb936d3d7d4d3bfc79f321cd4268be17",
+        "bytes": 10591
+      },
+      "latency_ms": 4110
+    },
+    {
+      "call": "gemini-vfp_active_001-subject",
+      "model": "gemini-3.5-flash-lite",
+      "reserved_usd": "0.16984",
+      "state": "settled",
+      "settled_usd": "0.00273690",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_001-subject-raw.json",
+        "sha256": "0546e32cac70c00c7fc8367a7ba1b67a4970a20e0e1a26ae05856eacbc1c141c",
+        "bytes": 1915
+      },
+      "latency_ms": 2561
+    },
+    {
+      "call": "sol-vfp_active_002-subject",
+      "model": "gpt-6-sol",
+      "reserved_usd": "0.064",
+      "state": "settled",
+      "settled_usd": "0.0099035",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_002-subject-raw.json",
+        "sha256": "e0d03f6cf61318c84dbcfee0e3f18a61e81136e08cdb5995bf9bae58a3b9ccb6",
+        "bytes": 10039
+      },
+      "latency_ms": 7141
+    },
+    {
+      "call": "luna-vfp_active_002-subject",
+      "model": "gpt-6-luna",
+      "reserved_usd": "0.0032",
+      "state": "settled",
+      "settled_usd": "0.000546175",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_002-subject-raw.json",
+        "sha256": "dbd4414a442e6d663dc1120a3918a05133fd3cb0ad736dfbdf46814f4974d597",
+        "bytes": 10396
+      },
+      "latency_ms": 3212
+    },
+    {
+      "call": "gemini-vfp_active_002-subject",
+      "model": "gemini-3.5-flash-lite",
+      "reserved_usd": "0.16984",
+      "state": "settled",
+      "settled_usd": "0.00276690",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_002-subject-raw.json",
+        "sha256": "546d1e2aee42b9289eeba2cf96a6f9c9da704c6640e97e6f63a70c31694f07be",
+        "bytes": 1976
+      },
+      "latency_ms": 2422
+    },
+    {
+      "call": "sol-vfp_active_003-subject",
+      "model": "gpt-6-sol",
+      "reserved_usd": "0.064",
+      "state": "settled",
+      "settled_usd": "0.0092735",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_003-subject-raw.json",
+        "sha256": "2d284ef87f0af6459690e35f0259a2dcca5dd68b99045ff9be861aa108640e18",
+        "bytes": 8241
+      },
+      "latency_ms": 14725
+    },
+    {
+      "call": "luna-vfp_active_003-subject",
+      "model": "gpt-6-luna",
+      "reserved_usd": "0.0032",
+      "state": "settled",
+      "settled_usd": "0.000532175",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_003-subject-raw.json",
+        "sha256": "28643fe09e6f153345e8758263f5272dc71963bda982eafe8dd3188b13648a6a",
+        "bytes": 10548
+      },
+      "latency_ms": 3434
+    },
+    {
+      "call": "gemini-vfp_active_003-subject",
+      "model": "gemini-3.5-flash-lite",
+      "reserved_usd": "0.16984",
+      "state": "settled",
+      "settled_usd": "0.00264190",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_003-subject-raw.json",
+        "sha256": "50fe4ced643434d66591783b3ba5834b3f9d49cd5bc0a81b107a1d1abf2e1c20",
+        "bytes": 1761
+      },
+      "latency_ms": 2449
+    },
+    {
+      "call": "sol-vfp_active_004-subject",
+      "model": "gpt-6-sol",
+      "reserved_usd": "0.064",
+      "state": "settled",
+      "settled_usd": "0.0095835",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_004-subject-raw.json",
+        "sha256": "0e2d6c05f0d4f187536ce026509691db9bc4d2fbab23f19d71f974f54a4e5b43",
+        "bytes": 8395
+      },
+      "latency_ms": 5179
+    },
+    {
+      "call": "luna-vfp_active_004-subject",
+      "model": "gpt-6-luna",
+      "reserved_usd": "0.0032",
+      "state": "settled",
+      "settled_usd": "0.000556175",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_004-subject-raw.json",
+        "sha256": "0dfadde2549bc75353c17f61e928e3eba53f6c0da89bdc85d66ae494cbad68e9",
+        "bytes": 10711
+      },
+      "latency_ms": 4715
+    },
+    {
+      "call": "gemini-vfp_active_004-subject",
+      "model": "gemini-3.5-flash-lite",
+      "reserved_usd": "0.16984",
+      "state": "settled",
+      "settled_usd": "0.00273190",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_004-subject-raw.json",
+        "sha256": "686c78caac734524b945e62cf058aba4bab285d7d8b4b859dcd35acf59a11319",
+        "bytes": 1864
+      },
+      "latency_ms": 3088
+    },
+    {
+      "call": "sol-vfp_active_005-subject",
+      "model": "gpt-6-sol",
+      "reserved_usd": "0.064",
+      "state": "settled",
+      "settled_usd": "0.0092435",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_005-subject-raw.json",
+        "sha256": "e83784e108b62b76f7d8598ae77cf6b48264983a7cad4d2f8b1e2456c2d0c42f",
+        "bytes": 8197
+      },
+      "latency_ms": 5142
+    },
+    {
+      "call": "luna-vfp_active_005-subject",
+      "model": "gpt-6-luna",
+      "reserved_usd": "0.0032",
+      "state": "settled",
+      "settled_usd": "0.000552675",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_005-subject-raw.json",
+        "sha256": "c216d87fb015072c09b21a3df058d213f90fd4d69e915f96db7b4de1af06942c",
+        "bytes": 10684
+      },
+      "latency_ms": 3839
+    },
+    {
+      "call": "gemini-vfp_active_005-subject",
+      "model": "gemini-3.5-flash-lite",
+      "reserved_usd": "0.16984",
+      "state": "settled",
+      "settled_usd": "0.00274690",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_005-subject-raw.json",
+        "sha256": "40d4af914e0be652489b5afae6ce8bc3a58883334f0a80e61b6fe985fe326dc2",
+        "bytes": 1895
+      },
+      "latency_ms": 2696
+    },
+    {
+      "call": "sol-vfp_active_006-subject",
+      "model": "gpt-6-sol",
+      "reserved_usd": "0.064",
+      "state": "settled",
+      "settled_usd": "0.0097135",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_006-subject-raw.json",
+        "sha256": "273af8bb54ee12516530457d3ddf9b6fd38ce2209ecec11dba986c7c4f450c9c",
+        "bytes": 9907
+      },
+      "latency_ms": 5041
+    },
+    {
+      "call": "luna-vfp_active_006-subject",
+      "model": "gpt-6-luna",
+      "reserved_usd": "0.0032",
+      "state": "settled",
+      "settled_usd": "0.0005406749999999999",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_006-subject-raw.json",
+        "sha256": "14a335505a8f449af0eaf42364e8a7fa5ce5091f29c12a89aad9791eecc1e239",
+        "bytes": 10656
+      },
+      "latency_ms": 3913
+    },
+    {
+      "call": "gemini-vfp_active_006-subject",
+      "model": "gemini-3.5-flash-lite",
+      "reserved_usd": "0.16984",
+      "state": "settled",
+      "settled_usd": "0.00276440",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_006-subject-raw.json",
+        "sha256": "a0441ee5918dc90d30d26db56a79854c0db0b543c3db7110a5be0aeac7539ee9",
+        "bytes": 1931
+      },
+      "latency_ms": 2582
+    },
+    {
+      "call": "sol-vfp_active_001-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02901500",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_001-judge-raw.json",
+        "sha256": "e003fb9472ebf5b8994fdcbc618096eb576d72a8f8213f8a8213ef1cf733e573",
+        "bytes": 4970
+      },
+      "latency_ms": 22495
+    },
+    {
+      "call": "luna-vfp_active_001-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02276500",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_001-judge-raw.json",
+        "sha256": "1bac65535c69268ebac81bcc68bdd803c530d91fd28ab558ec1e78052d7a1e4a",
+        "bytes": 3981
+      },
+      "latency_ms": 17510
+    },
+    {
+      "call": "gemini-vfp_active_001-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02339500",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_001-judge-raw.json",
+        "sha256": "1dfd67d5c6e1459807815d56c18045f3289d510579256f16a0e2fbf295370474",
+        "bytes": 3854
+      },
+      "latency_ms": 17565
+    },
+    {
+      "call": "sol-vfp_active_002-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02254500",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_002-judge-raw.json",
+        "sha256": "677f7c2da079c0812dc5b5e86ccd9ffa057e0618a482381eaadea9bde51aacc2",
+        "bytes": 3802
+      },
+      "latency_ms": 17313
+    },
+    {
+      "call": "luna-vfp_active_002-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02513000",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_002-judge-raw.json",
+        "sha256": "d757239cfbc82f2e219a5c2e9a902c5868abb2ea40c559f06136a9ae06f7a7ad",
+        "bytes": 3705
+      },
+      "latency_ms": 16570
+    },
+    {
+      "call": "gemini-vfp_active_002-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02429500",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_002-judge-raw.json",
+        "sha256": "b9dd17d57f8573215f9c6321702cdbb0436544372ceac12433b71cab2930418f",
+        "bytes": 3738
+      },
+      "latency_ms": 18118
+    },
+    {
+      "call": "sol-vfp_active_003-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02192500",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_003-judge-raw.json",
+        "sha256": "a46262f602a7a7fc8e7a79e913bcd387c127289c20c698e60cfab1656bf82e09",
+        "bytes": 3538
+      },
+      "latency_ms": 15529
+    },
+    {
+      "call": "luna-vfp_active_003-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02832500",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_003-judge-raw.json",
+        "sha256": "27a299ca31eec1a4a386904bb53fd67aaf2d639d1f0423f70ef6e976d7826639",
+        "bytes": 4807
+      },
+      "latency_ms": 20935
+    },
+    {
+      "call": "gemini-vfp_active_003-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02234500",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_003-judge-raw.json",
+        "sha256": "02f56c3294c425f6d007df8bb3e2338ac66d2f1505cb3e2b6a5df09e08fe22a0",
+        "bytes": 3646
+      },
+      "latency_ms": 15691
+    },
+    {
+      "call": "sol-vfp_active_004-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02214000",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_004-judge-raw.json",
+        "sha256": "d6892c88a3fe13aa5d21b9278f7b8c5c0f8e78cd276a29abfedb07b0a45a7999",
+        "bytes": 3698
+      },
+      "latency_ms": 17255
+    },
+    {
+      "call": "luna-vfp_active_004-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02008500",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_004-judge-raw.json",
+        "sha256": "20d059de13aab1b9c8188076fa2c19efc0370a28e7571f4d39005302f7e13523",
+        "bytes": 3290
+      },
+      "latency_ms": 15434
+    },
+    {
+      "call": "gemini-vfp_active_004-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02536500",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_004-judge-raw.json",
+        "sha256": "ccec8d4121c0ba66264bc6162001a4669f5ca7c971757ee371e0c8558509a59f",
+        "bytes": 4212
+      },
+      "latency_ms": 18910
+    },
+    {
+      "call": "sol-vfp_active_005-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02405000",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_005-judge-raw.json",
+        "sha256": "0fefee738988817a18c94aa2eb720a35f2d080028a2aab20b5093cf8be47a497",
+        "bytes": 4060
+      },
+      "latency_ms": 18544
+    },
+    {
+      "call": "luna-vfp_active_005-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02313000",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_005-judge-raw.json",
+        "sha256": "a4561ec0bdd53b3dd70b4c0670599b83835c2f568d9cd1b9d93e6051eb8d6e4d",
+        "bytes": 3447
+      },
+      "latency_ms": 17025
+    },
+    {
+      "call": "gemini-vfp_active_005-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02492500",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_005-judge-raw.json",
+        "sha256": "0586ed642a7b9fa59a292a424e97d310e1c96700e37cc9d1b97d83aafe0fb355",
+        "bytes": 4220
+      },
+      "latency_ms": 18545
+    },
+    {
+      "call": "sol-vfp_active_006-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02206000",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/sol-vfp_active_006-judge-raw.json",
+        "sha256": "db94039b9b197ca60d1b033ad93cb8421854a60bf1d62d487a4d44909d33ce57",
+        "bytes": 3407
+      },
+      "latency_ms": 15921
+    },
+    {
+      "call": "luna-vfp_active_006-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02246000",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/luna-vfp_active_006-judge-raw.json",
+        "sha256": "82b111e05b5874fbe1e379e79b28c0ae5eaf231c530d0dbc35b1ecca3417069f",
+        "bytes": 3675
+      },
+      "latency_ms": 17310
+    },
+    {
+      "call": "gemini-vfp_active_006-judge",
+      "model": "claude-opus-4-6",
+      "reserved_usd": "0.0756",
+      "state": "settled",
+      "settled_usd": "0.02498000",
+      "raw": {
+        "path": "output/evals/gpt6-image-rerun-20260927/gemini-vfp_active_006-judge-raw.json",
+        "sha256": "0ee0835d4a22a2217d232604c4da0df275d26a121e9b2b9dd1a6b55ecc23837c",
+        "bytes": 4014
+      },
+      "latency_ms": 18566
+    }
+  ]
+}

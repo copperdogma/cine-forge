@@ -1,0 +1,35 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"clip_id\": \"vfp_active_005\",\n  \"summary\": \"A yellow simplified character figure moves across a dark platform background with diagonal lines representing rain or streaks. The camera pans from left to right to track the character's movement across the gap.\",\n  \"tone_tags\": [\n    \"detached\",\n    \"surreal\"\n  ],\n  \"emotion_tags\": [\n    \"isolation\"\n  ],\n  \"color_tags\": [\n    \"navy\",\n    \"gold\"\n  ],\n  \"camera_tags\": [\n    \"lateral_track\"\n  ],\n  \"motion_tags\": [\n    \"fast_lateral\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A yellow character figure stands near the left edge of the platform.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The yellow figure is positioned directly above the gap in the platform.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The yellow figure has moved to the right side of the platform.\"\n    }\n  ],\n  \"overall_confidence\": 0.95\n}",
+            "thoughtSignature": "EmAKXgFpFH0TeLtzZijEJKrM/q5y6ok3A6dkOBSFOxMaqQbUxDHakbvqPx5vXMHwNWVp0rmZGifG48NGkJm+Hj7Zvhsmhiw/jCYDqg/0C0sJ4XQ22yf3IcquXhjy4dyMWTU="
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 6498,
+    "candidatesTokenCount": 319,
+    "totalTokenCount": 6817,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 998
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.5-flash-lite",
+  "responseId": "wty5atepHoTpqtsPuYaH6Aw"
+}
