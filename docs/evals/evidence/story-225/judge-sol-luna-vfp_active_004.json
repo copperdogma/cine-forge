@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.006551",
+  "latency_ms": 6745,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4602,
+    "path": "output/evals/sonnet55-20260928/judge-sol-luna-vfp_active_004-raw.json",
+    "sha256": "ff4cbc85111353c493e7e4e7ea3f90abe88b96f3c24c2f7986d5182c415d57e0"
+  },
+  "reason": "The summary and frame-specific evidence correctly identify the static composition and the rectangle changing from red in frames 0\u20131 to blue in frames 2\u20134. However, continuity_status is marked \u201cintact\u201d despite that visible color change; the reference classifies continuity as broken. \u201cDetached\u201d tone is not supported by the frames, and the camera tags omit the wide view.",
+  "request_id": "resp_01cbdc6e38f0ea7e016abac565fa1c87d0ab657b16fdf3ae0c",
+  "score": 0.76,
+  "usage": {
+    "input_tokens": 2033,
+    "input_tokens_details": {
+      "cache_write_tokens": 2030,
+      "cached_tokens": 0
+    },
+    "output_tokens": 147,
+    "output_tokens_details": {
+      "reasoning_tokens": 51
+    },
+    "total_tokens": 2180
+  }
+}

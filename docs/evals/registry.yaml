@@ -2054,6 +2054,7 @@ evals:
       - "221"
       - "222"
       - "224"
+      - "225"
     category_refs:
       - spec:7
       - spec:8
@@ -2098,6 +2099,36 @@ evals:
       note: "Fresh six-case frame-only results, source-backed truth review, and the 0.80 quality gate are required before any autonomous QA/default decision. A below-gate paired result may still identify a preferred headless reference model; use each row's evidence status."
 
     scores:
+      - model: "Claude Sonnet 5.5 / direct adaptive medium"
+        evidence_status: bounded-six-case-uncommitted-source-reviewed
+        metrics:
+          overall: 0.53735
+          deterministic: 0.46303
+          rubric: 0.61167
+          independent_combined: 0.61402
+        latency_ms: 4390
+        cost_usd: 0.013724
+        cost_estimated: true
+        measured: 2026-09-28
+        git_sha: "a3ac35743c94e253e0406fafe6ee4964a0330bf3+story225-hash-freeze"
+        result_file: benchmarks/results/video-understanding-sonnet55-vs-luna-v4-20260928.json
+        contract_manifest: docs/evals/story-225-sonnet55-evidence.json
+        note: "Attempt045 fresh exact native schema/adaptive medium with4096 output tokens; five ordered JPEGs on six current v4 controls. Source-backed scorer repair and symmetric judge recovery reuse unchanged subjects. Strict unique-tag contract5/6; duplicate rooftop tone_tags remains failure. Below0.80 aggregate and0/6 case passes; independently pixel-reviewed Sol comparison supports retaining Luna headless preference. Mean4.390s/USD0.013724; no product analyzer, runtime/default adoption or commit-identified promotion."
+      - model: "GPT-6 Luna / direct Responses low"
+        evidence_status: bounded-six-case-uncommitted-source-reviewed-control
+        metrics:
+          overall: 0.62179
+          deterministic: 0.61358
+          rubric: 0.63000
+          independent_combined: 0.69263
+        latency_ms: 8119
+        cost_usd: 0.000488341
+        cost_estimated: true
+        measured: 2026-09-28
+        git_sha: "a3ac35743c94e253e0406fafe6ee4964a0330bf3+story225-hash-freeze"
+        result_file: benchmarks/results/video-understanding-sonnet55-vs-luna-v4-20260928.json
+        contract_manifest: docs/evals/story-225-sonnet55-evidence.json
+        note: "Attempt045 fresh matched Responses Standard low1400 strict-schema control on six v4 cases. Retain preferred headless reference model: higher revised aggregate0.62179 versusSonnet0.53735, strict6/6 versus5/6, around28.1x lower observed subject cost (25.2x normalized uncached cache-write), slower8.119s versus4.390s. Firstcase input prompt-cache warmed bynative parity qualification; all outputs fresh/unique and otherfive cache-write buckets priced. Aggregate below0.80;1/6 case passes, propcontinuity status stillwrong. Uncommitted bounded history only; no product integration/default promotion."
       - model: "GPT-6 Luna / direct Responses low"
         evidence_status: bounded-six-case-uncommitted-v4-derived
         metrics:
@@ -2354,6 +2385,23 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "045"
+        story: attempts/045-sonnet55-vs-luna-v4-ordered-frame-comparison.md
+        date: 2026-09-28
+        status: succeeded
+        approach: "Fresh six-case Sonnet5.5/Luna strict ordered-JPEG comparison; source-reviewed scorer and symmetric Opus recovery with independent Sol pixel review."
+        worker_model: "GPT-6 Codex owner agent"
+        subject_model: "claude-sonnet-5-5 and gpt-6-luna"
+        score_before: 0.5986
+        score_after: 0.62179
+        latency_before: 3675
+        latency_after: 8119
+        cost_before: 0.000481
+        cost_after: 0.000488341
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-subject-model
+            note: "Retain Luna headless preference. Sonnet5.5 is faster but fails unique-tag and quality contracts at25-28x cost; no unchanged subject rerun. New checkpoint or broader source-backed scenes required."
       - id: "044"
         story: attempts/044-gpt6-image-fresh-v4-rerun.md
         date: 2026-09-27

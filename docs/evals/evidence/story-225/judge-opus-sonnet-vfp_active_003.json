@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01044",
+  "latency_ms": 9160,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1550,
+    "path": "output/evals/sonnet55-20260928/judge-opus-sonnet-vfp_active_003-raw.json",
+    "sha256": "fa56681a843a7be33f8a6a233aa03c17844e34a574a01167509700ac60cc8ce4"
+  },
+  "reason": "The summary correctly identifies the static composition with a left figure, central gray rectangle, and right figure, and correctly notes no movement. Camera tags (static, wide_master) and motion tags (stillness) match perfectly. Continuity is correctly marked as intact with appropriate notes. Color tags include 'amber' and 'desaturated' (matching reference) but add 'navy' which is not strongly supported. Tone is 'detached' vs reference 'intimate' \u2014 a mismatch. Emotion tags include 'isolation' but reference specifies none, so this is an invention. The description of the left figure as 'tall figure with a round head' roughly matches 'narrow round-topped form' but adding specifics like 'peach' coloring and describing the right figure as having 'a small head' introduces unsupported details. The evidence section is reasonably grounded in frame observations but includes some interpretive embellishments. Audio fields are correctly empty, which is appropriate. The emotion tag invention and tone mismatch are the primary penalties.",
+  "request_id": "msg_011CfWRJdrYtxLaKpSBqxvke",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 883,
+    "output_tokens": 241,
+    "service_tier": "standard"
+  }
+}

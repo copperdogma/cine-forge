@@ -1,0 +1,35 @@
+{
+  "payload": {
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "content": "<Output>\n{\"clip_id\":\"vfp_active_002\",\"summary\":\"A stylized orange-red figure holding a red bar moves steadily left to right across a dark red gradient scene, passing in front of a rectangular outline and a triangular line. Diagonal rain-like streaks shift slightly across samples while the background structures stay fixed.\",\"tone_tags\":[\"tense\",\"ominous\"],\"emotion_tags\":[\"suspicion\",\"tenderness\"],\"color_tags\":[\"red\",\"monochrome\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Figure, red bar, rectangle outline and triangle line keep consistent shape, size and color across all five samples.\",\"Figure position advances progressively left to right in adjacent samples with no visible jump in background.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Figure with red bar sits at left (x~80-200) of a dark red gradient with diagonal streaks.\"},{\"frame_index\":2,\"cue\":\"Figure has moved to center, overlapping the rectangular outline, while the triangle line stays in the same place.\"},{\"frame_index\":3,\"cue\":\"Figure is right of center, partly overlapping the triangle's right slope.\"},{\"frame_index\":4,\"cue\":\"Figure is at right (x~400-525), outside the rectangle, with the background frame unchanged.\"}],\"overall_confidence\":0.82}\n</Output>\n\nEvaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: A red abstract runner crosses a corridor from left to right while diagonal lines shift and red illumination pulses.\n- Tone: urgent, tense\n- Emotion: [none]\n- Color / grade: red\n- Camera language inferable from the ordered samples: static, wide_master\n- Motion inferable from the ordered samples: fast_lateral, pulsing_light\n- Continuity: intact - The small red rectangle stays beside the runner throughout the packet.\n- Audio: unavailable to the subject and excluded from scoring\n\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n",
+        "role": "user"
+      }
+    ],
+    "model": "claude-opus-4-6",
+    "output_config": {
+      "format": {
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "score": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "score",
+            "reason"
+          ],
+          "type": "object"
+        },
+        "type": "json_schema"
+      }
+    },
+    "system": "You are an impartial evaluator. Return exactly a JSON object with score (number 0 to 1) and reason (string). Explain concrete mismatches against visible source facts. Do not reveal chain of thought."
+  },
+  "url": "https://api.anthropic.com/v1/messages"
+}

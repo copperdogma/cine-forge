@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.0066785",
+  "latency_ms": 5029,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4566,
+    "path": "output/evals/sonnet55-20260928/judge-sol-sonnet-vfp_active_004-raw.json",
+    "sha256": "a4a112bc6e9519483b60f8a63b23d5e64537783d18b9010be6b710e39648539a"
+  },
+  "reason": "The description and frame-specific evidence correctly identify the fixed composition and the rectangle changing from red in frames 0\u20131 to blue in frames 2\u20134. However, continuity_status is marked \u201cintact\u201d despite that visible color change; the reference classifies continuity as broken. \u201cDetached\u201d tone and \u201cdesaturated\u201d color are not clearly established by the frames.",
+  "request_id": "resp_01f02a8aba0be89f016abac559b52487d0aca1f6f8cbd33731",
+  "score": 0.76,
+  "usage": {
+    "input_tokens": 2088,
+    "input_tokens_details": {
+      "cache_write_tokens": 2085,
+      "cached_tokens": 0
+    },
+    "output_tokens": 146,
+    "output_tokens_details": {
+      "reasoning_tokens": 52
+    },
+    "total_tokens": 2234
+  }
+}

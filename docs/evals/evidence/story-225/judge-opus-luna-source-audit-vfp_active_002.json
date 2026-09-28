@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01263",
+  "latency_ms": 7894,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1694,
+    "path": "output/evals/sonnet55-20260928/judge-opus-luna-source-audit-vfp_active_002-raw.json",
+    "sha256": "ac01653b601da43b5b7c3e3b3760b2e789687371e0552ac96ca0ef2810c9e014"
+  },
+  "reason": "The output correctly identifies: color (red), static camera, intact continuity, the coral/red figure moving left to right, the small outlined rectangle staying with the figure, the central box and diagonal lines remaining fixed, and empty audio fields. However, there are significant mismatches: (1) Tone tags 'detached' and 'surreal' do not match the reference 'urgent, tense' \u2014 while tone is interpretive for abstract shapes, the mismatch is notable. (2) Motion is tagged as 'measured' rather than 'fast_lateral' and 'pulsing_light' \u2014 the reference indicates fast lateral movement and pulsing light, while the output suggests slow/steady movement with no light pulsation noted. (3) Camera is tagged only as 'static' but misses 'wide_master' from the reference. (4) The description says diagonal lines 'remain fixed' but the reference states 'diagonal lines shift,' suggesting the output mischaracterizes the background motion. (5) The reference mentions 'red illumination pulses' which the output entirely omits. These combined mismatches in motion characterization, tone, and missed observable phenomena (pulsing light, shifting lines) bring the score below the 0.8 threshold.",
+  "request_id": "msg_011CfWRWAU72c4CnAeVj5N7r",
+  "score": 0.55,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 1071,
+    "output_tokens": 291,
+    "service_tier": "standard"
+  }
+}

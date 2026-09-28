@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.010165",
+  "latency_ms": 7517,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1554,
+    "path": "output/evals/sonnet55-20260928/judge-opus-luna-vfp_active_002-raw.json",
+    "sha256": "b0e8913da9d50cf8e8bc129c8948f769af69666cc12340fd010c4082f9cda29d"
+  },
+  "reason": "The model correctly identifies the red color palette, static camera, figure moving left to right, the small rectangle staying with the figure, and intact continuity. However, there are significant mismatches: (1) Tone is 'detached, surreal' instead of 'urgent, tense' \u2014 these are substantially different readings. (2) Motion is tagged as 'measured' rather than 'fast_lateral' and 'pulsing_light' \u2014 the reference indicates fast movement and pulsing illumination, both missed. (3) Camera tags omit 'wide_master'. (4) The description says 'dark red scene' but misses the pulsing/shifting nature of the red illumination and diagonal lines (reference says diagonal lines shift, model says they remain fixed \u2014 a factual contradiction). (5) The figure is described as a 'stylized coral figure' rather than a 'red abstract runner', which is somewhat equivalent but less precise. The fixed-diagonal-lines claim directly contradicts the reference's 'diagonal lines shift', which is a notable factual error. Audio fields are empty, which is correct.",
+  "request_id": "msg_011CfWRHhbFn5ppy4qzQLVus",
+  "score": 0.52,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 748,
+    "output_tokens": 257,
+    "service_tier": "standard"
+  }
+}

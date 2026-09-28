@@ -1,0 +1,78 @@
+{
+  "arm": "luna",
+  "name": "subject-luna-vfp_active_006",
+  "response": {
+    "cached": false,
+    "cost": 0.000541175,
+    "latencyMs": 8391,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "storm_tunnel_lateral_run",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_006",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+        "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+        "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+        "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+        "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+      ],
+      "meta_sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_075c34fe5bd8e837016abac4e2e54087d08eb838d01b66a9b4",
+      "requested_model": "gpt-6-luna",
+      "returned_model": "gpt-6-luna",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"A simplified cyan figure carrying a small rectangular object moves steadily from left to right beneath a curved arch and repeated slanted lines. The dark blue background and line pattern remain nearly fixed across the samples.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The cyan figure and attached rectangle appear left of center beneath the curved arch.\"},{\"frame_index\":2,\"cue\":\"The figure is near the center, while the arch and slanted background lines remain in place.\"},{\"frame_index\":4,\"cue\":\"The figure and rectangle are right of center beneath the same arch.\"}],\"overall_confidence\":0.9}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_075c34fe5bd8e837016abac4e2e54087d08eb838d01b66a9b4",
+      "model": "gpt-6-luna",
+      "raw_envelope_bytes": 10626,
+      "raw_envelope_path": "output/evals/sonnet55-20260928/subject/luna/vfp_active_006-raw-envelope.json",
+      "raw_envelope_sha256": "12c3e9fbdb2bfb7d008b54501dc35750c930c598c6f34eb385a740ebb29060f0",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 360,
+        "output_tokens_details": {
+          "reasoning_tokens": 160
+        },
+        "total_tokens": 3250
+      }
+    },
+    "tokenUsage": {
+      "completion": 200,
+      "completionDetails": {
+        "reasoning": 160
+      },
+      "prompt": 2890,
+      "total": 3250
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+    "clip_id": "storm_tunnel_lateral_run",
+    "evaluation_id": "vfp_active_006",
+    "target_markdown": "file://../video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+    "target_path": "video_understanding_truth_v4/storm_tunnel_lateral_run/target.json"
+  }
+}

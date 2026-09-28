@@ -52,4 +52,23 @@ def test_call_time_archives_and_post_run_scripts_have_distinct_pinned_identities
     runner = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(runner)
     assert runner.CALL_TIME_ARCHIVES == expected_archives
-    assert runner._check_freeze() == freeze
+    evolution_path = ROOT / "docs/evals/story-225-predecessor-v4-archives.json"
+    if not evolution_path.exists():
+        assert runner._check_freeze() == freeze
+        return
+    evolution = json.loads(evolution_path.read_text())
+    assert evolution["original_freeze"] == provenance["original_freeze"]["path"]
+    evolved = {row["original_freeze_path"]: row for row in evolution["evolved_contract_archives"]}
+    # Old paid execution remains fail-closed against newly evolved active inputs.
+    with pytest.raises(RuntimeError, match="Frozen file changed"):
+        runner._check_freeze()
+    for item in freeze["frozen_contract_files"]:
+        if item["path"] in evolved:
+            archive = evolved[item["path"]]
+            path = ROOT / archive["archive_path"]
+            assert _hash(path)["sha256"] == archive["sha256"] == item["sha256"]
+            assert path.stat().st_size == archive["bytes"] == item["bytes"]
+        else:
+            path = ROOT / expected_archives.get(item["path"], item["path"])
+            assert _hash(path)["sha256"] == item["sha256"]
+            assert path.stat().st_size == item["bytes"]

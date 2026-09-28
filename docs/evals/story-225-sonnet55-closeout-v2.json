@@ -1,0 +1,69 @@
+{
+  "base_git_sha": "a3ac35743c94e253e0406fafe6ee4964a0330bf3",
+  "branch": "codex/sonnet55-eval-20260928",
+  "date": "2026-09-28",
+  "destination": "origin/main",
+  "files": [
+    {
+      "bytes": 243817,
+      "path": "CHANGELOG.md",
+      "sha256": "117511935ebff7c76032d0a604a8bd56cb0ad67ab210da9777e5416864d59900"
+    },
+    {
+      "bytes": 18668,
+      "path": "benchmarks/scripts/run_sonnet55_video_comparison.py",
+      "sha256": "0776152e9b69d28b2603783b9e0df34e73209c0e4f1d23c199d66091e5f3ac7a"
+    },
+    {
+      "bytes": 18552,
+      "path": "docs/evals/snapshots/story-225-final-v1-run_sonnet55_video_comparison.py.txt",
+      "sha256": "c056f681ee353d84849d55f676008d4f5ff970cd4922f1ddbc088e9dcaeded16"
+    },
+    {
+      "bytes": 188624,
+      "path": "docs/evals/story-208-contract-manifest-v17.json",
+      "sha256": "4effc7a2813e85060aac22c65fe89e568d6fdaaefa3c377430cff1c77c538d5c"
+    },
+    {
+      "bytes": 33963,
+      "path": "docs/evals/story-225-sonnet55-evidence.json",
+      "sha256": "a7a10688b760645bd7f596196f97366f094491805dd76d4933315e2567ea89af"
+    },
+    {
+      "bytes": 241501,
+      "path": "docs/evals/truth-audit-ledger.yaml",
+      "sha256": "3102c41416f1ab3a57b026cad7f1444fa50139309eeb3e90c22a7e668b9a4146"
+    },
+    {
+      "bytes": 8104,
+      "path": "docs/stories/story-225-sonnet55-ordered-frame-evaluation.md",
+      "sha256": "b9c7b9bd4a904e52666985913291a12b3d99911130040cc77d96fa0ab056b221"
+    },
+    {
+      "bytes": 9878,
+      "path": "scripts/build_eval_contract_manifest.py",
+      "sha256": "658f43700379ecb30b483513a2ee06bc4a9f90330cfc40993767aa53c15a1653"
+    },
+    {
+      "bytes": 7559,
+      "path": "tests/unit/test_eval_contract_manifest.py",
+      "sha256": "e76087edea7af763d620a7b9dff293c43fb75051c095fb7a075acf1ecb975d2f"
+    }
+  ],
+  "paid_calls_added": 0,
+  "predecessor_archives": {
+    "benchmarks/scripts/run_sonnet55_video_comparison.py": "docs/evals/snapshots/story-225-final-v1-run_sonnet55_video_comparison.py.txt"
+  },
+  "predecessor_manifest": "docs/evals/story-225-sonnet55-evidence.json",
+  "push_state": "candidate preflight; barrier held",
+  "scores_changed": false,
+  "validation": [
+    "46 affected offline tests passed",
+    "24 judge request bodies identical to final-v1 helper",
+    "all runner methods <=100 lines",
+    "Ruff PASS",
+    "registry/truth-ledger/contract v17 PASS",
+    "methodology compile/check PASS with existing warnings",
+    "156 predecessor evidence hashes and 63 paid calltime hashes verified"
+  ]
+}

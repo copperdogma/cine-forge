@@ -1,0 +1,24 @@
+{
+  "original_freeze": "docs/evals/story-222-truth-v4-freeze.json",
+  "evolved_contract_archives": [
+    {
+      "original_freeze_path": "benchmarks/tasks/video-understanding.yaml",
+      "archive_path": "docs/evals/snapshots/story-225-predecessor-v4-video-understanding.yaml.txt",
+      "sha256": "34b326eda07d88ab3cbbf9f6340ecea36f622b9955b4d924bda6f45dd95ada1e",
+      "bytes": 10510
+    },
+    {
+      "original_freeze_path": "benchmarks/scorers/video_understanding_scorer.py",
+      "archive_path": "docs/evals/snapshots/story-225-predecessor-v4-video_understanding_scorer.py.txt",
+      "sha256": "0b353a7ff30ee4b5eea7961ab91a3961d830465184246a9c36ab65be95494b97",
+      "bytes": 8790
+    },
+    {
+      "original_freeze_path": "benchmarks/scorers/video_understanding_dimensions.py",
+      "archive_path": "docs/evals/snapshots/story-225-predecessor-v4-video_understanding_dimensions.py.txt",
+      "sha256": "3bd49dbcf285408f367208a189428d38fb38144cd75a2cab367f147f75507fe2",
+      "bytes": 12123
+    }
+  ],
+  "note": "Earlier paid runner intentionally rejects evolved active contracts. These exact predecessor archives preserve its frozen inputs without changing original evidence or old runner."
+}

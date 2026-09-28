@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01021",
+  "latency_ms": 7537,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1477,
+    "path": "output/evals/sonnet55-20260928/judge-opus-sonnet-vfp_active_005-raw.json",
+    "sha256": "05be60c9eb59980eee5b58b654331199c494a1e0fa5fc0f50ebb6e314261de0d"
+  },
+  "reason": "The output captures the core action (yellow figure moving left-to-right in an arc over a gap between dark platforms), the navy color palette, static wide-master camera, and intact continuity. However, several mismatches lower the score: (1) Motion is tagged 'measured' instead of 'fast_lateral' \u2014 the reference indicates fast lateral movement, so this is a meaningful error. (2) 'gold' is used instead of 'amber' \u2014 minor but not equivalent. (3) An emotion tag 'resolve' is invented; the reference explicitly says none. (4) Tone includes 'tense' twice but misses 'urgent'. (5) The continuity note misses the key observation that a small yellow rectangle stays beside the runner. (6) The summary says 'rain-like streaks' which is a somewhat speculative interpretation of diagonal background elements. Overall, while the broad visual scenario is correct, the motion classification error, invented emotion, and missing details bring the score below the 0.8 threshold.",
+  "request_id": "msg_011CfWRNMpWSjwNEdhqHQMAQ",
+  "score": 0.58,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 857,
+    "output_tokens": 237,
+    "service_tier": "standard"
+  }
+}

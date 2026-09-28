@@ -85,7 +85,7 @@ def score_keywords(
 
 def _affirmative_match(text: str, match: re.Match[str]) -> bool:
     """Do not credit a nearby explicit negation of a summary cue."""
-    prefix = re.split(r"[.!?;]", text[max(0, match.start() - 45):match.start()])[-1]
+    prefix = re.split(r"[.!?;]", text[max(0, match.start() - 45) : match.start()])[-1]
     if re.search(
         r"\b(?:not|never|without|doesn't|don't|didn't|isn't|aren't|wasn't|weren't)\b"
         r"(?:[\w,\s-]{0,20})$",
@@ -94,10 +94,12 @@ def _affirmative_match(text: str, match: re.Match[str]) -> bool:
         return False
     if re.search(r"\bno(?:\s+\w+){0,2}\s+$", prefix):
         return False
-    return not bool(re.search(
-        r"\b(?:not|never|without|doesn't|don't|didn't|isn't|aren't|wasn't|weren't)\b",
-        match.group(),
-    ))
+    return not bool(
+        re.search(
+            r"\b(?:not|never|without|doesn't|don't|didn't|isn't|aren't|wasn't|weren't)\b",
+            match.group(),
+        )
+    )
 
 
 def observable_required_keywords(target: VideoAnalysisTarget) -> list[str]:
@@ -266,9 +268,7 @@ def score_hard_constraints(
         matched=[] if missed else ["ordered frame packet contract"],
         missed=missed,
         rationale=(
-            "Hard constraints satisfied."
-            if not missed
-            else f"Hard failures: {', '.join(missed)}"
+            "Hard constraints satisfied." if not missed else f"Hard failures: {', '.join(missed)}"
         ),
     )
 
@@ -308,9 +308,15 @@ def observable_cue_tokens(target: VideoAnalysisTarget) -> set[str]:
         *target.continuity_notes,
     ]
     tokens = set(tokenize(" ".join(source_parts)))
-    unavailable_tokens = set(
-        tokenize(" ".join(_AUDIO_ONLY_TAGS & set(target.audio_tags)))
-    )
+    # Coarser visible geometry is valid evidence for abstract synthetic actors.
+    # These expand a cue lexicon, not summary/action/tag requirements: a figure
+    # need not be called a runner, and the drawn tunnel outline is an arch.
+    # Judges retain responsibility for whether the specific cue matches pixels.
+    if "runner" in tokens:
+        tokens.update({"figure", "figures"})
+    if "tunnel" in tokens:
+        tokens.update({"arch", "arched", "curved"})
+    unavailable_tokens = set(tokenize(" ".join(_AUDIO_ONLY_TAGS & set(target.audio_tags))))
     return tokens - unavailable_tokens
 
 
@@ -319,9 +325,7 @@ def cue_is_grounded(cue: str, lexicon: set[str]) -> bool:
     if len(tokens) < 3:
         return False
     matches = {
-        token
-        for token in tokens
-        if any(tokens_related(token, expected) for expected in lexicon)
+        token for token in tokens if any(tokens_related(token, expected) for expected in lexicon)
     }
     return len(matches) >= 2
 

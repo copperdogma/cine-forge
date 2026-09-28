@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01208",
+  "latency_ms": 12257,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1771,
+    "path": "output/evals/sonnet55-20260928/judge-opus-sonnet-vfp_active_001-raw.json",
+    "sha256": "06d32c1feb765a5f4b9f11c860a24abe9bb1e3bc9d47807e2ba24c2c1fa15294"
+  },
+  "reason": "The summary correctly identifies two figures (beige/light blue), their fixed positions, gradual enlargement, navy gradient backdrop, and dark floor. Color tags (navy, teal, desaturated) are mostly correct though 'desaturated' is not strongly supported. Motion tag 'measured' matches reference. Continuity is correctly marked 'intact' with appropriate notes about the pale rectangle on the blue figure. However, several issues reduce the score: (1) The output claims 'slow_push_in' as a camera tag, which the reference explicitly notes is ambiguous and not established\u2014the figure-size change is observable but a specific camera mechanism is not. This is an invented claim. (2) Tone tags 'detached' and 'tense' do not match the reference tone 'intimate.' (3) Emotion tags 'isolation' and 'hesitation' are listed but the reference says '[none]'\u2014these are invented interpretations not observable from still frames. (4) 'slow_drift' in motion tags is not well supported since positions are fixed. (5) 'locked_two_shot' is a reasonable observation but still speculative as camera language. The combination of invented camera movement, wrong tone, and fabricated emotions significantly penalizes the output despite otherwise solid visual observations and evidence.",
+  "request_id": "msg_011CfWRE3fsuoVr6topepuv6",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 926,
+    "output_tokens": 298,
+    "service_tier": "standard"
+  }
+}

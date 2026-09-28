@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01288",
+  "latency_ms": 10450,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1907,
+    "path": "output/evals/sonnet55-20260928/judge-opus-sonnet-vfp_active_002-raw.json",
+    "sha256": "687c8583e29aa34155af2bb92f06d27c925b798b81d3b22c666e843c83981fc4"
+  },
+  "reason": "Several significant mismatches with the reference: (1) Motion: The reference describes 'fast_lateral' and 'pulsing_light', but the output claims 'measured' and 'slow_drift', which are semantically opposite to fast lateral movement and pulsing light. (2) Emotion: The output invents 'suspicion' and 'tenderness' as emotion tags, while the reference specifies none. (3) Tone: The output includes 'ominous' which is not in the reference ('urgent, tense'); 'tense' matches. (4) Camera: The output has only 'static' but misses 'wide_master'. (5) Color: The output says 'monochrome' in addition to 'red'; while the scene is largely red, adding monochrome is debatable. (6) Continuity: The reference notes 'The small red rectangle stays beside the runner throughout the packet,' but the output describes the figure moving independently past a rectangular outline and triangle line, and describes the red bar as something the figure holds rather than a companion rectangle. The output also invents structures like a 'triangular line' and 'rectangular outline' as background features, which may not match the reference's description. (7) The overall description of movement direction (left to right) and continuity status (intact) are correct. (8) Audio fields are empty, which is correct. The motion speed mismatch, invented emotions, and structural description differences are significant enough to fail.",
+  "request_id": "msg_011CfWRGSB2hZtx4cESRq3HF",
+  "score": 0.42,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 856,
+    "output_tokens": 344,
+    "service_tier": "standard"
+  }
+}

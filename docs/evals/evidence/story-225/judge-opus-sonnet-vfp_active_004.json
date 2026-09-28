@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.00943",
+  "latency_ms": 6619,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1316,
+    "path": "output/evals/sonnet55-20260928/judge-opus-sonnet-vfp_active_004-raw.json",
+    "sha256": "610bfdf4b4c2872a259399c5ddb987d54f8e7467d50ea41c4536cb930c99478b"
+  },
+  "reason": "The output correctly identifies the static camera, the red-to-blue color change between frames 1 and 2, the navy color palette, and provides frame-grounded evidence. However, several issues lower the score: (1) Continuity is marked 'intact' when the reference says 'broken' due to the color change\u2014this is a significant factual mismatch. (2) Tone is tagged 'detached' when the reference indicates none; emotion_tags are correctly empty. (3) Color tags include 'desaturated' which is not strongly supported. (4) Motion tags include 'stillness' when the reference says none. (5) camera_tags omit 'wide_master'. (6) audio_tags and audio_notes are empty, which is correct per the scoring rules. The continuity status error is the most consequential mistake, as it directly contradicts the reference analysis.",
+  "request_id": "msg_011CfWRLU5jWnzsz6sHu4fia",
+  "score": 0.52,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 831,
+    "output_tokens": 211,
+    "service_tier": "standard"
+  }
+}

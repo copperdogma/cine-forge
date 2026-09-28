@@ -1,0 +1,121 @@
+{
+  "id": "resp_01656e2104383d5d016abac50815b087d0bf1da38a2c506e2e",
+  "object": "response",
+  "created_at": 1790625032,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1790625037,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "model": "gpt-6-sol",
+  "moderation": null,
+  "output": [
+    {
+      "id": "rs_01656e2104383d5d016abac509ad7487d09a4562923824df48",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqusUN9OXtOaWjKl_U4gIkXrX1IP3BxQRxVyKPFdTvXovM9_XyGHAkNR5dRJWX2B_CZsoM2g3LBs7JIPO1JiB4MNj6iZVYFjdAQaSivuZtowUCZLtW1o0qkRm7McfzwHXbh12FXGQXNALR3uuuD8v9WW-x5hkwCpecAU37m5v_g7Fa3SugnvSg9z6djuYAPAl-yscwq4geHC6zLLrkLExKsYc9V63Jw3rFHAm-ccmRgVO0IpfDcCXMQMXoZKLXHW2Wbn93VJdPks4GTDeMPow4U59-q_FiyTYCwpF3mDFGRsP2yHgl4j7eYQQCx6SMSO1nqn7Wft0izlAClLHTgvmMVzbWDjsaQkNDQyslR1FjbOXIn5UPmmcOHO_pM6oaUpPDORb6nZ7mdcULUxbQs7v3iJxFbkRWYnfGzM0sd6yDWMixRTSPKeJgZ7-qgVdA-Cf8z9gQf_i3qWevjIMwATqV4IeavvOugekHmt9RGwfhDSPFGSIhw-C_1-pNQotRAThPfHDzwUNyMvds_my9Tkw9ZwTHFfKnQvb2qYk4A-wRzYDip9COIakn27B1_h6KuQV5OSf0JqTy77vJt5ECz0IRmjidY30wuEUwNvLBZXnD9BLzkhmxVGe4vtz7IyExVvUFi40pEAYsOdpWMSGppVPeE-_9vCvP8UPe71Mv5R5hFys4BX-RE6dKWvSDxcwBHZ4ZZiBBFQ5mu89l9F3Pb2fe0yQmK4lB5eZIrg7b_swzFz_tdUPAHguORa5HP8h5bSJ8lu9imS4KWrXyxyLVkZ3CtdlB0T2ft7HVJaLBopvzOL8L2UdwVZgRhsn2QsqZ3dyfgGzaN4VQFiBBV0xr6fu481Gu54WgBhGWks0sC7VDDYFOnloZmcGv6JrtWdCUh0Tq0ujfWiCM2pXVA3vEP6NyxXhzLgqpvn79abKGtT9JlSD1oU2rXVsaJFPC-N9cRnfJeNdOv6UWXXsG3NXypqUlkshvfl3js-SS7L4wJ9PPXVjezk9Sy8Y0iuSckw7ZbHTQPGfvlnwtWB4WTF4L7rnQGFB_iIwYaMs-i89KICdaUiKOO6SFD5T2giRofZF8Z-MpXJ_OK-0BrBINCnuDNwt6EJFZ1NZaxEAzgvJZ76lt4ikKqvW9BqRCkLgr9FOCJG5hUFt9k4efPkoq44P7RIOmwoQWAjYip0_EeVgTLOVigf5D21xABEgTRTlVPhoHOTOtF5sNLUbXs_2bx1CWNF5wfvPbZWdglVcwyplDKQz2XDaxFBhnU9BGYOw_HAznKDLouxU-krqW3bJ5oY0otTEiHN5Q0RamFgMJVYEn1WCYRZ3NVIgxdXAdhudyHqTAStjWhRRt8tPANPp_MQi92NsQLOd8qaIfKOqeAQJM213j3yahCXxZ1xYDJhGzbgm8h4iUlT_rI5Krdh7F6fK6RpfqgSFQBmmtNklhuz7jVl3ccwye26nm6RAzz0S_gjQxScbHGXukVVUAZhcUBhCF6sj81NxHzQ==",
+      "summary": []
+    },
+    {
+      "id": "msg_01656e2104383d5d016abac50b9d8487d0a3bd84bec8133e94",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"score\":0.76,\"reason\":\"The description and frame evidence correctly identify the two figures, their gradual enlargement at nearly fixed centers, the stable pale rectangle, and the unchanged background. However, a slow camera push-in is not established: the figures enlarge while the rectangle and background do not scale. The tense tone and isolation/hesitation emotions are also interpretations unsupported by the still frames.\"}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "frame_review",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "score",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2176,
+    "input_tokens_details": {
+      "cache_write_tokens": 2173,
+      "cached_tokens": 0
+    },
+    "output_tokens": 144,
+    "output_tokens_details": {
+      "reasoning_tokens": 54
+    },
+    "total_tokens": 2320
+  },
+  "user": null,
+  "metadata": {}
+}

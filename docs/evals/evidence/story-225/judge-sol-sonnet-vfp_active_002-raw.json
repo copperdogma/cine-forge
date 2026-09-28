@@ -1,0 +1,121 @@
+{
+  "id": "resp_0a4a0498dfcd076a016abac52717b487d0a255a80c9f38f99b",
+  "object": "response",
+  "created_at": 1790625063,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1790625068,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "model": "gpt-6-sol",
+  "moderation": null,
+  "output": [
+    {
+      "id": "rs_0a4a0498dfcd076a016abac528141887d092e3b4f7ac9bdb2f",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqusUtkd0iyMCkyqmEl5IBhZbLRxuwgxjwPY8KPpzOeYFkQKQXFBV6cxX2lWvRTNSGmbOwmSGsQ2td8C38CPMj_2j9Im4df7PgbTCXDnw-M72go8giRtRY6Xae91Ed4PUgYSMWB0HsJc-iARNc3JfgvaeO0XwBLP_eXS8Pp5qA4R63CE_E0XgU54XjKaC3UgTn0nkXGiqH9GTgI9_Elf_8UmEXWWARDS0rsb-298yp6XnbI89KKqCMbvgPnhKEFE-m-9PqR0MGWtUBulGIc9W9KSuB_b9vFxPDRzlaRdTAlkQ0nt6NKqvxmk4Z61G4OdMRq7EHwYh1BabssHMV-0O1oymQ88zjZIsSBhuX1o5yTpvrShWi6_Vfe5bChL3fcGqR6vuN6xqANOX9x9ZuVoGcrv3bnQAog60EANOiuCdlgdAwpNYpkYjdKamI6Zr3jnaw7xJvF7O_mSIxJYzeui1pylqJoXbKKB5juo_xRIe8gVLTiLXVVT6TJfVpKC7-rZNU_asFJ5yusNVIuMXoCBwb406F6fU0ZJDFMTjntRCGHmqS8EpB-AffOhLfAgfEYMDF4aJuhwX6UgcJssqP-UZUaNdcYIBNRR10ZdaK1qx8MejEoetjvHU32pKN_9NwV9-jhMdd5u003rnCf_sMmS9CYNLaf3HMWER6mb-_jxDUifaep5GOozvvVBoBmwpn_kQ7ANqaXvXO2OAQlC4_B6azY89fJFYc6XRh1LVMwyeeu-5ifzm46c1gIuIVvlhplItzBi92RGD8bde-0RSmxkY0zEkCGQWv-8Vxsu0vACsc-ddYbbvZrziuKvXw6lShZEyahIm_aEX7VGFZDhihtgaTe1eNU9Zmij-mYxqNRFISQ65-az7dDg5wrjRizJMJKXh9rs6fWI6XS0PYm-Toou60fOCafUWBKvqITJM645LkzE_QnmbvQ42C0e9hYPEqSb-z9kQlprhaHIgio2-ouCiMM_5HbZJW3p8N5Pf_TforkqHiz1RFsQj9I4VL67NpDyavFOLb5wD8y_-QGukoBliPCu-cpxVrASqrfBAdy6UN4ftxsXPHcVfEwEZ2yE2PAxAoQCCyEbbkkUvMZ83pHdR6TP1-5H_Qg835F4IqFvKSs2n4LcBqtapMu9KLE0BCXa4AXijIFXTcpr4C5q7OJF2jqYZ3-D2Ofd1DYEBw5vAetv6fsZ4WFedIn5kq0FyFDkma4YzLIo5GO0oz0f7HLgu6vkQrsMUHV2Jsku8maYB6DLDbvClBcYGd5O3Tfd2nOwAwtjNEyc-6BpUYY5dVvdURAY9rl3-4_57UfeHAScRTk337K70tfC1-90Bh-qDnNAOfI3sJBJFwpBfk7gr-cg-wmzji5d3wgyEqgg23U87TJPhODPf7LyDY9wAnPIvZHzfmlv35hOV9YySmp-PNKDRRarkKuRaHNI4xqucmTmM5byx-P7aKoO82Y-yFLgw_tofeBTEC9vApYq8Ub7JZuXJtkRTfjGX6YXuSYD_J1NF-PKhHlYAyAvzSrpXdqp8yDX0pqMhANPPUuPmHVwBqyZpxBrrmgrH51K47vFgbi-OGozyMAkXB3hYR5DtO8Wk9M2zcfAffu9NNgBoLRnMtklrBDb3sHZqcm9F7zEa70z99yaecpvEKDjPiqPbbFjN87wCw86m2vdAkx0BOGjMfRLAe-Q9ma6vhDM5APzOfexJHWpHUx2ViMQqfjEquQxHIpJeG3YrtCh9nBJPxoLgzNcmUXJ1yNQ==",
+      "summary": []
+    },
+    {
+      "id": "msg_0a4a0498dfcd076a016abac52aee7c87d0b1ced3a8df6b1581",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"score\":0.77,\"reason\":\"The analysis correctly tracks the red figure and its accompanying rectangle moving left to right across a fixed red scene, with intact continuity and empty audio fields. However, it describes the movement as slow and measured rather than fast lateral motion, misses the pulsing red illumination, and assigns emotions\u2014especially tenderness\u2014that are not supported by the frames.\"}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "frame_review",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "score",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2112,
+    "input_tokens_details": {
+      "cache_write_tokens": 2109,
+      "cached_tokens": 0
+    },
+    "output_tokens": 184,
+    "output_tokens_details": {
+      "reasoning_tokens": 98
+    },
+    "total_tokens": 2296
+  },
+  "user": null,
+  "metadata": {}
+}

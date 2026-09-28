@@ -131,27 +131,32 @@ def score_prediction_against_target(
             haystack=prediction.summary,
             required=_observable_required_keywords(target),
             equivalents=(
-                {"closer": (
-                    r"\b(?:become|becomes|became|appear|appears|look|looks)\s+(?:(?:slightly|gradually|progressively|visibly)\s+)*(?:larger|bigger)\b",
-                    r"\benlarg\w*\s+across\s+(?:the\s+)?(?:ordered\s+)?(?:frames|samples)\b",
-                    r"\bacross\s+(?:the\s+)?(?:ordered\s+)?(?:frames|samples)\b.{0,80}\benlarg\w*\b",
-                    r"\bacross\s+(?:the\s+)?(?:ordered\s+)?(?:frames|samples)\b.{0,100}\b(?:grow|grows|grew)\s+(?:slightly|gradually|visibly|progressively|larger|bigger)\b",
-                    r"\b(?:camera|framing|shot)\s+push(?:es|ed|ing)?\s+in\b",
-                )}
-                if "slow_push_in" in target.camera_tags else
-                {"static": (
-                    r"\b(?:composition|arrangement|positions?|scene|frame)\s+"
-                    r"(?:remains?|stays?)\s+(?:visually\s+|completely\s+)?"
-                    r"(?:unchanged|fixed)\b",
-                    r"\bno\s+(?:visible\s+)?(?:motion|movement|change)\b",
-                )}
-                if "static" in target.required_keywords else None
+                {
+                    "closer": (
+                        r"\b(?:become|becomes|became|appear|appears|look|looks)\s+(?:(?:slightly|gradually|progressively|visibly)\s+)*(?:larger|bigger)\b",
+                        r"\benlarg\w*\s+across\s+(?:the\s+)?(?:ordered\s+)?(?:frames|samples)\b",
+                        r"\bacross\s+(?:the\s+)?(?:ordered\s+)?(?:frames|samples)\b.{0,80}\benlarg\w*\b",
+                        r"\bacross\s+(?:the\s+)?(?:ordered\s+)?(?:frames|samples)\b.{0,100}\b(?:grow|grows|grew)\s+(?:slightly|gradually|visibly|progressively|larger|bigger|taller)\b",
+                        r"\b(?:camera|framing|shot)\s+push(?:es|ed|ing)?\s+in\b",
+                    )
+                }
+                if "slow_push_in" in target.camera_tags
+                else {
+                    "static": (
+                        r"\b(?:composition|arrangement|positions?|scene|frame)\s+"
+                        r"(?:remains?|stays?)\s+(?:visually\s+|completely\s+)?"
+                        r"(?:unchanged|fixed)\b",
+                        r"\bno\s+(?:visible\s+)?(?:motion|movement|change)\b",
+                        r"\b(?:unchanging|unchanged)\s+(?:composition|arrangement|positions?|scene)\b",
+                        r"\bnothing\s+(?:visibly\s+)?(?:moves?|changes?)\b",
+                    )
+                }
+                if "static" in target.required_keywords
+                else None
             ),
         ),
         "tone": _score_tag_dimension("tone", prediction.tone_tags, target.tone_tags),
-        "emotion": _score_tag_dimension(
-            "emotion", prediction.emotion_tags, target.emotion_tags
-        ),
+        "emotion": _score_tag_dimension("emotion", prediction.emotion_tags, target.emotion_tags),
         "color": _score_tag_dimension("color", prediction.color_tags, target.color_tags),
         "camera": _score_tag_dimension("camera", prediction.camera_tags, target.camera_tags),
         "motion": _score_tag_dimension("motion", prediction.motion_tags, target.motion_tags),
@@ -172,9 +177,10 @@ def score_prediction_against_target(
     observable_weight = sum(raw_weights[name] for name in scored_dimensions)
     if observable_weight <= 0:
         raise ValueError("Target assigns no weight to observable frame dimensions")
-    overall_score = sum(
-        dimensions[name].score * raw_weights[name] for name in scored_dimensions
-    ) / observable_weight
+    overall_score = (
+        sum(dimensions[name].score * raw_weights[name] for name in scored_dimensions)
+        / observable_weight
+    )
     if not hard_dimension.score:
         overall_score *= 0.5
 
@@ -199,8 +205,7 @@ def score_prediction_against_target(
         1.0,
         max(
             0.0,
-            (1.0 - prediction.overall_confidence)
-            + (0.15 if not hard_dimension.score else 0.0),
+            (1.0 - prediction.overall_confidence) + (0.15 if not hard_dimension.score else 0.0),
         ),
     )
     rationale = " | ".join(missed) if missed else "Prediction matched the frame target."
@@ -219,9 +224,7 @@ def score_prediction_against_target(
 
 def format_score_reason(score: VideoAnalysisScore) -> str:
     parts = [f"overall={score.overall_score:.3f}", f"uncertainty={score.uncertainty:.3f}"]
-    parts.extend(
-        f"{dimension.dimension}={dimension.score:.2f}" for dimension in score.dimensions
-    )
+    parts.extend(f"{dimension.dimension}={dimension.score:.2f}" for dimension in score.dimensions)
     parts.append(score.rationale)
     return " | ".join(parts)
 

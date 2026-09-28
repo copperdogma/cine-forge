@@ -1,0 +1,78 @@
+{
+  "arm": "luna",
+  "name": "subject-luna-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.00021017000000000003,
+    "latencyMs": 10570,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0f9740bc0835a547016abac491f4e887d0a8d1d0e8cbc44c38",
+      "requested_model": "gpt-6-luna",
+      "returned_model": "gpt-6-luna",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified figures stand side by side against a dark blue background. Across the samples, both figures gradually grow taller while remaining in place.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Two small, rounded figures stand on a horizontal dark ground; the left figure is cream and the right is light blue.\"},{\"frame_index\":2,\"cue\":\"Both figures extend farther upward than in frame 0 while their bases remain aligned with the ground.\"},{\"frame_index\":4,\"cue\":\"The figures are taller still, with the same side-by-side arrangement and unchanged background horizon.\"}],\"overall_confidence\":0.91}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0f9740bc0835a547016abac491f4e887d0a8d1d0e8cbc44c38",
+      "model": "gpt-6-luna",
+      "raw_envelope_bytes": 10536,
+      "raw_envelope_path": "output/evals/sonnet55-20260928/subject/luna/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "3b6b397d01a1f9cbfff6a5fd5b9d0b99e2254cda07e8147c2b5fae3f13cf7b07",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 2887
+        },
+        "output_tokens": 362,
+        "output_tokens_details": {
+          "reasoning_tokens": 163
+        },
+        "total_tokens": 3252
+      }
+    },
+    "tokenUsage": {
+      "completion": 199,
+      "completionDetails": {
+        "reasoning": 163
+      },
+      "prompt": 2890,
+      "total": 3252
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

@@ -49,13 +49,13 @@ def test_story_213_manifest_is_hash_complete_for_final_qa_contract() -> None:
 
 @pytest.mark.unit
 def test_current_story_208_manifest_rolls_forward_without_rewriting_history() -> None:
-    assert manifest.DEFAULT_OUTPUT.name == "story-208-contract-manifest-v15.json"
+    assert manifest.DEFAULT_OUTPUT.name == "story-208-contract-manifest-v17.json"
     payload = manifest.build_manifest(
         REPO_ROOT,
         manifest.DEFAULT_LEDGER,
         manifest.DEFAULT_OUTPUT,
     )
-    assert payload["manifest_id"] == "story-208-eval-contracts-v15"
+    assert payload["manifest_id"] == "story-208-eval-contracts-v17"
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v1.json").exists()
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v2.json").exists()
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v3.json").exists()

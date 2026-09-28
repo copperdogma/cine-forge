@@ -1,0 +1,78 @@
+{
+  "arm": "luna",
+  "name": "subject-luna-vfp_active_002",
+  "response": {
+    "cached": false,
+    "cost": 0.0005406749999999999,
+    "latencyMs": 7821,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "alarm_chase_whip_pan",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_002",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a",
+        "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039",
+        "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655",
+        "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b",
+        "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+      ],
+      "meta_sha256": "d028854d7c23197397b7003bfcfe3fd651d418a232950e8e28851ea210e7e99a",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0d3c9f09ba1b190d016abac4b3f89c87d09647109932910791",
+      "requested_model": "gpt-6-luna",
+      "returned_model": "gpt-6-luna",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_002\",\"summary\":\"A stylized coral figure carrying a small outlined rectangle moves steadily from the left side of a geometric, dark red scene to the right. The surrounding diagonal lines and central outlined box remain fixed.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[],\"color_tags\":[\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The coral figure is at the far left, with a small red rectangle outlined in white beside its torso.\"},{\"frame_index\":2,\"cue\":\"The figure and outlined rectangle are near the center, overlapping the fixed central box.\"},{\"frame_index\":4,\"cue\":\"The figure is on the right side while the central box and diagonal background lines remain in place.\"}],\"overall_confidence\":0.97}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0d3c9f09ba1b190d016abac4b3f89c87d09647109932910791",
+      "model": "gpt-6-luna",
+      "raw_envelope_bytes": 10592,
+      "raw_envelope_path": "output/evals/sonnet55-20260928/subject/luna/vfp_active_002-raw-envelope.json",
+      "raw_envelope_sha256": "1edd779b1c2595653abf08f1197a4c9d7e21912a941ce68cb50a1e3a4425348c",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 359,
+        "output_tokens_details": {
+          "reasoning_tokens": 152
+        },
+        "total_tokens": 3249
+      }
+    },
+    "tokenUsage": {
+      "completion": 207,
+      "completionDetails": {
+        "reasoning": 152
+      },
+      "prompt": 2890,
+      "total": 3249
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+    "clip_id": "alarm_chase_whip_pan",
+    "evaluation_id": "vfp_active_002",
+    "target_markdown": "file://../video_understanding_truth_v4/alarm_chase_whip_pan/target.md",
+    "target_path": "video_understanding_truth_v4/alarm_chase_whip_pan/target.json"
+  }
+}

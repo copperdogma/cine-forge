@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-09-28-01] — Compare Sonnet 5.5 with Luna on ordered frames (Story 225)
+
+### Added
+- Retained six fresh synthetic five-JPEG subjects per model, native schema and
+  adapter parity checks, independent pixel reviews, and all bounded receipts.
+
+### Changed
+- Retained Luna as the headless reference preference after both models missed
+  the 0.80 quality gate. Subject latency and cost gates passed for both models.
+
+### Fixed
+- Applied source-backed semantic and evidence-grounding corrections equally to
+  saved outputs, preserving original scores, call-time code, and invalid tags.
+
 ## [2026-09-27-01] — Use pnpm for root and UI dependency installs (Story 223)
 
 ### Changed

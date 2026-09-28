@@ -1,0 +1,121 @@
+{
+  "id": "resp_0c7d4145e73b57a6016abac543581087d0a01b8b494fbee27c",
+  "object": "response",
+  "created_at": 1790625091,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1790625095,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "model": "gpt-6-sol",
+  "moderation": null,
+  "output": [
+    {
+      "id": "rs_0c7d4145e73b57a6016abac544872487d08d5f3224c542e2ae",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqusVH6vo2KIHARIKeedFOswuJrl1_siTKXIdz7Y0zRUg3mbHVVo8rfVy4_2UfjugmBFb-TscfbJmYTmZtpsv-Ij7yiCQMMXAEEoudHtE1L3a_sVvEyFAl-NtTkfhOrrrWDleR5jRRJGpUwoz0LFXJMw7xDkqoDpqD06Q8uowez_rEgCcSb0qwFQrUTV--qvbnqx8gZMxB51lz8mWHRVEGNwkhEic30t-jJagLFEGIHtsureppBXaIl-A29ZX24HxTSYFrZqakmJitfpD2p2IUtZevzatq9aogvdYxJ6OBJZbYUQe5spJoufzFXq55kSbRq5-opc-COeN3uAETNodK8n5BPf8ZOHGn5zFJX30gumbyvrY3py_PrKNpPDG98B5lPJBJPAPqmN-PLVlzFLzP_RE2p--ejJrK7jfrtBjsYVDRZz2S7eNNQ-C7bb7l0pNoKetDZROXNTHsnm_LrkpYP5HqLKTLHkrnuYhXVfWSTGaPGh-flUZYApO3iubhkx2NPdCAB8tEXdq4CXqdMHIIm4dOeEvRRxblPPyfl9rUuRADBMwPQx1Y3hQ7m0puI6pLl6lb6ZztjFlmEjjTCdvHdgfjdFFKvg3gikbkjY08E5U7yUL2eD8U4D8xk_lC-e1CfC1ttIrfYtQE_ta5kwNs8FEP4xVMlEFvlTeGbcfnomsEGQySgbLn7hTApEhSAj8LNX_hEU4RBuauXs-m-VaB3L33jwRv52vquGJm-_1CVZf0mdO3WCbU5FfOlXou7ZiZRwF8njWp9ugAX_C0u5_MbaiMsEyV9t839ksJVb3SEmN0YZzhZwztLbVsq8XlTvS3jHwgC2lVvM2uOaMu8NC4Xl-HcjV5BV3UiimKV8aMb8_m6hceD1Lv-IXsRzDwNtYV9sohlo6ON5l1VwGsXJCCiWXzJ-NnhwZsLNeII9bcRZZ5X687cV-gCI-bsvdNajhSgJHetX3BnyhpaywsY-GavhG6j7NPv7o6cYzJCJkZzXFgepuPALFiknHcRVjPBJKBZ04XT2DH6H2tG4-VCIs312DdSWQTB-RASTeRC9R7gqfsRKiVSxrf6botyPMaIj7IoMzmw7ZURrnoCKTVCXHiXoqugsszbxRyMwRdOPKrDRANP-IBOsntrQY3YY8ATFFe084Fmh3Gsrmn8ARGVZCFxbzvB5NCcEbNznpUeO0MaAu4oBLzUP3LTlEyF5JOBHZRC3j0FFGY5QLOCOStFQYrGZ2VmG1f_r05YbHaqRvEQ5RpPbbNtiZgyxhdQ_qnfQqQXZ71FDHOOqRR1Iw1byjqR2Dxuw==",
+      "summary": []
+    },
+    {
+      "id": "msg_0c7d4145e73b57a6016abac5455d8c87d09ce7f99c4ce228ed",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"score\":0.88,\"reason\":\"Accurately describes the fixed geometry, colors, static framing, and unchanged placement across the sampled frames, with concrete evidence at frames 0, 2, and 4. Minor mismatches: the reference characterizes the tone as intimate rather than detached and does not support the inferred emotion of isolation. Calling the left form a figure is an acceptable interpretation of its ambiguous shape.\"}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "frame_review",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "score",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2140,
+    "input_tokens_details": {
+      "cache_write_tokens": 2137,
+      "cached_tokens": 0
+    },
+    "output_tokens": 119,
+    "output_tokens_details": {
+      "reasoning_tokens": 23
+    },
+    "total_tokens": 2259
+  },
+  "user": null,
+  "metadata": {}
+}

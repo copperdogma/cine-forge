@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.009215",
+  "latency_ms": 7431,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1342,
+    "path": "output/evals/sonnet55-20260928/judge-opus-luna-vfp_active_006-raw.json",
+    "sha256": "76bd4e0a201bad514c927ba78db050d9f4c12684da5969ddf80f0c7668246c3b"
+  },
+  "reason": "The model correctly identifies the cyan figure, rectangular object, dark blue/navy background, teal/cyan colors, static camera, and intact continuity. However, there are significant mismatches: (1) Tone is tagged as 'detached' instead of 'urgent, tense' \u2014 this is a clear mismatch. (2) Motion is tagged as 'measured' instead of 'fast_lateral' \u2014 the reference indicates fast lateral movement, not measured/slow movement. (3) The model describes a 'curved arch' which may be a reasonable interpretation of the tunnel, but calling it an arch is somewhat inaccurate. (4) The rain-like streaks are described as 'slanted lines' which is acceptable. (5) Missing 'wide_master' camera tag. (6) Audio fields are empty which is correct. The tone and motion mismatches are significant enough to bring the score well below the 0.8 threshold.",
+  "request_id": "msg_011CfWRRnVeXjkw1sJmTQzuC",
+  "score": 0.55,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 738,
+    "output_tokens": 221,
+    "service_tier": "standard"
+  }
+}

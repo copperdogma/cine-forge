@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.006986",
+  "latency_ms": 6653,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4782,
+    "path": "output/evals/sonnet55-20260928/judge-sol-luna-vfp_active_005-raw.json",
+    "sha256": "3f62b6f171049de2b0df2ded10509e03989375b0fa6b503ae061e4cc10b36b8a"
+  },
+  "reason": "The summary correctly identifies the yellow figure, adjacent rectangle, left-to-right gap crossing, static composition, and intact continuity. However, \u201cmeasured\u201d motion conflicts with the rapid, roughly constant lateral movement across the five frames, and \u201cdetached\u201d misses the reference\u2019s tense tone. At frame 2, the figure is above the left edge of the gap, not centered over it.",
+  "request_id": "resp_02915803ba7071f9016abac5860e3887d088bdcb4a14266c3a",
+  "score": 0.77,
+  "usage": {
+    "input_tokens": 2035,
+    "input_tokens_details": {
+      "cache_write_tokens": 2032,
+      "cached_tokens": 0
+    },
+    "output_tokens": 190,
+    "output_tokens_details": {
+      "reasoning_tokens": 92
+    },
+    "total_tokens": 2225
+  }
+}

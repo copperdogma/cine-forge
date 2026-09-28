@@ -1,0 +1,32 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"clip_id\":\"vfp_active_005\",\"summary\":\"A yellow blocky figure moves left to right in an arc across a gap between two dark platforms under a navy sky with slanted rain-like streaks. The figure rises through the first frames and lands on the right platform by the last frame.\",\"tone_tags\":[\"tense\",\"tense\"],\"emotion_tags\":[\"resolve\"],\"color_tags\":[\"navy\",\"gold\"],\"camera_tags\":[\"wide_master\",\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Background platforms, gap, and diagonal streak pattern stay consistent across all five samples while the figure's position changes progressively.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Yellow figure stands on the left dark platform near x=120, before the gap.\"},{\"frame_index\":2,\"cue\":\"Figure is raised high above the gap center, at about x=285, with its head near y=65.\"},{\"frame_index\":4,\"cue\":\"Figure has landed on the right platform at about x=440, at a height similar to frame 0.\"},{\"frame_index\":3,\"cue\":\"Platform edges and the gap are in the same positions as in earlier frames, indicating a fixed camera.\"}],\"overall_confidence\":0.72}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011CfWRAtTucSzGEees8vh5F",
+  "model": "claude-sonnet-5-5",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 4512,
+    "output_tokens": 435,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.012655",
+  "latency_ms": 8258,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1699,
+    "path": "output/evals/sonnet55-20260928/judge-opus-sonnet-source-audit-vfp_active_003-raw.json",
+    "sha256": "70cfc2bb45c32375e8d2928f6ff929d8017f40e4af6ddc24f83d7bb64727baae"
+  },
+  "reason": "The output correctly identifies the core visual composition: a left figure with a round top, a gray-blue horizontal rectangle in the middle, and a rounded figure with a smaller head at right, all against a warm/dusky background. These match the reference's description of 'a horizontal gray rectangle between a narrow round-topped form at left and a broader round-topped figure at right.' Camera tags (static, wide_master) and motion tags (stillness) match exactly. Continuity is correctly identified as intact with appropriate evidence. Color tags include amber and desaturated, matching the reference; navy is an additional tag not contradicted by the pixels. The tone tag 'detached' differs from the reference's 'intimate,' and an emotion tag 'isolation' is provided where the reference has none\u2014these are interpretive mismatches but not factual inventions about visible content. Audio fields are empty as required. Evidence is frame-grounded and concrete. No invented actions, edits, camera movements, identities, or story meaning. Minor deductions for the tone/emotion mismatches and the extra 'navy' color tag, but overall the analysis is solid and faithful to the visible frames.",
+  "request_id": "msg_011CfWRWkC8gkRMQ84MMCv6X",
+  "score": 0.82,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 1206,
+    "output_tokens": 265,
+    "service_tier": "standard"
+  }
+}

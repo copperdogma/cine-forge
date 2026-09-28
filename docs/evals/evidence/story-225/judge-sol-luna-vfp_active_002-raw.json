@@ -1,0 +1,121 @@
+{
+  "id": "resp_0e3601207204683b016abac5351bcc87d0a78764ecfd4644ef",
+  "object": "response",
+  "created_at": 1790625077,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1790625081,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "model": "gpt-6-sol",
+  "moderation": null,
+  "output": [
+    {
+      "id": "rs_0e3601207204683b016abac5366cf487d0818223f457b50b4e",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqusU5u1N6HOhxsEBpq_0dhbXGQs3Oga2t9EXlWm2B3-wv-pVc5ApOOj6hxng4do585mwIOlxDntLQI1fSK9EXA4uA2bBUVUY0Qs2NkiuZa78DZ_yKDv-ix8maJzhUpBL0MwpOc1lt9NPfugcoetgPef4f04K1sRnHDDMrgQQiRA_sOmZBDOv2k7GI_Bf0R52vz6JzncJqcohKhdM3LEvF8JxvzqVxaGg9XzPXKMMNADuqfFAfgUC_-6ZjP_YgwW4trdrcwGRc5z9uRJacurS7_dRnnpw7T7_25sdLBpsKsR5qqkh0Po4AG2EJsKDjwR1kVmbFs8GE5_ffc2yD3WOfA16ygyg0A0YQV5EhQSeuH25umEhFHxrzpIn6h2FAGjJux8FCw0IRfmqTIEKhmvDG1AK7rr1v0T5aU0jazdK-SztV1jc7H5UF1XbykGtz2o8urrg9WdNCv9SHFMsCO3cctLbnzesaLARVSrZnw8WOhxmK-W_SCqf_lj5_v3AkAREu5ItTGbZsTfBkdsKqmWJSGoUBWOk9-xWvrHKaAiEgJjfwK6d1LFRx0H_ob4e4y-hTZH6dVa71YLD3B7Qxt376wmRYApP9nMQErLBEHcAr13JrxuOcgdg1CjCvpVjQ8D-CEZj-b2aK8XqR4BytvTlvfeurCR1UzGO-t1ALRl8-dwPSws270n9vIWlgKFhedZ0juB1Sop6o8mEu4-eLmnCYi7ddL5C-JVxFUtP8x6l21NA0NlJpqNVzuqVnPGnFaaj3jMn9KM94s7-9wNnEgwhX6e4gXuUuSIwc9iHsWCrx1q6yP8_f1A1FFv1Ka_TlEE52TqnRLRS1i8WAd5ekOyEpUgPAlhYLuRkRlaeNgkKYXDl1g6VqdG175TwvPK-jxt9BVJBzIhGLBt95I8o8Jy1uwzWePuRMrl51zi471oIGdk3a9YPKtU6ChHETgFZFEdvy4p75FDcGy5pI5ReIqwRiogv-hwrilHHZHWB1F_EAwrLdxDCJqa7bvKWLV1k50DUNaAWmM1Mt-qkKR1r3MMwBQYqWpOjRh4_oSXI6KJq0Ns5uHpw8xXJJ69wvdjHewiMaWssKLBHa55TP1ypRs2Oife-EOu-4BlY3kIJfU2t_vUQNZC8UB2kxtV50NrRU8Lkk7jZPuDtNwVIA1IwYYZIoRkdnJTU5JjQ756pAemCRxMb0UQJH-2hVAzZedWvgf6v4_CtcyG_4WmXTuUHBIT3ANIXnrSvquWyDJEQuQ_3MxmDHZUSiyGc9daLYnThwlpdXrTowYERb68asMzJezg5kfP-36DLXQqM7fh8hIqHviIPgvqB_107s8HRvpMLAYDCIWF8LxDhZA1NAwmSwz_xEYNgoV9SfYhB96B1-sY5hpqRp1ugKzK1FOwzd51DC4P-Kf_LTp6Wp_P8F3p0GUbAiXA0EYmeW6IOlcaAKSCuPVmzebDo=",
+      "summary": []
+    },
+    {
+      "id": "msg_0e3601207204683b016abac537bb9887d0bdb01d04a89004d5",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"score\":0.72,\"reason\":\"The left-to-right movement, red palette, static camera, attached rectangle, and intact continuity match the frames. However, the diagonal background lines shift between samples rather than remaining fixed. The description also misses the pulsing red illumination and characterizes the motion as measured and the tone as detached, whereas the reference identifies fast lateral motion and an urgent, tense tone.\"}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "frame_review",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "score",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2012,
+    "input_tokens_details": {
+      "cache_write_tokens": 2009,
+      "cached_tokens": 0
+    },
+    "output_tokens": 134,
+    "output_tokens_details": {
+      "reasoning_tokens": 42
+    },
+    "total_tokens": 2146
+  },
+  "user": null,
+  "metadata": {}
+}

@@ -1,0 +1,121 @@
+{
+  "id": "resp_0c9e4bb6b114461f016abac54ee55487d0ab7a2d4d379384a9",
+  "object": "response",
+  "created_at": 1790625102,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1790625106,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "model": "gpt-6-sol",
+  "moderation": null,
+  "output": [
+    {
+      "id": "rs_0c9e4bb6b114461f016abac54fe00487d0a073460307b6ff71",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqusVSXLGVqBg55Qlh1y_r87-G35YdXc2XKUGuMNt_ofTJxkBIsJTWqJMuWZ854_rPYJUqUVkhjUConbtGa5lrdWUpVwtWbNdu5GkaizS7OUTPjOqLYdwgKuipfaUWv7YI_tKVOzRUfPjMDRzo4aoN_MquEt-_IHNlVI11EFgHobw4ne6edpzLn7y7LyX8kiXghmAbd6EHZEoxgAgbY43K5PZ1fSxr_mRIf-mtP7vZ1iPWSwSabSdxMi3loPLd_uBy1cS1_gKfK9SBXOni_2Pg1ryFY08uRIInGcXUaEGPlGdBIaXwprPqQR5S5pu6CH72V3OA-6OMyD6Po2PgCivOl5npqxSj1nD5ircdP2QuUYWh4mJD_pUFKXoje6x44F_Zis13xd8ZmMjJytMq91nU6XRZTiCDJOASsnv-YCqTQACg3OiP6Hd-O65lKbujkRXXpHsCOvxihCcI_HAhCiFUDiRjs15OVf-O0Xdz34Zpa8sTsSbR1qjEo0pWC0bbvh8fiqcz74Iw1TslQKjhhQlnsXNb4xgkZaEtLs04-E485FdqqBpyj7tRPXH4pRPpKwI32PyyyOcGWflnxSpiKkgDX5nmgBEYgxwXIaRgKE78HC98UqqXtODR_csDxyE7G9jGwBfSYpzzAZGV8ainVT4fdhzur5j0M-yoSArhjGxmpUQuUYyeo5e5W2TjY3zcR_BgyOLYUQz6uCLXqqhb_xXrEaphUpT8O0FBF_VePOnk5NMjc2KaPtEiscZtKsbow5C37lrMAbvlSRde1vKvozUl67UDOhOIfyowlAaXulGPZooDO9XusF5SWkYzE0aFJ8aqsKnHTjrO__vBSAuf4jzbTNf2rF8pm_OdWeIvtNH6IafXUshBkUnhX0vnb1XuAeWxKXnChC1ttgle05eM4dxEnywJaw4g-CivzYH7RvEU_fC8ApVJQXjV5Y6MARrZ01_wg7Opv6SwOChmX_4uemSHu_cATwHAziICOXesdypCLVkanGLaguBCvY8mKmTG4tsXaJAeOsNseQNHjrUOaqI2LArFMxEKIh71E033KgxoqgqX7VkrH-Wk67XOR05XFQVmkdd7I4zrfe3QV2mPGvXvX7UvawC9CmO0oS0BhPZexsrQbjgBqnIvoveA1mQeeAOB6JgqvfhC7g-1kNuKlmpygWtdr7IcFj1Rc0-qUr5SOBnWn9S3SJU0QfKXTBx5Sj_6-cXKqvpVlWrYJbHMa_rp8JBwCP8Ivt89iMR3dZmg8r2o49LVbg9FaRG97se27k2Ku-lebKE3lhlvfdMUo44WRoDVIfpbLpyQLsWsys-NYls1rrkQxiGx1BTolW5vY9z_ONYP",
+      "summary": []
+    },
+    {
+      "id": "msg_0c9e4bb6b114461f016abac550caa487d08d9c813a52fe497e",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"score\":0.9,\"reason\":\"The summary and evidence accurately describe the fixed gray rectangle, the two round-topped forms, and their unchanged positions across the sampled frames. Color, stillness, and continuity also match. The main mismatches are the detached tone rather than the reference\u2019s intimate tone, and the omission of the wide-master framing tag.\"}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "frame_review",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "score",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2066,
+    "input_tokens_details": {
+      "cache_write_tokens": 2063,
+      "cached_tokens": 0
+    },
+    "output_tokens": 110,
+    "output_tokens_details": {
+      "reasoning_tokens": 27
+    },
+    "total_tokens": 2176
+  },
+  "user": null,
+  "metadata": {}
+}

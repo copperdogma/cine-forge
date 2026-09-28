@@ -1,0 +1,35 @@
+{
+  "payload": {
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "content": "<Output>\n{\"clip_id\":\"vfp_active_006\",\"summary\":\"A simple light-blue figure with a small rectangular object moves steadily from left to right beneath an arched line, with diagonal rain-like streaks across a navy-to-teal gradient. The scene is stylized and cool-toned, and the figure's progression across the samples is consistent.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\",\"teal\",\"desaturated\"],\"camera_tags\":[\"lateral_track\"],\"motion_tags\":[\"measured\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The figure keeps the same shape, size, and color across all five samples while its horizontal position shifts steadily rightward.\",\"The arch and gradient background remain fixed and consistent from frame to frame.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Figure with a small rectangle is at the far left, at about x=120, under the arched line.\"},{\"frame_index\":2,\"cue\":\"Figure has moved to the center of the frame, at about x=285, with the arch unchanged.\"},{\"frame_index\":4,\"cue\":\"Figure is at the right, at about x=440, with the same size and appearance.\"},{\"frame_index\":3,\"cue\":\"Diagonal rain-like streaks stay in similar angled positions while the figure sits at about x=367.\"}],\"overall_confidence\":0.72}\n</Output>\n\nEvaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: A cyan abstract runner moves laterally through a blue tunnel as repeated rain-like streaks shift across the ordered frames.\n- Tone: urgent, tense\n- Emotion: [none]\n- Color / grade: teal, navy\n- Camera language inferable from the ordered samples: static, wide_master\n- Motion inferable from the ordered samples: fast_lateral\n- Continuity: intact - The small cyan rectangle stays beside the runner across all five samples.\n- Audio: unavailable to the subject and excluded from scoring\n\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n",
+        "role": "user"
+      }
+    ],
+    "model": "claude-opus-4-6",
+    "output_config": {
+      "format": {
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "score": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "score",
+            "reason"
+          ],
+          "type": "object"
+        },
+        "type": "json_schema"
+      }
+    },
+    "system": "You are an impartial evaluator. Return exactly a JSON object with score (number 0 to 1) and reason (string). Explain concrete mismatches against visible source facts. Do not reveal chain of thought."
+  },
+  "url": "https://api.anthropic.com/v1/messages"
+}

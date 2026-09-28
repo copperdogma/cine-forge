@@ -1,0 +1,32 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"clip_id\":\"vfp_active_003\",\"summary\":\"Five samples show an unchanging composition: a tall figure with a round head at left, a gray-blue rectangle in the middle, and a rounded figure with a small head at right, all against a dusky gradient background. Nothing visibly moves or changes across the samples.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"desaturated\",\"amber\",\"navy\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"All five samples show identical placement of the left figure, gray-blue rectangle, and right figure, with no visible changes in background or lighting.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Tan left figure with round head at x~130, gray-blue rectangle spanning x~145-430, and rounded peach figure at right on a dark dusk gradient.\"},{\"frame_index\":2,\"cue\":\"Composition, framing, and object positions are identical to frame 0, indicating no camera movement or action.\"},{\"frame_index\":4,\"cue\":\"Final sample matches the first: same figures, rectangle, and horizon line at y~245, so continuity holds.\"}],\"overall_confidence\":0.85}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011CfWR9JxztiVfkPxcXe78X",
+  "model": "claude-sonnet-5-5",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 4512,
+    "output_tokens": 442,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard"
+  }
+}

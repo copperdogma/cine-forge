@@ -342,6 +342,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 221 | Opus 5.5 Ordered-Frame Evaluation | High | Done | — | spec:7, spec:8, spec:9 | 208 | [story-221](stories/story-221-opus55-ordered-frame-evaluation.md) |
 | 222 | GPT-6 Sol and Luna Ordered-Frame Evaluation | High | Done | — | spec:7, spec:8, spec:9 | 208 | [story-222](stories/story-222-gpt6-sol-luna-ordered-frame-evaluation.md) |
 | 224 | GPT-6 Image Fresh V4 Rerun | High | Done | — | spec:7, spec:8, spec:9 | 222 | [story-224](stories/story-224-gpt6-image-fresh-v4-rerun.md) |
+| 225 | Sonnet 5.5 Ordered-Frame Comparison | High | Done | — | spec:7, spec:8, spec:9 | 222 | [story-225](stories/story-225-sonnet55-ordered-frame-evaluation.md) |
 | 028 | Render Adapter Module | Unknown | Done | — | spec:7, spec:10 | 013, 022, 025, 027, 029 | [story-028](stories/story-028-render-adapter.md) |
 | 030 | Generated Output QA (Video Understanding Benchmark) | Unknown | Done | — | spec:7, spec:8, spec:9 | 005, 012, 021, 022, 028, 032 | [story-030](stories/story-030-generated-output-qa.md) |
 | 098 | Real-World Asset Upload Pipeline | Unknown | Cancelled | — | spec:7 | 029 | [story-098](stories/story-098-real-asset-upload.md) |

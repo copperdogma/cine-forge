@@ -1,0 +1,32 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simple figures, one beige and one light blue, stand apart against a navy gradient backdrop above a dark floor. Across the samples both figures grow slightly larger, consistent with a slow push-in, while their positions and the framing stay otherwise steady.\",\"tone_tags\":[\"detached\",\"tense\"],\"emotion_tags\":[\"isolation\",\"hesitation\"],\"color_tags\":[\"navy\",\"desaturated\",\"teal\"],\"camera_tags\":[\"slow_push_in\",\"locked_two_shot\"],\"motion_tags\":[\"measured\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both figures, the backdrop gradient, the floor line, and the white label on the blue figure remain consistent across all five samples.\",\"Figure sizes increase gradually and evenly from frame 0 to frame 4 with no sudden jumps in position or appearance.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Beige figure at left and light blue figure at right stand with a wide gap between them against a navy gradient, head tops at about y=125 and y=120.\"},{\"frame_index\":2,\"cue\":\"Both figures are noticeably larger than in frame 0, with heads higher at about y=115 and y=110, and the gap between them is unchanged.\"},{\"frame_index\":4,\"cue\":\"Figures are largest in the final sample with bodies wider (beige about x=124-217) and heads near y=105 and y=100, and the floor line stays fixed at y=245.\"},{\"frame_index\":3,\"cue\":\"White label on the blue figure's lower body stays in the same place while the figure scales up, showing a consistent object.\"}],\"overall_confidence\":0.72}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011CfWR4WBndxrbREsLedxqP",
+  "model": "claude-sonnet-5-5",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 4512,
+    "output_tokens": 581,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard"
+  }
+}

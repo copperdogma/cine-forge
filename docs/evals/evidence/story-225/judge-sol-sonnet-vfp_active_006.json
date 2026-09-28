@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.0067335",
+  "latency_ms": 5527,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4492,
+    "path": "output/evals/sonnet55-20260928/judge-sol-sonnet-vfp_active_006-raw.json",
+    "sha256": "d85c0f63f72a048a358b0db807c3ca13e369f57044256fa3b03375c3c65e06e3"
+  },
+  "reason": "The figure, adjacent rectangle, rightward progression, arch, cool colors, and intact continuity match the frames. However, the arch remains fixed, so a lateral camera track is unsupported; the figure moves substantially between samples, contrary to 'slow_drift.' The diagonal streaks shift rather than staying in similar positions. 'Detached' and 'isolation' are not grounded in the visible frames.",
+  "request_id": "resp_056ad7a529873ded016abac595c61487d096d358aba77730a7",
+  "score": 0.68,
+  "usage": {
+    "input_tokens": 2122,
+    "input_tokens_details": {
+      "cache_write_tokens": 2119,
+      "cached_tokens": 0
+    },
+    "output_tokens": 143,
+    "output_tokens_details": {
+      "reasoning_tokens": 44
+    },
+    "total_tokens": 2265
+  }
+}

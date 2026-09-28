@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.011345",
+  "latency_ms": 9814,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1722,
+    "path": "output/evals/sonnet55-20260928/judge-opus-luna-vfp_active_005-raw.json",
+    "sha256": "76152e737704ed88454e56dd88fae5f12efd5738d95997645924aa29991eb6ed"
+  },
+  "reason": "The model correctly identifies the yellow figure, the dark platform/rooftop, the gap, the rectangular object, left-to-right movement, static camera, intact continuity, empty emotion_tags, and empty audio fields. However, there are several significant mismatches: (1) Tone: the model says 'detached' while the reference specifies 'urgent, tense' \u2014 these are quite different characterizations. (2) Motion: the model says 'measured' while the reference says 'fast_lateral' \u2014 the runner moves quickly, not in a measured fashion. (3) Camera: the model only has 'static' but misses 'wide_master' which is inferable from the frames. (4) Color: the model says 'gold' instead of 'amber' \u2014 while close, 'amber' is a better match for the warm yellow tone. (5) The model describes the figure as 'carrying' the rectangular object rather than the object staying 'beside' the runner, which is a subtle but notable difference. (6) The model fails to describe the arc trajectory of the runner over the gap, instead saying the figure 'passes over' the gap more generically. The tone and motion mismatches are the most significant penalties, as they represent fundamentally different interpretations of the scene's character.",
+  "request_id": "msg_011CfWRPW67PdDeVu55ejNm4",
+  "score": 0.52,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 769,
+    "output_tokens": 300,
+    "service_tier": "standard"
+  }
+}

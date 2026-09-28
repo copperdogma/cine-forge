@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.0063685",
+  "latency_ms": 5043,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4547,
+    "path": "output/evals/sonnet55-20260928/judge-sol-luna-vfp_active_002-raw.json",
+    "sha256": "1226344bd124768e1f32dd1b783ffe038d48b197187e2f22afe92858a1a5f80c"
+  },
+  "reason": "The left-to-right movement, red palette, static camera, attached rectangle, and intact continuity match the frames. However, the diagonal background lines shift between samples rather than remaining fixed. The description also misses the pulsing red illumination and characterizes the motion as measured and the tone as detached, whereas the reference identifies fast lateral motion and an urgent, tense tone.",
+  "request_id": "resp_0e3601207204683b016abac5351bcc87d0a78764ecfd4644ef",
+  "score": 0.72,
+  "usage": {
+    "input_tokens": 2012,
+    "input_tokens_details": {
+      "cache_write_tokens": 2009,
+      "cached_tokens": 0
+    },
+    "output_tokens": 134,
+    "output_tokens_details": {
+      "reasoning_tokens": 42
+    },
+    "total_tokens": 2146
+  }
+}

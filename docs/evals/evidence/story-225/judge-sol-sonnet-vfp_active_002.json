@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.0071185",
+  "latency_ms": 6675,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4824,
+    "path": "output/evals/sonnet55-20260928/judge-sol-sonnet-vfp_active_002-raw.json",
+    "sha256": "37dc6c3dfed4088001f60a2c31b185f94828174c9bc5f790266df519024bfe42"
+  },
+  "reason": "The analysis correctly tracks the red figure and its accompanying rectangle moving left to right across a fixed red scene, with intact continuity and empty audio fields. However, it describes the movement as slow and measured rather than fast lateral motion, misses the pulsing red illumination, and assigns emotions\u2014especially tenderness\u2014that are not supported by the frames.",
+  "request_id": "resp_0a4a0498dfcd076a016abac52717b487d0a255a80c9f38f99b",
+  "score": 0.77,
+  "usage": {
+    "input_tokens": 2112,
+    "input_tokens_details": {
+      "cache_write_tokens": 2109,
+      "cached_tokens": 0
+    },
+    "output_tokens": 184,
+    "output_tokens_details": {
+      "reasoning_tokens": 98
+    },
+    "total_tokens": 2296
+  }
+}

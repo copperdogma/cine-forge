@@ -1,0 +1,76 @@
+{
+  "arm": "sonnet",
+  "name": "subject-sonnet-vfp_active_006",
+  "response": {
+    "cached": false,
+    "cost": 0.013874,
+    "latencyMs": 4537,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "storm_tunnel_lateral_run",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_006",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+        "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+        "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+        "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+        "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+      ],
+      "meta_sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "claude-sonnet-5-5",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "request_id": "msg_011CfWRBs2N6PEapxxkpE6A1",
+      "requested_model": "claude-sonnet-5-5",
+      "returned_model": "claude-sonnet-5-5",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"A simple light-blue figure with a small rectangular object moves steadily from left to right beneath an arched line, with diagonal rain-like streaks across a navy-to-teal gradient. The scene is stylized and cool-toned, and the figure's progression across the samples is consistent.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\",\"teal\",\"desaturated\"],\"camera_tags\":[\"lateral_track\"],\"motion_tags\":[\"measured\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The figure keeps the same shape, size, and color across all five samples while its horizontal position shifts steadily rightward.\",\"The arch and gradient background remain fixed and consistent from frame to frame.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Figure with a small rectangle is at the far left, at about x=120, under the arched line.\"},{\"frame_index\":2,\"cue\":\"Figure has moved to the center of the frame, at about x=285, with the arch unchanged.\"},{\"frame_index\":4,\"cue\":\"Figure is at the right, at about x=440, with the same size and appearance.\"},{\"frame_index\":3,\"cue\":\"Diagonal rain-like streaks stay in similar angled positions while the figure sits at about x=367.\"}],\"overall_confidence\":0.72}",
+    "raw": {
+      "id": "msg_011CfWRBs2N6PEapxxkpE6A1",
+      "model": "claude-sonnet-5-5",
+      "raw_envelope_bytes": 2055,
+      "raw_envelope_path": "output/evals/sonnet55-20260928/subject/sonnet/vfp_active_006-raw-envelope.json",
+      "raw_envelope_sha256": "805d6233acc7bad77cf2b68fa9fcf90fee19678c86674cb90f057b9b6a4a0596",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 485,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "service_tier": "standard"
+      }
+    },
+    "tokenUsage": {
+      "completion": 485,
+      "prompt": 4512,
+      "total": 4997
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+    "clip_id": "storm_tunnel_lateral_run",
+    "evaluation_id": "vfp_active_006",
+    "target_markdown": "file://../video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+    "target_path": "video_understanding_truth_v4/storm_tunnel_lateral_run/target.json"
+  }
+}

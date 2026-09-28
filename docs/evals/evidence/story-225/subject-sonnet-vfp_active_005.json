@@ -1,0 +1,76 @@
+{
+  "arm": "sonnet",
+  "name": "subject-sonnet-vfp_active_005",
+  "response": {
+    "cached": false,
+    "cost": 0.013374,
+    "latencyMs": 4078,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "rooftop_escape_crash_zoom",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_005",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d",
+        "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8",
+        "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd",
+        "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236",
+        "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+      ],
+      "meta_sha256": "82b8bbbdf804d1a9d8975e8952659d5455986fc2e4c3482d33f274227a715410",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "claude-sonnet-5-5",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "request_id": "msg_011CfWRAtTucSzGEees8vh5F",
+      "requested_model": "claude-sonnet-5-5",
+      "returned_model": "claude-sonnet-5-5",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_005\",\"summary\":\"A yellow blocky figure moves left to right in an arc across a gap between two dark platforms under a navy sky with slanted rain-like streaks. The figure rises through the first frames and lands on the right platform by the last frame.\",\"tone_tags\":[\"tense\",\"tense\"],\"emotion_tags\":[\"resolve\"],\"color_tags\":[\"navy\",\"gold\"],\"camera_tags\":[\"wide_master\",\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Background platforms, gap, and diagonal streak pattern stay consistent across all five samples while the figure's position changes progressively.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Yellow figure stands on the left dark platform near x=120, before the gap.\"},{\"frame_index\":2,\"cue\":\"Figure is raised high above the gap center, at about x=285, with its head near y=65.\"},{\"frame_index\":4,\"cue\":\"Figure has landed on the right platform at about x=440, at a height similar to frame 0.\"},{\"frame_index\":3,\"cue\":\"Platform edges and the gap are in the same positions as in earlier frames, indicating a fixed camera.\"}],\"overall_confidence\":0.72}",
+    "raw": {
+      "id": "msg_011CfWRAtTucSzGEees8vh5F",
+      "model": "claude-sonnet-5-5",
+      "raw_envelope_bytes": 1911,
+      "raw_envelope_path": "output/evals/sonnet55-20260928/subject/sonnet/vfp_active_005-raw-envelope.json",
+      "raw_envelope_sha256": "9a403d1cb0bffc5728aaf10680b03471e66a8c10e9ae4f3baaeedfb3405e767a",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 435,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "service_tier": "standard"
+      }
+    },
+    "tokenUsage": {
+      "completion": 435,
+      "prompt": 4512,
+      "total": 4947
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/rooftop_escape_crash_zoom",
+    "clip_id": "rooftop_escape_crash_zoom",
+    "evaluation_id": "vfp_active_005",
+    "target_markdown": "file://../video_understanding_truth_v4/rooftop_escape_crash_zoom/target.md",
+    "target_path": "video_understanding_truth_v4/rooftop_escape_crash_zoom/target.json"
+  }
+}

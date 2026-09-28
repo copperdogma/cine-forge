@@ -1,0 +1,32 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A static, symmetrical scene shows a brown platform under a dark navy gradient sky with a small rounded indicator in its center. The indicator is red in the first two samples and blue in the last three, while the framing stays the same.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Framing, platform, background and indicator position are identical across all five samples; only the indicator color changes from red (frames 0-1) to blue (frames 2-4).\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Red rounded indicator with white outline centered on the tan panel above a brown base, under a navy gradient sky.\"},{\"frame_index\":1,\"cue\":\"Composition identical to frame 0, indicator still red, with no camera shift.\"},{\"frame_index\":2,\"cue\":\"Indicator has changed to blue while the platform, horizon and framing remain unchanged.\"},{\"frame_index\":4,\"cue\":\"Indicator remains blue in the same position and the scene layout matches the earlier frames, indicating a static camera.\"}],\"overall_confidence\":0.8}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011CfWRA8ppNzj9EwpT5HrZQ",
+  "model": "claude-sonnet-5-5",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 4512,
+    "output_tokens": 446,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard"
+  }
+}

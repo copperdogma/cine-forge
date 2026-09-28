@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.006456",
+  "latency_ms": 4765,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4495,
+    "path": "output/evals/sonnet55-20260928/judge-sol-luna-vfp_active_006-raw.json",
+    "sha256": "11ca4268a48db85867d1d89f57301efaf7f8128c5aeca2ae39f8a8ea4d2980f1"
+  },
+  "reason": "The left-to-right movement, cyan figure and adjacent rectangle, fixed arch, colors, static camera, and intact continuity match the frames. However, the figure crosses most of the frame in five samples, making 'measured' motion a poor match for fast lateral movement. The slanted streaks shift between frames rather than remaining nearly fixed, and 'detached' misses the reference's urgent, tense tone.",
+  "request_id": "resp_077fc1c1e1682af2016abac5a2ba2c87d0a6d206a21082f6b6",
+  "score": 0.74,
+  "usage": {
+    "input_tokens": 2007,
+    "input_tokens_details": {
+      "cache_write_tokens": 2004,
+      "cached_tokens": 0
+    },
+    "output_tokens": 144,
+    "output_tokens_details": {
+      "reasoning_tokens": 42
+    },
+    "total_tokens": 2151
+  }
+}

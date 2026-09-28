@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.0062635",
+  "latency_ms": 4143,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4368,
+    "path": "output/evals/sonnet55-20260928/judge-sol-luna-vfp_active_003-raw.json",
+    "sha256": "466e4985f723159f042701b8495552c0b782da0e117ca7f1aff4a52e85d4b6c8"
+  },
+  "reason": "The summary and evidence accurately describe the fixed gray rectangle, the two round-topped forms, and their unchanged positions across the sampled frames. Color, stillness, and continuity also match. The main mismatches are the detached tone rather than the reference\u2019s intimate tone, and the omission of the wide-master framing tag.",
+  "request_id": "resp_0c9e4bb6b114461f016abac54ee55487d0ab7a2d4d379384a9",
+  "score": 0.9,
+  "usage": {
+    "input_tokens": 2066,
+    "input_tokens_details": {
+      "cache_write_tokens": 2063,
+      "cached_tokens": 0
+    },
+    "output_tokens": 110,
+    "output_tokens_details": {
+      "reasoning_tokens": 27
+    },
+    "total_tokens": 2176
+  }
+}

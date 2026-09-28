@@ -1,0 +1,121 @@
+{
+  "id": "resp_01f02a8aba0be89f016abac559b52487d0aca1f6f8cbd33731",
+  "object": "response",
+  "created_at": 1790625113,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1790625118,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "model": "gpt-6-sol",
+  "moderation": null,
+  "output": [
+    {
+      "id": "rs_01f02a8aba0be89f016abac55b25e487d0bcc7d66a2b3b5a76",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqusVewLm96elII99MHMdsnAYNsDNOTG6ulIu3w4c7Ti5NUFFIL68-t5bvoxUAamtL6UHog0e-NLvCcpMVaJeTs2ndmQArgjGDQoo7cmM4l_H3bZ1TB6S5-TrtCYM0EbRHD5hoOiMhqrrND8jv_wz7a9O8JfS7JogUy5dKOoBsoPC7MYRuMvcC4vOuVEYG2brXrbiMoLP4BBk1icDphZukzuDjiXuJIQYuCHZSaI_5MJHHxlSYUJogF38aKM2eMxN6Je_se5b93Evm3exJ4kr4K4eDQOo6rVgV5-UjceGK--05bvc-8Qp1gsLLeLOqceIOgbrhY2GJ5FgZbtG0HGxDg8l1d3yx360J9KYpq2QG5W6vh-F3ZonR6RpWvvVC5IIQj6-WGMxmYbDrc55SK2Lv0x3ZGlxhNPI2gU7pyMUpmfkYuYnJfkYS9RAt7nBkPcobwCUHSg0hGChxxEgnIqgrlp_HNTWbqxTdMIBPuhJWgZmM_RniIwmms-SF5rXoPhLtnehCqClGkkS0ycGsLnu_LItUvD43zx-nzcyYNr1NusRz70_oE891uVGDzSlLpDWmL0p0Cqqb0s-ndiyUvOy_ipApI6vUKGWVx8ZC6tMwqL2zN-dS-r8Zv_z1L2xIXuPFCqYKgYw0R3fsG7TLdVGBOWjn8h7NvZH26S1wK5d6NJ2KV5PP0eJsbWwQwt-IzZNFTGSgyyLQlpudIDfMiN0sSxXrzjjuTI4SBK2kNXi5UkPqOQZeUA9TWBN_FZ46tzQGNcajU7TVXe0AHibFRXq5N5S7LtKdEquGqD-Yn73ZCJGCKU7QamiyNDRrn9aAUFzbaUYunsLstgSL-L-ppYxUh1lNoitJ85YvJdO_eChEwHxCnFCLNR5pqc1vhjLzjxvxeqDvvZvsTsZnhSWEvG2cmE4x29cJgQbyBW5UG2APrmxoaddrd2zFVGM5GYp3T9A5dpAVCmQj4weZm0E8q4CCVqRcYXJ6kLy6QvWebSeNhKUnimntCSBJABzm6omXmH21LuB7Uqtuiu0gppN42UvqfhPfcofUY7BEUEbQ5SGypvHMgpIh37K77fagxJo5vwWHNWXajN7Wukaegy3E8i2ee2AtUqUXdg-kAFu6sthJZszkwRNN3OR6n2-3ZDR141vLswyLdee-STMWD73tFs-5GzWYqi1Ay0sL98yaMyS1IK5J3w9N3LZoULyT5tiXgHak_cvaTBr2PAB38L6oIQGjZ7P1wYhP2xeuu6vOtMTjDdBRJzw-g-wFhR_FoW--d5ns4HfjbxCmI_B9gVVa95MWCIBCZpwC24bu0DaFd46zYKDLrV3kkrdcx1NJGJAorHSqL_bP5GbqnL-jDaS-LliNcoOLuCHRd6L1Q4332n7tLz03vINyegr9JGaPGjeXqstYPo0lHclJkn1F6AYme1I5raQlj-X4_PxEmA7oVB7ieIlLi4gkoShcF4HnNjLLzhYzBqG_",
+      "summary": []
+    },
+    {
+      "id": "msg_01f02a8aba0be89f016abac55c8c9087d0bbea5398830d2ee3",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"score\":0.76,\"reason\":\"The description and frame-specific evidence correctly identify the fixed composition and the rectangle changing from red in frames 0\u20131 to blue in frames 2\u20134. However, continuity_status is marked \u201cintact\u201d despite that visible color change; the reference classifies continuity as broken. \u201cDetached\u201d tone and \u201cdesaturated\u201d color are not clearly established by the frames.\"}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "frame_review",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "score",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2088,
+    "input_tokens_details": {
+      "cache_write_tokens": 2085,
+      "cached_tokens": 0
+    },
+    "output_tokens": 146,
+    "output_tokens_details": {
+      "reasoning_tokens": 52
+    },
+    "total_tokens": 2234
+  },
+  "user": null,
+  "metadata": {}
+}

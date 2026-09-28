@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.0068785",
+  "latency_ms": 5637,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4587,
+    "path": "output/evals/sonnet55-20260928/judge-sol-sonnet-vfp_active_001-raw.json",
+    "sha256": "92fb27b70bf73a1e1d982a983885975344c0b439789698fa695d2886d15a9e73"
+  },
+  "reason": "The description and frame evidence correctly identify the two figures, their gradual enlargement at nearly fixed centers, the stable pale rectangle, and the unchanged background. However, a slow camera push-in is not established: the figures enlarge while the rectangle and background do not scale. The tense tone and isolation/hesitation emotions are also interpretations unsupported by the still frames.",
+  "request_id": "resp_01656e2104383d5d016abac50815b087d0bf1da38a2c506e2e",
+  "score": 0.76,
+  "usage": {
+    "input_tokens": 2176,
+    "input_tokens_details": {
+      "cache_write_tokens": 2173,
+      "cached_tokens": 0
+    },
+    "output_tokens": 144,
+    "output_tokens_details": {
+      "reasoning_tokens": 54
+    },
+    "total_tokens": 2320
+  }
+}

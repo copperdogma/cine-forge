@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.0072285",
+  "latency_ms": 7742,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4917,
+    "path": "output/evals/sonnet55-20260928/judge-sol-sonnet-vfp_active_005-raw.json",
+    "sha256": "bd3c9d38a520640b943a0f56e0efe086a09ca30e9338faf22248555ae800084b"
+  },
+  "reason": "The left-to-right arc, gap, colors, and static wide view are well supported. However, the final frame shows the figure still slightly above the right platform, not visibly landed. Its lateral movement is fast and roughly even, rather than measured. \u201cResolve\u201d is not observable, and the continuity notes miss the small yellow rectangle that stays beside the figure.",
+  "request_id": "resp_028cb428c64eeb28016abac5744a2887d0933b79ddc69e5c7a",
+  "score": 0.74,
+  "usage": {
+    "input_tokens": 2116,
+    "input_tokens_details": {
+      "cache_write_tokens": 2113,
+      "cached_tokens": 0
+    },
+    "output_tokens": 194,
+    "output_tokens_details": {
+      "reasoning_tokens": 102
+    },
+    "total_tokens": 2310
+  }
+}

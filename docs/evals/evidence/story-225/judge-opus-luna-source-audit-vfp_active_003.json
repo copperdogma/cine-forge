@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.012945",
+  "latency_ms": 10329,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1769,
+    "path": "output/evals/sonnet55-20260928/judge-opus-luna-source-audit-vfp_active_003-raw.json",
+    "sha256": "15a11756fd091d87ef1afce9f8061a01d8b8b2ca9b361484b4eb875775cf3948"
+  },
+  "reason": "The output correctly identifies the key visual elements: two figure-like shapes flanking a long gray rectangle against a dark background, with stillness and static camera. Color tags (amber, desaturated) match the reference exactly. Motion (stillness) and camera (static) match, though the reference also includes wide_master which is absent. Continuity is correctly marked as intact. Emotion tags are empty as expected. Audio fields are empty as required. The description of the left shape as 'round-headed ochre shape on a vertical brown base' is compatible with the reference's 'narrow round-topped form.' The right shape described as 'ochre block-shaped figure' partially matches; the reference says 'broader round-topped figure' - calling it block-shaped is slightly inaccurate but not an invention. Tone is 'detached' vs reference 'intimate' - a mismatch but tone is interpretive for abstract shapes and not directly pixel-provable, so this is a minor penalty. The description says 'dark two-tone background' which is a reasonable observation. No invented actions, edits, camera movements, identities, or story meanings. Missing 'wide_master' camera tag is a minor omission. Overall the analysis is factually grounded and largely matches the reference.",
+  "request_id": "msg_011CfWRXMhJthNjanPhfGrXj",
+  "score": 0.82,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 1129,
+    "output_tokens": 292,
+    "service_tier": "standard"
+  }
+}

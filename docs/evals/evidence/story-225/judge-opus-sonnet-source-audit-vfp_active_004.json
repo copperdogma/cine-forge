@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01262",
+  "latency_ms": 8532,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1643,
+    "path": "output/evals/sonnet55-20260928/judge-opus-sonnet-source-audit-vfp_active_004-raw.json",
+    "sha256": "2b40f288a2b72cdcf5711264bbe9070d047b90374e005ddff829165a77709ccb"
+  },
+  "reason": "The output correctly identifies the red-to-blue color change of the small indicator between frames 1 and 2, the static framing, and the navy background. However, there are notable mismatches: (1) Continuity is marked as 'intact' when the reference marks it as 'broken' due to the red-to-blue change \u2014 this is a significant factual error since the color change represents a continuity break. (2) The tone tag 'detached' is added when the reference specifies no tone tags; while interpretive, this is a minor addition not grounded in pixels. (3) The 'stillness' motion tag is acceptable given fixed geometry, and 'desaturated' color tag is a minor addition. (4) The 'wide_master' camera tag from the reference is missing. (5) The description of the object as a 'rounded indicator' versus the reference 'small rectangle' is a minor discrepancy but plausible depending on the actual frame content. The continuity status error is the most significant issue, as the model explicitly describes the color change in its notes but still marks continuity as intact rather than broken. This fundamental contradiction prevents a passing score.",
+  "request_id": "msg_011CfWRY7qfLQis4efhybubw",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 1154,
+    "output_tokens": 274,
+    "service_tier": "standard"
+  }
+}

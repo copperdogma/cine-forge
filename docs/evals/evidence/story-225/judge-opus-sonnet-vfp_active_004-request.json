@@ -1,0 +1,35 @@
+{
+  "payload": {
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "content": "<Output>\n{\"clip_id\":\"vfp_active_004\",\"summary\":\"A static, symmetrical scene shows a brown platform under a dark navy gradient sky with a small rounded indicator in its center. The indicator is red in the first two samples and blue in the last three, while the framing stays the same.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Framing, platform, background and indicator position are identical across all five samples; only the indicator color changes from red (frames 0-1) to blue (frames 2-4).\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Red rounded indicator with white outline centered on the tan panel above a brown base, under a navy gradient sky.\"},{\"frame_index\":1,\"cue\":\"Composition identical to frame 0, indicator still red, with no camera shift.\"},{\"frame_index\":2,\"cue\":\"Indicator has changed to blue while the platform, horizon and framing remain unchanged.\"},{\"frame_index\":4,\"cue\":\"Indicator remains blue in the same position and the scene layout matches the earlier frames, indicating a static camera.\"}],\"overall_confidence\":0.8}\n</Output>\n\nEvaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: A static table composition contains a small rectangle that is red in the first two samples and blue in the final three.\n- Tone: [none]\n- Emotion: [none]\n- Color / grade: navy\n- Camera language inferable from the ordered samples: static, wide_master\n- Motion inferable from the ordered samples: [none]\n- Continuity: broken - The tabletop rectangle changes from red to blue between the second and third samples.\n- Audio: unavailable to the subject and excluded from scoring\n\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n",
+        "role": "user"
+      }
+    ],
+    "model": "claude-opus-4-6",
+    "output_config": {
+      "format": {
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "score": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "score",
+            "reason"
+          ],
+          "type": "object"
+        },
+        "type": "json_schema"
+      }
+    },
+    "system": "You are an impartial evaluator. Return exactly a JSON object with score (number 0 to 1) and reason (string). Explain concrete mismatches against visible source facts. Do not reveal chain of thought."
+  },
+  "url": "https://api.anthropic.com/v1/messages"
+}

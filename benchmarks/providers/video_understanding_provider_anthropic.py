@@ -37,10 +37,14 @@ def call_anthropic(
         max_tokens=max_tokens,
         temperature=temperature,
     )
-    if model == "claude-opus-5-5":
+    if model in {"claude-opus-5-5", "claude-sonnet-5-5"}:
         if effort != "medium" or raw_output_path is None:
-            raise RuntimeError("Opus 5.5 requires medium effort and durable raw output")
+            raise RuntimeError("Anthropic 5.5 requires medium effort and durable raw output")
         payload.pop("temperature", None)
+        if model == "claude-sonnet-5-5":
+            if len(frames) != 5:
+                raise RuntimeError("Sonnet 5.5 requires five ordered JPEGs")
+            payload["thinking"] = {"type": "adaptive"}
         payload["output_config"] = {
             "effort": effort,
             "format": {"type": "json_schema", "schema": _anthropic_video_schema()},
@@ -80,7 +84,10 @@ def _normalize_anthropic_response(
     VideoAnalysisPrediction = scope["VideoAnalysisPrediction"]
     _token_count = scope["_token_count"]
     REPO_ROOT = scope["REPO_ROOT"]
-    if model == "claude-opus-5-5" and response.get("stop_reason") != "end_turn":
+    if (
+        model in {"claude-opus-5-5", "claude-sonnet-5-5"}
+        and response.get("stop_reason") != "end_turn"
+    ):
         raise RuntimeError(f"Anthropic response did not finish: {response.get('stop_reason')!r}")
     blocks = response.get("content", [])
     output = "\n".join(block.get("text", "") for block in blocks if block.get("type") == "text")
@@ -92,7 +99,7 @@ def _normalize_anthropic_response(
         request_id=response.get("id"),
         require_returned=True,
     )
-    if model == "claude-opus-5-5":
+    if model in {"claude-opus-5-5", "claude-sonnet-5-5"}:
         VideoAnalysisPrediction.model_validate_json(output)
         input_tokens = _token_count(usage.get("input_tokens"), "input_tokens")
         output_tokens = _token_count(usage.get("output_tokens"), "output_tokens")
@@ -102,7 +109,8 @@ def _normalize_anthropic_response(
         ):
             raise RuntimeError("Unexpected Anthropic cached input usage; billing needs review")
         raw_bytes = raw_output_path.read_bytes()
-        reported_cost = (input_tokens * 4 + output_tokens * 20) / 1_000_000
+        input_rate, output_rate = (2, 10) if model == "claude-sonnet-5-5" else (4, 20)
+        reported_cost = (input_tokens * input_rate + output_tokens * output_rate) / 1_000_000
     else:
         reported_cost = None
     return {
@@ -125,13 +133,13 @@ def _normalize_anthropic_response(
                     "raw_envelope_sha256": hashlib.sha256(raw_bytes).hexdigest(),
                     "raw_envelope_bytes": len(raw_bytes),
                 }
-                if model == "claude-opus-5-5"
+                if model in {"claude-opus-5-5", "claude-sonnet-5-5"}
                 else {}
             ),
         },
         **(
             {"reported_cost_usd": reported_cost, "cost_estimated": True}
-            if model == "claude-opus-5-5"
+            if model in {"claude-opus-5-5", "claude-sonnet-5-5"}
             else {}
         ),
     }

@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01198",
+  "latency_ms": 8621,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1551,
+    "path": "output/evals/sonnet55-20260928/judge-opus-luna-source-audit-vfp_active_004-raw.json",
+    "sha256": "c26de0cac7d17d76da3fa4a68f7e9ad2dcd7c73ed6f96589e1c6e34a32cffaf3"
+  },
+  "reason": "The summary correctly identifies the red-to-blue color change of the small rectangle at the right transition point (between frames 1 and 2), the navy background, the static camera, and the geometric composition. However, there are several issues: (1) Continuity is marked 'intact' when the reference requires 'broken' due to the red-to-blue color change \u2014 this is a significant factual mismatch. (2) The tone tag 'detached' is included when the reference has none; while interpretive, it's an addition not grounded in pixels. (3) 'red' is listed in color_tags but 'blue' is not, though the subject describes the blue rectangle in the summary and evidence \u2014 this is a minor inconsistency. (4) 'stillness' is listed as a motion tag; the reference has no motion tags, but the rubric notes stillness is supported by fixed geometry, so this is acceptable. (5) 'wide_master' camera tag from reference is missing. The continuity status error is the most critical mismatch, as it directly contradicts the observable color change between frames.",
+  "request_id": "msg_011CfWRYm33FgWYR6NZw7cNy",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 1091,
+    "output_tokens": 261,
+    "service_tier": "standard"
+  }
+}

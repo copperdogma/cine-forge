@@ -1,0 +1,76 @@
+{
+  "arm": "sonnet",
+  "name": "subject-sonnet-vfp_active_002",
+  "response": {
+    "cached": false,
+    "cost": 0.013944,
+    "latencyMs": 4711,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "alarm_chase_whip_pan",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_002",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a",
+        "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039",
+        "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655",
+        "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b",
+        "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+      ],
+      "meta_sha256": "d028854d7c23197397b7003bfcfe3fd651d418a232950e8e28851ea210e7e99a",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "claude-sonnet-5-5",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "request_id": "msg_011CfWR8PwcVd5hyB9UVYSrr",
+      "requested_model": "claude-sonnet-5-5",
+      "returned_model": "claude-sonnet-5-5",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_002\",\"summary\":\"A stylized orange-red figure holding a red bar moves steadily left to right across a dark red gradient scene, passing in front of a rectangular outline and a triangular line. Diagonal rain-like streaks shift slightly across samples while the background structures stay fixed.\",\"tone_tags\":[\"tense\",\"ominous\"],\"emotion_tags\":[\"suspicion\",\"tenderness\"],\"color_tags\":[\"red\",\"monochrome\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Figure, red bar, rectangle outline and triangle line keep consistent shape, size and color across all five samples.\",\"Figure position advances progressively left to right in adjacent samples with no visible jump in background.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Figure with red bar sits at left (x~80-200) of a dark red gradient with diagonal streaks.\"},{\"frame_index\":2,\"cue\":\"Figure has moved to center, overlapping the rectangular outline, while the triangle line stays in the same place.\"},{\"frame_index\":3,\"cue\":\"Figure is right of center, partly overlapping the triangle's right slope.\"},{\"frame_index\":4,\"cue\":\"Figure is at right (x~400-525), outside the rectangle, with the background frame unchanged.\"}],\"overall_confidence\":0.82}",
+    "raw": {
+      "id": "msg_011CfWR8PwcVd5hyB9UVYSrr",
+      "model": "claude-sonnet-5-5",
+      "raw_envelope_bytes": 2078,
+      "raw_envelope_path": "output/evals/sonnet55-20260928/subject/sonnet/vfp_active_002-raw-envelope.json",
+      "raw_envelope_sha256": "5ed1ca73135b77dbfd9104cbbe4075b5f9d20479df357fe221cd28aaa5b178b5",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 492,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "service_tier": "standard"
+      }
+    },
+    "tokenUsage": {
+      "completion": 492,
+      "prompt": 4512,
+      "total": 5004
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+    "clip_id": "alarm_chase_whip_pan",
+    "evaluation_id": "vfp_active_002",
+    "target_markdown": "file://../video_understanding_truth_v4/alarm_chase_whip_pan/target.md",
+    "target_path": "video_understanding_truth_v4/alarm_chase_whip_pan/target.json"
+  }
+}

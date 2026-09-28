@@ -1,0 +1,121 @@
+{
+  "id": "resp_01cbdc6e38f0ea7e016abac565fa1c87d0ab657b16fdf3ae0c",
+  "object": "response",
+  "created_at": 1790625126,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1790625132,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "model": "gpt-6-sol",
+  "moderation": null,
+  "output": [
+    {
+      "id": "rs_01cbdc6e38f0ea7e016abac5682c3487d0aed016c18a359eae",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqusVsqgbWijvptoSWSSqFTA-BZmDIcRB2Oe8DzoKh84lcqkZnVBtff0fVCCNxqufnacNjkCXEjs3CUDxzHSHgm4aAbnT-lAP7sirOpM2YvihtOkUzoUBoKrFaYM5Hg_WycNfGE4rjmRWW7jffJFCKxqjmloXZZ3ujru0j1mJbg3zaBbCS4NnHH-Ol7yJqMrn8lM8PpLPjTHeHgl91H5e-yL0q21DFTValO6U9v0jore87byPAQvvPt32hrylKsi_RPxTvXOwrtx8PyEwUWSxSz-mCOM8GanAFiZP2xNEupvHCoarqShtwsG33sRcrUmLFN6b2VVg2j6NrvkndgkemOvK9tUOxaXle37qO2D7obGnX7uJA37VJNe-4CMc1-Pmp90lT1P2QPHXApLkUiY5zpnJEgSlrCwtCI6YeshY0xS-RKCgjAoGuSoOkPvB30GCkouF8uGHiGHI2ScxuPTGDTwOYRPXuFnGT130Ak7AuWV_5niSiZZLO-u7aJDQyR0nflYohqqN0Z2mhm5LpsVckkaKZHVpnHzyMzM_YVZwMie7RUmGSR9CkN70iXeB2BvrD-w99yMPQf2qpnKJXWAHcP33gp1vtdMgI7s6wYVaIL1derREUY46GABz7rXaZDFsoDVXVh1hPs5ZLgU80OwFxFY1551nJ-bysfFg9xuwDrSsYZn_hA27-34kQ0rgQo27saf_nPUREKleyWm3EF06giXV-y5p7KphIUYHfMAu9_ooqodP-9xLAse5CWMSSAJL1TJHy5rklsZc400Sx_GHhoSWrlO_5V2P6C8wxFjnl1gZ0xxT9lJ4Q8bLdCPPNltwPBS_frXJ4vZnkDMzMcW7T4k-rZhnbnNTusZ3WiOzqH9JfhMBLd261XjWCE3CPHLSxQfY-JtuOMaqn4tVqiD6esu6Jq6SHhRBUw_joYE7mWU91Hb9IFP_9lHICYF_mS5lCW7dYo5aFBmnoiSsv-1fVEYEuJs3Llfjt36ghs40FcPaRLf9fFO_73I215dlh6q4GyjN8d1D1maCE9Me090QaPenUpMA1nUq2DOTrZk_ac6al139v-PAT-ywBrpGb10mV_RQpKzTJNbb0-HnvBSRKf0r48n5DUWUKssVzbgb7V9hfHbEM3T7GeaDHpfJlSANN51B-2BRwOOdugES2nVcVHLkBPxvIecrBglV4VEfQ-KfKbUAnnRYQXlasmMYtbF7-jH_sz-_oVmBXkmNocCsoRKquYvRAHXIfYKZ9X3t3WY7BLaSpNeSJeahTcx7po3b_x3N87D-7dO19V6rnrnEol64TPEKiZ5t-YhZDo14VG_F4MjX9WDzqRusi3fPAy0MBaG1S8hoscAWJ8RvladF259mBPdqXTUfzDSUor1JyTMoWN1DOY9lWoz1-aJZF0F63c5pUQbBQny7NXBAXQfliZRBt5upzgquPDdhOSa88_ZdUsPdydGLC6Zz-EJIjZWo6HgciXHbsk-E8aadeshjJAsAd2yWiZNKU6HCEKSNSDDmHh24=",
+      "summary": []
+    },
+    {
+      "id": "msg_01cbdc6e38f0ea7e016abac56a324887d083aa591e64320de9",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"score\":0.76,\"reason\":\"The summary and frame-specific evidence correctly identify the static composition and the rectangle changing from red in frames 0\u20131 to blue in frames 2\u20134. However, continuity_status is marked \u201cintact\u201d despite that visible color change; the reference classifies continuity as broken. \u201cDetached\u201d tone is not supported by the frames, and the camera tags omit the wide view.\"}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "frame_review",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "score",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2033,
+    "input_tokens_details": {
+      "cache_write_tokens": 2030,
+      "cached_tokens": 0
+    },
+    "output_tokens": 147,
+    "output_tokens_details": {
+      "reasoning_tokens": 51
+    },
+    "total_tokens": 2180
+  },
+  "user": null,
+  "metadata": {}
+}

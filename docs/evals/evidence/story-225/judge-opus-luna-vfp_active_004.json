@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.009565",
+  "latency_ms": 7162,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1401,
+    "path": "output/evals/sonnet55-20260928/judge-opus-luna-vfp_active_004-raw.json",
+    "sha256": "1be2b1bc1d8a3fd0edf7336c9959d3da4eb3e246addc8ddd174ac4e7b4ad445b"
+  },
+  "reason": "The summary, color, and evidence descriptions are largely consistent with the reference. However, there are several notable mismatches: (1) Continuity is marked 'intact' when the reference says 'broken' due to the red-to-blue color change \u2014 this is a significant factual disagreement about whether the change represents a continuity break. (2) Tone is 'detached' when reference says none. (3) Motion is listed as 'stillness' when reference says none \u2014 minor but still an invention. (4) Color tags include 'red' but miss that the rectangle also becomes blue; 'blue' is not in color_tags. (5) Camera tags list only 'static' but miss 'wide_master'. (6) 'emotion_tags' is correctly empty, and audio fields are correctly empty, which is good. The continuity status mismatch is the most critical error, as the model claims continuity is intact when the reference explicitly marks it as broken.",
+  "request_id": "msg_011CfWRML3pcoRMksBCeeBpq",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 768,
+    "output_tokens": 229,
+    "service_tier": "standard"
+  }
+}

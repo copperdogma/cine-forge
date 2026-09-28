@@ -1,0 +1,76 @@
+{
+  "arm": "sonnet",
+  "name": "subject-sonnet-vfp_active_003",
+  "response": {
+    "cached": false,
+    "cost": 0.013444,
+    "latencyMs": 4446,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "quiet_bedside_vigil",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_003",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+      ],
+      "meta_sha256": "ba3438e4973166276591efea693838df99841ac34eac732f433c0c5cfcefe8fa",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "claude-sonnet-5-5",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "request_id": "msg_011CfWR9JxztiVfkPxcXe78X",
+      "requested_model": "claude-sonnet-5-5",
+      "returned_model": "claude-sonnet-5-5",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_003\",\"summary\":\"Five samples show an unchanging composition: a tall figure with a round head at left, a gray-blue rectangle in the middle, and a rounded figure with a small head at right, all against a dusky gradient background. Nothing visibly moves or changes across the samples.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"desaturated\",\"amber\",\"navy\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"All five samples show identical placement of the left figure, gray-blue rectangle, and right figure, with no visible changes in background or lighting.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Tan left figure with round head at x~130, gray-blue rectangle spanning x~145-430, and rounded peach figure at right on a dark dusk gradient.\"},{\"frame_index\":2,\"cue\":\"Composition, framing, and object positions are identical to frame 0, indicating no camera movement or action.\"},{\"frame_index\":4,\"cue\":\"Final sample matches the first: same figures, rectangle, and horizon line at y~245, so continuity holds.\"}],\"overall_confidence\":0.85}",
+    "raw": {
+      "id": "msg_011CfWR9JxztiVfkPxcXe78X",
+      "model": "claude-sonnet-5-5",
+      "raw_envelope_bytes": 1935,
+      "raw_envelope_path": "output/evals/sonnet55-20260928/subject/sonnet/vfp_active_003-raw-envelope.json",
+      "raw_envelope_sha256": "c9cc31b3dfb8ab6d98b694e135f0f125e484cab0c29e96ada873caed064aa006",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 442,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "service_tier": "standard"
+      }
+    },
+    "tokenUsage": {
+      "completion": 442,
+      "prompt": 4512,
+      "total": 4954
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/quiet_bedside_vigil",
+    "clip_id": "quiet_bedside_vigil",
+    "evaluation_id": "vfp_active_003",
+    "target_markdown": "file://../video_understanding_truth_v4/quiet_bedside_vigil/target.md",
+    "target_path": "video_understanding_truth_v4/quiet_bedside_vigil/target.json"
+  }
+}

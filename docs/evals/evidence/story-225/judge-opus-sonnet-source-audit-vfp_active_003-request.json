@@ -1,0 +1,35 @@
+{
+  "payload": {
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "content": "<Output>\n{\"clip_id\":\"vfp_active_003\",\"summary\":\"Five samples show an unchanging composition: a tall figure with a round head at left, a gray-blue rectangle in the middle, and a rounded figure with a small head at right, all against a dusky gradient background. Nothing visibly moves or changes across the samples.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"desaturated\",\"amber\",\"navy\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"All five samples show identical placement of the left figure, gray-blue rectangle, and right figure, with no visible changes in background or lighting.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Tan left figure with round head at x~130, gray-blue rectangle spanning x~145-430, and rounded peach figure at right on a dark dusk gradient.\"},{\"frame_index\":2,\"cue\":\"Composition, framing, and object positions are identical to frame 0, indicating no camera movement or action.\"},{\"frame_index\":4,\"cue\":\"Final sample matches the first: same figures, rectangle, and horizon line at y~245, so continuity holds.\"}],\"overall_confidence\":0.85}\n</Output>\n\nEvaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: A warm static arrangement holds a horizontal gray rectangle between a narrow round-topped form at left and a broader round-topped figure at right.\n- Tone: intimate\n- Emotion: [none]\n- Color / grade: amber, desaturated\n- Camera language inferable from the ordered samples: static, wide_master\n- Motion inferable from the ordered samples: stillness\n- Continuity: intact - The gray horizontal rectangle and both round-topped forms keep the same positions in every frame.\n- Audio: unavailable to the subject and excluded from scoring\n- Interpretation boundary: The narrow round-topped left form may read as a lamp or second abstract figure, and the horizontal rectangle as a bed or barrier. Score fixed geometry and stillness, not one hidden object identity.\n\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n\nSource-verification clarifications for this rubric (apply identically to both arms):\n- The reference is a concise description, not an exhaustive list of visible shapes.\n  Concrete additional details supported by the source are valid, not invented.\n- In the red lateral-motion packet, the central outlined rectangle and triangular\n  diagonal outline are present in every JPEG. Calling them visible shapes is valid.\n- In the static warm packet, the left circle/post can read as an abstract figure or\n  lamp. The right body is rounded with a smaller circular head. Tan/peach wording\n  is compatible with the pixels. Do not enforce hidden object identity.\n- The visible small prop changes red-to-blue in the prop packet; both the color\n  observation and the continuity-status requirement must be evaluated separately.\n  The subject's allowed color vocabulary includes navy, red, teal, etc., but has no\n  blue tag. Do not penalize absence of an unavailable tag. Stillness is supported\n  by fixed geometry even when the reference has no required motion tag.\n- Emotion/tone readings are interpretive for these abstract shapes. Keep reference\n  tag mismatch separate from factual invention; do not claim reference tone is\n  directly proved by a pixel. Camera mechanism in dialogue is excluded from the\n  deterministic aggregate and remains physically ambiguous.\nReturn score 0..1 and concrete reason under the same >=.80 rubric threshold.\n",
+        "role": "user"
+      }
+    ],
+    "model": "claude-opus-4-6",
+    "output_config": {
+      "format": {
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "score": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "score",
+            "reason"
+          ],
+          "type": "object"
+        },
+        "type": "json_schema"
+      }
+    },
+    "system": "You are an impartial evaluator. Return exactly a JSON object with score (number 0 to 1) and reason (string). Explain concrete mismatches against visible source facts. Do not reveal chain of thought."
+  },
+  "url": "https://api.anthropic.com/v1/messages"
+}

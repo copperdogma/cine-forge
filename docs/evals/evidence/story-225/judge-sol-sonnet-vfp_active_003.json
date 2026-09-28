@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.0065385",
+  "latency_ms": 4740,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4382,
+    "path": "output/evals/sonnet55-20260928/judge-sol-sonnet-vfp_active_003-raw.json",
+    "sha256": "4696d8a5350ed5392722b0b50fe40392e5204ef57d454bcb3799cb568461a29a"
+  },
+  "reason": "Accurately describes the fixed geometry, colors, static framing, and unchanged placement across the sampled frames, with concrete evidence at frames 0, 2, and 4. Minor mismatches: the reference characterizes the tone as intimate rather than detached and does not support the inferred emotion of isolation. Calling the left form a figure is an acceptable interpretation of its ambiguous shape.",
+  "request_id": "resp_0c7d4145e73b57a6016abac543581087d0a01b8b494fbee27c",
+  "score": 0.88,
+  "usage": {
+    "input_tokens": 2140,
+    "input_tokens_details": {
+      "cache_write_tokens": 2137,
+      "cached_tokens": 0
+    },
+    "output_tokens": 119,
+    "output_tokens_details": {
+      "reasoning_tokens": 23
+    },
+    "total_tokens": 2259
+  }
+}

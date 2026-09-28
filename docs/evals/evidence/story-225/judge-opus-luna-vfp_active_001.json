@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.010395",
+  "latency_ms": 9692,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1663,
+    "path": "output/evals/sonnet55-20260928/judge-opus-luna-vfp_active_001-raw.json",
+    "sha256": "d6957ce58e5e08dd0e12f0fef4b9738b39b2bf36f6b4b0debca5df702847a5ad"
+  },
+  "reason": "The output correctly identifies two figures side by side against a dark blue background, static camera, measured motion, and intact continuity. However, several issues reduce the score: (1) The reference tone is 'intimate' but the output says 'detached' \u2014 a meaningful mismatch. (2) The reference notes a 'teal' color alongside navy, which the output omits entirely. (3) The reference specifically notes a pale rectangle prop that stays on/beside the right figure across all frames \u2014 this is a key observable detail that the output completely misses, and its absence means the evidence descriptions are incomplete. (4) The reference says figures 'appear larger' (enlarging at fixed centers), while the output describes them as 'growing taller' \u2014 this is partially correct but mischaracterizes the change as only vertical when the reference indicates general enlargement. (5) The output's evidence describes figure colors (cream and light blue) which is plausible but the pale rectangle on the right figure is not mentioned in any evidence entry. The missing prop and tone mismatch are significant enough to bring the score below the 0.8 threshold.",
+  "request_id": "msg_011CfWRFMWDBmtm6HpbefLjt",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 789,
+    "output_tokens": 258,
+    "service_tier": "standard"
+  }
+}

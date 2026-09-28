@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01447",
+  "latency_ms": 10219,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1916,
+    "path": "output/evals/sonnet55-20260928/judge-opus-sonnet-source-audit-vfp_active_002-raw.json",
+    "sha256": "61ef6e45f5631d89838b286f92452306fbb62190b4914a186b234e67193604cd"
+  },
+  "reason": "The output correctly identifies the red color palette, static camera, left-to-right movement of a figure, intact continuity, and provides reasonable frame-grounded evidence for the figure's progressive motion. However, there are several notable mismatches: (1) Motion is described as 'measured' and 'slow_drift' when the reference says 'fast_lateral' and 'pulsing_light' \u2014 the model misses the pulsing light entirely and underestimates the speed. (2) The reference notes a small red rectangle stays beside the runner as a key continuity detail; the output instead describes the figure holding a 'red bar,' which is a plausible interpretation but misses the companion-rectangle relationship. (3) Emotion tags include 'suspicion' and 'tenderness,' which are invented interpretations not supported by abstract shapes \u2014 the reference has no emotion tags. (4) Tone includes 'ominous' but misses 'urgent' from reference (though tone is interpretive). (5) Camera tags miss 'wide_master.' (6) Color tags include 'monochrome' which is questionable given red illumination pulses. (7) The description of background as 'dark red gradient' and 'diagonal rain-like streaks' is reasonable for the diagonal lines. Overall, there are enough correct observations but the motion characterization errors, invented emotion tags, and missing key details (pulsing light, wide master) bring the score below the 0.8 threshold.",
+  "request_id": "msg_011CfWRVR2BQZvsjZMbvujby",
+  "score": 0.55,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 1179,
+    "output_tokens": 343,
+    "service_tier": "standard"
+  }
+}

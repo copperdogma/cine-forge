@@ -1,0 +1,32 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simple figures, one beige and one light blue, stand apart against a navy gradient backdrop above a dark floor. Across the samples both figures grow slightly larger while their positions stay fixed, which suggests a gentle push-in.\",\"tone_tags\":[\"detached\",\"tense\"],\"emotion_tags\":[\"isolation\",\"hesitation\"],\"color_tags\":[\"navy\",\"teal\",\"desaturated\"],\"camera_tags\":[\"slow_push_in\",\"locked_two_shot\"],\"motion_tags\":[\"measured\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both figures, the pale label on the blue figure, the horizon line and the background gradient stay consistent across all five frames.\",\"Figure positions remain fixed while their scale increases gradually and steadily.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Beige figure at left and light blue figure at right, with a wide gap between them, against a navy gradient and a dark floor.\"},{\"frame_index\":2,\"cue\":\"Both figures are visibly larger than in frame 0 with the same layout, and the heads sit higher in frame.\"},{\"frame_index\":4,\"cue\":\"Figures are at their largest, with wider bodies and heads near y=100-106, while the background and floor line are unchanged.\"},{\"frame_index\":3,\"cue\":\"The pale rectangle on the blue figure's lower body is at the same position as in earlier frames, showing continuity.\"}],\"overall_confidence\":0.72}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011CfWR4ztwgxqRr8Ws5h4dV",
+  "model": "claude-sonnet-5-5",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 4512,
+    "output_tokens": 520,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard"
+  }
+}

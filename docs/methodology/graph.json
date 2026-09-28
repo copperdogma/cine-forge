@@ -970,7 +970,8 @@
           "220",
           "221",
           "222",
-          "224"
+          "224",
+          "225"
         ],
         "adrIds": [
           "ADR-002",
@@ -1112,7 +1113,8 @@
           "220",
           "221",
           "222",
-          "224"
+          "224",
+          "225"
         ],
         "adrIds": [
           "ADR-001",
@@ -1202,7 +1204,8 @@
           "220",
           "221",
           "222",
-          "224"
+          "224",
+          "225"
         ],
         "adrIds": [
           "ADR-002",
@@ -14801,6 +14804,64 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "225",
+      "title": "Sonnet 5.5 Ordered-Frame Comparison",
+      "path": "docs/stories/story-225-sonnet55-ordered-frame-evaluation.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12",
+        "R18"
+      ],
+      "specRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "222"
+      ],
+      "categoryRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "anthropic",
+        "evals",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "225",
+        "sourcePath": "docs/stories/story-225-sonnet55-ordered-frame-evaluation.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-225-sonnet55-ordered-frame-evaluation.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -16816,7 +16877,8 @@
         "220",
         "221",
         "222",
-        "224"
+        "224",
+        "225"
       ],
       "categoryRefs": [
         "spec:7",
@@ -16826,6 +16888,16 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "045",
+          "date": "2026-09-28",
+          "approach": "Fresh six-case Sonnet5.5/Luna strict ordered-JPEG comparison; source-reviewed scorer and symmetric Opus recovery with independent Sol pixel review.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "new-subject-model"
+          ]
+        },
         {
           "id": "044",
           "date": "2026-09-27",
@@ -16927,12 +16999,12 @@
       ],
       "latestScore": {
         "model": "GPT-6 Luna / direct Responses low",
-        "measured": "2026-09-26",
+        "measured": "2026-09-28",
         "metrics": {
-          "overall": 0.5986
+          "overall": 0.62179
         },
-        "evidenceStatus": "bounded-six-case-uncommitted-v4-derived",
-        "note": "Attempt 043 derived regrade of the same six saved direct Responses low-reasoning subject outputs; zero new subject calls. V4 source-checked truth overlay corrects rooftop size, bedside object ambiguity, and dialogue camera-mechanism ambiguity. The deterministic scorer is applied symmetrically to both arms and only three changed references are rejudged with Opus 4.6; three unchanged reference judg…"
+        "evidenceStatus": "bounded-six-case-uncommitted-source-reviewed-control",
+        "note": "Attempt045 fresh matched Responses Standard low1400 strict-schema control on six v4 cases. Retain preferred headless reference model: higher revised aggregate0.62179 versusSonnet0.53735, strict6/6 versus5/6, around28.1x lower observed subject cost (25.2x normalized uncached cache-write), slower8.119s versus4.390s. Firstcase input prompt-cache warmed bynative parity qualification; all outputs fres…"
       },
       "historicalEvidenceStatus": "",
       "excludedScoreCount": 14,
@@ -16948,7 +17020,8 @@
         "220",
         "221",
         "222",
-        "224"
+        "224",
+        "225"
       ],
       "declaredCategoryRefs": [
         "spec:7",
@@ -16968,17 +17041,17 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "trigger-exhausted",
-        "whyNow": "Attempt 043 derived regrade of the same six saved direct Responses low-reasoning subject outputs; zero new subject calls. V4 source-checked truth overlay corrects rooftop size, bedside object ambiguity, and dialogue camera-mechanism ambiguity. The deterministic scorer is applied symmetrically to both arms and only three changed references are rejudged with Opus 4.6; three unchanged reference judg…",
+        "whyNow": "Attempt045 fresh matched Responses Standard low1400 strict-schema control on six v4 cases. Retain preferred headless reference model: higher revised aggregate0.62179 versusSonnet0.53735, strict6/6 versus5/6, around28.1x lower observed subject cost (25.2x normalized uncached cache-write), slower8.119s versus4.390s. Firstcase input prompt-cache warmed bynative parity qualification; all outputs fres…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
-          "new-source-backed-corpus-or-reviewed-product-integration"
+          "new-subject-model"
         ],
         "lastRelevantAction": {
-          "date": "2026-09-27",
+          "date": "2026-09-28",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "044",
-          "summary": "Fresh unchanged-v4 six-case Sol/Luna low-reasoning high-detail image matrix with fresh Gemini3.5FlashLite and 18 Opus4.6 judges. Sol 0.6080, Luna 0.5902, Gemini 0.3861. Luna wins all six versus Gemini at 5x lower subject cost; Sol's small rubric-sensitive lead costs 17.4x Luna. No combined case reaches 0.80; all three mislabel visible prop-color continuity. Prefer inspected headless Luna value; h…"
+          "sourceId": "045",
+          "summary": "Fresh six-case Sonnet5.5/Luna strict ordered-JPEG comparison; source-reviewed scorer and symmetric Opus recovery with independent Sol pixel review."
         }
       }
     }

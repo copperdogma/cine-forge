@@ -17,6 +17,20 @@ prompts:
 
 providers:
   - id: file://../providers/video_understanding_provider.py
+    label: "Claude Sonnet 5.5 / direct adaptive medium"
+    config:
+      provider: anthropic
+      model: claude-sonnet-5-5
+      reasoning_effort: medium
+      max_tokens: 4096
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: video-understanding-frame-packet-v3
+      raw_output_dir: output/evals/sonnet55-20260928/sonnet
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
     label: "MiMo V2.6 Flash / DeepInfra (catalog fp8)"
     config:
       provider: openrouter

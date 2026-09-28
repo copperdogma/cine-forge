@@ -1,0 +1,121 @@
+{
+  "id": "resp_02915803ba7071f9016abac5860e3887d088bdcb4a14266c3a",
+  "object": "response",
+  "created_at": 1790625158,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1790625164,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "model": "gpt-6-sol",
+  "moderation": null,
+  "output": [
+    {
+      "id": "rs_02915803ba7071f9016abac5870a9c87d0a84b18e802fb0a8b",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqusWM4gHvENNuyfwEi_w94dfx8AAH3b9SVk0Up3F6juo97pGMNTA1VmbSoznp1-68ZC1yerrzCnmmARrjHV3drApcrNLHvuw9Jh9CAGJrL4BpkaXA4P59ndR6xb1Kdmo4gztLIy-3hdKEwTB5CZRlkF8epdmQb0GFScpDgODU6nx5OAZmSmaupeQmriF-WjxqvbmjtfxMqGPjs3ihvukUrgu--wb6nRIe1wm7eY8qkknjMAwIqBIwkIYq5wIIWFeFrcoGgUt_w-KikMeJboUvhHAEeT3dRO-W5TBN1lCs40tJ0KWCDTQyl8p4BdHKF0yHXQbUuQ5ByPT_gcSnXqqGBCtZj3ychZA7-NBa3RD6rMZAVQP2LYPwp6S8UA0wTuy7yHr1lJOqePEo7sPnjG41YAChE68ZXrMm79HoJxC5p5MnxH8wQLMw0Fq7wDpF7bMZjfllzY0hM9VsB6wnrpTVYvGAENX-IJ90SVLM-qRxOlUHG53oLhPjHXPSA4XpZ4yM05mLymGGDfUQVVHftUGFeOCcxoBAPF0_MKcelvgT9-G0fkuDdWTG3gc2Z3X6aualKogwMOFHnX7voZBkMj-QCRyoJlwkyauSw9JlyzeEV77eRVbjySAfNjmh4zA1T6Y3_74CC9hFuuz3XoSQEC-KjNHE3Q6hMBsItgLELIFPJL57REvDpCJ9uqTP6spAoILfPJQuj3K8LoIKVVBKT7phwPSeZUJhZ-FMLv9PBQGbkXCrzot9Xypb5UMuwotsLSmAQx5cABcOlFjhlZJD4XxmvAaNS387rl67JegtJrjJKk-iDIWhnPhGq41B6eoILdFsN3TzUtxHymo-6rr793SQ0nrNpdSypLWBZi4nWtE8YasobG7kflhvu9flzf7UPwwTLG7tQ72YrU-ol_icIP0Kl8ELbiG7B_GtSrYQWx-RHtqQOHcHKvh5UEHzrfI4LNk1256oKjEkjrsmEKl_dViyXyk1Th7JU1WaHdqNFP9dDvgiUfIB1BdTt7BnGf2a4wowckzzcSPqhzpDh_hkHBN1nNPDlcXViGphlwIUDC4YsI76xcWCFhGMHMPOsVaNN0zgnbKOtWBaBWnvvKrBlaGQ3K3xlMf3v43IjDDq3GT6oPBaaVaD6_uPQJG1VxOJGXf7j4GIQCS3bVuMibqD8qkr8rIqiNbTm59EEYL6okUDGMa8Pc9MbDayR-c9CoNVXs5AbxHkNmLRbo-6r7khV1yc347kuFLz2e84lzQwMFgpNUunP7As_szPVB4vNC6tFBvbyYxJEnyzBzoI9m15PVIkq7vC5Es7telB-PWcbhTs1LYDKlZmdlL9saprRRMzky5z04jtpLrB6CLP0L_blcK5LUgj8WhETPQBhxvTEPqFPdricJdySatO9DgCY4UIzoQZKaKvqny3tRsOCoNBGcEMEXgcYRvQA9Bwt2xWg3SaJv6qNdEeWrfFQYHmmrLavjaqQ4nM3LNVxkCIhpG0X2P2g2IsFGhbE-5v7hDCghoWvmhHrWwD1OeSqksVMcorYBMRZipbjCTIi3B7SS5ceGjSDD3WoFD8WGBv7sQH0nNVLURqQqeBGPzH7EkXKNsrKcsmBG-egzJPK5ESir3XFByyCcN7Y5VP_ud5u4OK8lK70ECpX48YjRwzRK9iY1WtG9sNA9jaJt_-EIrbYYVnyAu7MGZ1Fg==",
+      "summary": []
+    },
+    {
+      "id": "msg_02915803ba7071f9016abac58a25e087d0b49a6b3366c0faa2",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"score\":0.77,\"reason\":\"The summary correctly identifies the yellow figure, adjacent rectangle, left-to-right gap crossing, static composition, and intact continuity. However, \u201cmeasured\u201d motion conflicts with the rapid, roughly constant lateral movement across the five frames, and \u201cdetached\u201d misses the reference\u2019s tense tone. At frame 2, the figure is above the left edge of the gap, not centered over it.\"}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "frame_review",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "score",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2035,
+    "input_tokens_details": {
+      "cache_write_tokens": 2032,
+      "cached_tokens": 0
+    },
+    "output_tokens": 190,
+    "output_tokens_details": {
+      "reasoning_tokens": 92
+    },
+    "total_tokens": 2225
+  },
+  "user": null,
+  "metadata": {}
+}

@@ -1,0 +1,15 @@
+{
+  "files": [
+    {
+      "bytes": 3258,
+      "path": "benchmarks/scripts/review_sonnet55_source_audit.py",
+      "sha256": "bf149fa23bd2882f807fde923555c4f4604083c23933365ee8677a771d09b120"
+    }
+  ],
+  "guard": "\nSource-verification clarifications for this rubric (apply identically to both arms):\n- The reference is a concise description, not an exhaustive list of visible shapes.\n  Concrete additional details supported by the source are valid, not invented.\n- In the red lateral-motion packet, the central outlined rectangle and triangular\n  diagonal outline are present in every JPEG. Calling them visible shapes is valid.\n- In the static warm packet, the left circle/post can read as an abstract figure or\n  lamp. The right body is rounded with a smaller circular head. Tan/peach wording\n  is compatible with the pixels. Do not enforce hidden object identity.\n- The visible small prop changes red-to-blue in the prop packet; both the color\n  observation and the continuity-status requirement must be evaluated separately.\n  The subject's allowed color vocabulary includes navy, red, teal, etc., but has no\n  blue tag. Do not penalize absence of an unavailable tag. Stillness is supported\n  by fixed geometry even when the reference has no required motion tag.\n- Emotion/tone readings are interpretive for these abstract shapes. Keep reference\n  tag mismatch separate from factual invention; do not claim reference tone is\n  directly proved by a pixel. Camera mechanism in dialogue is excluded from the\n  deterministic aggregate and remains physically ambiguous.\nReturn score 0..1 and concrete reason under the same >=.80 rubric threshold.\n",
+  "judge": "claude-opus-4-6",
+  "maximum_six_reservations_usd": ".4536",
+  "prior_settled_usd": "0.30867571999999999973",
+  "reason": "Original Opus judge called visible rectangle/triangle invented, disallowed visible head/color descriptors, and asked for unavailable blue color tag.",
+  "scope": "Symmetric Opus recovery on cases002/003/004, actual saved outputs unchanged"
+}

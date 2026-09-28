@@ -20,9 +20,11 @@ dimensions = importlib.import_module("video_understanding_dimensions")
 
 @pytest.mark.unit
 def test_push_in_summary_accepts_visible_enlargement_wording() -> None:
-    aliases = {"closer": (
-        r"\b(?:become|becomes|became)\s+(?:(?:slightly|gradually)\s+)*(?:larger|bigger)\b",
-    )}
+    aliases = {
+        "closer": (
+            r"\b(?:become|becomes|became)\s+(?:(?:slightly|gradually)\s+)*(?:larger|bigger)\b",
+        )
+    }
     positive = dimensions.score_keywords(
         dimension="summary",
         haystack="Both figures gradually become slightly larger across the samples.",
@@ -56,10 +58,12 @@ def test_push_in_summary_accepts_visible_enlargement_wording() -> None:
 @pytest.mark.unit
 def test_temporal_enlargement_does_not_credit_a_static_or_negated_claim() -> None:
     alias = {"closer": (r"\bacross\s+(?:the\s+)?samples\b.{0,80}\benlarg\w*\b",)}
+
     def score(text: str) -> float:
         return dimensions.score_keywords(
             dimension="summary", haystack=text, required=["closer"], equivalents=alias
         ).score
+
     assert score("Across the samples, both figures subtly enlarge.") == 1.0
     assert score("Across the samples, both figures do not enlarge.") == 0.0
     assert score("A larger man stands still beside a smaller woman.") == 0.0
@@ -67,32 +71,44 @@ def test_temporal_enlargement_does_not_credit_a_static_or_negated_claim() -> Non
 
 @pytest.mark.unit
 def test_static_and_temporal_growth_equivalents_are_source_constrained() -> None:
-    static_alias = {"static": (
-        r"\b(?:composition|arrangement|positions?|scene|frame)\s+"
-        r"(?:remains?|stays?)\s+(?:visually\s+|completely\s+)?"
-        r"(?:unchanged|fixed)\b",
-        r"\bno\s+(?:visible\s+)?(?:motion|movement|change)\b",
-    )}
+    static_alias = {
+        "static": (
+            r"\b(?:composition|arrangement|positions?|scene|frame)\s+"
+            r"(?:remains?|stays?)\s+(?:visually\s+|completely\s+)?"
+            r"(?:unchanged|fixed)\b",
+            r"\bno\s+(?:visible\s+)?(?:motion|movement|change)\b",
+        )
+    }
+
     def static_score(value: str) -> float:
         return dimensions.score_keywords(
-            dimension="summary", haystack=value, required=["static"],
+            dimension="summary",
+            haystack=value,
+            required=["static"],
             equivalents=static_alias,
         ).score
+
     assert static_score("The composition remains unchanged across all five samples.") == 1.0
     assert static_score("The camera is static.") == 1.0
     assert static_score("The camera is not static.") == 0.0
     assert static_score("There is no motion across the samples.") == 1.0
     assert static_score("Positions changed while color remained unchanged.") == 0.0
 
-    growth_alias = {"closer": (
-        r"\bacross\s+(?:the\s+)?(?:ordered\s+)?(?:frames|samples)\b.{0,100}"
-        r"\b(?:grow|grows|grew)\s+(?:slightly|gradually|visibly|progressively|larger|bigger)\b",
-    )}
+    growth_alias = {
+        "closer": (
+            r"\bacross\s+(?:the\s+)?(?:ordered\s+)?(?:frames|samples)\b.{0,100}"
+            r"\b(?:grow|grows|grew)\s+(?:slightly|gradually|visibly|progressively|larger|bigger)\b",
+        )
+    }
+
     def growth_score(value: str) -> float:
         return dimensions.score_keywords(
-            dimension="summary", haystack=value, required=["closer"],
+            dimension="summary",
+            haystack=value,
+            required=["closer"],
             equivalents=growth_alias,
         ).score
+
     assert growth_score("Across the samples, both figures grow slightly.") == 1.0
     assert growth_score("Across the samples, figures do not grow slightly.") == 0.0
     assert growth_score("One larger figure stands beside another throughout.") == 0.0
@@ -240,15 +256,19 @@ def test_excluded_ambiguous_camera_renormalizes_without_bypassing_hard_constrain
     prediction = _perfect_prediction()
     prediction["camera_tags"] = []
     score = scorer.score_output_against_target(
-        output=prediction, target_path=target_path,
-        model_label="Control", prompt_version="frame-packet-v3",
+        output=prediction,
+        target_path=target_path,
+        model_label="Control",
+        prompt_version="frame-packet-v3",
     )
     assert score.overall_score == pytest.approx(1.0)
     assert next(x for x in score.dimensions if x.dimension == "camera").score == 0.0
 
     wrong_id = scorer.score_output_against_target(
-        output=prediction, target_path=target_path,
-        model_label="Control", prompt_version="frame-packet-v3",
+        output=prediction,
+        target_path=target_path,
+        model_label="Control",
+        prompt_version="frame-packet-v3",
         expected_clip_id="other-evaluation",
     )
     assert wrong_id.hard_constraints_passed is False
@@ -259,8 +279,10 @@ def test_excluded_ambiguous_camera_renormalizes_without_bypassing_hard_constrain
     target_path.write_text(json.dumps(target))
     with pytest.raises(ValueError, match="cannot mask"):
         scorer.score_output_against_target(
-            output=prediction, target_path=target_path,
-            model_label="Control", prompt_version="frame-packet-v3",
+            output=prediction,
+            target_path=target_path,
+            model_label="Control",
+            prompt_version="frame-packet-v3",
         )
 
 
@@ -372,3 +394,48 @@ def test_out_of_range_frame_index_hard_fails(tmp_path: Path) -> None:
     assert result["pass"] is False
     assert result["score"] < 0.70
     assert "frame_index" in result["reason"]
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    "summary",
+    [
+        "Two blue figures hold their positions; across the samples both gradually grow taller.",
+        "An unchanging composition shows the two shapes beside a gray rectangle.",
+        "Nothing visibly moves or changes across the samples.",
+    ],
+)
+def test_source_equivalent_temporal_summary_words(summary):
+    target_case = "dialogue_confession_push_in" if "taller" in summary else "quiet_bedside_vigil"
+    target = scorer.VideoAnalysisTarget.model_validate_json(
+        (
+            REPO_ROOT / "benchmarks/video_understanding_truth_v4" / target_case / "target.json"
+        ).read_text()
+    )
+    prediction = _perfect_prediction()
+    prediction["summary"] = summary
+    prediction["clip_id"] = target.clip_id
+    scored = scorer.score_prediction_against_target(
+        prediction=scorer.VideoAnalysisPrediction.model_validate(prediction),
+        target=target,
+        model_label="source-equivalent",
+        prompt_version=None,
+    )
+    summary_score = next(x for x in scored.dimensions if x.dimension == "summary")
+    assert ("closer" if "taller" in summary else "static") not in summary_score.missed
+
+
+@pytest.mark.unit
+def test_source_cue_geometry_does_not_require_semantic_action_names():
+    target = scorer.VideoAnalysisTarget.model_validate_json(
+        (
+            REPO_ROOT
+            / "benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.json"
+        ).read_text()
+    )
+    lexicon = dimensions.observable_cue_tokens(target)
+    assert dimensions.cue_is_grounded("The figure is near the center beneath the arch.", lexicon)
+    assert not dimensions.cue_is_grounded(
+        "A police helicopter explodes above a burning car.", lexicon
+    )
+    assert not dimensions.cue_is_grounded("An arch is visible.", {"red", "table", "rectangle"})

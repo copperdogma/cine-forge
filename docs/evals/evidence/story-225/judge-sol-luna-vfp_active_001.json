@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.0064085",
+  "latency_ms": 4935,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4466,
+    "path": "output/evals/sonnet55-20260928/judge-sol-luna-vfp_active_001-raw.json",
+    "sha256": "f5c358e69df548eff46133564dcfea349c107f51c45b20df67b2ccde216ccaf3"
+  },
+  "reason": "The two figures, their fixed left-right positions, dark background, measured enlargement, and intact continuity are correctly identified. However, the analysis omits the conspicuous pale rectangle that remains on the right figure in every frame. It describes the figures as growing taller, whereas they also become wider, and its detached tone differs from the reference\u2019s intimate tone.",
+  "request_id": "resp_0d61c789da72bc60016abac5175cd487d09c2f389dca16c179",
+  "score": 0.74,
+  "usage": {
+    "input_tokens": 2048,
+    "input_tokens_details": {
+      "cache_write_tokens": 2045,
+      "cached_tokens": 0
+    },
+    "output_tokens": 129,
+    "output_tokens_details": {
+      "reasoning_tokens": 39
+    },
+    "total_tokens": 2177
+  }
+}
