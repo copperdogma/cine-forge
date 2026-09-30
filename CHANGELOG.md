@@ -1,5 +1,19 @@
 # Changelog
 
+## [2026-09-29-01] — Compare GPT-6.1 Sol with Luna on ordered frames (Story 226)
+
+### Added
+- Preserved six fresh matched five-JPEG subjects per model, exact Responses
+  qualification, all 30 paid receipts, and offline verification from tracked evidence.
+
+### Changed
+- Prefer Sol as the source-faithful headless research reference; retain Luna as
+  the economical control. Neither passes autonomous QA; product defaults stay unchanged.
+
+### Fixed
+- Adjudicated a source-proven case004 judge defect symmetrically using saved
+  answers and original images, while preserving the invalid original grades.
+
 ## [2026-09-28-01] — Compare Sonnet 5.5 with Luna on ordered frames (Story 225)
 
 ### Added

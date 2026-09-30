@@ -1,0 +1,290 @@
+{
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1790709070,
+  "created_at": 1790709065,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "id": "resp_0c11e2a68867077f016abc0d497d2487d08ace41870a4f46df",
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "metadata": {},
+  "model": "gpt-6.1-sol",
+  "moderation": null,
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified human-shaped figures, beige on the left and pale blue on the right, appear against a navy-to-teal background above a dark lower band. Across the samples, both figures gradually become taller and wider while a cream, white-bordered rectangle remains on the blue figure's lower torso.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\",\"locked_two_shot\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The figures retain their left-right positions and colors as their silhouettes gradually enlarge; the background boundary and cream torso rectangle remain fixed.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A beige figure stands on the left and a pale blue figure on the right, with a cream rectangle outlined in white on the blue figure's lower torso.\"},{\"frame_index\":2,\"cue\":\"Both figures have taller, slightly wider silhouettes than in the first sample, while their bottom edges remain aligned with the same dark lower band.\"},{\"frame_index\":4,\"cue\":\"Both circular heads sit higher and both bodies are wider than initially; the horizontal background boundary and the blue figure's cream rectangle remain in the same locations.\"}],\"overall_confidence\":0.96}",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_0c11e2a68867077f016abc0d4b103487d0a8aa858fff38bb71",
+      "phase": "final_answer",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "status": "completed",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "description": null,
+      "name": "video_analysis_prediction",
+      "schema": {
+        "additionalProperties": false,
+        "description": "Model output normalized before deterministic scoring.",
+        "properties": {
+          "audio_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "audio_tags": {
+            "items": {
+              "enum": [
+                "alarm",
+                "drone",
+                "heartbeat",
+                "muzak",
+                "percussion",
+                "radio",
+                "silent",
+                "soft_music",
+                "speech",
+                "voiceover"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "camera_tags": {
+            "items": {
+              "enum": [
+                "cross_cut",
+                "crash_zoom",
+                "handheld_jitter",
+                "locked_two_shot",
+                "lateral_track",
+                "overhead_reveal",
+                "profile_closeup",
+                "slow_pull_back",
+                "slow_push_in",
+                "static",
+                "whip_pan",
+                "wide_master"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "clip_id": {
+            "description": "Local validation: minLength=1",
+            "type": "string"
+          },
+          "color_tags": {
+            "items": {
+              "enum": [
+                "amber",
+                "desaturated",
+                "gold",
+                "green",
+                "magenta",
+                "monochrome",
+                "navy",
+                "neon",
+                "red",
+                "sepia",
+                "teal",
+                "violet"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "continuity_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "continuity_status": {
+            "enum": [
+              "intact",
+              "broken",
+              "ambiguous"
+            ],
+            "type": "string"
+          },
+          "emotion_tags": {
+            "items": {
+              "enum": [
+                "anger",
+                "grief",
+                "hesitation",
+                "isolation",
+                "nostalgia",
+                "panic",
+                "relief",
+                "resolve",
+                "suspicion",
+                "tenderness",
+                "vulnerability",
+                "wonder"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "additionalProperties": false,
+              "description": "Evidence tied to one submitted image in the ordered frame packet.",
+              "properties": {
+                "cue": {
+                  "description": "Local validation: minLength=1",
+                  "type": "string"
+                },
+                "frame_index": {
+                  "description": "Local validation: minimum=0, maximum=4",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "frame_index",
+                "cue"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "motion_tags": {
+            "items": {
+              "enum": [
+                "abrupt_cut",
+                "escalating",
+                "fast_lateral",
+                "jitter",
+                "match_cut",
+                "measured",
+                "pulsing_light",
+                "slow_drift",
+                "spiral_orbit",
+                "stillness"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "overall_confidence": {
+            "description": "Local validation: minimum=0.0, maximum=1.0",
+            "type": "number"
+          },
+          "summary": {
+            "description": "Local validation: minLength=1",
+            "type": "string"
+          },
+          "tone_tags": {
+            "items": {
+              "enum": [
+                "detached",
+                "hopeful",
+                "intimate",
+                "mournful",
+                "nostalgic",
+                "ominous",
+                "playful",
+                "regretful",
+                "surreal",
+                "tense",
+                "triumphant",
+                "urgent"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "clip_id",
+          "summary",
+          "tone_tags",
+          "emotion_tags",
+          "color_tags",
+          "camera_tags",
+          "motion_tags",
+          "continuity_status",
+          "continuity_notes",
+          "audio_tags",
+          "audio_notes",
+          "evidence",
+          "overall_confidence"
+        ],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "json_schema"
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2890,
+    "input_tokens_details": {
+      "cache_write_tokens": 2887,
+      "cached_tokens": 0
+    },
+    "output_tokens": 288,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 3178
+  },
+  "user": null
+}

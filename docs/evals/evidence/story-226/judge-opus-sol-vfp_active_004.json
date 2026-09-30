@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01113",
+  "latency_ms": 8800,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1716,
+    "path": "output/evals/gpt61-sol-20260929/judge-opus-sol-vfp_active_004-raw.json",
+    "sha256": "cc7d36517bb4b7dc8dcf2f2ef9ee301ace2288e0e426fb037689214b8844bae2"
+  },
+  "reason": "The model correctly identifies the overall composition (small rectangle on a brown base against a dark navy background), the static camera, and the broken continuity with a color change from red to blue. However, there are significant factual errors: (1) The model claims the color change happens between frames 1 and 2, but the reference says the rectangle is red in the first two samples and changes to blue between the second and third samples. This is a concrete misplacement of the continuity break. (2) The evidence entry for frame_index 1 describes a red rectangle and frame_index 2 describes a blue rectangle, contradicting the reference where frame 2 should still be red. (3) The color_tags include 'red' but omit 'blue', which is a significant color in the clip. (4) The motion_tags include 'stillness' but the reference indicates no motion tags should be claimed \u2014 though this is minor since it's semantically close to static. (5) The camera_tags miss 'wide_master' which is inferable from the frames. (6) Audio fields are empty, which is correct. The misidentification of when the continuity break occurs is a substantial error in frame-grounded evidence, which is a key evaluation criterion.",
+  "request_id": "msg_011CfYGFcYHzDVToD7NBvvXE",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 791,
+    "output_tokens": 287,
+    "service_tier": "standard"
+  }
+}

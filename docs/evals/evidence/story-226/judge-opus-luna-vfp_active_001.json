@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.00973",
+  "latency_ms": 9338,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1487,
+    "path": "output/evals/gpt61-sol-20260929/judge-opus-luna-vfp_active_001-raw.json",
+    "sha256": "85da1cba476cd9e4c9fdb4844862d8d551182cd9284ae854427626908a831b4f"
+  },
+  "reason": "The summary correctly captures the two figures, their fixed positions, and the apparent enlargement across frames, matching the reference well. Tone is 'detached' vs reference 'intimate' \u2014 a clear mismatch. Color tags include 'gold' instead of 'teal' \u2014 one color is wrong ('navy' is correct). Motion tag 'measured' matches. Continuity 'intact' matches. Emotion tags empty matches. Camera tags empty is fine (excluded from scoring). Audio tags empty as required. The evidence entries are reasonable and grounded in frame observations, though frame_index references (0, 2, 4) are acceptable. The pale rectangle on the right figure is mentioned in frame 0 evidence but not tracked across frames as a continuity element \u2014 the reference specifically notes it stays beside the right figure across all five frames. The tone mismatch (detached vs intimate) and color mismatch (gold vs teal) are concrete factual differences that together bring the score below the pass threshold.",
+  "request_id": "msg_011CfYG6YiMcyX6j8pFL44dh",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 796,
+    "output_tokens": 230,
+    "service_tier": "standard"
+  }
+}

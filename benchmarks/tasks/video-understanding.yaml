@@ -17,6 +17,21 @@ prompts:
 
 providers:
   - id: file://../providers/video_understanding_provider.py
+    label: "GPT-6.1 Sol / direct Responses low"
+    config:
+      provider: openai
+      model: gpt-6.1-sol
+      transport: responses_strict
+      reasoning_effort: low
+      max_tokens: 4096
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: video-understanding-frame-packet-v3
+      raw_output_dir: output/evals/gpt61-sol-20260929/sol
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
     label: "Claude Sonnet 5.5 / direct adaptive medium"
     config:
       provider: anthropic

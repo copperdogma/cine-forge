@@ -1,0 +1,35 @@
+{
+  "payload": {
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "content": "<Output>\n{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified human-shaped figures, beige on the left and pale blue on the right, stand against a navy-to-teal background above a dark lower band. Across the samples, both figures gradually become taller and wider while a cream, white-outlined rectangle remains on the blue figure's lower torso.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\",\"locked_two_shot\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The figures retain their left-right positions, colors, and aligned lower edges throughout the ordered samples.\",\"Both silhouettes progressively increase in height and width while the background boundary and the rectangle on the blue figure remain fixed.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A beige figure at left and a pale blue figure at right have circular heads and rounded rectangular bodies; the blue figure contains a cream rectangle with a white outline.\"},{\"frame_index\":2,\"cue\":\"Both figures extend higher and slightly wider than in the first sample, with their bottom edges still aligned near the horizontal background boundary.\"},{\"frame_index\":4,\"cue\":\"The figures are taller and wider again, while the dark lower band begins at the same height and the cream torso rectangle retains its position.\"}],\"overall_confidence\":0.96}\n</Output>\n\nEvaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: Two abstract figures hold fixed left-right centers in blue light while both appear larger across the ordered frames; a pale rectangle stays on the right figure.\n- Tone: intimate\n- Emotion: [none]\n- Color / grade: navy, teal\n- Camera language inferable from the ordered samples: ambiguous; camera tags excluded from scoring\n- Motion inferable from the ordered samples: measured\n- Continuity: intact - The pale rectangle stays beside the right figure across all five frames.\n- Audio: unavailable to the subject and excluded from scoring\n- Interpretation boundary: The figures enlarge at nearly fixed centers while the prop and background do not scale. Figure-size change is observable; physical approach or a specific camera mechanism is not established.\n\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n",
+        "role": "user"
+      }
+    ],
+    "model": "claude-opus-4-6",
+    "output_config": {
+      "format": {
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "score": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "score",
+            "reason"
+          ],
+          "type": "object"
+        },
+        "type": "json_schema"
+      }
+    },
+    "system": "You are an impartial evaluator. Return exactly a JSON object with score (number 0 to 1) and reason (string). Explain concrete mismatches against visible source facts. Do not reveal chain of thought."
+  },
+  "url": "https://api.anthropic.com/v1/messages"
+}

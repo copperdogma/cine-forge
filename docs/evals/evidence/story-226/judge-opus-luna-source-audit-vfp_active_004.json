@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.011135",
+  "latency_ms": 7939,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1510,
+    "path": "output/evals/gpt61-sol-20260929/judge-opus-luna-source-audit-vfp_active_004-raw.json",
+    "sha256": "097d886adf7231080d6f876865b59eb6fbbde43543944b45e33b88a04076b98e"
+  },
+  "reason": "The summary correctly identifies the red-to-blue color change and the static composition, and the evidence at frame_index 0 (red) and frame_index 2 (blue) is consistent with the reference. However, there are significant errors: (1) continuity_status is marked 'intact' when it should be 'broken' \u2014 the red-to-blue change is a continuity break between frame_index 1 and 2, which is a critical field. (2) The summary says 'rectangle is blue in the later samples' which is correct, but also says it is red initially, which is fine. (3) tone_tags includes 'detached' when the reference has none. (4) color_tags includes 'red' which is fine as a visual observation but the reference only lists 'navy'. (5) camera_tags is missing 'wide_master'. (6) audio_tags and audio_notes are correctly empty. The continuity_status error is the most significant \u2014 it directly contradicts the reference's 'broken' status with a clear continuity note about the color change. This alone warrants a substantial penalty.",
+  "request_id": "msg_011CfYGPiB6xBc6i5aMLGAYq",
+  "score": 0.42,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 907,
+    "output_tokens": 264,
+    "service_tier": "standard"
+  }
+}

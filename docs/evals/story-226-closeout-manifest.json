@@ -1,0 +1,613 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-29",
+  "base_git_sha": "58a001716c2f20a07e4aefcc99d280e5a0c8bb10",
+  "story": "226",
+  "policy": "Original call-time manifest, execution patch, frozen sources, paid results and receipts are immutable. This containing commit identifies closure/docs and read-only offline verifier additions; no provider calls or runtime adoption.",
+  "files_excluding_self": [
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 244422,
+      "sha256": "3aa280e78dde8e051a7fc70e107963165acb73d61763474cc0178e52bd246969"
+    },
+    {
+      "path": "benchmarks/providers/video_understanding_provider_support.py",
+      "bytes": 14960,
+      "sha256": "3be1260ab96ad807979bbe5aa13522d960493ba1a63690890822fe2686930cbc"
+    },
+    {
+      "path": "benchmarks/providers/video_understanding_provider_vision.py",
+      "bytes": 14445,
+      "sha256": "aed7d33b73b2812e0ae602f505be293be35791127ba409ba63ba8c5c5ae68698"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-gpt61-sol-vs-luna-v4-20260929.json",
+      "bytes": 161062,
+      "sha256": "d36ab2ba1416fd03e8f0d3ed56311dbb8bb5d19e4afb3aa177ef70a27ab72037"
+    },
+    {
+      "path": "benchmarks/scripts/report_gpt61_video_comparison.py",
+      "bytes": 5254,
+      "sha256": "83fc02fef0ffd530a92cab85b947a098d7259c3334565b0e196f7172e78e54c9"
+    },
+    {
+      "path": "benchmarks/scripts/review_gpt61_prop_adjudication.py",
+      "bytes": 4817,
+      "sha256": "4d74d6e36a0111a388923446197300786b3eddcce4efeced1a0861f9cf6ba198"
+    },
+    {
+      "path": "benchmarks/scripts/review_gpt61_source_audit.py",
+      "bytes": 1671,
+      "sha256": "c9875335b24e14e569ea435144d683ffe78563369fc316710eb73ce324d0fcee"
+    },
+    {
+      "path": "benchmarks/scripts/run_gpt61_video_comparison.py",
+      "bytes": 13608,
+      "sha256": "8ec36b28acec30ca998cc389c1a4a29b2105c295344a3e5a184fc7a8df2d0d8f"
+    },
+    {
+      "path": "benchmarks/scripts/verify_gpt61_video_comparison.py",
+      "bytes": 2345,
+      "sha256": "36d54de9dc23090d27d20929f238d47c95e228cf5f1424d42023b7262c221b73"
+    },
+    {
+      "path": "benchmarks/tasks/video-understanding.yaml",
+      "bytes": 11480,
+      "sha256": "08db1d0d2cbfa2f1ca084ac45ed2b7e8708887dd531abbb739b117786ac4f042"
+    },
+    {
+      "path": "docs/build-map.md",
+      "bytes": 18585,
+      "sha256": "de915b30a4394efb6dd2d9eb3eca5eb031836c3441e983ece25526f72f67c4cb"
+    },
+    {
+      "path": "docs/evals/attempts/046-gpt61-sol-vs-luna-v4-ordered-frame-comparison.md",
+      "bytes": 9174,
+      "sha256": "11bf3ece061bebb5fd7d16037adad9be03631fa2106de4178542f6615f1d0054"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-source-audit-vfp_active_004-raw.json",
+      "bytes": 1510,
+      "sha256": "097d886adf7231080d6f876865b59eb6fbbde43543944b45e33b88a04076b98e"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-source-audit-vfp_active_004-request.json",
+      "bytes": 3741,
+      "sha256": "9c7e11890bc69e7589b37df3d4b2251d8a2be6ea03251827921e0d05486cf2e9"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-source-audit-vfp_active_004.json",
+      "bytes": 1693,
+      "sha256": "57160a11304990164a8a98abfeb620b0e16ac38d2616d411e04f80b216b35a47"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_001-raw.json",
+      "bytes": 1487,
+      "sha256": "85da1cba476cd9e4c9fdb4844862d8d551182cd9284ae854427626908a831b4f"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_001-request.json",
+      "bytes": 3432,
+      "sha256": "15e71667e581dc87e6c9d5a1d0ce9dfabffbc2e1649a4da86e4a0af7df2912d3"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_001.json",
+      "bytes": 1659,
+      "sha256": "16afaf3d67bb9885cb7a05c535052152220bd37fa2f04e00b62bde76cfffe571"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_002-raw.json",
+      "bytes": 1361,
+      "sha256": "913656a90fa74a1ab7ab9dbdfdac3598f76f459d117bba3cbd31cfcd89b54a34"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_002-request.json",
+      "bytes": 3182,
+      "sha256": "d49d46a5eade90b7ae2bfc5fe816dd2f79e34387c3f9fb23c3c4c3e01f2b5556"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_002.json",
+      "bytes": 1531,
+      "sha256": "fe37336553564f734f7fd4eac7564e8421d4b17bb4f457a2eb005213066fc51a"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_003-raw.json",
+      "bytes": 1466,
+      "sha256": "8372f6a41757f5920b3a0a1e7d757017f357af0d6b0079ef2754fb7f75e10b3e"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_003-request.json",
+      "bytes": 3367,
+      "sha256": "3c56ae7172a16aa6c8f76f007866b2a8062dd5a44bdb1c52948a287e7644290b"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_003.json",
+      "bytes": 1630,
+      "sha256": "3faeb9a7247b0bfb503e520767dfd1fdc6cb6d9ba55639040ec1f36c0ace9890"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_004-raw.json",
+      "bytes": 1461,
+      "sha256": "2818b590529b44f29521b180d41fdd754fe9cea0fff4789ec21280233b6553c9"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_004-request.json",
+      "bytes": 2984,
+      "sha256": "dbbbccfaed37ce70df0a279c8e47926b7a44553ce6a5389f0312eb1b1d686a42"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_004.json",
+      "bytes": 1628,
+      "sha256": "56372113a953aa88ab92c48a96ad3269a9a749b588d84c449736d248a25dffc0"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_005-raw.json",
+      "bytes": 1476,
+      "sha256": "1334a2ec8e99bc78970e13226d3df02d03109cf49a08c98e73e26c7e9205f05b"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_005-request.json",
+      "bytes": 3320,
+      "sha256": "e6b03c57d1519c6de82ad2ee0b4a57bc585e43d7ebc469651fc20594e915f6f7"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_005.json",
+      "bytes": 1646,
+      "sha256": "2980f32717dd77515d23767b5b5880465a1703604a976121b2f90bb2130a1f08"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_006-raw.json",
+      "bytes": 1413,
+      "sha256": "19cd234ab8799bb3e0397e70bdb750fbc1673af55e1b9df0ac93278d3aed11be"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_006-request.json",
+      "bytes": 3123,
+      "sha256": "516ddb37285af93ff0df633109b006028e11ab845e6f7b077adf607608e3676d"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-luna-vfp_active_006.json",
+      "bytes": 1585,
+      "sha256": "4c5294b602e46ccfa406c95e0e07d4f5089838ea4086272081d0eb17f8091f53"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-source-audit-vfp_active_004-raw.json",
+      "bytes": 2054,
+      "sha256": "c4d2a0c5deaa3645e8ae3d2c8ca73c085b554b1447600d46a43ce8910e0556f6"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-source-audit-vfp_active_004-request.json",
+      "bytes": 4065,
+      "sha256": "a354e187518a0605f6643ff045dc743f34941c09f0716e11b8a4bf6b29f38a49"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-source-audit-vfp_active_004.json",
+      "bytes": 2242,
+      "sha256": "614975242443d5c4d85d1d5f9f598444323c5926b7533e0846e39a2ed0ef44e5"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_001-raw.json",
+      "bytes": 1709,
+      "sha256": "189acd4048c4d885adbbc30e2efebe4a402f45550d19ab37837497e638443c62"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_001-request.json",
+      "bytes": 3954,
+      "sha256": "c3d9afb8bfce5b890007c5afdc30a676a3e119390964b9591243201f782299bb"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_001.json",
+      "bytes": 1884,
+      "sha256": "4fcf11ea7e3753bc48ee0f94e846c1a28cba349c631df70427b46893e34c09a2"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_002-raw.json",
+      "bytes": 1639,
+      "sha256": "583922761d7c4ddc8b1cfda6a3a352c7a327e4444ae486307b8166e17e90f603"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_002-request.json",
+      "bytes": 3459,
+      "sha256": "e126122758ae06fb8d63fd04b629ecc7395e816d0a677d0515e42b79b763d510"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_002.json",
+      "bytes": 1809,
+      "sha256": "124fc84d686c3cc91723a9152a9bcde50c81eeccae7bf6839e24c4f65bf85d45"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_003-raw.json",
+      "bytes": 1467,
+      "sha256": "fb7d387d9c36b5999710adabf5f631fddb836a13a554dab96541183805876d92"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_003-request.json",
+      "bytes": 3582,
+      "sha256": "1f07418fc090560b4839d9fa9d5585867d0ebb1634294dfe0e25d88a3fdae27a"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_003.json",
+      "bytes": 1629,
+      "sha256": "323a43ae5d15d3b45e2829110bf8f7c90aed3d891bbad9f4eeb933df9a0d46bd"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_004-raw.json",
+      "bytes": 1716,
+      "sha256": "cc7d36517bb4b7dc8dcf2f2ef9ee301ace2288e0e426fb037689214b8844bae2"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_004-request.json",
+      "bytes": 3308,
+      "sha256": "c24e0861ad32b6296af061c933fd75c7e8280d742c235142d5f3f662b31c68e6"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_004.json",
+      "bytes": 1881,
+      "sha256": "b2448226388f586d2368def1541b76e724cc4127e63020bc5ebd8ab345e891ea"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_005-raw.json",
+      "bytes": 1440,
+      "sha256": "e97fe95ee562806de5ef9de3778146d4d369d61909a724a0a60424ca6296179c"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_005-request.json",
+      "bytes": 3554,
+      "sha256": "201ebe258fff2afe0d6672954469497d87bcfa78367863e931b852cdafdab8f0"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_005.json",
+      "bytes": 1608,
+      "sha256": "955fe67d8f7342739806a047d127d11c1540dd141798e4c08c4548211c930a8e"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_006-raw.json",
+      "bytes": 1459,
+      "sha256": "1b752a32af8d6c2ea87d6920f1ee3c20f6a00f154ecdeab8982225a248879301"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_006-request.json",
+      "bytes": 3384,
+      "sha256": "6c2d83d3c325a2d9ecf13a3ec6dc3f1f2c0c3410c2dfa14649bb1165bd217d41"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-opus-sol-vfp_active_006.json",
+      "bytes": 1627,
+      "sha256": "e76835620711d4810565a4c4c60e8599be62ad7ef159dac356fd55f2782925fa"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-sonnet-source-adjudication-luna-vfp_active_004-raw.json",
+      "bytes": 1250,
+      "sha256": "28199257ce2c78fe9a27dab46f9d1d60a66d4d77a0240e30c97efa4c28d94a45"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-sonnet-source-adjudication-luna-vfp_active_004-request.json",
+      "bytes": 79097,
+      "sha256": "1a79859b488a1920ed74059707dd1f99dfa118de34fa09afa83c8bc9c08bd832"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-sonnet-source-adjudication-luna-vfp_active_004.json",
+      "bytes": 1455,
+      "sha256": "4feb61aa2d32adb235c4a8abe0e517d770714df24a2c53ae97e57e30431ddc2f"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-sonnet-source-adjudication-sol-vfp_active_004-raw.json",
+      "bytes": 1299,
+      "sha256": "e01ec5c3987a7fb9b1b7f948ee07ea76fdce75127e5b05bb93741af0cec4a678"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-sonnet-source-adjudication-sol-vfp_active_004-request.json",
+      "bytes": 79421,
+      "sha256": "6aa4b6d4ff3daffb1f9013cff91824b19d2546cc7d8a89840942035eb4360ec7"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/judge-sonnet-source-adjudication-sol-vfp_active_004.json",
+      "bytes": 1503,
+      "sha256": "554ec0bd65af4145ab71f564150f38598eef1cca8ba94fb8a922b78a18f41e9b"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/native-luna-vfp_active_001-request.json",
+      "bytes": 99011,
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/native-luna-vfp_active_001.json",
+      "bytes": 3662,
+      "sha256": "a03d1096e1ced355ed6f0995a6e86102f233b3a57ab9c3c99830ff6238d513ee"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/native-sol-vfp_active_001-request.json",
+      "bytes": 99012,
+      "sha256": "35fa150d6cd6d32f95bbd36a143251e5976194aab56531fb570f60c2c0df7460"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/native-sol-vfp_active_001.json",
+      "bytes": 4044,
+      "sha256": "c27acaac9e35cdabdebaf96ccfe33b5556855a37f5d16b7b944e70241d3ba494"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/native/luna/vfp_active_001-raw-envelope.json",
+      "bytes": 10562,
+      "sha256": "50f78b42c44097facbd80393fb05e0a038c1e0b939293b31bcac76a06bbc3aa5"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/native/sol/vfp_active_001-raw-envelope.json",
+      "bytes": 8674,
+      "sha256": "0735dbd16113228fb075db7d595e72aa26685b09a3045ff6793374f608e8d1b4"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-luna-vfp_active_001-request.json",
+      "bytes": 99011,
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-luna-vfp_active_001.json",
+      "bytes": 3618,
+      "sha256": "5fe6f28b8999397170426511c90f1e475cddbe285638d9c10bc914d18c2218fd"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-luna-vfp_active_002-request.json",
+      "bytes": 257871,
+      "sha256": "38af3d9b985fd321794d21f878e487f7f1cba39423a7dc6e67475c41a95fff10"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-luna-vfp_active_002.json",
+      "bytes": 3608,
+      "sha256": "0449648b6b911aa5e4c22ba1769352595125b32fc5ea34896081e1ccfc325b7a"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-luna-vfp_active_003-request.json",
+      "bytes": 98291,
+      "sha256": "309fbf758455cdbab27e9a643dfbd1a6d4effd743bc041db1676322ee3fd5dfb"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-luna-vfp_active_003.json",
+      "bytes": 3522,
+      "sha256": "e17f6a3efd417bb114e5dfa0b3fe0efdc914c6269eec4570cc504d4a13ed1070"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-luna-vfp_active_004-request.json",
+      "bytes": 85071,
+      "sha256": "999a219b80982ce3d3c0bc1b618c340ebb7f5ad0c9522adb662029667cad4356"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-luna-vfp_active_004.json",
+      "bytes": 3458,
+      "sha256": "a826f511d57a81906d87c44fa0ac734abe5256d29ef65893de13efdaa7dd8b40"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-luna-vfp_active_005-request.json",
+      "bytes": 192707,
+      "sha256": "99da93d687a682c00cf92c2db6684e5fc62529825bdc36bc45f71ca2110d5c74"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-luna-vfp_active_005.json",
+      "bytes": 3625,
+      "sha256": "139016fe82239d99bc119eb3300caf280f732ff9fe412ef5c472fdc096859f5e"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-luna-vfp_active_006-request.json",
+      "bytes": 313563,
+      "sha256": "01d478770d07fa488eacdc272b2a30e2eb2d80aed5c7834942257df1b20a813e"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-luna-vfp_active_006.json",
+      "bytes": 3566,
+      "sha256": "fba7c31551487b0d8f55c1be762b1b6f6a55ac0e3ffd79ce7f5526e078637bd8"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-sol-vfp_active_001-request.json",
+      "bytes": 99012,
+      "sha256": "35fa150d6cd6d32f95bbd36a143251e5976194aab56531fb570f60c2c0df7460"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-sol-vfp_active_001.json",
+      "bytes": 4135,
+      "sha256": "535c387ba1b0433daf9ed3af7b140ff55000c61dcb8fad4893db703564cdf4c9"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-sol-vfp_active_002-request.json",
+      "bytes": 257872,
+      "sha256": "02b2178b70142464d7b23b475b576038203f240e975ca30f0c1983714125aaa9"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-sol-vfp_active_002.json",
+      "bytes": 3879,
+      "sha256": "101c499b852abf1197227b1b8763285c10acf81c78d0338aa6891a3d9cfb4992"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-sol-vfp_active_003-request.json",
+      "bytes": 98292,
+      "sha256": "cc5ef9126556b8d0a4af2f76d44b9069e22ca75bb44a0a1e476a099d7b3f46e4"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-sol-vfp_active_003.json",
+      "bytes": 3721,
+      "sha256": "96781b277a18bc146c92881c95860a740b27ba6de29bf9f642035e3afb49e594"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-sol-vfp_active_004-request.json",
+      "bytes": 85072,
+      "sha256": "0151fac5412db8b9f1aebb78001d98f38a3e7dc58b12cb0c452714a753f1fa05"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-sol-vfp_active_004.json",
+      "bytes": 3769,
+      "sha256": "ff85145ca7cf64e3b8f24a6ba3c6cfb43639878d8c304f4ccae35bc917a300f5"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-sol-vfp_active_005-request.json",
+      "bytes": 192708,
+      "sha256": "1963f083dd7f6e1bceddc396976862dd58c87b9f1163a82fd1f6a4298e78bbbf"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-sol-vfp_active_005.json",
+      "bytes": 3843,
+      "sha256": "b27677074b6121966a2b864815b9cc7b2a8ede574eaf54316303b5a266c65a73"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-sol-vfp_active_006-request.json",
+      "bytes": 313564,
+      "sha256": "6a83d0876b23e774bd23b066aa47eca234c2356c2060766d32340544a18bd7a4"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject-sol-vfp_active_006.json",
+      "bytes": 3821,
+      "sha256": "33a54e7c190c04e7de09bd7a16ac9c22c3bef7ed3137cd6f12607f112380cf5c"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject/luna/vfp_active_001-raw-envelope.json",
+      "bytes": 10867,
+      "sha256": "58f865529d58940cf02e89ca8d983bf87b9f135e0120a87bfe27b5e93529851f"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject/luna/vfp_active_002-raw-envelope.json",
+      "bytes": 10743,
+      "sha256": "2ddbaeb41ff5b2693d5ef3919b49d56ecdfd6815db2d08d5815bfafbbe343cec"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject/luna/vfp_active_003-raw-envelope.json",
+      "bytes": 10504,
+      "sha256": "80cd3d866290b946824a4af4c9ff2e0a6e01397945648339ca1f209df23f7613"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject/luna/vfp_active_004-raw-envelope.json",
+      "bytes": 10469,
+      "sha256": "3731c42297186495c946a4c96f4c90695ed98de10b04cb39d1f4a85718b413bf"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject/luna/vfp_active_005-raw-envelope.json",
+      "bytes": 11089,
+      "sha256": "9d6d22c93880758e2f4925e4fc36dbadc3aa1570536b8fbfd9e0b14065410c42"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject/luna/vfp_active_006-raw-envelope.json",
+      "bytes": 10297,
+      "sha256": "e0196732edbfce3e8bb56ed434e41119ddf338993792d648cf686b69b059b3ed"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject/sol/vfp_active_001-raw-envelope.json",
+      "bytes": 8763,
+      "sha256": "334cad798573ffe197664726d61443aee4abf764f81bef88495642095806a911"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject/sol/vfp_active_002-raw-envelope.json",
+      "bytes": 8542,
+      "sha256": "1287b02dac89101fdfe17f68d3fd8ed7bb622464eb31b76c31540015ed6c1561"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject/sol/vfp_active_003-raw-envelope.json",
+      "bytes": 8389,
+      "sha256": "53e800c8e7f5df18d46df93580607245627b0d4bc3a4e89f350ad43668e56499"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject/sol/vfp_active_004-raw-envelope.json",
+      "bytes": 10173,
+      "sha256": "3eac05f4788a622539174cb473281f775b4cc08711e629550329272e401cfcc6"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject/sol/vfp_active_005-raw-envelope.json",
+      "bytes": 8481,
+      "sha256": "1e01804ae6d53f96664549d3630cdea301397b8c7a973903b8b75c90b5bd2a95"
+    },
+    {
+      "path": "docs/evals/evidence/story-226/subject/sol/vfp_active_006-raw-envelope.json",
+      "bytes": 8464,
+      "sha256": "1d3037bda1c5a151d61ac23e4df5e657615e5327ae30fd504d837dc4cbcd3a99"
+    },
+    {
+      "path": "docs/evals/registry.yaml",
+      "bytes": 309167,
+      "sha256": "21a3b33780c06916f9543544c2c9846d1c6e185651b2fbdaeda7086caf3426a9"
+    },
+    {
+      "path": "docs/evals/snapshots/story-226-calltime-run_gpt61_video_comparison.py.txt",
+      "bytes": 13457,
+      "sha256": "30ef74f4f9cb9abc7c0712f3594a0be80d9ff85c75ef1ba86369f20cc3bad345"
+    },
+    {
+      "path": "docs/evals/story-208-contract-manifest-v18.json",
+      "bytes": 188624,
+      "sha256": "4c591f1db15c12ee2a0d8f524bed8b6d80ae989aebf66ae36726af38b1eb519a"
+    },
+    {
+      "path": "docs/evals/story-208-contract-manifest-v19.json",
+      "bytes": 188801,
+      "sha256": "44c175326a8c598bea064604613f56f8a7e40b36d59be26c6e63796398ffa9a3"
+    },
+    {
+      "path": "docs/evals/story-226-execution.patch",
+      "bytes": 2649,
+      "sha256": "dd2754b606a88c3521b608d8e37b872713d66842666790938bb9a2c40f666ba9"
+    },
+    {
+      "path": "docs/evals/story-226-gpt61-sol-evidence.json",
+      "bytes": 56936,
+      "sha256": "3e1328b6c356cce2832ece68a7051f3055bbda95e33cd9a1d9826b83a2420a8c"
+    },
+    {
+      "path": "docs/evals/story-226-gpt61-sol-freeze.json",
+      "bytes": 13799,
+      "sha256": "9c8ee35bdcec562d4f07be3d27c410ac1cf1e140dbc2d288f36192ca250ab3da"
+    },
+    {
+      "path": "docs/evals/story-226-source-review.json",
+      "bytes": 4130,
+      "sha256": "cc89159973e44bf048b9bf892a0e28a0ea7fdfd7fc5524c8169b497b6442bb14"
+    },
+    {
+      "path": "docs/evals/truth-audit-ledger.yaml",
+      "bytes": 241733,
+      "sha256": "af5805c0169eb2981ddb656a97e661baf66f90e49f6cc7626aff97cc066f3a52"
+    },
+    {
+      "path": "docs/methodology/graph.json",
+      "bytes": 594749,
+      "sha256": "54df570ee2a55c562fa023c5569e8dcb6e290fd82f4e028c5f42a6962817170d"
+    },
+    {
+      "path": "docs/stories.md",
+      "bytes": 51848,
+      "sha256": "53c7b83573553d95cb4a539773d4f66bd487de006f04d89b44decfea3cbfbb26"
+    },
+    {
+      "path": "docs/stories/story-226-gpt61-sol-ordered-frame-evaluation.md",
+      "bytes": 7881,
+      "sha256": "6a79506b1da73cd5c94a5a8029259efe624fed31086dbb951f490e92ca500bdf"
+    },
+    {
+      "path": "scripts/build_eval_contract_manifest.py",
+      "bytes": 9878,
+      "sha256": "7e096ee2c4029a2f0396b839cc43aefb12c249349fe77cca1cfe3a1e97bd4fe3"
+    },
+    {
+      "path": "tests/unit/test_eval_contract_manifest.py",
+      "bytes": 7559,
+      "sha256": "fceee6f647a28b1abf5d3bb8a59486a9755a8d0752d56c1623f9193b53b5da93"
+    },
+    {
+      "path": "tests/unit/test_gpt61_video_verification.py",
+      "bytes": 948,
+      "sha256": "abec7a54521c32dbdbe415a9769a518eec05f8f2fd830aa4cb42cfd4974ba3c0"
+    },
+    {
+      "path": "tests/unit/test_video_understanding_dataset.py",
+      "bytes": 10962,
+      "sha256": "11cb8018eafdfa5615800ef36858358cfffcbee7afb6cfad63fc38e5626fb8a4"
+    },
+    {
+      "path": "tests/unit/test_video_understanding_gpt6_contract.py",
+      "bytes": 4451,
+      "sha256": "2d877b28c87f3dee87fbe2db7200fcd27d3e2e884bcbea678476c9fc5ec2c74a"
+    }
+  ],
+  "validation": {
+    "focused_tests": "85 passed plus 1 offline verifier regression passed",
+    "lint": "all changed Python passed Ruff",
+    "offline": "90 tracked receipt hashes, 12 recomputed scores, 30 settled ledger entries passed",
+    "source": "v4 truth 13 files passed",
+    "records": "registry, truth-ledger, v19 closeout manifest (v18 preserved) and methodology check passed",
+    "ci": "No hosted CI configuration exists in owner repo; focused local tooling checks apply.",
+    "whitespace": "Staged diff passes excluding exact immutable call-time runner snapshot and execution patch, whose original whitespace is preserved."
+  }
+}

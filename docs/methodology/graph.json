@@ -971,7 +971,8 @@
           "221",
           "222",
           "224",
-          "225"
+          "225",
+          "226"
         ],
         "adrIds": [
           "ADR-002",
@@ -1114,7 +1115,8 @@
           "221",
           "222",
           "224",
-          "225"
+          "225",
+          "226"
         ],
         "adrIds": [
           "ADR-001",
@@ -1205,7 +1207,8 @@
           "221",
           "222",
           "224",
-          "225"
+          "225",
+          "226"
         ],
         "adrIds": [
           "ADR-002",
@@ -14862,6 +14865,63 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "226",
+      "title": "GPT-6.1 Sol Ordered-Frame Comparison",
+      "path": "docs/stories/story-226-gpt61-sol-ordered-frame-evaluation.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12",
+        "R18"
+      ],
+      "specRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "225"
+      ],
+      "categoryRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "226",
+        "sourcePath": "docs/stories/story-226-gpt61-sol-ordered-frame-evaluation.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-226-gpt61-sol-ordered-frame-evaluation.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -16878,7 +16938,8 @@
         "221",
         "222",
         "224",
-        "225"
+        "225",
+        "226"
       ],
       "categoryRefs": [
         "spec:7",
@@ -16888,6 +16949,16 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "046",
+          "date": "2026-09-29",
+          "approach": "Fresh six-case strict five-JPEG Sol6.1-versus-Luna comparison with Opus review, source-first case004 adjudication, and hard USD4 ledger. Sol leads for headless source analysis only; both miss autonomous QA target.",
+          "note": "",
+          "retryStatus": "",
+          "retryWhen": [
+            "new-subject-model"
+          ]
+        },
         {
           "id": "045",
           "date": "2026-09-28",
@@ -16998,13 +17069,13 @@
         }
       ],
       "latestScore": {
-        "model": "GPT-6 Luna / direct Responses low",
-        "measured": "2026-09-28",
+        "model": "GPT-6.1 Sol / direct Responses low",
+        "measured": "2026-09-29",
         "metrics": {
-          "overall": 0.62179
+          "overall": 0.65712
         },
-        "evidenceStatus": "bounded-six-case-uncommitted-source-reviewed-control",
-        "note": "Attempt045 fresh matched Responses Standard low1400 strict-schema control on six v4 cases. Retain preferred headless reference model: higher revised aggregate0.62179 versusSonnet0.53735, strict6/6 versus5/6, around28.1x lower observed subject cost (25.2x normalized uncached cache-write), slower8.119s versus4.390s. Firstcase input prompt-cache warmed bynative parity qualification; all outputs fres…"
+        "evidenceStatus": "bounded-six-case-uncommitted-source-reviewed",
+        "note": "Attempt046 fresh direct exact Responses low/4096 strict five-JPEG comparison on six v4 synthetic cases. Cross-provider Opus on all12 saved answers; case004 Opus original and repair invalid under source/index/tag rules, replaced only there by symmetric source-first Sonnet5.5 image adjudication. Combined0.65712,0/6 case quality passes,6/6 hard constraints,6/6 per-call latency and cost gates. Source…"
       },
       "historicalEvidenceStatus": "",
       "excludedScoreCount": 14,
@@ -17021,7 +17092,8 @@
         "221",
         "222",
         "224",
-        "225"
+        "225",
+        "226"
       ],
       "declaredCategoryRefs": [
         "spec:7",
@@ -17040,18 +17112,18 @@
         "sourceId": "video-understanding",
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
-        "posture": "trigger-exhausted",
-        "whyNow": "Attempt045 fresh matched Responses Standard low1400 strict-schema control on six v4 cases. Retain preferred headless reference model: higher revised aggregate0.62179 versusSonnet0.53735, strict6/6 versus5/6, around28.1x lower observed subject cost (25.2x normalized uncached cache-write), slower8.119s versus4.390s. Firstcase input prompt-cache warmed bynative parity qualification; all outputs fres…",
-        "retryTriggerStatus": "exhausted",
+        "posture": "wait-for-trigger",
+        "whyNow": "Attempt046 fresh direct exact Responses low/4096 strict five-JPEG comparison on six v4 synthetic cases. Cross-provider Opus on all12 saved answers; case004 Opus original and repair invalid under source/index/tag rules, replaced only there by symmetric source-first Sonnet5.5 image adjudication. Combined0.65712,0/6 case quality passes,6/6 hard constraints,6/6 per-call latency and cost gates. Source…",
+        "retryTriggerStatus": "waiting",
         "retryWhen": [
           "new-subject-model"
         ],
         "lastRelevantAction": {
-          "date": "2026-09-28",
+          "date": "2026-09-29",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "045",
-          "summary": "Fresh six-case Sonnet5.5/Luna strict ordered-JPEG comparison; source-reviewed scorer and symmetric Opus recovery with independent Sol pixel review."
+          "sourceId": "046",
+          "summary": "Fresh six-case strict five-JPEG Sol6.1-versus-Luna comparison with Opus review, source-first case004 adjudication, and hard USD4 ledger. Sol leads for headless source analysis only; both miss autonomous QA target."
         }
       }
     }
@@ -17673,7 +17745,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: ingest_and_world_building, api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 169 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 171 days old against a 14-day cadence"
     ]
   }
 }

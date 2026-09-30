@@ -156,6 +156,8 @@ def test_registry_declares_active_policy_and_quarantines_historical_scores() -> 
         if score["evidence_status"].startswith("bounded-six-case-uncommitted-")
     ]
     assert {(score["model"], score["metrics"]["overall"]) for score in current_bounded} == {
+        ("GPT-6.1 Sol / direct Responses low", 0.65712),
+        ("GPT-6 Luna / direct Responses low", 0.61166),
         ("Claude Sonnet 5.5 / direct adaptive medium", 0.53735),
         ("GPT-6 Luna / direct Responses low", 0.62179),
         ("GPT-6 Luna / direct Responses low", 0.5986),

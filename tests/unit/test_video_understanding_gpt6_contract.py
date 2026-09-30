@@ -30,13 +30,16 @@ def _output() -> dict:
     }
 
 
-def test_direct_responses_sends_five_images_strict_schema_and_store_false(tmp_path, monkeypatch):
+@pytest.mark.parametrize("model,max_tokens", [("gpt-6-sol", 1400), ("gpt-6.1-sol", 4096)])
+def test_direct_responses_sends_five_images_strict_schema_and_store_false(
+    tmp_path, monkeypatch, model, max_tokens
+):
     captured = {}
 
     def fake_request(url, *, headers, body, raw_output_path):
         captured.update(url=url, body=body)
         return {
-            "id": "resp_test", "model": "gpt-6-sol", "status": "completed",
+            "id": "resp_test", "model": model, "status": "completed",
             "service_tier": "default", "error": None,
             "output": [{"type": "message", "status": "completed", "content": [
                 {"type": "output_text", "text": json.dumps(_output())}
@@ -53,19 +56,33 @@ def test_direct_responses_sends_five_images_strict_schema_and_store_false(tmp_pa
     monkeypatch.setattr(provider, "REPO_ROOT", tmp_path)
     raw_path = tmp_path / "output/raw.json"
     result = provider._vision.call_openai_responses_strict(
-        vars(provider), model="gpt-6-sol", user_text="synthetic prompt",
+        vars(provider), model=model, user_text="synthetic prompt",
         frames=[{"mime_type": "image/jpeg", "base64": "synthetic"}] * 5,
-        max_tokens=1400, reasoning_effort="low", raw_output_path=raw_path,
+        max_tokens=max_tokens, reasoning_effort="low", raw_output_path=raw_path,
     )
     assert captured["url"] == provider.OPENAI_RESPONSES_URL
     body = captured["body"]
     assert body["store"] is False
     assert body["service_tier"] == "default"
     assert body["reasoning"] == {"effort": "low"}
+    assert body["max_output_tokens"] == max_tokens
     assert body["text"]["format"]["strict"] is True
     assert len([x for x in body["input"][0]["content"] if x["type"] == "input_image"]) == 5
     assert raw_path.exists() and json.loads(raw_path.read_text())["id"] == "resp_test"
     assert result["reported_cost_usd"] == pytest.approx(0.0125)
+
+
+def test_gpt61_sol_cached_input_uses_its_own_current_rate():
+    usage = {
+        "input_tokens": 4500, "output_tokens": 300, "total_tokens": 4800,
+        "input_tokens_details": {"cached_tokens": 1000, "cache_write_tokens": 1000},
+        "output_tokens_details": {"reasoning_tokens": 100},
+    }
+    response = {"usage": usage}
+    result = provider._provider_support.openai_usage_and_cost(
+        vars(provider), response, "gpt-6.1-sol"
+    )
+    assert result[-1] == pytest.approx(0.0106)
 
 
 def test_incomplete_response_is_retained_and_rejected(tmp_path, monkeypatch):

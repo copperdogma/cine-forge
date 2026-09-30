@@ -1,0 +1,53 @@
+diff --git a/benchmarks/providers/video_understanding_provider_support.py b/benchmarks/providers/video_understanding_provider_support.py
+index 86327af..0a13591 100644
+--- a/benchmarks/providers/video_understanding_provider_support.py
++++ b/benchmarks/providers/video_understanding_provider_support.py
+@@ -318,6 +318,7 @@ def openai_usage_and_cost(
+         raise RuntimeError("OpenAI Responses token details exceed total tokens")
+     input_rate, cached_rate, write_rate, output_rate = {
+         "gpt-6-sol": (2.0, 0.2, 2.5, 10.0),
++        "gpt-6.1-sol": (2.0, 0.1, 2.5, 10.0),
+         "gpt-6-luna": (0.1, 0.01, 0.125, 0.5),
+     }[model]
+     # If write telemetry is absent, charge every non-cached input token at the
+diff --git a/benchmarks/providers/video_understanding_provider_vision.py b/benchmarks/providers/video_understanding_provider_vision.py
+index ce742cf..e5ec073 100644
+--- a/benchmarks/providers/video_understanding_provider_vision.py
++++ b/benchmarks/providers/video_understanding_provider_vision.py
+@@ -30,8 +30,8 @@ def call_openai_responses_strict(
+     raw_output_path: Path,
+ ) -> dict[str, Any]:
+     """Direct foreground Responses, with raw retention before validation."""
+-    if model not in {"gpt-6-sol", "gpt-6-luna"} or reasoning_effort != "low":
+-        raise RuntimeError("This bounded lane requires GPT-6 Sol/Luna at low effort")
++    if model not in {"gpt-6-sol", "gpt-6.1-sol", "gpt-6-luna"} or reasoning_effort != "low":
++        raise RuntimeError("This bounded lane requires GPT-6 Sol/6.1 Sol/Luna at low effort")
+     if len(frames) != 5:
+         raise RuntimeError("Five ordered JPEGs are required")
+     content = openai_frame_content(user_text, frames)
+diff --git a/benchmarks/tasks/video-understanding.yaml b/benchmarks/tasks/video-understanding.yaml
+index e0b551f..4d5656e 100644
+--- a/benchmarks/tasks/video-understanding.yaml
++++ b/benchmarks/tasks/video-understanding.yaml
+@@ -16,6 +16,21 @@ prompts:
+   - file://../prompts/video-understanding.txt
+ 
+ providers:
++  - id: file://../providers/video_understanding_provider.py
++    label: "GPT-6.1 Sol / direct Responses low"
++    config:
++      provider: openai
++      model: gpt-6.1-sol
++      transport: responses_strict
++      reasoning_effort: low
++      max_tokens: 4096
++      max_frames: 5
++      frame_policy: five_evenly_spaced_jpegs_v1
++      prompt_version: video-understanding-frame-packet-v3
++      raw_output_dir: output/evals/gpt61-sol-20260929/sol
++      pythonExecutable: python
++      timeout: 300000
++
+   - id: file://../providers/video_understanding_provider.py
+     label: "Claude Sonnet 5.5 / direct adaptive medium"
+     config:

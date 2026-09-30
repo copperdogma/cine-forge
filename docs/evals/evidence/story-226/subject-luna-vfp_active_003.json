@@ -1,0 +1,78 @@
+{
+  "arm": "luna",
+  "name": "subject-luna-vfp_active_003",
+  "response": {
+    "cached": false,
+    "cost": 0.0005326749999999999,
+    "latencyMs": 4328,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "quiet_bedside_vigil",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_003",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+      ],
+      "meta_sha256": "ba3438e4973166276591efea693838df99841ac34eac732f433c0c5cfcefe8fa",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_071d678626a228cf016abc0da54a8487d085f6d55277a65917",
+      "requested_model": "gpt-6-luna",
+      "returned_model": "gpt-6-luna",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_003\",\"summary\":\"A simple graphic shows two pale-gold stylized figures on either side of a long gray rectangle. The composition remains unchanged across the sampled frames.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"gold\",\"desaturated\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A pale-gold round-headed figure stands at the left end of a long gray rectangle.\"},{\"frame_index\":2,\"cue\":\"A second pale-gold figure is positioned to the right of the rectangle, with the same arrangement as frame 0.\"},{\"frame_index\":4,\"cue\":\"The two figures and gray rectangle remain in the same positions against a dark two-tone background.\"}],\"overall_confidence\":0.97}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_071d678626a228cf016abc0da54a8487d085f6d55277a65917",
+      "model": "gpt-6-luna",
+      "raw_envelope_bytes": 10504,
+      "raw_envelope_path": "output/evals/gpt61-sol-20260929/subject/luna/vfp_active_003-raw-envelope.json",
+      "raw_envelope_sha256": "80cd3d866290b946824a4af4c9ff2e0a6e01397945648339ca1f209df23f7613",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 343,
+        "output_tokens_details": {
+          "reasoning_tokens": 141
+        },
+        "total_tokens": 3233
+      }
+    },
+    "tokenUsage": {
+      "completion": 202,
+      "completionDetails": {
+        "reasoning": 141
+      },
+      "prompt": 2890,
+      "total": 3233
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/quiet_bedside_vigil",
+    "clip_id": "quiet_bedside_vigil",
+    "evaluation_id": "vfp_active_003",
+    "target_markdown": "file://../video_understanding_truth_v4/quiet_bedside_vigil/target.md",
+    "target_path": "video_understanding_truth_v4/quiet_bedside_vigil/target.json"
+  }
+}

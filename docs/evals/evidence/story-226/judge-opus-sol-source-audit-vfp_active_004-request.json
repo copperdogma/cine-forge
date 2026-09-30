@@ -1,0 +1,35 @@
+{
+  "payload": {
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "content": "<Output>\n{\"clip_id\":\"vfp_active_004\",\"summary\":\"A minimalist graphic shows a small white-outlined rectangle above a broad brown base against a dark navy background. The small rectangle changes from red to blue between frames 1 and 2 while the surrounding composition remains fixed.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"broken\",\"continuity_notes\":[\"The central rectangle changes abruptly from red in frame 1 to blue in frame 2 without any visible change in its outline, position, or surroundings.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":1,\"cue\":\"A red rectangle with clipped corners and a thin white outline sits on a gray-brown panel above a darker brown base.\"},{\"frame_index\":2,\"cue\":\"The same white-outlined rectangle is blue, with the panel, base, and background retaining their positions.\"},{\"frame_index\":4,\"cue\":\"The rectangle remains blue and the geometric composition is unchanged.\"}],\"overall_confidence\":0.96}\n</Output>\n\nEvaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: A static table composition contains a small rectangle that is red in the first two samples and blue in the final three.\n- Tone: [none]\n- Emotion: [none]\n- Color / grade: navy\n- Camera language inferable from the ordered samples: static, wide_master\n- Motion inferable from the ordered samples: [none]\n- Continuity: broken - The tabletop rectangle changes from red to blue between the second and third samples.\n- Audio: unavailable to the subject and excluded from scoring\n\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n\nSource-verified clarification for the prop-color packet, applied to both arms:\nThe five images use zero-based frame_index 0,1,2,3,4. The tabletop rectangle\nis red at indexes 0 and 1; blue at indexes 2, 3 and 4. Thus the change between\nthe second and third samples means BETWEEN frame_index 1 and frame_index 2.\nDo not penalize a claim that frame_index 2 is blue. The allowed color_tags\nvocabulary has no generic blue tag, so do not penalize its absence. A stillness\ntag is compatible with unchanged geometry even though the reference requires\nno motion tag. Continue to penalize marking continuity_status intact when the\nobserved red-to-blue prop change requires broken. Return the same score and\nreason schema under the original >=0.80 rubric.\n",
+        "role": "user"
+      }
+    ],
+    "model": "claude-opus-4-6",
+    "output_config": {
+      "format": {
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "score": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "score",
+            "reason"
+          ],
+          "type": "object"
+        },
+        "type": "json_schema"
+      }
+    },
+    "system": "You are an impartial evaluator. Return exactly a JSON object with score (number 0 to 1) and reason (string). Explain concrete mismatches against visible source facts. Do not reveal chain of thought."
+  },
+  "url": "https://api.anthropic.com/v1/messages"
+}

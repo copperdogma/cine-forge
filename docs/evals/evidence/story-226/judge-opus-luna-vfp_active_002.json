@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.008985",
+  "latency_ms": 6424,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1361,
+    "path": "output/evals/gpt61-sol-20260929/judge-opus-luna-vfp_active_002-raw.json",
+    "sha256": "913656a90fa74a1ab7ab9dbdfdac3598f76f459d117bba3cbd31cfcd89b54a34"
+  },
+  "reason": "The output correctly identifies the red color palette, static camera, left-to-right movement, and intact continuity. However, several important mismatches exist: (1) Tone is 'detached' instead of 'urgent, tense' \u2014 a significant mismatch. (2) Motion is 'measured' instead of 'fast_lateral' and 'pulsing_light' \u2014 the model misses the fast lateral movement and pulsing light, and instead describes slow/steady movement. (3) Camera tags are missing 'wide_master'. (4) The reference describes diagonal lines that shift, while the output claims they remain fixed. (5) The description calls the figure 'simplified' and does not capture the runner characterization, though this is minor. The tone and motion mismatches are substantial, and the incorrect claim about fixed background lines contradicts the reference's description of shifting diagonal lines.",
+  "request_id": "msg_011CfYGDztQothn1R2dbkFQy",
+  "score": 0.5,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 752,
+    "output_tokens": 209,
+    "service_tier": "standard"
+  }
+}

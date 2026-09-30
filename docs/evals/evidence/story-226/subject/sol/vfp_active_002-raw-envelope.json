@@ -1,0 +1,290 @@
+{
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1790709146,
+  "created_at": 1790709140,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "id": "resp_07cac9353648051c016abc0d94907887d0a8a8c76e983687ed",
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "metadata": {},
+  "model": "gpt-6.1-sol",
+  "moderation": null,
+  "object": "response",
+  "output": [
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"clip_id\":\"vfp_active_002\",\"summary\":\"A flat orange human-shaped icon with a white-outlined red rectangle moves steadily from left to right across a dark red graphic background. A central rectangular outline and peaked diagonal lines remain fixed while thin pale diagonal stripes shift across the samples.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The orange icon and its attached outlined rectangle retain their appearance as they progress rightward through all five samples.\",\"The central rectangular outline and peaked lines maintain the same placement throughout the packet.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The orange human-shaped icon sits on the left, with a small white-outlined red rectangle extending to its right.\"},{\"frame_index\":2,\"cue\":\"The same icon overlaps the central rectangular outline, beneath the apex of the peaked diagonal lines.\"},{\"frame_index\":4,\"cue\":\"The icon is now right of the central outline; its size and attached white-outlined rectangle remain consistent.\"}],\"overall_confidence\":0.96}",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_07cac9353648051c016abc0d96f07887d09414d733ff24c8f9",
+      "phase": "final_answer",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "status": "completed",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "description": null,
+      "name": "video_analysis_prediction",
+      "schema": {
+        "additionalProperties": false,
+        "description": "Model output normalized before deterministic scoring.",
+        "properties": {
+          "audio_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "audio_tags": {
+            "items": {
+              "enum": [
+                "alarm",
+                "drone",
+                "heartbeat",
+                "muzak",
+                "percussion",
+                "radio",
+                "silent",
+                "soft_music",
+                "speech",
+                "voiceover"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "camera_tags": {
+            "items": {
+              "enum": [
+                "cross_cut",
+                "crash_zoom",
+                "handheld_jitter",
+                "locked_two_shot",
+                "lateral_track",
+                "overhead_reveal",
+                "profile_closeup",
+                "slow_pull_back",
+                "slow_push_in",
+                "static",
+                "whip_pan",
+                "wide_master"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "clip_id": {
+            "description": "Local validation: minLength=1",
+            "type": "string"
+          },
+          "color_tags": {
+            "items": {
+              "enum": [
+                "amber",
+                "desaturated",
+                "gold",
+                "green",
+                "magenta",
+                "monochrome",
+                "navy",
+                "neon",
+                "red",
+                "sepia",
+                "teal",
+                "violet"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "continuity_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "continuity_status": {
+            "enum": [
+              "intact",
+              "broken",
+              "ambiguous"
+            ],
+            "type": "string"
+          },
+          "emotion_tags": {
+            "items": {
+              "enum": [
+                "anger",
+                "grief",
+                "hesitation",
+                "isolation",
+                "nostalgia",
+                "panic",
+                "relief",
+                "resolve",
+                "suspicion",
+                "tenderness",
+                "vulnerability",
+                "wonder"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "additionalProperties": false,
+              "description": "Evidence tied to one submitted image in the ordered frame packet.",
+              "properties": {
+                "cue": {
+                  "description": "Local validation: minLength=1",
+                  "type": "string"
+                },
+                "frame_index": {
+                  "description": "Local validation: minimum=0, maximum=4",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "frame_index",
+                "cue"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "motion_tags": {
+            "items": {
+              "enum": [
+                "abrupt_cut",
+                "escalating",
+                "fast_lateral",
+                "jitter",
+                "match_cut",
+                "measured",
+                "pulsing_light",
+                "slow_drift",
+                "spiral_orbit",
+                "stillness"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "overall_confidence": {
+            "description": "Local validation: minimum=0.0, maximum=1.0",
+            "type": "number"
+          },
+          "summary": {
+            "description": "Local validation: minLength=1",
+            "type": "string"
+          },
+          "tone_tags": {
+            "items": {
+              "enum": [
+                "detached",
+                "hopeful",
+                "intimate",
+                "mournful",
+                "nostalgic",
+                "ominous",
+                "playful",
+                "regretful",
+                "surreal",
+                "tense",
+                "triumphant",
+                "urgent"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "clip_id",
+          "summary",
+          "tone_tags",
+          "emotion_tags",
+          "color_tags",
+          "camera_tags",
+          "motion_tags",
+          "continuity_status",
+          "continuity_notes",
+          "audio_tags",
+          "audio_notes",
+          "evidence",
+          "overall_confidence"
+        ],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "json_schema"
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2890,
+    "input_tokens_details": {
+      "cache_write_tokens": 2887,
+      "cached_tokens": 0
+    },
+    "output_tokens": 252,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 3142
+  },
+  "user": null
+}

@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.009945",
+  "latency_ms": 6343,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1461,
+    "path": "output/evals/gpt61-sol-20260929/judge-opus-luna-vfp_active_004-raw.json",
+    "sha256": "2818b590529b44f29521b180d41fdd754fe9cea0fff4789ec21280233b6553c9"
+  },
+  "reason": "Several concrete mismatches: (1) Continuity is marked 'intact' but the reference says 'broken' due to the red-to-blue color change \u2014 this is a significant error in a key field. (2) The summary says 'red in the later samples' becomes 'blue in the later samples' which partially captures the change, but the continuity_status being 'intact' contradicts this observation. (3) The reference specifies the change happens between the second and third samples; the model's evidence only references frame_index 0 and 2, missing the intermediate frame where it's still red. (4) color_tags include 'red' which is correct, but the reference only lists 'navy' as a color/grade tag. (5) camera_tags lists only 'static' but misses 'wide_master'. (6) tone_tags includes 'detached' but reference says none. (7) audio_tags is correctly empty. The critical failure is the continuity_status being 'intact' when it should be 'broken', which is a major analytical error.",
+  "request_id": "msg_011CfYGGGAE3KdgfdvHrppqG",
+  "score": 0.52,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 709,
+    "output_tokens": 256,
+    "service_tier": "standard"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.00985",
+  "latency_ms": 7817,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1459,
+    "path": "output/evals/gpt61-sol-20260929/judge-opus-sol-vfp_active_006-raw.json",
+    "sha256": "1b752a32af8d6c2ea87d6920f1ee3c20f6a00f154ecdeab8982225a248879301"
+  },
+  "reason": "The output correctly identifies the cyan icon/runner figure moving left to right, the dark blue/navy background, teal/cyan color palette, static camera, intact continuity, the white-outlined rectangle staying with the figure, and the diagonal/rain-like streaks. However, there are significant mismatches: (1) Tone is tagged as 'detached' instead of 'urgent, tense' \u2014 a clear mismatch with the reference. (2) Motion is tagged as 'measured' instead of 'fast_lateral' \u2014 the reference indicates fast lateral movement, not measured/slow. (3) Camera tags are missing 'wide_master' which is in the reference. (4) The 'large cyan arch' description may be a reasonable interpretation of the tunnel, but calling it just an 'arch' rather than a tunnel is slightly imprecise. The tone and motion mismatches are substantial because they mischaracterize the fundamental feel and dynamics of the clip. The color tags and continuity assessment are good matches.",
+  "request_id": "msg_011CfYGHxtiTiaaNcvFzPLwV",
+  "score": 0.55,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 795,
+    "output_tokens": 235,
+    "service_tier": "standard"
+  }
+}

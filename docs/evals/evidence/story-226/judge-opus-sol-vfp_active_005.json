@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.00962",
+  "latency_ms": 8974,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1440,
+    "path": "output/evals/gpt61-sol-20260929/judge-opus-sol-vfp_active_005-raw.json",
+    "sha256": "e97fe95ee562806de5ef9de3778146d4d369d61909a724a0a60424ca6296179c"
+  },
+  "reason": "The summary correctly captures the yellow figure moving rightward in an arc over a gap between dark platforms, with continuity intact. Color tags ('gold','navy') are close but not exactly 'amber'\u2014acceptable. Camera tags include 'static' (correct) but miss 'wide_master'. Motion is tagged 'measured' instead of 'fast_lateral', which is a meaningful mismatch: the reference says fast lateral movement, not measured/slow. Tone is tagged 'playful' instead of 'urgent, tense'\u2014a significant mismatch in interpretation. The evidence is well-grounded in frames and describes the arc trajectory accurately. Continuity notes correctly mention the rectangular projection staying with the figure. The diagonal lines and yellow line spanning the gap are plausible observations. Overall, the visual description and continuity are solid, but the tone and motion characterization are notably wrong, bringing the score below the 0.8 threshold.",
+  "request_id": "msg_011CfYGGjehhw6zpzhsc2iJg",
+  "score": 0.68,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 844,
+    "output_tokens": 216,
+    "service_tier": "standard"
+  }
+}

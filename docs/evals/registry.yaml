@@ -2055,6 +2055,7 @@ evals:
       - "222"
       - "224"
       - "225"
+      - "226"
     category_refs:
       - spec:7
       - spec:8
@@ -2099,6 +2100,34 @@ evals:
       note: "Fresh six-case frame-only results, source-backed truth review, and the 0.80 quality gate are required before any autonomous QA/default decision. A below-gate paired result may still identify a preferred headless reference model; use each row's evidence status."
 
     scores:
+      - model: "GPT-6.1 Sol / direct Responses low"
+        evidence_status: bounded-six-case-uncommitted-source-reviewed
+        metrics:
+          overall: 0.65712
+          deterministic: 0.61590
+          rubric: 0.69833
+        latency_ms: 6117
+        cost_usd: 0.00871203
+        cost_estimated: true
+        measured: 2026-09-29
+        git_sha: "58a001716c2f20a07e4aefcc99d280e5a0c8bb10+story226-hash-freeze"
+        result_file: benchmarks/results/video-understanding-gpt61-sol-vs-luna-v4-20260929.json
+        contract_manifest: docs/evals/story-226-gpt61-sol-evidence.json
+        note: "Attempt046 fresh direct exact Responses low/4096 strict five-JPEG comparison on six v4 synthetic cases. Cross-provider Opus on all12 saved answers; case004 Opus original and repair invalid under source/index/tag rules, replaced only there by symmetric source-first Sonnet5.5 image adjudication. Combined0.65712,0/6 case quality passes,6/6 hard constraints,6/6 per-call latency and cost gates. Source review finds stronger continuity/temporal/arc coverage than Luna, but no autonomous QA or product analyzer/default exists. Mean6.117s/USD0.008712; first case cache-warmed by native qualification, uncached-write-normalized meanUSD0.0098668. Uncommitted hash-frozen history."
+      - model: "GPT-6 Luna / direct Responses low"
+        evidence_status: bounded-six-case-uncommitted-source-reviewed-control
+        metrics:
+          overall: 0.61166
+          deterministic: 0.61832
+          rubric: 0.60500
+        latency_ms: 5014
+        cost_usd: 0.00048926
+        cost_estimated: true
+        measured: 2026-09-29
+        git_sha: "58a001716c2f20a07e4aefcc99d280e5a0c8bb10+story226-hash-freeze"
+        result_file: benchmarks/results/video-understanding-gpt61-sol-vs-luna-v4-20260929.json
+        contract_manifest: docs/evals/story-226-gpt61-sol-evidence.json
+        note: "Attempt046 matched fresh direct Responses low/1400 control on the same six v4 cases,0/6 case quality passes,6/6 hard/latency/cost gates. Luna marks the observed red-to-blue prop change continuity intact and misses shifting diagonal streaks, though it is faster and roughly17.8x cheaper at observed cache billing. Mean5.014s/USD0.000489; first case cache-warmed by native qualification, uncached-write-normalized meanUSD0.00054459. Retain as economical control; no product analyzer/default promotion."
       - model: "Claude Sonnet 5.5 / direct adaptive medium"
         evidence_status: bounded-six-case-uncommitted-source-reviewed
         metrics:
@@ -2385,6 +2414,21 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "046"
+        story: attempts/046-gpt61-sol-vs-luna-v4-ordered-frame-comparison.md
+        date: 2026-09-29
+        status: succeeded
+        approach: "Fresh six-case strict five-JPEG Sol6.1-versus-Luna comparison with Opus review, source-first case004 adjudication, and hard USD4 ledger. Sol leads for headless source analysis only; both miss autonomous QA target."
+        worker_model: "Codex GPT-6"
+        worker_model_date: 2026-09-29
+        subject_model: "gpt-6.1-sol"
+        score_before: 0.61166
+        score_after: 0.65712
+        latency_before: 5014
+        latency_after: 6117
+        retry_when:
+          - condition: new-subject-model
+            note: "New checkpoint or broader source-backed scenes may test whether a model reaches the 0.80 QA gate."
       - id: "045"
         story: attempts/045-sonnet55-vs-luna-v4-ordered-frame-comparison.md
         date: 2026-09-28

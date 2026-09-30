@@ -1,0 +1,78 @@
+{
+  "arm": "sol",
+  "name": "subject-sol-vfp_active_003",
+  "response": {
+    "cached": false,
+    "cost": 0.0095135,
+    "latencyMs": 5050,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "quiet_bedside_vigil",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_003",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+      ],
+      "meta_sha256": "ba3438e4973166276591efea693838df99841ac34eac732f433c0c5cfcefe8fa",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6.1-sol",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_03cc305db61bb5e5016abc0da02d6c87d092749bc954a9d3c9",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_003\",\"summary\":\"A minimalist graphic shows two gold circular-headed forms on either side of a long, pale-bordered blue-gray rectangle against a dark background. The composition remains unchanged across all five samples.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"gold\",\"desaturated\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The shapes, framing, and background remain visibly unchanged throughout the ordered samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A gold circle tops a narrow brown vertical bar at left, beside a long blue-gray rectangle with a pale border.\"},{\"frame_index\":2,\"cue\":\"A smaller gold circle sits above a rounded gold rectangular body to the right of the bordered rectangle.\"},{\"frame_index\":4,\"cue\":\"The left circular-headed bar, central bordered rectangle, and right rounded figure retain the same positions and sizes as in the earlier samples.\"}],\"overall_confidence\":0.98}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_03cc305db61bb5e5016abc0da02d6c87d092749bc954a9d3c9",
+      "model": "gpt-6.1-sol",
+      "raw_envelope_bytes": 8389,
+      "raw_envelope_path": "output/evals/gpt61-sol-20260929/subject/sol/vfp_active_003-raw-envelope.json",
+      "raw_envelope_sha256": "53e800c8e7f5df18d46df93580607245627b0d4bc3a4e89f350ad43668e56499",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 229,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3119
+      }
+    },
+    "tokenUsage": {
+      "completion": 229,
+      "completionDetails": {
+        "reasoning": 0
+      },
+      "prompt": 2890,
+      "total": 3119
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/quiet_bedside_vigil",
+    "clip_id": "quiet_bedside_vigil",
+    "evaluation_id": "vfp_active_003",
+    "target_markdown": "file://../video_understanding_truth_v4/quiet_bedside_vigil/target.md",
+    "target_path": "video_understanding_truth_v4/quiet_bedside_vigil/target.json"
+  }
+}

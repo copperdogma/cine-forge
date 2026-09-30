@@ -1,0 +1,28 @@
+{
+  "cost_usd": "0.008272",
+  "latency_ms": 4749,
+  "model": "claude-sonnet-5-5",
+  "raw": {
+    "bytes": 1299,
+    "path": "output/evals/gpt61-sol-20260929/judge-sonnet-source-adjudication-sol-vfp_active_004-raw.json",
+    "sha256": "e01ec5c3987a7fb9b1b7f948ee07ea76fdce75127e5b05bb93741af0cec4a678"
+  },
+  "reason": "Frames 0 and 1 show a red rectangle, frames 2-4 show blue. The output correctly identifies the red-to-blue change between frames 1 and 2, and continuity_status is 'broken' as the reference says. The evidence is grounded at frames 1, 2 and 4 with accurate cues. The audio fields are empty, and the static camera and stillness tags are compatible with the scene. The summary is accurate. Minor issues: the tone tag 'detached' is not in the reference, which lists none, so it is a small unsupported addition. The color tags include 'red', which is fine, and blue is covered in the text. There is no wide_master camera tag, a minor omission. The 'continuity_notes' frame indexes are correct. Overall this is a strong match with small deductions.",
+  "request_id": "msg_011CfYGafKkbWDgGiV9Ps2Y6",
+  "score": 0.8,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2786,
+    "output_tokens": 270,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard"
+  }
+}

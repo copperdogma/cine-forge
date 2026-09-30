@@ -1,0 +1,78 @@
+{
+  "arm": "sol",
+  "name": "subject-sol-vfp_active_002",
+  "response": {
+    "cached": false,
+    "cost": 0.0097435,
+    "latencyMs": 6710,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "alarm_chase_whip_pan",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_002",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a",
+        "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039",
+        "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655",
+        "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b",
+        "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+      ],
+      "meta_sha256": "d028854d7c23197397b7003bfcfe3fd651d418a232950e8e28851ea210e7e99a",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6.1-sol",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_07cac9353648051c016abc0d94907887d0a8a8c76e983687ed",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_002\",\"summary\":\"A flat orange human-shaped icon with a white-outlined red rectangle moves steadily from left to right across a dark red graphic background. A central rectangular outline and peaked diagonal lines remain fixed while thin pale diagonal stripes shift across the samples.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The orange icon and its attached outlined rectangle retain their appearance as they progress rightward through all five samples.\",\"The central rectangular outline and peaked lines maintain the same placement throughout the packet.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The orange human-shaped icon sits on the left, with a small white-outlined red rectangle extending to its right.\"},{\"frame_index\":2,\"cue\":\"The same icon overlaps the central rectangular outline, beneath the apex of the peaked diagonal lines.\"},{\"frame_index\":4,\"cue\":\"The icon is now right of the central outline; its size and attached white-outlined rectangle remain consistent.\"}],\"overall_confidence\":0.96}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_07cac9353648051c016abc0d94907887d0a8a8c76e983687ed",
+      "model": "gpt-6.1-sol",
+      "raw_envelope_bytes": 8542,
+      "raw_envelope_path": "output/evals/gpt61-sol-20260929/subject/sol/vfp_active_002-raw-envelope.json",
+      "raw_envelope_sha256": "1287b02dac89101fdfe17f68d3fd8ed7bb622464eb31b76c31540015ed6c1561",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 252,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3142
+      }
+    },
+    "tokenUsage": {
+      "completion": 252,
+      "completionDetails": {
+        "reasoning": 0
+      },
+      "prompt": 2890,
+      "total": 3142
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+    "clip_id": "alarm_chase_whip_pan",
+    "evaluation_id": "vfp_active_002",
+    "target_markdown": "file://../video_understanding_truth_v4/alarm_chase_whip_pan/target.md",
+    "target_path": "video_understanding_truth_v4/alarm_chase_whip_pan/target.json"
+  }
+}

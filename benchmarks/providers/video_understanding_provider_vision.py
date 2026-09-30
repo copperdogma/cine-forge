@@ -30,8 +30,8 @@ def call_openai_responses_strict(
     raw_output_path: Path,
 ) -> dict[str, Any]:
     """Direct foreground Responses, with raw retention before validation."""
-    if model not in {"gpt-6-sol", "gpt-6-luna"} or reasoning_effort != "low":
-        raise RuntimeError("This bounded lane requires GPT-6 Sol/Luna at low effort")
+    if model not in {"gpt-6-sol", "gpt-6.1-sol", "gpt-6-luna"} or reasoning_effort != "low":
+        raise RuntimeError("This bounded lane requires GPT-6 Sol/6.1 Sol/Luna at low effort")
     if len(frames) != 5:
         raise RuntimeError("Five ordered JPEGs are required")
     content = openai_frame_content(user_text, frames)

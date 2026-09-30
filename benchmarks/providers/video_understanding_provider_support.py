@@ -318,6 +318,7 @@ def openai_usage_and_cost(
         raise RuntimeError("OpenAI Responses token details exceed total tokens")
     input_rate, cached_rate, write_rate, output_rate = {
         "gpt-6-sol": (2.0, 0.2, 2.5, 10.0),
+        "gpt-6.1-sol": (2.0, 0.1, 2.5, 10.0),
         "gpt-6-luna": (0.1, 0.01, 0.125, 0.5),
     }[model]
     # If write telemetry is absent, charge every non-cached input token at the

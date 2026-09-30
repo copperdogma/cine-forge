@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.009735",
+  "latency_ms": 7462,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1466,
+    "path": "output/evals/gpt61-sol-20260929/judge-opus-luna-vfp_active_003-raw.json",
+    "sha256": "8372f6a41757f5920b3a0a1e7d757017f357af0d6b0079ef2754fb7f75e10b3e"
+  },
+  "reason": "The output correctly identifies the core visual elements: two round-topped forms flanking a horizontal gray rectangle, static composition, stillness, intact continuity, and a desaturated color palette. Color is described as 'gold' and 'pale-gold' which is reasonably close to the reference 'amber'. The tone is 'detached' rather than 'intimate', which is a mismatch but tone is somewhat subjective. Camera tags include 'static' but miss 'wide_master'. Audio fields are empty as required. The output does not invent actions, edits, or story meaning. The description of both figures as 'stylized figures' is acceptable given the interpretation boundary note (the left form could be a lamp or abstract figure). Evidence is grounded in specific frames. Minor deductions for: tone mismatch, missing 'wide_master' camera tag, and slight imprecision in describing the left form as identical to the right (reference notes the left form is narrower than the right).",
+  "request_id": "msg_011CfYGF5PJWW24v2Jj4Ge2t",
+  "score": 0.82,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 797,
+    "output_tokens": 230,
+    "service_tier": "standard"
+  }
+}

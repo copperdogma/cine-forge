@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.00991",
+  "latency_ms": 8032,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1467,
+    "path": "output/evals/gpt61-sol-20260929/judge-opus-sol-vfp_active_003-raw.json",
+    "sha256": "fb7d387d9c36b5999710adabf5f631fddb836a13a554dab96541183805876d92"
+  },
+  "reason": "The output correctly identifies the key visual elements: two round-topped forms flanking a central horizontal rectangle, static framing, stillness, intact continuity, and a desaturated color palette. Color is described as 'gold' and 'blue-gray' rather than 'amber' and 'gray', which is a minor mismatch but semantically close enough for the warm tones. The reference says 'wide_master' camera tag which the output omits, costing slightly. The tone is 'detached' vs reference 'intimate', which is a mismatch but tone is subjective. Audio fields are correctly empty. Continuity is correctly assessed as intact with appropriate notes. Evidence is frame-grounded and describes observable elements without inventing actions, identities, or story meaning. The description of the rectangle as 'blue-gray' rather than 'gray' is a minor color discrepancy but not fabrication. Overall the structural and visual analysis is largely accurate with only minor deviations.",
+  "request_id": "msg_011CfYGEUAz5cY5vusiPr7yN",
+  "score": 0.82,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 832,
+    "output_tokens": 230,
+    "service_tier": "standard"
+  }
+}

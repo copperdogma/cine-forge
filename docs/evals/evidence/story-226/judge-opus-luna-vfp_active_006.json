@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.00902",
+  "latency_ms": 6788,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1413,
+    "path": "output/evals/gpt61-sol-20260929/judge-opus-luna-vfp_active_006-raw.json",
+    "sha256": "19cd234ab8799bb3e0397e70bdb750fbc1673af55e1b9df0ac93278d3aed11be"
+  },
+  "reason": "The output correctly identifies a cyan figure moving laterally from left to right beneath an arch/tunnel shape, with diagonal/rain-like streaks on a dark blue background, and correctly notes the small rectangular object staying with the figure. Colors (navy, teal) match. Continuity is correctly marked intact. Camera is correctly static, though 'wide_master' is missing. However, the tone is tagged as 'detached' instead of 'urgent, tense' \u2014 a significant mismatch. Motion is tagged as 'measured' rather than 'fast_lateral', which contradicts the reference's characterization of rapid lateral movement. The description of the background element as a 'curved arch' rather than a 'tunnel' is acceptable but slightly less precise. Audio fields are empty, which is correct. The two key mismatches \u2014 wrong tone and underestimated motion speed \u2014 are substantive enough to bring the score below passing.",
+  "request_id": "msg_011CfYGJYMrtxprCKQ2jofLY",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 739,
+    "output_tokens": 213,
+    "service_tier": "standard"
+  }
+}

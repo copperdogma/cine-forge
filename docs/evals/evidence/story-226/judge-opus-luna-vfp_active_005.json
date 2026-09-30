@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.009975",
+  "latency_ms": 7655,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1476,
+    "path": "output/evals/gpt61-sol-20260929/judge-opus-luna-vfp_active_005-raw.json",
+    "sha256": "1334a2ec8e99bc78970e13226d3df02d03109cf49a08c98e73e26c7e9205f05b"
+  },
+  "reason": "The model correctly identifies the yellow figure, small rectangular object, left-to-right movement, dark blue/navy background, gap between platforms, fast_lateral motion, and intact continuity. However, there are several notable mismatches: (1) Tone is tagged 'detached' instead of 'urgent, tense' \u2014 a clear mismatch with reference. (2) Color tags list 'gold' instead of 'amber' \u2014 a minor but noticeable difference. (3) Camera tags are empty, missing 'static' and 'wide_master' which are inferable from the frames. (4) The summary describes 'diagonal lines' which may not be clearly supported by frames, and omits the arc-like trajectory of the runner crossing the gap. (5) The description says 'passing over a narrow gap between two platforms' which is acceptable but doesn't capture the rooftop/arc nature. The missing camera tags (static, wide_master) and wrong tone tags are significant omissions/errors that together bring the score below passing threshold.",
+  "request_id": "msg_011CfYGHPnPoJXwA1DN1GBg3",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 785,
+    "output_tokens": 242,
+    "service_tier": "standard"
+  }
+}

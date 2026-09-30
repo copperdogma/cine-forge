@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.010995",
+  "latency_ms": 10002,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1639,
+    "path": "output/evals/gpt61-sol-20260929/judge-opus-sol-vfp_active_002-raw.json",
+    "sha256": "583922761d7c4ddc8b1cfda6a3a352c7a327e4444ae486307b8166e17e90f603"
+  },
+  "reason": "The model correctly identifies the red color palette, static camera, intact continuity, the human-shaped icon moving left to right, and the small rectangle staying with the runner. However, there are significant mismatches: (1) Tone is tagged as 'detached' instead of 'urgent/tense' \u2014 a clear mismatch with the reference. (2) Motion is tagged as 'measured' rather than 'fast_lateral' and 'pulsing_light' \u2014 the model misses the fast lateral movement and pulsing light, which are observable in the frames. (3) Camera tags omit 'wide_master'. (4) The model describes the icon color as 'orange' rather than 'red', which contradicts what is visible. (5) The model describes the background as 'dark red graphic background' and mentions 'thin pale diagonal stripes shift across the samples' but misses the pulsing red illumination. (6) Color tags only include 'red' but describe the figure as orange, creating internal inconsistency. Overall, while the spatial trajectory and continuity are correctly captured, the tone, motion characterization, color identification of the runner, and camera framing are notably off from reference.",
+  "request_id": "msg_011CfYGDG7frwP6n1UKJUwR1",
+  "score": 0.52,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 799,
+    "output_tokens": 280,
+    "service_tier": "standard"
+  }
+}

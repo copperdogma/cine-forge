@@ -1,0 +1,28 @@
+{
+  "cost_usd": "0.007844",
+  "latency_ms": 4164,
+  "model": "claude-sonnet-5-5",
+  "raw": {
+    "bytes": 1250,
+    "path": "output/evals/gpt61-sol-20260929/judge-sonnet-source-adjudication-luna-vfp_active_004-raw.json",
+    "sha256": "28199257ce2c78fe9a27dab46f9d1d60a66d4d77a0240e30c97efa4c28d94a45"
+  },
+  "reason": "Frames 0 and 1 are red, frames 2-4 are blue. The output's summary and evidence for frames 0 and 2 are accurate and it correctly notes static camera, empty motion, and empty audio. But continuity_status is 'intact' when the reference is 'broken': the rectangle changes from red to blue between frames 1 and 2. The output also leaves continuity_notes empty and describes the change only in the summary. The task says to penalize wrong continuity status, and this is a major error. Tone 'detached' is an unsupported invented tag, since the reference has none. Color tags navy and red are acceptable, though the blue is covered by the text. It omits wide_master, a minor issue. Overall it fails.",
+  "request_id": "msg_011CfYGb14u2gZAywxF5RawS",
+  "score": 0.35,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2682,
+    "output_tokens": 248,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard"
+  }
+}

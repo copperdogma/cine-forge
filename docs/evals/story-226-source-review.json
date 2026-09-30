@@ -1,0 +1,45 @@
+{
+  "date": "2026-09-29",
+  "reviewer": "Codex GPT-6, direct inspection of the repository's 30 original synthetic JPEGs and saved outputs before aggregate comparison",
+  "source_contact_sheet": "docs/evals/evidence/story-225/source-contact-sheet.png",
+  "source_directory": "benchmarks/video_understanding",
+  "cases": {
+    "vfp_active_001": {
+      "source_fact": "Two fixed-center abstract figures visibly enlarge; the pale right-side rectangle and backdrop stay fixed.",
+      "sol": "Identifies enlargement, both figures, fixed rectangle and continuity; detached tone conflicts with intimate target but is interpretive.",
+      "luna": "Identifies enlargement, both figures and rectangle; gold instead of teal tag and missing continuity note reduce exact coverage.",
+      "classification": "model-wrong on exact tag/coverage; tone ambiguous"
+    },
+    "vfp_active_002": {
+      "source_fact": "Red/orange figure and attached rectangle move left-to-right; central arch and outline stay fixed while diagonal streak positions change.",
+      "sol": "Recognizes shifting diagonal stripes and figure trajectory, but tags movement measured and misses reference light pulse/urgency; orange-red figure wording is a permissible pixel description.",
+      "luna": "Recognizes trajectory but falsely says diagonal lines remain fixed; measured motion and detached tone miss the maintained reference.",
+      "classification": "Luna fixed-streak claim model-wrong; both miss motion/illumination labels; color/tone wording ambiguous"
+    },
+    "vfp_active_003": {
+      "source_fact": "Static warm scene has a narrow left round-topped form, long gray rectangle and broader right round-topped form.",
+      "sol": "Describes fixed geometry and stillness accurately; gold versus amber and detached versus intimate are lexical/interpretive mismatches.",
+      "luna": "Describes fixed geometry and stillness accurately, but treats the narrow left form as like the broader right form; gold versus amber and tone are bounded wording differences.",
+      "classification": "mostly ambiguous lexical/tone; limited geometric difference"
+    },
+    "vfp_active_004": {
+      "source_fact": "Zero-based frame indexes 0 and 1 show red prop; indexes 2, 3 and 4 show blue prop. Change is between indexes 1 and 2.",
+      "sol": "Correctly localizes the change and marks continuity broken.",
+      "luna": "Observes the red-to-blue change but marks continuity intact, contradicting the task's required classification.",
+      "judge_repair": "Original Opus falsely said frame_index 2 should be red and requested a generic blue tag unavailable in the allowed vocabulary. Symmetric clarified Opus review still penalized the missing unavailable tag and invented all-five evidence coverage, so both Opus case004 grades are retained but invalid. Symmetric source-first Sonnet5.5 review with all five original JPEGs is the effective rubric evidence for case004 only.",
+      "classification": "golden-wrong judge indexing/allowed-tag defect repaired; Luna continuity_status model-wrong and task-blocking"
+    },
+    "vfp_active_005": {
+      "source_fact": "Yellow figure moves right in a visible up/down arc over a gap at constant approximate size, with attached rectangle staying with it.",
+      "sol": "Captures arc and frame-grounded positions; playful tone and measured motion differ from urgent/fast target.",
+      "luna": "Captures rightward travel but omits arc, though fast_lateral tag matches; detached tone differs from target.",
+      "classification": "Sol arc coverage advantage; both have model-wrong or ambiguous motion/tone labels"
+    },
+    "vfp_active_006": {
+      "source_fact": "Cyan figure and small rectangle move right under a fixed curved arch; repeated slanted streak positions change.",
+      "sol": "Captures icon trajectory, arch and prop but describes speed as measured and omits changing streaks.",
+      "luna": "Captures trajectory, arch and prop but describes speed as measured and omits changing streaks.",
+      "classification": "both miss reference speed and streak-change coverage; tone interpretive"
+    }
+  }
+}
