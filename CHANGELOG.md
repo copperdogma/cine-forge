@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-10-01-01] — Consolidate agent instructions and explain decision models
+
+### Added
+- Add a portable decision-model guide and compact AGENTS.md entry point for
+  choosing between code, bounded semantic judgments and language generation,
+  preserving owner evaluation verdicts, privacy and enablement gates.
+
+### Changed
+- Remove the root CLAUDE.md bridge after verified native AGENTS.md loading;
+  preserve Claude skill-discovery links and any scoped AGENTS instructions.
+
 ## [2026-09-29-01] — Compare GPT-6.1 Sol with Luna on ordered frames (Story 226)
 
 ### Added
