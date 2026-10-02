@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01015",
+  "latency_ms": 8646,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1431,
+    "path": "output/evals/grok47-effort-20261002/judge-opus-high-vfp_active_001-raw.json",
+    "sha256": "418d5ddf6556b72c6dca33436925b56a01bfa907d74d7e6ed58ba0e1c0c9fafa"
+  },
+  "reason": "The output correctly identifies intact continuity, the navy color, the two-figure composition, the light/pale rectangle on one figure, and the static background. However, it has several significant mismatches with the reference: (1) It claims 'stillness' and no visible movement across frames, missing the observable figure enlargement ('measured' motion) which is the key visual change across the ordered samples. (2) Tone is tagged 'detached/surreal' vs reference 'intimate'. (3) It includes 'isolation' as an emotion tag while the reference specifies none. (4) It misses 'teal' in color tags. (5) The evidence entries describe no change at all across frames, which contradicts the observable size increase of the figures. The failure to detect the figure enlargement is a major miss since it's the primary visual event in the clip, and claiming complete stillness is factually incorrect relative to the ordered frames.",
+  "request_id": "msg_011CfdWTtN2cGi6MEwKqncqr",
+  "score": 0.42,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 950,
+    "output_tokens": 216,
+    "service_tier": "standard"
+  }
+}

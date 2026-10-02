@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.012105",
+  "latency_ms": 9924,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1791,
+    "path": "output/evals/grok47-effort-20261002/judge-opus-low-vfp_active_006-raw.json",
+    "sha256": "2281d59bac91a240d2bfc55503a1d995000f3659b11bbc9940087e89aa240f84"
+  },
+  "reason": "The output captures several correct visual elements: the cyan figure, navy/teal color palette, lateral movement, intact continuity, and empty audio fields. However, there are significant mismatches: (1) Tone: the output says 'detached' while the reference says 'urgent, tense' \u2014 completely wrong tone. (2) Emotion: the output claims 'isolation' but the reference lists no emotion tags \u2014 this is invented. (3) Camera: the output claims 'lateral_track' implying camera movement, but the reference says 'static, wide_master' \u2014 the camera does not move, so this is an invented camera movement. (4) Motion: the output says 'measured' but the reference says 'fast_lateral' \u2014 opposite characterization of speed. (5) The output describes a 'broad cyan arch' but the reference describes a 'blue tunnel' \u2014 somewhat equivalent but the arch framing is debatable. (6) The output misses the 'small cyan rectangle' that stays beside the runner, a key continuity detail. (7) The output describes the figure as a 'flat cyan human icon' rather than an 'abstract runner.' While some visual details align (colors, general direction of motion, continuity status), the wrong tone, invented emotion, wrong camera tags, and wrong motion speed are substantial errors that prevent a passing score.",
+  "request_id": "msg_011CfdWE7tjVUGVZXXCLdtyk",
+  "score": 0.48,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 871,
+    "output_tokens": 310,
+    "service_tier": "standard"
+  }
+}

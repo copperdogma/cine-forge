@@ -1,0 +1,80 @@
+{
+  "arm": "high",
+  "name": "subject-high-vfp_active_006",
+  "response": {
+    "cached": false,
+    "cost": 0.018212,
+    "latencyMs": 22987,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "storm_tunnel_lateral_run",
+      "cost_estimated": false,
+      "evaluation_id": "vfp_active_006",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+        "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+        "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+        "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+        "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+      ],
+      "meta_sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "grok-4.7",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "xai",
+      "request_id": "84d1d7e9-5bb1-9469-b12f-c97335cea11e",
+      "requested_model": "grok-4.7",
+      "returned_model": "grok-4.7",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"A pale cyan person icon travels steadily from left to right across a fixed dark navy field of diagonal lines and a cyan arc. The icon and its small outlined rectangle move together while the background geometry stays in place.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The icon advances rightward across all five samples without a positional jump, while the arc and diagonal lines remain fixed.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A light-blue person icon is at the far left beneath a cyan arc, with a white-outlined rectangle at its lower right.\"},{\"frame_index\":2,\"cue\":\"The same icon and rectangle have shifted near the center while the diagonal lines and arc remain unchanged.\"},{\"frame_index\":4,\"cue\":\"The icon and attached rectangle are right of center, continuing the same left-to-right displacement.\"}],\"overall_confidence\":0.8}",
+    "raw": {
+      "id": "84d1d7e9-5bb1-9469-b12f-c97335cea11e",
+      "model": "grok-4.7",
+      "status": "completed",
+      "usage": {
+        "context_details": {
+          "input_tokens": 4360,
+          "output_tokens": 1877
+        },
+        "cost_in_usd_ticks": 182120000,
+        "input_tokens": 4360,
+        "input_tokens_details": {
+          "cached_tokens": 1152
+        },
+        "num_server_side_tools_used": 0,
+        "num_sources_used": 0,
+        "output_tokens": 1870,
+        "output_tokens_details": {
+          "reasoning_tokens": 1607
+        },
+        "total_tokens": 6230
+      },
+      "x_zero_data_retention": "false"
+    },
+    "tokenUsage": {
+      "completion": 263,
+      "completionDetails": {
+        "reasoning": 1607
+      },
+      "prompt": 4360,
+      "total": 6230
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+    "clip_id": "storm_tunnel_lateral_run",
+    "evaluation_id": "vfp_active_006",
+    "target_markdown": "file://../video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+    "target_path": "video_understanding_truth_v4/storm_tunnel_lateral_run/target.json"
+  }
+}

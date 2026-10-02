@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01129",
+  "latency_ms": 8758,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1628,
+    "path": "output/evals/grok47-effort-20261002/judge-opus-medium-vfp_active_001-raw.json",
+    "sha256": "a29f76ec4c3c186ce52ded4e2b3a09fad3488fdf644e89e689452e6439ef5ced"
+  },
+  "reason": "The output correctly identifies two figures with left-right placement, the pale rectangular badge on the right figure, navy color, static framing, and intact continuity. However, it has significant misses: (1) It completely fails to note the observable enlargement of the figures across the ordered frames, instead claiming 'stillness' and that positions/spacing remain 'unchanged' \u2014 this contradicts the reference which states both figures appear larger across frames. The motion tag should reflect 'measured' change, not 'stillness'. (2) Tone is tagged as 'detached' vs reference 'intimate'. (3) Emotion is tagged as 'isolation' when the reference indicates none. (4) Color tags include 'desaturated' but miss 'teal' which is noted in the reference. (5) The summary explicitly states 'positions, spacing, and framing remain unchanged' which is factually incorrect per the reference \u2014 the figures enlarge across frames. The failure to detect the most significant visual change (figure enlargement) is a substantial analytical miss, and the invented emotion tag and incorrect motion assessment compound the errors.",
+  "request_id": "msg_011CfdWL8Cznfu1ZWNqFyt5W",
+  "score": 0.52,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 988,
+    "output_tokens": 254,
+    "service_tier": "standard"
+  }
+}

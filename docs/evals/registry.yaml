@@ -2414,6 +2414,25 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "047"
+        story: attempts/047-grok47-effort-v4-calibration.md
+        date: 2026-10-02
+        status: failed
+        approach: "Fresh current-v4 three-case low/medium/high Grok4.7 calibration, equal8192 strict native five-JPEG subjects and pinned Opus4.6 rubric. Source-reviewed bodygrowth and shiftingstreak misses persist at all efforts. No full-six expansion or fresh Sol6.1 comparator; headless-only exploratory evidence."
+        worker_model: "Codex owner agent"
+        subject_model: "grok-4.7 low/medium/high native xAI Responses"
+        score_before: 0.5098667
+        score_after: 0.5485333
+        latency_before: 5402
+        latency_after: 17000
+        cost_before: 0.009032
+        cost_after: 0.015300
+        git_sha: "b66b42ad989c1187ff539ec1b4ddc398d3900da2+story227-source-hash-freeze"
+        result_file: benchmarks/results/video-understanding-grok47-effort-v4-20261002.json
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-subject-model
+            note: "Increased reasoning does not fix source-backed temporal misses on current v4 calibration. No unchanged effort rerun; materially new checkpoint or source-backed corpus needed."
       - id: "046"
         story: attempts/046-gpt61-sol-vs-luna-v4-ordered-frame-comparison.md
         date: 2026-09-29

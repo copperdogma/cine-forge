@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01266",
+  "latency_ms": 9288,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1730,
+    "path": "output/evals/grok47-effort-20261002/judge-opus-medium-vfp_active_003-raw.json",
+    "sha256": "5365e3539e5f2c30ae49ecb1fcda5ff6690b07da96c6091cbd941e06d263f7a2"
+  },
+  "reason": "The output correctly identifies the static scene with two forms separated by a central rectangle, dark background, wide/static camera, stillness, and intact continuity. However, there are notable mismatches: (1) Tone is 'detached'/'surreal' instead of 'intimate' \u2014 neither matches the reference. (2) Emotion tag 'isolation' is listed, but the reference specifies no emotion tags, so this is an invention. (3) Color tags include 'navy' and 'gold' \u2014 the reference says 'amber, desaturated'; 'gold' is close to 'amber' but 'navy' is not in the reference palette (the background is dark but described as amber/desaturated tones). (4) The description of figures as 'simplified tan figures' is reasonable but calling them 'figures' with 'circular head on a vertical brown post' over-specifies \u2014 the reference notes the left form is narrow/round-topped and may be a lamp or abstract figure. This is borderline acceptable per interpretation boundaries. (5) Audio fields are correctly empty. (6) Evidence is grounded at frames 0, 2, and 4, meeting the 2-4 requirement. (7) Continuity assessment is correct. The tone mismatch, invented emotion tag, and partially incorrect color tags bring the score below the 0.8 threshold.",
+  "request_id": "msg_011CfdWLkPcJZoVjE9X5XFYe",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 947,
+    "output_tokens": 317,
+    "service_tier": "standard"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "arm": "low",
+  "name": "subject-low-vfp_active_006",
+  "response": {
+    "cached": false,
+    "cost": 0.00866,
+    "latencyMs": 3730,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "storm_tunnel_lateral_run",
+      "cost_estimated": false,
+      "evaluation_id": "vfp_active_006",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+        "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+        "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+        "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+        "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+      ],
+      "meta_sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "grok-4.7",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "xai",
+      "request_id": "c21ee4e5-eded-922d-90c2-15c374fb64b5",
+      "requested_model": "grok-4.7",
+      "returned_model": "grok-4.7",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"A flat cyan human icon travels steadily from left to right beneath a broad cyan arch on a dark navy field crossed by diagonal lines. The graphic motion is smooth and continuous, with the isolated figure remaining the sole subject.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"lateral_track\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The figure advances rightward across every ordered sample without a visible cut or background change.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The cyan figure is near the left edge beneath the arch.\"},{\"frame_index\":2,\"cue\":\"The figure has shifted toward the center while the diagonal lines remain fixed.\"},{\"frame_index\":4,\"cue\":\"The figure is right of center, continuing the same smooth path.\"}],\"overall_confidence\":0.86}",
+    "raw": {
+      "id": "c21ee4e5-eded-922d-90c2-15c374fb64b5",
+      "model": "grok-4.7",
+      "status": "completed",
+      "usage": {
+        "context_details": {
+          "input_tokens": 4360,
+          "output_tokens": 287
+        },
+        "cost_in_usd_ticks": 86600000,
+        "input_tokens": 4360,
+        "input_tokens_details": {
+          "cached_tokens": 1152
+        },
+        "num_server_side_tools_used": 0,
+        "num_sources_used": 0,
+        "output_tokens": 278,
+        "output_tokens_details": {
+          "reasoning_tokens": 48
+        },
+        "total_tokens": 4638
+      },
+      "x_zero_data_retention": "false"
+    },
+    "tokenUsage": {
+      "completion": 230,
+      "completionDetails": {
+        "reasoning": 48
+      },
+      "prompt": 4360,
+      "total": 4638
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+    "clip_id": "storm_tunnel_lateral_run",
+    "evaluation_id": "vfp_active_006",
+    "target_markdown": "file://../video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+    "target_path": "video_understanding_truth_v4/storm_tunnel_lateral_run/target.json"
+  }
+}

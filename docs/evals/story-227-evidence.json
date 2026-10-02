@@ -1,0 +1,645 @@
+{
+  "date": "2026-10-02",
+  "base_git_sha": "b66b42ad989c1187ff539ec1b4ddc398d3900da2",
+  "result": "benchmarks/results/video-understanding-grok47-effort-v4-20261002.json",
+  "files": [
+    {
+      "path": "benchmarks/results/video-understanding-grok47-effort-v4-20261002.json",
+      "sha256": "06ceeb4237abcc4c774230b5d9de9464bd9583f2e75a38d81392ee5c01eca333",
+      "bytes": 102402
+    },
+    {
+      "path": "benchmarks/scripts/run_grok47_effort.py",
+      "sha256": "42410f9f3bf2f8ec31a2224d735a971532eb1cd2d92b7dcbe99c96faed1a0b14",
+      "bytes": 17663
+    },
+    {
+      "path": "benchmarks/scripts/verify_grok47_effort.py",
+      "sha256": "e362ec8513698b6e7b55c2b7cc24b42d371563ce8f2e80b90d523b1df9e5ec59",
+      "bytes": 3252
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-high-vfp_active_001-raw.json",
+      "sha256": "418d5ddf6556b72c6dca33436925b56a01bfa907d74d7e6ed58ba0e1c0c9fafa",
+      "bytes": 1431
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-high-vfp_active_001-request.json",
+      "sha256": "09472ce1a9f74b5f29d228c2bbc4de62c81554035d405e300ef76c53feb53a8f",
+      "bytes": 4102
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-high-vfp_active_001.json",
+      "sha256": "282158ba55c9472df1240b51ef86d92d2c8372c0d786850ca84f821742569317",
+      "bytes": 1598
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-high-vfp_active_003-raw.json",
+      "sha256": "e2384ebaac3b2d84184046d1d149590511b1ef00b5bf9298e459e0be1f1e5bdf",
+      "bytes": 1631
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-high-vfp_active_003-request.json",
+      "sha256": "0d6bdaf53896552bd689ffbd618f96cae895e183625e65ec0a26dcfdfe4124ee",
+      "bytes": 4151
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-high-vfp_active_003.json",
+      "sha256": "4f6395d521dfcc56201e4cd2c241b752de04ba688e94465f6f302e8e5616e356",
+      "bytes": 1808
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-high-vfp_active_006-raw.json",
+      "sha256": "d9882f2a0c86b33a2f412a0eb795faeae066710ea2cc665bbafda8d90d8fe9d3",
+      "bytes": 1684
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-high-vfp_active_006-request.json",
+      "sha256": "7039ddb4874c7974a943e26caa4d91e1444d17c920cafb1a677fb03ffd7f962f",
+      "bytes": 3841
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-high-vfp_active_006.json",
+      "sha256": "bc9fa15e707cd2baf3cbf0e891a9b62a0d9ee7a28004d719d3329cda458f5524",
+      "bytes": 1861
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-low-vfp_active_001-raw.json",
+      "sha256": "a2bfee57428d7453e2ddd66b2af7cca009eba8c41ca620ef3e0f623cb0ae1c5a",
+      "bytes": 1750
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-low-vfp_active_001-request.json",
+      "sha256": "a87d1a54beac5c4a27cea2f37908648fd652998dc9cfe7167309ed9287ee2bca",
+      "bytes": 4055
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-low-vfp_active_001.json",
+      "sha256": "7d6157d865ffa5d98fda6db09d7d824c26abeec54d9c291ffc86ce59add93151",
+      "bytes": 1920
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-low-vfp_active_003-raw.json",
+      "sha256": "6a735b4f384f35650ebd9d3e4bab7ff6a2463e1903ebbc247d356be4d6e1ceb5",
+      "bytes": 1869
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-low-vfp_active_003-request.json",
+      "sha256": "ffa958d6eceda16f59d177227511aa50a29a1a0e40373cece012259424c0b873",
+      "bytes": 4137
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-low-vfp_active_003.json",
+      "sha256": "e622589e54d1f14975afbdd3bd10d1878895a84a93eaa0089b1ff07ba0024f96",
+      "bytes": 2046
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-low-vfp_active_006-raw.json",
+      "sha256": "2281d59bac91a240d2bfc55503a1d995000f3659b11bbc9940087e89aa240f84",
+      "bytes": 1791
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-low-vfp_active_006-request.json",
+      "sha256": "b7080dabbc6987fe6b6d01648a2ca09c501a4c5e13889a0171b3d20b9ca0b142",
+      "bytes": 3692
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-low-vfp_active_006.json",
+      "sha256": "4861ca10841f97b83c9af69bc848e7c24970f7a2679ff9a81bcfcc4c5a7714e3",
+      "bytes": 1973
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-medium-vfp_active_001-raw.json",
+      "sha256": "a29f76ec4c3c186ce52ded4e2b3a09fad3488fdf644e89e689452e6439ef5ced",
+      "bytes": 1628
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-medium-vfp_active_001-request.json",
+      "sha256": "afbed9dc1ba77b0c057222157e8a24965aff130708f0c925ef33b903ff7dfcc5",
+      "bytes": 4268
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-medium-vfp_active_001.json",
+      "sha256": "492bd4e072ad222bd87d1b5a7b1f8ec7c9d6fc771b2090714dfbcee6eb61b709",
+      "bytes": 1803
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-medium-vfp_active_003-raw.json",
+      "sha256": "5365e3539e5f2c30ae49ecb1fcda5ff6690b07da96c6091cbd941e06d263f7a2",
+      "bytes": 1730
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-medium-vfp_active_003-request.json",
+      "sha256": "66d0efe18b84295dc780f957b33b529dd9695becfbbfe6d91f5e175e5e80bb0b",
+      "bytes": 4094
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-medium-vfp_active_003.json",
+      "sha256": "8098bdd8f4c7742768a7cc3ae96247eb34147deedfa8901081b4ac7320379c1f",
+      "bytes": 1908
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-medium-vfp_active_006-raw.json",
+      "sha256": "0e3220386cdced6ed9ba9ed65503b6bbc1d0d6092ed501d37a772f59f9be368e",
+      "bytes": 1375
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-medium-vfp_active_006-request.json",
+      "sha256": "dfae965e71e28484a0417f47309bb62915e3774bd499f3b5362c98b4a623d9b3",
+      "bytes": 3862
+    },
+    {
+      "path": "docs/evals/evidence/story-227/judge-opus-medium-vfp_active_006.json",
+      "sha256": "72bc6ac76e533b51bd922473f99cf08d9072e024fda583870d1124871a11d647",
+      "bytes": 1549
+    },
+    {
+      "path": "docs/evals/evidence/story-227/ledger.json",
+      "sha256": "3bc78a90eb48b12eaba1a1cd05eeb3f8892f30501e294e9d03b1fe8c778c5e18",
+      "bytes": 3364
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-high-vfp_active_001-full-raw.json",
+      "sha256": "873f9df47629b871a4939808c9e89b3dc9cd05051f6b55d592139f042b98ee04",
+      "bytes": 16237
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-high-vfp_active_001-request.json",
+      "sha256": "5735d751b7a6ab375db2b1a8130ed56a93be3ecf8e2af56acd26e59f7c3ca3d7",
+      "bytes": 99492
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-high-vfp_active_001.json",
+      "sha256": "cc64cab413c22368b71e967b45b2fdbd9bbc1d16e89c2ff506b169df43379a6e",
+      "bytes": 3654
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-high-vfp_active_003-full-raw.json",
+      "sha256": "cbf1b618a80b82a64f81bdbf91b5d427c8310822633726b7ddcdb0bada60703c",
+      "bytes": 6324
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-high-vfp_active_003-request.json",
+      "sha256": "9f727d7a944b917aef4ac3ce79ab19f7bc2e606adcf17a2fac6bccb462583011",
+      "bytes": 98772
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-high-vfp_active_003.json",
+      "sha256": "8e05333e5240c3f0c3c210eb5889a8b4409be385db2707949a3a6acf0d35002e",
+      "bytes": 3656
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-high-vfp_active_006-full-raw.json",
+      "sha256": "1ea789f9eab484aaf5b17bf3d32c2d99c20710b2b35bcc329d0df54cc8569781",
+      "bytes": 16032
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-high-vfp_active_006-request.json",
+      "sha256": "9abb9b81be78eb38b9ba13f95dbb4ad77f8a2b006f353b3f41f92f643edb62b2",
+      "bytes": 314044
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-high-vfp_active_006.json",
+      "sha256": "a9957952ae8cf0b6c63c0ea938b2aa97f1e5f821bdc28a5a9dad0ae7c361b31f",
+      "bytes": 3650
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-low-vfp_active_001-full-raw.json",
+      "sha256": "27c9aa682326ec6aabf5a8993b779f18edb8cbd083670756a575e76ade050b73",
+      "bytes": 5934
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-low-vfp_active_001-request.json",
+      "sha256": "a884b5784632ec39054f851e37502bdf13911304b6240a7301d080c93e5e8a64",
+      "bytes": 99491
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-low-vfp_active_001.json",
+      "sha256": "e0baa2ca7bbce0ad8cba424d8641b2fcaf3148af0df85be0c8ddcde960abb8db",
+      "bytes": 3598
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-low-vfp_active_003-full-raw.json",
+      "sha256": "1a3afdee431bee9890a77f653994f7d6fc9fb91b7a0e01803751450d118d81c9",
+      "bytes": 6196
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-low-vfp_active_003-request.json",
+      "sha256": "d601724496c1386feaaec2287d8bc84e60fe9071a5e7b353df43a551c6bc7cea",
+      "bytes": 98771
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-low-vfp_active_003.json",
+      "sha256": "508113af9d89bfb637aeaed42ecb79cef0f9c81d60c009f7b2731fa1c01c16c6",
+      "bytes": 3640
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-low-vfp_active_006-full-raw.json",
+      "sha256": "ec5b6d34967fdc9214e8f37ffbef3334d528d7b7084bb59f0a9585a4f87d7dc7",
+      "bytes": 5568
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-low-vfp_active_006-request.json",
+      "sha256": "e6948370f95bd339f86899c3e60278307533c9af64ef45db07f9e75f03dd6dcd",
+      "bytes": 314043
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-low-vfp_active_006.json",
+      "sha256": "09f020ce54ced3f4953c1cdd745874998c4a161c5d6146fe9f1c59a31ab17b2d",
+      "bytes": 3490
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-medium-vfp_active_001-full-raw.json",
+      "sha256": "40999f047d8c8ec9100508420bd930517f6cc9eeb830b96a1084419c2bca31cc",
+      "bytes": 9540
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-medium-vfp_active_001-request.json",
+      "sha256": "6d6c095c61cd56ab00e9966b0f702823c69d208ef342b610c0f818fe7da7ba97",
+      "bytes": 99494
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-medium-vfp_active_001.json",
+      "sha256": "bd0d111f5eef766fb702ab24fde5b5bf26b6771c8b943a96d7ef2c2403aed3ac",
+      "bytes": 3817
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-medium-vfp_active_003-full-raw.json",
+      "sha256": "58f0ac8e28ddadc1763768e39b75188ef33370cbf1a9020d4869e9ecfe7620e0",
+      "bytes": 9642
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-medium-vfp_active_003-request.json",
+      "sha256": "5563cc63090c4b9128bad82f23d2d502fe2da0eeef719a7f25032c192ebba853",
+      "bytes": 98774
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-medium-vfp_active_003.json",
+      "sha256": "4689c07f75f9249e59b1348ce8e1ed70f36a2bcb2b98b4d7eb18012f8063194e",
+      "bytes": 3605
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-medium-vfp_active_006-full-raw.json",
+      "sha256": "658175d1555238d09a529e7279391d92a2914977724247aefd49908d1911580a",
+      "bytes": 17099
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-medium-vfp_active_006-request.json",
+      "sha256": "044dedfff33a1f3b50583dbf082a0f5eeebf14f4111abfc2d639b2dc220341e6",
+      "bytes": 314046
+    },
+    {
+      "path": "docs/evals/evidence/story-227/subject-medium-vfp_active_006.json",
+      "sha256": "395fb203faf058b6a3f6eea270889b978c8f9cbc7a65424c5806dd4feeaf2d29",
+      "bytes": 3675
+    },
+    {
+      "path": "docs/evals/snapshots/story-227-original-run_grok47_effort.py.txt",
+      "sha256": "0cc49e85ea6b614b9596fbc4a5ac3e1155f8d39c7838fd43a5d0e21fa337fb9d",
+      "bytes": 16086
+    },
+    {
+      "path": "docs/evals/snapshots/story-227-repaired-calltime-run_grok47_effort.py.txt",
+      "sha256": "0a5b35f8515065517af73a7f58e0aa87524b969acf17c4f898b3d8ef3f08c85c",
+      "bytes": 16278
+    },
+    {
+      "path": "docs/evals/story-227-gpt61-sol-freeze.json",
+      "sha256": "c9b6e32490d97e210a4f37e7192f0d2e11adf7de9ddd81abb644600adfb6b692",
+      "bytes": 16067
+    },
+    {
+      "path": "docs/evals/story-227-provider-notes.md",
+      "sha256": "d8cbe32e4d34611776ea80ae7c810b7d71643463c61129952b777773750c3453",
+      "bytes": 1481
+    },
+    {
+      "path": "docs/evals/story-227-source-review.json",
+      "sha256": "272b54f867c4276e794b7f901cd7db87ac909885af18205e6f530ca34f14efeb",
+      "bytes": 3254
+    }
+  ],
+  "accounted_usd": ".224524",
+  "subject_actual_xai_usd": ".118614",
+  "judge_estimated_usd": ".105910",
+  "unknown_exposure_usd": "0",
+  "cap_usd": "5",
+  "output_budget_observation": "All9 responses within requested8192 output; doesnotproveprovider globallyenforcescap. Separatecampaignanomaly notedaftercalls; nofurthercalls.",
+  "frozen_source_files": [
+    {
+      "bytes": 3101,
+      "path": "benchmarks/prompts/video-understanding.txt",
+      "sha256": "53ea0b8ef7487d8dcaea352c0eb133100e18eb45d78b953f2007f14148beb6e2"
+    },
+    {
+      "bytes": 14689,
+      "path": "benchmarks/providers/video_understanding_provider.py",
+      "sha256": "783d4cacbcfaa9449b975cf4ed2d58eaa8f5af0bf63473ca9630bcbb3b9be15f"
+    },
+    {
+      "bytes": 7453,
+      "path": "benchmarks/providers/video_understanding_provider_anthropic.py",
+      "sha256": "8a9f0dd2a0729c746ec81b60d710f7589dfcde3055ca90bb083873c1e4fd8dc6"
+    },
+    {
+      "bytes": 14960,
+      "path": "benchmarks/providers/video_understanding_provider_support.py",
+      "sha256": "3be1260ab96ad807979bbe5aa13522d960493ba1a63690890822fe2686930cbc"
+    },
+    {
+      "bytes": 14445,
+      "path": "benchmarks/providers/video_understanding_provider_vision.py",
+      "sha256": "aed7d33b73b2812e0ae602f505be293be35791127ba409ba63ba8c5c5ae68698"
+    },
+    {
+      "bytes": 8149,
+      "path": "benchmarks/providers/video_understanding_transport.py",
+      "sha256": "7236575192c38cc4b5cda3df2b543f84dcb88d3c2bb4ceff86cacc97a441ba1d"
+    },
+    {
+      "bytes": 1236,
+      "path": "benchmarks/scorers/score_semantics.py",
+      "sha256": "3ec7f3083afbbaa5649f958718788f7ff1b3af300ff007b8673cb3a15b805b1c"
+    },
+    {
+      "bytes": 5898,
+      "path": "benchmarks/scorers/video_understanding_contract.py",
+      "sha256": "a27a5bcf9243f0679e770655bc0e91d379543fa8aadd7debf72eda8d4d30f3e3"
+    },
+    {
+      "bytes": 12564,
+      "path": "benchmarks/scorers/video_understanding_dimensions.py",
+      "sha256": "2f2a82e2f512bd523d3cb1ae8e42eac50bf2bc2f519220cb010510cb5bc51861"
+    },
+    {
+      "bytes": 9076,
+      "path": "benchmarks/scorers/video_understanding_scorer.py",
+      "sha256": "ee89f6458ed313d0b187f529f218eaeaced7af2a13f0b89ce44cf2c49f228738"
+    },
+    {
+      "bytes": 16086,
+      "path": "benchmarks/scripts/run_grok47_effort.py",
+      "sha256": "0cc49e85ea6b614b9596fbc4a5ac3e1155f8d39c7838fd43a5d0e21fa337fb9d"
+    },
+    {
+      "bytes": 11480,
+      "path": "benchmarks/tasks/video-understanding.yaml",
+      "sha256": "08db1d0d2cbfa2f1ca084ac45ed2b7e8708887dd531abbb739b117786ac4f042"
+    },
+    {
+      "bytes": 38344,
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_00.jpg",
+      "sha256": "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a"
+    },
+    {
+      "bytes": 37597,
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_01.jpg",
+      "sha256": "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039"
+    },
+    {
+      "bytes": 35584,
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_02.jpg",
+      "sha256": "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655"
+    },
+    {
+      "bytes": 36187,
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_03.jpg",
+      "sha256": "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b"
+    },
+    {
+      "bytes": 37453,
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_04.jpg",
+      "sha256": "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+    },
+    {
+      "bytes": 1338,
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/meta.json",
+      "sha256": "d028854d7c23197397b7003bfcfe3fd651d418a232950e8e28851ea210e7e99a"
+    },
+    {
+      "bytes": 12984,
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_00.jpg",
+      "sha256": "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84"
+    },
+    {
+      "bytes": 12943,
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_01.jpg",
+      "sha256": "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5"
+    },
+    {
+      "bytes": 13273,
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_02.jpg",
+      "sha256": "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24"
+    },
+    {
+      "bytes": 13223,
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_03.jpg",
+      "sha256": "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576"
+    },
+    {
+      "bytes": 13602,
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_04.jpg",
+      "sha256": "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+    },
+    {
+      "bytes": 1428,
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/meta.json",
+      "sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347"
+    },
+    {
+      "bytes": 11104,
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_00.jpg",
+      "sha256": "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e"
+    },
+    {
+      "bytes": 11104,
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_01.jpg",
+      "sha256": "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e"
+    },
+    {
+      "bytes": 11120,
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_02.jpg",
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "bytes": 11120,
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_03.jpg",
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "bytes": 11120,
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_04.jpg",
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "bytes": 1311,
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/meta.json",
+      "sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48"
+    },
+    {
+      "bytes": 13097,
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_00.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_01.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_02.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_03.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_04.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 1346,
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/meta.json",
+      "sha256": "ba3438e4973166276591efea693838df99841ac34eac732f433c0c5cfcefe8fa"
+    },
+    {
+      "bytes": 27600,
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_00.jpg",
+      "sha256": "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d"
+    },
+    {
+      "bytes": 27995,
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_01.jpg",
+      "sha256": "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8"
+    },
+    {
+      "bytes": 26221,
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_02.jpg",
+      "sha256": "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd"
+    },
+    {
+      "bytes": 27384,
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_03.jpg",
+      "sha256": "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236"
+    },
+    {
+      "bytes": 27098,
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_04.jpg",
+      "sha256": "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+    },
+    {
+      "bytes": 1387,
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/meta.json",
+      "sha256": "82b8bbbdf804d1a9d8975e8952659d5455986fc2e4c3482d33f274227a715410"
+    },
+    {
+      "bytes": 45585,
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_00.jpg",
+      "sha256": "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81"
+    },
+    {
+      "bytes": 45840,
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_01.jpg",
+      "sha256": "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7"
+    },
+    {
+      "bytes": 44751,
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_02.jpg",
+      "sha256": "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d"
+    },
+    {
+      "bytes": 45573,
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_03.jpg",
+      "sha256": "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef"
+    },
+    {
+      "bytes": 45193,
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_04.jpg",
+      "sha256": "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+    },
+    {
+      "bytes": 1385,
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/meta.json",
+      "sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13"
+    },
+    {
+      "bytes": 1528,
+      "path": "benchmarks/video_understanding_truth_v4/README.md",
+      "sha256": "46eb3c10df8c912ce62c9bc0aa831dfe5a0a8c36d9a41fb50ce8c9756022ca47"
+    },
+    {
+      "bytes": 1251,
+      "path": "benchmarks/video_understanding_truth_v4/alarm_chase_whip_pan/target.json",
+      "sha256": "bdeebb0075f458a1c87033300b1be9fce6bb66b3104362b35612e0a899d4f621"
+    },
+    {
+      "bytes": 530,
+      "path": "benchmarks/video_understanding_truth_v4/alarm_chase_whip_pan/target.md",
+      "sha256": "47f79d984b17bb23b3b8e494b0ea83a4bfabb09140c56f81607225e6f2f0dc1d"
+    },
+    {
+      "bytes": 1353,
+      "path": "benchmarks/video_understanding_truth_v4/dialogue_confession_push_in/target.json",
+      "sha256": "04d1a434d029604a61933ccc69ca85b821acbf0e74ede054389243476fd5fc36"
+    },
+    {
+      "bytes": 803,
+      "path": "benchmarks/video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+      "sha256": "b8a723c5e68b6ac65f65f76b9aaba4e15257bbc3d497e457ec8cd75480b3a160"
+    },
+    {
+      "bytes": 5893,
+      "path": "benchmarks/video_understanding_truth_v4/manifest.json",
+      "sha256": "61008dfc76f9cd75ee8fdebdbce1b0968c81fc88995912135d7014c7f1d030e8"
+    },
+    {
+      "bytes": 1221,
+      "path": "benchmarks/video_understanding_truth_v4/prop_swap_continuity_break/target.json",
+      "sha256": "9f14e1f173f5d818b8f915016c498be241206814cfd6cf36d4b68cacdb875be8"
+    },
+    {
+      "bytes": 522,
+      "path": "benchmarks/video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+      "sha256": "8a68446af7b9d7d8ef09e31d8ad8bb87ce064dd810da4fd6e251edd8ac4f4eba"
+    },
+    {
+      "bytes": 1279,
+      "path": "benchmarks/video_understanding_truth_v4/quiet_bedside_vigil/target.json",
+      "sha256": "fb1d0e1cc26ff665b85d8086d68ac9a057a6f5408f586e78dc219c1ff2fadfcf"
+    },
+    {
+      "bytes": 805,
+      "path": "benchmarks/video_understanding_truth_v4/quiet_bedside_vigil/target.md",
+      "sha256": "d7df7986a4611e5c1b40a96d9a99414b976f03fc4ea590aa517793005aa0b310"
+    },
+    {
+      "bytes": 1268,
+      "path": "benchmarks/video_understanding_truth_v4/rooftop_escape_crash_zoom/target.json",
+      "sha256": "a580fe31488479466d695125959701d6e3b7a6f481274bfad99e2bd1f95dde88"
+    },
+    {
+      "bytes": 685,
+      "path": "benchmarks/video_understanding_truth_v4/rooftop_escape_crash_zoom/target.md",
+      "sha256": "80b64c09ebf888dd089dbf3b15980ceffdc8187aa628d11de8c3640580b84599"
+    },
+    {
+      "bytes": 1270,
+      "path": "benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.json",
+      "sha256": "7d0a40d274599f17dd2242134c26d0f13c70430bca3ba49428c041d8bbf7d82e"
+    },
+    {
+      "bytes": 533,
+      "path": "benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+      "sha256": "66eca2cb744f84f549136615e834ee8e6843bf61d1dfdf1f13b28a7f0101bc3f"
+    },
+    {
+      "bytes": 7132,
+      "path": "src/cine_forge/schemas/video_analysis.py",
+      "sha256": "dc92b71ebc183ee15e1a92aaac814317bca1f1a9c76ae075164071edfbee5a36"
+    }
+  ]
+}

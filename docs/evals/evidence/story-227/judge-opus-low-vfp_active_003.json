@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.013375",
+  "latency_ms": 12693,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1869,
+    "path": "output/evals/grok47-effort-20261002/judge-opus-low-vfp_active_003-raw.json",
+    "sha256": "6a735b4f384f35650ebd9d3e4bab7ff6a2463e1903ebbc247d356be4d6e1ceb5"
+  },
+  "reason": "The output captures the core visual layout (two forms flanking a central rectangle on a dark background, static camera, stillness, intact continuity) reasonably well, and provides grounded evidence at frames 0, 2, and 4. However, there are notable mismatches: (1) Tone is 'detached' vs reference 'intimate' \u2014 a clear mismatch. (2) Emotion is 'isolation' vs reference [none] \u2014 an invented emotional tag not supported by the frames. (3) Color tags include 'navy' which is not in the reference (amber, desaturated); the output does include 'amber' and 'desaturated' but adds an unsupported color. (4) The output describes the left figure as a 'post-and-circle' and the right as 'person-shaped', which is acceptable within interpretation boundaries, but calling the central rectangle 'a counter' is a specific semantic interpretation not clearly supported. (5) The output describes both figures as 'tan' and the rectangle as 'blue-gray outlined', while the reference says the rectangle is gray \u2014 'blue-gray' is a slight embellishment. (6) Camera tags miss 'wide_master' from the reference. (7) Audio fields are empty, which is correct. The continuity assessment and static/stillness motion tags are correct. Overall, the structural analysis is partially correct but the tone mismatch, invented emotion tag, and extra/wrong color tag prevent a passing score.",
+  "request_id": "msg_011CfdWDBV1j1KXiH5VLXWuJ",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 965,
+    "output_tokens": 342,
+    "service_tier": "standard"
+  }
+}

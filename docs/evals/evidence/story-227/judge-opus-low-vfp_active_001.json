@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01228",
+  "latency_ms": 12245,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1750,
+    "path": "output/evals/grok47-effort-20261002/judge-opus-low-vfp_active_001-raw.json",
+    "sha256": "a2bfee57428d7453e2ddd66b2af7cca009eba8c41ca620ef3e0f623cb0ae1c5a"
+  },
+  "reason": "The output correctly identifies two figures in left-right positions against a navy backdrop, correctly notes continuity as 'intact,' and provides frame-grounded evidence at frames 0, 2, and 4. However, it has several significant mismatches with the reference: (1) It misses the key observable that the figures enlarge across the ordered frames, instead claiming 'no visible movement' and tagging 'stillness' for motion \u2014 the reference says 'measured' motion due to figure enlargement. (2) It tags the left figure as 'beige' rather than acknowledging a color that could encompass the teal/blue palette described in the reference; the reference specifies 'teal' as a color tag, which is absent. (3) Tone is tagged as 'detached' and 'tense' rather than 'intimate' per the reference. (4) Emotion is tagged as 'isolation' when the reference says none. (5) The 'desaturated' color tag is not supported by reference. (6) The continuity notes fail to mention the pale rectangle prop staying beside the right figure, which is the key continuity observation. The failure to detect the figure enlargement across frames is a significant miss of observable visual information, and the incorrect motion/stillness claim contradicts what the frames show.",
+  "request_id": "msg_011CfdWCHTeD7R6geeEp3Nkm",
+  "score": 0.52,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 946,
+    "output_tokens": 302,
+    "service_tier": "standard"
+  }
+}

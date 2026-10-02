@@ -1,0 +1,35 @@
+{
+  "payload": {
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "content": "<Output>\n{\"clip_id\":\"vfp_active_006\",\"summary\":\"A lone cyan person icon moves steadily from left to right beneath a fixed arch on a dark navy field crossed by diagonal lines. The background stays still while the figure advances in even lateral steps across the five samples.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The icon shifts progressively rightward from frame 0 through frame 4 while the arch and diagonal lines remain fixed.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The cyan figure sits at the left under the rising end of the arch, with a small white-outlined rectangle on its right.\"},{\"frame_index\":2,\"cue\":\"The same figure is near the center, still carrying the white rectangle, against unchanged diagonal lines.\"},{\"frame_index\":4,\"cue\":\"The figure has reached the right side beneath the descending end of the arch, completing the left-to-right drift.\"}],\"overall_confidence\":0.84}\n</Output>\n\nEvaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: A cyan abstract runner moves laterally through a blue tunnel as repeated rain-like streaks shift across the ordered frames.\n- Tone: urgent, tense\n- Emotion: [none]\n- Color / grade: teal, navy\n- Camera language inferable from the ordered samples: static, wide_master\n- Motion inferable from the ordered samples: fast_lateral\n- Continuity: intact - The small cyan rectangle stays beside the runner across all five samples.\n- Audio: unavailable to the subject and excluded from scoring\n\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n\nSource-verified interpretation boundaries: frame indexes are zero-based. Bedside lamp/bed or abstract figure/barrier readings are permitted. Dialogue bodies enlarge while prop/background do not scale, so no camera mechanism is required. In prop-swap indexes0-1 are red and2-4 blue; generic blue is absent from allowed color_tags, so correct blue text suffices. Evidence requires2-4 grounded entries, not coverage of all5 frames. Do not invent tag requirements outside the frozen reference/enum.",
+        "role": "user"
+      }
+    ],
+    "model": "claude-opus-4-6",
+    "output_config": {
+      "format": {
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "score": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "score",
+            "reason"
+          ],
+          "type": "object"
+        },
+        "type": "json_schema"
+      }
+    },
+    "system": "You are an impartial evaluator. Return exactly a JSON object with score (number 0 to 1) and reason (string). Explain concrete mismatches against visible source facts. Do not reveal chain of thought."
+  },
+  "url": "https://api.anthropic.com/v1/messages"
+}

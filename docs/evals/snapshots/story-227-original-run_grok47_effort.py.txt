@@ -1,0 +1,353 @@
+#!/usr/bin/env python3
+"""Bounded fresh comparison using the maintained video adapter and v4 scorer."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import sys
+import time
+import urllib.request
+from decimal import Decimal
+from pathlib import Path
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path[:0] = [
+    str(ROOT / "benchmarks/providers"),
+    str(ROOT / "benchmarks/scorers"),
+    str(ROOT / "src"),
+]
+import video_understanding_provider as provider  # noqa: E402
+
+OUT = ROOT / "output/evals/grok47-effort-20261002"
+EVIDENCE = ROOT / "docs/evals/evidence/story-227"
+FREEZE = ROOT / "docs/evals/story-227-gpt61-sol-freeze.json"
+RESULT = ROOT / "benchmarks/results/video-understanding-grok47-effort-v4-20261002.json"
+CAP = Decimal("5")
+RATES = {
+    "gpt-6.1-sol": (2, 10),
+    "gpt-6-luna": (0.125, 0.5),
+    "claude-opus-4-6": (5, 25),
+
+}
+RESERVE = {
+    "sol": Decimal(".30596"),
+    "low": Decimal("2.098304"),
+    "medium": Decimal("2.098304"),
+    "high": Decimal("2.098304"),
+    "luna": Decimal(".0032"),
+    "opus": Decimal(".0756"),
+
+}
+JUDGE_SCHEMA = {
+    "type": "object",
+    "properties": {"score": {"type": "number"}, "reason": {"type": "string"}},
+    "required": ["score", "reason"],
+    "additionalProperties": False,
+}
+
+
+def dump(path, data):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
+
+
+def inventory(path):
+    data = path.read_bytes()
+    return {
+        "path": str(path.relative_to(ROOT)),
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "bytes": len(data),
+    }
+
+
+def matrix():
+    task = yaml.safe_load((ROOT / "benchmarks/tasks/video-understanding.yaml").read_text())
+    prompt = (ROOT / "benchmarks/prompts/video-understanding.txt").read_text()
+    configs = {}
+    for arm, model in [("low", "grok-4.7"), ("medium", "grok-4.7"), ("high", "grok-4.7"), ("sol", "gpt-6.1-sol")]:
+        matches = [p for p in task["providers"] if p["config"]["model"] == model]
+        assert len(matches) == 1
+        config = dict(matches[0]["config"])
+        if model == "grok-4.7":
+            config.update(reasoning_effort=arm, max_tokens=8192)
+        config["basePath"] = str(ROOT / "benchmarks/tasks")
+        config["raw_output_dir"] = str((OUT / arm).relative_to(ROOT))
+        configs[arm] = config
+    tests = task["tests"]
+    assert len(tests) == 6 and len({t["vars"]["evaluation_id"] for t in tests}) == 6
+    return task, prompt, configs, tests
+
+
+def frozen_files():
+    paths = [
+        Path(__file__),
+        ROOT / "benchmarks/tasks/video-understanding.yaml",
+        ROOT / "benchmarks/prompts/video-understanding.txt",
+        ROOT / "src/cine_forge/schemas/video_analysis.py",
+    ]
+    paths += list((ROOT / "benchmarks/providers").glob("video_understanding*.py"))
+    paths += list((ROOT / "benchmarks/scorers").glob("video_understanding*.py"))
+    paths += [ROOT / "benchmarks/scorers/score_semantics.py"]
+    paths += list((ROOT / "benchmarks/video_understanding_truth_v4").rglob("*"))
+    _, prompt, configs, tests = matrix()
+    for t in tests:
+        request = provider._prepare_subject_request(
+            prompt, {"config": configs["sol"]}, {"vars": t["vars"]}
+        )
+        packet = request["packet"]
+        assert packet["frame_count"] == 5
+        assert t["vars"]["clip_id"] not in request["user_text"]
+        paths += [f["path"] for f in packet["frames"]]
+        paths += [ROOT / "benchmarks/video_understanding" / t["vars"]["clip_id"] / "meta.json"]
+    return sorted(set(p for p in paths if p.is_file()))
+
+
+def check_freeze():
+    freeze = json.loads(FREEZE.read_text())
+    for item in freeze["files"]:
+        path = item["path"]
+        if False:
+            pass
+        actual = inventory(ROOT / path)
+        assert (actual["sha256"], actual["bytes"]) == (item["sha256"], item["bytes"]), (
+            f"Frozen bytes changed: {item['path']}"
+        )
+
+
+def ledger():
+    path = OUT / "ledger.json"
+    return json.loads(path.read_text()) if path.exists() else []
+
+
+def accounted():
+    return sum((Decimal(str(x["accounted_usd"])) for x in ledger()), Decimal(0))
+
+
+def begin(name, arm):
+    assert not any(x["name"] == name for x in ledger()), f"Do not repeat {name}"
+    if accounted() + RESERVE[arm] + Decimal(".4") > CAP:
+        raise RuntimeError("Hard budget cap blocks next full reservation")
+    rows = ledger()
+    rows.append(
+        {
+            "name": name,
+            "arm": arm,
+            "state": "reserved",
+            "accounted_usd": str(RESERVE[arm]),
+            "reservation_usd": str(RESERVE[arm]),
+        }
+    )
+    dump(OUT / "ledger.json", rows)
+
+
+def settle(name, cost):
+    rows = ledger()
+    row = next(x for x in rows if x["name"] == name)
+    row.update(state="settled", accounted_usd=str(cost), estimated=not row["arm"] in {"low", "medium", "high"})
+    dump(OUT / "ledger.json", rows)
+
+
+def subject(arm, test, *, native=False):
+    _, prompt, configs, _ = matrix()
+    config = dict(configs[arm])
+    prefix = "native" if native else "subject"
+    name = f"{prefix}-{arm}-{test['vars']['evaluation_id']}"
+    receipt = OUT / f"{name}.json"
+    if receipt.exists():
+        return json.loads(receipt.read_text())
+    config["raw_output_dir"] = str((OUT / prefix / arm).relative_to(ROOT))
+    prepared = provider._prepare_subject_request(prompt, {"config": config}, {"vars": test["vars"]})
+    original = provider._request_json
+
+    def capture(url, **kwargs):
+        dump(OUT / f"{name}-request.json", {"url": url, "payload": kwargs["body"]})
+        return original(url, **kwargs)
+
+    provider._request_json = capture
+    begin(name, arm)
+    original_xai = provider._request_xai_responses_json
+    def capture_xai(payload):
+        dump(OUT / f"{name}-request.json", {"url": provider.XAI_RESPONSES_URL, "payload": payload})
+        # Preserve raw envelope before adapter parsing can fail.
+        req = urllib.request.Request(provider.XAI_RESPONSES_URL, data=json.dumps(payload).encode(), headers={"Authorization": "Bearer " + provider._require_env("XAI_API_KEY"), "content-type": "application/json"}, method="POST")
+        with urllib.request.urlopen(req, timeout=180) as http:
+            data = http.read()
+            zdr = http.headers.get("x-zero-data-retention")
+        (OUT / f"{name}-full-raw.json").write_bytes(data)
+        return json.loads(data), zdr
+    provider._request_xai_responses_json = capture_xai
+    start = time.perf_counter()
+    try:
+        if native:
+            response = provider._dispatch_subject_request(prepared)
+            response = provider._build_promptfoo_response(
+                request=prepared,
+                response=response,
+                latency_ms=round((time.perf_counter() - start) * 1000),
+                cost_usd=provider._response_cost(prepared, response),
+                subject_contract_sha256=None,
+            )
+        else:
+            response = provider.call_api(prompt, {"config": config}, {"vars": test["vars"]})
+    finally:
+        provider._request_json = original
+        provider._request_xai_responses_json = original_xai
+    row = {"name": name, "arm": arm, "vars": test["vars"], "response": response}
+    dump(receipt, row)
+    if response.get("error"):
+        raise RuntimeError(response["error"])
+    provider.VideoAnalysisPrediction.model_validate_json(response["output"])
+    settle(name, response["cost"])
+    raw_path = ROOT / response["raw"]["raw_envelope_path"]
+    for path in [receipt, raw_path, OUT / f"{name}-request.json"] + list(OUT.glob(f"{name}-full-raw.json")):
+        target = EVIDENCE / path.relative_to(OUT)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(path.read_bytes())
+    print(name, "latency", response["latencyMs"], "cost", response["cost"], flush=True)
+    return row
+
+
+def _review_request(kind, row):
+    task, prompt, configs, _ = matrix()
+    t = row["vars"]
+    target = (
+        ROOT / "benchmarks/video_understanding_truth_v4" / t["clip_id"] / "target.md"
+    ).read_text()
+    rubric = task["tests"][0]["assert"][1]["value"].replace("{{target_markdown}}", target)
+    user = "<Output>\n" + row["response"]["output"] + "\n</Output>\n\n" + rubric
+    user += "\nSource-verified interpretation boundaries: frame indexes are zero-based. Bedside lamp/bed or abstract figure/barrier readings are permitted. Dialogue bodies enlarge while prop/background do not scale, so no camera mechanism is required. In prop-swap indexes0-1 are red and2-4 blue; generic blue is absent from allowed color_tags, so correct blue text suffices. Evidence requires2-4 grounded entries, not coverage of all5 frames. Do not invent tag requirements outside the frozen reference/enum."
+
+    system = "You are an impartial evaluator. Return exactly a JSON object with score (number 0 to 1) and reason (string). Explain concrete mismatches against visible source facts. Do not reveal chain of thought."  # noqa: E501
+    if kind == "opus":
+        body = {
+            "model": "claude-opus-4-6",
+            "max_tokens": 1024,
+            "system": system,
+            "messages": [{"role": "user", "content": user}],
+            "output_config": {"format": {"type": "json_schema", "schema": JUDGE_SCHEMA}},
+        }
+        url = provider.ANTHROPIC_MESSAGES_URL
+        headers = {
+            "x-api-key": provider._require_env("ANTHROPIC_API_KEY"),
+            "anthropic-version": "2023-06-01",
+            "content-type": "application/json",
+        }
+    else:
+        raise RuntimeError("Only cross-provider Opus review is approved")
+    return body, url, headers
+
+
+def review(kind, row):
+    name = f"judge-{kind}-{row['arm']}-{row['vars']['evaluation_id']}"
+    parsed_path = OUT / f"{name}.json"
+    if parsed_path.exists():
+        return json.loads(parsed_path.read_text())
+    body, url, headers = _review_request(kind, row)
+    dump(OUT / f"{name}-request.json", {"url": url, "payload": body})
+    input_bound = len(json.dumps(body, ensure_ascii=False).encode()) + 4096
+    RESERVE[kind] = Decimal(input_bound * 5 + 1024 * 25) / 1000000
+    begin(name, kind)
+    start = time.perf_counter()
+    request = urllib.request.Request(
+        url, data=json.dumps(body).encode(), headers=headers, method="POST"
+    )
+    raw_path = OUT / f"{name}-raw.json"
+    with urllib.request.urlopen(request, timeout=60) as response:
+        raw_bytes = response.read()
+    raw_path.write_bytes(raw_bytes)
+    raw = json.loads(raw_bytes)
+    assert raw["model"] == body["model"] and raw.get("id")
+    if kind == "opus":
+        assert raw["stop_reason"] == "end_turn"
+        text = "\n".join(x["text"] for x in raw["content"] if x["type"] == "text")
+        usage = raw["usage"]
+        cost = (Decimal(usage["input_tokens"]) * 5 + Decimal(usage["output_tokens"]) * 25) / 1000000
+        assert not usage.get("cache_read_input_tokens", 0) and not usage.get(
+            "cache_creation_input_tokens", 0
+        )
+    else:
+        raise RuntimeError("Only cross-provider Opus review is approved")
+    # Settle valid terminal usage even if judge parsing subsequently needs repair.
+    settle(name, cost)
+    parsed = json.loads(text)
+    assert (
+        isinstance(parsed["score"], (int, float))
+        and 0 <= parsed["score"] <= 1
+        and isinstance(parsed["reason"], str)
+    )
+    parsed.update(
+        model=raw["model"],
+        request_id=raw["id"],
+        usage=usage,
+        cost_usd=str(cost),
+        latency_ms=round((time.perf_counter() - start) * 1000),
+        raw=inventory(raw_path),
+    )
+    dump(parsed_path, parsed)
+    for path in [parsed_path, raw_path, OUT / f"{name}-request.json"]:
+        target_path = EVIDENCE / path.relative_to(OUT)
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        target_path.write_bytes(path.read_bytes())
+    print(name, "score", parsed["score"], "cost", cost, flush=True)
+    return parsed
+
+
+CALIBRATION = ["storm_tunnel_lateral_run", "dialogue_confession_push_in", "quiet_bedside_vigil"]
+
+
+def scored(arm, test):
+    from video_understanding_scorer import get_assert, score_output_against_target
+    case = test["vars"]["evaluation_id"]
+    row = json.loads((OUT / f"subject-{arm}-{case}.json").read_text())
+    grade = json.loads((OUT / f"judge-opus-{arm}-{case}.json").read_text())
+    assertion = get_assert(row["response"]["output"], {"vars": test["vars"]})
+    details = score_output_against_target(output=row["response"]["output"], target_path=ROOT / "benchmarks" / test["vars"]["target_path"], model_label=arm, prompt_version="video-understanding-frame-packet-v3", expected_clip_id=case).model_dump()
+    return {**row, "assertion": assertion, "details": details, "rubric": grade, "combined": (assertion["score"]+grade["score"])/2}
+
+
+def report():
+    from statistics import mean
+    _, _, _, tests = matrix()
+    rows=[]
+    for test in tests:
+        for arm in ("low", "medium", "high", "sol"):
+            if (OUT / f"judge-opus-{arm}-{test['vars']['evaluation_id']}.json").exists():
+                rows.append(scored(arm,test))
+    summary={}
+    for arm in ("low", "medium", "high", "sol"):
+        group=[r for r in rows if r["arm"]==arm]
+        if not group: continue
+        summary[arm]={"n":len(group),"deterministic":mean(r["assertion"]["score"] for r in group),"rubric":mean(r["rubric"]["score"] for r in group),"overall":mean(r["combined"] for r in group),"rubric_passes":sum(r["rubric"]["score"]>=.8 for r in group),"assertion_passes":sum(r["assertion"]["pass"] for r in group),"mean_latency_ms":mean(r["response"]["latencyMs"] for r in group),"max_latency_ms":max(r["response"]["latencyMs"] for r in group),"mean_cost_usd":mean(r["response"]["cost"] for r in group),"max_cost_usd":max(r["response"]["cost"] for r in group),"tokens":[r["response"]["tokenUsage"] for r in group]}
+    dump(OUT / "report.json", {"rows":rows,"summary":summary,"ledger":ledger(),"accounted_usd":str(accounted())})
+    print(json.dumps(summary,indent=2))
+
+
+def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument("mode",choices=["preflight","subjects","judges","report"])
+    parser.add_argument("--arm",choices=["low","medium","high","sol"])
+    parser.add_argument("--slice",choices=["calibration","remaining","all"],default="calibration")
+    args=parser.parse_args()
+    _, _, configs, tests=matrix()
+    if args.mode=="preflight":
+        if FREEZE.exists(): check_freeze()
+        else: dump(FREEZE,{"date":"2026-10-02","base_git_sha":"b66b42ad989c1187ff539ec1b4ddc398d3900da2","files":[inventory(p) for p in frozen_files()],"matrix":{"arms":configs,"calibration":CALIBRATION,"concurrency":1,"output_cache":False,"subject_max_output_tokens":8192,"subject_reserve_usd":"2.098304","cap_usd":"5","retry_cap":2},"policy":"Current v4 source targets; preserve scorer and maintained rubric. Source clarification fixed before calls. Expand only source-reviewed calibration mean>=.70,2/3 rubric>=.80,and improvement>=.15 vs freshlow unless freshlow>=.80. Source contradictions fail advancement; per-call15s andUSD.02 economics prohibit productadvance. Selectedarm remaining3; comparator exactSol6.1 low4096 only if full6>=.8/economics pass. Serial admission includes outstanding liabilities; settledcharges release reserve, fullmatrix not guaranteed."})
+        print("Frozen",len(frozen_files()),"files;9calibration subjects,9Opus textjudges;optional3selected subjects+3judges,6Sol+6judges;synthetic5originalJPEGs/case;freshserial;USD5")
+        return
+    check_freeze()
+    if args.mode=="report": report(); return
+    assert args.arm
+    if args.slice=="calibration": tests=[t for t in tests if t["vars"]["clip_id"] in CALIBRATION]
+    elif args.slice=="remaining": tests=[t for t in tests if t["vars"]["clip_id"] not in CALIBRATION]
+    for test in tests:
+        if args.mode=="subjects": subject(args.arm,test)
+        else:
+            row=json.loads((OUT/f"subject-{args.arm}-{test['vars']['evaluation_id']}.json").read_text())
+            review("opus",row)
+
+
+if __name__=="__main__": main()

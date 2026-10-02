@@ -1,0 +1,80 @@
+{
+  "arm": "low",
+  "name": "subject-low-vfp_active_003",
+  "response": {
+    "cached": false,
+    "cost": 0.009392,
+    "latencyMs": 6705,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "quiet_bedside_vigil",
+      "cost_estimated": false,
+      "evaluation_id": "vfp_active_003",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+      ],
+      "meta_sha256": "ba3438e4973166276591efea693838df99841ac34eac732f433c0c5cfcefe8fa",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "grok-4.7",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "xai",
+      "request_id": "72e6d562-db34-95d9-8a38-c916ea79eaa8",
+      "requested_model": "grok-4.7",
+      "returned_model": "grok-4.7",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_003\",\"summary\":\"A static flat illustration holds a blue-gray outlined counter between a tan post-and-circle figure on the left and a tan person-shaped figure on the right. Across all five samples the shapes, spacing, and dark gradient background remain unchanged.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\",\"desaturated\",\"amber\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both figures, the counter, and the background hold the same positions and appearance from frame 0 through frame 4.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A tan vertical post with a circle sits left of a blue-gray outlined rectangle, opposite a tan person-shaped figure on a dark gradient.\"},{\"frame_index\":2,\"cue\":\"The same counter and two tan figures remain fixed with no visible shift in spacing or scale.\"},{\"frame_index\":4,\"cue\":\"The final sample matches the earlier composition, with both figures still and the rectangle unchanged.\"}],\"overall_confidence\":0.86}",
+    "raw": {
+      "id": "72e6d562-db34-95d9-8a38-c916ea79eaa8",
+      "model": "grok-4.7",
+      "status": "completed",
+      "usage": {
+        "context_details": {
+          "input_tokens": 4360,
+          "output_tokens": 407
+        },
+        "cost_in_usd_ticks": 93920000,
+        "input_tokens": 4360,
+        "input_tokens_details": {
+          "cached_tokens": 1152
+        },
+        "num_server_side_tools_used": 0,
+        "num_sources_used": 0,
+        "output_tokens": 400,
+        "output_tokens_details": {
+          "reasoning_tokens": 129
+        },
+        "total_tokens": 4760
+      },
+      "x_zero_data_retention": "false"
+    },
+    "tokenUsage": {
+      "completion": 271,
+      "completionDetails": {
+        "reasoning": 129
+      },
+      "prompt": 4360,
+      "total": 4760
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/quiet_bedside_vigil",
+    "clip_id": "quiet_bedside_vigil",
+    "evaluation_id": "vfp_active_003",
+    "target_markdown": "file://../video_understanding_truth_v4/quiet_bedside_vigil/target.md",
+    "target_path": "video_understanding_truth_v4/quiet_bedside_vigil/target.json"
+  }
+}

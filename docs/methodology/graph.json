@@ -972,7 +972,8 @@
           "222",
           "224",
           "225",
-          "226"
+          "226",
+          "227"
         ],
         "adrIds": [
           "ADR-002",
@@ -1116,7 +1117,8 @@
           "222",
           "224",
           "225",
-          "226"
+          "226",
+          "227"
         ],
         "adrIds": [
           "ADR-001",
@@ -1208,7 +1210,8 @@
           "222",
           "224",
           "225",
-          "226"
+          "226",
+          "227"
         ],
         "adrIds": [
           "ADR-002",
@@ -14922,6 +14925,63 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "227",
+      "title": "Grok 4.7 Reasoning Frame Calibration",
+      "path": "docs/stories/story-227-grok47-reasoning-frame-calibration.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12",
+        "R18"
+      ],
+      "specRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "226"
+      ],
+      "categoryRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "227",
+        "sourcePath": "docs/stories/story-227-grok47-reasoning-frame-calibration.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-227-grok47-reasoning-frame-calibration.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -16950,6 +17010,16 @@
       "retryWhen": [],
       "attempts": [
         {
+          "id": "047",
+          "date": "2026-10-02",
+          "approach": "Fresh current-v4 three-case low/medium/high Grok4.7 calibration, equal8192 strict native five-JPEG subjects and pinned Opus4.6 rubric. Source-reviewed bodygrowth and shiftingstreak misses persist at all efforts. No full-six expansion or fresh Sol6.1 comparator; headless-only exploratory evidence.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "new-subject-model"
+          ]
+        },
+        {
           "id": "046",
           "date": "2026-09-29",
           "approach": "Fresh six-case strict five-JPEG Sol6.1-versus-Luna comparison with Opus review, source-first case004 adjudication, and hard USD4 ledger. Sol leads for headless source analysis only; both miss autonomous QA target.",
@@ -17112,18 +17182,18 @@
         "sourceId": "video-understanding",
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
-        "posture": "wait-for-trigger",
+        "posture": "trigger-exhausted",
         "whyNow": "Attempt046 fresh direct exact Responses low/4096 strict five-JPEG comparison on six v4 synthetic cases. Cross-provider Opus on all12 saved answers; case004 Opus original and repair invalid under source/index/tag rules, replaced only there by symmetric source-first Sonnet5.5 image adjudication. Combined0.65712,0/6 case quality passes,6/6 hard constraints,6/6 per-call latency and cost gates. Source…",
-        "retryTriggerStatus": "waiting",
+        "retryTriggerStatus": "exhausted",
         "retryWhen": [
           "new-subject-model"
         ],
         "lastRelevantAction": {
-          "date": "2026-09-29",
+          "date": "2026-10-02",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "046",
-          "summary": "Fresh six-case strict five-JPEG Sol6.1-versus-Luna comparison with Opus review, source-first case004 adjudication, and hard USD4 ledger. Sol leads for headless source analysis only; both miss autonomous QA target."
+          "sourceId": "047",
+          "summary": "Fresh current-v4 three-case low/medium/high Grok4.7 calibration, equal8192 strict native five-JPEG subjects and pinned Opus4.6 rubric. Source-reviewed bodygrowth and shiftingstreak misses persist at all efforts. No full-six expansion or fresh Sol6.1 comparator; headless-only exploratory evidence."
         }
       }
     }
@@ -17745,7 +17815,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: ingest_and_world_building, api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 172 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 173 days old against a 14-day cadence"
     ]
   }
 }

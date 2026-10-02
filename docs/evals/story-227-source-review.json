@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-02",
+  "source_contact_sheet": "docs/evals/evidence/story-225/source-contact-sheet.png",
+  "targets": "benchmarks/video_understanding_truth_v4",
+  "reviewer": "Codex worker inspected original source contact sheet and individual reference contracts",
+  "policy": "No scorer/golden edits; factual misses separate from interpretive tag/lexical rubric penalties",
+  "classifications": {
+    "low": {
+      "dialogue_confession_push_in": {
+        "taxonomy": "model-wrong",
+        "evidence": "Figures visibly grow taller at fixed centers; low explicitly claims same scale and stillness. Also omits continuing pale rectangle continuity."
+      },
+      "quiet_bedside_vigil": {
+        "taxonomy": "ambiguous",
+        "evidence": "Accurately captures fixed round-topped forms/gray rectangle and stillness. Reference intimate vs detached/emotion isolation subjective. Judge blue-gray/counter penalties not clean truth; no unsupported camera/action."
+      },
+      "storm_tunnel_lateral_run": {
+        "taxonomy": "model-wrong",
+        "evidence": "Camera fixed arch/background yet subject lateral_track; diagonal streak positions visibly shift but subject says remain fixed. Lateral figure motion correctly observed."
+      }
+    },
+    "medium": {
+      "dialogue_confession_push_in": {
+        "taxonomy": "model-wrong",
+        "evidence": "Stillness and all frames match opening composition miss observable body enlargement; camera reference remains excluded."
+      },
+      "quiet_bedside_vigil": {
+        "taxonomy": "ambiguous",
+        "evidence": "Fixed geometry/stillness correctly described, detached/surreal/isolation and gold-vs-amber disagreement interpretive."
+      },
+      "storm_tunnel_lateral_run": {
+        "taxonomy": "model-wrong",
+        "evidence": "Correct static camera and rightward movement/prop preservation; repeatedly incorrectly says diagonal lines remain fixed."
+      }
+    },
+    "high": {
+      "dialogue_confession_push_in": {
+        "taxonomy": "model-wrong",
+        "evidence": "Explicitly says same scale at frame2 and no movement across5, misses visiblebodygrowth as low/medium. Increasedeffortdoesnotfix."
+      },
+      "quiet_bedside_vigil": {
+        "taxonomy": "ambiguous",
+        "evidence": "Correctfixedgeometry/stillness; detached/isolation vs intimate/none and grayblue/navy vs amber have interpretive reference/judge disagreements. Actualshapeevidencegrounded."
+      },
+      "storm_tunnel_lateral_run": {
+        "taxonomy": "model-wrong",
+        "evidence": "Staticcamera/rightwardfigure/attachedprop correctlyobserved; repeatedclaimdiagonalstreaksremainfixed contradictsmovingcyansegments acrosssourceframes."
+      }
+    }
+  },
+  "impact": "Headless task capability only; no product runtime integration or autonomy claim.",
+  "independent_coordinator_review": "Coordinator independently viewed unchanged30-framecontactsheet: confirmedbodygrowth and shiftedtunnelstreaks, fixedbedsidegeometry; no paidjudgeornewscorer applied.",
+  "decision": "No arm qualifiescalibration: all3effortsmissgrowth/streaksourcefacts;0/3rubricpasses,aggregate<.70. Noexpansion/currentSolcomparator;retainownerheadlessreference preference basedonexistingevidence, nofreshrelativeclaim."
+}

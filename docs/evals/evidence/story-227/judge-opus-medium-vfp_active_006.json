@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.0102",
+  "latency_ms": 7875,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1375,
+    "path": "output/evals/grok47-effort-20261002/judge-opus-medium-vfp_active_006-raw.json",
+    "sha256": "0e3220386cdced6ed9ba9ed65503b6bbc1d0d6092ed501d37a772f59f9be368e"
+  },
+  "reason": "The output correctly identifies: static camera, navy and teal colors, continuity intact, the cyan figure moving laterally, the small rectangle (white-outlined) beside the figure, diagonal/rain-like streaks in background, and empty audio fields. However, there are significant mismatches: (1) Tone is tagged as 'detached, surreal' instead of 'urgent, tense' \u2014 both tags are wrong. (2) Emotion is tagged as 'isolation' when reference says none. (3) Motion is tagged as 'measured, slow_drift' when reference says 'fast_lateral' \u2014 this is a clear contradiction. (4) The description of an 'arch' is not well-supported as the reference describes a 'blue tunnel'. (5) Missing 'wide_master' camera tag. The motion speed characterization is directly contradicted (slow vs fast), and tone/emotion tags are wrong. These are substantive errors that prevent a passing score.",
+  "request_id": "msg_011CfdWMSrT4oisUP2G7g5Nd",
+  "score": 0.52,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 915,
+    "output_tokens": 225,
+    "service_tier": "standard"
+  }
+}

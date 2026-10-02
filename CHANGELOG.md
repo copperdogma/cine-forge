@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-10-02-01] — Check Grok 4.7 reasoning on ordered frames (Story 227)
+
+### Added
+- Preserve fresh low/medium/high calibration on three source-reviewed synthetic
+  frame packets, full subject and judge receipts, and offline hash verification.
+
+### Changed
+- Retain the headless reference choice: increased reasoning did not repair body
+  growth or moving-streak errors; higher efforts added latency and cost.
+- Record provider output-cap uncertainty without changing runtime defaults.
+
 ## [2026-10-01-01] — Consolidate agent instructions and explain decision models
 
 ### Added

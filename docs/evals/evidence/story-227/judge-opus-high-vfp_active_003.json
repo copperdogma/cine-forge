@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.012425",
+  "latency_ms": 8952,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1631,
+    "path": "output/evals/grok47-effort-20261002/judge-opus-high-vfp_active_003-raw.json",
+    "sha256": "e2384ebaac3b2d84184046d1d149590511b1ef00b5bf9298e459e0be1f1e5bdf"
+  },
+  "reason": "The model correctly identifies the static wide composition, stillness, intact continuity, and two round-topped forms flanking a central rectangle. Camera tags (static, wide_master) and motion tags (stillness) match. Audio fields are correctly empty. However, there are several mismatches: (1) Tone: model says 'detached' while reference says 'intimate' \u2014 a clear mismatch. (2) Emotion: model tags 'isolation' while reference says none \u2014 an invented emotional attribution. (3) Color: model says 'desaturated' and 'navy'; reference says 'amber' and 'desaturated'. 'Desaturated' is correct but 'navy' is wrong \u2014 the reference indicates amber warmth, not navy/blue tones. The model describes a 'dark gradient' and 'gray-blue' panel, missing the amber/warm character. (4) The model describes figures as 'tan' which is reasonably close to amber, and the panel as 'gray-blue' which is acceptable for the gray rectangle. (5) Continuity notes and evidence are adequately grounded with 3 entries across frames 0, 2, 4. The tone, emotion, and color mismatches are significant enough to bring the score below the 0.8 threshold.",
+  "request_id": "msg_011CfdWUX5PT8Jgwii7RYUBy",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 965,
+    "output_tokens": 304,
+    "service_tier": "standard"
+  }
+}

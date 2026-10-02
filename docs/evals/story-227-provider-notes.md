@@ -1,0 +1,7 @@
+# Provider truth checked 2026-10-02
+
+Official [Grok4.7](https://docs.x.ai/developers/models/grok-4.7): exact `grok-4.7`, text/imageinput,500Kcontext, low/medium/high/xhigh, default high, strict structuredoutputs. [Reasoning](https://docs.x.ai/developers/model-capabilities/text/reasoning): cannotdisable, reasoningtokens exposed; encryptedreasoning returned; storefalse doesnotproveZDR. [Pricing](https://docs.x.ai/developers/pricing): globalUSD2/Minput,USD.50/Mcached,USD6/Moutput; >=200KUSD4/1/12. [Images](https://docs.x.ai/developers/model-capabilities/images/understanding) supportsimageblocks but hasno dimension-tokenhardbound; [tokenizer](https://docs.x.ai/developers/rest-api-reference/inference/other) istextonlyand excludesinferenceframing. No unsupportedsampling/penalty/stopparameters sent. Ownercatalogdiscovery returned exactgrok4.7, gpt6.1Sol andOpus4.6; inference receipts qualify exactGrokidentity.
+
+Pinned independent maintainedOpus4.6 textjudge uses nativeMessages with strictschema, max1024, StandardUSD5/Minput/USD25/Moutput, rawusage andcachebuckets retained. All9completed end_turn, exactclaude-opus-4-6; no caches. Tokenratedollars estimated, not billing receipts.
+
+All9Grokresponses below8192 requestedoutputbudget, but separateowner anomaly observedafterthesecompletecalls meansfuturemaxoutput enforcement unqualified. No furtherprovider calls authorized by this historicalrecord. Syntheticfixtures only; noZDR/privatepayload/nativeaudio orvideo claims.

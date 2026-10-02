@@ -1,0 +1,80 @@
+{
+  "arm": "high",
+  "name": "subject-high-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.01799,
+    "latencyMs": 29436,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": false,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "grok-4.7",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "xai",
+      "request_id": "e8fde106-3a62-9799-88b0-5b4f6a2ee179",
+      "requested_model": "grok-4.7",
+      "returned_model": "grok-4.7",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified figures, one beige and one pale blue with a light rectangle, stand apart on a black band against a navy gradient. Across all five samples neither figure nor the framing shows visible movement.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"static\",\"locked_two_shot\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both figures, their spacing, and the navy backdrop remain unchanged across all five ordered samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A beige rounded figure stands left of a pale-blue figure marked by a light rectangle, both against a dark navy gradient and black lower band.\"},{\"frame_index\":2,\"cue\":\"The same two figures remain separated at the same scale and positions, with no pose or background change.\"},{\"frame_index\":4,\"cue\":\"The final sample still shows both figures unmoved in the same locked composition.\"}],\"overall_confidence\":0.81}",
+    "raw": {
+      "id": "e8fde106-3a62-9799-88b0-5b4f6a2ee179",
+      "model": "grok-4.7",
+      "status": "completed",
+      "usage": {
+        "context_details": {
+          "input_tokens": 4360,
+          "output_tokens": 1842
+        },
+        "cost_in_usd_ticks": 179900000,
+        "input_tokens": 4360,
+        "input_tokens_details": {
+          "cached_tokens": 1152
+        },
+        "num_server_side_tools_used": 0,
+        "num_sources_used": 0,
+        "output_tokens": 1833,
+        "output_tokens_details": {
+          "reasoning_tokens": 1572
+        },
+        "total_tokens": 6193
+      },
+      "x_zero_data_retention": "false"
+    },
+    "tokenUsage": {
+      "completion": 261,
+      "completionDetails": {
+        "reasoning": 1572
+      },
+      "prompt": 4360,
+      "total": 6193
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}
