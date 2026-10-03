@@ -30,6 +30,22 @@ Compare progress with the end state, including both product usefulness and execu
 
 Do not equate test counts, closed stories, reports, proposals, or historical eval scores with completion. Conversely, explain how legitimate enabling work advances the outcome even when it adds no immediately usable output. Distinguish a genuine blocker from an unanswered question that affects only one item or lane. State evidence gaps instead of converting suspicion into a finding.
 
+## Follow Through and Opportunity Cost
+
+Every review answers:
+
+- What changed because of the previous review?
+- What improved for the user, or what evidence changed the next decision?
+- Is current work still attacking the most valuable remaining problem?
+- What should be finished, changed, deferred, or stopped?
+
+When the user requested periodic reviews, carry the original deadline and
+review schedule through interruptions; report the next due point against that
+original schedule rather than silently restarting it. Distinguish useful
+failed experiments and verified waits for external dependencies from repeated
+bookkeeping or status churn. A story can be complete while the broader goal
+continues; assess and state the goal's stopping condition separately.
+
 ## Challenge the approach
 
 Compare continuing as planned with plausible alternatives. Use the problem's actual constraints to consider richer context, a simpler existing path, different tools or models, a small human-assisted baseline, working backward from the consumer's needs, and an earlier end-to-end or independent-case demonstration. Do not require every review to explore every option.

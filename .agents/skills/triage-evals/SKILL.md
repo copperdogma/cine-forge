@@ -14,6 +14,10 @@ The core filter is actionability, not abstract importance. A red or stale eval
 line is not recommendable unless the diagnosis can name why that line should be
 revisited now.
 
+This is read-only triage: use retained representative timings, costs, effort
+records, or offline calculations for impact estimates. If evidence is missing,
+recommend a bounded measurement; do not run an eval merely to estimate impact.
+
 ## Lane Packet Mode
 
 When full-sweep `/triage` asks for a lane packet, stay read-only and return up
@@ -113,10 +117,22 @@ code, or hybrid implementation honestly.
      faster, thinner, or easier to operate when higher-pressure lines are not
      actionable
 
-   Phase plus current repo evidence is enough to justify an eval
-   recommendation when there is a bounded, falsifiable next move. A line does
-   not need a new external announcement or a fresh inbox item before it
-   becomes worth improving again.
+   Phase plus current repo evidence is not sufficient on its own: apply the
+   impact check below before elevating efficiency work. A line does not need a
+   new external announcement or a fresh inbox item when the measured impact
+   is worthwhile and the next move is bounded and falsifiable.
+
+## Impact Check
+
+Before recommending an optimization, estimate the target stage's share of
+end-to-end intake time, cost, or human effort and the improvement the proposed
+change could realistically deliver. Use a lightweight representative
+measurement where possible; label estimates and evidence limits. For example,
+if a stage uses 5% of total intake time and its time is reduced by 30%, the overall
+time saving is about 1.5%, before overhead. Prefer the end-to-end impact over
+the impressive-looking local percentage. Quality defects and critical
+dependencies can justify work independently of speed or cost savings; name
+that reason explicitly.
 
 ## Phase 2 — Diagnose
 
@@ -124,7 +140,9 @@ If the user passed a specific eval or compromise id:
 
 1. Assess that item directly:
    - What live gap or compromise does it serve?
-   - Is the latest score stale relative to current `HEAD`?
+   - Did relevant evaluated code, prompt, model/provider, scorer, golden, input,
+     or environment changes make the latest score stale? `HEAD` distance alone
+     is not enough.
    - Is it missing attempt history?
    - Is it near target, badly below target, or already good enough?
    - Does it look blocked by golden quality, model choice, simple lack of recent measurement, or an architecture limitation?
@@ -162,6 +180,9 @@ If no id was passed:
    - What is the cheapest next step?
    - Which state phase does it support?
    - Is the problem likely model-wrong, golden-wrong, stale-measurement, or architecture-limited?
+   - For an optimization, what is its stage share × realistic local gain and
+     resulting end-to-end time, cost, or human-effort impact? Explain any
+     parallel or critical-path effects.
 
 4. Produce a ranked top 3-5 list unless `--stale-only` was passed.
 
@@ -174,10 +195,10 @@ For each recommended item, end with one concrete next action:
 - **Skip for now** — when the eval is healthy enough or the compromise is not actionable yet
 - **Do story / ADR / spec work first** — when the bigger gap is not actually waiting on eval evidence
 
-Prefer a concrete next move over `no action` whenever a phase-aligned,
-bounded experiment or proof refresh still exists. Reserve `no action` for lines
-that are truly blocked on external capability, just retried on the same
-premise, or missing a falsifiable next experiment.
+Prefer a concrete next move when its expected user, quality, dependency, time,
+cost, or effort impact justifies the work and it is phase-aligned. A bounded
+experiment or proof refresh alone does not establish sufficient value; report
+`no action` when likely benefit is immaterial, and explain the impact basis.
 
 ## Output Format
 
@@ -232,10 +253,10 @@ or final repo-wide handoff in lane-packet mode.
 - Do not convert "big gap" or "red line" into "do this now" without naming a
   concrete why-now trigger or a genuinely new unanswered question
 - Do not treat "no newly released model" as sufficient reason for no action
-  when a bounded prompt, golden, proof-refresh, or architecture-linked eval
-  move still exists
-- If a `converge` or `climb` line still has a bounded falsifiable next move,
-  prefer recommending it over `no action`
+  when a bounded move with material expected impact still exists
+- A bounded falsifiable move in a `converge` or `climb` line is not by itself
+  sufficient reason to recommend action; apply the impact check and report
+  quality or critical-dependency exceptions explicitly
 - Do not treat every red compromise eval as blocking; use AGENTS expected-fail semantics
 - When a single model default depends on an eval, stale defaults matter, but they still do not outrank a bigger unrelated `climb` gap without explanation
 - Do not force eval work to the top if the current system bottleneck is product substrate rather than measurement

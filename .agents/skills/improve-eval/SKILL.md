@@ -72,7 +72,10 @@ cat docs/evals/registry.yaml
 git rev-parse --short HEAD
 ```
 
-If any scores are from a significantly older commit, flag them as potentially stale.
+Use commit differences to locate changes, then assess whether the evaluated
+code, prompt, model/provider contract, scorer, golden, inputs, or execution
+environment changed. Flag evidence as stale only when a relevant change could
+alter the result; commit distance alone is not enough.
 
 ## Phase 1 — Pick a Candidate
 
@@ -105,8 +108,10 @@ When presenting candidates, always show latency and cost alongside quality:
 This surfaces the full tradeoff — a 0.89 quality model at 4s may beat a 0.94 model at 47s.
 
 ### Priority 3: Stale scores
-Evals with git_sha far from HEAD might already be better (or worse) from code changes.
-Re-measure first before attempting improvements.
+Relevant changes to evaluated code, prompts, models/providers, scorers,
+goldens, inputs, or execution environment may make scores stale. Re-measure
+when those changes could affect this result; commit distance alone is not a
+staleness signal.
 
 ### Priority 4: Compromise evals
 Compromise evals with no attempts yet — worth probing to establish a baseline.
@@ -202,6 +207,36 @@ For each significant mismatch between model behavior and expected behavior:
 
 - CineForge's mismatch taxonomy is **model-wrong / golden-wrong / ambiguous**. Do not silently swap in another repo's taxonomy.
 
+## Experiment Decision Contract
+
+Before implementation or paid calls, record in the attempt plan:
+
+- a falsifiable hypothesis and the change or comparison that tests it
+- the baseline, metric, and aggregation rule, all fixed before observing results
+- required quality gates and any safety or correctness constraints
+- a meaningful improvement threshold, including how it is calculated
+- the authorized time, call, and spend budget, plus a stop condition
+- what result leads to adoption, rejection, or a qualified/uncertain result
+- the exact input identities reserved for development and independent
+  validation
+
+Start with the cheapest experiment that can settle the decision. An offline
+calculation or existing retained output may rule out an approach before any
+implementation or API call. A borderline result may receive one confirmation
+batch specified in advance and within the authorized budget; otherwise report
+it as uncertain. Assess sample size, paired variation, and measurement
+precision; a numerical threshold pass alone does not establish adoption-grade
+evidence. Preserve all observations and do not change the aggregation rule,
+input subset, or comparison after seeing results. Do not repeat attempts until
+a favorable result appears.
+Record whether validation inputs influenced tuning. If they did, disclose that
+contamination and reserve fresh material for the next independent confirmation.
+
+For result verification, follow
+`.agents/skills/finish-and-push/SKILL.md`'s proportional-validation and
+evidence-reuse policy: unchanged evidence carries forward, and rerun checks
+whose inputs or dependencies were affected by the change.
+
 ## Phase 5 — Execute
 
 1. **Make changes** according to the plan. This might involve:
@@ -225,10 +260,15 @@ For each significant mismatch between model behavior and expected behavior:
 
 This shows quality, latency_ms, and cost_usd per model. Record ALL three in the work log.
 
-4. **If the score improved:** Verify it holds. Run again to check consistency.
+4. **If the score improved:** Compare it with the predeclared threshold and
+   uncertainty rule. Run only the one predeclared confirmation batch when the
+   result is borderline and the authorized budget allows it; otherwise retain
+   an uncertain or tentative conclusion rather than repeatedly sampling for a
+   favorable result.
 
 5. **If the score didn't improve or got worse:** Decide whether to iterate or stop.
-   - If you have a clear next idea, iterate (up to 3 attempts within one session).
+   - A new attempt requires a distinct, recorded hypothesis or decision-bearing
+     question; do not iterate solely to seek a favorable score.
    - If you're out of ideas, stop and record the failure.
 
 ## Phase 6 — Record (MANDATORY — never skip)

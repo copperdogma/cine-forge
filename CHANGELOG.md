@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-10-03-01] — Set experiment and loop-review decision rules
+
+### Changed
+- Add end-to-end impact estimates to eval triage, predeclared experiment and
+  uncertainty rules to eval improvement, and follow-through/opportunity-cost
+  checks to loop reviews. Refresh the generated methodology surfaces.
+
 ## [2026-10-02-01] — Check Grok 4.7 reasoning on ordered frames (Story 227)
 
 ### Added
