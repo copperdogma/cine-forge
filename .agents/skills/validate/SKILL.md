@@ -15,6 +15,19 @@ skill's `Validation proportional to the change` policy is authoritative. Select
 the smallest sufficient checks and reuse evidence whose tested content,
 environment, and check configuration still apply.
 
+## Research for Unexplained Validation Failures
+
+Before an unfamiliar material failure or repeated unexplained failures lead to
+another retry, fixed sleep, special case, or weaker assertion, apply AGENTS'
+research rule. Diagnose locally, name the general problem class, reuse
+applicable research or inspect a few useful primary sources for established
+techniques, then test the smallest hypothesis. Stop when the next experiment
+is clear. Record useful sources, local evidence, and uncertainty in the existing
+log; a source link alone does not prove a fix. Preserve the acceptance contract,
+project reuse restrictions, proportional checks, and unchanged valid evidence.
+Ordinary understood fixes need no separate research pass. Research consumes
+the existing budget and cannot bypass hard stops or authorize a broader fix.
+
 ## Steps
 
 1. **Collect local delta first**:

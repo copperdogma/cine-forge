@@ -16,11 +16,14 @@ user-invocable: true
 Use this skill as the **canonical full-package setup entrypoint** for the
 methodology package. It assumes project-specific `docs/ideal.md` and
 `docs/spec.md` already exist from `/init-project` or equivalent source-backed
-intake. It replaces the old phased setup surface with one integrated package
+intake. `/init-project` is interview-first: it should discuss project shape,
+setup options, and first proof stories with the user before creating files.
+This skill replaces the old phased setup surface with one integrated package
 installer/normalizer.
 
 `/setup-methodology` does not discover a blank project's idea. For a greenfield
-folder with no real Ideal/spec, stop and route to `/init-project new-idea`.
+folder with no real Ideal/spec, stop and route to `/init-project new-idea`;
+do not treat that route as approval to scaffold without the kickoff interview.
 
 ## What This Skill Owns
 
@@ -48,6 +51,8 @@ folder with no real Ideal/spec, stop and route to `/init-project new-idea`.
   requirements, and guarded story/auto-fix routing
 - upgraded verification bootstrap: `/loop-verify` mode selection, budgeted
   defaults, docs/ADR inspect-only behavior, and strict clean-round escalation
+- optional `/loop-review` setup for projects with long-running strategic work,
+  plus periodic, budget-preserving strategy checkpoints in `/loop-verify`
 - local runtime allocation bootstrap for repos that expose a local web/API
   surface: Conductor-owned port allocation, repo-local launch/status/stop
   scripts, strict binding, health identity, and README/Codex action guidance
@@ -125,7 +130,7 @@ silently forking the setup contract.
    They may be v0, but they must be real authored artifacts. If either is
    missing, generic, only a placeholder, or not yet reviewed for cohesion
    against raw intake, stop and route to `/init-project`; do not fabricate them
-   from the setup template.
+   from the setup template or skip the user-facing kickoff discussion.
 2. **Create or refresh the checklist first after preflight.** Copy the bundled
    template to `docs/setup-checklist.md` if the template exists and the working
    checklist is missing or still an older one-off format. If the repo has no
@@ -165,6 +170,15 @@ silently forking the setup contract.
    interface fact is at issue. Upstream docs answer "what is true now";
    repo-local Ideal/spec/compromise/eval surfaces answer "what is good and
    safe for this product."
+   For a nontrivial obstacle with an uncertain next step, first inspect local
+   evidence and name the general problem class. Reuse applicable prior
+   research; otherwise compare a few relevant primary sources, then choose a
+   small local applicability check. Stop research once that experiment is
+   clear; repeated failed approaches call for reframing before more retries or
+   special cases. Prefer the simplest permitted technique that fits.
+   Record reusable sources, the decision,
+   result, and remaining uncertainty in existing notes. Obvious fixes need no
+   research ceremony; preserve local reuse boundaries and acceptance criteria.
 7. **Prefer outcome-first prompt contracts over inherited process stacks.**
    Prompts and skills should state the desired outcome, constraints, available
    evidence, final answer shape, and real local guardrails. Keep detailed
@@ -266,7 +280,7 @@ without spending many rounds proving absent evidence. Do this:
      ADR options, story boundaries, and build-plan alternatives where option
      quality is the blocker, with final judgment left to the caller
    - `/triage-adr` as an optional helper for existing ADRs whose remaining
-     Cam decisions, technical recommendations, evidence gaps, or alignment
+     human decisions, technical recommendations, evidence gaps, or alignment
      route are unclear
    - `/build-story` with delegation only after the plan gate, only for bounded
      non-blocking work with disjoint ownership
@@ -349,6 +363,8 @@ without spending many rounds proving absent evidence. Do this:
      companion runbook, and AGENTS/triage references when `state.ui_scout`
      exists
    - `AGENTS.md` — canonical public surface and operating rules
+     Include the concise research rule above so it travels with the project;
+     adapt examples and implementation-reuse limits to its domain.
    - for Conductor, preserve supervisor surfaces instead of product-only lanes:
      `projects.yaml`, `inbox.md`, `docs/scout.md`, `docs/scout/`,
      `docs/align-projects.md`, and `docs/alignments/`
@@ -408,6 +424,10 @@ without spending many rounds proving absent evidence. Do this:
      evidence, or an explicit local-only rationale, when a story or diff
      touches drift-prone providers, SDKs, browser/tooling plugins,
      UI/component libraries, model/provider slugs, or framework APIs
+   - Ensure `/build-story` retains the problem-class research trigger during
+     implementation as well as planning, and `/validate` applies it before
+     unexplained failures lead to more retries or weaker assertions. Preserve
+     acceptance criteria and reuse unchanged valid evidence.
 
 8. **Install the upgraded triage, core story-loop, and verification surface**:
    - Install or refresh `/triage` as the orchestration skill: Ideal/spec first,
@@ -443,9 +463,33 @@ without spending many rounds proving absent evidence. Do this:
    - Install or refresh `/loop-verify` with mode and materiality guidance:
      ordinary loops use a budgeted default, docs/ADR alignment uses find-only
      workers plus main-agent fixes, strict clean-round loops are reserved for
-     explicit or objective contract-critical proof, material executable or
-     contract fixes reset strict loops, and minor typo/formatting/non-contract
-     wording fixes only need targeted checks.
+     explicit or objective contract-critical proof, and any material strict-mode
+     fix resets a fresh full pass over the original scope only while the loop
+     remains convergent and within budget and scope. Preserve this repo's
+     existing reset contract instead of importing phase-specific reset rules.
+     Budget and non-convergence hard stops take precedence. Minor typo,
+     formatting, and non-contract wording fixes only need targeted checks.
+     At each existing round boundary,
+     the coordinator checks outcome progress, repeated assumptions, and
+     accumulating special cases before choosing another round. For a long
+     active run without a user cadence, add a strategy checkpoint after about
+     30 active minutes or three substantive rounds, whichever comes first;
+     preserve that cadence across interruptions. Checkpoints are proactive even
+     when proxy metrics improve. Reuse recent source-backed research only when
+     its assumptions and observed failure modes still apply; otherwise make a
+     bounded comparison against an established approach and select a small
+     discriminating experiment. Record the disposition and reassessment trigger
+     in the existing log. Research counts against existing budgets and cannot
+     extend hard stops, authorize another round, weaken acceptance, or create a
+     scheduler/automation.
+   - When a repo has long-running work with meaningful strategy decisions,
+     install or refresh optional `/loop-review` guidance to challenge the
+     problem framing and technique at its existing strategic review
+     checkpoints, including when proxy metrics improve without clear user
+     benefit. Keep this distinct from `/loop-verify` round checks; reuse
+     applicable research, respect current scope and budgets, and do not add a
+     recurring schedule. Do not require `/loop-review` for routine or short
+     work.
    - Install or refresh source-routing guidance so provider/component/model
      work checks current official upstream docs first when those facts are
      likely to drift, then ties any adoption back to local Ideal/spec/evals.

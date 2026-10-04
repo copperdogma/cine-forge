@@ -150,3 +150,24 @@ the package around those authored truths. For AI-capability areas, preserve the
 root/parent/child eval ladder: root Ideal eval or explicit deferral, parent
 failure, measured failure mode, child eval when needed, and owning story only
 after the next ladder node is clear.
+
+## Research and Strategy Review Wiring
+
+Keep AGENTS' research rule in initial and refreshed instructions, including
+lean kickoff that defers the full package. `/init-project` extracts local reuse
+boundaries; `/build-story` applies local diagnosis and bounded general-problem
+research during planning and implementation; `/validate` does so before
+unexplained failures invite more retries or weaker assertions. Reuse applicable
+findings, prefer useful primary sources, and stop at a decision plus the smallest
+local applicability check. Save sources, decisions, results, and uncertainty
+in existing work logs or research notes, preserving owner acceptance and privacy.
+
+Wire `/loop-verify` coordinator round checks and `/loop-review` strategic
+comparisons without changing their ownership or approval rules. Preserve an
+operator cadence; otherwise use roughly 30 active minutes or three substantive
+rounds, whichever comes first. Carry cadence across interruptions. An overdue
+timed review gets one current-state check only within remaining authorization,
+with the original next deadline retained. Reuse still-applicable comparisons;
+research is not a quota. Budgets and non-convergence stops take precedence;
+clean scoped verification terminates separately from broader goal review.
+This guidance creates no schedule and authorizes no additional rounds or scope.

@@ -13,6 +13,25 @@ or more reference repos, then installing the **same methodology package** used
 here: ideal/spec/state, generated graph surfaces, checklist, eval/golden
 baseline, AGENTS wiring, and canonical cross-CLI skill surface.
 
+## Research Rule at Kickoff
+
+When intake exposes an unfamiliar material obstacle, inspect local evidence,
+name its general problem class, and reuse applicable prior research before
+proposing a workaround. Otherwise consult a few relevant primary sources,
+retain applicability constraints, and stop when an approach and the smallest
+local check are clear. Record useful sources, the decision, local results, and
+uncertainty in existing intake or research notes. Repeated failures require
+reframing before more retries or special cases; obvious fixes need no ceremony.
+
+Include this concise rule in the initial `AGENTS.md`, even when full methodology
+setup is deferred. Extract implementation-reuse, private-source, and acceptance
+boundaries from intake and preserve them; ask only if a material boundary is
+unclear. Teach strategy review within existing authorization: retain requested
+cadence or use roughly 30 active minutes or three substantive rounds, whichever
+comes first. Carry cadence across interruptions, reuse applicable evidence,
+and keep research inside existing budgets and hard stops. Lean kickoff does
+not authorize a larger package or a recurring schedule.
+
 ## Greenfield Intake and Root Eval Boundary
 
 For a blank or idea-first repo, `init-project` must capture project meaning

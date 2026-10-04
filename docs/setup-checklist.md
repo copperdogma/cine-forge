@@ -128,3 +128,16 @@ preserved for provenance only; it is **not** the active setup checklist.
 - [ ] Review and update Ideal annually or when fundamental capabilities shift
 - [ ] Ideal/spec intake or local equivalent confirmed before setup creates generic placeholders
 - [ ] Eval ladder represented: root/parent evals, measured failure modes, child evals, and owning stories where applicable
+
+## Research and Strategy Guidance Refresh — 2026-10-04
+
+- [x] Initial and refreshed AGENTS teach local diagnosis, general problem class,
+      bounded primary-source research or applicable reuse, and small local proof.
+- [x] Intake retains the rule in lean setup and preserves domain reuse boundaries.
+- [x] Build guidance retains the research trigger during planning and implementation.
+- [x] Validation preserves acceptance and evidence reuse before unexplained retries.
+- [x] Loop coordinator and strategic review retain requested cadence, or the
+      30-active-minute / three-substantive-round default, across interruptions.
+- [x] Overdue checkpoints preserve the original deadline and remaining budget;
+      hard stops precede cadence, workers stay single-pass, and clean verification ends.
+- [x] Existing notes capture useful sources, decisions, local evidence, and uncertainty.

@@ -83,6 +83,13 @@ code, or hybrid implementation honestly.
 
 ## Phase 2 — Plan (produces a written artifact)
 
+Before choosing a speculative workaround for an unfamiliar material obstacle,
+apply AGENTS' research rule: diagnose locally, name the general problem class,
+reuse applicable research or consult a few relevant primary sources, and choose
+the smallest local applicability check. Record sources, assumptions, the
+chosen approach, and uncertainty in the existing story work log. Obvious fixes
+need no separate research pass; preserve project reuse limits and acceptance.
+
 If the implementation approach is genuinely unclear because the solution space
 is weak, use `/ideation` before writing the plan. Keep this optional and
 bounded: the ideation packet can improve alternatives and tradeoffs. If the
@@ -151,6 +158,14 @@ context. Keep routine small stories single-threaded.
   run the same work sequentially and note the fallback.
 
 ## Phase 3 — Implement
+
+Keep this trigger active after the plan gate. If implementation encounters a
+new uncertain obstacle or repeated failure, revisit its general problem class
+before adding retries or special cases. Reuse still-applicable research or make
+a bounded primary-source comparison, then verify the selected technique with
+a small local check and log evidence and uncertainty. For long-running work,
+follow AGENTS' strategy cadence within the approved scope and budget; reassess
+the user outcome as well as local metrics, preserving acceptance and reuse limits.
 
 12. **Implement** — Work through tasks in order. For each task:
    - If the story status is `Draft` and exploration proved it honestly buildable, first promote it to `Pending` and run `pnpm methodology:compile` so the status matches repo reality.

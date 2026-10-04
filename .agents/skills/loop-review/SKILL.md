@@ -56,6 +56,56 @@ Verify availability and requirements before recommending a specific new tool. Tr
 
 Assess whether the current bounded task should finish before changing direction. Favor preserving useful completed work and avoiding disruptive concurrent changes. A critical problem may justify an immediate stop recommendation, but the audit itself does not stop the thread.
 
+## Research at strategy checkpoints
+
+At each strategic review, compare the current technique with a meaningfully
+different established approach to the same general problem class. Do this even
+when local metrics improve: a better proxy score can coexist with little user
+benefit. Start with enough local evidence to distinguish the problem from its
+symptoms; retain the constraints that affect applicability.
+
+Reuse a recent source-backed comparison when its assumptions, constraints, and
+observed failure modes still fit, and state why. Otherwise consult a few useful
+primary sources for established techniques, tools, or permitted components.
+Stop once the evidence supports a next decision or a small discriminating
+experiment. If the bounded search is inconclusive or unavailable, name the gap;
+do not invent an alternative or present it as verified. Ordinary understood
+fixes need no separate research pass, and fresh searches are not a quota.
+
+Answer in the existing review record, without repeating the follow-through
+report below:
+
+- What outcome or useful uncertainty improved since the last checkpoint?
+- Would we choose this approach again with what we now know?
+- Which established alternative changes the mechanism, and which assumptions
+  support or rule out its use here?
+- What smallest comparison would justify continuing or changing direction?
+
+Retain useful source links or reused evidence, the continue/change/defer/stop
+decision, local results if already available, and uncertainty. Recommend a
+bounded local experiment only when it can change the decision; read-only
+review does not authorize executing it. Preserve acceptance criteria, project
+reuse restrictions, and the existing approval/handoff boundaries. Continuing
+is a valid source-backed conclusion; novelty is not required.
+
+Use an existing requested cadence or deadline. For an ongoing authorized work
+loop with none specified, use roughly 30 minutes of active work or three
+substantive rounds since the last strategic review (or run start), whichever
+comes first, as a tunable initial checkpoint.
+An unfamiliar obstacle can justify an earlier check. Carry elapsed active work,
+round count, and the last/next checkpoint in the existing log across
+interruptions; verified dependency waits do not count as active iteration.
+If an operator-timed review is overdue on resumption and authorized time and
+budget remain, perform one current-state review before more active work.
+Record the missed checkpoint and retain the original next deadline; do not
+replay every missed slot or shift the schedule from the resumption time.
+This default governs an active work loop, not a one-off audit or a recurring
+automation. It neither starts a schedule nor extends the authorized run.
+Research and any approved experiments consume the existing budget; hard stops
+and scope limits take precedence over another checkpoint. Clean scoped
+verification ends that verifier; assess a broader goal mismatch separately
+without restarting the clean verification loop.
+
 ## Present a concrete recommendation
 
 Lead with a candid verdict: aligned and progressing, aligned but at risk, materially misaligned, blocked, or insufficient evidence. Explain the conclusion with a few relevant artifact or source links. Keep the report proportional to the decision; there is no mandatory long report or scoring rubric.

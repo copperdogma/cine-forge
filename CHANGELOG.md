@@ -1,5 +1,11 @@
 # Changelog
 
+## [2026-10-04-02] — Research before reinvention
+
+### Changed
+- Add bounded problem-class research and periodic strategy checkpoints to agent
+  workflows, preserving owner reuse boundaries, verification stops, and budgets.
+
 ## [2026-10-04-01] — Audit original music-video production and plan pilot
 
 ### Added

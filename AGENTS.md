@@ -40,6 +40,34 @@ This file is the project-wide source of truth for agent behavior and engineering
 > - `docs/build-map.md` and `docs/stories.md` are generated views. Never treat them as the writable source of truth.
 > - Performance work is not a free-floating concern. Attach it to the owning `spec` category and then decide whether the correct phase is `climb` (improve capability/runtime), `hold` (keep an existing workaround cheaper/faster/cleaner), or `converge` (delete the workaround because the detector is green).
 
+## Research Before Reinvention
+
+When a nontrivial obstacle makes the next step uncertain, inspect enough
+local evidence to name the general problem class, then check established
+approaches before inventing a workaround. Reuse applicable prior research;
+otherwise consult a few primary sources, retaining the constraints that
+affect applicability. Stop once you can choose an approach and a small local
+test. Prefer the simplest permitted technique that fits; explain material
+departures. If attempts keep failing, revisit the diagnosis and assumptions
+before adding retries or special cases. Record reusable sources, the
+decision, local evidence, and uncertainty in existing project notes. Obvious
+fixes need no research ceremony. Preserve project reuse boundaries and
+acceptance criteria.
+
+In long-running authorized work, use `/loop-review` to challenge the approach
+against the user outcome and established alternatives. Preserve any requested
+cadence; otherwise use roughly 30 minutes of active work or three substantive
+rounds, whichever comes first, as a tunable initial checkpoint. Carry active
+time, round count, and the last/next checkpoint across interruptions; verified
+dependency waits do not count as active work. If an operator-timed checkpoint
+is overdue on resumption, perform one current-state review only within remaining
+authorized time and budget. Record the missed checkpoint, keep the original
+next deadline, and do not replay missed slots or shift cadence to resumption.
+Reuse applicable comparisons when their assumptions still fit; fresh research
+is not a quota. Research and experiments consume the existing budget. Hard
+stops and scope limits take precedence; this creates no automation or extension.
+A clean scoped verifier ends separately from review of the broader goal.
+
 ## Core Agent Mandates
 
 - **GREENFIELD PROJECT — NO BACKWARDS COMPATIBILITY**: This app is under active development with zero real users, zero valuable user data, and zero old processes or file formats to preserve. Do NOT waste time on backwards compatibility shims, migration paths, deprecation warnings, old format support, or "gentle" transitions. When something needs to change, **change it directly**. Delete the old code. Update all call sites. If a schema changes, change it — don't version it. If an API changes, change it — don't keep the old endpoint. The only cost is a `git revert` away.
