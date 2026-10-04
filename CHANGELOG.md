@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-10-04-01] — Audit original music-video production and plan pilot
+
+### Added
+- Record Scout 024 with independent maker-record and public-code audit, source
+  hashes, claim corrections, and ranked transfer recommendations.
+- Add Draft Story 228 for an original short music-video pilot: preserved song
+  timing, deterministic graphics, bounded generation and explicit take selection.
+
+### Changed
+- Register the approved scout handoff and refresh canonical planning history and
+  generated views without changing model defaults or production behavior.
+
 ## [2026-10-03-01] — Set experiment and loop-review decision rules
 
 ### Changed

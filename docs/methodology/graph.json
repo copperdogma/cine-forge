@@ -714,7 +714,8 @@
           "195",
           "196",
           "198",
-          "199"
+          "199",
+          "228"
         ],
         "adrIds": [
           "ADR-002",
@@ -857,7 +858,8 @@
           "201",
           "202",
           "203",
-          "204"
+          "204",
+          "228"
         ],
         "adrIds": [
           "ADR-002",
@@ -973,7 +975,8 @@
           "224",
           "225",
           "226",
-          "227"
+          "227",
+          "228"
         ],
         "adrIds": [
           "ADR-002",
@@ -1118,7 +1121,8 @@
           "224",
           "225",
           "226",
-          "227"
+          "227",
+          "228"
         ],
         "adrIds": [
           "ADR-001",
@@ -1288,7 +1292,8 @@
           "195",
           "196",
           "199",
-          "201"
+          "201",
+          "228"
         ],
         "adrIds": [
           "ADR-003"
@@ -1576,7 +1581,8 @@
           "161",
           "162",
           "183",
-          "187"
+          "187",
+          "228"
         ],
         "evalIds": [
           "full-script-throughput"
@@ -1603,7 +1609,8 @@
             "161",
             "162",
             "183",
-            "187"
+            "187",
+            "228"
           ],
           "evalIds": [
             "full-script-throughput"
@@ -1630,7 +1637,8 @@
           "207",
           "208",
           "213",
-          "216"
+          "216",
+          "228"
         ],
         "evalIds": [
           "compromise-C2-qa-validation"
@@ -1659,7 +1667,8 @@
             "207",
             "208",
             "213",
-            "216"
+            "216",
+            "228"
           ],
           "evalIds": [
             "compromise-C2-qa-validation"
@@ -1904,7 +1913,8 @@
           "200",
           "201",
           "202",
-          "203"
+          "203",
+          "228"
         ],
         "evalIds": [],
         "actionability": {
@@ -1932,7 +1942,8 @@
             "200",
             "201",
             "202",
-            "203"
+            "203",
+            "228"
           ],
           "evalIds": []
         }
@@ -14982,6 +14993,89 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "228",
+      "title": "Original Music Video Pilot",
+      "path": "docs/stories/story-228-original-music-video-pilot.md",
+      "status": "Draft",
+      "priority": "Medium",
+      "idealRefs": [
+        "R12 (transparency and control), R15 (change propagation)",
+        "R5 (human involvement), R6 (creative taste), R7 (iterative generation)",
+        "R8 (production artifacts), R9 (export), R10 (playable assembly)"
+      ],
+      "specRefs": [
+        "spec:10.1",
+        "spec:10.2",
+        "spec:10.3",
+        "spec:4.10.3",
+        "spec:4.10.7",
+        "spec:5.1",
+        "spec:5.3",
+        "spec:6.1",
+        "spec:7.1",
+        "spec:7.2",
+        "spec:8.1",
+        "spec:8.2"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C1",
+        "C2",
+        "C6"
+      ],
+      "dependsOn": [
+        "032",
+        "166",
+        "167"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7",
+        "spec:8",
+        "spec:10"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "feature-completeness",
+        "final-output",
+        "music-video",
+        "scene-generation"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20261004-1132",
+        "date": "2026-10-04",
+        "summary": "check-in integration: origin/main advanced 25 commits and already owns Story 215, so renumbered this pilot to 228 in an isolated current-main checkout and updated all scout/research links. Regenerated planning state/vie…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "228",
+        "sourcePath": "docs/stories/story-228-original-music-video-pilot.md",
+        "recommendedNow": false,
+        "posture": "draft",
+        "whyNow": "check-in integration: origin/main advanced 25 commits and already owns Story 215, so renumbered this pilot to 228 in an isolated current-main checkout and updated all scout/research links. Regenerated planning state/vie…",
+        "lastRelevantAction": {
+          "date": "2026-10-04",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-228-original-music-video-pilot.md",
+          "summary": "check-in integration: origin/main advanced 25 commits and already owns Story 215, so renumbered this pilot to 228 in an isolated current-main checkout and updated all scout/research links. Regenerated planning state/vie…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -17755,9 +17849,10 @@
             "184",
             "185",
             "192",
-            "202"
+            "202",
+            "228"
           ],
-          "stories_since_audit": 4,
+          "stories_since_audit": 5,
           "open_findings": [
             "Project Home still stacks Script Bible, healthy Artifact Health, and Final Output above the screenplay; Story 185 is the existing owner and should resolve placement rather than creating a second shell."
           ],
@@ -17800,9 +17895,10 @@
             "190",
             "192",
             "202",
-            "203"
+            "203",
+            "228"
           ],
-          "stories_since_audit": 12,
+          "stories_since_audit": 13,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -17815,7 +17911,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: ingest_and_world_building, api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 174 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 175 days old against a 14-day cadence"
     ]
   }
 }
