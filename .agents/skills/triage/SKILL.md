@@ -37,6 +37,16 @@ toward that Ideal, not to create backlog motion for its own sake.
 
 When full-sweep triage launches neutral lane packets with subagents, size each worker model and reasoning level to lane risk. Use cheaper or lower-reasoning workers for factual scans and mechanical packet gathering; keep stronger workers for semantic contracts, security, eval correctness, cross-repo decisions, or high-cost misses. Record any explicit override rationale in the triage report.
 
+Use the cheapest capable lane workers when expected savings exceed context,
+coordination and verification costs. Batch tiny related or empty lanes into one
+bounded packet when useful, keeping every required lane's coverage and stop
+condition explicit. Preserve any expressly requested separate fan-out. When
+there is no delegation benefit, execute the same contracts directly and explain
+the choice. Give direct artifact access, use completion events or message-aware
+waits, and avoid unchanged status sweeps and duplicate work; the main thread
+retains ranking and final disposition. The full-sweep collection procedure below
+preserves coverage whether packets are delegated, batched or gathered directly.
+
 ## Routing
 
 | Invocation | Behavior |
@@ -142,8 +152,10 @@ When invoked with no scope:
      invocation of unscoped `/triage` as explicit authorization to use the
      runtime's subagent/delegation tool for neutral lane packets when it is
      available and safe for the current checkout.
-   - Immediately launch scoped lane packet requests after reading the shared
-     frame. Keep packets neutral: ask each lane for its best candidates from
+   - After reading the shared frame, launch scoped lane packet requests when
+     delegation has a net benefit; batch tiny lanes or gather directly under
+     the economics rule above. Keep packets neutral: ask each lane for its best
+     candidates from
      the broad Ideal/spec/state/graph context, not for a final repo-wide pick
      and not for confirmation of one preselected gap.
    - Ask these lanes for packets:

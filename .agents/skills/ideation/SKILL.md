@@ -63,9 +63,14 @@ design. Generate:
 
 ### Subagent
 
-Use only when the current user request explicitly authorizes subagents,
-delegation, or parallel agent work. The main caller keeps the local north star,
-passes a bounded prompt to one worker, and receives a compact option packet.
+Use when current session, project or runtime instructions already authorize
+subagents, delegation or parallel work; do not demand fresh permission for the
+same scope. Preserve user opt-outs and governing tool restrictions. The main
+caller keeps the local north star and final decision, passes one bounded prompt
+with artifact access to the cheapest capable worker when delegation has a net
+benefit, and receives a compact option packet through completion events or a
+message-aware wait. Ideation is not automatically strategic review. Avoid
+unchanged status sweeps and duplicate work.
 
 Subagent prompt shape:
 

@@ -16,6 +16,55 @@ Read the user's current intent, project instructions, Ideal or equivalent, activ
 
 Preserve constraints and existing authorizations. An audit is read-only unless the user authorizes follow-through. Do not interrupt the main thread, edit its workspace, change goal status, send messages, or start implementation merely because the review finds a problem.
 
+## Strategic review dispatch
+
+Resolve the strongest available eligible model and its maximum supported thinking
+level from current runtime capabilities when the authorized run starts. Maximum
+means that model's highest supported setting on the actual tool surface, not a
+literal `max` parameter. Use current capability guidance and the user's preference;
+price, release date and catalogue positioning alone do not prove task superiority.
+Record requested model/effort separately from independently verified served
+identity; if the latter is unavailable, say so. Reuse the selection within the
+run; recheck after an availability error, runtime change or meaningful interruption.
+Inspect the dispatch schema: when full-history forks inherit configuration, use
+a compact no-history or partial-history packet for supported explicit overrides.
+Do not describe inherited or rejected settings as the requested configuration.
+
+If the main agent is not already suitably configured, dispatch one bounded,
+read-only strategic reviewer. An already configured main agent can review directly
+unless independent challenge is useful or requested. Review consequential plans
+before substantial work and evident drift before the timer. Ordinary checks,
+ideation and worker actions do not require this configuration. Do not recursively
+commission strategic reviewers, and preserve scope, access, privacy, aggregate
+budgets, deadlines and clean-verifier stops. Selection implies no new account,
+tier or budget. Disclose unavailable configuration and any authorized fallback;
+do not present an unperformed review as a completed gate.
+
+Supply a compact delta packet: intended outcome, constraints, current
+worktree/snapshot, remaining budget, prior recommendation and disposition,
+changes, failures and measured costs where available. Give direct access to
+decisive artifacts so the reviewer can inspect omitted or disconfirming evidence.
+Return a compact continue/change/defer/stop recommendation, evidence, the smallest
+next experiment or deliverable and its stop condition. Reopen settled decisions
+only for concrete new evidence or demonstrated outcome mismatch. The main agent
+owns disposition, integration and verified follow-through under existing authority.
+
+Do useful independent work while review runs; hold decisions the review could
+invalidate. When a result is needed, use the runtime's message-aware completion
+wait (child mailbox or supported thread wait), respecting host responsiveness
+limits. Renew a bounded wait without a fresh unchanged-state sweep; a timeout or
+progress-only message proves neither completion nor cancellation. Do not duplicate
+assigned work or launch a watcher when native events suffice. Failed or late reviews
+must be recorded; compare advice with the current snapshot before adopting it.
+
+Child final delivery normally completes the packet. Earlier pings should carry an
+actionable blocker, failure, decision or requested milestone, not frequent
+heartbeats; deduplicate any required terminal ping with the final report. Ordinary
+child messages do not start a new turn. Separate user-owned chat messaging requires
+human authorization for that destination; a child's request alone is insufficient.
+Do not end the parent turn promising an ephemeral child will wake it later without
+a supported continuation mechanism. Review and waiting do not extend hard stops.
+
 ## Investigate actual progress
 
 Use a bounded, adaptive investigation: recent thread activity, current branch/worktree, relevant changes, planning state, evals, and representative produced artifacts. Inspect enough primary evidence to test the main thread's account. Avoid broad history dumps or expensive reruns when targeted reads suffice. Prefer the active worktree's artifacts over an older primary checkout; label current drafts, historical results, and reused evidence.

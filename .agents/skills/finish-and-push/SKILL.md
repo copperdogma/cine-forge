@@ -44,6 +44,13 @@ charge of each repo's Git state; the coordinator owns scope, integration and
 landing decisions, and the final outcome. When no capable delegate is available,
 handle work directly within the invoking agent's capability or report the limit.
 
+Use useful independent work or message-aware completion waits for delegated
+results; avoid unchanged status sweeps, duplicate work and watcher agents when
+native events suffice. When a consequential outcome or architecture question
+needs strategic review, follow `/loop-review`'s runtime strongest/maximum policy,
+preserving existing scope, aggregate budgets and hard stops. Routine close-out
+checks need no compulsory strategic reviewer.
+
 ## Completion contract
 
 Resolve the intended outcome from the user's current request and the relevant

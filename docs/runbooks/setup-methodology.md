@@ -171,3 +171,23 @@ with the original next deadline retained. Reuse still-applicable comparisons;
 research is not a quota. Budgets and non-convergence stops take precedence;
 clean scoped verification terminates separately from broader goal review.
 This guidance creates no schedule and authorizes no additional rounds or scope.
+
+## Staffing and Completion Wait Wiring
+
+Keep the short AGENTS policy and focused leaf decisions when installing or
+refreshing the package. `/loop-review` resolves the strongest eligible model and
+highest supported effort from current runtime capabilities, records requested
+configuration separately from verified served identity, and dispatches one
+bounded read-only reviewer only when needed. Preserve authority, privacy,
+budgets, deadlines, cadence and clean stops; ordinary checks need no compulsory
+strategic reviewer. Workers use the cheapest capable configuration when overhead
+is justified, bounded packets and artifact access, and native completion or
+message-aware waits. Keep child mailboxes distinct from human-authorized user-chat
+messaging and supported continuation; handle failed/late results honestly.
+
+Apply missing decisions at installed leaves only: preserve tiny-lane coverage
+and explicit fan-out, human plan gates, main-thread final disposition, one Git
+owner, proportional checks, evaluator subjects/frozen prompts/judges and actual
+aggregate spend gates. Existing delegation authorization covers the same bounded
+ideation/ADR packet; preserve user opt-outs. Retain sparse/no-code exceptions and
+owner domain requirements. Do not add an absent evaluation skill for this policy.

@@ -1,5 +1,13 @@
 # Changelog
 
+## [2026-10-06-02] — Align agent staffing and completion waits
+
+### Changed
+- Resolve strongest/maximum strategic reviewers from current runtime capabilities;
+  keep ordinary workers proportional and collect delegated results through events.
+- Preserve owner plan, validation, evaluation and stopping contracts; record the
+  isolated Alignment 055 adaptation in `docs/agent-staffing-and-event-waits.md`.
+
 ## [2026-10-06-01] — Bound Mistral Large 4 frame evaluation (Story 229)
 
 ### Added

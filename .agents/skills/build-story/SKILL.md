@@ -144,6 +144,13 @@ After the user approves the Phase 2 plan, the main thread may use
 subagents/sidecars for non-trivial work when delegation reduces risk or protects
 context. Keep routine small stories single-threaded.
 
+- Select the cheapest capable workers when savings exceed context, coordination
+  and verification overhead. Give bounded packets and decisive artifact access;
+  do independent work or use message-aware completion waits without unchanged
+  status sweeps or duplicate work. No watcher is needed when native events suffice.
+- At a strategic checkpoint, follow `/loop-review`'s runtime strongest/maximum
+  selection and one read-only reviewer when needed. This preserves the plan
+  gate, existing authority, budget and stopping conditions.
 - The main thread owns the approved plan, Ideal/spec fit, integration, final
   implementation judgment, and handoff.
 - Useful post-gate sidecars include bounded exploration that no longer blocks

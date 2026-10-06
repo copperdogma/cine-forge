@@ -12,9 +12,12 @@ Create a new ADR with proper structure, research scaffolding, and generated plan
 
 Use `/ideation` before decision closure when the considered options are thin, all
 options are same-neighborhood variants, or the sticky choice needs a stronger
-divergent option set. If the user has explicitly authorized delegation, a
-bounded ideation subagent is a good fit for generating the option packet.
-`/create-adr` still owns the decision, ADR text, and follow-up route.
+divergent option set. Current session, project or runtime delegation
+authorization can cover one bounded read-only option worker; no fresh permission
+is needed for that same scope. Preserve opt-outs and tool restrictions, choose
+the cheapest capable worker only when overhead is justified, and collect through
+completion events or a message-aware wait. Option generation is not automatically
+strategic review. `/create-adr` owns the decision, ADR text and follow-up route.
 
 Use `/triage-adr` on an existing ADR when the conversation has become unclear,
 when it is not obvious what decisions remain, or when the ADR appears mature

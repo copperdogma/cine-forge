@@ -82,6 +82,26 @@ candidates, qualify each independently and compare each with the same
 maintained references per slot; do not create pairwise tournaments. Screen
 progressively so candidate count does not multiply the full matrix.
 
+## Evaluation Staffing and Completion Waits
+
+Size authorized evaluation workers by lane risk and demonstrated capability,
+using the cheapest capable worker when savings exceed context, coordination and
+verification costs. Give bounded packets and direct artifact access. Keep one
+owner for each provider run and evidence bundle; do not duplicate paid work.
+Collect through native completion events or message-aware waits without unchanged
+status sweeps. Strategic coordination review follows `/loop-review`'s runtime
+strongest/maximum policy when warranted; it must not change benchmark subjects,
+frozen prompts, scorers, goldens or judge configurations.
+
+Before concurrent provider work, require actual provider/job spend gates and
+conservative aggregate reservations within approved caps. If enforceable gates
+are absent, hold paid dispatch until the existing spend contract can be met.
+A spawn concurrency limit, prompt budget, notification or wait timeout is not a
+hard dollar cap; sleeping parents do not weaken aggregate enforcement. Record
+actual spend and unknown exposure separately from reservations. Preserve the
+maintained structural/semantic scoring, source-backed golden judgments, privacy
+and evidence-provenance contracts.
+
 ## Non-Negotiable Rule
 
 Do not call a model bad when access, capacity, provider transport, adapter,

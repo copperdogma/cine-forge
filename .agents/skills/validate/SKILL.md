@@ -118,6 +118,12 @@ the existing budget and cannot bypass hard stops or authorize a broader fix.
      the candidate and preserve CineForge's backend, UI, browser, eval,
      methodology, and skill-sync gates.
    - When launching parallel validation packets, size each worker model and reasoning level to shard risk. Use cheaper or lower-reasoning workers for lookup, compatibility-link or optional-alias checks, and mechanical scans; keep stronger workers for semantic contracts, security, eval correctness, cross-repo decisions, or high-cost misses. Record any explicit override rationale in the validation report.
+   - Delegate checks only when expected savings exceed context, coordination
+     and verification overhead. Use completion events or message-aware waits;
+     avoid duplicate work and unchanged status sweeps. Genuinely strategic
+     outcome/architecture review follows `/loop-review`'s strongest/maximum
+     policy. Routine validation needs no compulsory strategic reviewer; existing
+     validation scope, acceptance gates and stops still govern.
    - Subagents may gather evidence or flag findings, but the main thread keeps
      the final grade, closure recommendation, story handoff state, and
      yes-ready next step.

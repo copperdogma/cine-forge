@@ -74,7 +74,7 @@ similarly high-risk validation surfaces.
 
 ## Coordinator Defaults
 
-- Default the coordinator to the inherited model and reasoning level. For
+- Keep routine coordination at the inherited model and reasoning level. For
   worker agents, choose the cheapest model and reasoning level that can honestly
   inspect the shard. Downshift for mechanical checks, generated compatibility-link or optional-alias checks,
   typo-only docs cleanup, and other low-risk local work; keep inherited strength
@@ -84,6 +84,11 @@ similarly high-risk validation surfaces.
 - Do not hard-code "best model" as the default for every worker. If you override
   model or reasoning per shard, record the short rationale in the round plan and
   keep the override tied to task risk, not prestige.
+- Delegate only when expected savings exceed context, coordination and
+  verification overhead. Deep strategic reviews follow `/loop-review`'s runtime
+  strongest/maximum selection and bounded read-only dispatch; brief round
+  bookkeeping stays local. Existing clean-result, non-convergence and budget
+  stops take precedence; a review never authorizes another round.
 - Use fresh agents each round. Do not rely on stale worker context after files
   changed underneath them.
 - Before launching workers, close no-longer-needed old agents when practical. If
@@ -300,6 +305,11 @@ When a worker finds an upstream-owned or expansion issue:
      only when assigned fix-capable ownership and the fix is obvious, and
      otherwise return `RESULT: no-issue`.
 5. Wait for round results and classify them.
+   - Use message-aware completion waits when results are needed, or do useful
+     independent work. Renew bounded waits without unchanged status sweeps;
+     timeouts and progress messages do not prove completion. Do not duplicate
+     assigned shards or use watcher agents when native events suffice. Check
+     late reports against the current snapshot before disposition.
    - `RESULT: fixed` means the worker made a real corrective change, or it
      surfaced a real issue that the main agent then fixed before the round ended.
    - `RESULT: no-issue` means no real problem was found in that shard.

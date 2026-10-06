@@ -135,30 +135,45 @@ A clean scoped verifier ends separately from review of the broader goal.
 - **Core Stack**: Python 3.12+, Pydantic (schemas), YAML (recipes), React (UI).
 - **Core Pattern**: Driver orchestrates Modules which consume/produce versioned Artifacts stored in an ArtifactStore.
 
+## Agent Staffing and Completion Waits
+
+For strategic loop reviews, use the strongest available eligible model at its
+maximum supported thinking level, resolved from current runtime capabilities.
+Follow `/loop-review` for selection evidence and one bounded read-only reviewer
+when the main agent is not already suitably configured. Existing scope, access,
+privacy, budgets, deadlines and clean-stop rules prevail.
+
+Use the cheapest capable workers when delegation saves more than context,
+coordination and verification overhead. Give bounded packets and direct artifact
+access. Do independent work or use message-aware completion waits; avoid
+unchanged status sweeps, duplicate work and watcher agents when native events
+suffice. Child mailboxes and separate user-owned chats have distinct authorization
+and continuation contracts. Routine checks and implementation remain proportional
+to task risk; this policy does not change benchmark subjects, frozen prompts or
+judge configurations.
+
 ## Subagent Strategy
 
-Use subagents aggressively to parallelize work and protect the main context window. The orchestrating agent (Opus) is responsible for final quality — always review subagent output before accepting it.
+Use bounded subagents when independent work and context protection justify
+coordination and verification overhead. The main agent owns final quality and
+reviews returned evidence before accepting it.
 
-### Model Selection by Task Type
+### Model Selection by Task Risk
 
-| Task | Model | Rationale |
-|------|-------|-----------|
-| File search, glob, grep, simple reads | **Haiku** | Fast, cheap, mechanical |
-| Write a single focused component/page | **Sonnet** | Good code quality, fast enough |
-| Multi-file refactor, architecture decisions | **Opus** | Needs full context and judgment |
-| Research/exploration across codebase | **Sonnet** | Good at synthesis, thorough |
-| Writing tests for existing code | **Sonnet** | Needs to understand contracts |
-| Reviewing/validating generated code | **Opus** | Quality gate, catches subtle issues |
-| Writing docs, updating AGENTS.md | **Haiku** | Mechanical text, Opus reviews |
+Resolve worker models from current runtime capabilities. Mechanical searches,
+small documentation edits and factual gathering may use economical workers;
+semantic contracts, security, architecture and consequential misses need stronger
+capability. Strategic loop reviews use the strongest/maximum policy above.
+Pinned evaluation subjects and judges remain governed by their benchmark contracts.
 
 ### Guidelines
 - **Parallelize independent work only when ownership is clear**: If building 3 pages that don't depend on each other and the write boundaries are already clear, launch 3 subagents simultaneously. If ownership is overlapping or unclear, keep one primary execution path and use subagents for exploration/review instead of concurrent edits.
-- **Opus orchestrates, delegates, reviews**: The main agent reads results, spots issues, and iterates — never blindly trusts.
+- **The main agent orchestrates, delegates, reviews**: The main agent reads results, spots issues, and iterates — never blindly trusts.
 - **Context protection**: Use subagents for tasks that produce large output (exploration, research) to avoid flooding the main context.
 - **Fail fast**: If a subagent produces bad output, don't retry the same prompt — adjust the approach or do it yourself.
 
 ### Running Log
-Track model performance observations in `/memory/subagent-log.md` to refine the table above over time.
+Track model performance observations in `/memory/subagent-log.md` as dated evidence for future runtime staffing decisions.
 
 For `/finish-and-push`, its `Coordination` section governs delegation for the
 close-out flow in place of this general strategy.
