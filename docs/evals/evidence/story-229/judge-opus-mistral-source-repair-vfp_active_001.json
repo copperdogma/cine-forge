@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01304",
+  "latency_ms": 9418,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1767,
+    "path": "output/evals/mistral-large4-20261006/judge-opus-mistral-source-repair-vfp_active_001-raw.json",
+    "sha256": "ba2513808e8e3a65baaf2318dacea5f8e4d19b77926ad321de7558807915fe45"
+  },
+  "reason": "The output misses the key observable motion: the figures enlarge across the five frames. Instead, it repeatedly claims 'complete stillness' and 'no visible movement,' which directly contradicts the reference's 'measured' motion and the observable figure-size increase. The motion_tags ['stillness'] are wrong; the reference specifies 'measured.' The summary incorrectly states 'static positions across all five frames with no visible movement,' missing the enlargement. The pale rectangle/prop on the right figure is not mentioned at all, which is a continuity detail the reference highlights. Color tags include 'amber' which is not grounded in the reference (navy, teal), and 'teal' is missing. Tone 'detached'/'tense' vs reference 'intimate' is an interpretive disagreement (minor penalty). Emotion tags 'isolation'/'hesitation' vs reference [none] adds ungrounded emotional content. Audio fields are empty, which is correct. Continuity_status 'intact' is correct. The evidence entries describe static composition but fail to note the enlargement, so frame-grounded evidence is factually inaccurate. Overall, the critical miss of the figure enlargement and the false claim of complete stillness, plus the missing prop, significantly reduce the score.",
+  "request_id": "msg_011CfmEBEuFoJfgJozZfTiya",
+  "score": 0.35,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 1118,
+    "output_tokens": 298,
+    "service_tier": "standard"
+  }
+}

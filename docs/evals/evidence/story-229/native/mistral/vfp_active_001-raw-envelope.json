@@ -1,0 +1,46 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "{\n  \"clip_id\": \"vfp_active_001\",\n  \"summary\": \"Two stylized humanoid figures stand facing each other in a minimalist, dark environment with a gradient navy background. The figures remain in fixed positions across all five frames with no visible movement or change in their surroundings.\",\n  \"tone_tags\": [\"detached\", \"tense\"],\n  \"emotion_tags\": [\"isolation\", \"suspicion\"],\n  \"color_tags\": [\"navy\", \"desaturated\", \"amber\"],\n  \"camera_tags\": [\"static\", \"wide_master\"],\n  \"motion_tags\": [\"stillness\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"Two blocky humanoid figures positioned left and right against a dark navy gradient background; left figure is amber/beige, right figure is light blue with a white rectangular panel on its torso\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"Identical composition to frame 0 with both figures in unchanged positions; no visible motion blur or positional shift between the two figures\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"Final frame maintains exact same framing and figure placement as previous frames; the white rectangular detail on the right figure's torso remains consistently positioned\"\n    }\n  ],\n  \"overall_confidence\": 0.92\n}",
+        "reasoning": null,
+        "refusal": null,
+        "role": "assistant"
+      },
+      "native_finish_reason": "stop"
+    }
+  ],
+  "created": 1791300275,
+  "id": "gen-1791300275-6q2uyqZNFFw3Fq5hBXsE",
+  "model": "mistralai/mistral-large-4-0",
+  "object": "chat.completion",
+  "provider": "Mistral",
+  "service_tier": "default",
+  "system_fingerprint": null,
+  "usage": {
+    "completion_tokens": 321,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 0
+    },
+    "cost": 0.00297065,
+    "cost_details": {
+      "upstream_inference_completions_cost": 0.00067089,
+      "upstream_inference_cost": 0.00297065,
+      "upstream_inference_prompt_cost": 0.00229976
+    },
+    "is_byok": false,
+    "prompt_tokens": 3382,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 0,
+      "video_tokens": 0
+    },
+    "total_tokens": 3703
+  }
+}

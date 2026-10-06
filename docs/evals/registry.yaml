@@ -2056,6 +2056,7 @@ evals:
       - "224"
       - "225"
       - "226"
+      - "229"
     category_refs:
       - spec:7
       - spec:8
@@ -2414,6 +2415,27 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "048"
+        story: attempts/048-mistral-large4-v4-first-case-stop.md
+        date: 2026-10-06
+        status: failed
+        approach: "Exact OpenRouter Mistral Large4 strict4096 all5JPEG native/parity and fresh Luna low1400. First-case source-backed growth miss stops full6; Source-repaired Opus cross-provider grade .35 vs .75 (original .45/.72 retained), unchanged deterministic .3484 vs .6957, combined .3492 vs .72285. Remaining5 not measured; retain Luna headless reference, no product/default adoption. Eight calls USD.053050635/3, unknown0, subjectretry0, symmetricjudgerepair2. Natural Luna parity inputcache2887/2890 disclosed."
+        worker_model: "Codex (host exact ID unavailable)"
+        subject_model: "mistralai/mistral-large-4-0 / Mistral"
+        score_before: 0.72285
+        score_after: 0.3492
+        latency_before: 8018
+        latency_after: 5047
+        cost_before: 0.00021067
+        cost_after: 0.00288914
+        git_sha: "2e148974583e731bedd32e4896b282a94134aeff+story229-hash-freeze"
+        result_file: benchmarks/results/video-understanding-mistral-large4-vs-luna-v4-20261006-v2.json
+        contract_manifest: docs/evals/story-229-mistral-large4-evidence-v2.json
+        evidence_status: first-case-progressive-stop-uncommitted-source-reviewed
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-subject-model
+            note: "Unchanged Mistral Large4 config misses observable bodygrowth; require new checkpoint or source-valid materially different temporal capability evidence."
       - id: "047"
         story: attempts/047-grok47-effort-v4-calibration.md
         date: 2026-10-02

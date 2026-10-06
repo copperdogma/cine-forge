@@ -257,9 +257,7 @@ def call_openrouter_strict(
             isinstance(v, bool) or not isinstance(v, (int, float)) or v < 0
             for v in max_price.values()
         ):
-            raise RuntimeError(
-                "OpenRouter max_price must contain nonnegative prompt/completion rates"
-            )
+            raise RuntimeError("OpenRouter max_price must contain nonnegative prompt/completion rates")
         payload["provider"]["max_price"] = max_price
     payload["response_format"] = {
         "type": "json_schema",

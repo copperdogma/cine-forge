@@ -976,7 +976,8 @@
           "225",
           "226",
           "227",
-          "228"
+          "228",
+          "229"
         ],
         "adrIds": [
           "ADR-002",
@@ -1122,7 +1123,8 @@
           "225",
           "226",
           "227",
-          "228"
+          "228",
+          "229"
         ],
         "adrIds": [
           "ADR-001",
@@ -1215,7 +1217,8 @@
           "224",
           "225",
           "226",
-          "227"
+          "227",
+          "229"
         ],
         "adrIds": [
           "ADR-002",
@@ -15076,6 +15079,64 @@
           "summary": "check-in integration: origin/main advanced 25 commits and already owns Story 215, so renumbered this pilot to 228 in an isolated current-main checkout and updated all scout/research links. Regenerated planning state/vie…"
         }
       }
+    },
+    {
+      "id": "229",
+      "title": "Mistral Large 4 Ordered Frame Evaluation",
+      "path": "docs/stories/story-229-mistral-large4-ordered-frame-evaluation.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12",
+        "R18"
+      ],
+      "specRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "226",
+        "227"
+      ],
+      "categoryRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "229",
+        "sourcePath": "docs/stories/story-229-mistral-large4-ordered-frame-evaluation.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-229-mistral-large4-ordered-frame-evaluation.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -17093,7 +17154,8 @@
         "222",
         "224",
         "225",
-        "226"
+        "226",
+        "229"
       ],
       "categoryRefs": [
         "spec:7",
@@ -17103,6 +17165,16 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "048",
+          "date": "2026-10-06",
+          "approach": "Exact OpenRouter Mistral Large4 strict4096 all5JPEG native/parity and fresh Luna low1400. First-case source-backed growth miss stops full6; Source-repaired Opus cross-provider grade .35 vs .75 (original .45/.72 retained), unchanged deterministic .3484 vs .6957, combined .3492 vs .72285. Remaining5 not measured; retain Luna headless reference, no product/default adoption. Eight calls USD.053050635…",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "new-subject-model"
+          ]
+        },
         {
           "id": "047",
           "date": "2026-10-02",
@@ -17257,7 +17329,8 @@
         "222",
         "224",
         "225",
-        "226"
+        "226",
+        "229"
       ],
       "declaredCategoryRefs": [
         "spec:7",
@@ -17283,11 +17356,11 @@
           "new-subject-model"
         ],
         "lastRelevantAction": {
-          "date": "2026-10-02",
+          "date": "2026-10-06",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "047",
-          "summary": "Fresh current-v4 three-case low/medium/high Grok4.7 calibration, equal8192 strict native five-JPEG subjects and pinned Opus4.6 rubric. Source-reviewed bodygrowth and shiftingstreak misses persist at all efforts. No full-six expansion or fresh Sol6.1 comparator; headless-only exploratory evidence."
+          "sourceId": "048",
+          "summary": "Exact OpenRouter Mistral Large4 strict4096 all5JPEG native/parity and fresh Luna low1400. First-case source-backed growth miss stops full6; Source-repaired Opus cross-provider grade .35 vs .75 (original .45/.72 retained), unchanged deterministic .3484 vs .6957, combined .3492 vs .72285. Remaining5 not measured; retain Luna headless reference, no product/default adoption. Eight calls USD.053050635…"
         }
       }
     }
@@ -17911,7 +17984,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: ingest_and_world_building, api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 175 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 177 days old against a 14-day cadence"
     ]
   }
 }

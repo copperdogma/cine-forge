@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.010885",
+  "latency_ms": 8907,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1441,
+    "path": "output/evals/mistral-large4-20261006/judge-opus-luna-source-repair-vfp_active_001-raw.json",
+    "sha256": "f8a563f495902656bdf7c24f3ca07e5d4aced1b42735582ca8be43c9d4459c76"
+  },
+  "reason": "The output correctly identifies key visual elements: two simplified figures (cream and pale blue), navy background, fixed positions, figures growing larger across frames, and the pale rectangular detail on the right figure. Continuity is correctly marked as intact. Motion tag 'measured' matches reference. Audio fields are empty as required. Evidence is grounded at frames 0, 2, and 4 with accurate observations. However, several issues reduce the score: (1) The color_tags only include 'navy' but miss 'teal', which is noted in the reference. (2) The tone is 'detached' versus the reference 'intimate' \u2014 while this is interpretive, it's a mismatch. (3) The summary describes 'silhouettes' which slightly mischaracterizes the figures that have distinct colors (cream and pale blue), though the evidence entries correctly describe them. The missing 'teal' color tag and tone mismatch together bring this below the 0.8 threshold.",
+  "request_id": "msg_011CfmEBv1xyLxKDPghRnaBk",
+  "score": 0.75,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 1037,
+    "output_tokens": 228,
+    "service_tier": "standard"
+  }
+}

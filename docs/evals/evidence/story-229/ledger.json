@@ -1,0 +1,50 @@
+[
+  {
+    "accounted_usd": "0.00297065",
+    "arm": "mistral",
+    "estimated": false,
+    "name": "native-mistral-vfp_active_001",
+    "reservation_usd": "0.365072",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.00288914",
+    "arm": "mistral",
+    "estimated": false,
+    "name": "subject-mistral-vfp_active_001",
+    "reservation_usd": "0.365072",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0005651749999999999",
+    "arm": "luna",
+    "estimated": true,
+    "name": "native-luna-vfp_active_001",
+    "reservation_usd": "0.0032",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.00021067000000000001",
+    "arm": "luna",
+    "estimated": true,
+    "name": "subject-luna-vfp_active_001",
+    "reservation_usd": "0.0032",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.01171",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-mistral-vfp_active_001",
+    "reservation_usd": "0.0756",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.01078",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-luna-vfp_active_001",
+    "reservation_usd": "0.0756",
+    "state": "settled"
+  }
+]

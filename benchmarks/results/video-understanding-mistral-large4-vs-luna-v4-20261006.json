@@ -1,0 +1,547 @@
+{
+  "accounted_usd": "0.02912563499999999991",
+  "base_git_sha": "2e148974583e731bedd32e4896b282a94134aeff",
+  "cache_limit": "Luna parity output fresh; 2887/2890 input tokens cached after native probe",
+  "calltime_freeze": {
+    "bytes": 2143499,
+    "path": "docs/evals/story-229-mistral-large4-freeze.json",
+    "sha256": "f83fc9ef96714ab7845a28f21037176ed8345e1511f5467cdecbfec99b9d5ba8"
+  },
+  "cap_usd": "3",
+  "date": "2026-10-06",
+  "decision": "retain economical Luna headless reference; do not adopt Mistral for this lane",
+  "evidence_status": "first-case-progressive-stop-uncommitted-source-reviewed",
+  "ledger": [
+    {
+      "accounted_usd": "0.00297065",
+      "arm": "mistral",
+      "estimated": false,
+      "name": "native-mistral-vfp_active_001",
+      "reservation_usd": "0.365072",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.00288914",
+      "arm": "mistral",
+      "estimated": false,
+      "name": "subject-mistral-vfp_active_001",
+      "reservation_usd": "0.365072",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0005651749999999999",
+      "arm": "luna",
+      "estimated": true,
+      "name": "native-luna-vfp_active_001",
+      "reservation_usd": "0.0032",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.00021067000000000001",
+      "arm": "luna",
+      "estimated": true,
+      "name": "subject-luna-vfp_active_001",
+      "reservation_usd": "0.0032",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01171",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-mistral-vfp_active_001",
+      "reservation_usd": "0.0756",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01078",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_001",
+      "reservation_usd": "0.0756",
+      "state": "settled"
+    }
+  ],
+  "paid_retries": 0,
+  "rows": [
+    {
+      "arm": "mistral",
+      "assertion": {
+        "pass": false,
+        "reason": "raw_score=0.3484 | overall=0.348 | uncertainty=0.080 | summary=0.33 | tone=0.00 | emotion=0.00 | color=0.40 | camera=0.50 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: blue, closer | tone: intimate, unexpected=detached, unexpected=tense | emotion: unexpected=hesitation, unexpected=isolation | color: teal, unexpected=amber, unexpected=desaturated | motion: measured, unexpected=stillness | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "score": 0.3484
+      },
+      "combined": 0.3992,
+      "cost_gate_pass": true,
+      "details": {
+        "clip_id": "dialogue_confession_push_in",
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "matched": [
+              "figures"
+            ],
+            "missed": [
+              "blue",
+              "closer"
+            ],
+            "rationale": "Missing summary cues: blue, closer",
+            "score": 0.3333333333333333
+          },
+          {
+            "dimension": "tone",
+            "matched": [],
+            "missed": [
+              "intimate",
+              "unexpected=detached",
+              "unexpected=tense"
+            ],
+            "rationale": "Tag mismatches: intimate, unexpected=detached, unexpected=tense",
+            "score": 0.0
+          },
+          {
+            "dimension": "emotion",
+            "matched": [],
+            "missed": [
+              "unexpected=hesitation",
+              "unexpected=isolation"
+            ],
+            "rationale": "Tag mismatches: unexpected=hesitation, unexpected=isolation",
+            "score": 0.0
+          },
+          {
+            "dimension": "color",
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "teal",
+              "unexpected=amber",
+              "unexpected=desaturated"
+            ],
+            "rationale": "Tag mismatches: teal, unexpected=amber, unexpected=desaturated",
+            "score": 0.4
+          },
+          {
+            "dimension": "camera",
+            "matched": [
+              "locked_two_shot"
+            ],
+            "missed": [
+              "slow_push_in",
+              "unexpected=static"
+            ],
+            "rationale": "Tag mismatches: slow_push_in, unexpected=static",
+            "score": 0.5
+          },
+          {
+            "dimension": "motion",
+            "matched": [],
+            "missed": [
+              "measured",
+              "unexpected=stillness"
+            ],
+            "rationale": "Tag mismatches: measured, unexpected=stillness",
+            "score": 0.0
+          },
+          {
+            "dimension": "continuity",
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The pale rectangle stays beside the right figure across all five frames."
+            ],
+            "rationale": "Continuity mismatches: The pale rectangle stays beside the right figure across all five frames.",
+            "score": 0.75
+          },
+          {
+            "dimension": "audio",
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted.",
+            "score": 0.0
+          },
+          {
+            "dimension": "evidence",
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times.",
+            "score": 1.0
+          },
+          {
+            "dimension": "hard_constraints",
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied.",
+            "score": 1.0
+          }
+        ],
+        "hard_constraints_passed": true,
+        "model_label": "mistral",
+        "overall_score": 0.3484,
+        "prompt_version": "video-understanding-frame-packet-v3",
+        "rationale": "summary: blue, closer | tone: intimate, unexpected=detached, unexpected=tense | emotion: unexpected=hesitation, unexpected=isolation | color: teal, unexpected=amber, unexpected=desaturated | motion: measured, unexpected=stillness | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "uncertainty": 0.08
+      },
+      "dual_pass": false,
+      "latency_gate_pass": true,
+      "name": "subject-mistral-vfp_active_001",
+      "response": {
+        "cached": false,
+        "cost": 0.00288914,
+        "latencyMs": 5047,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "dialogue_confession_push_in",
+          "cost_estimated": false,
+          "evaluation_id": "vfp_active_001",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+            "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+            "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+            "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+            "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+          ],
+          "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "mistralai/mistral-large-4-0",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "openrouter",
+          "request_id": "gen-1791300285-7I4UkK9LOTxC5AaAkbIN",
+          "requested_model": "mistralai/mistral-large-4-0",
+          "returned_model": "mistralai/mistral-large-4-0",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\n  \"clip_id\": \"vfp_active_001\",\n  \"summary\": \"Two stylized humanoid figures stand facing each other in a minimalist, dark environment with a gradient navy background. The figures remain in static positions across all five frames with no visible movement or change in their poses.\",\n  \"tone_tags\": [\"detached\", \"tense\"],\n  \"emotion_tags\": [\"isolation\", \"hesitation\"],\n  \"color_tags\": [\"navy\", \"desaturated\", \"amber\"],\n  \"camera_tags\": [\"static\", \"locked_two_shot\"],\n  \"motion_tags\": [\"stillness\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\"frame_index\": 0, \"cue\": \"Two blocky humanoid figures positioned left and right against a dark navy gradient background, with a black floor occupying the lower third\"},\n    {\"frame_index\": 2, \"cue\": \"Identical composition to frame 0 with both figures in unchanged positions, confirming no movement between samples\"},\n    {\"frame_index\": 4, \"cue\": \"Final frame maintains exact same figure positions and background gradient as all prior frames, showing complete stillness across the sequence\"}\n  ],\n  \"overall_confidence\": 0.92\n}",
+        "raw": {
+          "id": "gen-1791300285-7I4UkK9LOTxC5AaAkbIN",
+          "model": "mistralai/mistral-large-4-0",
+          "provider": "Mistral",
+          "raw_envelope_bytes": 2330,
+          "raw_envelope_path": "output/evals/mistral-large4-20261006/subject/mistral/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "ca98a908731419cf0d24ebb40b0a3df1f8dd019836cb08485dd5be01d3d2c88d",
+          "usage": {
+            "completion_tokens": 282,
+            "completion_tokens_details": {
+              "audio_tokens": 0,
+              "image_tokens": 0,
+              "reasoning_tokens": 0
+            },
+            "cost": 0.00288914,
+            "cost_details": {
+              "upstream_inference_completions_cost": 0.00058938,
+              "upstream_inference_cost": 0.00288914,
+              "upstream_inference_prompt_cost": 0.00229976
+            },
+            "is_byok": false,
+            "prompt_tokens": 3382,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cache_write_tokens": 0,
+              "cached_tokens": 0,
+              "video_tokens": 0
+            },
+            "total_tokens": 3664
+          }
+        },
+        "tokenUsage": {
+          "completion": 282,
+          "prompt": 3382,
+          "total": 3664
+        }
+      },
+      "rubric": {
+        "cost_usd": "0.01171",
+        "latency_ms": 10740,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1612,
+          "path": "output/evals/mistral-large4-20261006/judge-opus-mistral-vfp_active_001-raw.json",
+          "sha256": "bade3f85c367b0c899a732b76d5df2ba88ac50a194a4b37b1721eab4537e8ca7"
+        },
+        "reason": "The output correctly identifies two figures in a dark/navy environment with a static camera and intact continuity, but has several significant mismatches with the reference: (1) It claims 'no visible movement or change' and tags 'stillness', while the reference clearly states the figures enlarge across the ordered frames \u2014 this is a meaningful observable change that was missed, making the motion tag wrong (should be 'measured' or similar). (2) It fails to note the pale rectangle/prop on the right figure, which is a key continuity element in the reference. (3) Tone is tagged as 'detached' and 'tense' rather than 'intimate'. (4) Emotion tags 'isolation' and 'hesitation' are invented \u2014 the reference lists no emotion. (5) Color tags include 'amber' and 'desaturated' but miss 'teal', which is in the reference. (6) The summary's claim of complete stillness across all frames directly contradicts the observable figure enlargement. The core visual observation \u2014 that the figures grow larger \u2014 was entirely missed, and the prop was not detected. Audio fields are empty, which is correct.",
+        "request_id": "msg_011CfmDWAhuNj4qyrhSzUBnX",
+        "score": 0.45,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 997,
+          "output_tokens": 269,
+          "service_tier": "standard"
+        }
+      },
+      "vars": {
+        "clip_dir": "../video_understanding/dialogue_confession_push_in",
+        "clip_id": "dialogue_confession_push_in",
+        "evaluation_id": "vfp_active_001",
+        "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+        "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+      }
+    },
+    {
+      "arm": "luna",
+      "assertion": {
+        "pass": false,
+        "reason": "raw_score=0.6957 | overall=0.696 | uncertainty=0.140 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached | color: teal | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "score": 0.6957
+      },
+      "combined": 0.70785,
+      "cost_gate_pass": true,
+      "details": {
+        "clip_id": "dialogue_confession_push_in",
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "matched": [
+              "figures",
+              "blue"
+            ],
+            "missed": [
+              "closer"
+            ],
+            "rationale": "Missing summary cues: closer",
+            "score": 0.6666666666666666
+          },
+          {
+            "dimension": "tone",
+            "matched": [],
+            "missed": [
+              "intimate",
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: intimate, unexpected=detached",
+            "score": 0.0
+          },
+          {
+            "dimension": "emotion",
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly.",
+            "score": 1.0
+          },
+          {
+            "dimension": "color",
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "teal"
+            ],
+            "rationale": "Tag mismatches: teal",
+            "score": 0.6666666666666666
+          },
+          {
+            "dimension": "camera",
+            "matched": [],
+            "missed": [
+              "locked_two_shot",
+              "slow_push_in"
+            ],
+            "rationale": "Tag mismatches: locked_two_shot, slow_push_in",
+            "score": 0.0
+          },
+          {
+            "dimension": "motion",
+            "matched": [
+              "measured"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly.",
+            "score": 1.0
+          },
+          {
+            "dimension": "continuity",
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The pale rectangle stays beside the right figure across all five frames."
+            ],
+            "rationale": "Continuity mismatches: The pale rectangle stays beside the right figure across all five frames.",
+            "score": 0.75
+          },
+          {
+            "dimension": "audio",
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted.",
+            "score": 0.0
+          },
+          {
+            "dimension": "evidence",
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times.",
+            "score": 1.0
+          },
+          {
+            "dimension": "hard_constraints",
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied.",
+            "score": 1.0
+          }
+        ],
+        "hard_constraints_passed": true,
+        "model_label": "luna",
+        "overall_score": 0.6957,
+        "prompt_version": "video-understanding-frame-packet-v3",
+        "rationale": "summary: closer | tone: intimate, unexpected=detached | color: teal | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "uncertainty": 0.14
+      },
+      "dual_pass": false,
+      "latency_gate_pass": true,
+      "name": "subject-luna-vfp_active_001",
+      "response": {
+        "cached": false,
+        "cost": 0.00021067000000000001,
+        "latencyMs": 8018,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "dialogue_confession_push_in",
+          "cost_estimated": true,
+          "evaluation_id": "vfp_active_001",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+            "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+            "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+            "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+            "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+          ],
+          "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "gpt-6-luna",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "openai",
+          "request_id": "resp_0e1561a0da2ee3f2016ac512cb4fc487d09fbefbd937562b2f",
+          "requested_model": "gpt-6-luna",
+          "returned_model": "gpt-6-luna",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"A minimalist graphic shows two simplified human figures standing apart against a dark blue background. Their silhouettes grow slightly larger across the ordered samples while the horizon and their positions remain nearly fixed.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\"],\"camera_tags\":[],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Two simplified figures, one cream-colored and one pale blue, stand on a dark horizontal ground beneath a navy background.\"},{\"frame_index\":2,\"cue\":\"Both figures remain in the same left-right positions, with the pale blue figure carrying a small light rectangular detail near its base.\"},{\"frame_index\":4,\"cue\":\"The figures appear slightly larger than in earlier samples, while the horizontal boundary between the background and ground stays fixed.\"}],\"overall_confidence\":0.86}",
+        "raw": {
+          "cache_write_count_known": true,
+          "id": "resp_0e1561a0da2ee3f2016ac512cb4fc487d09fbefbd937562b2f",
+          "model": "gpt-6-luna",
+          "raw_envelope_bytes": 10695,
+          "raw_envelope_path": "output/evals/mistral-large4-20261006/subject/luna/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "e45c3bff7b485dfd0bfa363ad44ce189b84557be9cc4dd18ba2f735934f4df81",
+          "service_tier": "default",
+          "status": "completed",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 2887
+            },
+            "output_tokens": 363,
+            "output_tokens_details": {
+              "reasoning_tokens": 149
+            },
+            "total_tokens": 3253
+          }
+        },
+        "tokenUsage": {
+          "completion": 214,
+          "completionDetails": {
+            "reasoning": 149
+          },
+          "prompt": 2890,
+          "total": 3253
+        }
+      },
+      "rubric": {
+        "cost_usd": "0.01078",
+        "latency_ms": 7802,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1472,
+          "path": "output/evals/mistral-large4-20261006/judge-opus-luna-vfp_active_001-raw.json",
+          "sha256": "774c8ffcefcae1e1271f8e27c6c844fd548e8e32ad76b8adba52b97f333f1c2e"
+        },
+        "reason": "The output captures many key observations correctly: two figures, dark blue/navy background, figures growing larger across frames, fixed positions, measured motion, intact continuity, and empty audio fields. However, there are notable mismatches: (1) Tone is 'detached' instead of 'intimate' \u2014 a clear mismatch. (2) Color tags include only 'navy' but miss 'teal', which is referenced. (3) The summary describes 'silhouettes grow slightly larger' which is correct but the description of figures as 'cream-colored' and 'pale blue' is somewhat imprecise relative to reference. (4) The continuity_notes are empty rather than noting the pale rectangle staying with the right figure, though the evidence at frame_index 2 does mention the rectangular detail. (5) Evidence entries are grounded at frames 0, 2, and 4, which meets the 2-4 requirement. The tone mismatch and missing 'teal' color tag are concrete scoring penalties that prevent reaching the 0.8 threshold.",
+        "request_id": "msg_011CfmDWwuEhFr5vPDADr5Xt",
+        "score": 0.72,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 916,
+          "output_tokens": 248,
+          "service_tier": "standard"
+        }
+      },
+      "vars": {
+        "clip_dir": "../video_understanding/dialogue_confession_push_in",
+        "clip_id": "dialogue_confession_push_in",
+        "evaluation_id": "vfp_active_001",
+        "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+        "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+      }
+    }
+  ],
+  "scope": "headless synthetic ordered JPEGs; other five cases not measured",
+  "source_review": "docs/evals/story-229-source-review.json",
+  "summary": {
+    "luna": {
+      "deterministic": 0.6957,
+      "dual_passes": 0,
+      "hard_constraint_passes": 1,
+      "mean_cost_usd": 0.00021067000000000001,
+      "mean_latency_ms": 8018,
+      "n": 1,
+      "overall": 0.70785,
+      "rubric": 0.72
+    },
+    "mistral": {
+      "deterministic": 0.3484,
+      "dual_passes": 0,
+      "hard_constraint_passes": 1,
+      "mean_cost_usd": 0.00288914,
+      "mean_latency_ms": 5047,
+      "n": 1,
+      "overall": 0.3992,
+      "rubric": 0.45
+    }
+  },
+  "unknown_exposure_usd": "0"
+}

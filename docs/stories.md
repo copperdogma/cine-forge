@@ -104,7 +104,7 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:6`, `spec:7`
-- UI scout freshness: attention needed — last run 2026-04-12 is 175 days old against a 14-day cadence
+- UI scout freshness: attention needed — last run 2026-04-12 is 177 days old against a 14-day cadence
 - Sequencing bias: `scene-generation-completion` — Keep `spec:6` / `spec:7` as the active product lane even after Story 164 closed the first surfaced real-scene render route. The next slice should deepen scene-generation completeness from that honest operator path instead of retreating to throughput-only or eval-polish work.
 - Sequencing bias: `pipeline-throughput-efficiency` — Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
@@ -346,6 +346,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 225 | Sonnet 5.5 Ordered-Frame Comparison | High | Done | — | spec:7, spec:8, spec:9 | 222 | [story-225](stories/story-225-sonnet55-ordered-frame-evaluation.md) |
 | 226 | GPT-6.1 Sol Ordered-Frame Comparison | High | Done | — | spec:7, spec:8, spec:9 | 225 | [story-226](stories/story-226-gpt61-sol-ordered-frame-evaluation.md) |
 | 227 | Grok 4.7 Reasoning Frame Calibration | High | Done | — | spec:7, spec:8, spec:9 | 226 | [story-227](stories/story-227-grok47-reasoning-frame-calibration.md) |
+| 229 | Mistral Large 4 Ordered Frame Evaluation | High | Done | — | spec:7, spec:8, spec:9 | 226, 227 | [story-229](stories/story-229-mistral-large4-ordered-frame-evaluation.md) |
 | 028 | Render Adapter Module | Unknown | Done | — | spec:7, spec:10 | 013, 022, 025, 027, 029 | [story-028](stories/story-028-render-adapter.md) |
 | 030 | Generated Output QA (Video Understanding Benchmark) | Unknown | Done | — | spec:7, spec:8, spec:9 | 005, 012, 021, 022, 028, 032 | [story-030](stories/story-030-generated-output-qa.md) |
 | 098 | Real-World Asset Upload Pipeline | Unknown | Cancelled | — | spec:7 | 029 | [story-098](stories/story-098-real-asset-upload.md) |

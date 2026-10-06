@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-06",
+  "scope": "first-case dialogue source review only; five latercases unrun",
+  "reviewers": [
+    "owning-agent visual inspection",
+    "bounded lower-cost sourceaudit",
+    "independent coordinator visual review"
+  ],
+  "source": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_00.jpg through frame_04.jpg",
+  "verified_facts": [
+    "Figure bodies enlarge across ordered samples at nearly fixed horizontal centers.",
+    "Prop and background do not scale; a specific camera mechanism is not established.",
+    "Pale rectangle persists on right figure."
+  ],
+  "mismatches": [
+    {
+      "arm": "mistral",
+      "classification": "model-wrong",
+      "runtime_impact": "non-runtime-blocking",
+      "evidence": "Complete stillness/identical composition explicitly misses figure enlargement; right rectangle absent from answer."
+    },
+    {
+      "arm": "mistral",
+      "classification": "ambiguous",
+      "evidence": "Facing each other, detached/tense, isolation/hesitation and amber/desaturated are interpretation/enum penalties; no factual failure claimed solely from these."
+    },
+    {
+      "arm": "luna",
+      "classification": "model-wrong",
+      "runtime_impact": "non-runtime-blocking",
+      "evidence": "Empty continuity_notes omit persisted pale rectangle, though evidence item2 observes it; growth correctly preserved."
+    },
+    {
+      "arm": "luna",
+      "classification": "ambiguous",
+      "evidence": "Detached versus intimate, missing teal and keyword closer remain fixed scoring penalties, not independently established visual contradictions."
+    },
+    {
+      "arm": "judge-opus-luna",
+      "classification": "golden-wrong",
+      "evidence": "Judge calls cream/pale-blue somewhat imprecise despite source colors visibly supporting that phrasing. Minor reason defect retained; does not affect decisive candidate growth miss or justify rejudging."
+    },
+    {
+      "arm": "both",
+      "classification": "ambiguous",
+      "evidence": "Dialogue camera dimension excluded and not included in validaggregate; neither static nor slowpushin establishes mechanism from stills."
+    }
+  ],
+  "decision": "Retain fresh Luna headless reference; reject candidate advancement on sourcecontradiction. Both first-case dual scores below.80. No fullsix winner/global video conclusion."
+}

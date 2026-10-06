@@ -1,0 +1,71 @@
+{
+  "data": {
+    "architecture": {
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "instruct_type": null,
+      "modality": "text+image->text",
+      "output_modalities": [
+        "text"
+      ],
+      "tokenizer": "Mistral"
+    },
+    "created": 1791294122,
+    "description": "Mistral Large 4 is a frontier multimodal (text and image input) model from Mistral AI built for reasoning, coding, and agentic workloads. It offers a 512K-token context window with up...",
+    "endpoints": [
+      {
+        "context_length": 524288,
+        "latency_last_30m": null,
+        "max_completion_tokens": 262144,
+        "max_prompt_tokens": null,
+        "model_id": "mistralai/mistral-large-4-0",
+        "model_name": "Mistral: Mistral Large 4",
+        "name": "Mistral | mistralai/mistral-large-4-0-20261006",
+        "native_tools": {},
+        "pricing": {
+          "completion": "0.00000209",
+          "discount": 0.5,
+          "input_cache_read": "0.00000007",
+          "prompt": "0.00000068"
+        },
+        "provider_name": "Mistral",
+        "quantization": "unknown",
+        "status": 0,
+        "supported_parameters": [
+          "max_tokens",
+          "temperature",
+          "top_p",
+          "stop",
+          "frequency_penalty",
+          "presence_penalty",
+          "seed",
+          "response_format",
+          "structured_outputs",
+          "tools",
+          "tool_choice",
+          "logprobs",
+          "top_logprobs"
+        ],
+        "supports_image_reference": false,
+        "supports_implicit_caching": false,
+        "supports_multiple_audio_references": false,
+        "supports_tool_choice": {
+          "auto": true,
+          "function": true,
+          "none": true,
+          "required": true
+        },
+        "supports_voice_cloning": false,
+        "tag": "mistral",
+        "throughput_last_30m": null,
+        "uptime_last_1d": 99.56370801276037,
+        "uptime_last_30m": 99.38697318007664,
+        "uptime_last_5m": 99.90167158308752
+      }
+    ],
+    "id": "mistralai/mistral-large-4-0",
+    "name": "Mistral: Mistral Large 4"
+  }
+}

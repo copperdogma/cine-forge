@@ -1,0 +1,35 @@
+{
+  "payload": {
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "content": "<Output>\n{\n  \"clip_id\": \"vfp_active_001\",\n  \"summary\": \"Two stylized humanoid figures stand facing each other in a minimalist, dark environment with a gradient navy background. The figures remain in static positions across all five frames with no visible movement or change in their poses.\",\n  \"tone_tags\": [\"detached\", \"tense\"],\n  \"emotion_tags\": [\"isolation\", \"hesitation\"],\n  \"color_tags\": [\"navy\", \"desaturated\", \"amber\"],\n  \"camera_tags\": [\"static\", \"locked_two_shot\"],\n  \"motion_tags\": [\"stillness\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\"frame_index\": 0, \"cue\": \"Two blocky humanoid figures positioned left and right against a dark navy gradient background, with a black floor occupying the lower third\"},\n    {\"frame_index\": 2, \"cue\": \"Identical composition to frame 0 with both figures in unchanged positions, confirming no movement between samples\"},\n    {\"frame_index\": 4, \"cue\": \"Final frame maintains exact same figure positions and background gradient as all prior frames, showing complete stillness across the sequence\"}\n  ],\n  \"overall_confidence\": 0.92\n}\n</Output>\n\nEvaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: Two abstract figures hold fixed left-right centers in blue light while both appear larger across the ordered frames; a pale rectangle stays on the right figure.\n- Tone: intimate\n- Emotion: [none]\n- Color / grade: navy, teal\n- Camera language inferable from the ordered samples: ambiguous; camera tags excluded from scoring\n- Motion inferable from the ordered samples: measured\n- Continuity: intact - The pale rectangle stays beside the right figure across all five frames.\n- Audio: unavailable to the subject and excluded from scoring\n- Interpretation boundary: The figures enlarge at nearly fixed centers while the prop and background do not scale. Figure-size change is observable; physical approach or a specific camera mechanism is not established.\n\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n\nSource-verified interpretation boundaries: frame indexes are zero-based. Bedside lamp/bed or abstract figure/barrier readings are permitted. Dialogue bodies enlarge while prop/background do not scale, so no camera mechanism is required. In prop-swap indexes0-1 are red and2-4 blue; generic blue is absent from allowed color_tags, so correct blue text suffices. Evidence requires2-4 grounded entries, not coverage of all5 frames. Do not invent tag requirements outside the frozen reference/enum.",
+        "role": "user"
+      }
+    ],
+    "model": "claude-opus-4-6",
+    "output_config": {
+      "format": {
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "score": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "score",
+            "reason"
+          ],
+          "type": "object"
+        },
+        "type": "json_schema"
+      }
+    },
+    "system": "You are an impartial evaluator. Return exactly a JSON object with score (number 0 to 1) and reason (string). Explain concrete mismatches against visible source facts. Do not reveal chain of thought."
+  },
+  "url": "https://api.anthropic.com/v1/messages"
+}

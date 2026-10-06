@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01171",
+  "latency_ms": 10740,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1612,
+    "path": "output/evals/mistral-large4-20261006/judge-opus-mistral-vfp_active_001-raw.json",
+    "sha256": "bade3f85c367b0c899a732b76d5df2ba88ac50a194a4b37b1721eab4537e8ca7"
+  },
+  "reason": "The output correctly identifies two figures in a dark/navy environment with a static camera and intact continuity, but has several significant mismatches with the reference: (1) It claims 'no visible movement or change' and tags 'stillness', while the reference clearly states the figures enlarge across the ordered frames \u2014 this is a meaningful observable change that was missed, making the motion tag wrong (should be 'measured' or similar). (2) It fails to note the pale rectangle/prop on the right figure, which is a key continuity element in the reference. (3) Tone is tagged as 'detached' and 'tense' rather than 'intimate'. (4) Emotion tags 'isolation' and 'hesitation' are invented \u2014 the reference lists no emotion. (5) Color tags include 'amber' and 'desaturated' but miss 'teal', which is in the reference. (6) The summary's claim of complete stillness across all frames directly contradicts the observable figure enlargement. The core visual observation \u2014 that the figures grow larger \u2014 was entirely missed, and the prop was not detected. Audio fields are empty, which is correct.",
+  "request_id": "msg_011CfmDWAhuNj4qyrhSzUBnX",
+  "score": 0.45,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 997,
+    "output_tokens": 269,
+    "service_tier": "standard"
+  }
+}

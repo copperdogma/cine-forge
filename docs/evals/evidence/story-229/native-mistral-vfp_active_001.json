@@ -1,0 +1,84 @@
+{
+  "arm": "mistral",
+  "name": "native-mistral-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.00297065,
+    "latencyMs": 9899,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": false,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "mistralai/mistral-large-4-0",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openrouter",
+      "request_id": "gen-1791300275-6q2uyqZNFFw3Fq5hBXsE",
+      "requested_model": "mistralai/mistral-large-4-0",
+      "returned_model": "mistralai/mistral-large-4-0",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\n  \"clip_id\": \"vfp_active_001\",\n  \"summary\": \"Two stylized humanoid figures stand facing each other in a minimalist, dark environment with a gradient navy background. The figures remain in fixed positions across all five frames with no visible movement or change in their surroundings.\",\n  \"tone_tags\": [\"detached\", \"tense\"],\n  \"emotion_tags\": [\"isolation\", \"suspicion\"],\n  \"color_tags\": [\"navy\", \"desaturated\", \"amber\"],\n  \"camera_tags\": [\"static\", \"wide_master\"],\n  \"motion_tags\": [\"stillness\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"Two blocky humanoid figures positioned left and right against a dark navy gradient background; left figure is amber/beige, right figure is light blue with a white rectangular panel on its torso\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"Identical composition to frame 0 with both figures in unchanged positions; no visible motion blur or positional shift between the two figures\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"Final frame maintains exact same framing and figure placement as previous frames; the white rectangular detail on the right figure's torso remains consistently positioned\"\n    }\n  ],\n  \"overall_confidence\": 0.92\n}",
+    "raw": {
+      "id": "gen-1791300275-6q2uyqZNFFw3Fq5hBXsE",
+      "model": "mistralai/mistral-large-4-0",
+      "provider": "Mistral",
+      "raw_envelope_bytes": 2505,
+      "raw_envelope_path": "output/evals/mistral-large4-20261006/native/mistral/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "90c03bd4f410fed1f6bcee1abf364d053500652b69cd7be9205448e315af36e2",
+      "usage": {
+        "completion_tokens": 321,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 0
+        },
+        "cost": 0.00297065,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.00067089,
+          "upstream_inference_cost": 0.00297065,
+          "upstream_inference_prompt_cost": 0.00229976
+        },
+        "is_byok": false,
+        "prompt_tokens": 3382,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 3703
+      }
+    },
+    "tokenUsage": {
+      "completion": 321,
+      "prompt": 3382,
+      "total": 3703
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

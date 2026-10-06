@@ -17,6 +17,22 @@ prompts:
 
 providers:
   - id: file://../providers/video_understanding_provider.py
+    label: "Mistral Large 4 / OpenRouter Mistral strict"
+    config:
+      provider: openrouter
+      model: mistralai/mistral-large-4-0
+      upstream_provider: Mistral
+      max_price: {prompt: 0.68, completion: 2.09}
+      max_tokens: 4096
+      max_frames: 5
+      frame_policy: five_evenly_spaced_jpegs_v1
+      prompt_version: video-understanding-frame-packet-v3
+      raw_output_dir: output/evals/mistral-large4-20261006/mistral
+      request_timeout_seconds: 60
+      pythonExecutable: python
+      timeout: 300000
+
+  - id: file://../providers/video_understanding_provider.py
     label: "GPT-6.1 Sol / direct Responses low"
     config:
       provider: openai

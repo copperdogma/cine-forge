@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-10-06-01] — Bound Mistral Large 4 frame evaluation (Story 229)
+
+### Added
+- Retain exact OpenRouter Mistral Large 4 five-image strict-schema qualification,
+  fresh Luna first-case comparison, source-repaired independent Opus reviews,
+  full safe receipts, offline verifiers and immutable v21 contract manifest.
+
+### Changed
+- Stop candidate expansion after a verified temporal-growth miss; retain Luna
+  as the economical headless reference. Record other five cases as unmeasured,
+  USD0.05305 all-provider spend and no product/default change.
+
+
 ## [2026-10-04-02] — Research before reinvention
 
 ### Changed

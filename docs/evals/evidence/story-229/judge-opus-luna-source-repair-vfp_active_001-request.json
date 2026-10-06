@@ -1,0 +1,35 @@
+{
+  "payload": {
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "content": "<Output>\n{\"clip_id\":\"vfp_active_001\",\"summary\":\"A minimalist graphic shows two simplified human figures standing apart against a dark blue background. Their silhouettes grow slightly larger across the ordered samples while the horizon and their positions remain nearly fixed.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\"],\"camera_tags\":[],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Two simplified figures, one cream-colored and one pale blue, stand on a dark horizontal ground beneath a navy background.\"},{\"frame_index\":2,\"cue\":\"Both figures remain in the same left-right positions, with the pale blue figure carrying a small light rectangular detail near its base.\"},{\"frame_index\":4,\"cue\":\"The figures appear slightly larger than in earlier samples, while the horizontal boundary between the background and ground stays fixed.\"}],\"overall_confidence\":0.86}\n</Output>\n\nEvaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: Two abstract figures hold fixed left-right centers in blue light while both appear larger across the ordered frames; a pale rectangle stays on the right figure.\n- Tone: intimate\n- Emotion: [none]\n- Color / grade: navy, teal\n- Camera language inferable from the ordered samples: ambiguous; camera tags excluded from scoring\n- Motion inferable from the ordered samples: measured\n- Continuity: intact - The pale rectangle stays beside the right figure across all five frames.\n- Audio: unavailable to the subject and excluded from scoring\n- Interpretation boundary: The figures enlarge at nearly fixed centers while the prop and background do not scale. Figure-size change is observable; physical approach or a specific camera mechanism is not established.\n\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n\nSource-verified interpretation boundaries: frame indexes are zero-based. Bedside lamp/bed or abstract figure/barrier readings are permitted. Dialogue bodies enlarge while prop/background do not scale, so no camera mechanism is required. In prop-swap indexes0-1 are red and2-4 blue; generic blue is absent from allowed color_tags, so correct blue text suffices. Evidence requires2-4 grounded entries, not coverage of all5 frames. Do not invent tag requirements outside the frozen reference/enum.\nAdditional original-pixel source verification: The left figure is visibly cream/tan and the right figure pale/light blue; these literal descriptions are source-accurate, not imprecise hallucinations. Background is blue/navy. Camera mechanism is excluded from this case's scoring: do not reward or penalize static versus inferred push-in as a verified camera mechanism. The observable figure enlargement is required regardless of that excluded mechanism. Subjective tone labels should be reported as interpretive disagreement, not a factual source contradiction. Preserve the maintained rubric and score scale.",
+        "role": "user"
+      }
+    ],
+    "model": "claude-opus-4-6",
+    "output_config": {
+      "format": {
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "score": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "score",
+            "reason"
+          ],
+          "type": "object"
+        },
+        "type": "json_schema"
+      }
+    },
+    "system": "You are an impartial evaluator. Return exactly a JSON object with score (number 0 to 1) and reason (string). Explain concrete mismatches against visible source facts. Do not reveal chain of thought."
+  },
+  "url": "https://api.anthropic.com/v1/messages"
+}

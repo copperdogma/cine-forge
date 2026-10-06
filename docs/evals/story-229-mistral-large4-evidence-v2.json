@@ -1,0 +1,231 @@
+{
+  "accounted_usd": "0.05305063499999999991",
+  "base_git_sha": "2e148974583e731bedd32e4896b282a94134aeff",
+  "calls": {
+    "fresh_scored_subjects": 2,
+    "native_qualification": 2,
+    "original_judges": 2,
+    "source_repair_judges": 2,
+    "unknown": 0
+  },
+  "cap_usd": "3",
+  "code_identity": "Original executed runner/vision adapter and original ledger retained in snapshots/story-229; original firstphase result/evidence manifest retained. Later active formatting/archive verification and estimated-label correction distinct. Source repair helper executed only two saved-answer Opus requests; original subject answers/scorer/prompt/golden unchanged.",
+  "custody": "existing owner keys through wrapper; no injection or cleanup needed",
+  "date": "2026-10-06",
+  "evidence_status": "first-case-progressive-stop-uncommitted-source-reviewed",
+  "privacy_class": "project-owned synthetic only, no credentials or authorization headers",
+  "regeneration": "Owner wrapper around first-phase runner and finite repair helper only under new authorized immutable identity. Offline verifier verifies both preserved phases without inference.",
+  "retained_files": [
+    {
+      "bytes": 28156,
+      "path": "benchmarks/results/video-understanding-mistral-large4-vs-luna-v4-20261006-v2.json",
+      "sha256": "3f6351e44f00409a96efd2caa3879ac42fcf6ffcbbd49fd76eb3863de52ee0fc"
+    },
+    {
+      "bytes": 23348,
+      "path": "benchmarks/results/video-understanding-mistral-large4-vs-luna-v4-20261006.json",
+      "sha256": "530a3cae3d246e34f98c21868fa0803d2fb072ae0c8a1fde26a3315b64e45f68"
+    },
+    {
+      "bytes": 2072,
+      "path": "benchmarks/scripts/finalize_mistral_large4_source_repair.py",
+      "sha256": "b14a3d4851940d6560010b185b44260e064145eaf075caaa7a9b7770ae84c3ff"
+    },
+    {
+      "bytes": 1457,
+      "path": "benchmarks/scripts/repair_mistral_large4_judge.py",
+      "sha256": "23ea5be037fee96f4d3ae39331cadc87b0f53be3459cbb12d2e9e4263dea54fc"
+    },
+    {
+      "bytes": 3571,
+      "path": "benchmarks/scripts/report_mistral_large4_video_comparison.py",
+      "sha256": "7747a2bca839149a0c0f5a80a1b162cd523335a2ffaac53e19a1348b75449841"
+    },
+    {
+      "bytes": 14733,
+      "path": "benchmarks/scripts/run_mistral_large4_video_comparison.py",
+      "sha256": "d72b264627840b84e182af78b1a87e501f759ebefba194bd653843622b3c55ba"
+    },
+    {
+      "bytes": 2929,
+      "path": "benchmarks/scripts/verify_mistral_large4_source_repair.py",
+      "sha256": "4177fc0d982bce5ee3087489c0659528bdebb190c6c8ec9ae10437e06520d5ed"
+    },
+    {
+      "bytes": 4292,
+      "path": "benchmarks/scripts/verify_mistral_large4_video_comparison.py",
+      "sha256": "26d75e387cf111c3ed29f5803261a586b22b4b98536811befd4a07522f0c0b09"
+    },
+    {
+      "bytes": 1441,
+      "path": "docs/evals/evidence/story-229/judge-opus-luna-source-repair-vfp_active_001-raw.json",
+      "sha256": "f8a563f495902656bdf7c24f3ca07e5d4aced1b42735582ca8be43c9d4459c76"
+    },
+    {
+      "bytes": 4623,
+      "path": "docs/evals/evidence/story-229/judge-opus-luna-source-repair-vfp_active_001-request.json",
+      "sha256": "42e18d8822aca1c2e6282ea84a353d3e5e12cce6dc3d7acea69eefab1c4b22ad"
+    },
+    {
+      "bytes": 1627,
+      "path": "docs/evals/evidence/story-229/judge-opus-luna-source-repair-vfp_active_001.json",
+      "sha256": "c6d7e0f8d92de8304ff77ce7f60d8d3d9d48c486f3b5ed5c330e82e3055421db"
+    },
+    {
+      "bytes": 1472,
+      "path": "docs/evals/evidence/story-229/judge-opus-luna-vfp_active_001-raw.json",
+      "sha256": "774c8ffcefcae1e1271f8e27c6c844fd548e8e32ad76b8adba52b97f333f1c2e"
+    },
+    {
+      "bytes": 4012,
+      "path": "docs/evals/evidence/story-229/judge-opus-luna-vfp_active_001-request.json",
+      "sha256": "b0bb553f82de1e1445c069a4aa2a438d6c1f39db87c9e53f096f746501f304ab"
+    },
+    {
+      "bytes": 1643,
+      "path": "docs/evals/evidence/story-229/judge-opus-luna-vfp_active_001.json",
+      "sha256": "30d9bb11e56f3b453750813e4d1207b430c1f4e2278f6cf5e5f65eba23670e12"
+    },
+    {
+      "bytes": 1767,
+      "path": "docs/evals/evidence/story-229/judge-opus-mistral-source-repair-vfp_active_001-raw.json",
+      "sha256": "ba2513808e8e3a65baaf2318dacea5f8e4d19b77926ad321de7558807915fe45"
+    },
+    {
+      "bytes": 4827,
+      "path": "docs/evals/evidence/story-229/judge-opus-mistral-source-repair-vfp_active_001-request.json",
+      "sha256": "e0595d09b66e7c60d54eac3880bfc298a587d5209afd4c47467a883c70dd592d"
+    },
+    {
+      "bytes": 1949,
+      "path": "docs/evals/evidence/story-229/judge-opus-mistral-source-repair-vfp_active_001.json",
+      "sha256": "0abf2ea240a141c4f4d76fd45c028b35d41e44f49e3341b31f38f3b903027e04"
+    },
+    {
+      "bytes": 1612,
+      "path": "docs/evals/evidence/story-229/judge-opus-mistral-vfp_active_001-raw.json",
+      "sha256": "bade3f85c367b0c899a732b76d5df2ba88ac50a194a4b37b1721eab4537e8ca7"
+    },
+    {
+      "bytes": 4216,
+      "path": "docs/evals/evidence/story-229/judge-opus-mistral-vfp_active_001-request.json",
+      "sha256": "97becb8601ee7262e31c6ca4023e9cc618a414949b3720e3df5a09908ec095c7"
+    },
+    {
+      "bytes": 1793,
+      "path": "docs/evals/evidence/story-229/judge-opus-mistral-vfp_active_001.json",
+      "sha256": "feb1a8c6ed18a13eabead63dce9527db4cff61816e0a30481b099439c8ddc9bd"
+    },
+    {
+      "bytes": 1557,
+      "path": "docs/evals/evidence/story-229/ledger-final.json",
+      "sha256": "6bd913da1255c224958edcf5bafa014f139e5f3d5e629e4f5029aa193aff7745"
+    },
+    {
+      "bytes": 1155,
+      "path": "docs/evals/evidence/story-229/ledger.json",
+      "sha256": "9b1e7f49ba1d5d7541c1bb66ca1390525340750ea29ec854b7880ccb16cc2e40"
+    },
+    {
+      "bytes": 10881,
+      "path": "docs/evals/evidence/story-229/native/luna/vfp_active_001-raw-envelope.json",
+      "sha256": "e17361513712b0cb59b49aee37d5bf0efa4a969745c15c4da89a8db250a35ee1"
+    },
+    {
+      "bytes": 2505,
+      "path": "docs/evals/evidence/story-229/native/mistral/vfp_active_001-raw-envelope.json",
+      "sha256": "90c03bd4f410fed1f6bcee1abf364d053500652b69cd7be9205448e315af36e2"
+    },
+    {
+      "bytes": 99011,
+      "path": "docs/evals/evidence/story-229/native-luna-vfp_active_001-request.json",
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517"
+    },
+    {
+      "bytes": 3646,
+      "path": "docs/evals/evidence/story-229/native-luna-vfp_active_001.json",
+      "sha256": "7df7c97c1ad8be034c393ef87de54ff2b2ae34ce3b22fe0eee149db262d86679"
+    },
+    {
+      "bytes": 99993,
+      "path": "docs/evals/evidence/story-229/native-mistral-vfp_active_001-request.json",
+      "sha256": "c4f8637121788c9ba9eabcbc2d238112f80a3a3c890b68df44d9f3e6980334ca"
+    },
+    {
+      "bytes": 4367,
+      "path": "docs/evals/evidence/story-229/native-mistral-vfp_active_001.json",
+      "sha256": "2fc258d4fa01913a4d493208c0e899e36495f3c11daf2f8fe904a6f45bef9556"
+    },
+    {
+      "bytes": 10695,
+      "path": "docs/evals/evidence/story-229/subject/luna/vfp_active_001-raw-envelope.json",
+      "sha256": "e45c3bff7b485dfd0bfa363ad44ce189b84557be9cc4dd18ba2f735934f4df81"
+    },
+    {
+      "bytes": 2330,
+      "path": "docs/evals/evidence/story-229/subject/mistral/vfp_active_001-raw-envelope.json",
+      "sha256": "ca98a908731419cf0d24ebb40b0a3df1f8dd019836cb08485dd5be01d3d2c88d"
+    },
+    {
+      "bytes": 99011,
+      "path": "docs/evals/evidence/story-229/subject-luna-vfp_active_001-request.json",
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517"
+    },
+    {
+      "bytes": 3719,
+      "path": "docs/evals/evidence/story-229/subject-luna-vfp_active_001.json",
+      "sha256": "db2f874ff18913e0f40884ccc5198c90a3cdf3a9bb82aeacd28cd38291cea33e"
+    },
+    {
+      "bytes": 99993,
+      "path": "docs/evals/evidence/story-229/subject-mistral-vfp_active_001-request.json",
+      "sha256": "c4f8637121788c9ba9eabcbc2d238112f80a3a3c890b68df44d9f3e6980334ca"
+    },
+    {
+      "bytes": 4194,
+      "path": "docs/evals/evidence/story-229/subject-mistral-vfp_active_001.json",
+      "sha256": "6d9bb02eb2bf8a1bab1b033d4c60370fb33247aea0ea2c2079f4fb00a07693ec"
+    },
+    {
+      "bytes": 1153,
+      "path": "docs/evals/snapshots/story-229/calltime-ledger.json",
+      "sha256": "962b48888e42dd22595f69d2efbfbdefda90fc6427dbe51251608a5f93d8d393"
+    },
+    {
+      "bytes": 14557,
+      "path": "docs/evals/snapshots/story-229/run_mistral_large4_video_comparison.py.txt",
+      "sha256": "fe28351a8e2ebe870b5b891404aa7180f4e6ce93ffc06ca9b2b4ff006cac5ff7"
+    },
+    {
+      "bytes": 14948,
+      "path": "docs/evals/snapshots/story-229/video_understanding_provider_vision.py.txt",
+      "sha256": "be25314e3ab59310139fcecc7de1435b147de45a24f67262d275ddc8fc573a27"
+    },
+    {
+      "bytes": 6645,
+      "path": "docs/evals/story-229-mistral-large4-evidence.json",
+      "sha256": "042f6076181bceef200c2ae3e670428e028ac7c923e16a5d02ac53aad91c9050"
+    },
+    {
+      "bytes": 2143499,
+      "path": "docs/evals/story-229-mistral-large4-freeze.json",
+      "sha256": "f83fc9ef96714ab7845a28f21037176ed8345e1511f5467cdecbfec99b9d5ba8"
+    },
+    {
+      "bytes": 2119,
+      "path": "docs/evals/story-229-public-endpoints.json",
+      "sha256": "59b290b73802ccc395bf89d36e346063a4736d8ada93c3350df2619780a76952"
+    },
+    {
+      "bytes": 2897,
+      "path": "docs/evals/story-229-source-review-v2.json",
+      "sha256": "49ded4ed521ee46c9919a37c233f4c2eb1b88bbd42b4a3e3e1937bdd90e7c429"
+    },
+    {
+      "bytes": 2360,
+      "path": "docs/evals/story-229-source-review.json",
+      "sha256": "bcd2ac72f2fd9c8b1e26f6d424c7f891546e813b07c1a22ebb07c27f7640e71f"
+    }
+  ],
+  "unknown_exposure_usd": "0"
+}
