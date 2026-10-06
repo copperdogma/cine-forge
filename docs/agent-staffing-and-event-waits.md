@@ -1,8 +1,8 @@
 # Agent Staffing and Event Waits — Alignment 055 Receipt
 
 Date: 2026-10-06 (America/Edmonton)
-Status: Applied and locally validated in an isolated owner worktree; landing is
-owned by the rollout coordinator and is not asserted here.
+Status: policy landed on owner remote main; final receipt landing is recorded
+by the rollout coordinator in Conductor Alignment 055.
 
 Source: Conductor Alignment 055,
 `/Users/cam/Documents/Projects/conductor-align-055/docs/alignments/align-055-agent-staffing-and-event-waits.md`.
@@ -62,3 +62,18 @@ completion distinctions, clean-verifier termination, frozen eval subjects/judges
 existing delegation authorization and explicit triage lane coverage. Reused the
 source Alignment 055 mailbox-wake evidence; no live message/provider test or
 cost-saving measurement was needed or claimed for these prose changes.
+
+## Verified policy landing
+
+Cam's 2026-10-06 approval covered this scoped commit and push. After the global
+Conductor/11-owner preflight cleared, policy commit
+`1005e514e68552793f026f6d8faa1b35311b2258` was pushed to
+`origin/codex/align-055-cine-forge` and fast-forwarded onto `origin/main`.
+`git ls-remote origin refs/heads/main` verified that exact policy SHA after
+landing. The primary checkout and its unrelated work were preserved.
+
+This section records the observed policy landing. Its subsequent receipt-only
+commit is recorded with final remote-main proof in Conductor Alignment 055's
+consolidated owner ledger. Policy validation is reused because the checked leaf,
+AGENTS and workflow inputs are unchanged; the receipt update receives scoped
+content review and `git diff --check`. No product rerun is required.
