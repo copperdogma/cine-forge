@@ -274,7 +274,7 @@ class GenerateRequest(BaseModel):
     positive_refs: list[str] = Field(default_factory=list)
     negative_refs: list[str] = Field(default_factory=list)
     seed_image_filename: str | None = None
-    model: str = "imagen-4.0-generate-001"
+    model: str = "gemini-nano-banana-2.1"
 
 
 class DecideRequest(BaseModel):
@@ -295,7 +295,7 @@ async def generate_design_study(
 ) -> DesignStudyState:
     """Generate one or more concept art images for an entity.
 
-    Reads the entity bible, synthesizes a visual prompt, calls Imagen 4,
+    Reads the entity bible, synthesizes a visual prompt, calls the selected image model,
     stores images in the bible folder, and returns updated DesignStudyState.
     """
     project_path = _get_project_path(project_id)

@@ -11,6 +11,7 @@ import type { DesignStudyImage, DesignStudyRound, ImageDecision } from '@/lib/ap
 type CompositionRefPolarity = 'positive' | 'negative'
 
 const MODEL_LABELS: Record<string, string> = {
+  'gemini-nano-banana-2.1': 'Nano Banana 2.1',
   'imagen-4.0-generate-001': 'Imagen 4',
   'gpt-image-1': 'GPT-Image',
 }

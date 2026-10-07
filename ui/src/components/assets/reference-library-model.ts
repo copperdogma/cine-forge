@@ -82,6 +82,7 @@ export function assetTypeLabel(item: Pick<ReferenceItem, 'assetType'>): string {
 
 function modelLabel(model: string | undefined): string | null {
   if (!model) return null
+  if (model === 'gemini-nano-banana-2.1') return 'Nano Banana 2.1'
   if (model === 'imagen-4.0-generate-001') return 'Imagen 4'
   if (model === 'gpt-image-1') return 'GPT-Image'
   return model

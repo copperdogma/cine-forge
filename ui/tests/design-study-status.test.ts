@@ -83,3 +83,12 @@ test('design-study failure summary preserves provider debug context', () => {
     { label: 'Prompt', value: 'abcdef123456' },
   ])
 })
+
+test('Nano Banana failures identify Google Images and retain the exact model', () => {
+  const nanoFailure = { ...failure, provider: 'google', model: 'gemini-nano-banana-2.1' }
+  assert.match(formatDesignStudyFailureSummary(nanoFailure), /Google Images failed on gemini-nano-banana-2\.1/)
+  assert.deepEqual(getDesignStudyFailureRows(nanoFailure).slice(0, 2), [
+    { label: 'Provider', value: 'Google Images' },
+    { label: 'Model', value: 'gemini-nano-banana-2.1' },
+  ])
+})

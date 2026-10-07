@@ -49,6 +49,6 @@ export function getDesignStudyFailureRows(
 function providerLabel(provider: string): string {
   const normalized = provider.trim().toLowerCase()
   if (normalized === 'openai') return 'OpenAI Images'
-  if (normalized === 'google') return 'Google Imagen'
+  if (normalized === 'google') return 'Google Images'
   return provider || 'Provider'
 }

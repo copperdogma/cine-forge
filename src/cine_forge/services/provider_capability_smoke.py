@@ -81,12 +81,12 @@ _LIVE_PROBE_SPECS: tuple[_ProbeSpec, ...] = (
         surface_tested="Default text analysis lane",
     ),
     _ProbeSpec(
-        probe_id="openai_storyboard_image_default",
-        label="OpenAI storyboard image generation",
-        provider="openai",
+        probe_id="google_storyboard_image_default",
+        label="Google storyboard image generation",
+        provider="google",
         capability_tested="image_generation",
-        env_name="OPENAI_API_KEY",
-        model="gpt-image-2",
+        env_name="GEMINI_API_KEY",
+        model="gemini-nano-banana-2.1",
         surface_tested="Storyboard generation default lane",
     ),
     _ProbeSpec(
@@ -95,7 +95,7 @@ _LIVE_PROBE_SPECS: tuple[_ProbeSpec, ...] = (
         provider="google",
         capability_tested="image_generation",
         env_name="GEMINI_API_KEY",
-        model="imagen-4.0-generate-001",
+        model="gemini-nano-banana-2.1",
         surface_tested="Design Study default image lane",
     ),
     _ProbeSpec(

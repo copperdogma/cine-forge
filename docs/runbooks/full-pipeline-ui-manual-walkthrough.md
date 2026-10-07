@@ -78,7 +78,7 @@ Run this sequence exactly unless the shipped UI changes in the same diff.
    through surfaced navigation, the scene tutorial keeps the default path obvious
    through Shot Planning, Storyboard, and Render, the Render tab stays honest
    about warnings vs. blockers while auto-building minimal prerequisites when
-   appropriate, the Storyboard tab uses the batch `gpt-image-2` template-grid
+   appropriate, the Storyboard tab uses the batch `gemini-nano-banana-2.1` template-grid
    first pass instead of issuing one provider call per shot by default, and the
    same panel then exposes `Prompt Detail`, `Video Detail`, and `Validation
    Detail` for the resulting scene render.

@@ -1,10 +1,11 @@
-"""Image generation via Google Imagen and OpenAI GPT Image models.
+"""Image generation via native Gemini, Google Imagen, and OpenAI GPT Image models.
 
 Provides provider dispatch:
   - generate_image: dispatch to the appropriate provider and return raw image bytes + model used
 
 Provider routing:
   - OpenAI GPT image models (for example ``gpt-image-1``) → OpenAI Images API
+  - Nano Banana 2.1 → native Gemini generateContent API
   - Google Imagen models (for example ``imagen-4.0-generate-001``) → Google Imagen API
 
 Provider keys prefer ``CINE_FORGE_*`` env names and fall back to the generic
@@ -22,6 +23,16 @@ import uuid
 from pathlib import Path
 from typing import Any, Literal
 
+from cine_forge.ai.gemini_image import (
+    MODEL as GEMINI_IMAGE_MODEL,
+)
+from cine_forge.ai.gemini_image import (
+    OUTPUT_COST_USD as GEMINI_OUTPUT_COST_USD,
+)
+from cine_forge.ai.gemini_image import (
+    generate_gemini_image,
+    resolve_image_options,
+)
 from cine_forge.ai.image_errors import ImageGenerationError, provider_http_error
 from cine_forge.env import require_env
 
@@ -29,7 +40,7 @@ IMAGEN_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models"
 OPENAI_BASE_URL = "https://api.openai.com/v1"
 
 # Default model and aspect ratios by entity type.
-DEFAULT_MODEL = "imagen-4.0-generate-001"
+DEFAULT_MODEL = GEMINI_IMAGE_MODEL
 
 ASPECT_RATIO_BY_ENTITY_TYPE: dict[str, str] = {
     "character": "9:16",   # portrait orientation
@@ -289,7 +300,7 @@ def _generate_image_imagen(
 
 
 def supports_direct_reference_images(model: str) -> bool:
-    return is_openai_image_model(model)
+    return is_openai_image_model(model) or model == GEMINI_IMAGE_MODEL
 
 
 def _build_openai_edit_multipart(
@@ -417,18 +428,21 @@ def generate_image(
 
     Routes to the appropriate provider based on model ID:
       - OpenAI GPT image models → OpenAI Images API
+      - Nano Banana 2.1 → native Gemini generateContent
       - Imagen models → Google Imagen API
 
     Args:
         prompt: The visual description to generate from.
         entity_type: Used to pick default aspect ratio / size if not specified.
         model: Model ID — determines provider routing.
-        aspect_ratio: Override aspect ratio (Imagen only). Defaults by entity_type:
+        aspect_ratio: Override aspect ratio (Gemini or Imagen). Defaults by entity_type:
             character -> "9:16", location -> "16:9", prop -> "4:3".
         reference_image_paths: Optional absolute file paths to reference images.
-            Currently supported for OpenAI GPT Image models only.
-        size: Optional OpenAI image size override. When omitted, the default
-            size is derived from entity_type.
+            Supported for native Gemini and OpenAI GPT Image models.
+        size: OpenAI pixel size, or Gemini resolution (1K, 2K, 4K). Gemini
+            also maps existing OpenAI pixel sizes to the same orientation at 1K.
+        quality: OpenAI quality, or Gemini thinking effort (low -> minimal,
+            auto/medium -> medium, high -> high).
 
     Returns:
         (image_bytes, model_used) where image_bytes is JPEG-encoded image data.
@@ -447,11 +461,20 @@ def generate_image(
             reference_image_paths=reference_image_paths,
             size=size,
         )
+    if model == GEMINI_IMAGE_MODEL:
+        # Pixel sizes encode orientation; explicit aspect overrides that mapping.
+        default_aspect = None if size and "x" in size else ASPECT_RATIO_BY_ENTITY_TYPE.get(
+            entity_type, "1:1"
+        )
+        return generate_gemini_image(
+            prompt, model=model, aspect_ratio=aspect_ratio or default_aspect,
+            quality=quality, reference_image_paths=reference_image_paths, size=size,
+        )
     if is_google_imagen_model(model):
         return _generate_image_imagen(prompt, entity_type, model, aspect_ratio)
     raise ImageGenerationError(
         f"Unsupported image model '{model}'. "
-        "Expected an OpenAI GPT image model or Google Imagen model.",
+        "Expected a native Gemini, OpenAI GPT image, or Google Imagen model.",
         model=model,
     )
 
@@ -463,9 +486,15 @@ def estimate_image_generation_cost_usd(
     quality: Literal["auto", "low", "medium", "high"] = "auto",
     size: str | None = None,
 ) -> float:
-    """Return a best-effort per-image cost estimate for supported providers."""
+    """Return a best-effort per-image estimate (Gemini image output only)."""
     if model == "mock":
         return 0.0
+
+    if model == GEMINI_IMAGE_MODEL:
+        # Output-only estimate: prompt/reference input and thinking are additional
+        # token charges that cannot be known from this function's inputs.
+        resolution, _, _ = resolve_image_options(size, None, quality)
+        return GEMINI_OUTPUT_COST_USD[resolution]
 
     if is_openai_image_model(model):
         resolved_size = size or OPENAI_SIZE_BY_ENTITY_TYPE.get(entity_type, "1024x1024")

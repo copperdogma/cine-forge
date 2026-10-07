@@ -9,7 +9,7 @@ from typing import Any
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import ArtifactRef, ShotPlan, TrackEntry
 
-DEFAULT_IMAGE_MODEL = "gpt-image-2"
+DEFAULT_IMAGE_MODEL = "gemini-nano-banana-2.1"
 DEFAULT_GRID_MODE = "template"
 DEFAULT_GRID_MAX_PANELS = 8
 DEFAULT_STYLE = "sketch"

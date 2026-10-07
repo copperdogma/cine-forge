@@ -104,7 +104,7 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:6`, `spec:7`
-- UI scout freshness: attention needed — last run 2026-04-12 is 177 days old against a 14-day cadence
+- UI scout freshness: attention needed — last run 2026-04-12 is 178 days old against a 14-day cadence
 - Sequencing bias: `scene-generation-completion` — Keep `spec:6` / `spec:7` as the active product lane even after Story 164 closed the first surfaced real-scene render route. The next slice should deepen scene-generation completeness from that honest operator path instead of retreating to throughput-only or eval-polish work.
 - Sequencing bias: `pipeline-throughput-efficiency` — Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
@@ -292,6 +292,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 192 | Brick & Steel GPT-Image Completion and Error Truth | High | Done | — | spec:5, spec:7, spec:8 | 191 | [story-192](stories/story-192-brick-steel-gpt-image-completion-and-error-truth.md) |
 | 195 | Production xAI Previz Readiness | High | Done | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 176, 184, 194 | [story-195](stories/story-195-production-xai-previz-readiness.md) |
 | 196 | Brick & Steel Product Truth Scrub | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 139, 180, 191, 192, 193, 194 | [story-196](stories/story-196-brick-steel-product-truth-scrub.md) |
+| 230 | Nano Banana 2.1 Image Defaults | High | Done | — | spec:5, spec:7, spec:8 | — | [story-230](stories/story-230-nano-banana21-image-defaults.md) |
 | 011c | Resource-oriented Routing | Medium | Done | — | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 042 | Wire Mock UI to Real APIs | Medium | Done | — | spec:5 | — | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 044 | Mobile-Friendly UI | Medium | Done | — | spec:5 | 043 | [story-044](stories/story-044-mobile-friendly-ui.md) |

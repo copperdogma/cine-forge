@@ -15,7 +15,8 @@ import { getDesignStudyImageUrl } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import type { DesignStudyImage, ImageDecision } from '@/lib/api'
 
-const IMAGEN_MODELS: Array<{ id: string; label: string }> = [
+const IMAGE_MODELS: Array<{ id: string; label: string }> = [
+  { id: 'gemini-nano-banana-2.1', label: 'Nano Banana 2.1' },
   { id: 'imagen-4.0-generate-001', label: 'Imagen 4' },
   { id: 'gpt-image-1', label: 'GPT-Image' },
 ]
@@ -29,7 +30,7 @@ const DECISION_STYLES: Record<ImageDecision, string> = {
 }
 
 function modelLabel(modelId: string): string {
-  return IMAGEN_MODELS.find(m => m.id === modelId)?.label ?? modelId
+  return IMAGE_MODELS.find(m => m.id === modelId)?.label ?? modelId
 }
 
 interface Props {

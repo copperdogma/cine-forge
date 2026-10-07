@@ -19,12 +19,12 @@ parameters:
   image_model:
     type: string
     required: false
-    default: "gpt-image-2"
+    default: "gemini-nano-banana-2.1"
     description: "Image model used for storyboard frame generation."
   image_size:
     type: string
     required: false
-    description: "Optional OpenAI image size override for storyboard frame generation."
+    description: "Optional image size override for storyboard frame generation; mapped to provider output options."
   style:
     type: string
     required: false

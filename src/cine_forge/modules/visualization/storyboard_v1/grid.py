@@ -44,6 +44,12 @@ class StoryboardGridLayout:
         return int(self.size.split("x", maxsplit=1)[1])
 
     @property
+    def aspect_ratio(self) -> str:
+        """Canvas aspect, distinct from any individual shot/frame aspect."""
+        divisor = math.gcd(self.width, self.height)
+        return f"{self.width // divisor}:{self.height // divisor}"
+
+    @property
     def panel_boxes(self) -> list[tuple[int, int, int, int]]:
         panel_width = (
             self.width - (2 * self.border_px) - ((self.columns - 1) * self.gutter_px)

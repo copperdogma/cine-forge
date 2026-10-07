@@ -168,14 +168,15 @@ def test_design_study_generate_decide_loop(tmp_path: Path) -> None:
     # --- Step 2: Generate — mock generate_image to avoid real API call ---
     with patch(
         "cine_forge.api.routers.design_study.generate_image",
-        return_value=(_FAKE_JPEG, "imagen-4.0-generate-001"),
-    ):
+        return_value=(_FAKE_JPEG, "gemini-nano-banana-2.1"),
+    ) as image_mock:
         resp = client.post(
             f"/api/projects/{project_id}/design-study/{entity_id}/generate",
             json={"entity_type": "character", "count": 2},
         )
 
     assert resp.status_code == 200, resp.text
+    assert image_mock.call_args.kwargs["model"] == "gemini-nano-banana-2.1"
     state = resp.json()
     assert state["entity_id"] == entity_id
     assert len(state["rounds"]) == 1

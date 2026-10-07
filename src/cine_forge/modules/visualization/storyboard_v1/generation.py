@@ -33,6 +33,10 @@ from cine_forge.modules.visualization.storyboard_v1.prompting import (
 from cine_forge.modules.visualization.storyboard_v1.reference_anchors import (
     build_reference_anchor_lines,
 )
+from cine_forge.modules.visualization.storyboard_v1.reference_limits import (
+    reference_limit_note,
+    select_direct_references,
+)
 from cine_forge.modules.visualization.storyboard_v1.support import (
     STYLE_PROMPTS,
     empty_cost,
@@ -146,7 +150,7 @@ def generate_storyboard_for_scene(
             location_bible=location_bible,
             continuity_states=continuity_states,
             character_identity_locks=character_identity_locks,
-            reference_images=reference_images,
+            reference_images=select_direct_references(image_model, reference_images),
         )
         image_bytes, model_used, direct_reference_images = generate_frame_bytes(
             prompt=prompt,
@@ -200,7 +204,9 @@ def generate_storyboard_for_scene(
                 ),
                 duration_estimate_seconds=shot.duration_estimate_seconds,
                 cost=frame_cost,
-                notes=shot.action_description,
+                notes=reference_limit_note(
+                    model_used, reference_images, direct_reference_images, shot.action_description
+                ),
             )
         )
         merge_cost(
@@ -304,13 +310,22 @@ def _generate_grid_storyboard_for_scene(
             prompt_sources_by_shot.append(prompt_sources)
             reference_images_by_shot.append(reference_images)
 
+        grid_references = _dedupe(
+            ref for shot_refs in reference_images_by_shot for ref in shot_refs
+        )
+        selected_references = select_direct_references(
+            image_model, grid_references, uses_template=uses_template_reference
+        )
         reference_anchor_lines = (
             build_reference_anchor_lines(
                 shots=shots,
                 character_bibles=character_bibles,
                 location_bible=location_bible,
                 character_identity_locks=character_identity_locks,
-                reference_images_by_shot=reference_images_by_shot,
+                reference_images_by_shot=[
+                    [ref for ref in refs if ref in selected_references]
+                    for refs in reference_images_by_shot
+                ],
             )
             if grid_reference_anchors
             else None
@@ -339,13 +354,11 @@ def _generate_grid_storyboard_for_scene(
             image_model=image_model,
             image_size=layout.size,
             style=style,
-            aspect_ratio=aspect_ratio,
+            aspect_ratio=layout.aspect_ratio,
             max_retries=max_retries,
             retry_delay_seconds=retry_delay_seconds,
             project_dir=store.project_dir,
-            reference_images=_dedupe(
-                ref for shot_refs in reference_images_by_shot for ref in shot_refs
-            ),
+            reference_images=grid_references,
             template_path=template_path if uses_template_reference else None,
         )
         extension, media_type = image_format_for_model(model_used)
@@ -418,7 +431,12 @@ def _generate_grid_storyboard_for_scene(
                         output_tokens=0,
                         estimated_cost_usd=round(frame_cost, 8),
                     ),
-                    notes=shot.action_description,
+                    notes=reference_limit_note(
+                        model_used,
+                        reference_images,
+                        direct_reference_images,
+                        shot.action_description,
+                    ),
                 )
             )
         merge_cost(
@@ -551,12 +569,15 @@ def _resolve_storyboard_image_request(
     if not has_reference_inputs or not supports_direct_reference_images(effective_model):
         return effective_model, [], []
 
+    selected_references = select_direct_references(
+        effective_model, reference_images, uses_template=template_path is not None
+    )
     direct_reference_paths = [
-        str(_resolve_path(project_dir, relative_path)) for relative_path in reference_images
+        str(_resolve_path(project_dir, relative_path)) for relative_path in selected_references
     ]
     if template_path is not None:
         direct_reference_paths.insert(0, str(template_path))
-    return effective_model, direct_reference_paths, list(reference_images)
+    return effective_model, direct_reference_paths, selected_references
 
 
 def _resolve_path(project_dir: Path, relative_path: str) -> Path:

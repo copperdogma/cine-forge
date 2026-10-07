@@ -220,11 +220,23 @@ def test_run_module_falls_back_to_reference_capable_image_model_for_conditioned_
 
 
 @pytest.mark.unit
-def test_run_module_defaults_storyboards_to_openai_template_grid_lane(
+@pytest.mark.parametrize(
+    "panel_count,canvas_size,canvas_aspect",
+    [(2, "1536x1024", "3:2"), (8, "1024x1536", "2:3")],
+)
+def test_run_module_defaults_storyboards_to_nano_banana_template_grid_lane(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
+    panel_count: int,
+    canvas_size: str,
+    canvas_aspect: str,
 ) -> None:
     seeded = seed_storyboard_project(tmp_path, scene_count=1)
+    plan = seeded["inputs"]["shot_plan"][0]
+    base_shot = plan["shots"][0]
+    plan["shots"] = [
+        {**base_shot, "shot_id": f"S{index:03d}"} for index in range(1, panel_count + 1)
+    ]
     calls: list[dict[str, object]] = []
 
     def fake_generate_image(
@@ -256,7 +268,7 @@ def test_run_module_defaults_storyboards_to_openai_template_grid_lane(
         params={"identity_model": "mock", "style": "clean_line"},
         context={
             "project_dir": str(seeded["project_dir"]),
-            "run_id": "storyboard-default-openai",
+            "run_id": "storyboard-default-nano-banana",
             "stage_id": "storyboards",
         },
     )
@@ -267,12 +279,14 @@ def test_run_module_defaults_storyboards_to_openai_template_grid_lane(
     storyboard = Storyboard.model_validate(storyboard_artifact["data"])
 
     assert calls
-    assert calls[0]["model"] == "gpt-image-2"
+    assert calls[0]["model"] == "gemini-nano-banana-2.1"
     assert "Panel 1" in str(calls[0]["prompt"])
     assert calls[0]["reference_image_paths"]
     assert Path(str(calls[0]["reference_image_paths"][0])).name == "grid_01_template.jpg"
-    assert calls[0]["size"] == "1536x1024"
-    assert storyboard.frames[0].cost.model == "gpt-image-2"
+    assert calls[0]["size"] == canvas_size
+    assert calls[0]["aspect_ratio"] == canvas_aspect
+    assert len(storyboard.frames) == panel_count
+    assert storyboard.frames[0].cost.model == "gemini-nano-banana-2.1"
     assert storyboard_artifact["metadata"]["annotations"]["grid_mode"] == "template"
 
 
@@ -324,7 +338,7 @@ def test_run_module_can_disable_default_storyboard_grid(
     assert len(calls) == 2
     assert "Single storyboard frame only." in str(calls[0]["prompt"])
     assert "Panel 1" not in str(calls[0]["prompt"])
-    assert storyboard.frames[0].cost.model == "gpt-image-2"
+    assert storyboard.frames[0].cost.model == "gemini-nano-banana-2.1"
     assert storyboard_artifact["metadata"]["annotations"]["grid_mode"] == "off"
 
 
@@ -358,7 +372,7 @@ def test_run_module_passes_openai_storyboard_image_size_override(
 
     result = run_module(
         inputs=seeded["inputs"],
-        params={"identity_model": "mock", "style": "clean_line"},
+        params={"identity_model": "mock", "style": "clean_line", "image_model": "gpt-image-2"},
         context={
             "project_dir": str(seeded["project_dir"]),
             "run_id": "storyboard-openai-size",
@@ -595,3 +609,44 @@ def test_sanitize_visual_text_removes_exact_text_display_cues() -> None:
     assert "whiteboard notes" not in sanitized
     assert "unlettered" in sanitized
     assert "illegible" in sanitized
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize("grid_mode,expected_refs", [("template", 13), ("off", 14)])
+def test_nano_banana_reference_cap_is_preserved_in_generated_frame_trace(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, grid_mode: str, expected_refs: int
+) -> None:
+    seeded = seed_storyboard_project(tmp_path, scene_count=1)
+    references = [f"references/ref_{index:02d}.jpg" for index in range(20)]
+    monkeypatch.setattr(
+        storyboard_generation, "reference_images_for_shot", lambda **_kwargs: references
+    )
+    calls = []
+
+    def fake_generate_image(**kwargs):
+        calls.append(kwargs)
+        return _jpeg_bytes(kwargs["size"] or "1536x1024"), kwargs["model"]
+
+    monkeypatch.setattr(storyboard_generation, "generate_image", fake_generate_image)
+    result = run_module(
+        inputs=seeded["inputs"],
+        params={"identity_model": "mock", "style": "clean_line"},
+        context={
+            "project_dir": str(seeded["project_dir"]),
+            "run_id": "storyboard-reference-limit",
+            "stage_id": "storyboards",
+            "runtime_params": {"storyboard_grid_mode": grid_mode},
+        },
+    )
+    artifact = next(a for a in result["artifacts"] if a["artifact_type"] == "storyboard")
+    storyboard = Storyboard.model_validate(artifact["data"])
+    assert calls
+    assert all(len(call["reference_image_paths"]) == 14 for call in calls)
+    assert all(references[expected_refs] not in call["prompt"] for call in calls)
+    if grid_mode == "template":
+        assert Path(calls[0]["reference_image_paths"][0]).name == "grid_01_template.jpg"
+    for frame in storyboard.frames:
+        assert frame.visual_reference_images == references
+        assert frame.direct_reference_images == references[:expected_refs]
+        assert "omitted from direct input" in frame.notes
+        assert references[expected_refs] in frame.notes

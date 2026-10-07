@@ -49,14 +49,14 @@ def design_study_failure_from_exception(
 def _provider_from_model(model: str) -> str:
     if model.startswith("gpt-image-") or model == "chatgpt-image-latest":
         return "openai"
-    if model.startswith("imagen-"):
+    if model.startswith(("imagen-", "gemini-")):
         return "google"
     return "provider"
 
 
 def _provider_label(provider: str) -> str:
     return {
-        "google": "Google Imagen",
+        "google": "Google Images",
         "openai": "OpenAI Images",
     }.get(provider, provider.title())
 

@@ -29,7 +29,8 @@ interface Props {
 
 type FilterMode = 'all' | 'selected' | 'favorites' | 'rejected'
 
-const IMAGEN_MODELS: Array<{ id: string; label: string }> = [
+const IMAGE_MODELS: Array<{ id: string; label: string }> = [
+  { id: 'gemini-nano-banana-2.1', label: 'Nano Banana 2.1' },
   { id: 'imagen-4.0-generate-001', label: 'Imagen 4' },
   { id: 'gpt-image-1', label: 'GPT-Image' },
 ]
@@ -56,7 +57,7 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
   const [positiveRefs, setPositiveRefs] = useState<string[]>([])
   const [negativeRefs, setNegativeRefs] = useState<string[]>([])
   const [count, setCount] = useState<1 | 2 | 4 | 8>(1)
-  const [model, setModel] = useState(IMAGEN_MODELS[0].id)
+  const [model, setModel] = useState(IMAGE_MODELS[0].id)
   const [filter, setFilter] = useState<FilterMode>('all')
   const [useSeedVariants, setUseSeedVariants] = useState(true)
   const [formatModalOpen, setFormatModalOpen] = useState(false)
@@ -184,7 +185,7 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
     setDirective(round.directive ?? '')
     setPositiveRefs([])
     setNegativeRefs([])
-    setModel(IMAGEN_MODELS.some(option => option.id === round.model) ? round.model : IMAGEN_MODELS[0].id)
+    setModel(IMAGE_MODELS.some(option => option.id === round.model) ? round.model : IMAGE_MODELS[0].id)
     setCount(isImageCount(round.count) ? round.count : 1)
     setUseSeedVariants(false)
   }
@@ -294,7 +295,7 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
                     negativeRefs={negativeRefChips}
                     count={count}
                     model={model}
-                    models={IMAGEN_MODELS}
+                    models={IMAGE_MODELS}
                     canGenerate={!projectLoading && !saveFormatMutation.isPending}
                     isGenerating={generateMutation.isPending || saveFormatMutation.isPending}
                     generationLabel={generationLabel}
@@ -327,7 +328,7 @@ export function DesignStudySection({ projectId, entityId, entityType }: Props) {
             negativeRefs={negativeRefChips}
             count={count}
             model={model}
-            models={IMAGEN_MODELS}
+            models={IMAGE_MODELS}
             canGenerate={!projectLoading && !saveFormatMutation.isPending}
             isGenerating={generateMutation.isPending || saveFormatMutation.isPending}
             generationLabel={generationLabel}

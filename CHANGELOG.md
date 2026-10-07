@@ -1,5 +1,16 @@
 # Changelog
 
+## [2026-10-06-03] — Use Nano Banana 2.1 for image generation (Story 230)
+
+### Changed
+- Default new storyboards, design studies and render still-image backfill to
+  Nano Banana 2.1 through native Gemini image generation. Keep explicit
+  OpenAI/Imagen choices available and align model labels/readiness probes.
+- Enforce the 14-reference limit including storyboard templates, preserving
+  selected-reference provenance and reporting references omitted by the limit.
+- Adopt directly at Cam's request; creative quality and live inference remain
+  unmeasured. Published image-output estimates exclude input/thinking charges.
+
 ## [2026-10-06-02] — Align agent staffing and completion waits
 
 ### Changed

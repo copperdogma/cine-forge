@@ -104,7 +104,7 @@ def test_refresh_classifies_live_probe_results(monkeypatch: pytest.MonkeyPatch) 
         "Script Bible model ID callability only; structured-output quality is not tested"
     )
     assert checks["openai_text_default"].status == "ok"
-    assert checks["openai_storyboard_image_default"].status == "ok"
+    assert checks["google_storyboard_image_default"].status == "auth_failed"
     assert checks["google_design_study_image_default"].status == "auth_failed"
     assert checks["openai_design_study_image_alt"].status == "ok"
     assert checks["google_render_video_default"].status == "rate_limited"
@@ -215,3 +215,29 @@ def test_google_live_smoke_rejects_wrong_nonempty_output(
 
     with pytest.raises(RuntimeError, match="expected exactly 'OK'"):
         provider_capability_probes.run_live_text_probe(spec, 3.0)
+
+
+@pytest.mark.unit
+def test_default_image_smokes_use_nano_banana_dispatch(monkeypatch: pytest.MonkeyPatch) -> None:
+    from cine_forge.services.provider_capability_smoke import _LIVE_PROBE_SPECS
+
+    captured = []
+
+    def fake_generate_image(**kwargs):
+        captured.append(kwargs)
+        return b"image", kwargs["model"]
+
+    monkeypatch.setattr(provider_capability_probes, "generate_image", fake_generate_image)
+    defaults = [
+        spec for spec in _LIVE_PROBE_SPECS
+        if spec.probe_id in {"google_storyboard_image_default", "google_design_study_image_default"}
+    ]
+    assert len(defaults) == 2
+    for spec in defaults:
+        assert spec.provider == "google"
+        assert spec.env_name == "GEMINI_API_KEY"
+        assert spec.model == "gemini-nano-banana-2.1"
+        provider_capability_probes.run_live_image_probe(spec)
+    assert len(captured) == 2
+    assert all(call["model"] == "gemini-nano-banana-2.1" for call in captured)
+    assert all(call["aspect_ratio"] == "1:1" for call in captured)

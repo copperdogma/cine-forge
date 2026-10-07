@@ -71,5 +71,5 @@ parameters:
   default_design_study_backfill_model:
     type: string
     required: false
-    default: "imagen-4.0-generate-001"
+    default: "gemini-nano-banana-2.1"
     description: "Image model used for automatic default design-study backfill."
