@@ -1,0 +1,121 @@
+{
+  "id": "resp_0a7745fbf049343a016ac6b7c7ea1087d0b635c02beb9e5550",
+  "object": "response",
+  "created_at": 1791408072,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1791408075,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "model": "gpt-6-sol",
+  "moderation": null,
+  "output": [
+    {
+      "id": "rs_0a7745fbf049343a016ac6b7c8e36487d0ae2d839993f61dc0",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqxrfLcpLMVUtSALJQcsW9wwmnJo_Ht8Rb_UnzbvWGne5dLcOZm-JvTzkqUW4jYzoWE4mZ4UHlZaenR9OTBvPXcI4QhUzpq9I_crPYQbuNWmOnXa-xKdpM1vzwrp2oYKTDREit-BfJAdadjRBMSji7QIIyloWZNWvnOXI3bDGp4v5ndhWhGpNI7cq7VECMvtQylOJ5ONrC3FMXhVfoVUl0V2FCQ4KLCkeHFqYi-tzdrI0uL4vpF_Xr5MqEV7HyDw-GoI5Zr9-CIARUv05-s36l-4tpQ200QyWdXOKMDjI-sQa4Dp0Akk9LiHzNN3RySX4MxhdnfSZgfiVdDYF7qRhPa2uNqUtPAeaR9WYKKw9Lo164Vq_6rZ_g3WdXr-72dITcTjTzbhEQz6tT6Bd86vLqvYbjpVoh4Hq5N1nqp6tFitFTNaV50QQSFLTAt24Ht9UBgpv1NHry6_TviWJvhxSjOA-oEqryjLjbzMv92qf7PNtIKX_3b6xStuhYF2sWAMXcx5Nj76kXjB9zXkMNu4niz2tEvYQqgeEOczGjBP0wsewv0e92W5ZSbfgg_ElnlKjnOk3BumfJSd_QzB1B6qvsbjTDO0h04Ft0QH0o175SRp0qGn37krkTdpKo19rUM95IjyNvQzMDz0lgUmxz0VxUdm3FNLDdHsvZ0z-2lR-dolmh-c7avmc6N6_y2u1ATmnsNCxcHWGBom01l8xKmsHwGq1q_2HNcwxnmGu6IHM5hQNQ31AUz3hYT6j7fluUuDbuMAFdEEkko7apEC4qUJUjHO0weoVlAbE4kfvvpUURsCg0djeP6_B5dfS2CQp93tnUAfh9qXU-yJfp55We4IGMvRuKfO7W7QtLp5yGJBaSedvL0D6sbYZblzxaR7nup-fMEwmDMXKr8MXcyi7sT601gZj99eCFaqTDGc-MuIOIUXXefVWOxZyudpXwcgEdV0a9QodepKP7V1B5_9k1PpwPxmEXv9Ex_CbRgwunyc-YbqAz6kv640BMwp94LOWPgLbVAipxv9OnUNW7yUP2ehCpymc_rZJcfMaEHFpj2oJ2NyH9kijwnwuDsxrPaWEDiM46oKihDrI9dCk6By_YwlTAI-y5Hc5Gl8QySzUrCf-2vmTjj8TvAiNEQU2oOuwysaDzsUO8kphKEP_EAMNnwRzeKSNBwkX7yU2bbimlOTTIvzak5kB_0XIAZ7A15BilsrZMBl2SPeo_rW9W3bOa4zXswoQNZYyAbzv6Fy-3JchUd_iqwEAWjDgUG0uazWdE8c3zFcjcjAt7w86mZRochIqPLxLFOeI5HQdZWUU0c9YWayb3zYvhzBxVBgJEowQA0jGYk_7-3vo8MSW4dQElPUyUtEzXcvINOMLaeCkhX2gQfLzCvtzW1-Ns53Lkgy5dHY-lYAwU-vFeOvdc70S6_ohw9G5V0DUhSDMGY2gWGH0HaPdd6qx7qpx31bSZjGz97YUlcSbbjurA6KWeJGrhZZyalTNX5Q==",
+      "summary": []
+    },
+    {
+      "id": "msg_0a7745fbf049343a016ac6b7ca1a5487d084425166f0a374ed",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"score\":0.84,\"reason\":\"The analysis correctly identifies the two figures, their fixed left-right positions, gradual enlargement, and intact continuity. The pale rectangle is low on the right figure rather than generally on its torso, and the reference color is teal rather than gold. Its detached/surreal tone also differs from the reference\u2019s intimate tone.\"}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "frame_review",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "score",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2077,
+    "input_tokens_details": {
+      "cache_write_tokens": 2074,
+      "cached_tokens": 0
+    },
+    "output_tokens": 129,
+    "output_tokens_details": {
+      "reasoning_tokens": 47
+    },
+    "total_tokens": 2206
+  },
+  "user": null,
+  "metadata": {}
+}

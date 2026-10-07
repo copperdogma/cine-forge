@@ -1,0 +1,82 @@
+#!/usr/bin/env python3
+"""Frozen production ScriptBible comparisons with inclusive shared ledger."""
+import argparse,json,sys,time
+from pathlib import Path
+from decimal import Decimal
+ROOT=Path(__file__).resolve().parents[2]
+sys.path[:0]=[str(ROOT/'benchmarks/providers'),str(ROOT/'benchmarks/scripts'),str(ROOT/'benchmarks/scorers')]
+import run_haiku55_campaign as campaign
+import script_bible_runtime_provider as p
+import script_bible_scorer as scorer
+import yaml
+b=campaign.base
+b.RESERVE.update(bible=Decimal('.15'),gemini=Decimal('.15'),biblejudge=Decimal('.25'))
+task=yaml.safe_load((ROOT/'benchmarks/runtime_tasks/script-bible-runtime.yaml').read_text())
+
+def test(index):
+ t=task['tests'][index];v=dict(t['vars']);ref=v['screenplay'].replace('file://','');v['screenplay']=(ROOT/'benchmarks/runtime_tasks'/ref).resolve().read_text();return {**t,'vars':v}
+
+def run(arm,index,native=False):
+ t=test(index);name=f"bible-{'native' if native else 'subject'}-{arm}-{index}";out=b.OUT/f'{name}.json'
+ if out.exists():return json.loads(out.read_text())
+ config={'model':'claude-haiku-5-5','reasoning_effort':arm,'max_tokens':8192,'request_timeout_seconds':120,'max_retries':0}
+ if arm=='gemini':config={'model':'gemini-3.5-flash-lite','thinking_level':'minimal','max_tokens':65536,'request_timeout_seconds':120,'max_retries':0}
+ # UTF8 byte bound conservatively exceeds text-token count; reserve full allowed output.
+ prompt=p.EXTRACTION_PROMPT.format(script_text=t['vars']['screenplay'])
+ reserve=(Decimal(len(prompt.encode())+10000)*Decimal('.5')+Decimal(config['max_tokens'])*Decimal('2.5'))/1000000
+ if arm=='gemini':reserve=(Decimal(len(prompt.encode())+10000)*Decimal('.3')+Decimal(65536)*Decimal('2.5'))/1000000
+ b.RESERVE['bible']=reserve
+ b.begin(name,'bible')
+ orig=p._request_json
+ def capture(payload,**kwargs):
+  b.dump(b.OUT/f'{name}-request.json',payload)
+  try:raw=orig(payload,**kwargs)
+  except Exception as e:b.dump(b.OUT/f'{name}-error.json',{'error':str(e)});raise
+  b.dump(b.OUT/f'{name}-raw.json',raw);return raw
+ p._request_json=capture
+ original_gemini=p._llm._gemini_transport
+ def capture_gemini(payload,**kwargs):
+  b.dump(b.OUT/f'{name}-request.json',payload)
+  raw=original_gemini(payload,**kwargs)
+  b.dump(b.OUT/f'{name}-raw.json',raw)
+  assert raw.get('modelVersion')=='gemini-3.5-flash-lite'
+  return raw
+ p._llm._gemini_transport=capture_gemini
+ started=time.perf_counter()
+ try:
+  if native:
+   answer,meta=p._call_haiku55(prompt=prompt,max_tokens=8192,timeout_seconds=120,effort=arm)
+   response={'output':answer.model_dump_json(),'cost':meta['estimated_cost_usd'],'latencyMs':round((time.perf_counter()-started)*1000),'metadata':meta}
+  else:response=p.call_api('runtime marker',{'config':config},{'vars':t['vars']})
+ finally:
+  p._request_json=orig
+  p._llm._gemini_transport=original_gemini
+ row={'name':name,'arm':arm,'vars':t['vars'],'response':response}
+ b.dump(out,row)
+ if response.get('error'):raise RuntimeError(response['error'])
+ p.ScriptBible.model_validate_json(response['output'])
+ b.settle(name,response['cost']);print(name,response['latencyMs'],response['cost'],flush=True)
+ return row
+
+def judge(row,index):
+ name=f"judge-bible-opus-{row['arm']}-{index}";out=b.OUT/f'{name}.json'
+ if out.exists():return json.loads(out.read_text())
+ t=test(index);rubric=t['assert'][1]['value']
+ for k,v in t['vars'].items():rubric=rubric.replace('{{'+k+'}}',str(v))
+ payload={'model':'claude-opus-4-6','max_tokens':2048,'system':'You are an impartial evaluator. Return JSON score (0 to 1) and reason. Ground judgments in the supplied source. Do not reveal chain of thought.','messages':[{'role':'user','content':'<Output>\n'+row['response']['output']+'\n</Output>\n'+rubric}],'output_config':{'format':{'type':'json_schema','schema':b.JUDGE_SCHEMA}}}
+ b.RESERVE['biblejudge']=(Decimal(len(json.dumps(payload).encode())+4096)*5+Decimal(2048)*25)/1000000
+ b.begin(name,'biblejudge');b.dump(b.OUT/f'{name}-request.json',payload)
+ raw=p._request_json(payload,timeout_seconds=120);b.dump(b.OUT/f'{name}-raw.json',raw)
+ assert raw['model']=='claude-opus-4-6' and raw['stop_reason']=='end_turn'
+ u=raw['usage'];cost=(Decimal(u['input_tokens'])*5+Decimal(u['output_tokens'])*25)/1000000;b.settle(name,cost)
+ result=json.loads(''.join(x['text'] for x in raw['content'] if x['type']=='text'));result.update(cost_usd=str(cost),usage=u);b.dump(out,result);return result
+
+if __name__=='__main__':
+ parser=argparse.ArgumentParser();parser.add_argument('mode');parser.add_argument('--arm',default='medium');parser.add_argument('--index',type=int,default=1);a=parser.parse_args()
+ if a.mode=='preflight':
+  paths=[Path(__file__),ROOT/'benchmarks/providers/script_bible_runtime_provider.py',ROOT/'benchmarks/scorers/script_bible_scorer.py',ROOT/'src/cine_forge/modules/ingest/script_bible_v1/main.py',ROOT/'src/cine_forge/schemas/script_bible.py',ROOT/'benchmarks/runtime_tasks/script-bible-runtime.yaml',ROOT/'benchmarks/input/the-mariner.md',ROOT/'tests/fixtures/ingest_inputs/open_frequency_short.fountain']
+  b.dump(ROOT/'docs/evals/haiku55-20261007-bible-freeze.json',{'files':[b.inventory(x) for x in paths],'prompts':[p.EXTRACTION_PROMPT.format(script_text=test(i)['vars']['screenplay']) for i in [0,1]],'schema':p.ScriptBible.model_json_schema(),'grouping':'independent','judge':'claude-opus-4-6 plus root source-grounded independent review','cache':False,'concurrency':1,'arms':['medium adaptive','low disabled','high adaptive'],'incumbent':'gemini-3.5-flash-lite minimal'})
+  print('zero-cost2 independent runtime prompts/schema frozen')
+ elif a.mode=='native':run(a.arm,a.index,True)
+ else:
+  row=run(a.arm,a.index);det=scorer.get_assert(row['response']['output'],{'vars':row['vars']});op=judge(row,a.index);r={'arm':a.arm,'index':a.index,'deterministic':det,'opus':op,'combined':(det['score']+op['score'])/2,'latencyMs':row['response']['latencyMs'],'cost':row['response']['cost']};b.dump(b.OUT/f'score-bible-{a.arm}-{a.index}.json',r);print(json.dumps(r),flush=True)

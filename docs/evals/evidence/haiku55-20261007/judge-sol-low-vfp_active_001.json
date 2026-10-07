@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.006411",
+  "latency_ms": 4886,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 2988,
+    "path": "output/evals/haiku55-20261007/judge-sol-low-vfp_active_001-raw.json",
+    "sha256": "42e3dd5d37c517ed69bd985fdeaa184249759fc9b32a8dc79eab61175e5664b3"
+  },
+  "reason": "Correctly identifies the two figures, navy background, pale rectangle on the right, and intact continuity. However, it misses the main observable change: both figures grow larger across the frames while remaining at nearly fixed left-right centers. Describing beige lateral drift and blue bobbing mischaracterizes that motion. The 'ominous,' 'isolation,' and 'suspicion' labels are unsupported by the visible frames; the rectangle remains beside the blue figure, but no act of holding is visible.",
+  "request_id": "resp_0ff40922502f605a016ac6b75c28fc87d093034ab22db6a502",
+  "score": 0.57,
+  "usage": {
+    "input_tokens": 2097,
+    "input_tokens_details": {
+      "cache_write_tokens": 2094,
+      "cached_tokens": 0
+    },
+    "output_tokens": 117,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 2214
+  }
+}

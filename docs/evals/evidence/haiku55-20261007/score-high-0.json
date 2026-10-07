@@ -1,0 +1,126 @@
+{
+  "arm": "high",
+  "combined_opus": 0.50165,
+  "combined_sol": 0.57665,
+  "deterministic": {
+    "pass": false,
+    "reason": "raw_score=0.5833 | overall=0.583 | uncertainty=0.400 | summary=0.67 | tone=0.00 | emotion=0.00 | color=0.67 | camera=0.00 | motion=0.67 | continuity=0.92 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached, unexpected=ominous | emotion: unexpected=hesitation, unexpected=isolation | color: teal | motion: unexpected=slow_drift | continuity: unexpected=The same two figures, including the white rectangle on the blue figure, appear in every ordered sample with consistent costume and placement.",
+    "score": 0.5833
+  },
+  "index": 0,
+  "opus": {
+    "cost_usd": "0.011905",
+    "latency_ms": 12287,
+    "model": "claude-opus-4-6",
+    "raw": {
+      "bytes": 1811,
+      "path": "output/evals/haiku55-20261007/judge-opus-high-vfp_active_001-raw.json",
+      "sha256": "860e55ba572c8b5298fc20a7d32e9c38b06d887321e2e8ca5a6fb24bf4c4778d"
+    },
+    "reason": "The output correctly identifies the two figures (tan/left and blue/right), the navy background, the white/pale rectangle on the right figure, static framing, measured motion, and intact continuity\u2014all matching the reference. However, it misses or contradicts several key observable facts: (1) It describes the figures as shifting up/down and drifting laterally ('slow_drift'), whereas the reference states they hold fixed left-right centers and enlarge across frames\u2014the enlargement is the salient observable motion, and lateral drift is not established. (2) It omits 'teal' from the color tags, only listing navy. (3) It tags tone as 'detached' and 'ominous' rather than the reference 'intimate'; this is a meaningful mismatch. (4) It tags emotions 'isolation' and 'hesitation' where the reference identifies none, which constitutes invented interpretation. (5) The evidence descriptions mention vertical and horizontal shifting but never note the enlargement of the figures, which is the primary observable change across the ordered frames. The continuity assessment is correct, and the rectangle prop is correctly tracked. Overall, the analysis gets several structural elements right but mischaracterizes the dominant motion pattern and invents tone/emotion content not supported by the frames.",
+    "request_id": "msg_011CfoaMWwmPkukpiaDhmfxr",
+    "score": 0.42,
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "inference_geo": "global",
+      "input_tokens": 926,
+      "output_tokens": 291,
+      "service_tier": "standard"
+    }
+  },
+  "response": {
+    "cached": false,
+    "cost": 0.0010302,
+    "latencyMs": 6777,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "claude-haiku-5-5",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "request_id": "msg_011CfoaM2XyVt9C1RVpwGVEj",
+      "requested_model": "claude-haiku-5-5",
+      "returned_model": "claude-haiku-5-5",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two minimalist flat-shaded figures, a tan one on the left and a light-blue one with a white rectangle at its lower body on the right, stand against a navy gradient over a dark floor. Across the samples the framing stays fixed while both figures shift slightly up and down and drift a few pixels, which reads as a subtle, unhurried motion.\",\"tone_tags\":[\"detached\",\"ominous\"],\"emotion_tags\":[\"isolation\",\"hesitation\"],\"color_tags\":[\"navy\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"slow_drift\",\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The same two figures, including the white rectangle on the blue figure, appear in every ordered sample with consistent costume and placement.\",\"The background gradient and floor line stay fixed across all five samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Tan figure stands at roughly x=170 on the left and light-blue figure with a white rectangle at its lower body stands on the right against the navy gradient.\"},{\"frame_index\":2,\"cue\":\"The tan figure's head sits higher and its body shifts slightly right compared with frame 0, while the blue figure's white rectangle stays in the same lower-body position.\"},{\"frame_index\":4,\"cue\":\"Both figures remain on the same dark floor line, with the tan figure back near its initial horizontal position and the blue figure's rectangle still visible.\"}],\"overall_confidence\":0.6}",
+    "raw": {
+      "id": "msg_011CfoaM2XyVt9C1RVpwGVEj",
+      "model": "claude-haiku-5-5",
+      "raw_envelope_bytes": 5422,
+      "raw_envelope_path": "output/evals/haiku55-20261007/subject/high/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "99e6def80d626ae61aa66e8bf525c0e4d2bc9c9d76b0398e0e989a1273339940",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 1158,
+        "output_tokens_details": {
+          "thinking_tokens": 635
+        },
+        "service_tier": "standard"
+      }
+    },
+    "tokenUsage": {
+      "completion": 1158,
+      "prompt": 4512,
+      "total": 5670
+    }
+  },
+  "sol": {
+    "cost_usd": "0.006401",
+    "latency_ms": 3257,
+    "model": "gpt-6-sol",
+    "raw": {
+      "bytes": 2922,
+      "path": "output/evals/haiku55-20261007/judge-sol-high-vfp_active_001-raw.json",
+      "sha256": "842c446cedaf9c7e8c30447ff452cddfd3aa7cf330bccb1207a0caafa1bfa06d"
+    },
+    "reason": "Correctly identifies the two figures, their colors, the pale rectangle, fixed background, and intact continuity. However, it misses the main observable change: both figures progressively enlarge while staying near fixed horizontal centers. Its claimed up-and-down drifting and the tan figure returning to its initial position are not supported by the frames. The ominous tone and isolation/hesitation emotions are also unsupported.",
+    "request_id": "resp_01fcc8715f7ff714016ac6b7953aec87d0827eb0154a25ac6f",
+    "score": 0.57,
+    "usage": {
+      "input_tokens": 2181,
+      "input_tokens_details": {
+        "cache_write_tokens": 2178,
+        "cached_tokens": 0
+      },
+      "output_tokens": 95,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 2276
+    }
+  }
+}

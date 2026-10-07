@@ -1,0 +1,485 @@
+{
+  "base_sha": "d358224da24e0ca5a6774c92287d70cf69389864",
+  "branch": "codex/haiku55-eval-20261007",
+  "status": "uncommitted bounded progressive stop",
+  "files": [
+    {
+      "path": "benchmarks/providers/script_bible_runtime_provider.py",
+      "sha256": "deb810f5d65268926a2be29fecaab517c5141beccaa0aaac9aa7ef95f226058a",
+      "bytes": 36212
+    },
+    {
+      "path": "benchmarks/providers/video_understanding_provider_anthropic.py",
+      "sha256": "c8227e48520bd5ddc47b6a490b3025b66698fbf5542939bb5c77f08e1e8c979a",
+      "bytes": 7970
+    },
+    {
+      "path": "benchmarks/results/haiku55-20261007-combined.json",
+      "sha256": "a1d2aaefa3bea008cc7c5a9424f4314956d30cc4e1085fcded70b471725301c3",
+      "bytes": 48493
+    },
+    {
+      "path": "benchmarks/scripts/run_haiku55_bible.py",
+      "sha256": "16a8ab42dc5e9aa38c1842556640fbd4c28b63c9b8bcaa2424b33c5ac94b3107",
+      "bytes": 7818
+    },
+    {
+      "path": "benchmarks/scripts/run_haiku55_campaign.py",
+      "sha256": "0fc5eaecd6d03b42d78e4f0b9c1f5e6e786a7b47a481a22fd1453c5b60828ae0",
+      "bytes": 4095
+    },
+    {
+      "path": "benchmarks/scripts/verify_haiku55_campaign.py",
+      "sha256": "28bab4c535ad24952ba810484cf989a7e0f30fb812cec888fe00f3e612cf44f7",
+      "bytes": 2683
+    },
+    {
+      "path": "docs/evals/attempts/049-haiku55-thinking-value.md",
+      "sha256": "d0874b38543768690c8359b407c899454cd1e97429e18c189852f9c9440e2198",
+      "bytes": 9682
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-native-medium-1-raw.json",
+      "sha256": "15291585381217884500b7fe4b80d8bcafe5c0d888b1484b1dccba000409d720",
+      "bytes": 6826
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-native-medium-1-request.json",
+      "sha256": "ee9da37119a7dd7598462355c85a8bca9ce1515368afd23b0d5af14acb9d964f",
+      "bytes": 11472
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-native-medium-1.json",
+      "sha256": "3a68626d0dd0f365dcc5163d1aa8f56d00fc94e15c96abc0cf7507c21bfaffc4",
+      "bytes": 10528
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-subject-gemini-1-raw.json",
+      "sha256": "3aaa6cefa0139dac840484b309bbb13cd612e2a9e36a3c32d9b7e596de225c34",
+      "bytes": 5696
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-subject-gemini-1-request.json",
+      "sha256": "16e7cf056061395e502d3784ee44efe29f7f173b9a4f7315fc9f8fc552c1ddcc",
+      "bytes": 9958
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-subject-gemini-1.json",
+      "sha256": "1a77d299884ca3dc63913810b6ea37e27ba7e78f080fa787ac0f640a78dcd45d",
+      "bytes": 9568
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-subject-high-1-raw.json",
+      "sha256": "b5efb6b96ed31ce50ce589d7ca1b8ef0cb8f5c2a816bfd27826e79a973181572",
+      "bytes": 12341
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-subject-high-1-request.json",
+      "sha256": "3aed931c66bc1d3cd97987bfbc3c8f5d906f9408e9affb80196f424e6559f2dc",
+      "bytes": 11470
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-subject-high-1.json",
+      "sha256": "249352eae0753b4f0ef9c3c44b483071ed12aa71280364862ce2fe13e8dd5335",
+      "bytes": 13687
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-subject-low-1-raw.json",
+      "sha256": "a7c51d3c650423b7beb4d84409d25b23d9bd9b4a4c5bf2d8e5bce94de45f53bd",
+      "bytes": 6058
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-subject-low-1-request.json",
+      "sha256": "a26c7034131e6a6b29fb3019095d3c10656a962966e8e4a73955e28c3621ade8",
+      "bytes": 11469
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-subject-low-1.json",
+      "sha256": "998ad5c6e8db0b8b7314fe25a0be160494d147706c0f7ff9fdbb9066e4739b13",
+      "bytes": 10495
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-subject-medium-1-raw.json",
+      "sha256": "32e25f2e9fa2641e4e5c2721fc267690f75b4f598f4e9891ea345e0671006304",
+      "bytes": 6961
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-subject-medium-1-request.json",
+      "sha256": "ee9da37119a7dd7598462355c85a8bca9ce1515368afd23b0d5af14acb9d964f",
+      "bytes": 11472
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/bible-subject-medium-1.json",
+      "sha256": "3b4aa4e8016fc53b3f33881eff0ae4ff24458c94feba2b71a5b81cd582ed70f1",
+      "bytes": 11404
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-bible-opus-gemini-1-raw.json",
+      "sha256": "b63791e0340099d1711fe029af3ee6bc9ac5e3ca6961312bcf06c8779ccb3a36",
+      "bytes": 2690
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-bible-opus-gemini-1-request.json",
+      "sha256": "37fbcb910793272320cac1f6eda832c907352e651a13ef96419c1b0ea6aca291",
+      "bytes": 11144
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-bible-opus-gemini-1.json",
+      "sha256": "3c12578945301ed83d0c733a84cdcc8007f10adb1ddbff67e457604819ad8302",
+      "bytes": 2409
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-bible-opus-high-1-raw.json",
+      "sha256": "5ea97bc9602c2784868521c9852d51d767899bc8c207ba351e790d56ddfa9850",
+      "bytes": 2430
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-bible-opus-high-1-request.json",
+      "sha256": "1fc7c7ce42974d42371e3297357013476b2340b4813ebb2ff44897c7750689e3",
+      "bytes": 15257
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-bible-opus-high-1.json",
+      "sha256": "ad53eaf47e39d5604a1510792845b0f4d0cc632679a6067f2c0bb2bcc2d5874d",
+      "bytes": 2149
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-bible-opus-low-1-raw.json",
+      "sha256": "ac755e9ce66f82daa812160f876c68a65ccdc890f13ca62ae41bbe9014c56334",
+      "bytes": 2684
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-bible-opus-low-1-request.json",
+      "sha256": "d5e2eb6d4590d4b9efd84d57e0009d34ec756984fa2198b60ac6acdcd07fdeec",
+      "bytes": 12079
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-bible-opus-low-1.json",
+      "sha256": "26a9e1346a018b5b8bbe149eca492e841445c4e56200a5d7004da837e657667d",
+      "bytes": 2404
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-bible-opus-medium-1-raw.json",
+      "sha256": "1bd3878b8efb8e7ef05154b1fe230bbc533280b7c3fbc1c5f9794f96f216c118",
+      "bytes": 2531
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-bible-opus-medium-1-request.json",
+      "sha256": "e04fbc569a006e389c4f83d28eb595f732f8e4400590adfa8565c335a91bb0ba",
+      "bytes": 12982
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-bible-opus-medium-1.json",
+      "sha256": "b048ea171b06aed074b2da1e7cb82df522db0250831993fa5259036509ecf57a",
+      "bytes": 2251
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-opus-high-vfp_active_001-raw.json",
+      "sha256": "860e55ba572c8b5298fc20a7d32e9c38b06d887321e2e8ca5a6fb24bf4c4778d",
+      "bytes": 1811
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-opus-high-vfp_active_001-request.json",
+      "sha256": "e530a21906411de0d6f1ed3d26aab6d35c8cd69cdf354e75f244a6653a9c47f2",
+      "bytes": 4021
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-opus-high-vfp_active_001.json",
+      "sha256": "621cbc8844e343ec946d224080112e949776d1fa13c5fe3527e1de1da5301f48",
+      "bytes": 1980
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-opus-low-vfp_active_001-raw.json",
+      "sha256": "0ef7000e7217ad77def125fa258870634e9b1ed343bf028b78c1ca1ac8b3547c",
+      "bytes": 1599
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-opus-low-vfp_active_001-request.json",
+      "sha256": "0d5e8e0a9b6aa9e9c0a3e3953d167aa0e1f62f3e3c0e8dce2d5bc9b888813789",
+      "bytes": 3652
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-opus-low-vfp_active_001.json",
+      "sha256": "d63bbf288f03acf82bf757bb9e2b54858760815fd6b36d23580cc714a3f018b7",
+      "bytes": 1762
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-opus-luna-vfp_active_001-raw.json",
+      "sha256": "4f7a734edc54f12d003398aa1ed3b99e29d497a9eac62532edfad4afaa6e4f96",
+      "bytes": 1510
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-opus-luna-vfp_active_001-request.json",
+      "sha256": "fd7d81b6fad7b9368a46d570023d1c54c42632b39ab830d8cdb667c907cc5c0f",
+      "bytes": 3532
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-opus-luna-vfp_active_001.json",
+      "sha256": "4af08eb96deb8c580c2352ca0355f87303b0b39188486b4268244a9e6a7b80f8",
+      "bytes": 1671
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-opus-medium-vfp_active_001-raw.json",
+      "sha256": "cddb15a3bba84d82708680a6d8fc39e1d347fe9c7feaaebea3f2d5f9ecb115ff",
+      "bytes": 1579
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-opus-medium-vfp_active_001-request.json",
+      "sha256": "32c9963b83859a819fe383f278aea0cec39d247cf1dba4fe7dd9116b934829ed",
+      "bytes": 3864
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-opus-medium-vfp_active_001.json",
+      "sha256": "59921e65d7665d702bfcd4871c68a112dd8f2aad493121688bc8736e7612b279",
+      "bytes": 1747
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-sol-high-vfp_active_001-raw.json",
+      "sha256": "842c446cedaf9c7e8c30447ff452cddfd3aa7cf330bccb1207a0caafa1bfa06d",
+      "bytes": 2922
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-sol-high-vfp_active_001-request.json",
+      "sha256": "781dd06343b67da16e7163696c43a35c9aef35f8c2e871b73476960dae753fb9",
+      "bytes": 93462
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-sol-high-vfp_active_001.json",
+      "sha256": "7aef134ebc21922ff24dec1eec3ee9bcb35da30713671e7fe696e0d53ca8c4d3",
+      "bytes": 1070
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-sol-low-vfp_active_001-raw.json",
+      "sha256": "42e3dd5d37c517ed69bd985fdeaa184249759fc9b32a8dc79eab61175e5664b3",
+      "bytes": 2988
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-sol-low-vfp_active_001-request.json",
+      "sha256": "672a4686325f61b80bf5d060f30379e9ba93afba67deb5f07956f57dfd5ee494",
+      "bytes": 93093
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-sol-low-vfp_active_001.json",
+      "sha256": "b69d8fffe348a1425b88b3d0eea0b60d865adfda6df0d7a1b86a86cc1cd9e3c1",
+      "bytes": 1135
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-sol-luna-vfp_active_001-raw.json",
+      "sha256": "f2bd1fecc91fd63382b9a0a9bab162a525e1d303db7f231fc94ab01395ce7fab",
+      "bytes": 4522
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-sol-luna-vfp_active_001-request.json",
+      "sha256": "02a822506b99c82ef03d6f6c9eff9aba0a66a508e04c8c62d3f605aa4c90bab8",
+      "bytes": 92973
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-sol-luna-vfp_active_001.json",
+      "sha256": "508c6ed6ceb7e4b8b57dbc72910c1722008aa8a655fd13c9f2b6eefe2d62fe2d",
+      "bytes": 981
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-sol-medium-vfp_active_001-raw.json",
+      "sha256": "593420118b6d810114c840e92a04dc1cff2634d97b780a4e17270094ab9fb006",
+      "bytes": 4425
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-sol-medium-vfp_active_001-request.json",
+      "sha256": "8d7a5c16a55df998a6dc7954b7c2c0e78bd9b692135c165a5488500f3458f0e3",
+      "bytes": 93305
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/judge-sol-medium-vfp_active_001.json",
+      "sha256": "f09d6d80192546ce17319425d29bd4219eb668d3284aa6de94d8bf21e4a831f4",
+      "bytes": 1015
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/ledger.json",
+      "sha256": "a5e6c6dddf62dea03b9d7dbc27cd772dc950ebdbd835847b1b5bd3558eed17ce",
+      "bytes": 4314
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/native/luna/vfp_active_001-raw-envelope.json",
+      "sha256": "d7f6f38476186570549063e868bdf20d3a1401e85565c7acea387a66138063fe",
+      "bytes": 10840
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/native/medium/vfp_active_001-raw-envelope.json",
+      "sha256": "d54335c6840028eda9da823ae2940ecb9472175b95a4fd277931f2d2d8a34708",
+      "bytes": 1886
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/native-luna-vfp_active_001-request.json",
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517",
+      "bytes": 99011
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/native-luna-vfp_active_001.json",
+      "sha256": "036aa1aec6f211b1ef2fe7e2fd257d5728941b64157bc5c1e2df1716de82161f",
+      "bytes": 3628
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/native-medium-vfp_active_001-request.json",
+      "sha256": "46ed7169260030c0de5eb4c0158edc0291ee899ee9fa4bdb9b8a630a30ce448f",
+      "bytes": 99146
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/native-medium-vfp_active_001.json",
+      "sha256": "a8630acf687668da93ce7567366df91379f0c486a6530ac6cc904a0690981039",
+      "bytes": 3855
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/root-source-review.json",
+      "sha256": "117b08c72949a45b76d5d15231ea99276fe5758f924ce733c91783f07ef87958",
+      "bytes": 2196
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/score-bible-gemini-1.json",
+      "sha256": "21db7ee6fc5ee9169ce6e01946ff7d5664c8db75a81a004c00728f5c48f7be39",
+      "bytes": 3199
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/score-bible-high-1.json",
+      "sha256": "ac9abb9669bd4f8051b5f8826adf2fde6bc3e166442ae9d266f5a15b9e8ab8d9",
+      "bytes": 2858
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/score-bible-low-1.json",
+      "sha256": "a57470e456e141e4ead577dfdbb4630411c8208341658426f94b88b60c67a304",
+      "bytes": 3171
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/score-bible-medium-1.json",
+      "sha256": "f9c9ed17f4fe8657fb1ac8e4c4022eb6cc999aeec02ea48dd2c91539d5a66775",
+      "bytes": 3021
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/score-high-0.json",
+      "sha256": "cf115c409c228f5d3be468642f8979f97817deb61adc3d1a205dc7b5ec699380",
+      "bytes": 7640
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/score-low-0.json",
+      "sha256": "bd5fa9320506ac7e6d03e1441445baccf78344a8fe747a27f9889843bad8137e",
+      "bytes": 7023
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/score-luna-0.json",
+      "sha256": "bc8dfde08bab6112970423d13f592124edc35008712aa6b46b9f1f7387236869",
+      "bytes": 6612
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/score-medium-0.json",
+      "sha256": "04bf8aa71fdae1fe4126e5bcb9f0ecab1eadd5015e2d74381db25d1d41474f86",
+      "bytes": 7084
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/subject/high/vfp_active_001-raw-envelope.json",
+      "sha256": "99e6def80d626ae61aa66e8bf525c0e4d2bc9c9d76b0398e0e989a1273339940",
+      "bytes": 5422
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/subject/low/vfp_active_001-raw-envelope.json",
+      "sha256": "a00faf080751bc560c10c41ea305e59c7aa161e0a60416a4a95c277c1107200b",
+      "bytes": 1851
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/subject/luna/vfp_active_001-raw-envelope.json",
+      "sha256": "8d4135958e429bd188283ed9ecdd843c7598248d7bfe3c349776ba9e30cb456b",
+      "bytes": 10839
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/subject/medium/vfp_active_001-raw-envelope.json",
+      "sha256": "e015ee9bf95a975b028f3b785d940ea4d85f768abd286ed06c30e8fdf070263d",
+      "bytes": 2063
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/subject-high-vfp_active_001-request.json",
+      "sha256": "ebdc4311ab61e9dcf9bb4e17fa24a0d9e9d0841f69881c169e8161bd23f5041d",
+      "bytes": 99144
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/subject-high-vfp_active_001.json",
+      "sha256": "679c828ad200e8f236252742e57fa58a606c980fc39fd3a882ffd0d395c850f5",
+      "bytes": 4177
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/subject-low-vfp_active_001-request.json",
+      "sha256": "2ce06f3d4a3dd000c03813636c1a62f5575a8e0f4c4e86893a4e61bc9a9dab01",
+      "bytes": 99143
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/subject-low-vfp_active_001.json",
+      "sha256": "52b83bb32101e40ef4207bc697bd505552938271b2b1ff6f60dec9b641e943ba",
+      "bytes": 3813
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/subject-luna-vfp_active_001-request.json",
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517",
+      "bytes": 99011
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/subject-luna-vfp_active_001.json",
+      "sha256": "876ef92d00f0891bfeed799a58e6b9b0e0e3ee476b87a2a77e51efea05d9531c",
+      "bytes": 3728
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/subject-medium-vfp_active_001-request.json",
+      "sha256": "46ed7169260030c0de5eb4c0158edc0291ee899ee9fa4bdb9b8a630a30ce448f",
+      "bytes": 99146
+    },
+    {
+      "path": "docs/evals/evidence/haiku55-20261007/subject-medium-vfp_active_001.json",
+      "sha256": "4975414d5b6c364f44cbba379b9c2c9cfe2498aa0eb6560627ca4a03c5b00f88",
+      "bytes": 4034
+    },
+    {
+      "path": "docs/evals/haiku55-20261007-bible-freeze.json",
+      "sha256": "6c758ee24d8bbd94804a6e3f4c240ccf6e9fa63e6743d596f868fa9da17ab623",
+      "bytes": 30992
+    },
+    {
+      "path": "docs/evals/haiku55-20261007-freeze.json",
+      "sha256": "d6e50e21e2d19fc1d483fb83889a7edd0b841aec73cfd23a2afeb77ddfcef948",
+      "bytes": 38380
+    },
+    {
+      "path": "docs/evals/snapshots/haiku55-20261007/run_haiku55_bible-pre-gemini-capture.py.txt",
+      "sha256": "69460c85f9b2fcb80627a71376543493574ffed774c0e78fee8021c7d074d258",
+      "bytes": 5560
+    },
+    {
+      "path": "docs/evals/snapshots/haiku55-20261007/run_haiku55_bible.py.txt",
+      "sha256": "05a02f981f6351a346060165cce17a10e3f0c0616040f5ea219298c94092e7a3",
+      "bytes": 6000
+    },
+    {
+      "path": "docs/evals/snapshots/haiku55-20261007/run_haiku55_campaign.py.txt",
+      "sha256": "7d3693997100cfc5da57b076d818dc4c2345923794db995e687d17b25c8ae4ce",
+      "bytes": 3272
+    },
+    {
+      "path": "docs/evals/snapshots/haiku55-20261007/script_bible_runtime_provider.py.txt",
+      "sha256": "8fcff9d1e4c5cd12fc29832d4d2c065932919adcf20fbf71723fb92a6ef8b72f",
+      "bytes": 36341
+    },
+    {
+      "path": "docs/evals/snapshots/haiku55-20261007/video_understanding_provider_anthropic.py.txt",
+      "sha256": "c61da20217676123f5e46ad9f0dacb95cc7b813336dfd6e3f85e38f17a365a9d",
+      "bytes": 7808
+    },
+    {
+      "path": "docs/stories/story-231-haiku55-thinking-value-evaluation.md",
+      "sha256": "c6ae5826204e9d515a5799a986fd225bacfa51fb0c6f7ab9ac22b2e0fb456545",
+      "bytes": 3488
+    },
+    {
+      "path": "tests/unit/test_video_understanding_haiku55_contract.py",
+      "sha256": "8b0877e56a23bd3d3298515f65ec869b4963f4b50a773990a5f7aabc0384d82b",
+      "bytes": 3761
+    }
+  ],
+  "offline_verify": "python benchmarks/scripts/verify_haiku55_campaign.py",
+  "provider_spend_estimated_usd": "0.190395745",
+  "unknown_exposure_usd": "0"
+}

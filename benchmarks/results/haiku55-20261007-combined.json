@@ -1,0 +1,827 @@
+{
+  "date": "2026-10-07",
+  "base": "d358224",
+  "cap_usd": "3",
+  "ledger": [
+    {
+      "accounted_usd": "0.0006617000000000001",
+      "arm": "medium",
+      "estimated": true,
+      "name": "native-medium-vfp_active_001",
+      "reservation_usd": "0.02024",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0006887000000000001",
+      "arm": "medium",
+      "estimated": true,
+      "name": "subject-medium-vfp_active_001",
+      "reservation_usd": "0.02024",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.010565",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-medium-vfp_active_001",
+      "reservation_usd": "0.0756",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0065735",
+      "arm": "sol",
+      "estimated": true,
+      "name": "judge-sol-medium-vfp_active_001",
+      "reservation_usd": "0.09096",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0006536000000000001",
+      "arm": "low",
+      "estimated": true,
+      "name": "subject-low-vfp_active_001",
+      "reservation_usd": "0.02024",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01055",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-low-vfp_active_001",
+      "reservation_usd": "0.0756",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.006411",
+      "arm": "sol",
+      "estimated": true,
+      "name": "judge-sol-low-vfp_active_001",
+      "reservation_usd": "0.09096",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0014328",
+      "arm": "bible",
+      "estimated": true,
+      "name": "bible-native-medium-1",
+      "reservation_usd": "0.028039",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0010302",
+      "arm": "high",
+      "estimated": true,
+      "name": "subject-high-vfp_active_001",
+      "reservation_usd": "0.02024",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.011905",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-high-vfp_active_001",
+      "reservation_usd": "0.0756",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.006401",
+      "arm": "sol",
+      "estimated": true,
+      "name": "judge-sol-high-vfp_active_001",
+      "reservation_usd": "0.09096",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0014643",
+      "arm": "bible",
+      "estimated": true,
+      "name": "bible-subject-medium-1",
+      "reservation_usd": "0.028039",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.000569175",
+      "arm": "luna",
+      "estimated": true,
+      "name": "native-luna-vfp_active_001",
+      "reservation_usd": "0.0032",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.026655",
+      "arm": "biblejudge",
+      "estimated": true,
+      "name": "judge-bible-opus-medium-1",
+      "reservation_usd": "0.135525",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.00023967000000000001",
+      "arm": "luna",
+      "estimated": true,
+      "name": "subject-luna-vfp_active_001",
+      "reservation_usd": "0.0032",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01104",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_001",
+      "reservation_usd": "0.0756",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0013002",
+      "arm": "bible",
+      "estimated": true,
+      "name": "bible-subject-low-1",
+      "reservation_usd": "0.028039",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.006481",
+      "arm": "sol",
+      "estimated": true,
+      "name": "judge-sol-luna-vfp_active_001",
+      "reservation_usd": "0.09096",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.026475",
+      "arm": "biblejudge",
+      "estimated": true,
+      "name": "judge-bible-opus-low-1",
+      "reservation_usd": "0.13101",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0022213000000000003",
+      "arm": "bible",
+      "estimated": true,
+      "name": "bible-subject-high-1",
+      "reservation_usd": "0.028039",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0030376",
+      "arm": "bible",
+      "estimated": true,
+      "name": "bible-subject-gemini-1",
+      "reservation_usd": "0.1683754",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.02571",
+      "arm": "biblejudge",
+      "estimated": true,
+      "name": "judge-bible-opus-gemini-1",
+      "reservation_usd": "0.126335",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.02833",
+      "arm": "biblejudge",
+      "estimated": true,
+      "name": "judge-bible-opus-high-1",
+      "reservation_usd": "0.1469",
+      "state": "settled"
+    }
+  ],
+  "scores": [
+    {
+      "arm": "gemini",
+      "combined": 0.7599499999999999,
+      "cost": 0.0030376,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.8833 | act_boundary_grounding=1.00 | act_structure=1.00 | confidence_quality=1.00 | conflict_grounding=0.50 | field_completeness=1.00 | full_source_coverage=0.67 | genre_tone_grounding=1.00 | journey_grounding=1.00 | json_valid=1.00 | logline_grounding=0.67 | setting_grounding=0.50 | synopsis_grounding=1.00 | theme_evidence_grounding=0.33 | themes=1.00 | title_correct=1.00 | unsupported_claims=1.00 | Required story events missing: the tower signal carries the north shelter plea | Theme evidence is not grounded in the source screenplay",
+        "score": 0.6999
+      },
+      "index": 1,
+      "latencyMs": 5525,
+      "opus": {
+        "cost_usd": "0.02571",
+        "reason": "Overall the bible is a faithful, schema-compliant, and production-useful distillation of the screenplay. Strengths: (1) All required JSON keys are present at every level with no extra keys. (2) The logline, synopsis, narrative arc, protagonist journey, central conflict, and setting overview accurately reflect the screenplay's content. (3) Terminal beats are preserved: Comet's return and the ON AIR sign steadying are both captured. (4) Themes are specific and evidence lines are traceable to actual screenplay moments. (5) Genre 'Drama' and tone 'Gritty, hopeful, and intimate' are reasonable descriptors. Minor issues that prevent a higher score: (a) In Act 1, the turning point says 'Kell returned from the dangerous bridge with a portable antenna,' but the screenplay does not say Kell went to the bridge to get the antenna\u2014he simply reports the bridge is closed and arrives with the antenna. The conflation is a small inaccuracy. (b) The turning point 'The team braves the stormy catwalk to rig the antenna' attributes this to the full team, but in the screenplay only Aria and Noah go up; Kell and June stay behind. (c) The synopsis states Kell 'braves the dangerous weather to secure a makeshift antenna on a water tower,' but in the screenplay it is Aria and Noah who climb the water tower. This is a material factual error about who does what. (d) Act 2's start and end scene are both listed as 'INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN,' which is technically correct for the single scene but slightly odd as an act boundary. (e) The synopsis mentions 'housing survivors in the high school gym' as something the station coordinates; the screenplay shows the gym already functioning as a shelter, not that the radio team set it up. These inaccuracies, especially misattributing the water tower climb to Kell instead of Aria and Noah, are notable factual errors but do not rise to the level of inventing plot outcomes or endings. The bible remains broadly trustworthy but requires corrections on character action attribution.",
+        "score": 0.82,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 2682,
+          "output_tokens": 492,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "arm": "high",
+      "combined": 0.77495,
+      "cost": 0.0022213000000000003,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.9692 | act_boundary_grounding=1.00 | act_structure=1.00 | confidence_quality=1.00 | conflict_grounding=1.00 | field_completeness=1.00 | full_source_coverage=1.00 | genre_tone_grounding=1.00 | journey_grounding=1.00 | json_valid=1.00 | logline_grounding=0.67 | setting_grounding=1.00 | synopsis_grounding=1.00 | theme_evidence_grounding=0.92 | themes=1.00 | title_correct=1.00 | unsupported_claims=1.00 | Theme evidence is not grounded in the source screenplay",
+        "score": 0.6999
+      },
+      "index": 1,
+      "latencyMs": 19381,
+      "opus": {
+        "cost_usd": "0.02833",
+        "reason": "The bible is highly faithful to the screenplay. Logline, synopsis, setting, and central conflict all accurately reflect the source material. Both terminal beats (Comet's return and the ON AIR sign steadying as the team settles back to work) are present and correctly described. The act structure maps cleanly onto the screenplay's four slug lines (studio night, water tower, gym, studio morning), with Act 2 covering the gym and Act 3 covering the morning studio. Turning points are all grounded in actual screenplay moments. Theme quotations are accurate and traceable to the source. Genre ('Disaster Drama with Ensemble Comedy') and tone ('Warm, urgent, and quietly humorous') are well-supported. The schema is correct with all required fields and no extra keys at any level. Minor deductions: (1) The synopsis adds a small embellishment about 'bread and wet coats' being described as the studio being 'warm,' which is a slight interpretation but not a contradiction. (2) The synopsis says the crew 'hangs a sign reading OPEN FREQUENCY and returns to air' \u2014 in the screenplay, June tapes the sign, and the team is already in the studio, so 'returns to air' slightly overstates what's shown. (3) The protagonist journey characterizes Aria's arc as moving from technical focus to community awareness, which is a reasonable reading but somewhat interpretive given the screenplay's brevity. (4) Act 2's end_scene is listed as the same as its start_scene, which is technically correct since the gym sequence is one continuous scene, but slightly awkward. (5) The narrative arc description is accurate and doesn't invent resolution beyond what the screenplay shows. Overall, the bible is a reliable production reference with no material contradictions or hallucinated outcomes.",
+        "score": 0.85,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 3651,
+          "output_tokens": 403,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "arm": "low",
+      "combined": 0.7599499999999999,
+      "cost": 0.0013002,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.9122 | act_boundary_grounding=0.00 | act_structure=1.00 | confidence_quality=1.00 | conflict_grounding=1.00 | field_completeness=1.00 | full_source_coverage=1.00 | genre_tone_grounding=1.00 | journey_grounding=1.00 | json_valid=1.00 | logline_grounding=0.67 | setting_grounding=1.00 | synopsis_grounding=1.00 | theme_evidence_grounding=0.78 | themes=1.00 | title_correct=1.00 | unsupported_claims=1.00 | Act boundaries do not partition the exact source headings | Theme evidence is not grounded in the source screenplay",
+        "score": 0.6999
+      },
+      "index": 1,
+      "latencyMs": 12804,
+      "opus": {
+        "cost_usd": "0.026475",
+        "reason": "The bible is schema-compliant with all required keys present and no extra keys at any level. Terminal beats are preserved: Maya's missing-dog plea, Comet's morning return under the vending machine, the ON AIR sign steadying to a solid red glow, and the crew settling back to work. No invented ending or material contradiction with the screenplay. All direct quotations are accurate and traceable to the source. Act boundaries align reasonably with the screenplay's scene headings, though Act 2 starting at the shelter and ending at the studio morning scene blurs into Act 3 (both end in the same INT. COMMUNITY RADIO STUDIO - MORNING location), making the act division somewhat arbitrary rather than clearly delineated. Minor issues: (1) The synopsis says 'they pick up a desperate call for insulin' at the water tower, which is accurate, but adds 'blankets from the north shelter' slightly rephrasing\u2014acceptable. (2) The synopsis says 'storm residue has cleared' but the screenplay says 'pale sunlight cuts through the storm residue on the windows,' meaning residue is still present, not cleared\u2014a minor inaccuracy. (3) The protagonist journey claims Aria 'begins skeptical of a miracle,' but in the screenplay she says 'Give me ten minutes and one miracle,' which is more hopeful/determined than skeptical\u2014a slight mischaracterization. (4) Comet was found 'under the vending machine' per the screenplay, but the act structure says 'recovered from the vending machine in the band room'\u2014combining two details accurately. (5) The logline and synopsis are faithful overall but slightly embellish the narrative scope. (6) Genre 'Drama' is accurate but could note the comedy/warmth more explicitly; tone 'Warm, urgent and quietly humorous' captures it well. (7) One theme evidence line ('Noah longing for boring weather and boring jobs') paraphrases rather than quotes but is substantively correct. Overall the bible is a reliable production reference with only minor inaccuracies that don't amount to hard failures.",
+        "score": 0.82,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 2925,
+          "output_tokens": 474,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "arm": "medium",
+      "combined": 0.7599499999999999,
+      "cost": 0.0014643,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.8978 | act_boundary_grounding=0.00 | act_structure=1.00 | confidence_quality=1.00 | conflict_grounding=1.00 | field_completeness=1.00 | full_source_coverage=1.00 | genre_tone_grounding=1.00 | journey_grounding=0.50 | json_valid=1.00 | logline_grounding=0.67 | setting_grounding=1.00 | synopsis_grounding=1.00 | theme_evidence_grounding=0.89 | themes=1.00 | title_correct=1.00 | unsupported_claims=1.00 | Act boundaries do not partition the exact source headings | Theme evidence is not grounded in the source screenplay",
+        "score": 0.6999
+      },
+      "index": 1,
+      "latencyMs": 12338,
+      "opus": {
+        "cost_usd": "0.026655",
+        "reason": "The bible is largely faithful to the screenplay and covers its key beats, characters, settings, and themes without material contradiction. Terminal beats are correctly captured: Maya's dog plea leads to Comet's morning return, and the ON AIR sign steadies as the crew settles back to work. Schema is exactly correct with all required fields and no extra keys. Themes are specific and quotes are accurate or very close paraphrases from the source. Genre/tone labels (Drama, warm/hopeful/lightly comedic with storm urgency) are well-supported. However, there are some issues: (1) Act 3's turning point 'June refuses to repeat the music too often, choosing to keep the broadcast fresh' slightly mischaracterizes June's line ('No. Once is joy. Twice is branding.') \u2014 she's not refusing to repeat it 'too often' but rather declining to put it on repeat at all, and the framing as 'keeping the broadcast fresh' is a mild distortion. (2) Act 3 turning point about taping the OPEN FREQUENCY sign actually happens in the morning scene which also contains Act 2's resolution (Maya returning with Comet), creating slight act boundary confusion \u2014 the sign-taping and Comet's return and the morning bulletin all happen in the same scene, yet they're split across Acts 2 and 3. (3) The protagonist journey focuses on Aria, which is reasonable but slightly overstated \u2014 the screenplay doesn't strongly show an individual-to-collective arc for Aria specifically; she's collaborative from the start. (4) The synopsis is accurate but somewhat condensed, missing minor details like the bread Kell brings or Noah's 'DAY TWO' notebook label. (5) The logline adds 'racing to keep shelters supplied' which slightly embellishes \u2014 the crew broadcasts information but doesn't directly supply shelters. These are minor issues that don't rise to hard failures but prevent a higher score.",
+        "score": 0.82,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 3126,
+          "output_tokens": 441,
+          "service_tier": "standard"
+        }
+      }
+    },
+    {
+      "arm": "high",
+      "combined_opus": 0.50165,
+      "combined_sol": 0.57665,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.5833 | overall=0.583 | uncertainty=0.400 | summary=0.67 | tone=0.00 | emotion=0.00 | color=0.67 | camera=0.00 | motion=0.67 | continuity=0.92 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached, unexpected=ominous | emotion: unexpected=hesitation, unexpected=isolation | color: teal | motion: unexpected=slow_drift | continuity: unexpected=The same two figures, including the white rectangle on the blue figure, appear in every ordered sample with consistent costume and placement.",
+        "score": 0.5833
+      },
+      "index": 0,
+      "opus": {
+        "cost_usd": "0.011905",
+        "latency_ms": 12287,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1811,
+          "path": "output/evals/haiku55-20261007/judge-opus-high-vfp_active_001-raw.json",
+          "sha256": "860e55ba572c8b5298fc20a7d32e9c38b06d887321e2e8ca5a6fb24bf4c4778d"
+        },
+        "reason": "The output correctly identifies the two figures (tan/left and blue/right), the navy background, the white/pale rectangle on the right figure, static framing, measured motion, and intact continuity\u2014all matching the reference. However, it misses or contradicts several key observable facts: (1) It describes the figures as shifting up/down and drifting laterally ('slow_drift'), whereas the reference states they hold fixed left-right centers and enlarge across frames\u2014the enlargement is the salient observable motion, and lateral drift is not established. (2) It omits 'teal' from the color tags, only listing navy. (3) It tags tone as 'detached' and 'ominous' rather than the reference 'intimate'; this is a meaningful mismatch. (4) It tags emotions 'isolation' and 'hesitation' where the reference identifies none, which constitutes invented interpretation. (5) The evidence descriptions mention vertical and horizontal shifting but never note the enlargement of the figures, which is the primary observable change across the ordered frames. The continuity assessment is correct, and the rectangle prop is correctly tracked. Overall, the analysis gets several structural elements right but mischaracterizes the dominant motion pattern and invents tone/emotion content not supported by the frames.",
+        "request_id": "msg_011CfoaMWwmPkukpiaDhmfxr",
+        "score": 0.42,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 926,
+          "output_tokens": 291,
+          "service_tier": "standard"
+        }
+      },
+      "response": {
+        "cached": false,
+        "cost": 0.0010302,
+        "latencyMs": 6777,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "dialogue_confession_push_in",
+          "cost_estimated": true,
+          "evaluation_id": "vfp_active_001",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+            "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+            "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+            "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+            "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+          ],
+          "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "claude-haiku-5-5",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "anthropic",
+          "request_id": "msg_011CfoaM2XyVt9C1RVpwGVEj",
+          "requested_model": "claude-haiku-5-5",
+          "returned_model": "claude-haiku-5-5",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two minimalist flat-shaded figures, a tan one on the left and a light-blue one with a white rectangle at its lower body on the right, stand against a navy gradient over a dark floor. Across the samples the framing stays fixed while both figures shift slightly up and down and drift a few pixels, which reads as a subtle, unhurried motion.\",\"tone_tags\":[\"detached\",\"ominous\"],\"emotion_tags\":[\"isolation\",\"hesitation\"],\"color_tags\":[\"navy\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"slow_drift\",\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The same two figures, including the white rectangle on the blue figure, appear in every ordered sample with consistent costume and placement.\",\"The background gradient and floor line stay fixed across all five samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Tan figure stands at roughly x=170 on the left and light-blue figure with a white rectangle at its lower body stands on the right against the navy gradient.\"},{\"frame_index\":2,\"cue\":\"The tan figure's head sits higher and its body shifts slightly right compared with frame 0, while the blue figure's white rectangle stays in the same lower-body position.\"},{\"frame_index\":4,\"cue\":\"Both figures remain on the same dark floor line, with the tan figure back near its initial horizontal position and the blue figure's rectangle still visible.\"}],\"overall_confidence\":0.6}",
+        "raw": {
+          "id": "msg_011CfoaM2XyVt9C1RVpwGVEj",
+          "model": "claude-haiku-5-5",
+          "raw_envelope_bytes": 5422,
+          "raw_envelope_path": "output/evals/haiku55-20261007/subject/high/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "99e6def80d626ae61aa66e8bf525c0e4d2bc9c9d76b0398e0e989a1273339940",
+          "stop_reason": "end_turn",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 4512,
+            "output_tokens": 1158,
+            "output_tokens_details": {
+              "thinking_tokens": 635
+            },
+            "service_tier": "standard"
+          }
+        },
+        "tokenUsage": {
+          "completion": 1158,
+          "prompt": 4512,
+          "total": 5670
+        }
+      },
+      "sol": {
+        "cost_usd": "0.006401",
+        "latency_ms": 3257,
+        "model": "gpt-6-sol",
+        "raw": {
+          "bytes": 2922,
+          "path": "output/evals/haiku55-20261007/judge-sol-high-vfp_active_001-raw.json",
+          "sha256": "842c446cedaf9c7e8c30447ff452cddfd3aa7cf330bccb1207a0caafa1bfa06d"
+        },
+        "reason": "Correctly identifies the two figures, their colors, the pale rectangle, fixed background, and intact continuity. However, it misses the main observable change: both figures progressively enlarge while staying near fixed horizontal centers. Its claimed up-and-down drifting and the tan figure returning to its initial position are not supported by the frames. The ominous tone and isolation/hesitation emotions are also unsupported.",
+        "request_id": "resp_01fcc8715f7ff714016ac6b7953aec87d0827eb0154a25ac6f",
+        "score": 0.57,
+        "usage": {
+          "input_tokens": 2181,
+          "input_tokens_details": {
+            "cache_write_tokens": 2178,
+            "cached_tokens": 0
+          },
+          "output_tokens": 95,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2276
+        }
+      }
+    },
+    {
+      "arm": "low",
+      "combined_opus": 0.46530000000000005,
+      "combined_sol": 0.5253,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.4806 | overall=0.481 | uncertainty=0.400 | summary=0.67 | tone=0.00 | emotion=0.00 | color=0.50 | camera=0.00 | motion=0.00 | continuity=1.00 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached, unexpected=ominous | emotion: unexpected=isolation, unexpected=suspicion | color: teal, unexpected=desaturated | motion: measured, unexpected=slow_drift, unexpected=stillness",
+        "score": 0.4806
+      },
+      "index": 0,
+      "opus": {
+        "cost_usd": "0.01055",
+        "latency_ms": 8907,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1599,
+          "path": "output/evals/haiku55-20261007/judge-opus-low-vfp_active_001-raw.json",
+          "sha256": "0ef7000e7217ad77def125fa258870634e9b1ed343bf028b78c1ca1ac8b3547c"
+        },
+        "reason": "The summary correctly identifies two figures (beige/left, blue/right) with a white/pale rectangle on the right figure against a navy background, and correctly notes continuity as intact with the rectangle remaining consistent. However, the model misses the key observable change: both figures enlarge across the ordered frames, instead describing only 'slight shifts' and 'marginal bobbing.' The tone is tagged as 'detached' and 'ominous' versus the reference 'intimate,' and emotion tags ('isolation','suspicion') are invented with no grounding\u2014the reference specifies none. Color tags miss 'teal' and include 'desaturated' which is not well-supported. Motion is described as 'stillness' and 'slow_drift' rather than the observable figure enlargement ('measured'). The motion_tags fail to capture the scaling/enlargement that is the primary observable motion. Audio fields are empty, which is correct. Overall, while basic scene elements are identified, the central observable phenomenon (figure enlargement) is missed, tone/emotion are fabricated, and motion description is inaccurate.",
+        "request_id": "msg_011CfoaHZ1gCtpzuVC32ypsL",
+        "score": 0.45,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 840,
+          "output_tokens": 254,
+          "service_tier": "standard"
+        }
+      },
+      "response": {
+        "cached": false,
+        "cost": 0.0006536000000000001,
+        "latencyMs": 5019,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "dialogue_confession_push_in",
+          "cost_estimated": true,
+          "evaluation_id": "vfp_active_001",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+            "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+            "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+            "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+            "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+          ],
+          "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "claude-haiku-5-5",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "anthropic",
+          "request_id": "msg_011CfoaHEmKjpRkaCJ2orUix",
+          "requested_model": "claude-haiku-5-5",
+          "returned_model": "claude-haiku-5-5",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simple flat figures stand on a dark floor against a navy gradient background, one beige and one light blue holding a white rectangle. Across the ordered samples the beige figure shifts slightly and the blue figure bobs marginally, with no clear scene change.\",\"tone_tags\":[\"detached\",\"ominous\"],\"emotion_tags\":[\"isolation\",\"suspicion\"],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"stillness\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both figures and the white rectangle remain in consistent positions across all five samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Beige figure on left and light blue figure holding a white rectangle on right against a navy gradient background\"},{\"frame_index\":2,\"cue\":\"Same two figures and white rectangle present with the frame framing unchanged\"},{\"frame_index\":4,\"cue\":\"Blue figure and white rectangle remain in the same right-side position with only minor shifts in the beige figure\"}],\"overall_confidence\":0.6}",
+        "raw": {
+          "id": "msg_011CfoaHEmKjpRkaCJ2orUix",
+          "model": "claude-haiku-5-5",
+          "raw_envelope_bytes": 1851,
+          "raw_envelope_path": "output/evals/haiku55-20261007/subject/low/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "a00faf080751bc560c10c41ea305e59c7aa161e0a60416a4a95c277c1107200b",
+          "stop_reason": "end_turn",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 4511,
+            "output_tokens": 405,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard"
+          }
+        },
+        "tokenUsage": {
+          "completion": 405,
+          "prompt": 4511,
+          "total": 4916
+        }
+      },
+      "sol": {
+        "cost_usd": "0.006411",
+        "latency_ms": 4886,
+        "model": "gpt-6-sol",
+        "raw": {
+          "bytes": 2988,
+          "path": "output/evals/haiku55-20261007/judge-sol-low-vfp_active_001-raw.json",
+          "sha256": "42e3dd5d37c517ed69bd985fdeaa184249759fc9b32a8dc79eab61175e5664b3"
+        },
+        "reason": "Correctly identifies the two figures, navy background, pale rectangle on the right, and intact continuity. However, it misses the main observable change: both figures grow larger across the frames while remaining at nearly fixed left-right centers. Describing beige lateral drift and blue bobbing mischaracterizes that motion. The 'ominous,' 'isolation,' and 'suspicion' labels are unsupported by the visible frames; the rectangle remains beside the blue figure, but no act of holding is visible.",
+        "request_id": "resp_0ff40922502f605a016ac6b75c28fc87d093034ab22db6a502",
+        "score": 0.57,
+        "usage": {
+          "input_tokens": 2097,
+          "input_tokens_details": {
+            "cache_write_tokens": 2094,
+            "cached_tokens": 0
+          },
+          "output_tokens": 117,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2214
+        }
+      }
+    },
+    {
+      "arm": "luna",
+      "combined_opus": 0.765,
+      "combined_sol": 0.7949999999999999,
+      "deterministic": {
+        "pass": true,
+        "reason": "overall=0.750 | uncertainty=0.130 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.50 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached, unexpected=surreal | color: teal, unexpected=gold | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "score": 0.75
+      },
+      "index": 0,
+      "opus": {
+        "cost_usd": "0.01104",
+        "latency_ms": 8915,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1510,
+          "path": "output/evals/haiku55-20261007/judge-opus-luna-vfp_active_001-raw.json",
+          "sha256": "4f7a734edc54f12d003398aa1ed3b99e29d497a9eac62532edfad4afaa6e4f96"
+        },
+        "reason": "The summary correctly captures two figures standing apart on a dark ground with a blue background, with a rectangle on the right figure's torso, and both figures enlarging while feet remain fixed. However, there are notable mismatches: (1) Tone is 'detached/surreal' vs reference 'intimate' - this is a clear mismatch. (2) Color tags include 'gold' instead of 'teal' - the reference says navy/teal, but the output says navy/gold. The 'pale tan' description of the left figure might justify gold loosely, but the reference specifies teal as a key color. (3) The evidence is grounded in frames 0, 2, and 4, which is reasonable for 5 ordered frames, but it only references 3 of 5 frames. (4) Audio fields are empty, which is correct. (5) Motion tag 'measured' matches reference. (6) Continuity 'intact' matches reference. (7) Camera 'static' - reference says camera is excluded from scoring so this doesn't penalize. The tone mismatch and color mismatch together bring the score below the 0.8 threshold.",
+        "request_id": "msg_011CfoaRVPNYezx1WyGj5Ad4",
+        "score": 0.78,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 818,
+          "output_tokens": 278,
+          "service_tier": "standard"
+        }
+      },
+      "response": {
+        "cached": false,
+        "cost": 0.00023967000000000001,
+        "latencyMs": 5311,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "dialogue_confession_push_in",
+          "cost_estimated": true,
+          "evaluation_id": "vfp_active_001",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+            "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+            "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+            "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+            "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+          ],
+          "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "gpt-6-luna",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "openai",
+          "request_id": "resp_0c98258c794b04da016ac6b7b9705c87d0a34423f16f0c089e",
+          "requested_model": "gpt-6-luna",
+          "returned_model": "gpt-6-luna",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified human-like figures stand apart on a dark horizontal ground against a deep blue background; the blue figure has a small outlined rectangle on its torso. Across the samples, both figures subtly enlarge upward while their feet and the background remain fixed.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"gold\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A pale tan figure stands at left and a light-blue figure with an outlined torso rectangle stands at right.\"},{\"frame_index\":2,\"cue\":\"Both figures retain their positions above the dark ground, with the same outlined rectangle on the blue figure.\"},{\"frame_index\":4,\"cue\":\"The figures extend higher and appear slightly wider than in frame 0, while their feet remain aligned with the ground.\"}],\"overall_confidence\":0.87}",
+        "raw": {
+          "cache_write_count_known": true,
+          "id": "resp_0c98258c794b04da016ac6b7b9705c87d0a34423f16f0c089e",
+          "model": "gpt-6-luna",
+          "raw_envelope_bytes": 10839,
+          "raw_envelope_path": "output/evals/haiku55-20261007/subject/luna/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "8d4135958e429bd188283ed9ecdd843c7598248d7bfe3c349776ba9e30cb456b",
+          "service_tier": "default",
+          "status": "completed",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 2887
+            },
+            "output_tokens": 421,
+            "output_tokens_details": {
+              "reasoning_tokens": 193
+            },
+            "total_tokens": 3311
+          }
+        },
+        "tokenUsage": {
+          "completion": 228,
+          "completionDetails": {
+            "reasoning": 193
+          },
+          "prompt": 2890,
+          "total": 3311
+        }
+      },
+      "sol": {
+        "cost_usd": "0.006481",
+        "latency_ms": 4339,
+        "model": "gpt-6-sol",
+        "raw": {
+          "bytes": 4522,
+          "path": "output/evals/haiku55-20261007/judge-sol-luna-vfp_active_001-raw.json",
+          "sha256": "f2bd1fecc91fd63382b9a0a9bab162a525e1d303db7f231fc94ab01395ce7fab"
+        },
+        "reason": "The analysis correctly identifies the two figures, their fixed left-right positions, gradual enlargement, and intact continuity. The pale rectangle is low on the right figure rather than generally on its torso, and the reference color is teal rather than gold. Its detached/surreal tone also differs from the reference\u2019s intimate tone.",
+        "request_id": "resp_0a7745fbf049343a016ac6b7c7ea1087d0b635c02beb9e5550",
+        "score": 0.84,
+        "usage": {
+          "input_tokens": 2077,
+          "input_tokens_details": {
+            "cache_write_tokens": 2074,
+            "cached_tokens": 0
+          },
+          "output_tokens": 129,
+          "output_tokens_details": {
+            "reasoning_tokens": 47
+          },
+          "total_tokens": 2206
+        }
+      }
+    },
+    {
+      "arm": "medium",
+      "combined_opus": 0.46530000000000005,
+      "combined_sol": 0.5303,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.4806 | overall=0.481 | uncertainty=0.300 | summary=0.67 | tone=0.00 | emotion=0.00 | color=0.50 | camera=0.00 | motion=0.00 | continuity=1.00 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | color: teal, unexpected=desaturated | motion: measured, unexpected=slow_drift, unexpected=stillness",
+        "score": 0.4806
+      },
+      "index": 0,
+      "opus": {
+        "cost_usd": "0.010565",
+        "latency_ms": 10283,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1579,
+          "path": "output/evals/haiku55-20261007/judge-opus-medium-vfp_active_001-raw.json",
+          "sha256": "cddb15a3bba84d82708680a6d8fc39e1d347fe9c7feaaebea3f2d5f9ecb115ff"
+        },
+        "reason": "The output correctly identifies two figures (left and right), the pale/white rectangle on the right figure, the dark/navy sky, and intact continuity\u2014all matching the reference. However, it describes the tan figure as 'drifting rightward' across frames, whereas the reference says both figures hold fixed left-right centers and instead enlarge (grow larger) across the ordered samples. This is a significant mischaracterization of the primary observable motion. The tone is labeled 'detached/surreal' vs. the reference 'intimate,' and emotion is tagged 'isolation' when the reference indicates none. Color tags miss 'teal' and instead list 'desaturated,' which is not well-supported. Motion is described as 'slow_drift/stillness' rather than the measured enlargement that is the key observable change. The model fails to note figure enlargement at all, which is the central visual observation. Audio fields are not empty (they are empty arrays, which is acceptable). Overall, the core motion description is wrong and several subjective tags diverge from the reference.",
+        "request_id": "msg_011CfoaEmatT1RQzcBFVj9wV",
+        "score": 0.45,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 893,
+          "output_tokens": 244,
+          "service_tier": "standard"
+        }
+      },
+      "response": {
+        "cached": false,
+        "cost": 0.0006887000000000001,
+        "latencyMs": 3806,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "dialogue_confession_push_in",
+          "cost_estimated": true,
+          "evaluation_id": "vfp_active_001",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+            "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+            "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+            "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+            "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+          ],
+          "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "claude-haiku-5-5",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "anthropic",
+          "request_id": "msg_011CfoaEWhByuyv6VeFeqro3",
+          "requested_model": "claude-haiku-5-5",
+          "returned_model": "claude-haiku-5-5",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simple flat figures stand on a dark ground under a navy gradient sky, with a tan figure on the left and a light blue figure holding a white rectangular object on the right. Across the ordered samples the tan figure drifts slightly rightward and the blue figure shifts subtly, suggesting small gradual movement with no visible scene change.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"slow_drift\",\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both figures and the white rectangle on the right figure remain present across all five ordered samples with no visible cut or discontinuity.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Tan figure on the left and light blue figure with white rectangle on the right stand against a navy gradient sky above a dark ground.\"},{\"frame_index\":2,\"cue\":\"Tan figure's head and body sit slightly more to the right than in frame 0 while the blue figure remains in the same right-side position.\"},{\"frame_index\":4,\"cue\":\"Tan figure is shifted further right at roughly the same height, and the white rectangle remains on the blue figure's lower torso.\"}],\"overall_confidence\":0.7}",
+        "raw": {
+          "id": "msg_011CfoaEWhByuyv6VeFeqro3",
+          "model": "claude-haiku-5-5",
+          "raw_envelope_bytes": 2063,
+          "raw_envelope_path": "output/evals/haiku55-20261007/subject/medium/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "e015ee9bf95a975b028f3b785d940ea4d85f768abd286ed06c30e8fdf070263d",
+          "stop_reason": "end_turn",
+          "usage": {
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 0
+            },
+            "cache_creation_input_tokens": 0,
+            "cache_read_input_tokens": 0,
+            "inference_geo": "global",
+            "input_tokens": 4512,
+            "output_tokens": 475,
+            "output_tokens_details": {
+              "thinking_tokens": 0
+            },
+            "service_tier": "standard"
+          }
+        },
+        "tokenUsage": {
+          "completion": 475,
+          "prompt": 4512,
+          "total": 4987
+        }
+      },
+      "sol": {
+        "cost_usd": "0.0065735",
+        "latency_ms": 5056,
+        "model": "gpt-6-sol",
+        "raw": {
+          "bytes": 4425,
+          "path": "output/evals/haiku55-20261007/judge-sol-medium-vfp_active_001-raw.json",
+          "sha256": "593420118b6d810114c840e92a04dc1cff2634d97b780a4e17270094ab9fb006"
+        },
+        "reason": "The figures, colors, pale rectangle, and intact continuity are described accurately. The main motion claim is wrong: both figures grow larger across the samples while their left-right centers stay nearly fixed; the tan figure does not progressively drift right. Calling the rectangle something the blue figure is holding also goes beyond what the simple shapes establish.",
+        "request_id": "resp_0109901b4c014ec6016ac6b73847a887d0bcb1c0e59008e0af",
+        "score": 0.58,
+        "usage": {
+          "input_tokens": 2146,
+          "input_tokens_details": {
+            "cache_write_tokens": 2143,
+            "cached_tokens": 0
+          },
+          "output_tokens": 121,
+          "output_tokens_details": {
+            "reasoning_tokens": 36
+          },
+          "total_tokens": 2267
+        }
+      }
+    }
+  ],
+  "verdict": {
+    "frames": "Reject all3 Haiku configurations on first source discriminator; retain Luna reference, no absolute gate winner",
+    "script_bible": "Retain incumbent; no challenger arm cleared preserved gates. High shows raw structural promise but independent source finds unsupported beagle and gym attribution. No promotion."
+  },
+  "unmeasured": [
+    "other5 frame cases",
+    "The Mariner",
+    "prod video integration",
+    "repeat variance"
+  ],
+  "independent_review": "Conductor root GPT6.1Sol source-reviewed saved outputs; no paid rereview",
+  "spend_accounted_usd": "0.190395745"
+}

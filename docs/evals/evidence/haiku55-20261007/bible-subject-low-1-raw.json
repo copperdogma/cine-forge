@@ -1,0 +1,32 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"title\":\"Open Frequency\",\"logline\":\"When a storm cuts off a small town, a rag-tag crew of community radio volunteers keeps a single emergency broadcast alive so residents can find shelter, medicine, and each other.\",\"synopsis\":\"During a violent storm that has closed the bridge and killed the cell towers, the volunteers of Red Creek's community radio station scramble to restore their signal. Aria, Noah, June, and Kell haul a portable antenna to the water tower catwalk, where they pick up a desperate call for insulin and blankets from the north shelter. The broadcast becomes the town's lifeline, relaying road closures, shelter supplies, and personal messages through the long night.\\n\\nAt the high school gym shelter before dawn, June gathers updates while Kell organizes supplies and teenager Maya brings a flyer for her lost dog Comet. The station weaves the small, human request into its official bulletins, turning an emergency channel into a place where neighbors look out for one another. By morning the storm residue has cleared, the dog is found, and the four volunteers return to the studio under a steady ON AIR light, determined to keep the frequency open.\",\"act_structure\":[{\"act_number\":1,\"title\":\"Setup\",\"start_scene\":\"INT. COMMUNITY RADIO STUDIO - NIGHT\",\"end_scene\":\"EXT. WATER TOWER CATWALK - NIGHT\",\"summary\":\"The volunteers face a storm-wrecked town with the station's ON AIR signal failing, and Kell arrives with the antenna that may be their only way to reach people.\",\"turning_points\":[\"Bridge closed and cell towers dead; the hill relay becomes the only option\",\"Aria promises a miracle to restore the ON AIR signal\",\"Static resolves into a distress call from the north shelter needing insulin and blankets\"]},{\"act_number\":2,\"title\":\"Confrontation\",\"start_scene\":\"INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\",\"end_scene\":\"INT. COMMUNITY RADIO STUDIO - MORNING\",\"summary\":\"The broadcast reaches the shelter, where the crew manages updates, supplies, and personal requests while the town depends on them.\",\"turning_points\":[\"Radio relays confirm the east road is open one lane and heavy trucks are restricted\",\"Maya asks the station to announce her missing dog Comet, and June agrees\",\"Comet is safely recovered from the vending machine in the band room\"]},{\"act_number\":3,\"title\":\"Resolution\",\"start_scene\":\"INT. COMMUNITY RADIO STUDIO - MORNING\",\"end_scene\":\"INT. COMMUNITY RADIO STUDIO - MORNING\",\"summary\":\"With the storm passing, the team returns to the studio, celebrates the recovered dog, and commits to keeping the station running.\",\"turning_points\":[\"June hangs the OPEN FREQUENCY sign over the studio door\",\"Maya reunites with Comet and the morning bulletin reports the good news\",\"The ON AIR sign steadies into a solid red glow as the crew resumes work\"]}],\"themes\":[{\"theme\":\"Community through communication\",\"description\":\"The radio station becomes a shared lifeline, connecting strangers and neighbors through information and small personal appeals.\",\"evidence\":[\"Aria: \\\"Give me ten minutes and one miracle.\\\" (the crew's reliance on one channel)\",\"UNKNOWN VOICE (RADIO): \\\"north shelter needs insulin and dry blankets.\\\"\",\"June: \\\"If we're naming roads and insulin drops, we can name dogs.\\\"\"]},{\"theme\":\"Ordinary people rising to crisis\",\"description\":\"Volunteers with modest tools and no official authority keep the town informed and cared for through the emergency.\",\"evidence\":[\"Kell: \\\"The hill relay is our only shot.\\\"\",\"Noah longing for \\\"boring weather\\\" and \\\"boring jobs\\\"\",\"June: \\\"Once is joy. Twice is branding.\\\"\"]},{\"theme\":\"Hope amid disruption\",\"description\":\"Small victories, such as a recovered dog and a steady signal, carry the community through the storm's damage.\",\"evidence\":[\"Maya: \\\"He's family.\\\"\",\"The ON AIR sign flickers, then dies again, then steadies into a solid red glow\",\"June: \\\"zero remorse\\\" recovered dog bulletin\"]}],\"narrative_arc\":\"The story follows a classic three-act emergency shape: a crisis is introduced with the station and town cut off, the crew escalates its efforts through a long night at the shelter, and the arc resolves with the storm receding and the station restored to steady operation. Tension rises from technical failure and urgent need, then eases into warmth and community as the morning arrives.\",\"genre\":\"Drama\",\"tone\":\"Warm, urgent and quietly humorous\",\"protagonist_journey\":\"Aria begins skeptical of a miracle yet ends by leading the restoration of the broadcast, moving from doubt about the station's purpose to committed stewardship of the community channel.\",\"central_conflict\":\"The volunteers must keep the only working emergency signal alive against a storm that has severed roads, power and communications, while the town urgently needs accurate information and supplies.\",\"setting_overview\":\"A small town called Red Creek during a single stormy night and the following morning. Key locations include a community radio studio, a water tower catwalk overlooking the valley, and a high school gym serving as a shelter. Infrastructure is damaged: the bridge is closed, cell towers are dead, and the station runs on emergency power.\",\"confidence\":0.9}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011CfoaRwMa6KrAsKi88Je1a",
+  "model": "claude-haiku-5-5",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 3887,
+    "output_tokens": 1823,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard"
+  }
+}

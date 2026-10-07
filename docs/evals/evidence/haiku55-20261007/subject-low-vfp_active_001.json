@@ -1,0 +1,76 @@
+{
+  "arm": "low",
+  "name": "subject-low-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.0006536000000000001,
+    "latencyMs": 5019,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "claude-haiku-5-5",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "request_id": "msg_011CfoaHEmKjpRkaCJ2orUix",
+      "requested_model": "claude-haiku-5-5",
+      "returned_model": "claude-haiku-5-5",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simple flat figures stand on a dark floor against a navy gradient background, one beige and one light blue holding a white rectangle. Across the ordered samples the beige figure shifts slightly and the blue figure bobs marginally, with no clear scene change.\",\"tone_tags\":[\"detached\",\"ominous\"],\"emotion_tags\":[\"isolation\",\"suspicion\"],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"stillness\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both figures and the white rectangle remain in consistent positions across all five samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Beige figure on left and light blue figure holding a white rectangle on right against a navy gradient background\"},{\"frame_index\":2,\"cue\":\"Same two figures and white rectangle present with the frame framing unchanged\"},{\"frame_index\":4,\"cue\":\"Blue figure and white rectangle remain in the same right-side position with only minor shifts in the beige figure\"}],\"overall_confidence\":0.6}",
+    "raw": {
+      "id": "msg_011CfoaHEmKjpRkaCJ2orUix",
+      "model": "claude-haiku-5-5",
+      "raw_envelope_bytes": 1851,
+      "raw_envelope_path": "output/evals/haiku55-20261007/subject/low/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "a00faf080751bc560c10c41ea305e59c7aa161e0a60416a4a95c277c1107200b",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4511,
+        "output_tokens": 405,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "service_tier": "standard"
+      }
+    },
+    "tokenUsage": {
+      "completion": 405,
+      "prompt": 4511,
+      "total": 4916
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

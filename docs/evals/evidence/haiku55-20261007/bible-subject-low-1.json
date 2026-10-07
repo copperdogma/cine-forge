@@ -1,0 +1,52 @@
+{
+  "arm": "low",
+  "name": "bible-subject-low-1",
+  "response": {
+    "cached": false,
+    "cost": 0.0013002,
+    "latencyMs": 12804,
+    "metadata": {
+      "allow_fallbacks": null,
+      "cost_estimated": true,
+      "data_collection": null,
+      "finish_reason": "end_turn",
+      "markdown_fence_removed": null,
+      "model": "claude-haiku-5-5",
+      "provider": "anthropic",
+      "raw_output_path": null,
+      "reasoning_effort": null,
+      "request_id": "msg_011CfoaRwMa6KrAsKi88Je1a",
+      "requested_model": "claude-haiku-5-5",
+      "require_parameters": null,
+      "returned_model": "claude-haiku-5-5",
+      "runtime_prompt": "script_bible_v1.EXTRACTION_PROMPT",
+      "runtime_schema": "cine_forge.schemas.ScriptBible",
+      "schema_enforcement": null,
+      "store": null,
+      "upstream_provider": null,
+      "x_zero_data_retention": null,
+      "zdr": null
+    },
+    "output": "{\"title\":\"Open Frequency\",\"logline\":\"When a storm cuts off a small town, a rag-tag crew of community radio volunteers keeps a single emergency broadcast alive so residents can find shelter, medicine, and each other.\",\"synopsis\":\"During a violent storm that has closed the bridge and killed the cell towers, the volunteers of Red Creek's community radio station scramble to restore their signal. Aria, Noah, June, and Kell haul a portable antenna to the water tower catwalk, where they pick up a desperate call for insulin and blankets from the north shelter. The broadcast becomes the town's lifeline, relaying road closures, shelter supplies, and personal messages through the long night.\\n\\nAt the high school gym shelter before dawn, June gathers updates while Kell organizes supplies and teenager Maya brings a flyer for her lost dog Comet. The station weaves the small, human request into its official bulletins, turning an emergency channel into a place where neighbors look out for one another. By morning the storm residue has cleared, the dog is found, and the four volunteers return to the studio under a steady ON AIR light, determined to keep the frequency open.\",\"act_structure\":[{\"act_number\":1,\"title\":\"Setup\",\"start_scene\":\"INT. COMMUNITY RADIO STUDIO - NIGHT\",\"end_scene\":\"EXT. WATER TOWER CATWALK - NIGHT\",\"summary\":\"The volunteers face a storm-wrecked town with the station's ON AIR signal failing, and Kell arrives with the antenna that may be their only way to reach people.\",\"turning_points\":[\"Bridge closed and cell towers dead; the hill relay becomes the only option\",\"Aria promises a miracle to restore the ON AIR signal\",\"Static resolves into a distress call from the north shelter needing insulin and blankets\"]},{\"act_number\":2,\"title\":\"Confrontation\",\"start_scene\":\"INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\",\"end_scene\":\"INT. COMMUNITY RADIO STUDIO - MORNING\",\"summary\":\"The broadcast reaches the shelter, where the crew manages updates, supplies, and personal requests while the town depends on them.\",\"turning_points\":[\"Radio relays confirm the east road is open one lane and heavy trucks are restricted\",\"Maya asks the station to announce her missing dog Comet, and June agrees\",\"Comet is safely recovered from the vending machine in the band room\"]},{\"act_number\":3,\"title\":\"Resolution\",\"start_scene\":\"INT. COMMUNITY RADIO STUDIO - MORNING\",\"end_scene\":\"INT. COMMUNITY RADIO STUDIO - MORNING\",\"summary\":\"With the storm passing, the team returns to the studio, celebrates the recovered dog, and commits to keeping the station running.\",\"turning_points\":[\"June hangs the OPEN FREQUENCY sign over the studio door\",\"Maya reunites with Comet and the morning bulletin reports the good news\",\"The ON AIR sign steadies into a solid red glow as the crew resumes work\"]}],\"themes\":[{\"theme\":\"Community through communication\",\"description\":\"The radio station becomes a shared lifeline, connecting strangers and neighbors through information and small personal appeals.\",\"evidence\":[\"Aria: \\\"Give me ten minutes and one miracle.\\\" (the crew's reliance on one channel)\",\"UNKNOWN VOICE (RADIO): \\\"north shelter needs insulin and dry blankets.\\\"\",\"June: \\\"If we're naming roads and insulin drops, we can name dogs.\\\"\"]},{\"theme\":\"Ordinary people rising to crisis\",\"description\":\"Volunteers with modest tools and no official authority keep the town informed and cared for through the emergency.\",\"evidence\":[\"Kell: \\\"The hill relay is our only shot.\\\"\",\"Noah longing for \\\"boring weather\\\" and \\\"boring jobs\\\"\",\"June: \\\"Once is joy. Twice is branding.\\\"\"]},{\"theme\":\"Hope amid disruption\",\"description\":\"Small victories, such as a recovered dog and a steady signal, carry the community through the storm's damage.\",\"evidence\":[\"Maya: \\\"He's family.\\\"\",\"The ON AIR sign flickers, then dies again, then steadies into a solid red glow\",\"June: \\\"zero remorse\\\" recovered dog bulletin\"]}],\"narrative_arc\":\"The story follows a classic three-act emergency shape: a crisis is introduced with the station and town cut off, the crew escalates its efforts through a long night at the shelter, and the arc resolves with the storm receding and the station restored to steady operation. Tension rises from technical failure and urgent need, then eases into warmth and community as the morning arrives.\",\"genre\":\"Drama\",\"tone\":\"Warm, urgent and quietly humorous\",\"protagonist_journey\":\"Aria begins skeptical of a miracle yet ends by leading the restoration of the broadcast, moving from doubt about the station's purpose to committed stewardship of the community channel.\",\"central_conflict\":\"The volunteers must keep the only working emergency signal alive against a storm that has severed roads, power and communications, while the town urgently needs accurate information and supplies.\",\"setting_overview\":\"A small town called Red Creek during a single stormy night and the following morning. Key locations include a community radio studio, a water tower catwalk overlooking the valley, and a high school gym serving as a shelter. Infrastructure is damaged: the bridge is closed, cell towers are dead, and the station runs on emergency power.\",\"confidence\":0.9}",
+    "raw": {
+      "id": "msg_011CfoaRwMa6KrAsKi88Je1a",
+      "model": "claude-haiku-5-5",
+      "provider": null,
+      "usage": {
+        "input_tokens": 3887,
+        "output_tokens": 1823
+      }
+    },
+    "tokenUsage": {
+      "completion": 1823,
+      "prompt": 3887,
+      "total": 5710
+    }
+  },
+  "vars": {
+    "ending_contract": "Maya's missing-dog plea leads to Comet's morning return; the ON AIR sign steadies and the radio team settles back to work.",
+    "golden_path": "golden/open-frequency-script-bible.json",
+    "golden_sha256": "2e70cd6255c04b1cf9e7ef94d13b9a3935be3c026d12afbfaf21e4595cd83d5b",
+    "screenplay": "Title: Open Frequency\nCredit: Written for CineForge UI manual acceptance\nAuthor: CineForge\n\nINT. COMMUNITY RADIO STUDIO - NIGHT\n\nRain rattles the skylight. Old consoles hum under emergency power.\nARIA threads a tape reel while NOAH coaxes a signal out of a battered mixer.\nJUNE covers a whiteboard with road closures, shelter names, and call signs.\nKELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag.\n\nKELL\nBridge is closed. Cell towers are dead. The hill relay is our only shot.\n\nNOAH\nPlease tell me that antenna is less cursed than it looks.\n\nKELL\nIt only tried to kill me once.\n\nJUNE\nGood. Tonight we don't have time for a second opinion.\n\nAria flips a switch. The ON AIR sign flickers, then dies again.\n\nARIA\nGive me ten minutes and one miracle.\n\nJUNE\nTake fifteen. Keep the miracle.\n\nCUT TO:\n\nEXT. WATER TOWER CATWALK - NIGHT\n\nWind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy.\nAria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.\nThe canvas tool bag swings in the gusts. Somewhere in the valley, a siren rises and cuts out.\n\nNOAH\nI miss boring weather.\n\nARIA\nYou miss boring jobs.\n\nNoah plugs the cable into a handheld receiver. Static spits, then settles into a thin human voice.\n\nUNKNOWN VOICE (RADIO)\nRed Creek station... if anyone hears this... north shelter needs insulin and dry blankets.\n\nAria and Noah freeze.\n\nARIA\nJune, do you copy?\n\nJUNE (RADIO)\nLoud enough to make me useful.\n\nAria smiles for the first time all night and tightens the last bolt.\n\nCUT TO:\n\nINT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\n\nCots line the basketball court. Handwritten signs point toward MEDICINE, MEALS, and MESSAGES.\nJune records updates at a folding table while Kell sorts flashlight batteries into a tackle box.\nMAYA, a teenager in a soaked marching-band jacket, approaches with a flyer for a missing dog named COMET.\n\nMAYA\nCan the station announce this too?\n\nJUNE\nIf we're naming roads and insulin drops, we can name dogs.\n\nKELL\nComet better be worth interrupting the weather report.\n\nMAYA\nHe stole my grilled cheese and slept through the evacuation. He's family.\n\nNoah's voice crackles over a tabletop radio.\n\nNOAH (RADIO)\nEast road is open one lane. Bridge crew wants no heavy trucks till daylight.\n\nJune writes the update beneath NORTH SHELTER on the whiteboard, then takes Maya's flyer.\n\nJUNE\nSpell his name for the broadcast.\n\nMAYA\nC-O-M-E-T. Like the fast kind of star.\n\nCUT TO:\n\nINT. COMMUNITY RADIO STUDIO - MORNING\n\nWet coats hang from every chair. Pale sunlight cuts through the storm residue on the windows.\nAria pins a hand-drawn map beside the console. Noah labels a notebook DAY TWO.\nJune tapes a new sign over the door: OPEN FREQUENCY.\nKell enters with a loaf of warm bread wrapped in foil. Maya follows close behind with a muddy, sleepy COMET in her arms.\n\nMAYA\nHe was under the vending machine in the band room.\n\nKELL\nSmart dog. Dry floor, free snacks.\n\nJune laughs, reaches for the microphone, and nods at Aria.\n\nJUNE\nRed Creek, morning bulletin. East road is open, north shelter is stocked, and one missing dog has been recovered with zero remorse.\n\nNoah pushes up a brass-heavy cassette cue. The room brightens with music.\n\nARIA\nPut that on repeat between updates.\n\nJUNE\nNo. Once is joy. Twice is branding.\n\nThe ON AIR sign steadies into a solid red glow as the four of them settle back to work.\n"
+  }
+}

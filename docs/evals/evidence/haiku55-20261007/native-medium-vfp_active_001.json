@@ -1,0 +1,76 @@
+{
+  "arm": "medium",
+  "name": "native-medium-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.0006617000000000001,
+    "latencyMs": 4988,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "claude-haiku-5-5",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "request_id": "msg_011CfoaDnE4YhUhjrmGjJ71U",
+      "requested_model": "claude-haiku-5-5",
+      "returned_model": "claude-haiku-5-5",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simple flat figures stand on a dark ground under a navy gradient sky, one beige and one light blue with a white rectangle at its lower torso. Across the ordered samples the beige figure drifts slightly rightward and shifts vertically while the blue figure stays largely in place with small bobbing.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"slow_drift\",\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both figures and the white rectangle remain present in all five ordered samples with consistent styling and background.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Beige figure at left with a round head above a rounded rectangular body on a dark ground\"},{\"frame_index\":0,\"cue\":\"Light blue figure at right holding a white rounded rectangle at its lower torso against a navy gradient sky\"},{\"frame_index\":4,\"cue\":\"Beige figure has shifted slightly right and blue figure remains at the right with the same white rectangle\"}],\"overall_confidence\":0.6}",
+    "raw": {
+      "id": "msg_011CfoaDnE4YhUhjrmGjJ71U",
+      "model": "claude-haiku-5-5",
+      "raw_envelope_bytes": 1886,
+      "raw_envelope_path": "output/evals/haiku55-20261007/native/medium/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "d54335c6840028eda9da823ae2940ecb9472175b95a4fd277931f2d2d8a34708",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 421,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "service_tier": "standard"
+      }
+    },
+    "tokenUsage": {
+      "completion": 421,
+      "prompt": 4512,
+      "total": 4933
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

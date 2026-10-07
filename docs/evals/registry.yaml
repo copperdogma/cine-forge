@@ -2415,6 +2415,19 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "049"
+        story: attempts/049-haiku55-thinking-value.md
+        date: 2026-10-07
+        status: failed
+        approach: "Fresh medium-adaptive/low-disabled/high-adaptive Haiku5.5 value calibration; source-grounded progressive stop, no default change"
+        worker_model: "GPT-6.1 Sol"
+        subject_model: "Claude Haiku 5.5"
+        git_sha: "d358224"
+        result_file: benchmarks/results/haiku55-20261007-combined.json
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-subject-model
+            note: "New exact checkpoint or materially changed maintained contract; same configuration retry is not justified"
       - id: "048"
         story: attempts/048-mistral-large4-v4-first-case-stop.md
         date: 2026-10-06
@@ -4715,6 +4728,19 @@ evals:
         note: "Production default retained: still the best non-preview value point despite a tiny quality gap to Gemini 3.1 Flash Lite."
 
     attempts:
+      - id: "049"
+        story: attempts/049-haiku55-thinking-value.md
+        date: 2026-10-07
+        status: failed
+        approach: "Fresh medium-adaptive/low-disabled/high-adaptive Haiku5.5 value calibration; source-grounded progressive stop, no default change"
+        worker_model: "GPT-6.1 Sol"
+        subject_model: "Claude Haiku 5.5"
+        git_sha: "d358224"
+        result_file: benchmarks/results/haiku55-20261007-combined.json
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-subject-model
+            note: "New exact checkpoint or materially changed maintained contract; same configuration retry is not justified"
       - id: "038"
         story: attempts/038-grok47-video-and-script-bible.md
         date: 2026-09-22

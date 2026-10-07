@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+"""Haiku 5.5 approved bounded owner campaign; reuse maintained v4 machinery."""
+
+import argparse
+import json
+import sys
+from decimal import Decimal
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "benchmarks/scripts"))
+import run_sonnet55_video_comparison as base  # noqa: E402
+
+base.OUT = ROOT / "output/evals/haiku55-20261007"
+base.EVIDENCE = ROOT / "docs/evals/evidence/haiku55-20261007"
+base.FREEZE = ROOT / "docs/evals/haiku55-20261007-freeze.json"
+base.RESULT = ROOT / "benchmarks/results/haiku55-20261007-video.json"
+base.RESERVE.update(low=Decimal(".02024"), medium=Decimal(".02024"), high=Decimal(".02024"))
+original_matrix = base.matrix
+
+
+def matrix():
+    task, prompt, configs, tests = original_matrix()
+    sonnet = configs.pop("sonnet")
+    for arm in ["medium", "low", "high"]:
+        configs[arm] = {
+            **sonnet,
+            "model": "claude-haiku-5-5",
+            "reasoning_effort": arm,
+            "raw_output_dir": str((base.OUT / arm).relative_to(ROOT)),
+        }
+    return task, prompt, configs, tests
+
+
+base.matrix = matrix
+
+
+def preflight():
+    task, prompt, configs, tests = matrix()
+    paths = [Path(__file__), ROOT / "benchmarks/scripts/run_sonnet55_video_comparison.py"]
+    paths += list((ROOT / "benchmarks/providers").glob("video_understanding*.py"))
+    paths += list((ROOT / "benchmarks/scorers").glob("video_understanding*.py"))
+    paths += [
+        ROOT / "benchmarks/tasks/video-understanding.yaml",
+        ROOT / "benchmarks/prompts/video-understanding.txt",
+    ]
+    rendered = []
+    for t in tests:
+        req = base.provider._prepare_subject_request(
+            prompt, {"config": configs["medium"]}, {"vars": t["vars"]}
+        )
+        assert len(req["packet"]["frames"]) == 5 and t["vars"]["clip_id"] not in req["user_text"]
+        paths += [f["path"] for f in req["packet"]["frames"]]
+        paths += list(
+            (ROOT / "benchmarks/video_understanding_truth_v4" / t["vars"]["clip_id"]).glob("*")
+        )
+        rendered.append({"vars": t["vars"], "prompt": req["user_text"], "frame_count": 5})
+    base.dump(
+        base.FREEZE,
+        {
+            "files": [base.inventory(p) for p in sorted(set(paths)) if p.is_file()],
+            "matrix": rendered,
+            "arms": configs,
+            "cache": False,
+            "concurrency": 1,
+            "grouping": "independent single-user sessions",
+            "budget": "3 inclusive both lanes",
+            "calibration": "first and prop-swap; select cheapest qualifying arm then freeze for other four; one unchanged repeated confirmation if useful",  # noqa: E501
+            "judges": ["claude-opus-4-6", "gpt-6-sol source corroboration"],
+        },
+    )
+    print("preflight six independent frame cases", len(paths), "frozen files")
+
+
+def score(arm, index):
+    t = matrix()[3][index]
+    row = base.subject(arm, t)
+    det = base.scorer.get_assert(row["response"]["output"], {"vars": t["vars"]})
+    op = base.review("opus", row)
+    sol = base.review("sol", row)
+    result = {
+        "arm": arm,
+        "index": index,
+        "deterministic": det,
+        "opus": op,
+        "sol": sol,
+        "response": row["response"],
+        "combined_opus": (det["score"] + op["score"]) / 2,
+        "combined_sol": (det["score"] + sol["score"]) / 2,
+    }
+    base.dump(base.OUT / f"score-{arm}-{index}.json", result)
+    print(
+        json.dumps(
+            {
+                k: v
+                for k, v in result.items()
+                if k not in ["response", "opus", "sol", "deterministic"]
+            }
+        ),
+        flush=True,
+    )
+    return result
+
+
+if __name__ == "__main__":
+    p = argparse.ArgumentParser()
+    p.add_argument("mode")
+    p.add_argument("--arm", default="medium")
+    p.add_argument("--index", type=int, default=0)
+    a = p.parse_args()
+    if a.mode == "preflight":
+        preflight()
+    elif a.mode == "native":
+        base.subject(a.arm, matrix()[3][a.index], native=True)
+    elif a.mode == "score":
+        score(a.arm, a.index)

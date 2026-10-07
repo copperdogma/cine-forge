@@ -1,0 +1,29 @@
+{
+  "arm": "medium",
+  "combined": 0.7599499999999999,
+  "cost": 0.0014643,
+  "deterministic": {
+    "pass": false,
+    "reason": "raw_score=0.8978 | act_boundary_grounding=0.00 | act_structure=1.00 | confidence_quality=1.00 | conflict_grounding=1.00 | field_completeness=1.00 | full_source_coverage=1.00 | genre_tone_grounding=1.00 | journey_grounding=0.50 | json_valid=1.00 | logline_grounding=0.67 | setting_grounding=1.00 | synopsis_grounding=1.00 | theme_evidence_grounding=0.89 | themes=1.00 | title_correct=1.00 | unsupported_claims=1.00 | Act boundaries do not partition the exact source headings | Theme evidence is not grounded in the source screenplay",
+    "score": 0.6999
+  },
+  "index": 1,
+  "latencyMs": 12338,
+  "opus": {
+    "cost_usd": "0.026655",
+    "reason": "The bible is largely faithful to the screenplay and covers its key beats, characters, settings, and themes without material contradiction. Terminal beats are correctly captured: Maya's dog plea leads to Comet's morning return, and the ON AIR sign steadies as the crew settles back to work. Schema is exactly correct with all required fields and no extra keys. Themes are specific and quotes are accurate or very close paraphrases from the source. Genre/tone labels (Drama, warm/hopeful/lightly comedic with storm urgency) are well-supported. However, there are some issues: (1) Act 3's turning point 'June refuses to repeat the music too often, choosing to keep the broadcast fresh' slightly mischaracterizes June's line ('No. Once is joy. Twice is branding.') \u2014 she's not refusing to repeat it 'too often' but rather declining to put it on repeat at all, and the framing as 'keeping the broadcast fresh' is a mild distortion. (2) Act 3 turning point about taping the OPEN FREQUENCY sign actually happens in the morning scene which also contains Act 2's resolution (Maya returning with Comet), creating slight act boundary confusion \u2014 the sign-taping and Comet's return and the morning bulletin all happen in the same scene, yet they're split across Acts 2 and 3. (3) The protagonist journey focuses on Aria, which is reasonable but slightly overstated \u2014 the screenplay doesn't strongly show an individual-to-collective arc for Aria specifically; she's collaborative from the start. (4) The synopsis is accurate but somewhat condensed, missing minor details like the bread Kell brings or Noah's 'DAY TWO' notebook label. (5) The logline adds 'racing to keep shelters supplied' which slightly embellishes \u2014 the crew broadcasts information but doesn't directly supply shelters. These are minor issues that don't rise to hard failures but prevent a higher score.",
+    "score": 0.82,
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "inference_geo": "global",
+      "input_tokens": 3126,
+      "output_tokens": 441,
+      "service_tier": "standard"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.0065735",
+  "latency_ms": 5056,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4425,
+    "path": "output/evals/haiku55-20261007/judge-sol-medium-vfp_active_001-raw.json",
+    "sha256": "593420118b6d810114c840e92a04dc1cff2634d97b780a4e17270094ab9fb006"
+  },
+  "reason": "The figures, colors, pale rectangle, and intact continuity are described accurately. The main motion claim is wrong: both figures grow larger across the samples while their left-right centers stay nearly fixed; the tan figure does not progressively drift right. Calling the rectangle something the blue figure is holding also goes beyond what the simple shapes establish.",
+  "request_id": "resp_0109901b4c014ec6016ac6b73847a887d0bcb1c0e59008e0af",
+  "score": 0.58,
+  "usage": {
+    "input_tokens": 2146,
+    "input_tokens_details": {
+      "cache_write_tokens": 2143,
+      "cached_tokens": 0
+    },
+    "output_tokens": 121,
+    "output_tokens_details": {
+      "reasoning_tokens": 36
+    },
+    "total_tokens": 2267
+  }
+}

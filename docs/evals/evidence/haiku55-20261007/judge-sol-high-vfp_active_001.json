@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.006401",
+  "latency_ms": 3257,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 2922,
+    "path": "output/evals/haiku55-20261007/judge-sol-high-vfp_active_001-raw.json",
+    "sha256": "842c446cedaf9c7e8c30447ff452cddfd3aa7cf330bccb1207a0caafa1bfa06d"
+  },
+  "reason": "Correctly identifies the two figures, their colors, the pale rectangle, fixed background, and intact continuity. However, it misses the main observable change: both figures progressively enlarge while staying near fixed horizontal centers. Its claimed up-and-down drifting and the tan figure returning to its initial position are not supported by the frames. The ominous tone and isolation/hesitation emotions are also unsupported.",
+  "request_id": "resp_01fcc8715f7ff714016ac6b7953aec87d0827eb0154a25ac6f",
+  "score": 0.57,
+  "usage": {
+    "input_tokens": 2181,
+    "input_tokens_details": {
+      "cache_write_tokens": 2178,
+      "cached_tokens": 0
+    },
+    "output_tokens": 95,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 2276
+  }
+}

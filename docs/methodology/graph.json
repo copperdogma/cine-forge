@@ -300,7 +300,8 @@
           "217",
           "218",
           "219",
-          "220"
+          "220",
+          "231"
         ],
         "adrIds": [
           "ADR-003"
@@ -979,7 +980,8 @@
           "227",
           "228",
           "229",
-          "230"
+          "230",
+          "231"
         ],
         "adrIds": [
           "ADR-002",
@@ -1127,7 +1129,8 @@
           "227",
           "228",
           "229",
-          "230"
+          "230",
+          "231"
         ],
         "adrIds": [
           "ADR-001",
@@ -1221,7 +1224,8 @@
           "225",
           "226",
           "227",
-          "229"
+          "229",
+          "231"
         ],
         "adrIds": [
           "ADR-002",
@@ -15199,6 +15203,63 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "231",
+      "title": "Haiku 5.5 thinking value evaluation",
+      "path": "docs/stories/story-231-haiku55-thinking-value-evaluation.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12",
+        "R18"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "231",
+        "sourcePath": "docs/stories/story-231-haiku55-thinking-value-evaluation.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-231-haiku55-thinking-value-evaluation.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -16825,6 +16886,16 @@
       "retryWhen": [],
       "attempts": [
         {
+          "id": "049",
+          "date": "2026-10-07",
+          "approach": "Fresh medium-adaptive/low-disabled/high-adaptive Haiku5.5 value calibration; source-grounded progressive stop, no default change",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "new-subject-model"
+          ]
+        },
+        {
           "id": "038",
           "date": "2026-09-22",
           "approach": "Qualified direct Grok 4.7 Responses strict output, then ran one frozen low-reasoning exact-runtime synthetic Open Frequency case before stopping on the decisive hard subject-cost gate; the recorded quality hard score has a source-reviewed scorer-contract ambiguity.",
@@ -17048,14 +17119,14 @@
         "whyNow": "Attempt 038 exact-runtime synthetic Open Frequency progressive stop. Direct xAI Responses returned exact grok-4.7 identity, terminal provider-strict ScriptBible JSON, low reasoning, store=false, and reconciled provider-reported cost. The recorded aggregate 0.80995 is below 0.90. Offline source adjudication replayed the unchanged scorer at 0.6999 hard / 0.8967 raw: four theme deductions are faithf…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
-          "materially-cheaper-exact-model-and-fresh-approval"
+          "new-subject-model"
         ],
         "lastRelevantAction": {
-          "date": "2026-09-22",
+          "date": "2026-10-07",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "038",
-          "summary": "Qualified direct Grok 4.7 Responses strict output, then ran one frozen low-reasoning exact-runtime synthetic Open Frequency case before stopping on the decisive hard subject-cost gate; the recorded quality hard score has a source-reviewed scorer-contract ambiguity."
+          "sourceId": "049",
+          "summary": "Fresh medium-adaptive/low-disabled/high-adaptive Haiku5.5 value calibration; source-grounded progressive stop, no default change"
         }
       }
     },
@@ -17227,6 +17298,16 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "049",
+          "date": "2026-10-07",
+          "approach": "Fresh medium-adaptive/low-disabled/high-adaptive Haiku5.5 value calibration; source-grounded progressive stop, no default change",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "new-subject-model"
+          ]
+        },
         {
           "id": "048",
           "date": "2026-10-06",
@@ -17418,11 +17499,11 @@
           "new-subject-model"
         ],
         "lastRelevantAction": {
-          "date": "2026-10-06",
+          "date": "2026-10-07",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "048",
-          "summary": "Exact OpenRouter Mistral Large4 strict4096 all5JPEG native/parity and fresh Luna low1400. First-case source-backed growth miss stops full6; Source-repaired Opus cross-provider grade .35 vs .75 (original .45/.72 retained), unchanged deterministic .3484 vs .6957, combined .3492 vs .72285. Remaining5 not measured; retain Luna headless reference, no product/default adoption. Eight calls USD.053050635…"
+          "sourceId": "049",
+          "summary": "Fresh medium-adaptive/low-disabled/high-adaptive Haiku5.5 value calibration; source-grounded progressive stop, no default change"
         }
       }
     }

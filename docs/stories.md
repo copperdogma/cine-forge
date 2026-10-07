@@ -164,6 +164,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 218 | GPT-6 Astra Bounded Script-Bible Evaluation | High | Done | — | spec:2, spec:8 | 208, 216 | [story-218](stories/story-218-gpt6-astra-bounded-script-bible-eval.md) |
 | 219 | Qwen3.8 Flash Force-Fresh Script-Bible Evaluation | High | Done | — | spec:2, spec:8 | 208, 211, 216 | [story-219](stories/story-219-qwen38-flash-force-fresh-script-bible-eval.md) |
 | 220 | Grok 4.7 Bounded Video and Script-Bible Evaluations | High | Done | — | spec:2, spec:7, spec:8, spec:9 | 208, 212, 218 | [story-220](stories/story-220-grok-47-bounded-video-and-script-bible-evals.md) |
+| 231 | Haiku 5.5 thinking value evaluation | High | Done | — | spec:2, spec:7, spec:8, spec:9 | — | [story-231](stories/story-231-haiku55-thinking-value-evaluation.md) |
 | 064 | Screenplay Format Round-Trip: Converter Upgrade + Fidelity Test Suite | Medium | Done | — | spec:2 | — | [story-064](stories/story-064-screenplay-format-round-trip.md) |
 | 070 | Script View Scene Dividers & Entity Hotlinks | Medium | Done | — | spec:2, spec:3, spec:5 | 045 | [story-070](stories/story-070-script-view-scene-dividers-and-hotlinks.md) |
 | 072 | Live Entity Discovery Feedback | Medium | Done | — | spec:2, spec:5 | 062 | [story-072](stories/story-072-live-entity-discovery-feedback.md) |

@@ -1,0 +1,189 @@
+{
+  "max_tokens": 8192,
+  "messages": [
+    {
+      "content": "You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\nTitle: Open Frequency\nCredit: Written for CineForge UI manual acceptance\nAuthor: CineForge\n\nINT. COMMUNITY RADIO STUDIO - NIGHT\n\nRain rattles the skylight. Old consoles hum under emergency power.\nARIA threads a tape reel while NOAH coaxes a signal out of a battered mixer.\nJUNE covers a whiteboard with road closures, shelter names, and call signs.\nKELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag.\n\nKELL\nBridge is closed. Cell towers are dead. The hill relay is our only shot.\n\nNOAH\nPlease tell me that antenna is less cursed than it looks.\n\nKELL\nIt only tried to kill me once.\n\nJUNE\nGood. Tonight we don't have time for a second opinion.\n\nAria flips a switch. The ON AIR sign flickers, then dies again.\n\nARIA\nGive me ten minutes and one miracle.\n\nJUNE\nTake fifteen. Keep the miracle.\n\nCUT TO:\n\nEXT. WATER TOWER CATWALK - NIGHT\n\nWind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy.\nAria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.\nThe canvas tool bag swings in the gusts. Somewhere in the valley, a siren rises and cuts out.\n\nNOAH\nI miss boring weather.\n\nARIA\nYou miss boring jobs.\n\nNoah plugs the cable into a handheld receiver. Static spits, then settles into a thin human voice.\n\nUNKNOWN VOICE (RADIO)\nRed Creek station... if anyone hears this... north shelter needs insulin and dry blankets.\n\nAria and Noah freeze.\n\nARIA\nJune, do you copy?\n\nJUNE (RADIO)\nLoud enough to make me useful.\n\nAria smiles for the first time all night and tightens the last bolt.\n\nCUT TO:\n\nINT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\n\nCots line the basketball court. Handwritten signs point toward MEDICINE, MEALS, and MESSAGES.\nJune records updates at a folding table while Kell sorts flashlight batteries into a tackle box.\nMAYA, a teenager in a soaked marching-band jacket, approaches with a flyer for a missing dog named COMET.\n\nMAYA\nCan the station announce this too?\n\nJUNE\nIf we're naming roads and insulin drops, we can name dogs.\n\nKELL\nComet better be worth interrupting the weather report.\n\nMAYA\nHe stole my grilled cheese and slept through the evacuation. He's family.\n\nNoah's voice crackles over a tabletop radio.\n\nNOAH (RADIO)\nEast road is open one lane. Bridge crew wants no heavy trucks till daylight.\n\nJune writes the update beneath NORTH SHELTER on the whiteboard, then takes Maya's flyer.\n\nJUNE\nSpell his name for the broadcast.\n\nMAYA\nC-O-M-E-T. Like the fast kind of star.\n\nCUT TO:\n\nINT. COMMUNITY RADIO STUDIO - MORNING\n\nWet coats hang from every chair. Pale sunlight cuts through the storm residue on the windows.\nAria pins a hand-drawn map beside the console. Noah labels a notebook DAY TWO.\nJune tapes a new sign over the door: OPEN FREQUENCY.\nKell enters with a loaf of warm bread wrapped in foil. Maya follows close behind with a muddy, sleepy COMET in her arms.\n\nMAYA\nHe was under the vending machine in the band room.\n\nKELL\nSmart dog. Dry floor, free snacks.\n\nJune laughs, reaches for the microphone, and nods at Aria.\n\nJUNE\nRed Creek, morning bulletin. East road is open, north shelter is stocked, and one missing dog has been recovered with zero remorse.\n\nNoah pushes up a brass-heavy cassette cue. The room brightens with music.\n\nARIA\nPut that on repeat between updates.\n\nJUNE\nNo. Once is joy. Twice is branding.\n\nThe ON AIR sign steadies into a solid red glow as the four of them settle back to work.\n\n\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** \u2014 The title of the screenplay.\n2. **logline** \u2014 A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** \u2014 A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.\n4. **act_structure** \u2014 Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (short label like \"Setup\", \"Confrontation\", \"Resolution\")\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n5. **themes** \u2014 Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** \u2014 Describe the overall story shape and dramatic movement.\n7. **genre** \u2014 Primary genre (e.g. \"Action-Thriller\", \"Drama\", \"Sci-Fi Horror\").\n8. **tone** \u2014 Dominant tone (e.g. \"Gritty and intense\", \"Darkly comedic\").\n9. **protagonist_journey** \u2014 The protagonist's transformation arc.\n10. **central_conflict** \u2014 The core dramatic conflict.\n11. **setting_overview** \u2014 Time period, locations, and world context.\n12. **confidence** \u2014 Your confidence in this analysis (0.0-1.0).\n\nReturn valid JSON matching the provided schema. Be specific and evidence-grounded.",
+      "role": "user"
+    }
+  ],
+  "model": "claude-haiku-5-5",
+  "output_config": {
+    "effort": "low",
+    "format": {
+      "schema": {
+        "$defs": {
+          "ActStructure": {
+            "additionalProperties": false,
+            "description": "One act within the screenplay's dramatic structure.",
+            "properties": {
+              "act_number": {
+                "description": "Constraints enforced after parsing: minimum: 1.",
+                "title": "Act Number",
+                "type": "integer"
+              },
+              "end_scene": {
+                "description": "Scene heading or description marking act end",
+                "title": "End Scene",
+                "type": "string"
+              },
+              "start_scene": {
+                "description": "Scene heading or description marking act start",
+                "title": "Start Scene",
+                "type": "string"
+              },
+              "summary": {
+                "description": "1-2 sentence summary of what happens in this act",
+                "title": "Summary",
+                "type": "string"
+              },
+              "title": {
+                "description": "Short label, e.g. 'Setup', 'Confrontation', 'Resolution'",
+                "title": "Title",
+                "type": "string"
+              },
+              "turning_points": {
+                "description": "Key turning points / plot beats within this act",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Turning Points",
+                "type": "array"
+              }
+            },
+            "required": [
+              "act_number",
+              "title",
+              "start_scene",
+              "end_scene",
+              "summary",
+              "turning_points"
+            ],
+            "title": "ActStructure",
+            "type": "object"
+          },
+          "ThematicElement": {
+            "additionalProperties": false,
+            "description": "A theme identified in the screenplay.",
+            "properties": {
+              "description": {
+                "description": "How this theme manifests in the story",
+                "title": "Description",
+                "type": "string"
+              },
+              "evidence": {
+                "description": "Scene references or quotes supporting this theme",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Evidence",
+                "type": "array"
+              },
+              "theme": {
+                "description": "Theme name, e.g. 'Redemption', 'Loss of innocence'",
+                "title": "Theme",
+                "type": "string"
+              }
+            },
+            "required": [
+              "theme",
+              "description",
+              "evidence"
+            ],
+            "title": "ThematicElement",
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "description": "High-level story understanding derived from the canonical script.\n\nProject-scoped (entity_id='project'). Produced by script_bible_v1 module.",
+        "properties": {
+          "act_structure": {
+            "description": "Dramatic structure broken into acts with turning points",
+            "items": {
+              "$ref": "#/$defs/ActStructure"
+            },
+            "title": "Act Structure",
+            "type": "array"
+          },
+          "central_conflict": {
+            "description": "The core dramatic conflict driving the narrative",
+            "title": "Central Conflict",
+            "type": "string"
+          },
+          "confidence": {
+            "description": "Overall extraction confidence Constraints enforced after parsing: minimum: 0.0, maximum: 1.0.",
+            "title": "Confidence",
+            "type": "number"
+          },
+          "genre": {
+            "description": "Primary genre, e.g. 'Action-Thriller', 'Drama'",
+            "title": "Genre",
+            "type": "string"
+          },
+          "logline": {
+            "description": "One-sentence summary of the story",
+            "title": "Logline",
+            "type": "string"
+          },
+          "narrative_arc": {
+            "description": "Overall story shape \u2014 setup, confrontation, resolution pattern",
+            "title": "Narrative Arc",
+            "type": "string"
+          },
+          "protagonist_journey": {
+            "description": "The protagonist's transformation arc across the story",
+            "title": "Protagonist Journey",
+            "type": "string"
+          },
+          "setting_overview": {
+            "description": "Time period, location context, and world-building essentials",
+            "title": "Setting Overview",
+            "type": "string"
+          },
+          "synopsis": {
+            "description": "1-3 paragraph synopsis",
+            "title": "Synopsis",
+            "type": "string"
+          },
+          "themes": {
+            "description": "Major thematic concerns identified in the script",
+            "items": {
+              "$ref": "#/$defs/ThematicElement"
+            },
+            "title": "Themes",
+            "type": "array"
+          },
+          "title": {
+            "description": "Title of the screenplay",
+            "title": "Title",
+            "type": "string"
+          },
+          "tone": {
+            "description": "Dominant tone, e.g. 'Gritty and intense', 'Darkly comedic'",
+            "title": "Tone",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "logline",
+          "synopsis",
+          "act_structure",
+          "themes",
+          "narrative_arc",
+          "genre",
+          "tone",
+          "protagonist_journey",
+          "central_conflict",
+          "setting_overview",
+          "confidence"
+        ],
+        "title": "ScriptBible",
+        "type": "object"
+      },
+      "type": "json_schema"
+    }
+  },
+  "thinking": {
+    "type": "disabled"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.010565",
+  "latency_ms": 10283,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1579,
+    "path": "output/evals/haiku55-20261007/judge-opus-medium-vfp_active_001-raw.json",
+    "sha256": "cddb15a3bba84d82708680a6d8fc39e1d347fe9c7feaaebea3f2d5f9ecb115ff"
+  },
+  "reason": "The output correctly identifies two figures (left and right), the pale/white rectangle on the right figure, the dark/navy sky, and intact continuity\u2014all matching the reference. However, it describes the tan figure as 'drifting rightward' across frames, whereas the reference says both figures hold fixed left-right centers and instead enlarge (grow larger) across the ordered samples. This is a significant mischaracterization of the primary observable motion. The tone is labeled 'detached/surreal' vs. the reference 'intimate,' and emotion is tagged 'isolation' when the reference indicates none. Color tags miss 'teal' and instead list 'desaturated,' which is not well-supported. Motion is described as 'slow_drift/stillness' rather than the measured enlargement that is the key observable change. The model fails to note figure enlargement at all, which is the central visual observation. Audio fields are not empty (they are empty arrays, which is acceptable). Overall, the core motion description is wrong and several subjective tags diverge from the reference.",
+  "request_id": "msg_011CfoaEmatT1RQzcBFVj9wV",
+  "score": 0.45,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 893,
+    "output_tokens": 244,
+    "service_tier": "standard"
+  }
+}

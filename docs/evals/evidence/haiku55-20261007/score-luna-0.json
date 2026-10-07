@@ -1,0 +1,128 @@
+{
+  "arm": "luna",
+  "combined_opus": 0.765,
+  "combined_sol": 0.7949999999999999,
+  "deterministic": {
+    "pass": true,
+    "reason": "overall=0.750 | uncertainty=0.130 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.50 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached, unexpected=surreal | color: teal, unexpected=gold | continuity: The pale rectangle stays beside the right figure across all five frames.",
+    "score": 0.75
+  },
+  "index": 0,
+  "opus": {
+    "cost_usd": "0.01104",
+    "latency_ms": 8915,
+    "model": "claude-opus-4-6",
+    "raw": {
+      "bytes": 1510,
+      "path": "output/evals/haiku55-20261007/judge-opus-luna-vfp_active_001-raw.json",
+      "sha256": "4f7a734edc54f12d003398aa1ed3b99e29d497a9eac62532edfad4afaa6e4f96"
+    },
+    "reason": "The summary correctly captures two figures standing apart on a dark ground with a blue background, with a rectangle on the right figure's torso, and both figures enlarging while feet remain fixed. However, there are notable mismatches: (1) Tone is 'detached/surreal' vs reference 'intimate' - this is a clear mismatch. (2) Color tags include 'gold' instead of 'teal' - the reference says navy/teal, but the output says navy/gold. The 'pale tan' description of the left figure might justify gold loosely, but the reference specifies teal as a key color. (3) The evidence is grounded in frames 0, 2, and 4, which is reasonable for 5 ordered frames, but it only references 3 of 5 frames. (4) Audio fields are empty, which is correct. (5) Motion tag 'measured' matches reference. (6) Continuity 'intact' matches reference. (7) Camera 'static' - reference says camera is excluded from scoring so this doesn't penalize. The tone mismatch and color mismatch together bring the score below the 0.8 threshold.",
+    "request_id": "msg_011CfoaRVPNYezx1WyGj5Ad4",
+    "score": 0.78,
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "inference_geo": "global",
+      "input_tokens": 818,
+      "output_tokens": 278,
+      "service_tier": "standard"
+    }
+  },
+  "response": {
+    "cached": false,
+    "cost": 0.00023967000000000001,
+    "latencyMs": 5311,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0c98258c794b04da016ac6b7b9705c87d0a34423f16f0c089e",
+      "requested_model": "gpt-6-luna",
+      "returned_model": "gpt-6-luna",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified human-like figures stand apart on a dark horizontal ground against a deep blue background; the blue figure has a small outlined rectangle on its torso. Across the samples, both figures subtly enlarge upward while their feet and the background remain fixed.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"gold\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A pale tan figure stands at left and a light-blue figure with an outlined torso rectangle stands at right.\"},{\"frame_index\":2,\"cue\":\"Both figures retain their positions above the dark ground, with the same outlined rectangle on the blue figure.\"},{\"frame_index\":4,\"cue\":\"The figures extend higher and appear slightly wider than in frame 0, while their feet remain aligned with the ground.\"}],\"overall_confidence\":0.87}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0c98258c794b04da016ac6b7b9705c87d0a34423f16f0c089e",
+      "model": "gpt-6-luna",
+      "raw_envelope_bytes": 10839,
+      "raw_envelope_path": "output/evals/haiku55-20261007/subject/luna/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "8d4135958e429bd188283ed9ecdd843c7598248d7bfe3c349776ba9e30cb456b",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 2887
+        },
+        "output_tokens": 421,
+        "output_tokens_details": {
+          "reasoning_tokens": 193
+        },
+        "total_tokens": 3311
+      }
+    },
+    "tokenUsage": {
+      "completion": 228,
+      "completionDetails": {
+        "reasoning": 193
+      },
+      "prompt": 2890,
+      "total": 3311
+    }
+  },
+  "sol": {
+    "cost_usd": "0.006481",
+    "latency_ms": 4339,
+    "model": "gpt-6-sol",
+    "raw": {
+      "bytes": 4522,
+      "path": "output/evals/haiku55-20261007/judge-sol-luna-vfp_active_001-raw.json",
+      "sha256": "f2bd1fecc91fd63382b9a0a9bab162a525e1d303db7f231fc94ab01395ce7fab"
+    },
+    "reason": "The analysis correctly identifies the two figures, their fixed left-right positions, gradual enlargement, and intact continuity. The pale rectangle is low on the right figure rather than generally on its torso, and the reference color is teal rather than gold. Its detached/surreal tone also differs from the reference\u2019s intimate tone.",
+    "request_id": "resp_0a7745fbf049343a016ac6b7c7ea1087d0b635c02beb9e5550",
+    "score": 0.84,
+    "usage": {
+      "input_tokens": 2077,
+      "input_tokens_details": {
+        "cache_write_tokens": 2074,
+        "cached_tokens": 0
+      },
+      "output_tokens": 129,
+      "output_tokens_details": {
+        "reasoning_tokens": 47
+      },
+      "total_tokens": 2206
+    }
+  }
+}

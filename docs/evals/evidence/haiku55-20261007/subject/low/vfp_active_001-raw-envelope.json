@@ -1,0 +1,32 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simple flat figures stand on a dark floor against a navy gradient background, one beige and one light blue holding a white rectangle. Across the ordered samples the beige figure shifts slightly and the blue figure bobs marginally, with no clear scene change.\",\"tone_tags\":[\"detached\",\"ominous\"],\"emotion_tags\":[\"isolation\",\"suspicion\"],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"stillness\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both figures and the white rectangle remain in consistent positions across all five samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Beige figure on left and light blue figure holding a white rectangle on right against a navy gradient background\"},{\"frame_index\":2,\"cue\":\"Same two figures and white rectangle present with the frame framing unchanged\"},{\"frame_index\":4,\"cue\":\"Blue figure and white rectangle remain in the same right-side position with only minor shifts in the beige figure\"}],\"overall_confidence\":0.6}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011CfoaHEmKjpRkaCJ2orUix",
+  "model": "claude-haiku-5-5",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 4511,
+    "output_tokens": 405,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "cost_usd": "0.02833",
+  "reason": "The bible is highly faithful to the screenplay. Logline, synopsis, setting, and central conflict all accurately reflect the source material. Both terminal beats (Comet's return and the ON AIR sign steadying as the team settles back to work) are present and correctly described. The act structure maps cleanly onto the screenplay's four slug lines (studio night, water tower, gym, studio morning), with Act 2 covering the gym and Act 3 covering the morning studio. Turning points are all grounded in actual screenplay moments. Theme quotations are accurate and traceable to the source. Genre ('Disaster Drama with Ensemble Comedy') and tone ('Warm, urgent, and quietly humorous') are well-supported. The schema is correct with all required fields and no extra keys at any level. Minor deductions: (1) The synopsis adds a small embellishment about 'bread and wet coats' being described as the studio being 'warm,' which is a slight interpretation but not a contradiction. (2) The synopsis says the crew 'hangs a sign reading OPEN FREQUENCY and returns to air' \u2014 in the screenplay, June tapes the sign, and the team is already in the studio, so 'returns to air' slightly overstates what's shown. (3) The protagonist journey characterizes Aria's arc as moving from technical focus to community awareness, which is a reasonable reading but somewhat interpretive given the screenplay's brevity. (4) Act 2's end_scene is listed as the same as its start_scene, which is technically correct since the gym sequence is one continuous scene, but slightly awkward. (5) The narrative arc description is accurate and doesn't invent resolution beyond what the screenplay shows. Overall, the bible is a reliable production reference with no material contradictions or hallucinated outcomes.",
+  "score": 0.85,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 3651,
+    "output_tokens": 403,
+    "service_tier": "standard"
+  }
+}

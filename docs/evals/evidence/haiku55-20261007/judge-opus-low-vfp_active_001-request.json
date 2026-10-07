@@ -1,0 +1,35 @@
+{
+  "payload": {
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "content": "<Output>\n{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simple flat figures stand on a dark floor against a navy gradient background, one beige and one light blue holding a white rectangle. Across the ordered samples the beige figure shifts slightly and the blue figure bobs marginally, with no clear scene change.\",\"tone_tags\":[\"detached\",\"ominous\"],\"emotion_tags\":[\"isolation\",\"suspicion\"],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"stillness\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both figures and the white rectangle remain in consistent positions across all five samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Beige figure on left and light blue figure holding a white rectangle on right against a navy gradient background\"},{\"frame_index\":2,\"cue\":\"Same two figures and white rectangle present with the frame framing unchanged\"},{\"frame_index\":4,\"cue\":\"Blue figure and white rectangle remain in the same right-side position with only minor shifts in the beige figure\"}],\"overall_confidence\":0.6}\n</Output>\n\nEvaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: Two abstract figures hold fixed left-right centers in blue light while both appear larger across the ordered frames; a pale rectangle stays on the right figure.\n- Tone: intimate\n- Emotion: [none]\n- Color / grade: navy, teal\n- Camera language inferable from the ordered samples: ambiguous; camera tags excluded from scoring\n- Motion inferable from the ordered samples: measured\n- Continuity: intact - The pale rectangle stays beside the right figure across all five frames.\n- Audio: unavailable to the subject and excluded from scoring\n- Interpretation boundary: The figures enlarge at nearly fixed centers while the prop and background do not scale. Figure-size change is observable; physical approach or a specific camera mechanism is not established.\n\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n",
+        "role": "user"
+      }
+    ],
+    "model": "claude-opus-4-6",
+    "output_config": {
+      "format": {
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "score": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "score",
+            "reason"
+          ],
+          "type": "object"
+        },
+        "type": "json_schema"
+      }
+    },
+    "system": "You are an impartial evaluator. Return exactly a JSON object with score (number 0 to 1) and reason (string). Explain concrete mismatches against visible source facts. Do not reveal chain of thought."
+  },
+  "url": "https://api.anthropic.com/v1/messages"
+}

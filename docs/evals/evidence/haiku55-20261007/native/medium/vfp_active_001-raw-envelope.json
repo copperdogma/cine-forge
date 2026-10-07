@@ -1,0 +1,32 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simple flat figures stand on a dark ground under a navy gradient sky, one beige and one light blue with a white rectangle at its lower torso. Across the ordered samples the beige figure drifts slightly rightward and shifts vertically while the blue figure stays largely in place with small bobbing.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"slow_drift\",\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both figures and the white rectangle remain present in all five ordered samples with consistent styling and background.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Beige figure at left with a round head above a rounded rectangular body on a dark ground\"},{\"frame_index\":0,\"cue\":\"Light blue figure at right holding a white rounded rectangle at its lower torso against a navy gradient sky\"},{\"frame_index\":4,\"cue\":\"Beige figure has shifted slightly right and blue figure remains at the right with the same white rectangle\"}],\"overall_confidence\":0.6}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011CfoaDnE4YhUhjrmGjJ71U",
+  "model": "claude-haiku-5-5",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 4512,
+    "output_tokens": 421,
+    "output_tokens_details": {
+      "thinking_tokens": 0
+    },
+    "service_tier": "standard"
+  }
+}

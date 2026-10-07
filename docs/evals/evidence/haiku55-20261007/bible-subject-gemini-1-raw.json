@@ -1,0 +1,31 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"title\": \"Open Frequency\",\n  \"logline\": \"During a catastrophic storm, a resourceful team of community radio operators braves the elements to restore local communications, coordinate relief efforts, and reunite a family with their missing dog.\",\n  \"synopsis\": \"In the dead of night during a severe storm that knocks out power and cell towers, a small team of community radio broadcasters\u2014Aria, Noah, June, and Kell\u2014scramble to get their station back on the air. Kell braves the dangerous weather to secure a makeshift antenna on a water tower, allowing the team to broadcast critical emergency updates regarding road closures and insulin shortages. By morning, the station has transformed into a vital lifeline for the flooded valley, successfully coordinating rescue efforts, housing survivors in the high school gym, and even locating a teenager's lost dog.\",\n  \"act_structure\": [\n    {\n      \"act_number\": 1,\n      \"title\": \"Setup\",\n      \"start_scene\": \"INT. COMMUNITY RADIO STUDIO - NIGHT\",\n      \"end_scene\": \"EXT. WATER TOWER CATWALK - NIGHT\",\n      \"summary\": \"During a blackout storm, Aria, Noah, June, and Kell struggle to get their community radio station operational and successfully rig a risky antenna on a water tower to capture a signal.\",\n      \"turning_points\": [\n        \"The station loses power and cell towers fail across the valley\",\n        \"Kell returns from the dangerous bridge with a portable antenna\",\n        \"The team braves the stormy catwalk to rig the antenna and hears a distress call for insulin\"\n      ]\n    },\n    {\n      \"act_number\": 2,\n      \"title\": \"Confrontation\",\n      \"start_scene\": \"INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\",\n      \"end_scene\": \"INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\",\n      \"summary\": \"Operating out of a makeshift shelter, the crew coordinates relief updates while managing community members in distress, including a teenager looking for her missing dog.\",\n      \"turning_points\": [\n        \"June and Kell coordinate emergency supplies and shelter logs from the high school gym\",\n        \"Maya asks the station to broadcast a missing notice for her dog Comet\",\n        \"Noah broadcasts road opening updates from the field\"\n      ]\n    },\n    {\n      \"act_number\": 3,\n      \"title\": \"Resolution\",\n      \"start_scene\": \"INT. COMMUNITY RADIO STUDIO - MORNING\",\n      \"end_scene\": \"INT. COMMUNITY RADIO STUDIO - MORNING\",\n      \"summary\": \"The storm clears, the station officially adopts the banner 'Open Frequency', and the community comes together as the missing dog is returned and regular broadcasting resumes with renewed hope.\",\n      \"turning_points\": [\n        \"The team re-enters the studio in the morning with renewed purpose\",\n        \"Maya and a sleepy Comet arrive safely at the station\",\n        \"The station officially becomes 'Open Frequency' as music and emergency bulletins resume under a steady red ON AIR light\"\n      ]\n    }\n  ],\n  \"themes\": [\n    {\n      \"theme\": \"Community Resilience\",\n      \"description\": \"How ordinary people come together to support one another and maintain social fabric during crises.\",\n      \"evidence\": [\n        \"Coordinating insulin drops and shelter blankets over the radio\",\n        \"Establishing the high school gym as a functional community shelter\",\n        \"Naming roads and missing dogs alike to keep spirits high\"\n      ]\n    },\n    {\n      \"theme\": \"Hope and Connection\",\n      \"description\": \"The emotional necessity of human voice and communication in overcoming isolation and disaster.\",\n      \"evidence\": [\n        \"Aria smiling for the first time when the radio signal is established\",\n        \"Maya viewing her dog Comet as essential family during an evacuation\",\n        \"The transition of the station into 'Open Frequency'\"\n      ]\n    }\n  ],\n  \"narrative_arc\": \"The story follows a linear crisis-to-recovery arc: starting from total blackout and chaos, moving through coordinated emergency response in the dead of night, and resolving in daylight with a stabilized community and a permanent community broadcast channel.\",\n  \"genre\": \"Drama\",\n  \"tone\": \"Gritty, hopeful, and intimate\",\n  \"protagonist_journey\": \"The ensemble of radio operators shifts from a frantic group fighting technical failures in the dark to a confident, unified community backbone providing hope and practical aid.\",\n  \"central_conflict\": \"The characters must overcome severe storm conditions, failing technology, and institutional blackouts to restore communication channels and aid their isolated town.\",\n  \"setting_overview\": \"A storm-battered small valley town during a severe weather emergency, focusing primarily on a rundown community radio station and a high school gymnasium turned evacuation shelter.\",\n  \"confidence\": 1.0\n}",
+            "thoughtSignature": "EmAKXgFpFH0T8qDX/qNi8ILjpyhczIKxbTGlkqZKK49ivXaqMgz/KHA25oun6K9ri1B0Purd+bDPnS+zOlJ+B78ASIriHHMAR7CygHD35z0HtqTZz5X7qu1rmNglh/aC95c="
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "modelVersion": "gemini-3.5-flash-lite",
+  "responseId": "7LfGav7aBPeVmtkP19KQqQ0",
+  "usageMetadata": {
+    "candidatesTokenCount": 1060,
+    "promptTokenCount": 1292,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1292
+      }
+    ],
+    "serviceTier": "standard",
+    "totalTokenCount": 2352
+  }
+}

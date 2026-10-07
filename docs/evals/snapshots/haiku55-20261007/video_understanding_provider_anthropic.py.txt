@@ -38,21 +38,13 @@ def call_anthropic(
         temperature=temperature,
     )
     if model in {"claude-opus-5-5", "claude-sonnet-5-5", "claude-haiku-5-5"}:
-        if (
-            (effort != "medium" and model != "claude-haiku-5-5")
-            or effort not in {"low", "medium", "high"}
-            or raw_output_path is None
-        ):
-            raise RuntimeError("Anthropic 5.5 requires supported effort and durable raw output")
+        if (effort != "medium" and model != "claude-haiku-5-5") or effort not in {"low", "medium", "high"} or raw_output_path is None:
+            raise RuntimeError("Anthropic 5.5 requires medium effort and durable raw output")
         payload.pop("temperature", None)
         if model in {"claude-sonnet-5-5", "claude-haiku-5-5"}:
             if len(frames) != 5:
-                raise RuntimeError(f"{model} requires five ordered JPEGs")
-            payload["thinking"] = {
-                "type": "disabled"
-                if model == "claude-haiku-5-5" and effort == "low"
-                else "adaptive"
-            }
+                raise RuntimeError("Sonnet 5.5 requires five ordered JPEGs")
+            payload["thinking"] = {"type": "disabled" if model == "claude-haiku-5-5" and effort == "low" else "adaptive"}
         payload["output_config"] = {
             "effort": effort,
             "format": {"type": "json_schema", "schema": _anthropic_video_schema()},
@@ -117,11 +109,7 @@ def _normalize_anthropic_response(
         ):
             raise RuntimeError("Unexpected Anthropic cached input usage; billing needs review")
         raw_bytes = raw_output_path.read_bytes()
-        input_rate, output_rate = (
-            ((0.5, 2.5) if input_tokens > 100000 else (0.1, 0.5))
-            if model == "claude-haiku-5-5"
-            else ((2, 10) if model == "claude-sonnet-5-5" else (4, 20))
-        )
+        input_rate, output_rate = ((.5, 2.5) if input_tokens > 100000 else (.1, .5)) if model == "claude-haiku-5-5" else ((2, 10) if model == "claude-sonnet-5-5" else (4, 20))
         reported_cost = (input_tokens * input_rate + output_tokens * output_rate) / 1_000_000
     else:
         reported_cost = None

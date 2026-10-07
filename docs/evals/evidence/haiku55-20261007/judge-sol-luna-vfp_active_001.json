@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.006481",
+  "latency_ms": 4339,
+  "model": "gpt-6-sol",
+  "raw": {
+    "bytes": 4522,
+    "path": "output/evals/haiku55-20261007/judge-sol-luna-vfp_active_001-raw.json",
+    "sha256": "f2bd1fecc91fd63382b9a0a9bab162a525e1d303db7f231fc94ab01395ce7fab"
+  },
+  "reason": "The analysis correctly identifies the two figures, their fixed left-right positions, gradual enlargement, and intact continuity. The pale rectangle is low on the right figure rather than generally on its torso, and the reference color is teal rather than gold. Its detached/surreal tone also differs from the reference\u2019s intimate tone.",
+  "request_id": "resp_0a7745fbf049343a016ac6b7c7ea1087d0b635c02beb9e5550",
+  "score": 0.84,
+  "usage": {
+    "input_tokens": 2077,
+    "input_tokens_details": {
+      "cache_write_tokens": 2074,
+      "cached_tokens": 0
+    },
+    "output_tokens": 129,
+    "output_tokens_details": {
+      "reasoning_tokens": 47
+    },
+    "total_tokens": 2206
+  }
+}

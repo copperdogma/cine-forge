@@ -1,5 +1,11 @@
 # Changelog
 
+## [2026-10-07-01] — Haiku thinking value evaluation (Story 231)
+
+### Added
+- Bounded fresh three-thinking-arm Haiku 5.5 frame and runtime ScriptBible evidence, strict schema adapter support, source adjudication and spend provenance. Existing references retained after source-fidelity failures; no runtime defaults changed.
+
+
 ## [2026-10-06-03] — Use Nano Banana 2.1 for image generation (Story 230)
 
 ### Changed

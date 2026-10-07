@@ -1,0 +1,29 @@
+{
+  "arm": "low",
+  "combined": 0.7599499999999999,
+  "cost": 0.0013002,
+  "deterministic": {
+    "pass": false,
+    "reason": "raw_score=0.9122 | act_boundary_grounding=0.00 | act_structure=1.00 | confidence_quality=1.00 | conflict_grounding=1.00 | field_completeness=1.00 | full_source_coverage=1.00 | genre_tone_grounding=1.00 | journey_grounding=1.00 | json_valid=1.00 | logline_grounding=0.67 | setting_grounding=1.00 | synopsis_grounding=1.00 | theme_evidence_grounding=0.78 | themes=1.00 | title_correct=1.00 | unsupported_claims=1.00 | Act boundaries do not partition the exact source headings | Theme evidence is not grounded in the source screenplay",
+    "score": 0.6999
+  },
+  "index": 1,
+  "latencyMs": 12804,
+  "opus": {
+    "cost_usd": "0.026475",
+    "reason": "The bible is schema-compliant with all required keys present and no extra keys at any level. Terminal beats are preserved: Maya's missing-dog plea, Comet's morning return under the vending machine, the ON AIR sign steadying to a solid red glow, and the crew settling back to work. No invented ending or material contradiction with the screenplay. All direct quotations are accurate and traceable to the source. Act boundaries align reasonably with the screenplay's scene headings, though Act 2 starting at the shelter and ending at the studio morning scene blurs into Act 3 (both end in the same INT. COMMUNITY RADIO STUDIO - MORNING location), making the act division somewhat arbitrary rather than clearly delineated. Minor issues: (1) The synopsis says 'they pick up a desperate call for insulin' at the water tower, which is accurate, but adds 'blankets from the north shelter' slightly rephrasing\u2014acceptable. (2) The synopsis says 'storm residue has cleared' but the screenplay says 'pale sunlight cuts through the storm residue on the windows,' meaning residue is still present, not cleared\u2014a minor inaccuracy. (3) The protagonist journey claims Aria 'begins skeptical of a miracle,' but in the screenplay she says 'Give me ten minutes and one miracle,' which is more hopeful/determined than skeptical\u2014a slight mischaracterization. (4) Comet was found 'under the vending machine' per the screenplay, but the act structure says 'recovered from the vending machine in the band room'\u2014combining two details accurately. (5) The logline and synopsis are faithful overall but slightly embellish the narrative scope. (6) Genre 'Drama' is accurate but could note the comedy/warmth more explicitly; tone 'Warm, urgent and quietly humorous' captures it well. (7) One theme evidence line ('Noah longing for boring weather and boring jobs') paraphrases rather than quotes but is substantively correct. Overall the bible is a reliable production reference with only minor inaccuracies that don't amount to hard failures.",
+    "score": 0.82,
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "inference_geo": "global",
+      "input_tokens": 2925,
+      "output_tokens": 474,
+      "service_tier": "standard"
+    }
+  }
+}

@@ -1,0 +1,225 @@
+{
+  "arms": [
+    "medium adaptive",
+    "low disabled",
+    "high adaptive"
+  ],
+  "cache": false,
+  "concurrency": 1,
+  "files": [
+    {
+      "bytes": 5560,
+      "path": "benchmarks/scripts/run_haiku55_bible.py",
+      "sha256": "69460c85f9b2fcb80627a71376543493574ffed774c0e78fee8021c7d074d258"
+    },
+    {
+      "bytes": 36341,
+      "path": "benchmarks/providers/script_bible_runtime_provider.py",
+      "sha256": "8fcff9d1e4c5cd12fc29832d4d2c065932919adcf20fbf71723fb92a6ef8b72f"
+    },
+    {
+      "bytes": 20039,
+      "path": "benchmarks/scorers/script_bible_scorer.py",
+      "sha256": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9"
+    },
+    {
+      "bytes": 7150,
+      "path": "src/cine_forge/modules/ingest/script_bible_v1/main.py",
+      "sha256": "7361da008a1d058fcae7e9e8733128a60e459d4677612a7f11681bdeda54376d"
+    },
+    {
+      "bytes": 2864,
+      "path": "src/cine_forge/schemas/script_bible.py",
+      "sha256": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb"
+    },
+    {
+      "bytes": 7942,
+      "path": "benchmarks/runtime_tasks/script-bible-runtime.yaml",
+      "sha256": "a63892417bd70dc7dece148c8a51b4b655fe6292b08fc7c643fccbcfb090d095"
+    },
+    {
+      "bytes": 16363,
+      "path": "benchmarks/input/the-mariner.md",
+      "sha256": "7dec16a4070547eec4a801018c02a5f00e862354d0de359efff64ff1da661a78"
+    },
+    {
+      "bytes": 3447,
+      "path": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    }
+  ],
+  "grouping": "independent",
+  "incumbent": "gemini-3.5-flash-lite minimal",
+  "judge": "claude-opus-4-6 plus root source-grounded independent review",
+  "prompts": [
+    "You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\n\n\nThe Mariner\n\nWhat happens when a hero\u2019s origin story crumbles?  \nFADE IN:\n\nEXT. CITY CENTRE \\- NIGHT\n\nA ruined city. Fires burn here and there, some from barrels with huddled homeless homeless warming themselves, others from destroyed buildings. A fallen skyscraper has carved away chunks of its neighbours, filling an intersection with rubble. Gunshots and screams are heard. Sirens are far in the distance.\n\nOPENING TITLE\n\nIn 2020 the pandemic swept the globe. Everyone who could work remotely did, hollowing out the skyscrapers. The cascading bank failures and commercial real estate collapse of 2025 turned these once pristine urban centres into sprawling no-go zones. Vigilanties arise to do what the police couldn\u2019t.\n\nEXT. RUDDY & GREENE BUILDING \\- FRONT \\- NIGHT\n\nClassic 15-story sandstone building. Once beautiful, now riddled with bullet holes and graffiti. Parked outside are rows of high-end European SUVs.\n\nEXT. RUDDY & GREENE BUILDING \\- REAR \\- NIGHT\n\nGrimy alley. A delivery van rolls up. \u201cMcAngus Fish & Brewis\u201d painted on the side with a giant fake fish on top.\n\nTHE MARINER, hidden in shadow, gets out of the van and flings open the building\u2019s back door, his huge frame silhouetted against the interior\u2019s light. He charges in. All we hear are the sounds: yells, violent fighting, silence. Heavy footsteps, DING, elevator doors open, muzak version of \u201cFaith\u201d by George Michael playing with Mariner humming along, elevator doors close.\n\nAs the elevator rises, one window lights up on each floor, all the way to the very top.\n\nMore sounds: DING, elevator opens, \u201cFaith\u201d playing, yelling, running, gunfire, screams, silence. Heavy footsteps. A door kicked in, more gunfire, fighting, wet cracking sounds, silence.\n\nROSE (O.S.)  \nBilly?\\!\n\nMARINER (O.S.)  \nNot today\\! C\u2019mon, we gotta go.\n\nMore sounds: two people running down a hallway, a single gunshot, THWACK, nothing. DING, elevator doors.\n\nINT. RUDDY & GREEN BUILDING \\- ELEVATOR\n\nUB40's \"I Can't Help Falling in Love With You\" muzak.\n\nROSE (mid-30s) leans against the elevator wall, panting. She\u2019s wearing a Tim Hortons uniform, her hair is a mess, and there\u2019s blood spattered on her face.\n\nShe looks right, pants a few more times, then squints in disgust. She gingerly picks up a bloody scrap of something with hair on it. She snorts and drops it.\n\nROSE  \nIs that skull??\n\nNext to her is Mariner, also panting, covered in far more blood. His face is broad, stoic, and frowning. He has gray-blue eyes and a thick, curly, beard barely streaked with gray. He wears a red knit cap and a small mask.\n\nFULL-SCREEN SUPERIMPOSED TITLE CARD: \u201cTHE MARINER\u201d\n\nHe blinks a few times as a drop of blood falls from his eyebrow. He looks toward her, then spits out some blood.\n\nMARINER  \nYeaaaaah...\n\nHe\u2019s built like a pro-wrestler. Moss green SWEATER stretched over his huge frame, sleeves rolled showing heavy leather BRACERS adorned with anchors. His inner forearm has a classic heart-and-arrow TATTOO with \u201cDad\u201d in the centre. Across his chest is a BANDOLIER of bright red 12-gauge shells, FISH HOOKS hanging from the bottom edge. Heavy rubberized BOOTS go past his knees. A CAPE of heavy FISHING NET edged with WEIGHTS hangs from his shoulders.\n\nHe holds a STOUT WOODEN OAR in both hands, edged with METAL and dripping with BLOOD. He shakes it to dislodge another GRISLY BIT which hits the ground with a wet plop.\n\nROSE  \nHow the hell did you find me?\n\nMariner looks down and mumbles something.\n\nROSE  \n(annoyed)  \nWhat?\n\nMARINER  \nAirTag.\n\nROSE  \nWhat??\n\nMARINER  \nI stashed an AirTag in your purse. Last Thanksgiving at ma\u2019s.\n\nROSE  \nShit\\! My purse\\!\n\nMARINER  \nJust in case\\! I worry about--\n\nROSE  \nShut it\\! We gotta go back for it.\n\nMARINER  \nWhat? No way\\! I\u2019m taking you home. It\u2019s my fault they went after you. I never thought they\u2019d--\n\nROSE  \n(laughing)  \nYou think they\u2019re after you?\n\nMariner looks confused. DING \\- elevator doors open on 12\\.\n\nThree THUGS are waiting for them. THUG 1 raises his GUN... Mariner SWINGS HIS OAR in an arc, catching the gun... BANG \\- shot goes high, GUN FLIES out of his hand... Mariner SIDE-KICKS him in the chest... Thug 1 FLIES back, knocking the others to the GROUND.\n\nRose has been frantically pressing the CLOSE DOOR button.\n\nThe thugs struggle to their feet.\n\nTHUG 2  \n(into radio)  \nWe\u2019ve got them on twelve.\n\nTHUGS 2 & 3 DRAW GUNS. BLAM BLAM BLAM. Rose and Mariner LEAP to the side... DOORS begin to CLOSE... Thug 2 LUNGES at the elevator BUTTON... Mariner\u2019s OAR flashes through the closing doors... Thug 2 SCREAMS and CURSES... Doors close.\n\nTHUG  \n(muffled)  \nGo\\! Go\\! Down to eight\\!\n\nRose presses 11\\.\n\nROSE  \nWe\u2019ll take the stairs up. They won\u2019t expect that.\n\nMARINER  \nBecause it\u2019s stupid\\!\n\nRose raises an eyebrow at Mariner\u2019s crazy outfit.\n\nMARINER  \nIt\u2019s functional\\! ... And an homage.\n\nDING. Doors open. Rose peers out. Silence.\n\nMARINER  \n(whispering)  \nRose... No\\!\n\nRose quietly darts out of the elevator. Mariner tries to grab her but misses. He hesitates... Doors start closing. Mariner dashes out after her, grumbling.\n\nINT. 11TH FLOOR \\- CONTINUOUS\n\nThey hunt for a stairwell through the dim corridors. Lights flicker, papers and office furniture litter the hallway.\n\nROSE  \nWait. Did you mean an homage to... dad? Are you ser--\n\nMARINER  \nShh\\!\n\nHe PULLS her into an EMPTY ROOM. They hide behind a toppled FILING CABINET and listen, catching their breath. Someone slowly walks by. Mariner looks down at his \u201cDad\u201d TATTOO.\n\nBEGIN FLASHBACK: EXT. COASTLINE \\- DAY \\- PAST\n\nYoung Mariner (8) and his dad (30s, fisherman) bob happily in a wooden sailboat near the shoreline. Golden light bathes them. Dad is behind Mariner, teaching him to cast. They laugh and smile, enjoying the day.\n\nDAD  \nOi, me bosun. Ya knows what\u2019s a hero? \u2018E\u2019s the one what\u2019s brave an true. You remembers that. Go on now an fetch yer pa anudder.\n\nYoung Mariner nods, fetching a beer with the seriousness of a young boy with a job to do.\n\nEND FLASHBACK.\n\nRose nudges him, breaking his reverie. He grabs her hand and leads her out of the room. They find a stairwell.\n\nINT. STAIRWELL \\- CONTINUOUS\n\nShe goes up, he goes down.\n\nMARINER  \nYou mad? We have to go\\! I\u2019ll buy you a new bloody purse.\n\nROSE  \nIt ain\u2019t the purse. It\u2019s... a blockchain password to my life savings. I hid it on a chip in the lining. It\u2019s all I got, Billy\\!\n\nShe gives a pleading look and heads up stairs. Mariner follows, grumbling.\n\nINT. 12TH FLOOR STAIRWELL \\- CONTINUOUS\n\nMARINER  \nThe hell\u2019s a blockchain?\n\nBOOM \\- A thug (ROSCO) opens the stairwell door, slamming Rose into Mariner. They stumble... Mariner YANKS Rosco into the stairwell... SMASHES his face into the wall... Rosco drops his GUN... Rose picks it up and points it at the back of his head as Mariner keeps him pressed into the wall.\n\nROSE  \nHey, Rosco. Explain blockchain.\n\nROSCO  \n(panicked, face smooshed)  \nWhat?\\!\n\nRose cocks the gun.\n\nROSCO  \nOkay, okay\\! It\u2019s, uh, a decentralized digital ledger detailing asset ownership. Untraceable. Oh man, Mr. Salvatori\u2019s gonna kill ya, Rosie.\n\nRose nods \u201cyes,\" maybe at both things. She motions for Mariner to do something to Rosco.\n\nROSCO  \nHe ain\u2019t gonna let you walk with 20 mil--\n\nMariner cracks his head into the wall and Rosco crumples. Rose tucks the gun into her pants. Mariner stares at her.\n\nMARINER  \nWas he going to say 20 million? And how the hell do you know these assholes?\n\nRose starts up the stairs again. Mariner grabs her arm. She struggles. He lets her go. She scowls at him.\n\nROSE  \nI stole it, okay? From these assholes. It\u2019s gang money.\n\nMARINER  \nYou got me involved in stealing gang money?\n\nROSE  \nWho got you involved, Mr. Fucking AirTag?\n\nRose storms up the stairs and out of the door to the 13th floor. Mariner follows.\n\nINT. 13TH FLOOR\n\nVINNIE, MIKEY, and CARLOS patrol the ruined corridor.\n\nMIKEY  \nYou heard about WaldoCoin?\n\nVINNIE  \nMan, that shit\u2019s a scam. You gotta get into PonziCoin. My cousin\u2019s in it. He says it\u2019s legit.\n\nThey hear the stairwell door slam open on the other side of the floor and angry voices. Vinnie puts a finger to his lips and motions Mikey and Carlos to follow.\n\nMARINER (O.S.)  \nWe\u2019re leaving. Now. I don\u2019t steal, Rose. It\u2019s against my code.\n\nThe thugs creep down the hallway toward the voices.\n\nROSE (O.S.)  \n(laughing but angry)  \nFrom criminals? We take it, their gang collapses. And what code??\n\nVinnie motions the others to stop at the corner, gun ready.\n\nMARINER (O.S.)  \nI live by the Mariner\u2019s code: honesty, bravery, and grit. A true hero never backs down from a fight.\n\nROSE (O.S.)  \nYou know who you sound like...\n\nThe thugs appear at the end of the hallway, guns raised.\n\nCARLOS  \nFreeze, assholes\\! On the ground\\!\n\nVINNIE  \nRosey, baby. We don\u2019t wanna hurt ya. Mr. Salvatori just wants his password. That\u2019s all. Then maybe, if you\u2019re reeeaal nice, maybe you can be my booty call some more.\n\nRose\u2019s eyes narrow. Mariner scowls and steps in front.\n\nMIKEY  \nHey, Finding Nemo, drop the piece.\n\nVINNIE cackles. Mainer slowly unholsters his weapon \\- a fat, bright-orange pistol.\n\nMIKEY  \nIs that a... flare gun?\n\nThe thugs all start laughing. POP \\- Blinding red flare streaks out... Mariner spins, broad back protecting Rose... Flare hits VINNIE in the chest. He SCREAMS and drops, still screaming. BLAM-BLAM-BLAM \\- Thugs fire... One shot hits Mariner\u2019s back... He shoves Rose through an open door...\n\nRose sees the stark red light of the flare and hears VINNIE\u2019S screams as it continues to burn. Mariner lunges toward the other thugs. BLAM-BLAM. THUMP. GRUNT. CRACK. SCREAM. BLAM. Rose peeks out. Mariner is holding Mikey and Carlos by the necks, a foot off the ground. CRUNCH \\- he cracks their heads together and they drop.\n\nRose joins Mariner as he wipes his BLOODY OAR on Carlos\u2019 back. \u201cBOSUN\u201d is carved into the wood. Rose gives Vinnie\u2019s body a kick.\n\nROSE  \nPrick. Oh shit\\! You\u2019re bleeding.\n\nShe rips off a strip of her uniform and wraps it around Mariner\u2019s leg. She eyes the holes in his sweater.\n\nMARINER  \nI hate your boyfriend.\n\nROSE  \nEx boyfriend. Yeah I know. Vinnie\u2019s unique... charm convinced me that robbing these jackasses was the right move.\n\nMARINER  \nHe convinced me, too. C\u2019mon.\n\nINT. 15TH FLOOR\n\nThis floor isn\u2019t destroyed like the others. It\u2019s CLEAN, LUXURIOUS, and DIMLY LIT, like an old nightclub. Mariner\u2019s opening fight is evident: pooled blood and gouged walls.\n\nThe stairwell door opens. Mariner and Rose edge into the corridor. They pass a number of ROOMS: pool table, cigar lounge, a smashed door with a chair and ropes on the floor.\n\nAt the end of the hallway they stop at a sturdy closed door. Rose nods. Mariner checks the handle. Locked.\n\nMariner shoves his OAR into the doorframe and strains. CREAK. He bears down harder, veins rising on his neck, muscles bulging. CREAK. CRACK. CRASH \\- It splinters open.\n\nThey survey the room: huge wooden DESK atop a thick Persian RUG, BOOKSHELVES of leather-bound books, fine BOOZE fills a glass case, mismatched PAINTINGS of different periods, and a bowl of MINTS on the desk. Next to that, a PURSE.\n\nRose tiptoes in and picks up her PURSE as Mariner moves to check two SIDE DOORS.\n\nROSE  \nChrist you\u2019re strong, Billy. That\u2019s gotta be juice, right?\n\nBEGIN FLASHBACK: EXT. BACKYARD \\- DAY \\- PAST\n\nThe warm sun dapples through trees in the idyllic yard, a trim house with a homemade pie in the window. Young Mariner\u2019s dad patiently explains the basics of weightlifting. Mariner struggles to bench press, dad encouraging and helping him. He makes it. They laugh. Dad puts his arm around him and tousles his hair.\n\nDAD  \nYer gonna be a scrapper, ya knows that? Jus remember, me bosun, don\u2019t never run from a fight. Not again, ya hears me? It\u2019s not what a man does. It\u2019s not what a MacAngus does. Let\u2019s do a round.\n\nMariner nods, lips pursed in resolve. He has a black eye.\n\nEND FLASHBACK.\n\nMARINER  \nJust hours of pumpin\u2019 tin, sis. Just like dad taught me.\n\nROSE  \nYou\u2019re serious about this dad shit? You talking about the summer he took you to buddy\u2019s place?\n\nMARINER  \n(through gritted teeth)  \nDad taught me everything. Sailing, fishing, fighting. How to get strong and be brave. How to be a man. Everything. It broke me when he died.\n\nROSE  \nDied\\!?\n\nRose turns to Mariner.\n\nROSE (CONT\u2019D)  \nSeriously? All these years you thought he was dead? Is that what you told yourself? Is that why you thought he never came to see you? \n\nMARINER  \nWhat are you saying?\n\nROSE  \nChrist, Billy, he\u2019s living up in  Chimney Bay with some skank. He was on the pogey that summer at buddy\u2019s\\! He was supposed to be taking care of you. Instead he\u2019d ditch you in his deadbeat friend\u2019s yard all summer while they got shit faced.\n\nMARINER  \n(quietly)  \nBullshit. Ma would\u2019a said.\n\nROSE  \nYou were too young, Will. She didn\u2019t want to break your heart.\n\nMariner looks lost; a hulking bearded man with the eyes of a wounded child.\n\nTINKLE \\- ICE in a TUMBLER of scotch melts. As they look at the desk, they notice a STILL-BURNING CIGAR.\n\nA VOICE booms from the door they entered through.\n\nSALVATORI (O.S.)  \n(Russian accent)  \nRosey\\! Somehow I just knew you\u2019d be back.\n\nTwo THUGS burst in through the office doors, GUNS raised. Rose retreats behind the desk. Mariner stares vacantly.\n\nSALVATORI enters, holding a SUBMACHINE GUN. He\u2019s WHITE FROM HEAD TO TOE: white silk suit, tie, shirt, shoes. White hair pulled back into a small ponytail, and a finely groomed white MOUSTACHE. His red-tinted glasses stand out in contrast. He wears a thick hoop earring, gold rings on each finger, and has a single GOLDEN TOOTH.\n\nSalvatori strides confidently up to Rose, submachine gun levelled at her gut. He never breaks eye contact with her.\n\nSALVATORI  \nYou brought a big man with you.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nThe yard is overgrown with WEEDS, DISCARDED BOTTLES, some RUSTY WEIGHTS, and a BENCH PRESS repaired with peeling duct-tape. Young Mariner\u2019s dad PUNCHES him in the face.\n\nDAD  \nJeeeeezuz,  b'y, ya gots to stand up fer yerself, bosun\\! No wonders ya got yer ass whupped. Hands up, now\\! Don\u2019t never run from a fight again, ya hear?\n\nMariner nods, lips pursed in resolve. Dad PUNCHES him again.\n\nDAD  \nFer fuck sakes\\! Yer a bag a sad. Go lift some tin till yer a man.\n\nDad heads into the house in DISGUST, kicking a BOTTLE which SMASHES against the stucco. Mariner, wiping a split lip, goes to the BENCH PRESS and struggles to add some weights.\n\nINT. STAIRWELL \\- (BACK TO PRESENT)\n\nSALVATORI  \nWho are you, big man?\n\nMARINER  \n(quietly)  \nNobody.\n\nSALVATORI  \nYou certainly look like you\u2019re trying to be somebody. Like a big fucking hero.\n\nEXT. COASTLINE \\- DAY \\- (FLASHBACK)\n\nYoung Mariner in a boat, the bottom littered with empty beer bottles. Dad is pissing off the side. Mariner is under-dressed and shivering.\n\nDAD  \nYa know whats a hero, b\u2019y? It\u2019s got two thumbs and \u2018e looks like this\\! Ha\\! Now fetch me anudder. An don\u2019t gimme no sass abouts it like yer mudder.\n\nEXT. BACKYARD \\- DAY \\- (FLASHBACK)\n\nSALVATORI (CONT\u2019D)  \nSo? Are you a big fucking hero?\n\nMARINER  \n(quietly)  \nNo.\n\nThe thugs take Mariner\u2019s OAR and kick the back of his legs so he\u2019s kneeling at their feet. Mariner doesn\u2019t resist.\n\nBLAM. Salvatori fires a SHOT into the bookcase behind Rose. Mariner flinches and Rose stifles a scream.\n\nSALVATORI  \nMemory stick, Rosey.\n\nRose swallows.\n\nROSE  \nHe\u2019s no hero. He\u2019s a gullible ass who spent his entire life in the shadow of a loser.\n\nMariner closes his eyes and hangs his head. Salvatori smirks at this.\n\nROSE  \nI know a hero, though. He sees the best in people even if they don\u2019t deserve it. He grew up in a shitty home with a shitty father who kicked the crap out of him and then abandoned him for some junkie. And instead of following that path, he forged his own.\n\nMariner looks up at Rose, eyes moist.\n\nSALVATORI  \nOkay, okay, shut up now.\n\nROSE  \nHe\u2019s a model of honesty and bravery and grit. He somehow turned a deadbeat father into a superhero. Then became a real one.\n\nSalvatori points his GUN at Rose\u2019s head.\n\nSALVATORI  \n(screaming)  \nPASSWORD, ROSE. NOW\\!\n\nROSE  \nAnd he never backs down from a fight.\n\nA smile crosses Mariner\u2019s face as he clenches his hands into fists.\n\nCUT TO BLACK.\n\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** \u2014 The title of the screenplay.\n2. **logline** \u2014 A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** \u2014 A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.\n4. **act_structure** \u2014 Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (short label like \"Setup\", \"Confrontation\", \"Resolution\")\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n5. **themes** \u2014 Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** \u2014 Describe the overall story shape and dramatic movement.\n7. **genre** \u2014 Primary genre (e.g. \"Action-Thriller\", \"Drama\", \"Sci-Fi Horror\").\n8. **tone** \u2014 Dominant tone (e.g. \"Gritty and intense\", \"Darkly comedic\").\n9. **protagonist_journey** \u2014 The protagonist's transformation arc.\n10. **central_conflict** \u2014 The core dramatic conflict.\n11. **setting_overview** \u2014 Time period, locations, and world context.\n12. **confidence** \u2014 Your confidence in this analysis (0.0-1.0).\n\nReturn valid JSON matching the provided schema. Be specific and evidence-grounded.",
+    "You are a professional script reader and story analyst. Read the following screenplay and produce a comprehensive script bible.\n\nSCREENPLAY:\nTitle: Open Frequency\nCredit: Written for CineForge UI manual acceptance\nAuthor: CineForge\n\nINT. COMMUNITY RADIO STUDIO - NIGHT\n\nRain rattles the skylight. Old consoles hum under emergency power.\nARIA threads a tape reel while NOAH coaxes a signal out of a battered mixer.\nJUNE covers a whiteboard with road closures, shelter names, and call signs.\nKELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag.\n\nKELL\nBridge is closed. Cell towers are dead. The hill relay is our only shot.\n\nNOAH\nPlease tell me that antenna is less cursed than it looks.\n\nKELL\nIt only tried to kill me once.\n\nJUNE\nGood. Tonight we don't have time for a second opinion.\n\nAria flips a switch. The ON AIR sign flickers, then dies again.\n\nARIA\nGive me ten minutes and one miracle.\n\nJUNE\nTake fifteen. Keep the miracle.\n\nCUT TO:\n\nEXT. WATER TOWER CATWALK - NIGHT\n\nWind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy.\nAria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.\nThe canvas tool bag swings in the gusts. Somewhere in the valley, a siren rises and cuts out.\n\nNOAH\nI miss boring weather.\n\nARIA\nYou miss boring jobs.\n\nNoah plugs the cable into a handheld receiver. Static spits, then settles into a thin human voice.\n\nUNKNOWN VOICE (RADIO)\nRed Creek station... if anyone hears this... north shelter needs insulin and dry blankets.\n\nAria and Noah freeze.\n\nARIA\nJune, do you copy?\n\nJUNE (RADIO)\nLoud enough to make me useful.\n\nAria smiles for the first time all night and tightens the last bolt.\n\nCUT TO:\n\nINT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\n\nCots line the basketball court. Handwritten signs point toward MEDICINE, MEALS, and MESSAGES.\nJune records updates at a folding table while Kell sorts flashlight batteries into a tackle box.\nMAYA, a teenager in a soaked marching-band jacket, approaches with a flyer for a missing dog named COMET.\n\nMAYA\nCan the station announce this too?\n\nJUNE\nIf we're naming roads and insulin drops, we can name dogs.\n\nKELL\nComet better be worth interrupting the weather report.\n\nMAYA\nHe stole my grilled cheese and slept through the evacuation. He's family.\n\nNoah's voice crackles over a tabletop radio.\n\nNOAH (RADIO)\nEast road is open one lane. Bridge crew wants no heavy trucks till daylight.\n\nJune writes the update beneath NORTH SHELTER on the whiteboard, then takes Maya's flyer.\n\nJUNE\nSpell his name for the broadcast.\n\nMAYA\nC-O-M-E-T. Like the fast kind of star.\n\nCUT TO:\n\nINT. COMMUNITY RADIO STUDIO - MORNING\n\nWet coats hang from every chair. Pale sunlight cuts through the storm residue on the windows.\nAria pins a hand-drawn map beside the console. Noah labels a notebook DAY TWO.\nJune tapes a new sign over the door: OPEN FREQUENCY.\nKell enters with a loaf of warm bread wrapped in foil. Maya follows close behind with a muddy, sleepy COMET in her arms.\n\nMAYA\nHe was under the vending machine in the band room.\n\nKELL\nSmart dog. Dry floor, free snacks.\n\nJune laughs, reaches for the microphone, and nods at Aria.\n\nJUNE\nRed Creek, morning bulletin. East road is open, north shelter is stocked, and one missing dog has been recovered with zero remorse.\n\nNoah pushes up a brass-heavy cassette cue. The room brightens with music.\n\nARIA\nPut that on repeat between updates.\n\nJUNE\nNo. Once is joy. Twice is branding.\n\nThe ON AIR sign steadies into a solid red glow as the four of them settle back to work.\n\n\n==========\n\nAnalyze the screenplay above and extract:\n\n1. **title** \u2014 The title of the screenplay.\n2. **logline** \u2014 A single compelling sentence that captures the story's premise, protagonist, conflict, and stakes.\n3. **synopsis** \u2014 A 1-3 paragraph synopsis covering the full story arc. Include key plot points but keep it concise.\n4. **act_structure** \u2014 Break the screenplay into its dramatic acts (typically 3, but use whatever structure the script supports). For each act:\n   - act_number (1, 2, 3...)\n   - title (short label like \"Setup\", \"Confrontation\", \"Resolution\")\n   - start_scene (the scene heading or description where the act begins)\n   - end_scene (where the act ends)\n   - summary (1-2 sentences)\n   - turning_points (key plot beats within the act)\n5. **themes** \u2014 Major thematic concerns. For each:\n   - theme (name)\n   - description (how it manifests)\n   - evidence (scene references or brief quotes, 2-4 items)\n6. **narrative_arc** \u2014 Describe the overall story shape and dramatic movement.\n7. **genre** \u2014 Primary genre (e.g. \"Action-Thriller\", \"Drama\", \"Sci-Fi Horror\").\n8. **tone** \u2014 Dominant tone (e.g. \"Gritty and intense\", \"Darkly comedic\").\n9. **protagonist_journey** \u2014 The protagonist's transformation arc.\n10. **central_conflict** \u2014 The core dramatic conflict.\n11. **setting_overview** \u2014 Time period, locations, and world context.\n12. **confidence** \u2014 Your confidence in this analysis (0.0-1.0).\n\nReturn valid JSON matching the provided schema. Be specific and evidence-grounded."
+  ],
+  "schema": {
+    "$defs": {
+      "ActStructure": {
+        "description": "One act within the screenplay's dramatic structure.",
+        "properties": {
+          "act_number": {
+            "minimum": 1,
+            "title": "Act Number",
+            "type": "integer"
+          },
+          "end_scene": {
+            "description": "Scene heading or description marking act end",
+            "title": "End Scene",
+            "type": "string"
+          },
+          "start_scene": {
+            "description": "Scene heading or description marking act start",
+            "title": "Start Scene",
+            "type": "string"
+          },
+          "summary": {
+            "description": "1-2 sentence summary of what happens in this act",
+            "title": "Summary",
+            "type": "string"
+          },
+          "title": {
+            "description": "Short label, e.g. 'Setup', 'Confrontation', 'Resolution'",
+            "title": "Title",
+            "type": "string"
+          },
+          "turning_points": {
+            "description": "Key turning points / plot beats within this act",
+            "items": {
+              "type": "string"
+            },
+            "title": "Turning Points",
+            "type": "array"
+          }
+        },
+        "required": [
+          "act_number",
+          "title",
+          "start_scene",
+          "end_scene",
+          "summary"
+        ],
+        "title": "ActStructure",
+        "type": "object"
+      },
+      "ThematicElement": {
+        "description": "A theme identified in the screenplay.",
+        "properties": {
+          "description": {
+            "description": "How this theme manifests in the story",
+            "title": "Description",
+            "type": "string"
+          },
+          "evidence": {
+            "description": "Scene references or quotes supporting this theme",
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "theme": {
+            "description": "Theme name, e.g. 'Redemption', 'Loss of innocence'",
+            "title": "Theme",
+            "type": "string"
+          }
+        },
+        "required": [
+          "theme",
+          "description"
+        ],
+        "title": "ThematicElement",
+        "type": "object"
+      }
+    },
+    "description": "High-level story understanding derived from the canonical script.\n\nProject-scoped (entity_id='project'). Produced by script_bible_v1 module.",
+    "properties": {
+      "act_structure": {
+        "description": "Dramatic structure broken into acts with turning points",
+        "items": {
+          "$ref": "#/$defs/ActStructure"
+        },
+        "title": "Act Structure",
+        "type": "array"
+      },
+      "central_conflict": {
+        "description": "The core dramatic conflict driving the narrative",
+        "title": "Central Conflict",
+        "type": "string"
+      },
+      "confidence": {
+        "description": "Overall extraction confidence",
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "title": "Confidence",
+        "type": "number"
+      },
+      "genre": {
+        "description": "Primary genre, e.g. 'Action-Thriller', 'Drama'",
+        "title": "Genre",
+        "type": "string"
+      },
+      "logline": {
+        "description": "One-sentence summary of the story",
+        "title": "Logline",
+        "type": "string"
+      },
+      "narrative_arc": {
+        "description": "Overall story shape \u2014 setup, confrontation, resolution pattern",
+        "title": "Narrative Arc",
+        "type": "string"
+      },
+      "protagonist_journey": {
+        "description": "The protagonist's transformation arc across the story",
+        "title": "Protagonist Journey",
+        "type": "string"
+      },
+      "setting_overview": {
+        "description": "Time period, location context, and world-building essentials",
+        "title": "Setting Overview",
+        "type": "string"
+      },
+      "synopsis": {
+        "description": "1-3 paragraph synopsis",
+        "title": "Synopsis",
+        "type": "string"
+      },
+      "themes": {
+        "description": "Major thematic concerns identified in the script",
+        "items": {
+          "$ref": "#/$defs/ThematicElement"
+        },
+        "title": "Themes",
+        "type": "array"
+      },
+      "title": {
+        "description": "Title of the screenplay",
+        "title": "Title",
+        "type": "string"
+      },
+      "tone": {
+        "description": "Dominant tone, e.g. 'Gritty and intense', 'Darkly comedic'",
+        "title": "Tone",
+        "type": "string"
+      }
+    },
+    "required": [
+      "title",
+      "logline",
+      "synopsis",
+      "act_structure",
+      "themes",
+      "narrative_arc",
+      "genre",
+      "tone",
+      "protagonist_journey",
+      "central_conflict",
+      "setting_overview",
+      "confidence"
+    ],
+    "title": "ScriptBible",
+    "type": "object"
+  }
+}

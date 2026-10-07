@@ -1,0 +1,31 @@
+{
+  "reviewer": "Codex coordinator; independent provider OpenAI",
+  "scope": "Source review of exact saved outputs; subject identity known, not blind",
+  "files": [
+    {
+      "path": "/Users/cam/Documents/Projects/cine-forge-haiku55-eval/benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_00.jpg",
+      "sha256": "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84"
+    },
+    {
+      "path": "/Users/cam/Documents/Projects/cine-forge-haiku55-eval/benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_04.jpg",
+      "sha256": "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+    },
+    {
+      "path": "/Users/cam/Documents/Projects/cine-forge-haiku55-eval/output/evals/haiku55-20261007/bible-subject-high-1.json",
+      "sha256": "249352eae0753b4f0ef9c3c44b483071ed12aa71280364862ce2fe13e8dd5335"
+    },
+    {
+      "path": "/Users/cam/Documents/Projects/cine-forge-haiku55-eval/output/evals/haiku55-20261007/bible-subject-gemini-1.json",
+      "sha256": "1a77d299884ca3dc63913810b6ea37e27ba7e78f080fa787ac0f640a78dcd45d"
+    }
+  ],
+  "frame_finding": "First/final source frames show both figures enlarging at fixed horizontal centers while white rectangle/background remain fixed. All three Haiku arms omit enlargement and describe drift/bobbing. Luna explicitly describes enlargement; retain Luna for measured screen. No absolute 0.80 winner established.",
+  "bible_findings": [
+    "High output invents COMET breed beagle; source only identifies a dog.",
+    "High synopsis places all four crew at gym by pre-dawn; source places June/Kell there while Noah is radio voice and Aria absent.",
+    "High setting flooded valley not explicitly in source.",
+    "Fresh Gemini wrongly credits Kell securing catwalk antenna; source Aria/Noah do this.",
+    "High bulletin theme paraphrase is broadly source-grounded; closes the story is loose since music/joke/ON AIR follow. Preserve lexical clamp ambiguity separately from independent unsupported assertions."
+  ],
+  "recommendation": "No source-faithfulness-qualified Bible promotion; retain current configuration pending separate evidence, not a claimed quality winner."
+}

@@ -1,0 +1,29 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"score\":0.82,\"reason\":\"Overall the bible is a faithful, schema-compliant, and production-useful distillation of the screenplay. Strengths: (1) All required JSON keys are present at every level with no extra keys. (2) The logline, synopsis, narrative arc, protagonist journey, central conflict, and setting overview accurately reflect the screenplay's content. (3) Terminal beats are preserved: Comet's return and the ON AIR sign steadying are both captured. (4) Themes are specific and evidence lines are traceable to actual screenplay moments. (5) Genre 'Drama' and tone 'Gritty, hopeful, and intimate' are reasonable descriptors. Minor issues that prevent a higher score: (a) In Act 1, the turning point says 'Kell returned from the dangerous bridge with a portable antenna,' but the screenplay does not say Kell went to the bridge to get the antenna\u2014he simply reports the bridge is closed and arrives with the antenna. The conflation is a small inaccuracy. (b) The turning point 'The team braves the stormy catwalk to rig the antenna' attributes this to the full team, but in the screenplay only Aria and Noah go up; Kell and June stay behind. (c) The synopsis states Kell 'braves the dangerous weather to secure a makeshift antenna on a water tower,' but in the screenplay it is Aria and Noah who climb the water tower. This is a material factual error about who does what. (d) Act 2's start and end scene are both listed as 'INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN,' which is technically correct for the single scene but slightly odd as an act boundary. (e) The synopsis mentions 'housing survivors in the high school gym' as something the station coordinates; the screenplay shows the gym already functioning as a shelter, not that the radio team set it up. These inaccuracies, especially misattributing the water tower climb to Kell instead of Aria and Noah, are notable factual errors but do not rise to the level of inventing plot outcomes or endings. The bible remains broadly trustworthy but requires corrections on character action attribution.\"}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011CfoaVFWZDU1PnmVPeoYoD",
+  "model": "claude-opus-4-6",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2682,
+    "output_tokens": 492,
+    "service_tier": "standard"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "arm": "gemini",
+  "name": "bible-subject-gemini-1",
+  "response": {
+    "cached": false,
+    "cost": 0.0030376,
+    "latencyMs": 5525,
+    "metadata": {
+      "allow_fallbacks": null,
+      "cost_estimated": true,
+      "data_collection": null,
+      "finish_reason": "stop",
+      "markdown_fence_removed": null,
+      "model": "gemini-3.5-flash-lite",
+      "provider": "google",
+      "raw_output_path": null,
+      "reasoning_effort": null,
+      "request_id": "7LfGav7aBPeVmtkP19KQqQ0",
+      "requested_model": "gemini-3.5-flash-lite",
+      "require_parameters": null,
+      "returned_model": "gemini-3.5-flash-lite",
+      "runtime_prompt": "script_bible_v1.EXTRACTION_PROMPT",
+      "runtime_schema": "cine_forge.schemas.ScriptBible",
+      "schema_enforcement": null,
+      "store": null,
+      "upstream_provider": null,
+      "x_zero_data_retention": null,
+      "zdr": null
+    },
+    "output": "{\"title\":\"Open Frequency\",\"logline\":\"During a catastrophic storm, a resourceful team of community radio operators braves the elements to restore local communications, coordinate relief efforts, and reunite a family with their missing dog.\",\"synopsis\":\"In the dead of night during a severe storm that knocks out power and cell towers, a small team of community radio broadcasters\u2014Aria, Noah, June, and Kell\u2014scramble to get their station back on the air. Kell braves the dangerous weather to secure a makeshift antenna on a water tower, allowing the team to broadcast critical emergency updates regarding road closures and insulin shortages. By morning, the station has transformed into a vital lifeline for the flooded valley, successfully coordinating rescue efforts, housing survivors in the high school gym, and even locating a teenager's lost dog.\",\"act_structure\":[{\"act_number\":1,\"title\":\"Setup\",\"start_scene\":\"INT. COMMUNITY RADIO STUDIO - NIGHT\",\"end_scene\":\"EXT. WATER TOWER CATWALK - NIGHT\",\"summary\":\"During a blackout storm, Aria, Noah, June, and Kell struggle to get their community radio station operational and successfully rig a risky antenna on a water tower to capture a signal.\",\"turning_points\":[\"The station loses power and cell towers fail across the valley\",\"Kell returns from the dangerous bridge with a portable antenna\",\"The team braves the stormy catwalk to rig the antenna and hears a distress call for insulin\"]},{\"act_number\":2,\"title\":\"Confrontation\",\"start_scene\":\"INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\",\"end_scene\":\"INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\",\"summary\":\"Operating out of a makeshift shelter, the crew coordinates relief updates while managing community members in distress, including a teenager looking for her missing dog.\",\"turning_points\":[\"June and Kell coordinate emergency supplies and shelter logs from the high school gym\",\"Maya asks the station to broadcast a missing notice for her dog Comet\",\"Noah broadcasts road opening updates from the field\"]},{\"act_number\":3,\"title\":\"Resolution\",\"start_scene\":\"INT. COMMUNITY RADIO STUDIO - MORNING\",\"end_scene\":\"INT. COMMUNITY RADIO STUDIO - MORNING\",\"summary\":\"The storm clears, the station officially adopts the banner 'Open Frequency', and the community comes together as the missing dog is returned and regular broadcasting resumes with renewed hope.\",\"turning_points\":[\"The team re-enters the studio in the morning with renewed purpose\",\"Maya and a sleepy Comet arrive safely at the station\",\"The station officially becomes 'Open Frequency' as music and emergency bulletins resume under a steady red ON AIR light\"]}],\"themes\":[{\"theme\":\"Community Resilience\",\"description\":\"How ordinary people come together to support one another and maintain social fabric during crises.\",\"evidence\":[\"Coordinating insulin drops and shelter blankets over the radio\",\"Establishing the high school gym as a functional community shelter\",\"Naming roads and missing dogs alike to keep spirits high\"]},{\"theme\":\"Hope and Connection\",\"description\":\"The emotional necessity of human voice and communication in overcoming isolation and disaster.\",\"evidence\":[\"Aria smiling for the first time when the radio signal is established\",\"Maya viewing her dog Comet as essential family during an evacuation\",\"The transition of the station into 'Open Frequency'\"]}],\"narrative_arc\":\"The story follows a linear crisis-to-recovery arc: starting from total blackout and chaos, moving through coordinated emergency response in the dead of night, and resolving in daylight with a stabilized community and a permanent community broadcast channel.\",\"genre\":\"Drama\",\"tone\":\"Gritty, hopeful, and intimate\",\"protagonist_journey\":\"The ensemble of radio operators shifts from a frantic group fighting technical failures in the dark to a confident, unified community backbone providing hope and practical aid.\",\"central_conflict\":\"The characters must overcome severe storm conditions, failing technology, and institutional blackouts to restore communication channels and aid their isolated town.\",\"setting_overview\":\"A storm-battered small valley town during a severe weather emergency, focusing primarily on a rundown community radio station and a high school gymnasium turned evacuation shelter.\",\"confidence\":1.0}",
+    "raw": {
+      "id": "7LfGav7aBPeVmtkP19KQqQ0",
+      "model": "gemini-3.5-flash-lite",
+      "provider": null,
+      "usage": {
+        "input_tokens": 1292,
+        "output_tokens": 1060
+      }
+    },
+    "tokenUsage": {
+      "completion": 1060,
+      "prompt": 1292,
+      "total": 2352
+    }
+  },
+  "vars": {
+    "ending_contract": "Maya's missing-dog plea leads to Comet's morning return; the ON AIR sign steadies and the radio team settles back to work.",
+    "golden_path": "golden/open-frequency-script-bible.json",
+    "golden_sha256": "2e70cd6255c04b1cf9e7ef94d13b9a3935be3c026d12afbfaf21e4595cd83d5b",
+    "screenplay": "Title: Open Frequency\nCredit: Written for CineForge UI manual acceptance\nAuthor: CineForge\n\nINT. COMMUNITY RADIO STUDIO - NIGHT\n\nRain rattles the skylight. Old consoles hum under emergency power.\nARIA threads a tape reel while NOAH coaxes a signal out of a battered mixer.\nJUNE covers a whiteboard with road closures, shelter names, and call signs.\nKELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag.\n\nKELL\nBridge is closed. Cell towers are dead. The hill relay is our only shot.\n\nNOAH\nPlease tell me that antenna is less cursed than it looks.\n\nKELL\nIt only tried to kill me once.\n\nJUNE\nGood. Tonight we don't have time for a second opinion.\n\nAria flips a switch. The ON AIR sign flickers, then dies again.\n\nARIA\nGive me ten minutes and one miracle.\n\nJUNE\nTake fifteen. Keep the miracle.\n\nCUT TO:\n\nEXT. WATER TOWER CATWALK - NIGHT\n\nWind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy.\nAria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.\nThe canvas tool bag swings in the gusts. Somewhere in the valley, a siren rises and cuts out.\n\nNOAH\nI miss boring weather.\n\nARIA\nYou miss boring jobs.\n\nNoah plugs the cable into a handheld receiver. Static spits, then settles into a thin human voice.\n\nUNKNOWN VOICE (RADIO)\nRed Creek station... if anyone hears this... north shelter needs insulin and dry blankets.\n\nAria and Noah freeze.\n\nARIA\nJune, do you copy?\n\nJUNE (RADIO)\nLoud enough to make me useful.\n\nAria smiles for the first time all night and tightens the last bolt.\n\nCUT TO:\n\nINT. HIGH SCHOOL GYM SHELTER - PRE-DAWN\n\nCots line the basketball court. Handwritten signs point toward MEDICINE, MEALS, and MESSAGES.\nJune records updates at a folding table while Kell sorts flashlight batteries into a tackle box.\nMAYA, a teenager in a soaked marching-band jacket, approaches with a flyer for a missing dog named COMET.\n\nMAYA\nCan the station announce this too?\n\nJUNE\nIf we're naming roads and insulin drops, we can name dogs.\n\nKELL\nComet better be worth interrupting the weather report.\n\nMAYA\nHe stole my grilled cheese and slept through the evacuation. He's family.\n\nNoah's voice crackles over a tabletop radio.\n\nNOAH (RADIO)\nEast road is open one lane. Bridge crew wants no heavy trucks till daylight.\n\nJune writes the update beneath NORTH SHELTER on the whiteboard, then takes Maya's flyer.\n\nJUNE\nSpell his name for the broadcast.\n\nMAYA\nC-O-M-E-T. Like the fast kind of star.\n\nCUT TO:\n\nINT. COMMUNITY RADIO STUDIO - MORNING\n\nWet coats hang from every chair. Pale sunlight cuts through the storm residue on the windows.\nAria pins a hand-drawn map beside the console. Noah labels a notebook DAY TWO.\nJune tapes a new sign over the door: OPEN FREQUENCY.\nKell enters with a loaf of warm bread wrapped in foil. Maya follows close behind with a muddy, sleepy COMET in her arms.\n\nMAYA\nHe was under the vending machine in the band room.\n\nKELL\nSmart dog. Dry floor, free snacks.\n\nJune laughs, reaches for the microphone, and nods at Aria.\n\nJUNE\nRed Creek, morning bulletin. East road is open, north shelter is stocked, and one missing dog has been recovered with zero remorse.\n\nNoah pushes up a brass-heavy cassette cue. The room brightens with music.\n\nARIA\nPut that on repeat between updates.\n\nJUNE\nNo. Once is joy. Twice is branding.\n\nThe ON AIR sign steadies into a solid red glow as the four of them settle back to work.\n"
+  }
+}

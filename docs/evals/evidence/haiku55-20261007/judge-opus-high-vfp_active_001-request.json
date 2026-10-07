@@ -1,0 +1,35 @@
+{
+  "payload": {
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "content": "<Output>\n{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two minimalist flat-shaded figures, a tan one on the left and a light-blue one with a white rectangle at its lower body on the right, stand against a navy gradient over a dark floor. Across the samples the framing stays fixed while both figures shift slightly up and down and drift a few pixels, which reads as a subtle, unhurried motion.\",\"tone_tags\":[\"detached\",\"ominous\"],\"emotion_tags\":[\"isolation\",\"hesitation\"],\"color_tags\":[\"navy\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"slow_drift\",\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The same two figures, including the white rectangle on the blue figure, appear in every ordered sample with consistent costume and placement.\",\"The background gradient and floor line stay fixed across all five samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Tan figure stands at roughly x=170 on the left and light-blue figure with a white rectangle at its lower body stands on the right against the navy gradient.\"},{\"frame_index\":2,\"cue\":\"The tan figure's head sits higher and its body shifts slightly right compared with frame 0, while the blue figure's white rectangle stays in the same lower-body position.\"},{\"frame_index\":4,\"cue\":\"Both figures remain on the same dark floor line, with the tan figure back near its initial horizontal position and the blue figure's rectangle still visible.\"}],\"overall_confidence\":0.6}\n</Output>\n\nEvaluate this model's structured analysis against the ordered-frame\nreference below.\n\nReference analysis:\n# Ordered JPEG frame-packet reference\n\n- Summary: Two abstract figures hold fixed left-right centers in blue light while both appear larger across the ordered frames; a pale rectangle stays on the right figure.\n- Tone: intimate\n- Emotion: [none]\n- Color / grade: navy, teal\n- Camera language inferable from the ordered samples: ambiguous; camera tags excluded from scoring\n- Motion inferable from the ordered samples: measured\n- Continuity: intact - The pale rectangle stays beside the right figure across all five frames.\n- Audio: unavailable to the subject and excluded from scoring\n- Interpretation boundary: The figures enlarge at nearly fixed centers while the prop and background do not scale. Figure-size change is observable; physical approach or a specific camera mechanism is not established.\n\n\nThe subject received only five ordered JPEG samples plus neutral timing facts and\nan opaque identifier. It did not receive the semantic clip ID, title, target,\ntranscript, MP4, or audio. Judge only claims observable across those still frames.\nIgnore every audio line in the reference and require empty audio fields; do not\nreward a claim of silence. Accept semantically equivalent visual wording, but\nrequire concrete frame-grounded evidence at submitted sample times. Penalize\ninvented actions, edits, camera movement, continuity changes, identities, props,\nlocations, or story meaning that the ordered samples do not show.\nPass only at score >= 0.8.\n",
+        "role": "user"
+      }
+    ],
+    "model": "claude-opus-4-6",
+    "output_config": {
+      "format": {
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "reason": {
+              "type": "string"
+            },
+            "score": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "score",
+            "reason"
+          ],
+          "type": "object"
+        },
+        "type": "json_schema"
+      }
+    },
+    "system": "You are an impartial evaluator. Return exactly a JSON object with score (number 0 to 1) and reason (string). Explain concrete mismatches against visible source facts. Do not reveal chain of thought."
+  },
+  "url": "https://api.anthropic.com/v1/messages"
+}

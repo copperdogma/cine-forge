@@ -1,0 +1,406 @@
+{
+  "arms": {
+    "high": {
+      "basePath": "/Users/cam/Documents/Projects/cine-forge-haiku55-eval/benchmarks/tasks",
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "max_frames": 5,
+      "max_tokens": 4096,
+      "model": "claude-haiku-5-5",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "pythonExecutable": "python",
+      "raw_output_dir": "output/evals/haiku55-20261007/high",
+      "reasoning_effort": "high",
+      "timeout": 300000
+    },
+    "low": {
+      "basePath": "/Users/cam/Documents/Projects/cine-forge-haiku55-eval/benchmarks/tasks",
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "max_frames": 5,
+      "max_tokens": 4096,
+      "model": "claude-haiku-5-5",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "pythonExecutable": "python",
+      "raw_output_dir": "output/evals/haiku55-20261007/low",
+      "reasoning_effort": "low",
+      "timeout": 300000
+    },
+    "luna": {
+      "basePath": "/Users/cam/Documents/Projects/cine-forge-haiku55-eval/benchmarks/tasks",
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "max_frames": 5,
+      "max_tokens": 1400,
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "pythonExecutable": "python",
+      "raw_output_dir": "output/evals/haiku55-20261007/luna",
+      "reasoning_effort": "low",
+      "timeout": 300000,
+      "transport": "responses_strict"
+    },
+    "medium": {
+      "basePath": "/Users/cam/Documents/Projects/cine-forge-haiku55-eval/benchmarks/tasks",
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "max_frames": 5,
+      "max_tokens": 4096,
+      "model": "claude-haiku-5-5",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "pythonExecutable": "python",
+      "raw_output_dir": "output/evals/haiku55-20261007/medium",
+      "reasoning_effort": "medium",
+      "timeout": 300000
+    }
+  },
+  "budget": "3 inclusive both lanes",
+  "cache": false,
+  "calibration": "first and prop-swap; select cheapest qualifying arm then freeze for other four; one unchanged repeated confirmation if useful",
+  "concurrency": 1,
+  "files": [
+    {
+      "bytes": 3101,
+      "path": "benchmarks/prompts/video-understanding.txt",
+      "sha256": "53ea0b8ef7487d8dcaea352c0eb133100e18eb45d78b953f2007f14148beb6e2"
+    },
+    {
+      "bytes": 14747,
+      "path": "benchmarks/providers/video_understanding_provider.py",
+      "sha256": "f8ae20cd74cba54836e86b589dd34ee89aae86d32111ee97ac1242faebbe3b99"
+    },
+    {
+      "bytes": 7808,
+      "path": "benchmarks/providers/video_understanding_provider_anthropic.py",
+      "sha256": "c61da20217676123f5e46ad9f0dacb95cc7b813336dfd6e3f85e38f17a365a9d"
+    },
+    {
+      "bytes": 14960,
+      "path": "benchmarks/providers/video_understanding_provider_support.py",
+      "sha256": "3be1260ab96ad807979bbe5aa13522d960493ba1a63690890822fe2686930cbc"
+    },
+    {
+      "bytes": 14978,
+      "path": "benchmarks/providers/video_understanding_provider_vision.py",
+      "sha256": "49978ace06f327f4a91380677835b7385ea7c92c3030cd68537e20735092e6ee"
+    },
+    {
+      "bytes": 8149,
+      "path": "benchmarks/providers/video_understanding_transport.py",
+      "sha256": "7236575192c38cc4b5cda3df2b543f84dcb88d3c2bb4ceff86cacc97a441ba1d"
+    },
+    {
+      "bytes": 5898,
+      "path": "benchmarks/scorers/video_understanding_contract.py",
+      "sha256": "a27a5bcf9243f0679e770655bc0e91d379543fa8aadd7debf72eda8d4d30f3e3"
+    },
+    {
+      "bytes": 12564,
+      "path": "benchmarks/scorers/video_understanding_dimensions.py",
+      "sha256": "2f2a82e2f512bd523d3cb1ae8e42eac50bf2bc2f519220cb010510cb5bc51861"
+    },
+    {
+      "bytes": 9076,
+      "path": "benchmarks/scorers/video_understanding_scorer.py",
+      "sha256": "ee89f6458ed313d0b187f529f218eaeaced7af2a13f0b89ce44cf2c49f228738"
+    },
+    {
+      "bytes": 3272,
+      "path": "benchmarks/scripts/run_haiku55_campaign.py",
+      "sha256": "7d3693997100cfc5da57b076d818dc4c2345923794db995e687d17b25c8ae4ce"
+    },
+    {
+      "bytes": 18668,
+      "path": "benchmarks/scripts/run_sonnet55_video_comparison.py",
+      "sha256": "0776152e9b69d28b2603783b9e0df34e73209c0e4f1d23c199d66091e5f3ac7a"
+    },
+    {
+      "bytes": 12064,
+      "path": "benchmarks/tasks/video-understanding.yaml",
+      "sha256": "7099a13de9353f374fd9f3f2fe3177208378e4ef697cbbedba74baec283b1733"
+    },
+    {
+      "bytes": 38344,
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_00.jpg",
+      "sha256": "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a"
+    },
+    {
+      "bytes": 37597,
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_01.jpg",
+      "sha256": "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039"
+    },
+    {
+      "bytes": 35584,
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_02.jpg",
+      "sha256": "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655"
+    },
+    {
+      "bytes": 36187,
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_03.jpg",
+      "sha256": "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b"
+    },
+    {
+      "bytes": 37453,
+      "path": "benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_04.jpg",
+      "sha256": "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+    },
+    {
+      "bytes": 12984,
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_00.jpg",
+      "sha256": "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84"
+    },
+    {
+      "bytes": 12943,
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_01.jpg",
+      "sha256": "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5"
+    },
+    {
+      "bytes": 13273,
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_02.jpg",
+      "sha256": "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24"
+    },
+    {
+      "bytes": 13223,
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_03.jpg",
+      "sha256": "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576"
+    },
+    {
+      "bytes": 13602,
+      "path": "benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_04.jpg",
+      "sha256": "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+    },
+    {
+      "bytes": 11104,
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_00.jpg",
+      "sha256": "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e"
+    },
+    {
+      "bytes": 11104,
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_01.jpg",
+      "sha256": "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e"
+    },
+    {
+      "bytes": 11120,
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_02.jpg",
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "bytes": 11120,
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_03.jpg",
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "bytes": 11120,
+      "path": "benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_04.jpg",
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "bytes": 13097,
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_00.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_01.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_02.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_03.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_04.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 27600,
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_00.jpg",
+      "sha256": "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d"
+    },
+    {
+      "bytes": 27995,
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_01.jpg",
+      "sha256": "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8"
+    },
+    {
+      "bytes": 26221,
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_02.jpg",
+      "sha256": "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd"
+    },
+    {
+      "bytes": 27384,
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_03.jpg",
+      "sha256": "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236"
+    },
+    {
+      "bytes": 27098,
+      "path": "benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_04.jpg",
+      "sha256": "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+    },
+    {
+      "bytes": 45585,
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_00.jpg",
+      "sha256": "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81"
+    },
+    {
+      "bytes": 45840,
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_01.jpg",
+      "sha256": "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7"
+    },
+    {
+      "bytes": 44751,
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_02.jpg",
+      "sha256": "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d"
+    },
+    {
+      "bytes": 45573,
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_03.jpg",
+      "sha256": "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef"
+    },
+    {
+      "bytes": 45193,
+      "path": "benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_04.jpg",
+      "sha256": "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+    },
+    {
+      "bytes": 1251,
+      "path": "benchmarks/video_understanding_truth_v4/alarm_chase_whip_pan/target.json",
+      "sha256": "bdeebb0075f458a1c87033300b1be9fce6bb66b3104362b35612e0a899d4f621"
+    },
+    {
+      "bytes": 530,
+      "path": "benchmarks/video_understanding_truth_v4/alarm_chase_whip_pan/target.md",
+      "sha256": "47f79d984b17bb23b3b8e494b0ea83a4bfabb09140c56f81607225e6f2f0dc1d"
+    },
+    {
+      "bytes": 1353,
+      "path": "benchmarks/video_understanding_truth_v4/dialogue_confession_push_in/target.json",
+      "sha256": "04d1a434d029604a61933ccc69ca85b821acbf0e74ede054389243476fd5fc36"
+    },
+    {
+      "bytes": 803,
+      "path": "benchmarks/video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+      "sha256": "b8a723c5e68b6ac65f65f76b9aaba4e15257bbc3d497e457ec8cd75480b3a160"
+    },
+    {
+      "bytes": 1221,
+      "path": "benchmarks/video_understanding_truth_v4/prop_swap_continuity_break/target.json",
+      "sha256": "9f14e1f173f5d818b8f915016c498be241206814cfd6cf36d4b68cacdb875be8"
+    },
+    {
+      "bytes": 522,
+      "path": "benchmarks/video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+      "sha256": "8a68446af7b9d7d8ef09e31d8ad8bb87ce064dd810da4fd6e251edd8ac4f4eba"
+    },
+    {
+      "bytes": 1279,
+      "path": "benchmarks/video_understanding_truth_v4/quiet_bedside_vigil/target.json",
+      "sha256": "fb1d0e1cc26ff665b85d8086d68ac9a057a6f5408f586e78dc219c1ff2fadfcf"
+    },
+    {
+      "bytes": 805,
+      "path": "benchmarks/video_understanding_truth_v4/quiet_bedside_vigil/target.md",
+      "sha256": "d7df7986a4611e5c1b40a96d9a99414b976f03fc4ea590aa517793005aa0b310"
+    },
+    {
+      "bytes": 1268,
+      "path": "benchmarks/video_understanding_truth_v4/rooftop_escape_crash_zoom/target.json",
+      "sha256": "a580fe31488479466d695125959701d6e3b7a6f481274bfad99e2bd1f95dde88"
+    },
+    {
+      "bytes": 685,
+      "path": "benchmarks/video_understanding_truth_v4/rooftop_escape_crash_zoom/target.md",
+      "sha256": "80b64c09ebf888dd089dbf3b15980ceffdc8187aa628d11de8c3640580b84599"
+    },
+    {
+      "bytes": 1270,
+      "path": "benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.json",
+      "sha256": "7d0a40d274599f17dd2242134c26d0f13c70430bca3ba49428c041d8bbf7d82e"
+    },
+    {
+      "bytes": 533,
+      "path": "benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+      "sha256": "66eca2cb744f84f549136615e834ee8e6843bf61d1dfdf1f13b28a7f0101bc3f"
+    }
+  ],
+  "grouping": "independent single-user sessions",
+  "judges": [
+    "claude-opus-4-6",
+    "gpt-6-sol source corroboration"
+  ],
+  "matrix": [
+    {
+      "frame_count": 5,
+      "prompt": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.\n\nOrdered frame packet\n- clip_id: vfp_active_001\n- duration_seconds: 4.0\n- resolution: 640x360\n- frame_count: 5\n- ordered_frame_indices: [0, 1, 2, 3, 4]\n- ordered_sample_times_seconds: [0, 1, 2, 3, 3.875]\n- audio_available_to_model: false\n\nOnly the ordered JPEG samples are submitted. The source video's audio, transcript, and descriptive metadata are unavailable; do not infer them.",
+      "vars": {
+        "clip_dir": "../video_understanding/dialogue_confession_push_in",
+        "clip_id": "dialogue_confession_push_in",
+        "evaluation_id": "vfp_active_001",
+        "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+        "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+      }
+    },
+    {
+      "frame_count": 5,
+      "prompt": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.\n\nOrdered frame packet\n- clip_id: vfp_active_002\n- duration_seconds: 4.0\n- resolution: 640x360\n- frame_count: 5\n- ordered_frame_indices: [0, 1, 2, 3, 4]\n- ordered_sample_times_seconds: [0, 1, 2, 3, 3.875]\n- audio_available_to_model: false\n\nOnly the ordered JPEG samples are submitted. The source video's audio, transcript, and descriptive metadata are unavailable; do not infer them.",
+      "vars": {
+        "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+        "clip_id": "alarm_chase_whip_pan",
+        "evaluation_id": "vfp_active_002",
+        "target_markdown": "file://../video_understanding_truth_v4/alarm_chase_whip_pan/target.md",
+        "target_path": "video_understanding_truth_v4/alarm_chase_whip_pan/target.json"
+      }
+    },
+    {
+      "frame_count": 5,
+      "prompt": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.\n\nOrdered frame packet\n- clip_id: vfp_active_003\n- duration_seconds: 4.0\n- resolution: 640x360\n- frame_count: 5\n- ordered_frame_indices: [0, 1, 2, 3, 4]\n- ordered_sample_times_seconds: [0, 1, 2, 3, 3.875]\n- audio_available_to_model: false\n\nOnly the ordered JPEG samples are submitted. The source video's audio, transcript, and descriptive metadata are unavailable; do not infer them.",
+      "vars": {
+        "clip_dir": "../video_understanding/quiet_bedside_vigil",
+        "clip_id": "quiet_bedside_vigil",
+        "evaluation_id": "vfp_active_003",
+        "target_markdown": "file://../video_understanding_truth_v4/quiet_bedside_vigil/target.md",
+        "target_path": "video_understanding_truth_v4/quiet_bedside_vigil/target.json"
+      }
+    },
+    {
+      "frame_count": 5,
+      "prompt": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.\n\nOrdered frame packet\n- clip_id: vfp_active_004\n- duration_seconds: 4.0\n- resolution: 640x360\n- frame_count: 5\n- ordered_frame_indices: [0, 1, 2, 3, 4]\n- ordered_sample_times_seconds: [0, 1, 2, 3, 3.875]\n- audio_available_to_model: false\n\nOnly the ordered JPEG samples are submitted. The source video's audio, transcript, and descriptive metadata are unavailable; do not infer them.",
+      "vars": {
+        "clip_dir": "../video_understanding/prop_swap_continuity_break",
+        "clip_id": "prop_swap_continuity_break",
+        "evaluation_id": "vfp_active_004",
+        "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+        "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+      }
+    },
+    {
+      "frame_count": 5,
+      "prompt": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.\n\nOrdered frame packet\n- clip_id: vfp_active_005\n- duration_seconds: 4.0\n- resolution: 640x360\n- frame_count: 5\n- ordered_frame_indices: [0, 1, 2, 3, 4]\n- ordered_sample_times_seconds: [0, 1, 2, 3, 3.875]\n- audio_available_to_model: false\n\nOnly the ordered JPEG samples are submitted. The source video's audio, transcript, and descriptive metadata are unavailable; do not infer them.",
+      "vars": {
+        "clip_dir": "../video_understanding/rooftop_escape_crash_zoom",
+        "clip_id": "rooftop_escape_crash_zoom",
+        "evaluation_id": "vfp_active_005",
+        "target_markdown": "file://../video_understanding_truth_v4/rooftop_escape_crash_zoom/target.md",
+        "target_path": "video_understanding_truth_v4/rooftop_escape_crash_zoom/target.json"
+      }
+    },
+    {
+      "frame_count": 5,
+      "prompt": "You are CineForge's ordered-frame-packet QA analyst.\n\nAnalyze only the provided ordered JPEG samples. They are still-frame samples from a\nsource clip, not a playable video. No audio, transcript, title, tags, or descriptive\nmetadata are submitted. Do not claim to hear sound, speech, music, silence, or any\nother audio condition.\n\nThe supplied `clip_id` is an opaque evaluation identifier. Copy it exactly into the\nresponse, but do not infer scene content from it.\n\nReturn one strict JSON object with exactly these keys:\n- clip_id\n- summary\n- tone_tags\n- emotion_tags\n- color_tags\n- camera_tags\n- motion_tags\n- continuity_status\n- continuity_notes\n- audio_tags\n- audio_notes\n- evidence\n- overall_confidence\n\nUse these exact JSON types:\n- `clip_id`, `summary`, and `continuity_status` are strings.\n- Every field ending in `_tags` is an array of strings.\n- `continuity_notes` and `audio_notes` are arrays of strings, never strings.\n- `evidence` is an array of 2-4 objects. Every evidence object has exactly\n  `{\"frame_index\": <integer 0 through 4>, \"cue\": \"<visible cue>\"}`.\n- `overall_confidence` is a number.\n\nAllowed `tone_tags`:\n[\"detached\",\"hopeful\",\"intimate\",\"mournful\",\"nostalgic\",\"ominous\",\"playful\",\"regretful\",\"surreal\",\"tense\",\"triumphant\",\"urgent\"]\n\nAllowed `emotion_tags`:\n[\"anger\",\"grief\",\"hesitation\",\"isolation\",\"nostalgia\",\"panic\",\"relief\",\"resolve\",\"suspicion\",\"tenderness\",\"vulnerability\",\"wonder\"]\n\nAllowed `color_tags`:\n[\"amber\",\"desaturated\",\"gold\",\"green\",\"magenta\",\"monochrome\",\"navy\",\"neon\",\"red\",\"sepia\",\"teal\",\"violet\"]\n\nAllowed `camera_tags`:\n[\"cross_cut\",\"crash_zoom\",\"handheld_jitter\",\"locked_two_shot\",\"lateral_track\",\"overhead_reveal\",\"profile_closeup\",\"slow_pull_back\",\"slow_push_in\",\"static\",\"whip_pan\",\"wide_master\"]\n\nAllowed `motion_tags`:\n[\"abrupt_cut\",\"escalating\",\"fast_lateral\",\"jitter\",\"match_cut\",\"measured\",\"pulsing_light\",\"slow_drift\",\"spiral_orbit\",\"stillness\"]\n\nAllowed `audio_tags`:\n[\"alarm\",\"drone\",\"heartbeat\",\"muzak\",\"percussion\",\"radio\",\"silent\",\"soft_music\",\"speech\",\"voiceover\"]\n\nAllowed `continuity_status`:\n[\"intact\",\"broken\",\"ambiguous\"]\n\nRules:\n- Keep `summary` to 2 sentences max.\n- Use only the allowed tag vocabularies.\n- Treat the images in their listed order; infer camera or motion tags only when a\n  visible change across those samples supports the claim.\n- Do not infer an edit or action hidden between non-adjacent still samples.\n- Mention a continuity break only if the ordered samples directly show it.\n- Put each continuity observation in `continuity_notes` as a separate string;\n  use an empty array when there is no supported observation.\n- Set `audio_tags` and `audio_notes` to empty lists. `silent` is also an audio claim\n  and is invalid because audio was not submitted.\n- `evidence` must be 2-4 distinct visible-cue objects. Each object must use the\n  exact `frame_index` and `cue` keys, cite one submitted image (0 through 4),\n  and describe concrete image content supporting the analysis. Generic rationale\n  is not evidence.\n- `overall_confidence` must be a number between 0 and 1.\n- Do not wrap the JSON in markdown fences.\n\nOrdered frame packet\n- clip_id: vfp_active_006\n- duration_seconds: 4.0\n- resolution: 640x360\n- frame_count: 5\n- ordered_frame_indices: [0, 1, 2, 3, 4]\n- ordered_sample_times_seconds: [0, 1, 2, 3, 3.875]\n- audio_available_to_model: false\n\nOnly the ordered JPEG samples are submitted. The source video's audio, transcript, and descriptive metadata are unavailable; do not infer them.",
+      "vars": {
+        "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+        "clip_id": "storm_tunnel_lateral_run",
+        "evaluation_id": "vfp_active_006",
+        "target_markdown": "file://../video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+        "target_path": "video_understanding_truth_v4/storm_tunnel_lateral_run/target.json"
+      }
+    }
+  ]
+}

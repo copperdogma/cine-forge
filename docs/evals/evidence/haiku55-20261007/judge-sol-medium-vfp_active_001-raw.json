@@ -1,0 +1,121 @@
+{
+  "id": "resp_0109901b4c014ec6016ac6b73847a887d0bcb1c0e59008e0af",
+  "object": "response",
+  "created_at": 1791407928,
+  "status": "completed",
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1791407932,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "model": "gpt-6-sol",
+  "moderation": null,
+  "output": [
+    {
+      "id": "rs_0109901b4c014ec6016ac6b739f3cc87d09c336bb0c511534b",
+      "type": "reasoning",
+      "content": [],
+      "encrypted_content": "gAAAAABqxrc8jXxS7ygp8DPCBe1LUcbcf7m91Kyp7EY_q0gRxANC2JZLc7A9I1XJAQAyZjrRjsXv_Z4lWZf5S6gMjFNiE7AQLxo7LbyrEgofQ47gmH7sWDT8TFU4cBoMs4xuBW-cR6xAdODcqAIdhMUEbaaI9wiWSTTeB0LA2n7pdYTPGN6mYT_pfYr32hol_HGiOP82pgBRMLMAGWoCmzSPs2WdVmCj0IQIOBEXx5zA4f0-j5J8om2OpmYne0w5fV6HDB6-aQAVPR90NsqOD4QLVL5EHsrOW2wyf8fWZGIoyuDF1sX31J2pjzDd_3vZVVVM_OuwG_YvYyTYcOn4VFq50wFQ30j9c9kiyk3sCkSf7722cA6n-pPGe8Xzm8iBmTu2cHBjUX4VUjiL5Gmsy4JuxzV5qv33wSnHVwzF3bd9i-HRBmyidVF5rU_WFH0Z3KiwnHZecZrMv4Ic8L51Czm7eJ-9piBdqSpgsHbim0Hjt3RGpND-6byxsOZ5eZuJ3FcQriPHGu5kBwtyqjQ9kpvMM999HWeDzkwL1o5EFjm4qxkTKc-fsSYCUFsyX6t1J-sNChBxJqBmPhPM36m1tXSxv7D7Wv6sGpPL1kpiiX4b-SEqZBJ4bQHLBS8spOIDpNCKwie4SVAx70w1FHyggjn6Cz_bBER7_WpqxX0AKi0K8ZXaWOjIHTHydjT5ZZ9RhGHVSEKuJvwSBsTvkBVwp4Z1uV5au9FI4NERM0U8Ht5jihG6NaqCaFTGVjBoqnoE7Z9LIl9pclAIWybjBPWjnIqYejShfUi10Wp2AG0rJyRy_DWDK8fz6c-5cqkJCIm3bZiJGiD5nvZD8dnGY_Hpf0Vn6lFejI_pQOjqKNb83vmNrc95AA3wvInRBdKM_TTAV9gJWfxuBHUU8BF-PgjEmvoJMTokwJpOzWYF9SkJ-AmGB3hJXI13HWb5Mfm3D8Jm5h4-07jqhVPcKvgsZtxwmoNnNiFpr00pBENaCt_HkPKljQQ4_9JCu-XzyVu3e4O_wWGgo3jhrlCxJ9A14iU2guWP0xmudqr_se1qCsgxChbnkSvy5eZlBjpsEsRw6lmq7d1B4NkpzRWlQ_TlVUrbB7H5BcH0cNmPBBJvKqtFJAMpmCUmYK57UKbefAyeZRF3-ZsEhzCstAg8E9rZm0R8Dbdg-fv8MqM4kpz02YsoEOKanpFoF7E8ohOqQKr_tly_X4F4wxscyZ-QZG_FYlbsASDCUCTIjvfGyqrswQnWkCr_7t5AyIgJRf3ob5w7vVXeWwhjos8vf-Jr0Cc3XY4LX9fkMDRc_zR5QTxuuOzDpAGWd4C3W1DmuN9OnWBpucmukuSTA7bQCBsaG_IHqmldLn3FsmfEcvptog==",
+      "summary": []
+    },
+    {
+      "id": "msg_0109901b4c014ec6016ac6b73a93b087d0ad407ef698342047",
+      "type": "message",
+      "status": "completed",
+      "content": [
+        {
+          "type": "output_text",
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"score\":0.58,\"reason\":\"The figures, colors, pale rectangle, and intact continuity are described accurately. The main motion claim is wrong: both figures grow larger across the samples while their left-right centers stay nearly fixed; the tan figure does not progressively drift right. Calling the rectangle something the blue figure is holding also goes beyond what the simple shapes establish.\"}"
+        }
+      ],
+      "phase": "final_answer",
+      "role": "assistant"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "type": "json_schema",
+      "description": null,
+      "name": "frame_review",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "score",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "strict": true
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2146,
+    "input_tokens_details": {
+      "cache_write_tokens": 2143,
+      "cached_tokens": 0
+    },
+    "output_tokens": 121,
+    "output_tokens_details": {
+      "reasoning_tokens": 36
+    },
+    "total_tokens": 2267
+  },
+  "user": null,
+  "metadata": {}
+}
