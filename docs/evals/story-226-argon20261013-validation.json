@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-13",
+  "status": "pass",
+  "focused_tests": {
+    "count": 64,
+    "status": "pass",
+    "command": "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m pytest tests/unit/test_video_understanding_argon_contract.py tests/unit/test_video_understanding_benchmark.py tests/unit/test_video_understanding_gpt6_contract.py tests/unit/test_video_understanding_scorer_adversarial.py tests/unit/test_video_understanding_report_contract.py -q"
+  },
+  "other_checks": [
+    "Ruff on touched provider, runner, repair, report and test",
+    "Offline report --verify:88 retained hashes,9 reconstructed scores,24 settled calls,native/parity bodies",
+    "check_eval_registry.py PASS",
+    "check_truth_audit_ledger.py PASS",
+    "build_eval_contract_manifest.py --check PASS (new immutablev22)",
+    "methodology build/check PASS",
+    "git diff --check PASS",
+    "primary eight dirty entries unchanged"
+  ],
+  "warnings": [
+    "Existing architecture-audit domains due/open findings",
+    "Existing UI scout185days old against14day cadence"
+  ],
+  "scope": "Isolated evaluation tooling, evidence and records. No UI or production/default changes; no paid verification rerun.",
+  "code_files": [
+    {
+      "path": "benchmarks/providers/video_understanding_provider.py",
+      "sha256": "f59f5c670c1e966db8526ec04f41bf68dd509cefca2dbeedf4dd17790c012362"
+    },
+    {
+      "path": "benchmarks/providers/video_understanding_provider_argon.py",
+      "sha256": "8028bf87ea1e63a8121c0166960a59c4ac020d1e9197c644639d69ea660a749c"
+    },
+    {
+      "path": "benchmarks/scripts/run_argon_video_comparison.py",
+      "sha256": "469754d2a61d18deec3ff7baddba5e2d1c74fbc50d0b4e4d5474508a3929a8e0"
+    },
+    {
+      "path": "benchmarks/scripts/report_argon_video_comparison.py",
+      "sha256": "d42f8befbe947b8e4e7ac2d8e33504a0a5f19b4a0582d6c2c1b277f9177184e3"
+    },
+    {
+      "path": "benchmarks/scripts/repair_argon_prop_judges.py",
+      "sha256": "19b1d461c45d1f25e2ec5289571d0ded5c40dfaccd055af86f1cc6abf15f1984"
+    },
+    {
+      "path": "tests/unit/test_video_understanding_argon_contract.py",
+      "sha256": "cf91ff971efce3660fec60884ecf86b45127dac24267201d52ac74101eaf3cab"
+    }
+  ]
+}

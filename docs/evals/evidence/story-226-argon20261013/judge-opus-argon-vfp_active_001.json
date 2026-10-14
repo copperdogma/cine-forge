@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.013265",
+  "latency_ms": 11645,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1888,
+    "path": "output/evals/argon-20261013/judge-opus-argon-vfp_active_001-raw.json",
+    "sha256": "e238595cf348f02994a55c8b1464957af4de75a066ec29d70101b91a6cc1044a"
+  },
+  "reason": "The output correctly identifies two figures (beige/left and light blue/right), the navy background, the pale rectangle on the right figure, intact continuity, and measured motion. Color tags (navy, teal) match. Continuity status and notes are accurate. Evidence is grounded at frames 0, 2, and 4 with observable details. However, several issues reduce the score: (1) The model asserts a 'slow push-in' camera movement, which the reference explicitly says is not established from the frames\u2014figure enlargement occurs at nearly fixed centers while prop/background do not scale, so attributing it to a camera push-in is an unsupported claim. This is a meaningful error because it mischaracterizes the observable phenomenon. (2) Tone tags 'detached' and 'tense' do not match the reference 'intimate'. (3) Emotion tags 'isolation' and 'hesitation' are present but the reference specifies [none], so these are invented interpretations. (4) Camera tag 'slow_push_in' is an unsupported claim per the interpretation boundary. The camera language is ambiguous per the reference and excluded from scoring, but the model actively claims a specific mechanism which is penalized. Audio fields are empty, which is correct. Overall, the visual description is largely accurate but the tone/emotion mismatches and the unsupported camera mechanism claim bring the score below the 0.8 threshold.",
+  "request_id": "msg_011Cg1BD1Qu1QbU8mxBDcqBo",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 1003,
+    "output_tokens": 330,
+    "service_tier": "standard"
+  }
+}

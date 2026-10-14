@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01352",
+  "latency_ms": 10305,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1860,
+    "path": "output/evals/argon-20261013/judge-opus-luna-vfp_active_004-raw.json",
+    "sha256": "a2c7f3bf21e36dbcc39a7a5ec22a91ab8a3483bd03c640e9b785b6ad14c7489f"
+  },
+  "reason": "The output captures several correct elements: static camera, navy color, the red-to-blue color change of the rectangle, and provides grounded evidence at frame indexes 0, 2, and 4. However, there are significant issues: (1) Continuity is marked as 'intact' when the reference says 'broken' \u2014 the color change from red to blue between frames 1 and 2 constitutes a continuity break, not continuity preservation. This is a major factual mismatch. (2) The summary says the rectangle changes from red to blue but then claims continuity is intact, which is internally contradictory as well. (3) The reference specifies the rectangle is red in the first TWO samples (frames 0-1), but the output's evidence only notes red at frame 0 and blue at frame 2, skipping frame 1's red state; frame 1 evidence is absent. (4) Color tags include 'red' and 'desaturated' \u2014 'red' is acceptable for frames 0-1, but 'desaturated' is not clearly supported by the reference. (5) motion_tags lists 'stillness' when reference says none; this is a minor invented tag. (6) tone_tags lists 'detached' when reference says none. (7) camera_tags only lists 'static' but misses 'wide_master'. (8) audio_tags and audio_notes are correctly empty. The continuity status error is the most consequential problem, as it directly contradicts the reference finding of a broken continuity.",
+  "request_id": "msg_011Cg1BRXQXu4Vf2SVJdct35",
+  "score": 0.55,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 894,
+    "output_tokens": 362,
+    "service_tier": "standard"
+  }
+}

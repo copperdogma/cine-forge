@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01105",
+  "latency_ms": 10614,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1435,
+    "path": "output/evals/argon-20261013/judge-opus-argon-vfp_active_004-raw.json",
+    "sha256": "5cc2943255cfaffc4f484ddbca76db56038ce90b18b036f104a1d244c482ec1b"
+  },
+  "reason": "The model correctly identifies the core continuity break (red-to-blue change between frames 1 and 2), the static/wide_master camera tags, the navy color, and provides well-grounded evidence at frames 0, 1, and 2. However, there are notable issues: (1) tone_tags=['detached'] and emotion_tags=['isolation'] are invented\u2014the reference specifies none for both; (2) color_tags includes 'desaturated' and 'red' beyond the reference-supported 'navy'; the reference notes red is present but only 'navy' is listed as a color/grade tag, and generic 'red' as a color_tag is borderline acceptable but 'desaturated' is unsupported; (3) motion_tags=['stillness'] is invented when the reference says none; (4) audio_tags and audio_notes are correctly empty, which is good. The invented tone, emotion, and motion tags represent non-trivial additions not grounded in the frames per the reference, pulling the score below the 0.8 threshold.",
+  "request_id": "msg_011Cg1BQ1VfbA94985xosMjY",
+  "score": 0.78,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 945,
+    "output_tokens": 253,
+    "service_tier": "standard"
+  }
+}

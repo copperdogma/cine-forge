@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.011345",
+  "latency_ms": 9398,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1579,
+    "path": "output/evals/argon-20261013/judge-opus-luna-vfp_active_001-raw.json",
+    "sha256": "4c9fa565696ec16fe448d4fe8dff1e1082d3eaeffbc7303c936ce992596c53d5"
+  },
+  "reason": "The output captures the core visual narrative (two figures, fixed positions, gradual enlargement, navy background, ground line, pale rectangle on right figure, intact continuity, measured motion, no emotion tags, empty audio fields). However, several mismatches lower the score: (1) Tone is 'detached' instead of the reference 'intimate' \u2014 a clear mismatch. (2) Color tags list only 'navy' but miss 'teal', which is part of the reference palette. (3) The summary describes figures as 'featureless' yet the evidence correctly notes the pale rectangle on the right figure \u2014 minor internal inconsistency but not a major penalty. (4) Camera tag 'static' is included; while camera tags are excluded from scoring per instructions, asserting 'static' camera could imply the size change is body growth rather than camera push-in, which is acceptable per interpretation boundaries. (5) The evidence is well-grounded at frames 0, 2, and 4, meeting the 2-4 entry requirement. The tone mismatch and missing 'teal' color tag are the primary penalties preventing a passing score.",
+  "request_id": "msg_011Cg1BEiTjEYg39Y4wCYyJr",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 939,
+    "output_tokens": 266,
+    "service_tier": "standard"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified, geometric figures\u2014one beige and one light blue with a rectangular badge\u2014stand apart against a dark navy background. Across the five ordered frames, the composition remains a subtle slow push-in on the two stationary figures with intact continuity.\",\"tone_tags\":[\"detached\",\"tense\"],\"emotion_tags\":[\"isolation\",\"hesitation\"],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"locked_two_shot\",\"slow_push_in\"],\"motion_tags\":[\"stillness\",\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both stylized figures maintain consistent shapes, colors, and relative positions across all five frames.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A beige stylized figure on the left and a light blue figure with a white rectangle on the right stand separated on a dark ground line against a navy gradient.\"},{\"frame_index\":2,\"cue\":\"Both figures remain in the same relative posture and spacing while appearing slightly larger in the frame.\"},{\"frame_index\":4,\"cue\":\"The two figures appear subtly larger and closer to the top edge of the frame compared to frame 0, showing a gradual push-in without any cut.\"}],\"overall_confidence\":0.95}",
+            "thoughtSignature": "EtkFCtYFAWkUfRMe8Toi7sixGB9wXkgvKzVsdUEdsqjFra4DgIl+Bvpmy/Ox+W685bxsHVSgMPaQH4MSkvuId1vKjPhsZzWvXdppBZ71fknUF2OeVaSVa5HzBodZVA9BR690Y//E4xIFiKdirmP8jUnb7f2FYn1aXazb8jqkTgpo4GPHXZGBH7kIjANBj4zLS67kWf6tMIxeb/0Y/w4Z6ZbV46KsBPLA3ngp9kY6igHQDqfnzTR4m8JOEqG9DNbfGpbprXltvGbJji0EvtLqTjbBVE1TMZl37WZxx90TE7xzqpVnUmv68ksZ69LhSJxrw/P24k0kBtZlJlokru41o37BC0hU38NCRgTY0oOwajOKh9PBHq1rMl3EwYipw3AJSrYfv4NpXh3N2gFiE9BPkgmM8KICVjLcZFeCJE5H1g+wvZ8EySxBGIFikchST6N0hhKXzS4jPPHB6mLHrWQD2ynDd72qm1LeMQyNxQoK/bqS2iiPmFG6HqQTviJS/EzW7XtIOCJ4aq+PYthz5sTxe29xszCR2OYeS8yqHm0+G7rMUzxwFut7tBN3m4pmIJIaK5yIpvB8PUlTxpSvrOpXK3EQngK3tDT6dwbzAL/qItaAv3ZauyOioy6GcSbgFEf/bCCzejzxws3oQQ49ih9mFyOKVOlYWTDAkGf8WBF99b4uaOO70yL3+M//hd1bz4vb9ZR42O5pldey8Oosewnvova8K9O1019seuV8SxrncrqhRT9J5K2db/h5duWkTNn9sbwIy41W4sNwENKPrDgweVxmMARvzuS3PVxdOUrjjJA56MBpQ15et8ZoNEzdLSgTZbKLM2qPoFv1x8ILEfGobAxf1iC/lnWjV7FVGS0K//OHmBfscW96PcoUSRwy6WZUB3uVMRfX5jUfYkUliXlVRyKdm+AJHo6doYSspQZYvmSIYhyWzozxKR0D+0jKGVq3kB4Xj12SfX10RCUx"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "modelVersion": "gemini-4-argon",
+  "responseId": "R8vOat6KAfGtz7IP4eii6QI",
+  "usageMetadata": {
+    "cacheTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 1482
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 4003
+      }
+    ],
+    "cachedContentTokenCount": 5485,
+    "candidatesTokenCount": 289,
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 289
+      }
+    ],
+    "promptTokenCount": 7534,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2034
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      }
+    ],
+    "thoughtsTokenCount": 177,
+    "totalTokenCount": 8000
+  }
+}

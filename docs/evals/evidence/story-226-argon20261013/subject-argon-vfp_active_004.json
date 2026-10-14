@@ -1,0 +1,86 @@
+{
+  "arm": "argon",
+  "name": "subject-argon-vfp_active_004",
+  "response": {
+    "cached": false,
+    "cost": 0.021038,
+    "latencyMs": 12284,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "prop_swap_continuity_break",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_004",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+      ],
+      "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gemini-4-argon",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "google",
+      "request_id": "zsvOatSKNr7oz7IPwOeM8QI",
+      "requested_model": "gemini-4-argon",
+      "returned_model": "gemini-4-argon",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A static wide shot shows a two-tiered brown block against a dark navy background. Between the second and third frames, the white-bordered rectangular plaque on the block abruptly changes from red to blue.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"desaturated\",\"navy\",\"red\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"broken\",\"continuity_notes\":[\"The white-outlined rectangular plaque on the center of the brown structure changes color from red in frames 0 and 1 to blue in frames 2, 3, and 4 while the camera and surrounding geometry remain completely static.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A red rectangular plaque with a white border is centered on the upper tier of the brown structure against a navy background.\"},{\"frame_index\":1,\"cue\":\"The centered rectangular plaque remains red with no change in framing or object position.\"},{\"frame_index\":2,\"cue\":\"The centered rectangular plaque changes color from red to blue while the structure and background remain unchanged.\"}],\"overall_confidence\":0.95}",
+    "raw": {
+      "finishReason": "STOP",
+      "modelVersion": "gemini-4-argon",
+      "raw_envelope_bytes": 3817,
+      "raw_envelope_path": "output/evals/argon-20261013/subject/argon/vfp_active_004-raw-envelope.json",
+      "raw_envelope_sha256": "a3b49488e7a57e18eff437933a1b130de81ef15651ca9329b328e9523671947e",
+      "responseId": "zsvOatSKNr7oz7IPwOeM8QI",
+      "usageMetadata": {
+        "candidatesTokenCount": 272,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 272
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 325,
+        "totalTokenCount": 8131
+      }
+    },
+    "tokenUsage": {
+      "completion": 272,
+      "completionDetails": {
+        "reasoning": 325
+      },
+      "prompt": 7534,
+      "total": 8131
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/prop_swap_continuity_break",
+    "clip_id": "prop_swap_continuity_break",
+    "evaluation_id": "vfp_active_004",
+    "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+    "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+  }
+}

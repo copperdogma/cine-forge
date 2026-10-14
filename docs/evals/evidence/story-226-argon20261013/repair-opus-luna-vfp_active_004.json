@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.020045",
+  "latency_ms": 11836,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1592,
+    "path": "output/evals/argon-20261013/repair-opus-luna-vfp_active_004-raw.json",
+    "sha256": "640c0b8906a223d7bb6d398414452815c9c307bf8d2c152edc0974d633a1deb5"
+  },
+  "reason": "The model correctly identifies the visual layout (brown platform, dark blue background, small outlined rectangle), the color change from red to blue, the static camera, and provides grounded evidence at frames 0, 2, and 4. Color tags include navy and red which are observable. However, there are significant mismatches: (1) Continuity is marked 'intact' when the reference says 'broken' \u2014 the rectangle changes color between frames 1 and 2, which is a discontinuity/prop-swap, not continuity being intact. This is a critical error. (2) The summary says 'changes from red to blue' implying a single transition but doesn't note that frames 0-1 are red and 2-4 are blue \u2014 minor. (3) 'desaturated' color tag is questionable. (4) 'stillness' as a motion tag is acceptable per instructions. (5) tone_tags includes 'detached' when reference says none. (6) 'motion_tags' includes 'stillness' which is permissible. (7) audio_tags and audio_notes are correctly empty. The continuity judgment error is the most significant mismatch, as the reference explicitly marks continuity as broken.",
+  "repair_reason": "source-validity faults only",
+  "request_id": "msg_011Cg1BagvGZroaupWziFjTq",
+  "score": 0.55,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2574,
+    "output_tokens": 287,
+    "service_tier": "standard"
+  }
+}

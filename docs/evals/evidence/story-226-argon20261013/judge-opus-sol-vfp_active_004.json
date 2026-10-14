@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01418",
+  "latency_ms": 9972,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1899,
+    "path": "output/evals/argon-20261013/judge-opus-sol-vfp_active_004-raw.json",
+    "sha256": "6965301aaf79150e98f9e472c9523b10d1633a31cbda3d39537d5db8b62b0ccf"
+  },
+  "reason": "The summary correctly identifies a red-to-blue color change in a rectangle, a static composition, and a navy background. However, there are several concrete mismatches: (1) The model claims the change occurs between frames 1 and 2 in the summary but in evidence says frame 0 and 1 are red and frame 2 is blue \u2014 the evidence is correct but the summary says 'between frames 1 and 2' which is correct per the reference (frames 0-1 red, 2-4 blue). (2) The color_tags include 'red' but omit 'blue', which is a notable gap \u2014 however per the source-verified interpretation boundaries, 'generic blue is absent from allowed color_tags, so correct blue text suffices,' meaning blue need not appear in color_tags. So that is acceptable. (3) The tone is listed as 'detached' when the reference indicates no tone tags should be present; this is an invented tag. (4) motion_tags includes 'stillness' when the reference indicates no motion tags; this is an invented/unsupported tag. (5) camera_tags only includes 'static' but misses 'wide_master'. (6) audio_tags and audio_notes are correctly empty. (7) The continuity_status is correctly 'broken' with appropriate notes. (8) Evidence is well-grounded with 4 entries covering frames 0,1,2,4, which is within the acceptable 2-4 range. The invented tone and motion tags, plus the missing wide_master camera tag, bring the score below the 0.8 threshold.",
+  "request_id": "msg_011Cg1BQnCjaqVFKUeVtUwhE",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 946,
+    "output_tokens": 378,
+    "service_tier": "standard"
+  }
+}

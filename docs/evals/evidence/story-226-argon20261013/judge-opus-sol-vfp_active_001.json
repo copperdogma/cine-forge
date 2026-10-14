@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.012885",
+  "latency_ms": 11549,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1803,
+    "path": "output/evals/argon-20261013/judge-opus-sol-vfp_active_001-raw.json",
+    "sha256": "ee552e9bd663d10ddd04438ed2dd50e3f306198ab366ea6470d8c964599dca01"
+  },
+  "reason": "The output captures the main visual story well: two abstract figures enlarging across frames, left-right positioning preserved, pale rectangle on the right figure, continuity intact, measured motion, navy color, empty audio fields. However, there are notable mismatches: (1) Tone is 'detached' instead of 'intimate' \u2014 a clear mismatch against the reference. (2) Color tags include only 'navy' but miss 'teal', which is specified in the reference. (3) Camera tags include 'static' and 'locked_two_shot', but the reference says camera language is ambiguous and tags should be excluded; while camera tags are excluded from scoring, claiming 'static' could imply no camera mechanism is at play, which borders on an unsupported claim given the interpretation boundary that no camera mechanism is established. (4) The summary and evidence describe figures becoming 'taller and wider' with 'bases remaining aligned,' which is reasonable but the reference notes figures enlarge at 'nearly fixed centers' rather than fixed bases \u2014 a minor but notable discrepancy in the described spatial behavior. (5) Evidence is well-grounded with 3 entries at frames 0, 2, and 4, which meets the 2-4 requirement. The tone mismatch and missing teal color tag are the primary penalties preventing a passing score.",
+  "request_id": "msg_011Cg1BDrWQB1dMPrxCCfLoP",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 1032,
+    "output_tokens": 309,
+    "service_tier": "standard"
+  }
+}

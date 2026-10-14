@@ -1,0 +1,78 @@
+{
+  "arm": "luna",
+  "name": "subject-luna-vfp_active_004",
+  "response": {
+    "cached": false,
+    "cost": 0.0005406749999999999,
+    "latencyMs": 5655,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "prop_swap_continuity_break",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_004",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+      ],
+      "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0b2626ee7826f424016acecbe4185087d0a1e128beeba2fa17",
+      "requested_model": "gpt-6-luna",
+      "returned_model": "gpt-6-luna",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A simple geometric display shows a small outlined rectangle centered on a brown platform against a dark blue background. The rectangle changes from red to blue while the framing and surrounding shapes remain fixed.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"red\",\"desaturated\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The platform, background, and centered outlined rectangle retain the same positions and shapes across the samples; only the rectangle's fill color changes from red to blue.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A red, white-outlined rectangle is centered on the upper brown block.\"},{\"frame_index\":2,\"cue\":\"The centered outlined rectangle is blue, while the brown blocks and dark background remain in place.\"},{\"frame_index\":4,\"cue\":\"The blue rectangle and geometric layout remain unchanged.\"}],\"overall_confidence\":0.98}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0b2626ee7826f424016acecbe4185087d0a1e128beeba2fa17",
+      "model": "gpt-6-luna",
+      "raw_envelope_bytes": 11646,
+      "raw_envelope_path": "output/evals/argon-20261013/subject/luna/vfp_active_004-raw-envelope.json",
+      "raw_envelope_sha256": "f9a2e73b85cd8d50f11df7cff59cee083feb864c7e53ed352e4e043e8759f672",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 359,
+        "output_tokens_details": {
+          "reasoning_tokens": 134
+        },
+        "total_tokens": 3249
+      }
+    },
+    "tokenUsage": {
+      "completion": 225,
+      "completionDetails": {
+        "reasoning": 134
+      },
+      "prompt": 2890,
+      "total": 3249
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/prop_swap_continuity_break",
+    "clip_id": "prop_swap_continuity_break",
+    "evaluation_id": "vfp_active_004",
+    "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+    "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+  }
+}

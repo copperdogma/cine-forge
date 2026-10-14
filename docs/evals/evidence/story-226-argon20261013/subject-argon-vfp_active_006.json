@@ -1,0 +1,86 @@
+{
+  "arm": "argon",
+  "name": "subject-argon-vfp_active_006",
+  "response": {
+    "cached": false,
+    "cost": 0.020278,
+    "latencyMs": 10110,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "storm_tunnel_lateral_run",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_006",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+        "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+        "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+        "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+        "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+      ],
+      "meta_sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gemini-4-argon",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "google",
+      "request_id": "6svOar6rAsOJqtsPrPihsQY",
+      "requested_model": "gemini-4-argon",
+      "returned_model": "gemini-4-argon",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\n  \"clip_id\": \"vfp_active_006\",\n  \"summary\": \"A stylized light-blue figure icon carrying a rectangular object moves steadily from left to right beneath a static cyan arch against a dark blue background with diagonal lines. The framing remains fixed throughout the progression.\",\n  \"tone_tags\": [\"detached\", \"surreal\"],\n  \"emotion_tags\": [\"isolation\", \"resolve\"],\n  \"color_tags\": [\"navy\", \"teal\", \"desaturated\"],\n  \"camera_tags\": [\"static\", \"wide_master\"],\n  \"motion_tags\": [\"measured\", \"slow_drift\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [\n    \"The cyan arch remain fixed in position across all five frames while the figure icon progresses smoothly from left to right.\"\n  ],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A light-blue geometric figure icon holding a white-bordered rectangle starts near the left edge beneath a large cyan arch.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The figure icon reaches the horizontal center of the frame under the apex of the cyan arch while background diagonal lines shift slightly.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The figure icon arrives on the right side beneath the arch, completing a consistent rightward progression.\"\n    }\n  ],\n  \"overall_confidence\": 0.95\n}",
+    "raw": {
+      "finishReason": "STOP",
+      "modelVersion": "gemini-4-argon",
+      "raw_envelope_bytes": 3143,
+      "raw_envelope_path": "output/evals/argon-20261013/subject/argon/vfp_active_006-raw-envelope.json",
+      "raw_envelope_sha256": "c5bf1614b721234a5cb726d0fe1f1ae4970ced9b9dceb77cc6c46a7f4ffa46b6",
+      "responseId": "6svOar6rAsOJqtsPrPihsQY",
+      "usageMetadata": {
+        "candidatesTokenCount": 371,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 371
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 150,
+        "totalTokenCount": 8055
+      }
+    },
+    "tokenUsage": {
+      "completion": 371,
+      "completionDetails": {
+        "reasoning": 150
+      },
+      "prompt": 7534,
+      "total": 8055
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+    "clip_id": "storm_tunnel_lateral_run",
+    "evaluation_id": "vfp_active_006",
+    "target_markdown": "file://../video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+    "target_path": "video_understanding_truth_v4/storm_tunnel_lateral_run/target.json"
+  }
+}

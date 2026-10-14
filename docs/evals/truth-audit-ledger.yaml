@@ -1614,6 +1614,7 @@ surfaces:
     owner: "video-understanding benchmark transport owner"
     paths:
       - "benchmarks/providers/video_understanding_provider.py"
+      - "benchmarks/providers/video_understanding_provider_argon.py"
       - "benchmarks/providers/video_understanding_provider_support.py"
       - "benchmarks/providers/video_understanding_transport.py"
       - "benchmarks/scripts/final_render_provider_floor_subject_contract.py"
@@ -1634,6 +1635,8 @@ surfaces:
       - "docs/evals/attempts/013-visual-modality-truth.md"
       - "docs/evals/attempts/019-video-understanding-post-commit-calibration.md"
       - "tests/unit/test_video_understanding_benchmark.py"
+      - "tests/unit/test_video_understanding_argon_contract.py"
+      - "docs/evals/attempts/050-argon-v4-three-case-screen.md"
       - "tests/unit/test_visual_frame_eval_contract.py"
       - "tests/unit/test_final_render_provider_floor_subject_contract.py"
       - "docs/evals/attempts/016-independent-closeout-adversarial-review.md"

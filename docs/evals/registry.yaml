@@ -2415,6 +2415,26 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "050"
+        story: attempts/050-argon-v4-three-case-screen.md
+        date: 2026-10-13
+        status: failed
+        approach: "Approved Scout092 item3: exact native Google Argon medium32768 vs fresh Sol6.1 low4096 and Luna6 low1400 on frozen v4 dialogue/prop/motion five-JPEG cases. All-arm independent Opus4.6; one symmetric source-image prop judge repair on saved subjects. No demonstrated adoption win: original aggregate .58867 vs .61003/.61498; source-adjudicated .59533 vs .61003/.61498. All0/3 dual passes. Argon passed2/3 latency and1/3 cost gates; no source-grounded decisive Argon contradiction. Scores caveated by preserved lexical/scorer truth defects, no quality-superiority claim or current score promotion."
+        worker_model: "Codex GPT6 owner; independent source reviewer GPT6Luna high"
+        subject_model: "gemini-4-argon native Google medium32768"
+        score_before: 0.6149833333
+        score_after: 0.5886666667
+        latency_after: 15592
+        cost_after: 0.01687417
+        git_sha: "1a38bbae97382abdffe99b2abe959154b02dace6+argon20261013-hash-freeze"
+        result_file: benchmarks/results/video-understanding-argon-vs-sol-luna-v4-20261013.json
+        contract_manifest: docs/evals/story-226-argon20261013-evidence-v2.json
+        evidence_status: bounded-three-case-uncommitted-source-reviewed
+        spend_usd_estimated: 0.278644895
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-approach
+            note: "Source-backed scoring validity repair before a new capability decision; new faster/cheaper checkpoint or source contract change needed for same-budget adoption retest. No unchanged-model tuning."
       - id: "049"
         story: attempts/049-haiku55-thinking-value.md
         date: 2026-10-07

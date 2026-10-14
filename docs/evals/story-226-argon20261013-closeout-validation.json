@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-13",
+  "status": "pass",
+  "scope": "Scout092 bounded CineForge commit preflight, no paid rerun",
+  "reused_checks": "64 focused tests against unchanged provider/scorer/source inputs; originalvalidation retained",
+  "unchanged_code_files": [
+    "benchmarks/providers/video_understanding_provider.py",
+    "benchmarks/providers/video_understanding_provider_argon.py",
+    "benchmarks/scripts/run_argon_video_comparison.py",
+    "benchmarks/scripts/repair_argon_prop_judges.py",
+    "tests/unit/test_video_understanding_argon_contract.py"
+  ],
+  "offline_replay": "Report assemble with run.OUT at a nonexistent in-repo output/evals/scout092-runtime-unavailable-verification directory matches sealed9score/24callresult exactly; no ignoredoutputdependency",
+  "offline_replay_fix": "Read trackedledger explicitly. Originalreport bytes archived and originalmanifest unchanged.",
+  "original_manifest_sha256": "36e75bd55ef3c90ea92420f23e61b19ec135190cea500255a0edcb721f1d7ebd",
+  "original_report_sha256": "d42f8befbe947b8e4e7ac2d8e33504a0a5f19b4a0582d6c2c1b277f9177184e3",
+  "new_report_sha256": "94d0642626f95f77d4bb445c4edf9b88505250f9e7fd77cc441fe3b5c8684fc1",
+  "remaining_gate": "Root coordinated landing clearance before any push",
+  "initial_probe_fault": "First test chose OUT outsideROOT and the unchanged matrix path-safety guard rejected it before ledger replay. Corrected only the test setup to an absent in-root path; no provider calls."
+}

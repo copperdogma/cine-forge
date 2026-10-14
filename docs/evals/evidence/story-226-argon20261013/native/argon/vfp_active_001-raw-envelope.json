@@ -1,0 +1,41 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified geometric figures\u2014one beige on the left and one light blue with a pale rectangular badge on the right\u2014stand separated on a dark floor against a navy-to-teal gradient background. Across the five ordered frames, the composition remains symmetrical as the figures gradually scale larger, suggesting a measured slow push-in.\",\"tone_tags\":[\"detached\",\"tense\"],\"emotion_tags\":[\"isolation\",\"hesitation\"],\"color_tags\":[\"navy\",\"teal\",\"desaturated\"],\"camera_tags\":[\"locked_two_shot\",\"slow_push_in\"],\"motion_tags\":[\"measured\",\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A beige figure on the left and a light-blue figure with a white lower-left rectangle on the right stand spaced apart on a dark horizontal ground plane against a dark navy background.\"},{\"frame_index\":2,\"cue\":\"Both figures maintain their exact relative positions and details while appearing slightly larger in the frame compared to frame 0.\"},{\"frame_index\":4,\"cue\":\"The beige and light-blue figures reach their largest size in the sequence while remaining stationary on the dark floor line.\"}],\"overall_confidence\":0.92}",
+            "thoughtSignature": "Es4HCssHAWkUfRP7y31nu+9TiXMz25JNjUG4RmAnLyk2EFMRPKChly7xLg8VH8uAzlQJ79IRmGTbDmRh4AcXUnE3j2l4TKA4MWvBDFsbtavs6pY8kR7lHo6w9yIUpoIPs1YZJQtTja79SBZpe0fJGccDW3BkKQtBgHXy6tPd9X5+JQ5P17lvkx7a62ewJ2xUoWT89nZbkLssJuF7fn4EDo59uIsBrW17INM5T17CLgOuxat3WbwUF9M373fwe+5Bf7e/257eoi+RPwpKnD2IjHDVbbJIQZV1eNwlE+evHNx4KAUeAr6FQHkF1peKs1NL92ni3xQZZhc7AW9RFsd7gJ44oJ+MY/eNlXeMyz+tbnQMPVf7m80Ah+piBxRzVBo8tomrTqpyc4Hak8PP2H26aOk8LNXmnXCuWhVuM1Uv6DeCe3aE7sNVCulug9KT+cLrOJNfUdV8/FZy2BYjkE2x619FqjtxdVLzdeww1bmQakabH9PhKIDQ4vbXu43hyvIstEpOPHeevVQ6jek4CJWfpbwW3+NV47FMCsuHWise7PvgrStl4O4WXjeMU4bTREJBa11xu93Z3DDJ6PDIJM4FUczsUjWDbKZWXxm9jZ7zqhKY1qfk6G3aeJ7nllaSynm/VoF6nRQu9KkrerlhPeNoevpSOhRgeT6mkPmOYIFUmm/Y1Saqdg0zKVr/7RyAYF+kr0WnfckG90NqsthE0qG2JhsM6oMzn00785NJLrjr7Kcd3Mo5tlz4LQJMy2MG4M8Hx2Fj5GRwMuuFSiI0hnSBJVLAS8NRa1q5nd7SfWDttxlww9I/fT2OuCZtm8RBhjsq46Ijvu5v2Fk6ortKAizNOevqfS2CT+A6koBQYc0OOqD5lkoB6uDIfMhQShRCLmzYWuGypBAUvsF/ZgGhEsaPOCYJPX1wxrPP62W+JriN42jhmvIBaKmASykiKVf/e1ZN7bzwO9/NMoDfofJJk7xbfLZ/Zt475IdGpskZHEt3L0qH1vlQhAUiNFk2ib/VTavJWDeTZLOlySWE53AOIzAG7uIyJ/my/H/WQxEZo5+UASI/wFWfzOzc/aXfAm4/W8OoWMwa4vF5EhwlBl+dAD001uBWOtjB3/s6fVjXO+KgZObHWF1rMW+lGCu4MVnBfnGDt7C4NDMFvmKwjTzkR0rDPWQkabh18g6w7kYqdyIYbTcxtHeJ31iMRU46LWHNH0R1FPu/cf9mtWeKa4KYutyEAFpfLzAWxTchYIzA7sbWkZ88NvRqRKd1aewudAj/XfdlADZHeY4MTHSrz7jS++rW69A="
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "modelVersion": "gemini-4-argon",
+  "responseId": "O8vOasrKDImcz7IP_-_MwQM",
+  "usageMetadata": {
+    "candidatesTokenCount": 289,
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 289
+      }
+    ],
+    "promptTokenCount": 7534,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2034
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      }
+    ],
+    "thoughtsTokenCount": 217,
+    "totalTokenCount": 8040
+  }
+}

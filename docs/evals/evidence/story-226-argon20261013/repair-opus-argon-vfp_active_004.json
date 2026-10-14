@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.019625",
+  "latency_ms": 1,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1594,
+    "path": "output/evals/argon-20261013/repair-opus-argon-vfp_active_004-raw.json",
+    "sha256": "a423425b1e6c3e454e79f8c3ccc5b33b6c2d20c574184b8508d2c334c948e990"
+  },
+  "reason": "The output correctly identifies the core continuity break: frames 0-1 have a red rectangle that changes to blue in frames 2-4, matching the reference. Continuity is correctly marked as broken with accurate continuity notes. Camera tags (static, wide_master) match. Color tags include navy and red, both observable; 'desaturated' is reasonable. The 'stillness' motion tag is acceptable per the clarification. Evidence provides 3 grounded entries at frames 0, 1, and 2, which is within the 2-4 required range. Audio fields are empty as required. Minor issues: tone_tags ['detached'] and emotion_tags ['isolation'] are invented interpretations not supported by reference (reference has none); the description calls the object a 'plaque' on a 'two-tiered brown block' rather than a table composition with a small rectangle\u2014this is semantically equivalent enough but slightly embellished. The summary says 'between the second and third frames' which correctly identifies the transition between frame_index 1 and 2. Overall a solid analysis with minor unnecessary tone/emotion additions.",
+  "repair_reason": "source-validity faults only",
+  "request_id": "msg_011Cg1BXKDTrjQ11XonCtaD9",
+  "score": 0.82,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2625,
+    "output_tokens": 260,
+    "service_tier": "standard"
+  }
+}

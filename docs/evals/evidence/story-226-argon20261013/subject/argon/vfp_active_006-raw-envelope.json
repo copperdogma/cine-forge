@@ -1,0 +1,41 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\n  \"clip_id\": \"vfp_active_006\",\n  \"summary\": \"A stylized light-blue figure icon carrying a rectangular object moves steadily from left to right beneath a static cyan arch against a dark blue background with diagonal lines. The framing remains fixed throughout the progression.\",\n  \"tone_tags\": [\"detached\", \"surreal\"],\n  \"emotion_tags\": [\"isolation\", \"resolve\"],\n  \"color_tags\": [\"navy\", \"teal\", \"desaturated\"],\n  \"camera_tags\": [\"static\", \"wide_master\"],\n  \"motion_tags\": [\"measured\", \"slow_drift\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [\n    \"The cyan arch remain fixed in position across all five frames while the figure icon progresses smoothly from left to right.\"\n  ],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A light-blue geometric figure icon holding a white-bordered rectangle starts near the left edge beneath a large cyan arch.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The figure icon reaches the horizontal center of the frame under the apex of the cyan arch while background diagonal lines shift slightly.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The figure icon arrives on the right side beneath the arch, completing a consistent rightward progression.\"\n    }\n  ],\n  \"overall_confidence\": 0.95\n}",
+            "thoughtSignature": "EtAFCs0FAWkUfRObUoAz045Q87/4R3x6uqeOw6bXrXT8hbJb42OVNcwkynltXa4HkPjj0M1TdfUF4G8T8YN4Z0CScrv03N+ofX6if+68Eu+2TUWSJFP/mG7ggn9E15xbXwyvorl+T2auVjlsOr0uSm+N1GVpDE0q3koIhWF/5J2W0DXWR9205K8I7BS1S2NDe1/2hyQRE5YFN184QkQo6/k2wrrUxcsA1fhypRmkvw/ZLjgdfn6qAm0YR/4haskbd7v3QKJpSFvRCCRmfKVNnZqK31l3EFW1LwRLQcZcnfzBnfbgNQ7H/aPEQAKMb4/wRiEWOtl3E73Sw37NvKEDgqtzEKY3hDJ8c/DUWcktl0YwB1o4uRaRXm8Mm+AliBk+IEZOk3uzG1ecapiUPKktCUGYS5+0lUbt67qee6z4X7fHIiRKE5ZYSs6Imbhee8D/SXjkXkSCFYXOPUsUbQBK/fRy7DzyJ+HTHfEEQgayXDFO1DqHHqfbMLetSgAZsOflnGol5tiqMOcgC2yZ/w7oocN/TJvhGqoT5pBuB7W5IVm1xf7wEUU8frOXD9uYv2t3C81DGhrL5M2q13mZybUiYjsYpDnXgu2JZgZ92k/WBnD5ZruY4h8latyvMqmQX/RcBbQZTO+SyByvy/+ZFxs4XTYjsy8zeqgWBdRk9TLJnHO1BZc5Wy/eHNw+Ywtimhd2Qp4+5sLEc/9zDgL7N6Mt18BWcBAkJK7YD0NtCq1HkSyHrZ6Lki0vK/lLDzj/kR3jiesDbRq4/9w5at7x5MkJoVuRxmj8O+EdDkOX1k3Ax0yWM6pUCh3yt+zSd7o1dSXsNhgToQZHW/ZBm25Oav3RgL/PXKKw3T5sB5bevlrHKewOlyq/Oc80GA9PTgBttaUBadJ78k4tucKokTKXLj10b38/XegTLNeqsKMcEEQl0mZg5/5mPEaYgh/tZh7uIBaOMXHo"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "modelVersion": "gemini-4-argon",
+  "responseId": "6svOar6rAsOJqtsPrPihsQY",
+  "usageMetadata": {
+    "candidatesTokenCount": 371,
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 371
+      }
+    ],
+    "promptTokenCount": 7534,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2034
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      }
+    ],
+    "thoughtsTokenCount": 150,
+    "totalTokenCount": 8055
+  }
+}

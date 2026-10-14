@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.01032",
+  "latency_ms": 7381,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1490,
+    "path": "output/evals/argon-20261013/judge-opus-luna-vfp_active_006-raw.json",
+    "sha256": "88337dcdef54a966a35fc7741b383e9fac98e71d137413c8233e3081906cce48"
+  },
+  "reason": "The output correctly identifies the cyan figure, rectangular object, left-to-right movement, dark blue background with diagonal lines, static camera, intact continuity, empty audio fields, and teal/navy color tags. However, there are notable mismatches: (1) Tone is 'detached' instead of the reference 'urgent, tense' \u2014 this is a significant deviation. (2) Motion is tagged as 'measured' rather than 'fast_lateral' \u2014 the reference indicates fast lateral movement, not slow/measured. (3) Camera tags omit 'wide_master' which is inferable from the frames. (4) The description mentions a 'broad arch' which may be a reasonable interpretation of the tunnel, but calling it an arch rather than a tunnel is minor. The tone and motion mismatches are the most significant errors, as they mischaracterize the clip's energy and speed. The summary describes 'steady' movement which contradicts fast lateral motion. These cumulative errors bring the score below the 0.8 passing threshold.",
+  "request_id": "msg_011Cg1BTkF1LRnBQAA1wcWGh",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 864,
+    "output_tokens": 240,
+    "service_tier": "standard"
+  }
+}

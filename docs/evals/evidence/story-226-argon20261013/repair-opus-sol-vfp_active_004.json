@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.02363",
+  "latency_ms": 14300,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 2107,
+    "path": "output/evals/argon-20261013/repair-opus-sol-vfp_active_004-raw.json",
+    "sha256": "3764407c6ab40ed9dce4991240a879dbe5a72bc962007ae46a96ddb6d9e99542"
+  },
+  "reason": "The output correctly identifies the scene composition, the color change from red to blue, the static camera, and the broken continuity. However, there are notable mismatches: (1) The summary says the rectangle changes from red to blue 'between frames 1 and 2' \u2014 this is correct per the reference (between second and third samples, i.e., frame_index 1\u21922), so this is fine. (2) The continuity_notes say the change is 'from red in frame 1 to blue in frame 2' which is correctly placed. (3) tone_tags includes 'detached' \u2014 the reference has no tone tags, so this is an invention. (4) motion_tags includes 'stillness' \u2014 per the clarification, stillness is permitted as source-observable, so this is acceptable. (5) color_tags includes only 'navy' and 'red' \u2014 red is correctly included as it is visible, but blue is omitted from color_tags even though it is prominently visible in frames 2-4. The instructions note 'generic blue is absent from allowed color_tags, so correct blue text suffices,' meaning blue mention in evidence/notes is sufficient, but its absence from color_tags is not penalized. (6) camera_tags includes only 'static' but misses 'wide_master' which the reference identifies. (7) emotion_tags is correctly empty. (8) audio_tags and audio_notes are correctly empty. (9) Evidence has 4 entries which is within the 2-4 range. (10) The evidence at frame_index 0 mentions 'clipped corners' which is a minor embellishment but not strongly contradicted. Overall, the invented 'detached' tone tag and missing 'wide_master' camera tag are the main issues preventing a higher score.",
+  "repair_reason": "source-validity faults only",
+  "request_id": "msg_011Cg1BZeCY1KTJLw9jhTR6d",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2626,
+    "output_tokens": 420,
+    "service_tier": "standard"
+  }
+}

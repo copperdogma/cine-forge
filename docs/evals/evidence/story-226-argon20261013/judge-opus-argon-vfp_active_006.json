@@ -1,0 +1,25 @@
+{
+  "cost_usd": "0.012255",
+  "latency_ms": 12335,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1727,
+    "path": "output/evals/argon-20261013/judge-opus-argon-vfp_active_006-raw.json",
+    "sha256": "7dcf61a081019a197d0e2afdb0437e02ef3d28433b367030f929389f0867e3f4"
+  },
+  "reason": "The output captures several correct visual elements: the dark blue/navy background, cyan/teal color palette, static wide_master camera, and intact continuity. However, there are significant mismatches: (1) Tone is described as 'detached, surreal' when the reference says 'urgent, tense'. (2) Emotion tags list 'isolation, resolve' when the reference specifies none. (3) Motion is described as 'measured, slow_drift' when the reference clearly states 'fast_lateral' \u2014 this is a major mismatch in observable motion characterization. (4) The description of 'diagonal lines' partially captures the 'rain-like streaks' but the figure is described as 'carrying a rectangular object' rather than having a small cyan rectangle beside a runner, which is a subtle but notable difference in spatial relationship. (5) The description says 'arch' as a static element, which may correspond to a 'tunnel' but imposes a somewhat different spatial reading. The color tags match well (navy, teal) though 'desaturated' is not in the reference. The continuity observation about lateral progression is generally correct. The wrong tone, invented emotions, and incorrect motion speed are substantial errors that prevent a passing score.",
+  "request_id": "msg_011Cg1BSH949oP9JxisZNScz",
+  "score": 0.52,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 1016,
+    "output_tokens": 287,
+    "service_tier": "standard"
+  }
+}

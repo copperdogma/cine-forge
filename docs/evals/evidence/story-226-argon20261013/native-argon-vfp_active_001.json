@@ -1,0 +1,86 @@
+{
+  "arm": "argon",
+  "name": "native-argon-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.020128,
+    "latencyMs": 11891,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gemini-4-argon",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "google",
+      "request_id": "O8vOasrKDImcz7IP_-_MwQM",
+      "requested_model": "gemini-4-argon",
+      "returned_model": "gemini-4-argon",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified geometric figures\u2014one beige on the left and one light blue with a pale rectangular badge on the right\u2014stand separated on a dark floor against a navy-to-teal gradient background. Across the five ordered frames, the composition remains symmetrical as the figures gradually scale larger, suggesting a measured slow push-in.\",\"tone_tags\":[\"detached\",\"tense\"],\"emotion_tags\":[\"isolation\",\"hesitation\"],\"color_tags\":[\"navy\",\"teal\",\"desaturated\"],\"camera_tags\":[\"locked_two_shot\",\"slow_push_in\"],\"motion_tags\":[\"measured\",\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A beige figure on the left and a light-blue figure with a white lower-left rectangle on the right stand spaced apart on a dark horizontal ground plane against a dark navy background.\"},{\"frame_index\":2,\"cue\":\"Both figures maintain their exact relative positions and details while appearing slightly larger in the frame compared to frame 0.\"},{\"frame_index\":4,\"cue\":\"The beige and light-blue figures reach their largest size in the sequence while remaining stationary on the dark floor line.\"}],\"overall_confidence\":0.92}",
+    "raw": {
+      "finishReason": "STOP",
+      "modelVersion": "gemini-4-argon",
+      "raw_envelope_bytes": 3374,
+      "raw_envelope_path": "output/evals/argon-20261013/native/argon/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "7bf036f74f5cded8a0a82c5fa4353449f1ac2f7768e4aadee7d8b6192452cadb",
+      "responseId": "O8vOasrKDImcz7IP_-_MwQM",
+      "usageMetadata": {
+        "candidatesTokenCount": 289,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 289
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 217,
+        "totalTokenCount": 8040
+      }
+    },
+    "tokenUsage": {
+      "completion": 289,
+      "completionDetails": {
+        "reasoning": 217
+      },
+      "prompt": 7534,
+      "total": 8040
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+"""One finite symmetric source-image repair; no subject/golden/scorer changes."""
+from __future__ import annotations
+
+import json
+import time
+import urllib.request
+from decimal import Decimal
+
+import run_argon_video_comparison as run
+
+
+def main():
+    run.check_freeze()
+    _, prompt, configs, tests = run.matrix()
+    test = tests[1]
+    assert test['vars']['clip_id'] == 'prop_swap_continuity_break'
+    run.RESERVE['opus'] = Decimal('1.0256')
+    for arm in ('argon', 'sol', 'luna'):
+        name = f'repair-opus-{arm}-vfp_active_004'
+        path = run.OUT / f'{name}.json'
+        if path.exists():
+            continue
+        row = json.loads((run.OUT / f'subject-{arm}-vfp_active_004.json').read_text())
+        body, url, headers = run._review_request('opus', row)
+        content = [{'type': 'text', 'text': body['messages'][0]['content'] +
+                    '\nSource-validity clarification before this symmetric review: inspect the '
+                    'five original images below. Frozen reference omissions are not universal '
+                    'prohibitions on equivalent source-observable wording. The static scene '
+                    'supports stillness; do not call stillness an invented motion. Red is '
+                    'visibly present and is an allowed color tag. Evidence needs2–4distinct '
+                    'grounded entries, not citation of frame1 or all5images. Ignore known '
+                    'reference/scorer lexical limitations while applying the unchanged '
+                    'source-grounding rubric. Do not grade the earlier review or infer model '
+                    'identity. Assess all true remaining mismatches independently, including '
+                    'the required continuity judgment. No physical prop swap is established.'}]
+        packet = run.provider._prepare_subject_request(
+            prompt, {'config': configs[arm]}, {'vars': test['vars']}
+        )['packet']
+        for i, frame in enumerate(packet['frames']):
+            content += [{'type': 'text', 'text': f'frame_index:{i}'},
+                        {'type': 'image', 'source': {'type': 'base64',
+                         'media_type': 'image/jpeg', 'data': frame['base64']}}]
+        body['messages'][0]['content'] = content
+        run.dump(run.OUT / f'{name}-request.json', {'url': url, 'payload': body})
+        start = time.perf_counter()
+        raw_path = run.OUT / f'{name}-raw.json'
+        if not raw_path.exists():
+            run.begin(name, 'opus')
+            request = urllib.request.Request(url, data=json.dumps(body).encode(),
+                                             headers=headers, method='POST')
+            with urllib.request.urlopen(request, timeout=120) as response:
+                raw_path.write_bytes(response.read())
+        raw = json.loads(raw_path.read_text())
+        assert raw['model'] == 'claude-opus-4-6' and raw['id']
+        assert raw['stop_reason'] == 'end_turn'
+        usage = raw['usage']
+        for field in ('input_tokens', 'output_tokens'):
+            assert type(usage[field]) is int and usage[field] >= 0
+        assert not usage.get('cache_creation_input_tokens')
+        assert not usage.get('cache_read_input_tokens')
+        cost = (Decimal(usage['input_tokens']) * 5 + Decimal(usage['output_tokens']) * 25) / Decimal(1000000)
+        run.settle(name, cost)
+        parts = [p['text'] for p in raw['content'] if p['type'] == 'text']
+        assert len(parts) == 1
+        parsed = json.loads(parts[0])
+        assert type(parsed['score']) in (int, float) and 0 <= parsed['score'] <= 1
+        parsed.update(model=raw['model'], request_id=raw['id'], usage=usage,
+                      cost_usd=str(cost), latency_ms=round((time.perf_counter()-start)*1000),
+                      raw=run.inventory(raw_path), repair_reason='source-validity faults only')
+        run.dump(path, parsed)
+        for source in (path, raw_path, run.OUT / f'{name}-request.json'):
+            dest = run.EVIDENCE / source.relative_to(run.OUT)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_bytes(source.read_bytes())
+        print(name, parsed['score'], cost, flush=True)
+
+
+if __name__ == '__main__':
+    main()

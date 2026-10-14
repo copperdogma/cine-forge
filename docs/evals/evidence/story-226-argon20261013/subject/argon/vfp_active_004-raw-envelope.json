@@ -1,0 +1,41 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A static wide shot shows a two-tiered brown block against a dark navy background. Between the second and third frames, the white-bordered rectangular plaque on the block abruptly changes from red to blue.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[\"isolation\"],\"color_tags\":[\"desaturated\",\"navy\",\"red\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"broken\",\"continuity_notes\":[\"The white-outlined rectangular plaque on the center of the brown structure changes color from red in frames 0 and 1 to blue in frames 2, 3, and 4 while the camera and surrounding geometry remain completely static.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A red rectangular plaque with a white border is centered on the upper tier of the brown structure against a navy background.\"},{\"frame_index\":1,\"cue\":\"The centered rectangular plaque remains red with no change in framing or object position.\"},{\"frame_index\":2,\"cue\":\"The centered rectangular plaque changes color from red to blue while the structure and background remain unchanged.\"}],\"overall_confidence\":0.95}",
+            "thoughtSignature": "EtgKCtUKAWkUfRMCbR0NhJFejQ3y55qAefgQTVOH6SWBiU64YdfDW+IYy1qlzM6efRYzhFSSlL0hBPKT+/oQjvtiwZ1dWxuMGVPNaKDYswteYjaeHNm8+5k7he3d9M9LiDFmUEa2AXMwmSy3yjI9D1EPqR+Vt6EmSmBtaMn+VFSb57gEmoxeW2Gqpn7vXgRhntR6oqVFIW8uM13GKeEPBJG9/tpajSW6tGBaI4mEd8JIaVU4Z4cBIv+cozHKzDKLMjBiacaurkOtQeAs/lN9AkhwpKTtzIYpV69+rqU33cSwByZMUEeASyqSqHYoyIWlB6xMr5+ecZsUYpqvjDI+llJ0p/gQTOM7g1zPFjQHCs+BHfqDhoumyEYcgTEiB3vRAfWjSxAprrKPN15lFg+Y52R9feHQFVheCDtEc9LO+vy5/dcXgzrZyYYuxJObUyWbzlsoCb0LDvNJ5ZMaX/SZHaT0l30DMkiNzm9s3LcplbiUHNLZiuJK+c5Xwd+EQWSgto7/Urs8tJK0LYJ/HRVi2fCOtG9YAPDhbES1JEJfyyhOb44FAcNs0ZNTW21R0z6tzeLsGChkWKpx1miwM527xn6JarsTj9tshdtnnIwOy5NwDhfbF3BOJeeeieIbc/TqGMBZOn1hNj1cKQLd9xGm/bFAa9mMRPm0iVh/MUnVRdkQtvN+gVZGOzeQU+15+92ZgvnRvHLIvPSPKvGLzwQl/DzQqSiT9WMJhUAdCYL0SG3yFiDVve3bDalurCYRNLl+Bo7BYz3KaA7RFTRO2/Dd67VdzW0Li4D/yu6qblDLSanJ5API4cIdWhGjMz7pG0cOu4y39GeibMXjQCYNucA/C6vttNT7NMnN+iOyWJ+1YaVwotGhVViSSWeRKdopC+AGHjJC5TnvE4UxSj4tXWZrBPsvPawEKVbi768ccKCDfPAxA1X+wAIBFx8KT26Kz9wNzUmPkJ6eadR6/f2nphDaSFCou9DwK2TpUN8PlfxR83l3yjdPwCLw7meM8/jlVFCs9/JFutHP7YV5Q13F1MM00m61Tnz06dk32IBsvLM1Sp3OLu0mg5tuqwxQs6C0H3rPP2+ACsJEl3Bu0DmO5ak/5nOVKuMptZ0yb3HucpGy67yhcuBYBOJ5PzdqVoIRhO+1D33nHTzkkfkhq4trKtBMJdBnqmOkRk0MkX2983dZM7ucLFhi8R2xE1Bslf7k0kkejGtAB7qjPztHQUw+dN5lAM/P2sWPu0WcGsB4s9S6dS9Ab1SG/HYATG/Pt4aSxJRFuwGEwlZXMoZGcZWti/ke8rh7/O1Ybp6+DXoLMvVQa7GPOeYfvdUr836KqV0+VxAIVaG52YpAhL2/CohDV7qPMQmD0RsmedaSixf/y5cShcaWfZcZEv/jxktV9ZtzMA69+AFap4z68ZQ8jhm2cQmlX/HBe0lxyI175ZRhItkUK2dw24E2A+C6h/KoSHV5M4v6XIbtTA7w0XBCtEOLUwNiqWAlt4VnyMQHVFvkSkc4YL2+gni36SOOLSMFk0KvJuzeOLqpeRYa0crq1zepzrErkeR9pNIBEz3m3JE9ck/oeHzcgGF8KC9gO+ieyyBTz5CeLLotQ38RH1d7j94Z+6cM1IxU0l3eZQti60Iv5Of3Emw6hvYKieBWDAQE0fbDJZ4iseIpD/1FAZyfP5Isol3RZFeHDAIQ8LYMj3jBBnpQlFXAOoEzcWrTMlNqJU9jX4Uk6GxQNn5ua1tiVY4whP/6CswcfN256luSu8DeOLXlTQ0+hIQQQwv1ebSw5ync9W6ydHpC00ozXqLhz01kumgvQRE04IDp2VPLMzUb"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "modelVersion": "gemini-4-argon",
+  "responseId": "zsvOatSKNr7oz7IPwOeM8QI",
+  "usageMetadata": {
+    "candidatesTokenCount": 272,
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 272
+      }
+    ],
+    "promptTokenCount": 7534,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2034
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      }
+    ],
+    "thoughtsTokenCount": 325,
+    "totalTokenCount": 8131
+  }
+}

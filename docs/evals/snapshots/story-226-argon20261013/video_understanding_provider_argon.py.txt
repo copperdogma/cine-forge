@@ -1,0 +1,76 @@
+"""Native Argon transport for the bounded synthetic ordered-frame lane."""
+from __future__ import annotations
+
+import hashlib
+from pathlib import Path
+from typing import Any
+
+from cine_forge.ai.token_usage import validate_gemini_token_usage
+
+
+def call_argon(scope: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
+    config = request['config']
+    if request['model'] != 'gemini-4-argon' or config.get('reasoning_effort') != 'medium':
+        raise RuntimeError('Argon lane requires exact model and medium thinking')
+    if request['max_tokens'] != 32768 or len(request['packet']['frames']) != 5:
+        raise RuntimeError('Argon lane requires five JPEGs and32768 total output')
+    raw_path = scope['_openai_raw_output_path'](request)
+    payload = scope['_build_gemini_payload'](
+        user_text=request['user_text'], frames=request['packet']['frames'],
+        max_tokens=request['max_tokens'], response_schema=scope['_VIDEO_ANALYSIS_RESPONSE_SCHEMA'],
+    )
+    payload['generationConfig']['thinkingConfig'] = {'thinkingLevel': 'medium'}
+    url = scope['GEMINI_MODELS_URL'] + '/gemini-4-argon:generateContent'
+    try:
+        response = scope['_request_json'](
+            url, headers={'x-goog-api-key': scope['_require_env']('GEMINI_API_KEY'),
+                          'Content-Type': 'application/json'}, body=payload,
+            raw_output_path=raw_path, timeout_seconds=1200,
+        )
+    except scope['ProviderHTTPError'] as exc:
+        scope['_write_raw_envelope'](raw_path, {'response_error': {'status': exc.status_code,
+                                                                'body': exc.body}})
+        raise
+    scope['_write_raw_envelope'](raw_path, response)
+    identity = scope['validate_provider_response_identity'](
+        provider='google', requested_model=request['model'],
+        returned_model=response.get('modelVersion'), request_id=response.get('responseId'),
+        require_returned=True,
+    )
+    candidates = response.get('candidates')
+    if not isinstance(candidates, list) or len(candidates) != 1:
+        raise RuntimeError('Argon requires exactly one complete candidate')
+    candidate = candidates[0]
+    if candidate.get('finishReason') != 'STOP' or response.get('continuationToken'):
+        raise RuntimeError('Argon did not reach terminal STOP')
+    parts = candidate.get('content', {}).get('parts', [])
+    texts = [p['text'] for p in parts if isinstance(p, dict) and 'text' in p
+             and not p.get('thought')]
+    if len(texts) != 1 or not texts[0].strip():
+        raise RuntimeError('Argon requires one complete final text')
+    output = texts[0]
+    scope['VideoAnalysisPrediction'].model_validate_json(output)
+    usage = response['usageMetadata']
+    tokens = validate_gemini_token_usage(
+        prompt_tokens=usage.get('promptTokenCount'),
+        visible_completion_tokens=usage.get('candidatesTokenCount'),
+        total_tokens=usage.get('totalTokenCount'),
+        reasoning_completion_tokens=usage.get('thoughtsTokenCount', 0),
+    )
+    if tokens.billed_completion > request['max_tokens']:
+        raise RuntimeError('Argon billed output exceeds declared cap')
+    cached = scope['_token_count'](usage.get('cachedContentTokenCount', 0), 'cached input')
+    if cached > tokens.prompt:
+        raise RuntimeError('Cached input exceeds prompt')
+    cost = ((tokens.prompt - cached) * 2 + cached * .1 + tokens.billed_completion * 10) / 1e6
+    raw_bytes = raw_path.read_bytes()
+    return {'output': output, 'token_usage': {'prompt': tokens.prompt,
+            'completion': tokens.visible_completion, 'total': tokens.total,
+            'billed_completion': tokens.billed_completion,
+            'reasoning_completion': tokens.reported_reasoning_completion or 0},
+            'reported_cost_usd': cost, 'cost_estimated': True,
+            'raw': {'modelVersion': identity.returned_model, 'responseId': identity.request_id,
+                    'usageMetadata': usage, 'finishReason': candidate['finishReason'],
+                    'raw_envelope_path': raw_path.relative_to(scope['REPO_ROOT']).as_posix(),
+                    'raw_envelope_sha256': hashlib.sha256(raw_bytes).hexdigest(),
+                    'raw_envelope_bytes': len(raw_bytes)}}

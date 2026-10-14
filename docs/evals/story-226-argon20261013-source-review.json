@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-13",
+  "reviewer": "independent GPT6Luna high source review; owner corroborated manifest facts",
+  "privacy": "project-authored synthetic",
+  "cases": {
+    "dialogue_confession_push_in": "Bodies enlarge at near-fixed centers while prop/background do not scale. No mechanism established.",
+    "prop_swap_continuity_break": "Same rectangle red0-1/blue2-4; physical swap not established.",
+    "storm_tunnel_lateral_run": "Runner shifts left-right; fixed tunnel; streak pattern shifts; cause unknown."
+  },
+  "known_scorer_weakness": {
+    "classification": "golden-wrong/scorer contract weakness",
+    "path": "benchmarks/scorers/video_understanding_scorer.py",
+    "lines": "135-143",
+    "fact": "Camera push-in can credit closer summary despite excluded camera dimension. Original scorer retained; source-first independent review required; no current score promotion."
+  },
+  "source_hashes": "All15 JPEGs and3target pairs match unchanged v4manifest",
+  "runtime_impact": "non-runtime-blocking; no shipped ordered-frame analyzer",
+  "postrun_source_classification": {
+    "argon": "All3recognize source changes in visible evidence. Dialogue camera mechanism unsupported/ambiguous; prop change correctlybroken; motion summary understates streakchanges but evidence recognizes them. No unambiguous source contradiction.",
+    "sol": "Correct growth andproptransition; motionstreak temporal detail omitted; thirdstormevidence is visibly grounded despite deterministic falsehardfailure.",
+    "luna": "Correct growth andcolortransition but propcontinuityintact is model-wrong against declared visualcontinuitycontract. Stormstreak temporal detail omitted."
+  },
+  "retained_score_validity_limits": [
+    "Dialogue bodygrowth summary equivalent vocabulary and camera alias false-credit.",
+    "Prop rectangularplaque wording and source-supported stillness/red receive deterministic penalties.",
+    "Storm icon/arch/lines not accepted as runner/tunnel/streak synonyms; Sol grounded thirdcue falsely fails hardconstraint lexical cue scorer.",
+    "Tone/emotion/tempo/color/tagchoices remain interpretive and subjective; do not infer source contradiction from lexicalscore."
+  ],
+  "judge_repair": {
+    "reason": "Propjudge calls stillness invented, requested extra frame1 evidence, color enum confusion; one symmetric all3sourceimageOpusrepair.",
+    "original_scores": {
+      "argon": 0.78,
+      "sol": 0.72,
+      "luna": 0.55
+    },
+    "repaired_scores": {
+      "argon": 0.82,
+      "sol": 0.72,
+      "luna": 0.55
+    },
+    "subject/scorer/golden_changes": false,
+    "retry_rounds": 1,
+    "calls": 3,
+    "no_further_rejudge": true,
+    "operational_fault": "Firstrepair rawresponse retained before local Decimal/float cost parse failure; fixed parser, re-used raw; no duplicatedsubject orreviewcall. Firstrepairproviderlatencyunknown; savedreceipt1ms measures parse."
+  }
+}
