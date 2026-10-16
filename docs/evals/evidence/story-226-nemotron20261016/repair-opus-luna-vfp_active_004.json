@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.02092",
+  "latency_ms": 10889,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1697,
+    "path": "output/evals/nemotron-20261016/repair-opus-luna-vfp_active_004-raw.json",
+    "sha256": "356a25ccd4499a86afcbcccf609b3bda5a22313d45761535d241624912e36171"
+  },
+  "reason": "The output correctly describes the visual scene (a white-outlined rectangle on a platform/table, red in early frames, blue in later frames), provides well-grounded evidence at frames 0, 2, and 4, and correctly identifies navy and red colors and the static camera. However, there is a critical error in continuity_status: the output marks it as 'intact' when the reference requires 'broken' \u2014 the unexplained color swap from red to blue between frames 1 and 2 constitutes a continuity break. The summary says 'fill changes from red to blue' which implies awareness of the change, yet continuity_status is 'intact' with empty continuity_notes, contradicting the reference's 'broken' classification. Additionally, the summary inaccurately implies the change happens during the first frame rather than between frames 1 and 2 (red is present in frames 0 and 1, blue in 2-4). The motion_tags include 'stillness' which is acceptable as a visible observation. The tone tag 'detached' is not strongly supported but is not heavily penalized per instructions. The audio_tags and audio_notes are empty as required. The major continuity error significantly reduces the score.",
+  "request_id": "msg_011Cg6AsVvMasScTF2QMiKwd",
+  "score": 0.52,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2744,
+    "output_tokens": 288,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

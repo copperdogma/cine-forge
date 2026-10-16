@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.02148",
+  "latency_ms": 12668,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1786,
+    "path": "output/evals/nemotron-20261016/judge-opus-luna-vfp_active_004-raw.json",
+    "sha256": "59af7ebdb3c79e45af805dc6cf17eb9db158d458d453c4d107aef4ba9c788c5f"
+  },
+  "reason": "Several issues: (1) Continuity is marked 'intact' but reference says 'broken' due to the red-to-blue color swap between frames 1 and 2 \u2014 this is a significant factual error. (2) The summary says the fill 'changes from red to blue' implying a gradual transition, but the reference specifies frames 0-1 are red and 2-4 are blue, a discrete swap; the model's evidence at frame_index 0 correctly shows red and frame_index 2 shows blue, but misses that frame 1 is still red (the model skips frame 1 entirely). (3) Tone is 'detached' but reference says none; while tone can be ambiguous, 'detached' is an invention. (4) Motion_tags has 'stillness' but reference says none \u2014 no motion tag should be present. (5) Camera_tags has only 'static' but misses 'wide_master' from reference. (6) Color_tags include 'red' alongside 'navy' \u2014 red is present in the scene but the reference only lists 'navy' as the color/grade tag; however the instructions say 'correct blue text suffices' for the blue rectangle, and the model doesn't include a blue tag. (7) Audio_tags and audio_notes are correctly empty. (8) Evidence entries are grounded and mostly accurate for the frames they describe. The continuity error alone is a major factual mistake that prevents passing.",
+  "request_id": "msg_011Cg6Ai4kHE1yYMvmdidyaw",
+  "score": 0.5,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2531,
+    "output_tokens": 353,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

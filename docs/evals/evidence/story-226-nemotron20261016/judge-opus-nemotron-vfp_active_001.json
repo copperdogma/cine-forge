@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.02006",
+  "latency_ms": 16198,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1770,
+    "path": "output/evals/nemotron-20261016/judge-opus-nemotron-vfp_active_001-raw.json",
+    "sha256": "0ecc3b49255456b52fd158fda7ccd1bc6788400d98df96b4dbb49bdf9eb601fe"
+  },
+  "reason": "Several significant mismatches: (1) Summary claims 'scene remains unchanged across all sampled frames' but reference and source images show figures enlarging across frames - this is a key observable motion that was missed. (2) Motion tagged as 'stillness' when reference indicates 'measured' motion (figure enlargement). (3) Color tags include 'gold' but reference specifies 'navy, teal' - the left figure is beige, not gold, and teal background tones are missed. (4) Tone 'detached' vs reference 'intimate' - both are subjective but divergent. (5) Emotion 'isolation' is invented; reference says [none]. (6) The pale rectangle prop on the right figure is never mentioned in summary or evidence, which is a key continuity element noted in the reference. (7) Audio fields are empty, which is correct. (8) Continuity marked 'intact' which matches. (9) Evidence entries correctly identify two figures and basic composition but falsely claim 'no camera or object movement' and 'final frame matches initial composition exactly,' which contradicts the observable size increase of the figures across frames. The failure to detect the enlargement motion and the prop, plus invented emotion and incorrect color/motion tags, result in a low score.",
+  "request_id": "msg_011Cg6AdbZJ8EhRMRgBrTVst",
+  "score": 0.38,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2517,
+    "output_tokens": 299,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

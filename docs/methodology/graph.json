@@ -17299,6 +17299,16 @@
       "retryWhen": [],
       "attempts": [
         {
+          "id": "051",
+          "date": "2026-10-16",
+          "approach": "Scout096 item4: exact Together Nemotron3.5 router-enabled32768 strict five-JPEG contract; first-case source-proven growth contradiction stops candidate1/3. Fresh Sol6.1 low/Luna low controls3/3; fixed full-source cross-provider Opus4.6; symmetric saved-output prop judge-contract repair. Candidate matched dialogue .27595 vs Sol.7282/Luna.625, all0/1passes. No score promotion, defaults or autonomou…",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "new-subject-model"
+          ]
+        },
+        {
           "id": "050",
           "date": "2026-10-13",
           "approach": "Approved Scout092 item3: exact native Google Argon medium32768 vs fresh Sol6.1 low4096 and Luna6 low1400 on frozen v4 dialogue/prop/motion five-JPEG cases. All-arm independent Opus4.6; one symmetric source-image prop judge repair on saved subjects. No demonstrated adoption win: original aggregate .58867 vs .61003/.61498; source-adjudicated .59533 vs .61003/.61498. All0/3 dual passes. Argon passed…",
@@ -17506,14 +17516,14 @@
         "whyNow": "Attempt046 fresh direct exact Responses low/4096 strict five-JPEG comparison on six v4 synthetic cases. Cross-provider Opus on all12 saved answers; case004 Opus original and repair invalid under source/index/tag rules, replaced only there by symmetric source-first Sonnet5.5 image adjudication. Combined0.65712,0/6 case quality passes,6/6 hard constraints,6/6 per-call latency and cost gates. Source…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
-          "new-approach"
+          "new-subject-model"
         ],
         "lastRelevantAction": {
-          "date": "2026-10-13",
+          "date": "2026-10-16",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "050",
-          "summary": "Approved Scout092 item3: exact native Google Argon medium32768 vs fresh Sol6.1 low4096 and Luna6 low1400 on frozen v4 dialogue/prop/motion five-JPEG cases. All-arm independent Opus4.6; one symmetric source-image prop judge repair on saved subjects. No demonstrated adoption win: original aggregate .58867 vs .61003/.61498; source-adjudicated .59533 vs .61003/.61498. All0/3 dual passes. Argon passed…"
+          "sourceId": "051",
+          "summary": "Scout096 item4: exact Together Nemotron3.5 router-enabled32768 strict five-JPEG contract; first-case source-proven growth contradiction stops candidate1/3. Fresh Sol6.1 low/Luna low controls3/3; fixed full-source cross-provider Opus4.6; symmetric saved-output prop judge-contract repair. Candidate matched dialogue .27595 vs Sol.7282/Luna.625, all0/1passes. No score promotion, defaults or autonomou…"
         }
       }
     }
@@ -18137,7 +18147,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: ingest_and_world_building, api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 185 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 187 days old against a 14-day cadence"
     ]
   }
 }

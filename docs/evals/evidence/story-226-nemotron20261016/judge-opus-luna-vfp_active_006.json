@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.019015",
+  "latency_ms": 11341,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1623,
+    "path": "output/evals/nemotron-20261016/judge-opus-luna-vfp_active_006-raw.json",
+    "sha256": "43ac895dca726491f6ac3e83b435ee8ee4c64b2fc696c1d03b45b2fbe05cdf57"
+  },
+  "reason": "The output correctly identifies the cyan figure, rectangular object, arch, crossing lines, dark blue/navy background, left-to-right lateral movement, static camera, intact continuity, and teal/navy color palette. Evidence entries at frames 0, 2, and 4 are grounded and accurate. However, several issues lower the score: (1) Tone is tagged as 'detached' instead of 'urgent'/'tense' per reference \u2014 a clear mismatch. (2) Motion is tagged as 'measured' rather than 'fast_lateral' \u2014 the figure traverses a significant distance across frames suggesting faster movement. (3) The summary describes 'carrying' the object rather than recognizing it as beside/adjacent to the figure, and calls the figure 'simplified' rather than describing it as a runner. (4) Missing 'wide_master' camera tag from reference. (5) The description says the figure is 'carrying' the rectangular object, which is slightly inaccurate \u2014 it sits beside/next to the figure. The visual content identification is largely correct but the tone and motion characterization mismatches are significant enough to prevent passing.",
+  "request_id": "msg_011Cg6Am33BERXHuumaMVxhg",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2478,
+    "output_tokens": 265,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

@@ -1,0 +1,1858 @@
+{
+  "base_git_sha": "3a029014d252fabfa41d21008cefa471080706be",
+  "cap_usd": "3",
+  "date": "2026-10-16",
+  "decision": "Reject router-enabled Nemotron for current ordered-frame task: source-proven growth miss. Retain Sol quality and Luna economical research references; neither qualifies autonomous QA.",
+  "evidence_status": "bounded-first-case-candidate-stop-uncommitted-source-reviewed",
+  "judge_repairs": 0,
+  "ledger": [
+    {
+      "accounted_usd": "0.00116255",
+      "arm": "nemotron",
+      "estimated": true,
+      "name": "native-nemotron-vfp_active_001",
+      "reservation_usd": "0.0557056",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.00125455",
+      "arm": "nemotron",
+      "estimated": true,
+      "name": "subject-nemotron-vfp_active_001",
+      "reservation_usd": "0.0557056",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0099935",
+      "arm": "sol",
+      "estimated": true,
+      "name": "native-sol-vfp_active_001",
+      "reservation_usd": "0.30596",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0031447",
+      "arm": "sol",
+      "estimated": true,
+      "name": "subject-sol-vfp_active_001",
+      "reservation_usd": "0.30596",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.000576175",
+      "arm": "luna",
+      "estimated": true,
+      "name": "native-luna-vfp_active_001",
+      "reservation_usd": "0.0032",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.00022267",
+      "arm": "luna",
+      "estimated": true,
+      "name": "subject-luna-vfp_active_001",
+      "reservation_usd": "0.0032",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.02006",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-nemotron-vfp_active_001",
+      "reservation_usd": "0.15",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01985",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_001",
+      "reservation_usd": "0.15",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0193",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_001",
+      "reservation_usd": "0.15",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0097835",
+      "arm": "sol",
+      "estimated": true,
+      "name": "subject-sol-vfp_active_004",
+      "reservation_usd": "0.30596",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.021965",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_004",
+      "reservation_usd": "0.15",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.000538175",
+      "arm": "luna",
+      "estimated": true,
+      "name": "subject-luna-vfp_active_004",
+      "reservation_usd": "0.0032",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.02148",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_004",
+      "reservation_usd": "0.15",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0096835",
+      "arm": "sol",
+      "estimated": true,
+      "name": "subject-sol-vfp_active_006",
+      "reservation_usd": "0.30596",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01874",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_006",
+      "reservation_usd": "0.15",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0005521749999999999",
+      "arm": "luna",
+      "estimated": true,
+      "name": "subject-luna-vfp_active_006",
+      "reservation_usd": "0.0032",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.019015",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_006",
+      "reservation_usd": "0.15",
+      "state": "settled"
+    }
+  ],
+  "limits": "Maintained lexical/scorer and subjective rubric limits prevent quality-rank promotion. n1 candidate vs n3 controls; compare first case only. Native regular-vs-medium mapping unverified; routerenabled observed. Other effort levels and remaining candidate cases unmeasured.",
+  "matched_first_case": [
+    {
+      "arm": "nemotron",
+      "assertion": {
+        "pass": false,
+        "reason": "raw_score=0.1719 | overall=0.172 | uncertainty=0.170 | summary=0.33 | tone=0.00 | emotion=0.00 | color=0.50 | camera=0.00 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=0.80 | hard_constraints=0.00 | summary: blue, closer | tone: intimate, unexpected=detached | emotion: unexpected=isolation | color: teal, unexpected=gold | motion: measured, unexpected=stillness | continuity: The pale rectangle stays beside the right figure across all five frames. | evidence: item 3: cue_not_target_grounded | hard_constraints: evidence_3_cue_not_target_grounded",
+        "score": 0.1719
+      },
+      "combined": 0.27595000000000003,
+      "rubric": {
+        "cost_usd": "0.02006",
+        "latency_ms": 16198,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1770,
+          "path": "output/evals/nemotron-20261016/judge-opus-nemotron-vfp_active_001-raw.json",
+          "sha256": "0ecc3b49255456b52fd158fda7ccd1bc6788400d98df96b4dbb49bdf9eb601fe"
+        },
+        "reason": "Several significant mismatches: (1) Summary claims 'scene remains unchanged across all sampled frames' but reference and source images show figures enlarging across frames - this is a key observable motion that was missed. (2) Motion tagged as 'stillness' when reference indicates 'measured' motion (figure enlargement). (3) Color tags include 'gold' but reference specifies 'navy, teal' - the left figure is beige, not gold, and teal background tones are missed. (4) Tone 'detached' vs reference 'intimate' - both are subjective but divergent. (5) Emotion 'isolation' is invented; reference says [none]. (6) The pale rectangle prop on the right figure is never mentioned in summary or evidence, which is a key continuity element noted in the reference. (7) Audio fields are empty, which is correct. (8) Continuity marked 'intact' which matches. (9) Evidence entries correctly identify two figures and basic composition but falsely claim 'no camera or object movement' and 'final frame matches initial composition exactly,' which contradicts the observable size increase of the figures across frames. The failure to detect the enlargement motion and the prop, plus invented emotion and incorrect color/motion tags, result in a low score.",
+        "request_id": "msg_011Cg6AdbZJ8EhRMRgBrTVst",
+        "score": 0.38,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 2517,
+          "output_tokens": 299,
+          "service_tier": "standard",
+          "speed": "standard"
+        }
+      }
+    },
+    {
+      "arm": "sol",
+      "assertion": {
+        "pass": true,
+        "reason": "overall=0.736 | uncertainty=0.050 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.50 | motion=1.00 | continuity=1.00 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: figures | tone: intimate, unexpected=detached | color: teal",
+        "score": 0.7364
+      },
+      "combined": 0.7282,
+      "rubric": {
+        "cost_usd": "0.01985",
+        "latency_ms": 12500,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1567,
+          "path": "output/evals/nemotron-20261016/judge-opus-sol-vfp_active_001-raw.json",
+          "sha256": "7f91b0773016cb78fc0ab9bb33fc2b2f4766840cf1beb49989824615a970fba3"
+        },
+        "reason": "The output correctly identifies the two abstract figures (beige left, light blue right), the pale rectangle on the right figure, the dark lower band, the navy background, and the gradual enlargement of figures across frames. Continuity is correctly marked as intact. Motion tag 'measured' matches. Audio fields are empty as required. However: (1) Tone is 'detached' vs reference 'intimate' \u2014 a mismatch, though tone is ambiguous. (2) Color tags include only 'navy' but miss 'teal', which is visible in the background gradient. (3) Camera tags include 'static' and 'locked_two_shot' \u2014 the reference says camera is ambiguous and excluded from scoring, so these aren't penalized but also don't earn credit. (4) The summary says the pale rectangle is on the 'lower torso' \u2014 it's actually on the lower-right area of the right figure's body, which is roughly correct. (5) Evidence references only frames 0, 2, 4 \u2014 this is within the allowed 2-4 grounded entries. The missing teal color tag and tone mismatch are the primary deductions.",
+        "request_id": "msg_011Cg6Ae9YPasG4YbVGQN6fH",
+        "score": 0.72,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 2610,
+          "output_tokens": 272,
+          "service_tier": "standard",
+          "speed": "standard"
+        }
+      }
+    },
+    {
+      "arm": "luna",
+      "assertion": {
+        "pass": true,
+        "reason": "overall=0.750 | uncertainty=0.170 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.50 | camera=0.67 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached, unexpected=surreal | color: teal, unexpected=desaturated | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "score": 0.75
+      },
+      "combined": 0.625,
+      "rubric": {
+        "cost_usd": "0.0193",
+        "latency_ms": 11777,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1699,
+          "path": "output/evals/nemotron-20261016/judge-opus-luna-vfp_active_001-raw.json",
+          "sha256": "aece1dd63995ec9057a3945a103e24d1c86d5eb93269d690e90299983aaf3435"
+        },
+        "reason": "The output correctly identifies two simplified figures, their enlargement across frames, the dark ground, the navy/blue background, measured motion, intact continuity, and empty audio fields. However, several concrete issues reduce the score: (1) The pale rectangle prop on the right figure is never mentioned in the summary, evidence, or continuity notes \u2014 this is a significant observable detail present in all five frames that the reference highlights. (2) The camera_tags include 'slow_push_in', which is an unsupported camera mechanism \u2014 the reference explicitly states no camera mechanism is established since figures enlarge while the background/prop do not scale. This is an invented claim. (3) The tone is 'detached'/'surreal' rather than 'intimate' as in the reference. (4) The color_tags list 'desaturated' but miss 'teal', which is visible in the background gradient. (5) The two figures are described as 'pale' but the model fails to distinguish their clearly different colors (beige/cream left figure vs. light blue right figure). The missing prop is a notable omission, and the invented camera push-in directly contradicts the interpretation boundary.",
+        "request_id": "msg_011Cg6Af4higU82GW7ZaxsYJ",
+        "score": 0.5,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 2525,
+          "output_tokens": 267,
+          "service_tier": "standard",
+          "speed": "standard"
+        }
+      }
+    }
+  ],
+  "rows": [
+    {
+      "arm": "nemotron",
+      "assertion": {
+        "pass": false,
+        "reason": "raw_score=0.1719 | overall=0.172 | uncertainty=0.170 | summary=0.33 | tone=0.00 | emotion=0.00 | color=0.50 | camera=0.00 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=0.80 | hard_constraints=0.00 | summary: blue, closer | tone: intimate, unexpected=detached | emotion: unexpected=isolation | color: teal, unexpected=gold | motion: measured, unexpected=stillness | continuity: The pale rectangle stays beside the right figure across all five frames. | evidence: item 3: cue_not_target_grounded | hard_constraints: evidence_3_cue_not_target_grounded",
+        "score": 0.1719
+      },
+      "combined": 0.27595000000000003,
+      "cost_gate_pass": true,
+      "details": {
+        "clip_id": "dialogue_confession_push_in",
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "matched": [
+              "figures"
+            ],
+            "missed": [
+              "blue",
+              "closer"
+            ],
+            "rationale": "Missing summary cues: blue, closer",
+            "score": 0.3333333333333333
+          },
+          {
+            "dimension": "tone",
+            "matched": [],
+            "missed": [
+              "intimate",
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: intimate, unexpected=detached",
+            "score": 0.0
+          },
+          {
+            "dimension": "emotion",
+            "matched": [],
+            "missed": [
+              "unexpected=isolation"
+            ],
+            "rationale": "Tag mismatches: unexpected=isolation",
+            "score": 0.0
+          },
+          {
+            "dimension": "color",
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "teal",
+              "unexpected=gold"
+            ],
+            "rationale": "Tag mismatches: teal, unexpected=gold",
+            "score": 0.5
+          },
+          {
+            "dimension": "camera",
+            "matched": [],
+            "missed": [
+              "locked_two_shot",
+              "slow_push_in",
+              "unexpected=static"
+            ],
+            "rationale": "Tag mismatches: locked_two_shot, slow_push_in, unexpected=static",
+            "score": 0.0
+          },
+          {
+            "dimension": "motion",
+            "matched": [],
+            "missed": [
+              "measured",
+              "unexpected=stillness"
+            ],
+            "rationale": "Tag mismatches: measured, unexpected=stillness",
+            "score": 0.0
+          },
+          {
+            "dimension": "continuity",
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The pale rectangle stays beside the right figure across all five frames."
+            ],
+            "rationale": "Continuity mismatches: The pale rectangle stays beside the right figure across all five frames.",
+            "score": 0.75
+          },
+          {
+            "dimension": "audio",
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted.",
+            "score": 0.0
+          },
+          {
+            "dimension": "evidence",
+            "matched": [
+              "frame 0",
+              "frame 2"
+            ],
+            "missed": [
+              "item 3: cue_not_target_grounded"
+            ],
+            "rationale": "Evidence is missing, generic, invented, duplicated, or not tied to a frame.",
+            "score": 0.8
+          },
+          {
+            "dimension": "hard_constraints",
+            "matched": [],
+            "missed": [
+              "evidence_3_cue_not_target_grounded"
+            ],
+            "rationale": "Hard failures: evidence_3_cue_not_target_grounded",
+            "score": 0.0
+          }
+        ],
+        "hard_constraints_passed": false,
+        "model_label": "nemotron",
+        "overall_score": 0.1719,
+        "prompt_version": "video-understanding-frame-packet-v3",
+        "rationale": "summary: blue, closer | tone: intimate, unexpected=detached | emotion: unexpected=isolation | color: teal, unexpected=gold | motion: measured, unexpected=stillness | continuity: The pale rectangle stays beside the right figure across all five frames. | evidence: item 3: cue_not_target_grounded | hard_constraints: evidence_3_cue_not_target_grounded",
+        "uncertainty": 0.17
+      },
+      "dual_pass": false,
+      "latency_gate_pass": true,
+      "name": "subject-nemotron-vfp_active_001",
+      "response": {
+        "cached": false,
+        "cost": 0.00125455,
+        "latencyMs": 5642,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "dialogue_confession_push_in",
+          "cost_estimated": false,
+          "evaluation_id": "vfp_active_001",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+            "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+            "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+            "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+            "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+          ],
+          "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "nvidia/nemotron-3.5-super-vl",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "openrouter",
+          "request_id": "gen-1792165110-Y1Go48oRyq2dM2NfPtCu",
+          "requested_model": "nvidia/nemotron-3.5-super-vl",
+          "returned_model": "nvidia/nemotron-3.5-super-vl",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\"clip_id\": \"vfp_active_001\", \"summary\": \"Two static, stylized figures stand side-by-side against a dark gradient background. The scene remains unchanged across all sampled frames.\", \"tone_tags\": [\"detached\"], \"emotion_tags\": [\"isolation\"], \"color_tags\": [\"navy\", \"gold\"], \"camera_tags\": [\"static\"], \"motion_tags\": [\"stillness\"], \"continuity_status\": \"intact\", \"continuity_notes\": [], \"audio_tags\": [], \"audio_notes\": [], \"evidence\": [{\"frame_index\": 0, \"cue\": \"Two stylized figures, one beige and one light blue, positioned on a navy gradient background\"}, {\"frame_index\": 2, \"cue\": \"Identical positioning and appearance of the two figures with no camera or object movement\"}, {\"frame_index\": 4, \"cue\": \"Final frame matches the initial composition exactly, confirming a static shot\"}], \"overall_confidence\": 0.98}",
+        "raw": {
+          "id": "gen-1792165110-Y1Go48oRyq2dM2NfPtCu",
+          "model": "nvidia/nemotron-3.5-super-vl",
+          "provider": "Together",
+          "raw_envelope_bytes": 14513,
+          "raw_envelope_path": "output/evals/nemotron-20261016/subject/nemotron/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "ea778858dccab9f8246cabee0df001b176d2df4c5b9abc84c8457fb9182969b7",
+          "usage": {
+            "completion_tokens": 1775,
+            "completion_tokens_details": {
+              "audio_tokens": 0,
+              "image_tokens": 0,
+              "reasoning_tokens": 1561
+            },
+            "cost": 0.00125455,
+            "cost_details": {
+              "upstream_inference_completions_cost": 0.0008875,
+              "upstream_inference_cost": 0.00125455,
+              "upstream_inference_prompt_cost": 0.00036705
+            },
+            "is_byok": false,
+            "prompt_tokens": 2447,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cache_write_tokens": 0,
+              "cached_tokens": 0,
+              "video_tokens": 0
+            },
+            "total_tokens": 4222
+          }
+        },
+        "tokenUsage": {
+          "completion": 1775,
+          "prompt": 2447,
+          "total": 4222
+        }
+      },
+      "rubric": {
+        "cost_usd": "0.02006",
+        "latency_ms": 16198,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1770,
+          "path": "output/evals/nemotron-20261016/judge-opus-nemotron-vfp_active_001-raw.json",
+          "sha256": "0ecc3b49255456b52fd158fda7ccd1bc6788400d98df96b4dbb49bdf9eb601fe"
+        },
+        "reason": "Several significant mismatches: (1) Summary claims 'scene remains unchanged across all sampled frames' but reference and source images show figures enlarging across frames - this is a key observable motion that was missed. (2) Motion tagged as 'stillness' when reference indicates 'measured' motion (figure enlargement). (3) Color tags include 'gold' but reference specifies 'navy, teal' - the left figure is beige, not gold, and teal background tones are missed. (4) Tone 'detached' vs reference 'intimate' - both are subjective but divergent. (5) Emotion 'isolation' is invented; reference says [none]. (6) The pale rectangle prop on the right figure is never mentioned in summary or evidence, which is a key continuity element noted in the reference. (7) Audio fields are empty, which is correct. (8) Continuity marked 'intact' which matches. (9) Evidence entries correctly identify two figures and basic composition but falsely claim 'no camera or object movement' and 'final frame matches initial composition exactly,' which contradicts the observable size increase of the figures across frames. The failure to detect the enlargement motion and the prop, plus invented emotion and incorrect color/motion tags, result in a low score.",
+        "request_id": "msg_011Cg6AdbZJ8EhRMRgBrTVst",
+        "score": 0.38,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 2517,
+          "output_tokens": 299,
+          "service_tier": "standard",
+          "speed": "standard"
+        }
+      },
+      "vars": {
+        "clip_dir": "../video_understanding/dialogue_confession_push_in",
+        "clip_id": "dialogue_confession_push_in",
+        "evaluation_id": "vfp_active_001",
+        "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+        "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+      }
+    },
+    {
+      "arm": "sol",
+      "assertion": {
+        "pass": true,
+        "reason": "overall=0.736 | uncertainty=0.050 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.50 | motion=1.00 | continuity=1.00 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: figures | tone: intimate, unexpected=detached | color: teal",
+        "score": 0.7364
+      },
+      "combined": 0.7282,
+      "cost_gate_pass": true,
+      "details": {
+        "clip_id": "dialogue_confession_push_in",
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "matched": [
+              "blue",
+              "closer"
+            ],
+            "missed": [
+              "figures"
+            ],
+            "rationale": "Missing summary cues: figures",
+            "score": 0.6666666666666666
+          },
+          {
+            "dimension": "tone",
+            "matched": [],
+            "missed": [
+              "intimate",
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: intimate, unexpected=detached",
+            "score": 0.0
+          },
+          {
+            "dimension": "emotion",
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly.",
+            "score": 1.0
+          },
+          {
+            "dimension": "color",
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "teal"
+            ],
+            "rationale": "Tag mismatches: teal",
+            "score": 0.6666666666666666
+          },
+          {
+            "dimension": "camera",
+            "matched": [
+              "locked_two_shot"
+            ],
+            "missed": [
+              "slow_push_in",
+              "unexpected=static"
+            ],
+            "rationale": "Tag mismatches: slow_push_in, unexpected=static",
+            "score": 0.5
+          },
+          {
+            "dimension": "motion",
+            "matched": [
+              "measured"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly.",
+            "score": 1.0
+          },
+          {
+            "dimension": "continuity",
+            "matched": [
+              "intact",
+              "The pale rectangle stays beside the right figure across all five frames."
+            ],
+            "missed": [],
+            "rationale": "Continuity status and notes matched the observable target.",
+            "score": 1.0
+          },
+          {
+            "dimension": "audio",
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted.",
+            "score": 0.0
+          },
+          {
+            "dimension": "evidence",
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times.",
+            "score": 1.0
+          },
+          {
+            "dimension": "hard_constraints",
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied.",
+            "score": 1.0
+          }
+        ],
+        "hard_constraints_passed": true,
+        "model_label": "sol",
+        "overall_score": 0.7364,
+        "prompt_version": "video-understanding-frame-packet-v3",
+        "rationale": "summary: figures | tone: intimate, unexpected=detached | color: teal",
+        "uncertainty": 0.05
+      },
+      "dual_pass": false,
+      "latency_gate_pass": true,
+      "name": "subject-sol-vfp_active_001",
+      "response": {
+        "cached": false,
+        "cost": 0.0031447,
+        "latencyMs": 8773,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "dialogue_confession_push_in",
+          "cost_estimated": true,
+          "evaluation_id": "vfp_active_001",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+            "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+            "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+            "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+            "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+          ],
+          "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "gpt-6.1-sol",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "openai",
+          "request_id": "resp_048395dc4ba4cfe7016ad245066df487d0867638dc0ce0ba79",
+          "requested_model": "gpt-6.1-sol",
+          "returned_model": "gpt-6.1-sol",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified human-shaped icons, beige on the left and light blue on the right, stand against a dark blue background above a dark lower band. Across the samples, their silhouettes gradually grow taller and wider while a pale outlined rectangle remains on the blue figure's lower torso.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\"],\"camera_tags\":[\"static\",\"locked_two_shot\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The figures retain their left-right positions, colors, and bottom alignment throughout the ordered samples; the background boundary and the blue figure's pale rectangle remain fixed.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A beige figure on the left and a light-blue figure on the right have circular heads and rounded rectangular bodies; the blue figure bears a pale, white-outlined rectangle.\"},{\"frame_index\":2,\"cue\":\"Both figures extend slightly higher and wider than in the first sample, with their lower edges still aligned near the same horizontal background boundary.\"},{\"frame_index\":4,\"cue\":\"The figures have taller, wider silhouettes, while the dark horizontal boundary and the pale rectangle on the right remain in the same locations.\"}],\"overall_confidence\":0.95}",
+        "raw": {
+          "cache_write_count_known": true,
+          "id": "resp_048395dc4ba4cfe7016ad245066df487d0867638dc0ce0ba79",
+          "model": "gpt-6.1-sol",
+          "raw_envelope_bytes": 8677,
+          "raw_envelope_path": "output/evals/nemotron-20261016/subject/sol/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "c9e5cd53cd5ef6fc73837ee142bdeba5af8b49eb09f302f8bd31fcc9fc0ff634",
+          "service_tier": "default",
+          "status": "completed",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 2887
+            },
+            "output_tokens": 285,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 3175
+          }
+        },
+        "tokenUsage": {
+          "completion": 285,
+          "completionDetails": {
+            "reasoning": 0
+          },
+          "prompt": 2890,
+          "total": 3175
+        }
+      },
+      "rubric": {
+        "cost_usd": "0.01985",
+        "latency_ms": 12500,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1567,
+          "path": "output/evals/nemotron-20261016/judge-opus-sol-vfp_active_001-raw.json",
+          "sha256": "7f91b0773016cb78fc0ab9bb33fc2b2f4766840cf1beb49989824615a970fba3"
+        },
+        "reason": "The output correctly identifies the two abstract figures (beige left, light blue right), the pale rectangle on the right figure, the dark lower band, the navy background, and the gradual enlargement of figures across frames. Continuity is correctly marked as intact. Motion tag 'measured' matches. Audio fields are empty as required. However: (1) Tone is 'detached' vs reference 'intimate' \u2014 a mismatch, though tone is ambiguous. (2) Color tags include only 'navy' but miss 'teal', which is visible in the background gradient. (3) Camera tags include 'static' and 'locked_two_shot' \u2014 the reference says camera is ambiguous and excluded from scoring, so these aren't penalized but also don't earn credit. (4) The summary says the pale rectangle is on the 'lower torso' \u2014 it's actually on the lower-right area of the right figure's body, which is roughly correct. (5) Evidence references only frames 0, 2, 4 \u2014 this is within the allowed 2-4 grounded entries. The missing teal color tag and tone mismatch are the primary deductions.",
+        "request_id": "msg_011Cg6Ae9YPasG4YbVGQN6fH",
+        "score": 0.72,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 2610,
+          "output_tokens": 272,
+          "service_tier": "standard",
+          "speed": "standard"
+        }
+      },
+      "vars": {
+        "clip_dir": "../video_understanding/dialogue_confession_push_in",
+        "clip_id": "dialogue_confession_push_in",
+        "evaluation_id": "vfp_active_001",
+        "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+        "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+      }
+    },
+    {
+      "arm": "luna",
+      "assertion": {
+        "pass": true,
+        "reason": "overall=0.750 | uncertainty=0.170 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.50 | camera=0.67 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached, unexpected=surreal | color: teal, unexpected=desaturated | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "score": 0.75
+      },
+      "combined": 0.625,
+      "cost_gate_pass": true,
+      "details": {
+        "clip_id": "dialogue_confession_push_in",
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "matched": [
+              "figures",
+              "blue",
+              "closer"
+            ],
+            "missed": [],
+            "rationale": "Summary covered the required observable cues.",
+            "score": 1.0
+          },
+          {
+            "dimension": "tone",
+            "matched": [],
+            "missed": [
+              "intimate",
+              "unexpected=detached",
+              "unexpected=surreal"
+            ],
+            "rationale": "Tag mismatches: intimate, unexpected=detached, unexpected=surreal",
+            "score": 0.0
+          },
+          {
+            "dimension": "emotion",
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly.",
+            "score": 1.0
+          },
+          {
+            "dimension": "color",
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "teal",
+              "unexpected=desaturated"
+            ],
+            "rationale": "Tag mismatches: teal, unexpected=desaturated",
+            "score": 0.5
+          },
+          {
+            "dimension": "camera",
+            "matched": [
+              "slow_push_in"
+            ],
+            "missed": [
+              "locked_two_shot"
+            ],
+            "rationale": "Tag mismatches: locked_two_shot",
+            "score": 0.6666666666666666
+          },
+          {
+            "dimension": "motion",
+            "matched": [
+              "measured"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly.",
+            "score": 1.0
+          },
+          {
+            "dimension": "continuity",
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The pale rectangle stays beside the right figure across all five frames."
+            ],
+            "rationale": "Continuity mismatches: The pale rectangle stays beside the right figure across all five frames.",
+            "score": 0.75
+          },
+          {
+            "dimension": "audio",
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted.",
+            "score": 0.0
+          },
+          {
+            "dimension": "evidence",
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times.",
+            "score": 1.0
+          },
+          {
+            "dimension": "hard_constraints",
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied.",
+            "score": 1.0
+          }
+        ],
+        "hard_constraints_passed": true,
+        "model_label": "luna",
+        "overall_score": 0.75,
+        "prompt_version": "video-understanding-frame-packet-v3",
+        "rationale": "tone: intimate, unexpected=detached, unexpected=surreal | color: teal, unexpected=desaturated | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "uncertainty": 0.17
+      },
+      "dual_pass": false,
+      "latency_gate_pass": true,
+      "name": "subject-luna-vfp_active_001",
+      "response": {
+        "cached": false,
+        "cost": 0.00022267,
+        "latencyMs": 5999,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "dialogue_confession_push_in",
+          "cost_estimated": true,
+          "evaluation_id": "vfp_active_001",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+            "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+            "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+            "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+            "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+          ],
+          "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "gpt-6-luna",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "openai",
+          "request_id": "resp_084afd779ca708a4016ad24515dd3c87d0b118bd1ac9a0de01",
+          "requested_model": "gpt-6-luna",
+          "returned_model": "gpt-6-luna",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"A minimalist animation shows two simplified figures standing side by side against a dark blue background. Across the samples, both figures gradually appear larger while remaining in place relative to each other and the ground.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"slow_push_in\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Two pale, simplified figures stand on a dark horizontal ground against a blue gradient.\"},{\"frame_index\":2,\"cue\":\"Both figures remain side by side; their bodies appear slightly larger than in frame 0.\"},{\"frame_index\":4,\"cue\":\"The two figures are still aligned on the same ground, and both appear larger than in the earlier samples.\"}],\"overall_confidence\":0.83}",
+        "raw": {
+          "cache_write_count_known": true,
+          "id": "resp_084afd779ca708a4016ad24515dd3c87d0b118bd1ac9a0de01",
+          "model": "gpt-6-luna",
+          "raw_envelope_bytes": 12011,
+          "raw_envelope_path": "output/evals/nemotron-20261016/subject/luna/vfp_active_001-raw-envelope.json",
+          "raw_envelope_sha256": "05d5de9003c59ee07eaeb1fd5ca7222fbfd8126d6a0ce8a8d121a9e737d73948",
+          "service_tier": "default",
+          "status": "completed",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cached_tokens": 2887
+            },
+            "output_tokens": 387,
+            "output_tokens_details": {
+              "reasoning_tokens": 175
+            },
+            "total_tokens": 3277
+          }
+        },
+        "tokenUsage": {
+          "completion": 212,
+          "completionDetails": {
+            "reasoning": 175
+          },
+          "prompt": 2890,
+          "total": 3277
+        }
+      },
+      "rubric": {
+        "cost_usd": "0.0193",
+        "latency_ms": 11777,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1699,
+          "path": "output/evals/nemotron-20261016/judge-opus-luna-vfp_active_001-raw.json",
+          "sha256": "aece1dd63995ec9057a3945a103e24d1c86d5eb93269d690e90299983aaf3435"
+        },
+        "reason": "The output correctly identifies two simplified figures, their enlargement across frames, the dark ground, the navy/blue background, measured motion, intact continuity, and empty audio fields. However, several concrete issues reduce the score: (1) The pale rectangle prop on the right figure is never mentioned in the summary, evidence, or continuity notes \u2014 this is a significant observable detail present in all five frames that the reference highlights. (2) The camera_tags include 'slow_push_in', which is an unsupported camera mechanism \u2014 the reference explicitly states no camera mechanism is established since figures enlarge while the background/prop do not scale. This is an invented claim. (3) The tone is 'detached'/'surreal' rather than 'intimate' as in the reference. (4) The color_tags list 'desaturated' but miss 'teal', which is visible in the background gradient. (5) The two figures are described as 'pale' but the model fails to distinguish their clearly different colors (beige/cream left figure vs. light blue right figure). The missing prop is a notable omission, and the invented camera push-in directly contradicts the interpretation boundary.",
+        "request_id": "msg_011Cg6Af4higU82GW7ZaxsYJ",
+        "score": 0.5,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 2525,
+          "output_tokens": 267,
+          "service_tier": "standard",
+          "speed": "standard"
+        }
+      },
+      "vars": {
+        "clip_dir": "../video_understanding/dialogue_confession_push_in",
+        "clip_id": "dialogue_confession_push_in",
+        "evaluation_id": "vfp_active_001",
+        "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+        "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+      }
+    },
+    {
+      "arm": "sol",
+      "assertion": {
+        "pass": false,
+        "reason": "raw_score=0.5017 | overall=0.502 | uncertainty=0.010 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.67 | motion=0.00 | continuity=0.25 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: rectangle | tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken",
+        "score": 0.5017
+      },
+      "combined": 0.5608500000000001,
+      "cost_gate_pass": true,
+      "details": {
+        "clip_id": "prop_swap_continuity_break",
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "matched": [
+              "red",
+              "blue"
+            ],
+            "missed": [
+              "rectangle"
+            ],
+            "rationale": "Missing summary cues: rectangle",
+            "score": 0.6666666666666666
+          },
+          {
+            "dimension": "tone",
+            "matched": [],
+            "missed": [
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: unexpected=detached",
+            "score": 0.0
+          },
+          {
+            "dimension": "emotion",
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly.",
+            "score": 1.0
+          },
+          {
+            "dimension": "color",
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "unexpected=red"
+            ],
+            "rationale": "Tag mismatches: unexpected=red",
+            "score": 0.6666666666666666
+          },
+          {
+            "dimension": "camera",
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master",
+            "score": 0.6666666666666666
+          },
+          {
+            "dimension": "motion",
+            "matched": [],
+            "missed": [
+              "unexpected=stillness"
+            ],
+            "rationale": "Tag mismatches: unexpected=stillness",
+            "score": 0.0
+          },
+          {
+            "dimension": "continuity",
+            "matched": [
+              "The tabletop rectangle changes from red to blue between the second and third samples."
+            ],
+            "missed": [
+              "status=broken"
+            ],
+            "rationale": "Continuity mismatches: status=broken",
+            "score": 0.25
+          },
+          {
+            "dimension": "audio",
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted.",
+            "score": 0.0
+          },
+          {
+            "dimension": "evidence",
+            "matched": [
+              "frame 0",
+              "frame 1",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times.",
+            "score": 1.0
+          },
+          {
+            "dimension": "hard_constraints",
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied.",
+            "score": 1.0
+          }
+        ],
+        "hard_constraints_passed": true,
+        "model_label": "sol",
+        "overall_score": 0.5017,
+        "prompt_version": "video-understanding-frame-packet-v3",
+        "rationale": "summary: rectangle | tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken",
+        "uncertainty": 0.01
+      },
+      "dual_pass": false,
+      "latency_gate_pass": true,
+      "name": "subject-sol-vfp_active_004",
+      "response": {
+        "cached": false,
+        "cost": 0.0097835,
+        "latencyMs": 9311,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "prop_swap_continuity_break",
+          "cost_estimated": true,
+          "evaluation_id": "vfp_active_004",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+            "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+            "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+            "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+            "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+          ],
+          "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "gpt-6.1-sol",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "openai",
+          "request_id": "resp_0d8a6fdbe2958cc1016ad2453d002887d0beee2d14ecb65eb9",
+          "requested_model": "gpt-6.1-sol",
+          "returned_model": "gpt-6.1-sol",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A minimalist graphic shows two overlapping brown rectangular blocks against a dark navy background. A small white-outlined inset changes from red to blue between samples 1 and 2, while the surrounding geometry remains unchanged.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The inset changes from red in frame 1 to blue in frame 2 without changing its shape or position; the blocks and background remain aligned throughout.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A white-outlined red inset sits on the upper brown rectangle above a wider dark-brown base.\"},{\"frame_index\":1,\"cue\":\"The inset remains red, with the blocks in the same positions.\"},{\"frame_index\":2,\"cue\":\"The inset is now blue, retaining its white border and position on the upper rectangle.\"},{\"frame_index\":4,\"cue\":\"The blue inset and both brown rectangles retain the same placement against the dark background.\"}],\"overall_confidence\":0.99}",
+        "raw": {
+          "cache_write_count_known": true,
+          "id": "resp_0d8a6fdbe2958cc1016ad2453d002887d0beee2d14ecb65eb9",
+          "model": "gpt-6.1-sol",
+          "raw_envelope_bytes": 8471,
+          "raw_envelope_path": "output/evals/nemotron-20261016/subject/sol/vfp_active_004-raw-envelope.json",
+          "raw_envelope_sha256": "3ec8d2c9b40f9e5ba0c53b809bee3b9f34139b465d086954faef605b734f45ed",
+          "service_tier": "default",
+          "status": "completed",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 256,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 3146
+          }
+        },
+        "tokenUsage": {
+          "completion": 256,
+          "completionDetails": {
+            "reasoning": 0
+          },
+          "prompt": 2890,
+          "total": 3146
+        }
+      },
+      "rubric": {
+        "cost_usd": "0.021965",
+        "latency_ms": 14441,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1982,
+          "path": "output/evals/nemotron-20261016/judge-opus-sol-vfp_active_004-raw.json",
+          "sha256": "f1399b7e1021c6de6f6b5e2d7361a1b7a532b4ee26d32176fc1a8f47a6b96765"
+        },
+        "reason": "The output correctly identifies the visual composition (two brown rectangular blocks, navy background, white-outlined small rectangle changing from red to blue), and accurately grounds evidence at frames 0, 1, 2, and 4 with correct color descriptions. However, there are several notable mismatches: (1) The summary says the change happens 'between samples 1 and 2,' which is correct per frame indexing but described ambiguously as 'samples 1 and 2' rather than clearly between frames 1 and 2. This is actually correct. (2) Continuity is marked as 'intact' when the reference says 'broken' \u2014 the color change of the rectangle constitutes a continuity break. This is a significant error. (3) The tone is tagged as 'detached' when the reference says none \u2014 a minor invented tag. (4) The motion_tags include 'stillness' when the reference says none \u2014 technically there is no motion, but inventing a tag not in the reference is a minor issue. (5) The color_tags include 'red' but not 'blue' \u2014 the output mentions blue in text but doesn't include it in color_tags; however per the evaluation criteria, generic 'blue' may not be in allowed color_tags, so this is acceptable. (6) camera_tags only has 'static' but misses 'wide_master' from the reference. (7) The audio fields are empty, which is correct. The continuity_status being 'intact' instead of 'broken' is the most significant error, as the prop color change is the central event of this clip.",
+        "request_id": "msg_011Cg6Agchq7WijLT7QUwyUc",
+        "score": 0.62,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 2538,
+          "output_tokens": 371,
+          "service_tier": "standard",
+          "speed": "standard"
+        }
+      },
+      "vars": {
+        "clip_dir": "../video_understanding/prop_swap_continuity_break",
+        "clip_id": "prop_swap_continuity_break",
+        "evaluation_id": "vfp_active_004",
+        "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+        "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+      }
+    },
+    {
+      "arm": "luna",
+      "assertion": {
+        "pass": false,
+        "reason": "raw_score=0.5333 | overall=0.533 | uncertainty=0.020 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.67 | motion=0.00 | continuity=0.00 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken, The tabletop rectangle changes from red to blue between the second and third samples.",
+        "score": 0.5333
+      },
+      "combined": 0.51665,
+      "cost_gate_pass": true,
+      "details": {
+        "clip_id": "prop_swap_continuity_break",
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "matched": [
+              "rectangle",
+              "red",
+              "blue"
+            ],
+            "missed": [],
+            "rationale": "Summary covered the required observable cues.",
+            "score": 1.0
+          },
+          {
+            "dimension": "tone",
+            "matched": [],
+            "missed": [
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: unexpected=detached",
+            "score": 0.0
+          },
+          {
+            "dimension": "emotion",
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly.",
+            "score": 1.0
+          },
+          {
+            "dimension": "color",
+            "matched": [
+              "navy"
+            ],
+            "missed": [
+              "unexpected=red"
+            ],
+            "rationale": "Tag mismatches: unexpected=red",
+            "score": 0.6666666666666666
+          },
+          {
+            "dimension": "camera",
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master",
+            "score": 0.6666666666666666
+          },
+          {
+            "dimension": "motion",
+            "matched": [],
+            "missed": [
+              "unexpected=stillness"
+            ],
+            "rationale": "Tag mismatches: unexpected=stillness",
+            "score": 0.0
+          },
+          {
+            "dimension": "continuity",
+            "matched": [],
+            "missed": [
+              "status=broken",
+              "The tabletop rectangle changes from red to blue between the second and third samples."
+            ],
+            "rationale": "Continuity mismatches: status=broken, The tabletop rectangle changes from red to blue between the second and third samples.",
+            "score": 0.0
+          },
+          {
+            "dimension": "audio",
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted.",
+            "score": 0.0
+          },
+          {
+            "dimension": "evidence",
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times.",
+            "score": 1.0
+          },
+          {
+            "dimension": "hard_constraints",
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied.",
+            "score": 1.0
+          }
+        ],
+        "hard_constraints_passed": true,
+        "model_label": "luna",
+        "overall_score": 0.5333,
+        "prompt_version": "video-understanding-frame-packet-v3",
+        "rationale": "tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken, The tabletop rectangle changes from red to blue between the second and third samples.",
+        "uncertainty": 0.02
+      },
+      "dual_pass": false,
+      "latency_gate_pass": true,
+      "name": "subject-luna-vfp_active_004",
+      "response": {
+        "cached": false,
+        "cost": 0.000538175,
+        "latencyMs": 4872,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "prop_swap_continuity_break",
+          "cost_estimated": true,
+          "evaluation_id": "vfp_active_004",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+            "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+            "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+            "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+            "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+          ],
+          "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "gpt-6-luna",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "openai",
+          "request_id": "resp_0ca4c7aae5c74317016ad24554c56c87d0834e8a5115286c49",
+          "requested_model": "gpt-6-luna",
+          "returned_model": "gpt-6-luna",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\n  \"clip_id\": \"vfp_active_004\",\n  \"summary\": \"A simple geometric scene shows a small outlined rectangle centered on a raised platform. Its fill changes from red to blue while the rest of the composition remains fixed.\",\n  \"tone_tags\": [\"detached\"],\n  \"emotion_tags\": [],\n  \"color_tags\": [\"navy\", \"red\"],\n  \"camera_tags\": [\"static\"],\n  \"motion_tags\": [\"stillness\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A red, white-outlined rectangle is centered on a gray-brown block above a dark brown base.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The centered white-outlined rectangle is blue; the platform and background remain in the same positions.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The rectangle remains blue and the geometric composition is unchanged.\"\n    }\n  ],\n  \"overall_confidence\": 0.98\n}",
+        "raw": {
+          "cache_write_count_known": true,
+          "id": "resp_0ca4c7aae5c74317016ad24554c56c87d0834e8a5115286c49",
+          "model": "gpt-6-luna",
+          "raw_envelope_bytes": 11118,
+          "raw_envelope_path": "output/evals/nemotron-20261016/subject/luna/vfp_active_004-raw-envelope.json",
+          "raw_envelope_sha256": "a20af4ca0702fe8b2964e4e254a12186389f7cf485792aecc11b101b4f3febf6",
+          "service_tier": "default",
+          "status": "completed",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 354,
+            "output_tokens_details": {
+              "reasoning_tokens": 99
+            },
+            "total_tokens": 3244
+          }
+        },
+        "tokenUsage": {
+          "completion": 255,
+          "completionDetails": {
+            "reasoning": 99
+          },
+          "prompt": 2890,
+          "total": 3244
+        }
+      },
+      "rubric": {
+        "cost_usd": "0.02148",
+        "latency_ms": 12668,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1786,
+          "path": "output/evals/nemotron-20261016/judge-opus-luna-vfp_active_004-raw.json",
+          "sha256": "59af7ebdb3c79e45af805dc6cf17eb9db158d458d453c4d107aef4ba9c788c5f"
+        },
+        "reason": "Several issues: (1) Continuity is marked 'intact' but reference says 'broken' due to the red-to-blue color swap between frames 1 and 2 \u2014 this is a significant factual error. (2) The summary says the fill 'changes from red to blue' implying a gradual transition, but the reference specifies frames 0-1 are red and 2-4 are blue, a discrete swap; the model's evidence at frame_index 0 correctly shows red and frame_index 2 shows blue, but misses that frame 1 is still red (the model skips frame 1 entirely). (3) Tone is 'detached' but reference says none; while tone can be ambiguous, 'detached' is an invention. (4) Motion_tags has 'stillness' but reference says none \u2014 no motion tag should be present. (5) Camera_tags has only 'static' but misses 'wide_master' from reference. (6) Color_tags include 'red' alongside 'navy' \u2014 red is present in the scene but the reference only lists 'navy' as the color/grade tag; however the instructions say 'correct blue text suffices' for the blue rectangle, and the model doesn't include a blue tag. (7) Audio_tags and audio_notes are correctly empty. (8) Evidence entries are grounded and mostly accurate for the frames they describe. The continuity error alone is a major factual mistake that prevents passing.",
+        "request_id": "msg_011Cg6Ai4kHE1yYMvmdidyaw",
+        "score": 0.5,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 2531,
+          "output_tokens": 353,
+          "service_tier": "standard",
+          "speed": "standard"
+        }
+      },
+      "vars": {
+        "clip_dir": "../video_understanding/prop_swap_continuity_break",
+        "clip_id": "prop_swap_continuity_break",
+        "evaluation_id": "vfp_active_004",
+        "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+        "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+      }
+    },
+    {
+      "arm": "sol",
+      "assertion": {
+        "pass": false,
+        "reason": "raw_score=0.4783 | overall=0.478 | uncertainty=0.030 | summary=0.00 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small cyan rectangle stays beside the runner across all five samples., unexpected=The icon advances rightward across each successive sample while retaining its shape and size; the arch remains in the same position.",
+        "score": 0.4783
+      },
+      "combined": 0.54915,
+      "cost_gate_pass": true,
+      "details": {
+        "clip_id": "storm_tunnel_lateral_run",
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "matched": [],
+            "missed": [
+              "runner",
+              "tunnel",
+              "streaks"
+            ],
+            "rationale": "Missing summary cues: runner, tunnel, streaks",
+            "score": 0.0
+          },
+          {
+            "dimension": "tone",
+            "matched": [],
+            "missed": [
+              "tense",
+              "urgent",
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: tense, urgent, unexpected=detached",
+            "score": 0.0
+          },
+          {
+            "dimension": "emotion",
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly.",
+            "score": 1.0
+          },
+          {
+            "dimension": "color",
+            "matched": [
+              "navy",
+              "teal"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly.",
+            "score": 1.0
+          },
+          {
+            "dimension": "camera",
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master",
+            "score": 0.6666666666666666
+          },
+          {
+            "dimension": "motion",
+            "matched": [],
+            "missed": [
+              "fast_lateral",
+              "unexpected=measured"
+            ],
+            "rationale": "Tag mismatches: fast_lateral, unexpected=measured",
+            "score": 0.0
+          },
+          {
+            "dimension": "continuity",
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The small cyan rectangle stays beside the runner across all five samples.",
+              "unexpected=The icon advances rightward across each successive sample while retaining its shape and size; the arch remains in the same position."
+            ],
+            "rationale": "Continuity mismatches: The small cyan rectangle stays beside the runner across all five samples., unexpected=The icon advances rightward across each successive sample while retaining its shape and size; the arch remains in the same position.",
+            "score": 0.75
+          },
+          {
+            "dimension": "audio",
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted.",
+            "score": 0.0
+          },
+          {
+            "dimension": "evidence",
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times.",
+            "score": 1.0
+          },
+          {
+            "dimension": "hard_constraints",
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied.",
+            "score": 1.0
+          }
+        ],
+        "hard_constraints_passed": true,
+        "model_label": "sol",
+        "overall_score": 0.4783,
+        "prompt_version": "video-understanding-frame-packet-v3",
+        "rationale": "summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small cyan rectangle stays beside the runner across all five samples., unexpected=The icon advances rightward across each successive sample while retaining its shape and size; the arch remains in the same position.",
+        "uncertainty": 0.03
+      },
+      "dual_pass": false,
+      "latency_gate_pass": true,
+      "name": "subject-sol-vfp_active_006",
+      "response": {
+        "cached": false,
+        "cost": 0.0096835,
+        "latencyMs": 9959,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "storm_tunnel_lateral_run",
+          "cost_estimated": true,
+          "evaluation_id": "vfp_active_006",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+            "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+            "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+            "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+            "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+          ],
+          "meta_sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "gpt-6.1-sol",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "openai",
+          "request_id": "resp_0f6ca1fc5cb87e7a016ad24566cd5c87d09384c23ee64b0cd1",
+          "requested_model": "gpt-6.1-sol",
+          "returned_model": "gpt-6.1-sol",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"A flat cyan person-like icon with a white-outlined rectangular extension moves steadily from left to right beneath a cyan arch. Slanted cyan and gray lines span a dark blue gradient background.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The icon advances rightward across each successive sample while retaining its shape and size; the arch remains in the same position.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The cyan icon sits near the left end of a broad cyan arch, with a small white-outlined rectangle projecting to its right.\"},{\"frame_index\":2,\"cue\":\"The same icon is near the center beneath the arch, against diagonal gray and cyan lines.\"},{\"frame_index\":4,\"cue\":\"The icon is now on the right side, retaining its circular head, rounded rectangular body, and outlined extension; the arch still spans the frame.\"}],\"overall_confidence\":0.97}",
+        "raw": {
+          "cache_write_count_known": true,
+          "id": "resp_0f6ca1fc5cb87e7a016ad24566cd5c87d09384c23ee64b0cd1",
+          "model": "gpt-6.1-sol",
+          "raw_envelope_bytes": 8407,
+          "raw_envelope_path": "output/evals/nemotron-20261016/subject/sol/vfp_active_006-raw-envelope.json",
+          "raw_envelope_sha256": "6fd2edfd4223cd918707855d3070c1cb747a3a39b3af0daeea5bc81eb9c67998",
+          "service_tier": "default",
+          "status": "completed",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 246,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 3136
+          }
+        },
+        "tokenUsage": {
+          "completion": 246,
+          "completionDetails": {
+            "reasoning": 0
+          },
+          "prompt": 2890,
+          "total": 3136
+        }
+      },
+      "rubric": {
+        "cost_usd": "0.01874",
+        "latency_ms": 11229,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1523,
+          "path": "output/evals/nemotron-20261016/judge-opus-sol-vfp_active_006-raw.json",
+          "sha256": "c0f47d15e66e911ac57eb354c42ef504b46023dc6797506f9665607e048aae76"
+        },
+        "reason": "The output correctly identifies the cyan person-like icon moving left to right beneath a cyan arch against a dark blue gradient background with slanted cyan/gray lines. Color tags (navy, teal) match the reference. Camera tag (static) matches. Continuity is correctly marked as intact. Evidence entries at frames 0, 2, and 4 are grounded and accurate. However, there are notable mismatches: (1) Tone is 'detached' instead of 'urgent, tense' \u2014 a significant mismatch. (2) Motion is tagged as 'measured' rather than 'fast_lateral' \u2014 the reference indicates fast lateral movement, not measured/slow. (3) The reference includes 'wide_master' as a camera tag which the output omits. (4) The summary describes the motion as 'steadily' which conflicts with the urgent/fast nature indicated by reference. (5) Audio fields are empty as required, which is correct. The visual description is largely accurate but the tone and motion characterization are meaningfully wrong, preventing a passing score.",
+        "request_id": "msg_011Cg6AjkF6Q7YCkFz5DYE4a",
+        "score": 0.62,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 2518,
+          "output_tokens": 246,
+          "service_tier": "standard",
+          "speed": "standard"
+        }
+      },
+      "vars": {
+        "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+        "clip_id": "storm_tunnel_lateral_run",
+        "evaluation_id": "vfp_active_006",
+        "target_markdown": "file://../video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+        "target_path": "video_understanding_truth_v4/storm_tunnel_lateral_run/target.json"
+      }
+    },
+    {
+      "arm": "luna",
+      "assertion": {
+        "pass": false,
+        "reason": "raw_score=0.4783 | overall=0.478 | uncertainty=0.060 | summary=0.00 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small cyan rectangle stays beside the runner across all five samples.",
+        "score": 0.4783
+      },
+      "combined": 0.54915,
+      "cost_gate_pass": true,
+      "details": {
+        "clip_id": "storm_tunnel_lateral_run",
+        "dimensions": [
+          {
+            "dimension": "summary",
+            "matched": [],
+            "missed": [
+              "runner",
+              "tunnel",
+              "streaks"
+            ],
+            "rationale": "Missing summary cues: runner, tunnel, streaks",
+            "score": 0.0
+          },
+          {
+            "dimension": "tone",
+            "matched": [],
+            "missed": [
+              "tense",
+              "urgent",
+              "unexpected=detached"
+            ],
+            "rationale": "Tag mismatches: tense, urgent, unexpected=detached",
+            "score": 0.0
+          },
+          {
+            "dimension": "emotion",
+            "matched": [],
+            "missed": [],
+            "rationale": "Tags matched the target exactly.",
+            "score": 1.0
+          },
+          {
+            "dimension": "color",
+            "matched": [
+              "navy",
+              "teal"
+            ],
+            "missed": [],
+            "rationale": "Tags matched the target exactly.",
+            "score": 1.0
+          },
+          {
+            "dimension": "camera",
+            "matched": [
+              "static"
+            ],
+            "missed": [
+              "wide_master"
+            ],
+            "rationale": "Tag mismatches: wide_master",
+            "score": 0.6666666666666666
+          },
+          {
+            "dimension": "motion",
+            "matched": [],
+            "missed": [
+              "fast_lateral",
+              "unexpected=measured"
+            ],
+            "rationale": "Tag mismatches: fast_lateral, unexpected=measured",
+            "score": 0.0
+          },
+          {
+            "dimension": "continuity",
+            "matched": [
+              "intact"
+            ],
+            "missed": [
+              "The small cyan rectangle stays beside the runner across all five samples."
+            ],
+            "rationale": "Continuity mismatches: The small cyan rectangle stays beside the runner across all five samples.",
+            "score": 0.75
+          },
+          {
+            "dimension": "audio",
+            "matched": [],
+            "missed": [],
+            "rationale": "Audio is not scored because no audio was submitted.",
+            "score": 0.0
+          },
+          {
+            "dimension": "evidence",
+            "matched": [
+              "frame 0",
+              "frame 2",
+              "frame 4"
+            ],
+            "missed": [],
+            "rationale": "Evidence cites specific target-supported cues at submitted frame times.",
+            "score": 1.0
+          },
+          {
+            "dimension": "hard_constraints",
+            "matched": [
+              "ordered frame packet contract"
+            ],
+            "missed": [],
+            "rationale": "Hard constraints satisfied.",
+            "score": 1.0
+          }
+        ],
+        "hard_constraints_passed": true,
+        "model_label": "luna",
+        "overall_score": 0.4783,
+        "prompt_version": "video-understanding-frame-packet-v3",
+        "rationale": "summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small cyan rectangle stays beside the runner across all five samples.",
+        "uncertainty": 0.06
+      },
+      "dual_pass": false,
+      "latency_gate_pass": true,
+      "name": "subject-luna-vfp_active_006",
+      "response": {
+        "cached": false,
+        "cost": 0.0005521749999999999,
+        "latencyMs": 5938,
+        "metadata": {
+          "audio_submitted": false,
+          "candidate_variant": null,
+          "clip_id": "storm_tunnel_lateral_run",
+          "cost_estimated": true,
+          "evaluation_id": "vfp_active_006",
+          "frame_count": 5,
+          "frame_policy": "five_evenly_spaced_jpegs_v1",
+          "frame_sha256": [
+            "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+            "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+            "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+            "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+            "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+          ],
+          "meta_sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13",
+          "modality": "ordered_jpeg_frame_packet",
+          "model": "gpt-6-luna",
+          "prompt_version": "video-understanding-frame-packet-v3",
+          "provider": "openai",
+          "request_id": "resp_098d14f543e47a34016ad2457beefc87d0900794d6bfa959a6",
+          "requested_model": "gpt-6-luna",
+          "returned_model": "gpt-6-luna",
+          "sample_times_seconds": [
+            0.0,
+            1.0,
+            2.0,
+            3.0,
+            3.875
+          ]
+        },
+        "output": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"A simplified cyan figure carrying a small rectangular object shifts steadily from the left side of the frame toward the right beneath a large arch and a field of crossing lines. The dark blue graphic background remains broadly consistent.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The cyan figure and rectangular object are positioned in the left portion of the frame beneath the arch.\"},{\"frame_index\":2,\"cue\":\"The figure is near the center of the frame, with the arch still spanning the background.\"},{\"frame_index\":4,\"cue\":\"The figure and object are positioned on the right side while the same arch and crossing-line graphic remain visible.\"}],\"overall_confidence\":0.94}",
+        "raw": {
+          "cache_write_count_known": true,
+          "id": "resp_098d14f543e47a34016ad2457beefc87d0900794d6bfa959a6",
+          "model": "gpt-6-luna",
+          "raw_envelope_bytes": 12200,
+          "raw_envelope_path": "output/evals/nemotron-20261016/subject/luna/vfp_active_006-raw-envelope.json",
+          "raw_envelope_sha256": "a9528d6f058fab80e134042a3ef323859a6014e7275515d079a402f0bf107ab4",
+          "service_tier": "default",
+          "status": "completed",
+          "usage": {
+            "input_tokens": 2890,
+            "input_tokens_details": {
+              "cache_write_tokens": 2887,
+              "cached_tokens": 0
+            },
+            "output_tokens": 382,
+            "output_tokens_details": {
+              "reasoning_tokens": 169
+            },
+            "total_tokens": 3272
+          }
+        },
+        "tokenUsage": {
+          "completion": 213,
+          "completionDetails": {
+            "reasoning": 169
+          },
+          "prompt": 2890,
+          "total": 3272
+        }
+      },
+      "rubric": {
+        "cost_usd": "0.019015",
+        "latency_ms": 11341,
+        "model": "claude-opus-4-6",
+        "raw": {
+          "bytes": 1623,
+          "path": "output/evals/nemotron-20261016/judge-opus-luna-vfp_active_006-raw.json",
+          "sha256": "43ac895dca726491f6ac3e83b435ee8ee4c64b2fc696c1d03b45b2fbe05cdf57"
+        },
+        "reason": "The output correctly identifies the cyan figure, rectangular object, arch, crossing lines, dark blue/navy background, left-to-right lateral movement, static camera, intact continuity, and teal/navy color palette. Evidence entries at frames 0, 2, and 4 are grounded and accurate. However, several issues lower the score: (1) Tone is tagged as 'detached' instead of 'urgent'/'tense' per reference \u2014 a clear mismatch. (2) Motion is tagged as 'measured' rather than 'fast_lateral' \u2014 the figure traverses a significant distance across frames suggesting faster movement. (3) The summary describes 'carrying' the object rather than recognizing it as beside/adjacent to the figure, and calls the figure 'simplified' rather than describing it as a runner. (4) Missing 'wide_master' camera tag from reference. (5) The description says the figure is 'carrying' the rectangular object, which is slightly inaccurate \u2014 it sits beside/next to the figure. The visual content identification is largely correct but the tone and motion characterization mismatches are significant enough to prevent passing.",
+        "request_id": "msg_011Cg6Am33BERXHuumaMVxhg",
+        "score": 0.62,
+        "usage": {
+          "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+          },
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "inference_geo": "global",
+          "input_tokens": 2478,
+          "output_tokens": 265,
+          "service_tier": "standard",
+          "speed": "standard"
+        }
+      },
+      "vars": {
+        "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+        "clip_id": "storm_tunnel_lateral_run",
+        "evaluation_id": "vfp_active_006",
+        "target_markdown": "file://../video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+        "target_path": "video_understanding_truth_v4/storm_tunnel_lateral_run/target.json"
+      }
+    }
+  ],
+  "scope": "Candidate1/3 and fresh controls3/3; five authored synthetic JPEGs each; no six-case promotion",
+  "settled_usd_mixed_reported_and_estimated": "0.1773214949999999999",
+  "spend_split": {
+    "judges": "0.140410",
+    "qualification": "0.011732225",
+    "subjects": "0.0251792699999999999"
+  },
+  "subject_retries": 0,
+  "summary": {
+    "luna": {
+      "deterministic": 0.5871999999999999,
+      "dual_passes": 0,
+      "mean_cost_usd": 0.0004376733333333333,
+      "mean_latency_ms": 5603,
+      "n": 3,
+      "overall": 0.5636,
+      "rubric": 0.54
+    },
+    "nemotron": {
+      "deterministic": 0.1719,
+      "dual_passes": 0,
+      "mean_cost_usd": 0.00125455,
+      "mean_latency_ms": 5642,
+      "n": 1,
+      "overall": 0.27595000000000003,
+      "rubric": 0.38
+    },
+    "sol": {
+      "deterministic": 0.5721333333333334,
+      "dual_passes": 0,
+      "mean_cost_usd": 0.007537233333333333,
+      "mean_latency_ms": 9347.666666666666,
+      "n": 3,
+      "overall": 0.6127333333333334,
+      "rubric": 0.6533333333333333
+    }
+  },
+  "unknown_exposure_usd": "0"
+}

@@ -1,0 +1,84 @@
+{
+  "arm": "nemotron",
+  "name": "native-nemotron-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.00116255,
+    "latencyMs": 4278,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": false,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "nvidia/nemotron-3.5-super-vl",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openrouter",
+      "request_id": "gen-1792165099-KNmr9hwQL4uGAQN7VSKK",
+      "requested_model": "nvidia/nemotron-3.5-super-vl",
+      "returned_model": "nvidia/nemotron-3.5-super-vl",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\n  \"clip_id\": \"vfp_active_001\",\n  \"summary\": \"Two stylized, abstract figures stand side-by-side against a dark gradient background. The scene remains completely static across all five sampled frames.\",\n  \"tone_tags\": [\"detached\"],\n  \"emotion_tags\": [\"isolation\"],\n  \"color_tags\": [\"navy\"],\n  \"camera_tags\": [\"static\"],\n  \"motion_tags\": [\"stillness\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [\"The positions and appearances of the two figures remain identical across all ordered samples.\"],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\"frame_index\": 0, \"cue\": \"Beige figure on left and light blue figure on right against dark blue gradient\"},\n    {\"frame_index\": 2, \"cue\": \"Identical placement of both figures with no movement detected\"},\n    {\"frame_index\": 4, \"cue\": \"Scene remains unchanged with white rectangle visible on blue figure's torso\"}\n  ],\n  \"overall_confidence\": 0.98\n}",
+    "raw": {
+      "id": "gen-1792165099-KNmr9hwQL4uGAQN7VSKK",
+      "model": "nvidia/nemotron-3.5-super-vl",
+      "provider": "Together",
+      "raw_envelope_bytes": 13319,
+      "raw_envelope_path": "output/evals/nemotron-20261016/native/nemotron/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "62956e650763b21a45b652ce5657bdd0a3eb5f926885812594541a2586937b2b",
+      "usage": {
+        "completion_tokens": 1591,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 1351
+        },
+        "cost": 0.00116255,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0007955,
+          "upstream_inference_cost": 0.00116255,
+          "upstream_inference_prompt_cost": 0.00036705
+        },
+        "is_byok": false,
+        "prompt_tokens": 2447,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 4038
+      }
+    },
+    "tokenUsage": {
+      "completion": 1591,
+      "prompt": 2447,
+      "total": 4038
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

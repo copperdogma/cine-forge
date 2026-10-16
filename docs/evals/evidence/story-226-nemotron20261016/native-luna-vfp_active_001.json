@@ -1,0 +1,78 @@
+{
+  "arm": "luna",
+  "name": "native-luna-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.000576175,
+    "latencyMs": 6920,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0c839e413a49fb1c016ad2450f687c87d093884e42107a8984",
+      "requested_model": "gpt-6-luna",
+      "returned_model": "gpt-6-luna",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"A minimalist graphic shows two featureless, differently colored figures standing side by side against a dark blue background. Across the samples, both figures subtly grow upward while remaining in place; the blue figure has a pale rectangle on its torso.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Two simple figures stand on a dark horizontal ground line; a pale rectangular mark appears on the blue figure's torso.\"},{\"frame_index\":2,\"cue\":\"Both figures remain side by side, with their heads and upper bodies extending higher than in frame 0.\"},{\"frame_index\":4,\"cue\":\"The figures have grown upward further while staying in roughly the same positions against the unchanged background.\"}],\"overall_confidence\":0.92}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0c839e413a49fb1c016ad2450f687c87d093884e42107a8984",
+      "model": "gpt-6-luna",
+      "raw_envelope_bytes": 12626,
+      "raw_envelope_path": "output/evals/nemotron-20261016/native/luna/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "26f41f80ce83d307f532511030eef6a69a53c9421f1ba2f915adacec75d4e855",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 430,
+        "output_tokens_details": {
+          "reasoning_tokens": 208
+        },
+        "total_tokens": 3320
+      }
+    },
+    "tokenUsage": {
+      "completion": 222,
+      "completionDetails": {
+        "reasoning": 208
+      },
+      "prompt": 2890,
+      "total": 3320
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

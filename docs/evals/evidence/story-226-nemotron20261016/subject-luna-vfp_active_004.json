@@ -1,0 +1,78 @@
+{
+  "arm": "luna",
+  "name": "subject-luna-vfp_active_004",
+  "response": {
+    "cached": false,
+    "cost": 0.000538175,
+    "latencyMs": 4872,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "prop_swap_continuity_break",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_004",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+      ],
+      "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0ca4c7aae5c74317016ad24554c56c87d0834e8a5115286c49",
+      "requested_model": "gpt-6-luna",
+      "returned_model": "gpt-6-luna",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\n  \"clip_id\": \"vfp_active_004\",\n  \"summary\": \"A simple geometric scene shows a small outlined rectangle centered on a raised platform. Its fill changes from red to blue while the rest of the composition remains fixed.\",\n  \"tone_tags\": [\"detached\"],\n  \"emotion_tags\": [],\n  \"color_tags\": [\"navy\", \"red\"],\n  \"camera_tags\": [\"static\"],\n  \"motion_tags\": [\"stillness\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A red, white-outlined rectangle is centered on a gray-brown block above a dark brown base.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The centered white-outlined rectangle is blue; the platform and background remain in the same positions.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The rectangle remains blue and the geometric composition is unchanged.\"\n    }\n  ],\n  \"overall_confidence\": 0.98\n}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0ca4c7aae5c74317016ad24554c56c87d0834e8a5115286c49",
+      "model": "gpt-6-luna",
+      "raw_envelope_bytes": 11118,
+      "raw_envelope_path": "output/evals/nemotron-20261016/subject/luna/vfp_active_004-raw-envelope.json",
+      "raw_envelope_sha256": "a20af4ca0702fe8b2964e4e254a12186389f7cf485792aecc11b101b4f3febf6",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 354,
+        "output_tokens_details": {
+          "reasoning_tokens": 99
+        },
+        "total_tokens": 3244
+      }
+    },
+    "tokenUsage": {
+      "completion": 255,
+      "completionDetails": {
+        "reasoning": 99
+      },
+      "prompt": 2890,
+      "total": 3244
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/prop_swap_continuity_break",
+    "clip_id": "prop_swap_continuity_break",
+    "evaluation_id": "vfp_active_004",
+    "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+    "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+  }
+}

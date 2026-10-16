@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.01985",
+  "latency_ms": 12500,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1567,
+    "path": "output/evals/nemotron-20261016/judge-opus-sol-vfp_active_001-raw.json",
+    "sha256": "7f91b0773016cb78fc0ab9bb33fc2b2f4766840cf1beb49989824615a970fba3"
+  },
+  "reason": "The output correctly identifies the two abstract figures (beige left, light blue right), the pale rectangle on the right figure, the dark lower band, the navy background, and the gradual enlargement of figures across frames. Continuity is correctly marked as intact. Motion tag 'measured' matches. Audio fields are empty as required. However: (1) Tone is 'detached' vs reference 'intimate' \u2014 a mismatch, though tone is ambiguous. (2) Color tags include only 'navy' but miss 'teal', which is visible in the background gradient. (3) Camera tags include 'static' and 'locked_two_shot' \u2014 the reference says camera is ambiguous and excluded from scoring, so these aren't penalized but also don't earn credit. (4) The summary says the pale rectangle is on the 'lower torso' \u2014 it's actually on the lower-right area of the right figure's body, which is roughly correct. (5) Evidence references only frames 0, 2, 4 \u2014 this is within the allowed 2-4 grounded entries. The missing teal color tag and tone mismatch are the primary deductions.",
+  "request_id": "msg_011Cg6Ae9YPasG4YbVGQN6fH",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2610,
+    "output_tokens": 272,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

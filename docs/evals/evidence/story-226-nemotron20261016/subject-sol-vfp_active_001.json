@@ -1,0 +1,78 @@
+{
+  "arm": "sol",
+  "name": "subject-sol-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.0031447,
+    "latencyMs": 8773,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6.1-sol",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_048395dc4ba4cfe7016ad245066df487d0867638dc0ce0ba79",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified human-shaped icons, beige on the left and light blue on the right, stand against a dark blue background above a dark lower band. Across the samples, their silhouettes gradually grow taller and wider while a pale outlined rectangle remains on the blue figure's lower torso.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\"],\"camera_tags\":[\"static\",\"locked_two_shot\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The figures retain their left-right positions, colors, and bottom alignment throughout the ordered samples; the background boundary and the blue figure's pale rectangle remain fixed.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A beige figure on the left and a light-blue figure on the right have circular heads and rounded rectangular bodies; the blue figure bears a pale, white-outlined rectangle.\"},{\"frame_index\":2,\"cue\":\"Both figures extend slightly higher and wider than in the first sample, with their lower edges still aligned near the same horizontal background boundary.\"},{\"frame_index\":4,\"cue\":\"The figures have taller, wider silhouettes, while the dark horizontal boundary and the pale rectangle on the right remain in the same locations.\"}],\"overall_confidence\":0.95}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_048395dc4ba4cfe7016ad245066df487d0867638dc0ce0ba79",
+      "model": "gpt-6.1-sol",
+      "raw_envelope_bytes": 8677,
+      "raw_envelope_path": "output/evals/nemotron-20261016/subject/sol/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "c9e5cd53cd5ef6fc73837ee142bdeba5af8b49eb09f302f8bd31fcc9fc0ff634",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 2887
+        },
+        "output_tokens": 285,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3175
+      }
+    },
+    "tokenUsage": {
+      "completion": 285,
+      "completionDetails": {
+        "reasoning": 0
+      },
+      "prompt": 2890,
+      "total": 3175
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

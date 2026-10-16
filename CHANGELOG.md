@@ -1,5 +1,13 @@
 # Changelog
 
+## [2026-10-16-01] — Screen Nemotron on ordered frames (Scout 096)
+
+### Added
+- Preserve strict five-frame native and parity qualification, a fresh Sol/Luna comparison, fixed cross-provider reviews, original and repaired results, source adjudication, settled spend and offline evidence verification.
+
+### Changed
+- Stop Nemotron after its first dialogue case misses visible figure growth. Retain the existing research references; the remaining candidate cases are unmeasured. No product analyzer or runtime default changed.
+
 ## [2026-10-08-01] — Continuing strategic reviewers and fresh milestones
 
 ### Changed

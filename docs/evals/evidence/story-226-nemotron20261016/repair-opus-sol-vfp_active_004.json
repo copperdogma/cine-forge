@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.020805",
+  "latency_ms": 12999,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1737,
+    "path": "output/evals/nemotron-20261016/repair-opus-sol-vfp_active_004-raw.json",
+    "sha256": "281b9d8da0c074b0d6d6bb3113522a0d06316104263bdd83fb3cefc826b2f2ec"
+  },
+  "reason": "The output correctly identifies the navy background, brown rectangles, red-to-blue inset change, static camera, and provides reasonable evidence entries grounded in the frames. However, there is a critical semantic error: continuity_status is labeled 'intact' when the reference requires 'broken' \u2014 the unexplained color swap of the rectangle from red (frames 0-1) to blue (frames 2-4) constitutes a continuity break. The summary says it changes 'between samples 1 and 2' which is correct timing but the continuity_notes describe it as a smooth acknowledged change rather than a break. Additionally, the summary calls these 'overlapping' blocks which is somewhat inaccurate \u2014 they are stacked/layered, not overlapping in the typical sense. The color_tags include 'red' but omit blue (though the text describes blue correctly; the reference notes generic blue has no enum value so textual mention suffices). The motion_tags list 'stillness' which is acceptable given the static frames. The evidence at frame_index 2 correctly notes the change to blue. Overall the visual description is largely accurate but the continuity_status error is a significant factual mistake that substantially lowers the score.",
+  "request_id": "msg_011Cg6ArZHVGMtK2MDHT8MrN",
+  "score": 0.52,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2751,
+    "output_tokens": 282,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

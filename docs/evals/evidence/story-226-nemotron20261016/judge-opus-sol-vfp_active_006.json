@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.01874",
+  "latency_ms": 11229,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1523,
+    "path": "output/evals/nemotron-20261016/judge-opus-sol-vfp_active_006-raw.json",
+    "sha256": "c0f47d15e66e911ac57eb354c42ef504b46023dc6797506f9665607e048aae76"
+  },
+  "reason": "The output correctly identifies the cyan person-like icon moving left to right beneath a cyan arch against a dark blue gradient background with slanted cyan/gray lines. Color tags (navy, teal) match the reference. Camera tag (static) matches. Continuity is correctly marked as intact. Evidence entries at frames 0, 2, and 4 are grounded and accurate. However, there are notable mismatches: (1) Tone is 'detached' instead of 'urgent, tense' \u2014 a significant mismatch. (2) Motion is tagged as 'measured' rather than 'fast_lateral' \u2014 the reference indicates fast lateral movement, not measured/slow. (3) The reference includes 'wide_master' as a camera tag which the output omits. (4) The summary describes the motion as 'steadily' which conflicts with the urgent/fast nature indicated by reference. (5) Audio fields are empty as required, which is correct. The visual description is largely accurate but the tone and motion characterization are meaningfully wrong, preventing a passing score.",
+  "request_id": "msg_011Cg6AjkF6Q7YCkFz5DYE4a",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2518,
+    "output_tokens": 246,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

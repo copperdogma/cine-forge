@@ -2415,6 +2415,26 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "051"
+        story: attempts/051-nemotron35-ordered-frame-first-case-stop.md
+        date: 2026-10-16
+        status: failed
+        approach: "Scout096 item4: exact Together Nemotron3.5 router-enabled32768 strict five-JPEG contract; first-case source-proven growth contradiction stops candidate1/3. Fresh Sol6.1 low/Luna low controls3/3; fixed full-source cross-provider Opus4.6; symmetric saved-output prop judge-contract repair. Candidate matched dialogue .27595 vs Sol.7282/Luna.625, all0/1passes. No score promotion, defaults or autonomous-QA claim."
+        worker_model: "Codex GPT6.1 owner; root independent source inspection"
+        subject_model: "nvidia/nemotron-3.5-super-vl / Together routerenabled32768; native finer mapping unverified"
+        score_before: 0.7282
+        score_after: 0.27595
+        latency_after: 5642
+        cost_after: 0.00125455
+        git_sha: "3a029014d252fabfa41d21008cefa471080706be+nemotron20261016-hash-freeze"
+        result_file: benchmarks/results/video-understanding-nemotron-vs-sol-luna-v4-20261016-v2.json
+        contract_manifest: docs/evals/story-226-nemotron20261016-evidence.json
+        evidence_status: bounded-first-case-candidate-stop-source-reviewed
+        spend_usd_mixed_reported_and_estimated: 0.219046495
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-subject-model
+            note: "New exact checkpoint or materially changed source/contract; scoring-validity repair before broader qualification. No unchanged-arm retry or unapproved effort sweep."
       - id: "050"
         story: attempts/050-argon-v4-three-case-screen.md
         date: 2026-10-13

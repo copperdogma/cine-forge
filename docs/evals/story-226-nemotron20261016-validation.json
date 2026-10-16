@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-16",
+  "focused_tests": {
+    "count": 64,
+    "command": "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m pytest tests/unit/test_video_understanding_gpt6_contract.py tests/unit/test_video_understanding_benchmark.py tests/unit/test_video_understanding_dataset.py tests/unit/test_video_understanding_scorer_adversarial.py -q",
+    "result": "pass"
+  },
+  "offline_verifier": "7 reconstructed scores,19settledcalls,114hashentries,native/parity equal; pass with nonexistent ignored output directory under repo and urllib network disabled",
+  "lint": "ruff changed scripts pass",
+  "registry": "check_eval_registry.py pass",
+  "methodology": "build/check pass; unrelated architecture/UI freshness warnings retained",
+  "source": "v4 build --check pass",
+  "whitespace": "git diff --check pass",
+  "provider_calls_after_evaluation": 0
+}

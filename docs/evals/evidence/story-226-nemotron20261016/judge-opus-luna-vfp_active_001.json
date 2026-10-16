@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.0193",
+  "latency_ms": 11777,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1699,
+    "path": "output/evals/nemotron-20261016/judge-opus-luna-vfp_active_001-raw.json",
+    "sha256": "aece1dd63995ec9057a3945a103e24d1c86d5eb93269d690e90299983aaf3435"
+  },
+  "reason": "The output correctly identifies two simplified figures, their enlargement across frames, the dark ground, the navy/blue background, measured motion, intact continuity, and empty audio fields. However, several concrete issues reduce the score: (1) The pale rectangle prop on the right figure is never mentioned in the summary, evidence, or continuity notes \u2014 this is a significant observable detail present in all five frames that the reference highlights. (2) The camera_tags include 'slow_push_in', which is an unsupported camera mechanism \u2014 the reference explicitly states no camera mechanism is established since figures enlarge while the background/prop do not scale. This is an invented claim. (3) The tone is 'detached'/'surreal' rather than 'intimate' as in the reference. (4) The color_tags list 'desaturated' but miss 'teal', which is visible in the background gradient. (5) The two figures are described as 'pale' but the model fails to distinguish their clearly different colors (beige/cream left figure vs. light blue right figure). The missing prop is a notable omission, and the invented camera push-in directly contradicts the interpretation boundary.",
+  "request_id": "msg_011Cg6Af4higU82GW7ZaxsYJ",
+  "score": 0.5,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2525,
+    "output_tokens": 267,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}
