@@ -1,0 +1,78 @@
+{
+  "arm": "luna",
+  "name": "subject-luna-vfp_active_004",
+  "response": {
+    "cached": false,
+    "cost": 0.000536175,
+    "latencyMs": 5204,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "prop_swap_continuity_break",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_004",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+      ],
+      "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0b987d63f35c45e7016ad3978950e887d0ab813f945fc3361f",
+      "requested_model": "gpt-6-luna",
+      "returned_model": "gpt-6-luna",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A simple, stylized graphic shows a red rounded rectangle centered on a brown platform against a dark blue background. The rectangle is blue in the later samples, while the composition remains fixed.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"red\",\"navy\"],\"camera_tags\":[\"static\"],\"motion_tags\":[],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The centered rounded rectangle changes from red in frames 0\u20131 to blue in frames 2\u20134; the surrounding composition remains visually consistent.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A small red rounded rectangle with a white outline is centered on the upper brown block.\"},{\"frame_index\":2,\"cue\":\"The same centered rounded rectangle is blue with a white outline.\"},{\"frame_index\":4,\"cue\":\"The blue rounded rectangle and the surrounding blocks remain in the same positions as earlier samples.\"}],\"overall_confidence\":0.98}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0b987d63f35c45e7016ad3978950e887d0ab813f945fc3361f",
+      "model": "gpt-6-luna",
+      "raw_envelope_bytes": 11521,
+      "raw_envelope_path": "output/evals/deepseek1017-20261017/subject/luna/vfp_active_004-raw-envelope.json",
+      "raw_envelope_sha256": "f43ed925275deafee349aa70250e7e39935368e4bca09399d05de9f5abb615e0",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 350,
+        "output_tokens_details": {
+          "reasoning_tokens": 128
+        },
+        "total_tokens": 3240
+      }
+    },
+    "tokenUsage": {
+      "completion": 222,
+      "completionDetails": {
+        "reasoning": 128
+      },
+      "prompt": 2890,
+      "total": 3240
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/prop_swap_continuity_break",
+    "clip_id": "prop_swap_continuity_break",
+    "evaluation_id": "vfp_active_004",
+    "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+    "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+  }
+}

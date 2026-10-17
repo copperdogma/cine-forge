@@ -17299,6 +17299,16 @@
       "retryWhen": [],
       "attempts": [
         {
+          "id": "052",
+          "date": "2026-10-17",
+          "approach": "Scout097 item4 USD4: exact Cloudflare DeepSeek1017 high32768. Native/parity strict five-JPEG schema observed but native reasoning/visible accounting invalid (2040-2026=14 versus complete13-key JSON); generation GET repeats mismatch. Candidate saved-answer source miss and39.093s diagnostic only, no formal quality/cost rank. Root independently confirms figure growth. Stop candidate1/3; fresh Sol/Lu…",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "provider-accounting-correction-or-new-checkpoint-contract"
+          ]
+        },
+        {
           "id": "051",
           "date": "2026-10-16",
           "approach": "Scout096 item4: exact Together Nemotron3.5 router-enabled32768 strict five-JPEG contract; first-case source-proven growth contradiction stops candidate1/3. Fresh Sol6.1 low/Luna low controls3/3; fixed full-source cross-provider Opus4.6; symmetric saved-output prop judge-contract repair. Candidate matched dialogue .27595 vs Sol.7282/Luna.625, all0/1passes. No score promotion, defaults or autonomou…",
@@ -17516,14 +17526,14 @@
         "whyNow": "Attempt046 fresh direct exact Responses low/4096 strict five-JPEG comparison on six v4 synthetic cases. Cross-provider Opus on all12 saved answers; case004 Opus original and repair invalid under source/index/tag rules, replaced only there by symmetric source-first Sonnet5.5 image adjudication. Combined0.65712,0/6 case quality passes,6/6 hard constraints,6/6 per-call latency and cost gates. Source…",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
-          "new-subject-model"
+          "provider-accounting-correction-or-new-checkpoint-contract"
         ],
         "lastRelevantAction": {
-          "date": "2026-10-16",
+          "date": "2026-10-17",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "051",
-          "summary": "Scout096 item4: exact Together Nemotron3.5 router-enabled32768 strict five-JPEG contract; first-case source-proven growth contradiction stops candidate1/3. Fresh Sol6.1 low/Luna low controls3/3; fixed full-source cross-provider Opus4.6; symmetric saved-output prop judge-contract repair. Candidate matched dialogue .27595 vs Sol.7282/Luna.625, all0/1passes. No score promotion, defaults or autonomou…"
+          "sourceId": "052",
+          "summary": "Scout097 item4 USD4: exact Cloudflare DeepSeek1017 high32768. Native/parity strict five-JPEG schema observed but native reasoning/visible accounting invalid (2040-2026=14 versus complete13-key JSON); generation GET repeats mismatch. Candidate saved-answer source miss and39.093s diagnostic only, no formal quality/cost rank. Root independently confirms figure growth. Stop candidate1/3; fresh Sol/Lu…"
         }
       }
     }
@@ -18147,7 +18157,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: ingest_and_world_building, api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 187 days old against a 14-day cadence"
+      "UI scout freshness due: attention needed — last run 2026-04-12 is 188 days old against a 14-day cadence"
     ]
   }
 }

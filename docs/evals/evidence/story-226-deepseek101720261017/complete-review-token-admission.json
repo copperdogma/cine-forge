@@ -1,0 +1,110 @@
+[
+  {
+    "complete_input_tokens": 2475,
+    "count_rechecked_after_run": true,
+    "image_blocks": 5,
+    "max_tokens": 8192,
+    "request": {
+      "bytes": 94037,
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-deepseek1017-vfp_active_001-request.json",
+      "sha256": "b113a4642b88ec28c39c91c8381c58e3db563b9882205d5768613924f69f2566"
+    },
+    "source_images_before_answer": true
+  },
+  {
+    "complete_input_tokens": 2423,
+    "count_rechecked_after_run": true,
+    "image_blocks": 5,
+    "max_tokens": 8192,
+    "request": {
+      "bytes": 93806,
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-luna-vfp_active_001-request.json",
+      "sha256": "fc67b64de688ea65a894d283885d7c2bc21caf930a552b9872720c6970c1fe56"
+    },
+    "source_images_before_answer": true
+  },
+  {
+    "complete_input_tokens": 2388,
+    "count_rechecked_after_run": true,
+    "image_blocks": 5,
+    "max_tokens": 8192,
+    "request": {
+      "bytes": 79635,
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-luna-vfp_active_004-request.json",
+      "sha256": "6016f3cf286ce964025e82e30312ee9ced6a3c62f327d567947707ab41a6b326"
+    },
+    "source_images_before_answer": true
+  },
+  {
+    "complete_input_tokens": 2429,
+    "count_rechecked_after_run": true,
+    "image_blocks": 5,
+    "max_tokens": 8192,
+    "request": {
+      "bytes": 308122,
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-luna-vfp_active_006-request.json",
+      "sha256": "62d04df1200958b37a17534e96f50e9b6bcabcee4295a530ebe4ae501772c8b8"
+    },
+    "source_images_before_answer": true
+  },
+  {
+    "complete_input_tokens": 2498,
+    "count_rechecked_after_run": true,
+    "image_blocks": 5,
+    "max_tokens": 8192,
+    "request": {
+      "bytes": 94167,
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-sol-vfp_active_001-request.json",
+      "sha256": "7b6d0f08289426bf24b2dae2f468735e64749fecbaf0d95d0441be8a674a4bdf"
+    },
+    "source_images_before_answer": true
+  },
+  {
+    "complete_input_tokens": 2534,
+    "count_rechecked_after_run": true,
+    "image_blocks": 5,
+    "max_tokens": 8192,
+    "request": {
+      "bytes": 80075,
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-sol-vfp_active_004-request.json",
+      "sha256": "2ccdd8403b595f83c7d09c273119d9e1edbc162651e71b54b6d4357259c3633d"
+    },
+    "source_images_before_answer": true
+  },
+  {
+    "complete_input_tokens": 2501,
+    "count_rechecked_after_run": true,
+    "image_blocks": 5,
+    "max_tokens": 8192,
+    "request": {
+      "bytes": 308473,
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-sol-vfp_active_006-request.json",
+      "sha256": "29150fde16f5da49974dbbaae61d3b8ffee98eb81cb86917651691964412c56e"
+    },
+    "source_images_before_answer": true
+  },
+  {
+    "complete_input_tokens": 2545,
+    "count_rechecked_after_run": true,
+    "image_blocks": 5,
+    "max_tokens": 8192,
+    "request": {
+      "bytes": 80355,
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/repair-opus-luna-vfp_active_004-request.json",
+      "sha256": "ebea412f062ac0a07935d86434318f28cb3fb141adee8877bcf5d9a7efc87acd"
+    },
+    "source_images_before_answer": true
+  },
+  {
+    "complete_input_tokens": 2691,
+    "count_rechecked_after_run": true,
+    "image_blocks": 5,
+    "max_tokens": 8192,
+    "request": {
+      "bytes": 80795,
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/repair-opus-sol-vfp_active_004-request.json",
+      "sha256": "231c94277a75b1445034da5c3d7bcadf9bee42e1f7ddaa664d322490a1b2ec5e"
+    },
+    "source_images_before_answer": true
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "advance_candidate": false,
+  "class": "model-wrong",
+  "source_fact": "Figure bodies and heads visibly enlarge at fixed left/right centers from frame0 to4, while rectangle/background remain fixed.",
+  "candidate_contradiction": "Summary explicitly states positions and shapes remain unchanged; motion stillness; no growth observed.",
+  "independent_fixed_full_source_opus_score": 0.45,
+  "candidate_latency_ms": 39093,
+  "remaining_candidate_cases": "not measured",
+  "contract_qualified": false,
+  "quarantine": "Usage accounting invalid/inconclusive; diagnostic saved-answer source observation only",
+  "official_source": "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens",
+  "native_visible_difference": 55,
+  "subject_visible_difference": 14,
+  "paid_semantic_retry": false
+}

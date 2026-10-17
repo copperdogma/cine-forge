@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.02111",
+  "latency_ms": 7991,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1614,
+    "path": "output/evals/deepseek1017-20261017/repair-opus-sol-vfp_active_004-raw.json",
+    "sha256": "4b5785d581e410ef2295cfa010139c2773584e5a7d487d6b900aff57cfab7410"
+  },
+  "reason": "The analysis correctly identifies the red-to-blue color change between frames 1 and 2, describes the static composition, and provides frame-grounded evidence. However, there are significant issues: (1) Continuity is marked as 'intact' when the reference clearly states it should be 'broken' due to the unexplained color swap between frames 1 and 2. This is a meaningful semantic error. (2) 'motion_tags' includes 'stillness' which is acceptable as it describes the fixed geometry. (3) 'camera_tags' includes only 'static' but misses 'wide_master'. (4) 'tone_tags' includes 'detached' which is not clearly supported but not strongly penalized given ambiguity. (5) 'color_tags' includes only 'navy' and 'red' but omits blue - though the summary and evidence text correctly describe the blue change, the color_tags field is incomplete. (6) Audio fields contain empty arrays, which is correct. The continuity_status error (intact vs broken) is the most significant fault, as the color change from red to blue is an unexplained discontinuity that should be flagged as broken continuity.",
+  "request_id": "msg_011Cg84rdwqdS9toY7BL8jtn",
+  "score": 0.55,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2792,
+    "output_tokens": 286,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

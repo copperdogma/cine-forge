@@ -1,0 +1,84 @@
+{
+  "arm": "deepseek1017",
+  "name": "native-deepseek1017-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.0018131,
+    "latencyMs": 49152,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": false,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "deepseek/deepseek-v4.1-flash-1017",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openrouter",
+      "request_id": "gen-1792251613-ly5bjlvAAEou4JQF1lki",
+      "requested_model": "deepseek/deepseek-v4.1-flash-1017",
+      "returned_model": "deepseek/deepseek-v4.1-flash-1017",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"A static minimal composition shows two rounded figures, one beige on the left and one light blue with a white torso patch on the right, against a navy gradient and dark ground. The ordered samples remain visually consistent, with no visible camera movement or action across them.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"desaturated\"],\"camera_tags\":[\"locked_two_shot\",\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"No visible continuity break; figure positions, colors, and the ground line remain consistent across the ordered samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Beige rounded figure on the left and light-blue rounded figure with a white rectangular torso patch on the right against a navy gradient.\"},{\"frame_index\":2,\"cue\":\"Both figures remain at the same left/right positions and scale as in frame 0, with the dark ground line unchanged.\"},{\"frame_index\":4,\"cue\":\"The same navy background, dark ground band, and right figure's white torso rectangle are still visible at the final sample.\"}],\"overall_confidence\":0.9}",
+    "raw": {
+      "id": "gen-1792251613-ly5bjlvAAEou4JQF1lki",
+      "model": "deepseek/deepseek-v4.1-flash-1017",
+      "provider": "Cloudflare",
+      "raw_envelope_bytes": 24076,
+      "raw_envelope_path": "output/evals/deepseek1017-20261017/native/deepseek1017/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "815470961cb18ae3e3790068f6c791ab8ad63c608588fcf9ee429dffa9167a44",
+      "usage": {
+        "completion_tokens": 2695,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 2640
+        },
+        "cost": 0.0018131,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.001617,
+          "upstream_inference_cost": 0.0018131,
+          "upstream_inference_prompt_cost": 0.0001961
+        },
+        "is_byok": false,
+        "prompt_tokens": 1961,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 4656
+      }
+    },
+    "tokenUsage": {
+      "completion": 2695,
+      "prompt": 1961,
+      "total": 4656
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

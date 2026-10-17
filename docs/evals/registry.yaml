@@ -2415,6 +2415,22 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "052"
+        story: attempts/052-deepseek1017-ordered-frame-screen.md
+        date: 2026-10-17
+        status: inconclusive
+        approach: "Scout097 item4 USD4: exact Cloudflare DeepSeek1017 high32768. Native/parity strict five-JPEG schema observed but native reasoning/visible accounting invalid (2040-2026=14 versus complete13-key JSON); generation GET repeats mismatch. Candidate saved-answer source miss and39.093s diagnostic only, no formal quality/cost rank. Root independently confirms figure growth. Stop candidate1/3; fresh Sol/Luna controls3/3 all below.80; symmetric saved-prop review repair. No score promotion/default changes."
+        worker_model: "Codex owner; root independent source inspection"
+        subject_model: "deepseek/deepseek-v4.1-flash-1017 / Cloudflare unknownprecision high32768"
+        git_sha: "9467abc51a6ea2bebf0867fe633691c5a13c7406+deepseek1017-hash-freeze"
+        result_file: benchmarks/results/video-understanding-deepseek1017-vs-sol-luna-v4-20261017-v2.json
+        contract_manifest: docs/evals/story-226-deepseek101720261017-evidence.json
+        evidence_status: diagnostic-accounting-quarantined-non-decision-grade
+        spend_usd_mixed_reported_and_estimated: 0.210174063
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: provider-accounting-correction-or-new-checkpoint-contract
+            note: "Require documented sane native usage and new qualification, not normalized-token substitution. Source-backed scoring-validity repair before broader qualification; no unchanged semantic retry."
       - id: "051"
         story: attempts/051-nemotron35-ordered-frame-first-case-stop.md
         date: 2026-10-16

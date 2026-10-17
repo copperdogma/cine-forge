@@ -1,0 +1,52 @@
+# Attempt052 — DeepSeek V4.1 Flash1017 ordered-frame screen
+
+2026-10-17, approved Scout097 item4, owner Story226. Hard inclusive USD4. Fresh remote base `9467abc51a6ea2bebf0867fe633691c5a13c7406`; isolated `codex/scout097-deepseek1017-cineforge-20261017`, primary dirt untouched. No defaults, account changes, deployment, commit or push.
+
+## Frozen decision contract
+
+Exact `deepseek/deepseek-v4.1-flash-1017`, canonical `deepseek/deepseek-v4.1-flash-20261017`; preferred pinned Cloudflare, unknown precision, no fallback, require_parameters, max prices .30/1.20USD/M. Start high/32768 including reasoning to test source fidelity, no effort sweep. Fresh direct Responses `gpt-6.1-sol` low4096 quality reference and `gpt-6-luna` low1400 economy reference. Native qualifier then maintained adapter same-body parity. Strict13-key schema, terminal state/identity/usage/raw custody before parsing. No output-cache reuse, independent serial case groups; disclose provider input caching.
+
+Three authored synthetic cases `vfp_active_001` dialogue,004 prop continuity,006 storm motion; exactly five original ordered640x360 JPEGs each. No rawMP4/audio/transcript/private payload. Ordinary downstream retention/training remains uncertain; eligible synthetic inputs only, account ZDR unverified. Source/prompt/schema/scorer/goldens frozen; first source-grounded discriminator before progression. Valid decisive candidate miss stops expansion; controls may finish independent paired question. Combined>=.80, deterministic>=.70, rubric>=.80, <=15s and <=USD.02 per subject. Three exposed cases cannot establish six-case/autonomous-QA adoption; maintained headless research has no shipped inference caller.
+
+Fixed blind native Opus4.6 strict score/reason rubric with all five original images **before** answer/reference text. Source interpretation boundaries from prior source adjudications apply symmetrically; do not change rubric/goldens. Source-first independent adjudication verifies material source mismatch; repair demonstrated judge defects on saved answers, preserving originals. No semantic retries or tuning.
+
+## Admission and useful source research
+
+Public [exact endpoint metadata](https://openrouter.ai/api/v1/models/deepseek/deepseek-v4.1-flash-1017/endpoints) and catalog identify Cloudflare1M context, supported strict schema/high effort, .10/.60M actual current rate and unknown precision. Catalog is access evidence only until inference; immutable backend revision remains unproven. [DeepSeek vision](https://api-docs.deepseek.com/guides/vision/) documents max1024tokens/image and original/high processing. [Claude vision](https://platform.claude.com/docs/en/build-with-claude/vision) and native count_tokens qualify full review-image admission; [OpenAI vision](https://developers.openai.com/api/docs/guides/images-vision) informs conservative image reservation. These provider bounds are adapted only for current small640x360 packets and checked against returned usage after inference.
+
+Zero-cost9 rendered packets, five image hashes each, complete strict schema/user text plus image-token bounds within106K candidate and26K native control envelopes. Nine complete source/rubric/schema/saved-reference-output judge packets count2509/2437/2417 tokens using native free count_tokens API. Actual future response lengths are unknown: count every actual complete packet again before its paid review, require<=20K and never truncate. Output8192 per judge. Candidate3*.0711216=.2133648 + sixcontrol allowance.60 + nineOpus*.3048=2.7432 =>3.5565648, recovery/qualification headroom.4434352. Reserve before everyPOST, retain unknown exposure. Existing owner credentials present via sanctioned wrapper; no injection or credential cleanup needed.
+
+Source overlay check13/13 and69 focused packet/schema/scorer/OpenAI checks passed before inference. Discovery lists selected model identities; safe catalog and endpoints snapshots retained. Source inspection of dialogue frame0/4 confirms visibly larger heads/bodies at fixed centers while rectangle/background stay fixed; mechanism remains unknown.
+
+## Verdict and measured limits
+
+**Defer DeepSeek1017 adoption: its native usage accounting is unqualified. Retain Sol as the maintained quality research reference and Luna as economical control.** No qualified candidate winner is demonstrated. The saved candidate answer diagnostically misses the observable growth and takes39.093s, exceeding15s; neither fact establishes general model quality. The root independently viewed original frame00/04 and confirmed figures grow while source background/rectangle stay fixed. Candidate prop/motion remain unmeasured, not failed.
+
+Access exact canonical1017/Cloudflare available; five-image strict schema, terminal completion and native/parity identical bodies observed for all3 arms. **Candidate accounting qualification fails:** scored completion2040 minus reasoning2026 leaves14 visible tokens; native2695 minus2640 leaves55, incompatible with each complete13-key answer. [Official OpenRouter semantics](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens) explicitly defines that subtraction as visible tokens. Zero-cost [generation GET](https://openrouter.ai/docs/api/api-reference/generations/get-generation) repeats native counts and supplies normalized completion2310/2933; these differing tokenizer fields do not repair native decomposition. No undocumented reinterpretation, recomputed bill, subject retry, new effort or route substitution occurred. Generation confirms five images, canonical checkpoint and same provider/cost. Immutable backend revision and route precision remain unknown.
+
+Candidate's already-paid blind Opus review and saved output are **diagnostic only**, quarantined from formal scores/adoption-grade comparisons: deterministic.4667/rubric.45/combined.45835; scored39.093s/router-reportedUSD.001240068. Native49.152s/router-reportedUSD.0018131. Router money exactly matches generation total_cost, but token-effort decomposition and economics superiority claims are unqualified. Formal capability/economics: not measured under valid complete contract. Adoption defer. Diagnostic source contradiction and latency explain why another unchanged subject call is unjustified.
+
+| Fresh qualified reference | n | Deterministic | Effective rubric | Combined | passes | Mean latency | Mean subject USD estimate |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Sol6.1 low4096 | 3 | .52107 | .65000 | .58553 | 0/3 | 7.924s | .0080939 |
+| Luna6 low1400 | 3 | .58720 | .59000 | .58860 | 0/3 | 5.486s | .000434673 |
+
+Matched dialogue control combined Sol.6991/Luna.5975. Sol explicitly observes growth; Luna mentions vague subtle shift and omits enlargement. Both control prop answers correctly observe red0–1/blue2–4 yet label continuity intact: **model-wrong**, under declared visual continuity contract. Both storm controls track lateral motion, omit background streak change, and label measured rather than fast_lateral. Three-case mean near tie is not source-validated superiority: subjective tone/tempo/camera labels and lexical shape synonyms remain **ambiguous/scorer limitations**, non-runtime-blocking. No current score promotion or autonomous-QA qualification.
+
+Original Sol prop judge incorrectly says the answer missed noting blue, penalizes visible stillness and imposes a wide_master label. One symmetric saved-control repair corrects these demonstrated review-contract faults only, preserving true continuity errors: Opus Sol/Luna.72/.72→.55/.55. Lower repaired scores are retained without score shopping. No subject/scorer/target/rubric rewrite. Original reviews and two repair charges are preserved. Judge reasons still contain bounded subjective/lexical judgments; absolute grades remain research evidence.
+
+## Spend, custody and verification
+
+19 settled POSTs:3 native qualifiers,7 scored subjects,7 original Opus reviews,2 saved-control review repairs. **USD.210174063 /4 total accounted**, unknown charge exposure0. Qualification.012383275; subjects.026825788; original judges.131525; repairs.03944. Candidate money.003053168 is router-reported and independently generation-matched; native OpenAI/Anthropic costs are usage×rates estimates, not invoice claims. Candidate accounting telemetry uncertainty is distinct from unknown charge exposure. Native control provider input caching is disclosed in full raw usage; no subject-output cache. N1 candidate diagnostic and n3 controls cannot support broad or p95 comparisons. No failures/retries erased, and no further paid execution.
+
+Current owner source builder13files and69 focused schema/packet/dataset/scorer/OpenAI checks pass. Ruff passes three new scripts; registry/truth-ledger/contract-manifest and methodology validation recorded with exact commands. All original source/golden bytes remain unchanged. Native/parity outgoing bodies match per arm. Every complete actual Opus packet was counted with all original images before dispatch and fit20K; max output8192 never truncated. No account/settings/runtime/default/UI changes. Existing owner credentials only, no injected key and no cleanup obligation; primary dirty entries preserved.
+
+Durable complete synthetic receipts, requests, generation metadata, ledger, source stop and owner discovery: `docs/evals/evidence/story-226-deepseek101720261017/`. Call-time freeze pins source/code bytes; archived runner preserves exact pre-format code. Current report reads tracked receipts, not ignored local output; manifest pins all evidence plus final scripts. Offline replay:
+
+```bash
+PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python benchmarks/scripts/report_deepseek1017_video_comparison.py --verify
+```
+
+Paid commands used owner `scripts/with_cine_forge_provider_env.py` around `run_deepseek1017_video_comparison.py preflight`, `qualify --first`, `judges --first`, `subjects`, `judges`, then `repair_deepseek1017_prop_reviews.py`. Immutable receipts/result block repeat dispatch. Safe regeneration requires new authorized run identity. Recommended next step: source-backed scorer/judge validity repair before broader qualification; for this candidate also require documented accounting correction or materially new checkpoint/contract. No unchanged semantic retry.
+
+Practical effect: Cam avoids treating a cheap but accounting-unqualified source miss as a deployable improvement; the independent controls preserve useful source facts and concrete evaluator defects for the next repair.

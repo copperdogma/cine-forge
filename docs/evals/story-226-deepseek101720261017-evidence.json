@@ -1,0 +1,369 @@
+{
+  "date": "2026-10-17",
+  "base_git_sha": "9467abc51a6ea2bebf0867fe633691c5a13c7406",
+  "files": [
+    {
+      "path": "benchmarks/results/video-understanding-deepseek1017-vs-sol-luna-v4-20261017-v2.json",
+      "sha256": "b0b90a84920c6c0c83befe7f9a8a45ba3a666c8a9f5dba6ccd6966c2a47aa04b",
+      "bytes": 100148
+    },
+    {
+      "path": "benchmarks/scripts/repair_deepseek1017_prop_reviews.py",
+      "sha256": "fbcb629f618b1dfe01e5bc157a72242ab1eaf0e0fd82821dd0a0021b919da6e6",
+      "bytes": 1529
+    },
+    {
+      "path": "benchmarks/scripts/report_deepseek1017_video_comparison.py",
+      "sha256": "35d9799d065a21385dc64a77ee462b27374ffcce02d012b25cd3d23afa2876f5",
+      "bytes": 6985
+    },
+    {
+      "path": "benchmarks/scripts/run_deepseek1017_video_comparison.py",
+      "sha256": "eaa180d69a1f995b706da38186bb0b7dca7458800bd9781089829251e81497fd",
+      "bytes": 20561
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/catalog.json",
+      "sha256": "e152ef550d6e33c175b05e09d6d918b71aebabe6f8101d154203352bd3fc6f35",
+      "bytes": 4411
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/complete-review-token-admission.json",
+      "sha256": "58560796956aae22cb4e0cdc1a6a052430f57be4a133def8f2f7798d32d1e9f9",
+      "bytes": 3710
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/endpoints.json",
+      "sha256": "b0a54c38874aae71454d5727732fb16eef17c52c55f8d3fb486a564ae78191c1",
+      "bytes": 12978
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/first-case-decision.json",
+      "sha256": "bba461a4da6fabf3eea12cd29c646325feca9a8b3d59c4b3c4d9dca7657d0af8",
+      "bytes": 801
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-deepseek1017-vfp_active_001-raw.json",
+      "sha256": "4b4d982ef67d22ce9ba52ea788b9b9e813fade8ea786f1dcd1f728648f2fd313",
+      "bytes": 1554
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-deepseek1017-vfp_active_001-request.json",
+      "sha256": "b113a4642b88ec28c39c91c8381c58e3db563b9882205d5768613924f69f2566",
+      "bytes": 94037
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-deepseek1017-vfp_active_001.json",
+      "sha256": "fa7c725984e279fbf4a63960b57f67557ef9d12ee1a9a1962dd1efe394a2800f",
+      "bytes": 1739
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-luna-vfp_active_001-raw.json",
+      "sha256": "0535de8b29bc1343fe77cfd469cc89e5197ecedd8e682675ac989853d7123e4c",
+      "bytes": 1314
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-luna-vfp_active_001-request.json",
+      "sha256": "fc67b64de688ea65a894d283885d7c2bc21caf930a552b9872720c6970c1fe56",
+      "bytes": 93806
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-luna-vfp_active_001.json",
+      "sha256": "df62206bbcc1027e15b2b34a4cdd8fc6472775e27ff51fc0a584b0366ed2b600",
+      "bytes": 1487
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-luna-vfp_active_004-raw.json",
+      "sha256": "2695dc64d117a41d15daf08cc6752f8411887bf8677324f7ce4ae2e32f95becf",
+      "bytes": 1236
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-luna-vfp_active_004-request.json",
+      "sha256": "6016f3cf286ce964025e82e30312ee9ced6a3c62f327d567947707ab41a6b326",
+      "bytes": 79635
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-luna-vfp_active_004.json",
+      "sha256": "e0aa380aee0e02372ee2ae8e21515548b705ebf2f8c8efa8f8e13427875cc1d6",
+      "bytes": 1412
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-luna-vfp_active_006-raw.json",
+      "sha256": "957a9ada21a25ce7e483410a692b138a269541cbc7a2bbd5bcc1a0225fdd0db0",
+      "bytes": 1573
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-luna-vfp_active_006-request.json",
+      "sha256": "62d04df1200958b37a17534e96f50e9b6bcabcee4295a530ebe4ae501772c8b8",
+      "bytes": 308122
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-luna-vfp_active_006.json",
+      "sha256": "bde6233cd197729d55e781c8a70a7f79e581f3d587ffd60bb6c8ac085d793a40",
+      "bytes": 1749
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-sol-vfp_active_001-raw.json",
+      "sha256": "01efe4d5968620028239211b99cc3207846f3ad5b98e6e7af65bd80b4dbf74fb",
+      "bytes": 1506
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-sol-vfp_active_001-request.json",
+      "sha256": "7b6d0f08289426bf24b2dae2f468735e64749fecbaf0d95d0441be8a674a4bdf",
+      "bytes": 94167
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-sol-vfp_active_001.json",
+      "sha256": "606bf35976f6eb20fbb81980428cd676e6bd91ca38aec70b02a3dba9fddfcfe1",
+      "bytes": 1680
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-sol-vfp_active_004-raw.json",
+      "sha256": "3dc3c32ee48c41989b4d387b59dc96ac3ba5cf1b072deee1a3763b70d52bc03f",
+      "bytes": 1474
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-sol-vfp_active_004-request.json",
+      "sha256": "2ccdd8403b595f83c7d09c273119d9e1edbc162651e71b54b6d4357259c3633d",
+      "bytes": 80075
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-sol-vfp_active_004.json",
+      "sha256": "1c3cb47942cd6cf961b1d581aa09fa00bb05611b3b96e897ec5757e74e624687",
+      "bytes": 1646
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-sol-vfp_active_006-raw.json",
+      "sha256": "d0c8fae7328c0c4caa4b75e147ce2a01ad4cf32fd66d4dfea0d78195f576d848",
+      "bytes": 1738
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-sol-vfp_active_006-request.json",
+      "sha256": "29150fde16f5da49974dbbaae61d3b8ffee98eb81cb86917651691964412c56e",
+      "bytes": 308473
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/judge-opus-sol-vfp_active_006.json",
+      "sha256": "6eeee856591334fbf8f2c56ac6a99bf19507bdcdf8da93a9703cd9e4dcbfacd3",
+      "bytes": 1918
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/ledger.json",
+      "sha256": "75294e203b11e0c4dc276f69fa27da7ef129eb716af5b5eeb508a09b3d056327",
+      "bytes": 3585
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/native/deepseek1017/vfp_active_001-raw-envelope.json",
+      "sha256": "815470961cb18ae3e3790068f6c791ab8ad63c608588fcf9ee429dffa9167a44",
+      "bytes": 24076
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/native/luna/vfp_active_001-raw-envelope.json",
+      "sha256": "b931fc4ff87f9985c52116873537f6838f8ab54396fa491eb1a36a7faeba1d94",
+      "bytes": 12381
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/native/sol/vfp_active_001-raw-envelope.json",
+      "sha256": "e1fbb469164a4e38d614e992717e6330c703ecf9e89effcbfe77672c0a90ddb6",
+      "bytes": 8639
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/native-deepseek1017-generation.json",
+      "sha256": "40b8da9ea3649e310462d150527d2008917e716c4fc215cdf9c5b1c1e78eeb61",
+      "bytes": 1764
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/native-deepseek1017-vfp_active_001-request.json",
+      "sha256": "a65e79f35d5c7cafe78d85d82054c5178173cbe2c762074c6ef81b5ec7768a33",
+      "bytes": 100050
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/native-deepseek1017-vfp_active_001.json",
+      "sha256": "9339536d0ff382f97e8315aa588cab83db6cd9f50a6361ef7a069458b20a21cf",
+      "bytes": 4232
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/native-luna-vfp_active_001-request.json",
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517",
+      "bytes": 99011
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/native-luna-vfp_active_001.json",
+      "sha256": "0b7ac98789bb1e64af6cb822a848c0de9aa4de2cee9578ee421159e282504ed5",
+      "bytes": 3820
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/native-sol-vfp_active_001-request.json",
+      "sha256": "35fa150d6cd6d32f95bbd36a143251e5976194aab56531fb570f60c2c0df7460",
+      "bytes": 99012
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/native-sol-vfp_active_001.json",
+      "sha256": "d3c74805df0f383b0489a467e41c4d274dec8f701528d8b1aa64b08ef6565bff",
+      "bytes": 4012
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/owner-discovery.txt",
+      "sha256": "8c8687083d1424595b38102ac70754a0aa6e3960c0b8f80769c5f70bb9885bb4",
+      "bytes": 7807
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/repair-opus-luna-vfp_active_004-raw.json",
+      "sha256": "d86d8e8e958a109e9fe534d3eb7cce272d91e8692f430da47795cd0220526e02",
+      "bytes": 1331
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/repair-opus-luna-vfp_active_004-request.json",
+      "sha256": "ebea412f062ac0a07935d86434318f28cb3fb141adee8877bcf5d9a7efc87acd",
+      "bytes": 80355
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/repair-opus-luna-vfp_active_004.json",
+      "sha256": "b2535609f673b6a3e587efbe0c8684adb10494406ab541a1eb6173312d416a10",
+      "bytes": 1504
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/repair-opus-sol-vfp_active_004-raw.json",
+      "sha256": "4b5785d581e410ef2295cfa010139c2773584e5a7d487d6b900aff57cfab7410",
+      "bytes": 1614
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/repair-opus-sol-vfp_active_004-request.json",
+      "sha256": "231c94277a75b1445034da5c3d7bcadf9bee42e1f7ddaa664d322490a1b2ec5e",
+      "bytes": 80795
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/repair-opus-sol-vfp_active_004.json",
+      "sha256": "cce2ad9fff808fbd98e660e10ecf6b0a41c2e482961b77b4fbc5d9265049e051",
+      "bytes": 1783
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject/deepseek1017/vfp_active_001-raw-envelope.json",
+      "sha256": "e5fc97956eeb50cd4f9fb88932d54afc55dfcf7f927804899a0cb424966a25b7",
+      "bytes": 18967
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject/luna/vfp_active_001-raw-envelope.json",
+      "sha256": "e201d95259b9f222fbf253d5036601bed0f8cb378364fd14cfffbca33e1161d9",
+      "bytes": 11450
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject/luna/vfp_active_004-raw-envelope.json",
+      "sha256": "f43ed925275deafee349aa70250e7e39935368e4bca09399d05de9f5abb615e0",
+      "bytes": 11521
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject/luna/vfp_active_006-raw-envelope.json",
+      "sha256": "08b54e45a579f082d61a470200c42a47589e1abf08bf9587b8564692b4c87945",
+      "bytes": 12253
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject/sol/vfp_active_001-raw-envelope.json",
+      "sha256": "567aa1b1c980107df3417ff9dd884b1d3a59d56c901fd206a5b24e66afec39fc",
+      "bytes": 8629
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject/sol/vfp_active_004-raw-envelope.json",
+      "sha256": "467e71b9fc89aeb66e0b0e054654eb0519e9ac1f9f9bf72ea8bb91d34e478467",
+      "bytes": 10725
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject/sol/vfp_active_006-raw-envelope.json",
+      "sha256": "9f62800c77099d548eca752d12fceedaacc7be1c7655d0a4a7ad4977c70628e2",
+      "bytes": 8654
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-deepseek1017-generation.json",
+      "sha256": "07c925206b22a14a12ef249e224024aa323102c7e0caa4d82fe2d6a338f76d2b",
+      "bytes": 1778
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-deepseek1017-vfp_active_001-request.json",
+      "sha256": "a65e79f35d5c7cafe78d85d82054c5178173cbe2c762074c6ef81b5ec7768a33",
+      "bytes": 100050
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-deepseek1017-vfp_active_001.json",
+      "sha256": "f42d4d2e0ae49e686122b1d2860bc91f089ba3b4202492e1b1131d3047b18e24",
+      "bytes": 4215
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-luna-vfp_active_001-request.json",
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517",
+      "bytes": 99011
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-luna-vfp_active_001.json",
+      "sha256": "64c3a650a634ba7407601fc79f732439ef1cab45094d6bf310edeebc14ae40a8",
+      "bytes": 3660
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-luna-vfp_active_004-request.json",
+      "sha256": "999a219b80982ce3d3c0bc1b618c340ebb7f5ad0c9522adb662029667cad4356",
+      "bytes": 85071
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-luna-vfp_active_004.json",
+      "sha256": "140061f9d6b3e710df59040001b31997d0c57bc8e7efd5d3c03a7543750422e6",
+      "bytes": 3695
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-luna-vfp_active_006-request.json",
+      "sha256": "01d478770d07fa488eacdc272b2a30e2eb2d80aed5c7834942257df1b20a813e",
+      "bytes": 313563
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-luna-vfp_active_006.json",
+      "sha256": "a8de13b0a6b27a6221063843dfbf74a8626ae80b03c52e6c912d3eda6b44e500",
+      "bytes": 3669
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-sol-vfp_active_001-request.json",
+      "sha256": "35fa150d6cd6d32f95bbd36a143251e5976194aab56531fb570f60c2c0df7460",
+      "bytes": 99012
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-sol-vfp_active_001.json",
+      "sha256": "a0d6d0d0258d70cba6ec82e35f7f4c23f33e5333f1ee2acdd6e35046c5efffcf",
+      "bytes": 4004
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-sol-vfp_active_004-request.json",
+      "sha256": "0151fac5412db8b9f1aebb78001d98f38a3e7dc58b12cb0c452714a753f1fa05",
+      "bytes": 85072
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-sol-vfp_active_004.json",
+      "sha256": "f859f4ee77b62b1575c7e183a3da6a7615bc55f8d530d428ba1e53c3a98fe1fc",
+      "bytes": 4132
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-sol-vfp_active_006-request.json",
+      "sha256": "6a83d0876b23e774bd23b066aa47eca234c2356c2060766d32340544a18bd7a4",
+      "bytes": 313564
+    },
+    {
+      "path": "docs/evals/evidence/story-226-deepseek101720261017/subject-sol-vfp_active_006.json",
+      "sha256": "f5d476d6fba3420642e05084c71a009b7baa0b2bdf8c3f37638ecf58a704cf8d",
+      "bytes": 4014
+    },
+    {
+      "path": "docs/evals/snapshots/story-226-deepseek101720261017/run_deepseek1017_video_comparison.py.txt",
+      "sha256": "ca9990ef552b8d4c14df83661c7b241849ef8b73d6c6f42dcae3182b8371ab72",
+      "bytes": 19204
+    },
+    {
+      "path": "docs/evals/story-226-deepseek101720261017-deepseek1017-freeze.json",
+      "sha256": "88718c3d673f4255f9dd233b30007d98c8a81d708e5ef075226fee409dcacf20",
+      "bytes": 22183
+    },
+    {
+      "path": "docs/evals/story-226-deepseek101720261017-validation.json",
+      "sha256": "14681aed265c89281aae0513813851bec662bbb78dd600b51fa87cafea9e3763",
+      "bytes": 1951
+    }
+  ],
+  "receipt_custody": "complete approved synthetic raw before parsing, no secrets; safe original JPEG bytes embedded",
+  "regeneration": "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python benchmarks/scripts/report_deepseek1017_video_comparison.py --verify",
+  "paid_work_closed": true
+}

@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.016895",
+  "latency_ms": 7216,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1236,
+    "path": "output/evals/deepseek1017-20261017/judge-opus-luna-vfp_active_004-raw.json",
+    "sha256": "2695dc64d117a41d15daf08cc6752f8411887bf8677324f7ce4ae2e32f95becf"
+  },
+  "reason": "The summary correctly identifies the red-to-blue change and static composition. Color tags include 'red' and 'navy' which are appropriate. Camera tags correctly include 'static' but miss 'wide_master'. The continuity_status is marked 'intact' which contradicts the reference's 'broken' status \u2014 the red-to-blue change is a continuity break, not intact continuity. This is a significant factual error. Tone is listed as 'detached' but reference indicates none. Emotion tags are correctly empty. Audio tags are empty which is correct. Evidence is well-grounded with appropriate frame references. The main penalty is for marking continuity as 'intact' instead of 'broken' and adding an unsupported tone tag.",
+  "request_id": "msg_011Cg84nn7cP6ycCHH1Dh8mr",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2489,
+    "output_tokens": 178,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

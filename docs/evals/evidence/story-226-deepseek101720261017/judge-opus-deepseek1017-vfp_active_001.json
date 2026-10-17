@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.018505",
+  "latency_ms": 10539,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1554,
+    "path": "output/evals/deepseek1017-20261017/judge-opus-deepseek1017-vfp_active_001-raw.json",
+    "sha256": "4b4d982ef67d22ce9ba52ea788b9b9e813fade8ea786f1dcd1f728648f2fd313"
+  },
+  "reason": "The model describes the scene as fully static ('stillness', 'static') and explicitly states 'their positions and shapes remain unchanged.' The reference clearly indicates that both figures enlarge across the ordered frames \u2014 this is a key observable motion detail that was missed entirely. The motion tag should be 'measured' rather than 'stillness.' The tone is labeled 'detached' vs. reference 'intimate.' The emotion tag 'isolation' is not supported by the reference (which lists none). Color tags include 'amber' instead of 'teal' (though navy is correct). The model correctly identifies continuity as intact and notes the white badge/rectangle on the right figure. However, missing the central observable change (figure enlargement) is a significant error that undermines the analysis. Audio fields are empty, which is correct. Evidence entries are grounded but describe only static features, missing the growth. Overall, the core motion observation is wrong, tone/emotion are mismatched, and color partially matches.",
+  "request_id": "msg_011Cg84gWtQVF4cTGNcfNo3G",
+  "score": 0.45,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2576,
+    "output_tokens": 225,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

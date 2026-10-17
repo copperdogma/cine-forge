@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.019525",
+  "latency_ms": 8689,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1573,
+    "path": "output/evals/deepseek1017-20261017/judge-opus-luna-vfp_active_006-raw.json",
+    "sha256": "957a9ada21a25ce7e483410a692b138a269541cbc7a2bbd5bcc1a0225fdd0db0"
+  },
+  "reason": "The summary correctly identifies the cyan figure moving left-to-right beneath an arch, with diagonal lines in the background, and the small rectangle staying with the figure. However, there are notable mismatches: (1) Tone: 'detached' vs reference 'urgent, tense' \u2014 this is a significant mismatch. (2) Motion: 'measured' vs reference 'fast_lateral' \u2014 the figure clearly traverses a large portion of the frame across 5 samples, suggesting fast lateral movement, not measured. (3) Camera: 'static' is partially correct but misses 'wide_master' from the reference. (4) The description says 'carrying' the rectangle rather than it being beside the figure, which is a minor inaccuracy. (5) Color tags 'navy, teal' match the reference well. (6) Continuity 'intact' is correct. (7) Evidence is properly grounded with 3 entries at frames 0, 2, and 4. (8) Audio fields are empty as required. The tone and motion mismatches are the primary penalties, as they reflect observable characteristics from the frames that were incorrectly characterized.",
+  "request_id": "msg_011Cg84p1cUybVfsyNSvxHuo",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2530,
+    "output_tokens": 275,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

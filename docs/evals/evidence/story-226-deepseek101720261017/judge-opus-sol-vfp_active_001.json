@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.01912",
+  "latency_ms": 9051,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1506,
+    "path": "output/evals/deepseek1017-20261017/judge-opus-sol-vfp_active_001-raw.json",
+    "sha256": "01efe4d5968620028239211b99cc3207846f3ad5b98e6e7af65bd80b4dbf74fb"
+  },
+  "reason": "The summary correctly identifies two simplified figures (beige left, light blue right) that grow larger across frames, with a pale rectangle on the right figure. Continuity is correctly marked as intact. Motion tag 'measured' matches. Color tag 'navy' matches one reference tag but misses 'teal'. Tone is 'detached' vs reference 'intimate' \u2014 a mismatch. Camera tag 'locked_two_shot' implies a specific camera mechanism (locked shot) that isn't fully established from the frames alone, though this is noted as excluded from scoring. Audio tags/notes are empty, which is correct. Evidence is grounded in frames 0, 2, 4 with reasonable observations, meeting the 2-4 entry requirement. The claim that figures grow taller/wider is consistent with the source. The description of 'lower edges stay aligned' is approximately correct. Minor issues: missing 'teal' color tag, wrong tone tag. Overall solid but tone mismatch and missing color tag bring it just below the 0.8 threshold.",
+  "request_id": "msg_011Cg84hJcz1dRhPZoqrAAfU",
+  "score": 0.78,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2599,
+    "output_tokens": 245,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

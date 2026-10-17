@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.017545",
+  "latency_ms": 7401,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1314,
+    "path": "output/evals/deepseek1017-20261017/judge-opus-luna-vfp_active_001-raw.json",
+    "sha256": "0535de8b29bc1343fe77cfd469cc89e5197ecedd8e682675ac989853d7123e4c"
+  },
+  "reason": "The summary mentions 'shift subtly' for the silhouettes but fails to identify the key observable change: both figures enlarge across the ordered frames. The tone is 'detached' instead of 'intimate'. Color tags include 'gold' but miss 'teal' (the reference lists navy and teal). The motion tag 'measured' matches. Continuity status 'intact' is correct, and the continuity note about the pale rectangle on the right figure is captured in evidence. Audio tags are empty, which is correct. Evidence entries are grounded but don't mention the size increase, which is the primary observable motion/change. The summary's claim of 'silhouettes shift subtly' is vague and doesn't capture the enlargement. Overall, key observations (figure enlargement, teal color) are missed, and tone is wrong.",
+  "request_id": "msg_011Cg84hzwPS8c5QGcJcWFcF",
+  "score": 0.6,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2524,
+    "output_tokens": 197,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

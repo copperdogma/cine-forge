@@ -1,0 +1,40 @@
+{
+  "base_git_sha": "9467abc51a6ea2bebf0867fe633691c5a13c7406",
+  "commands": [
+    {
+      "command": "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python benchmarks/scripts/build_video_understanding_truth_v4.py --check",
+      "result": "13 frozen source files match"
+    },
+    {
+      "command": "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m pytest tests/unit/test_video_understanding_gpt6_contract.py tests/unit/test_video_understanding_benchmark.py tests/unit/test_video_understanding_dataset.py tests/unit/test_video_understanding_scorer_adversarial.py tests/unit/test_video_analysis_schema.py -q",
+      "result": "69 passed"
+    },
+    {
+      "command": "/Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m ruff check benchmarks/scripts/repair_deepseek1017_prop_reviews.py benchmarks/scripts/run_deepseek1017_video_comparison.py benchmarks/scripts/report_deepseek1017_video_comparison.py",
+      "result": "passed"
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/check_eval_registry.py; PYTHONPATH=src python scripts/check_truth_audit_ledger.py; PYTHONPATH=src python scripts/build_eval_contract_manifest.py --check",
+      "result": "all passed; no truth/scorer/schema change so existing immutable v22 unchanged"
+    },
+    {
+      "command": "node scripts/methodology-graph.js build; node scripts/methodology-graph.js check; git diff --check",
+      "result": "passed; prior architecture/UI freshness warnings unrelated"
+    }
+  ],
+  "credentials": {
+    "existing_owner_provider_presence": [
+      "OPENAI_API_KEY",
+      "ANTHROPIC_API_KEY",
+      "OPENROUTER_API_KEY"
+    ],
+    "injected": false,
+    "cleanup": "none required; primary dirty entries unchanged"
+  },
+  "actual_review_complete_tokens": [
+    2388,
+    2691
+  ],
+  "unknown_charge_exposure_usd": 0,
+  "provider_native_usage_accounting": "unqualified candidate, no normalization repair inferred"
+}

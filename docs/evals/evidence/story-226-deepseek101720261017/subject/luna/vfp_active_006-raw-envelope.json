@@ -1,0 +1,297 @@
+{
+  "access_programs": null,
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1792251803,
+  "created_at": 1792251798,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "id": "resp_04423760fe452159016ad39796050887d083bfc9c7299593da",
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 1400,
+  "max_tool_calls": null,
+  "metadata": {},
+  "model": "gpt-6-luna",
+  "moderation": null,
+  "object": "response",
+  "output": [
+    {
+      "content": [],
+      "encrypted_content": "gAAAAABq05ebcV8eCZUklh6gecRJCEHECcsaper5i66JtRQFUs-UjI3LjnX23YT7xMfohgQ0bK5C77kQzXfUrHRjOULy4Z_xcvLg6YM-4ADSUFQzFQyMxuVfVRTJtgj_24_KD1jK9MYhSHH7A946DwEKHw8HUiFgA2jaQ0bVv2CBQ7IkJkM235xztgW18iLIr3_Kk5LLPEmSseaO9fiHjtW-52Ly62ftHFIwLWsmWVmEKlL8eibmcAix84MJwTr7cGr4EQUKvqXrWFHq1m_-ksdi9tqs9sO5Rm5gH_9EerpQKEaHS4zbOF_jym7vlcguhKPCFZUnMBhCN0KhxoB3YBdfm_5Kif5RDYuGABwhQuRIBtS-29Piqsec277aBMDjKbWfzSQD51LOzD8oWc-ERiewrKN5zPOGlB0217KCwASimehrzdH4_TdfPdCs4gPovdyCVINO1Fypd7nXeOfVGcDlYgt1Wy9ehgDDiAY-36bKufZCzIrjLpCM4JoyuhfkoAXobgGG7N-ygs9uM7PMSYPYrvMs0OlArXiICX68ot17mUXVuhizsuYafbqAGY4DKxCOKgQdd28i0eBgyH7tZtX8YLoOm1niwKFWxINeh2guK1_XuhikVth65RPWXBq05mMhN0G2VMHvK_mgbw6WH0PeOvPp35F8jrL2RK6xBa4CdI_xM7VOBULLRrvpDTB_oIfyDJLZonbj3IpHq5ejr2LpVOEePOBGZ4527j0X_vypKbbtscGZ7rbiJygTUpRvIG6beMposnGBfk_5Qdj0onMB9IdrZHa1n0kQ-CSzOKiEEeXEwXU-0IE2czKITO3L_J-JFsazDVu1jQOicDTTmqsiXS5B4SBXG7SbCdmmeDeJG2LcUIyEROYwM9o4kwA2eKXORMW-EXXpaNoIQUuCJHGVI7QDh562rFhZW59gzQGGBgJlMC9hMBpCKCZBvyLI9PnPqX9Qe5pM6SIlgzyhm_Im_InWnX4OWH31UdF_XNkolvyoHz8CDI0fdpUVroAN3eUwWnkxSoG655CSQ06Cv2yezLQZJNn_0FNn4oJQyj0HCJViBi6QhjFOabsp7NMfXzIoTiXuly7k7MoA7RlDAICtAo5ZJlUTcd6uOCoLdqICW5vo_WhrMs8wQS6skEfUGpp00kx1Amug3wuftOYJAr5oaz76-YKUN-UPbsVaDoTXOlaSomoaBvp9t0eSgPTnJiQfRuCHhERHl0ofWCFzsLWNwE6SzYxYUyvXoNe3e-OozkYnMEyayk3hvv121_NSbdx9ihwRNi5vO9OaEQ2E1f2qVA5IeLlVouPYzLG3SN6XwA_lIjogUSkFU5hf8CnMGMZ9xw2bmL7jIK_S_MRrV0We9Vnk7GGVDrtkjcJFHcFhwwqRtaP8UKCw1rzieO7LdMbyNlFPMX-Q1-kVT3uMsUKblCKQMXdrZ41BYtKIg1swBj4J01_qYtL9OhCYyduUk31l2aaNj1Ta3CK1sRTu1LGh6I1-4Om69kBuPBKny_bAGdP2OKIq_4UXkfYBujlwRM1UYQsQOV67wrYKCGgcBCCkDHvTgcClWvLWdipVmwKZkaU1YUwJAFfaPP5oF--XVOD-LxVNIutXmKatjTRsi3jUkqJie4pa0PBjesVTJl_ZTsDZ25YU4yVBfXrk-bTR32-B3kmv7vUJEtn-b_KKG17X0jStGqKDeg5SIN20I9kUtO0Nu5ufI2MqcRS3T_4dS15xH_ibPD-Sg-NvgV73u5NdSa4GuCKX1ogoSdh_aqc9bBzBLS3dC58P8BOKVBmxw2mMQz08lzaUzdFAVN0XNwRUtvBgZiR5vqeO_dmn63cd5jb6u3i2IUtfmP2Iv87lmwFTv1VzXDQOxc90Bugs0gylN3zJwNy8PmPiOLXswOXuys4JKTZyADV0_ZvXwkUMQW6nnsTszo9IS3ZoGNAWprCfbzwz-Od4bh__8y5JXyqo50Z4wm1_g18BqHjqqbdqEFkVEIJ7DZJO1rYOgq8oW8Rh06Rgnv54oq4qcTgEXLivYHxZ4uKiwqsZPWQAxvl5Kc2IXA4nLSDSxx52k1goNnFLPdHAy63ExSZKDdpqcNkUtbbP8GD_w3f1XQ4zIqUH5U1SXvddK50q2-vDmLTIrHtPmPHOLsH9ERFs82pGt1nvoLNcCirk6Guz8dSwSJEmEzJ21HNn1Et4ndG7QHqiW9qJPZQTZZxvk7Oxd0mcBEttWwcfnxC0hyND2LGgfTLKeIDZocmR65zC9UgjhpuMlHnXDcamn1rlhMhlMtbHJfcU-qs-M1a5WLT3uX8tFubzHPJ_35NwfP1tUbUaVG-DQ6Gjz6OlwtuBA2Ah3BUMsbccCKZVYbF6vEyA4V9m7hXtX5hqtAZssdawaBLhH-SAiVbgZAdvNXxuVzRHyK3EbDJA-nzmqUCXjQ4lA7MPVsYjyoTUFwxdEUv19A5HMCN1oIlhsrHx8JfxsUKPG0iyWLBEiUSP1_CPumD72p3FYbd4ls2h5yqyhWQoikcdGIQHRbhzjunh91PBK3SLK3gUggeByRo2QIGl3C_bfyaXD0FrKF1PYi38uJxhvY047oipt0wEOaKr4Y14YXJFy7E1wALziV1Tx0IPQqQdFrsPJMEOehcRQnu89Uv7_NWATvpHKm5iT335jj99ai-lEzWY9-OQu5e32K6ES-9tDTyHd3FPqreb61nntXjb-QClmqk7WiMpUWuxk16ZoCI9ebZjcB2VDkSWs0m2UNDrCT5V2YC9J-mTarFnzgmMRUPAl5icskWUjmcCyridOs95G3_xK_4lQP2YJNTtr5SBBt0CCQan10EUR79KZHR7rp9s3DRNXiLb8Sd6D_3muIrV038WnQUwSifYvg8k4xxwP4MjtBHJOsAmcQ6rBpSi2LoljdP1LqgDnYLHr0PDM9SoBMyo1x7hsPd4h-0PDwKIEwdjJV2tf_3neNEXowc3gmPfiwq7JIDorX0jtgBcbjFq6VGY8xRdSzAaiUTRi8PVm13EumwqhyHpsDpN7-c-sT_zXVWrO1F9ojEcgAUNPeigJ-gxxCZU5O4miUCAl0wSKTOVkfIhP1zfhbxfbKnJVoT8Cx3RXvgiWU3isPYn6bbqxGO4mylB6mkgGktI3XPrRqG2WyN1x-8GGSE3Kmuwr0WNlWTbFtyCS16oPPLIERITpvgfhct4iyVXXLdPCyz22xNzD_Kl7Ny-9FE0iJov_IBhBajJiwFWhIHRmnPfN7uC95pATPYOBkxUqWKvL2A5Qx-ui4sWK6vezq7wj5nt5rSEaVsw7ZERxecENVcAvoHQB88mPIwDeQR0XTVoxjZubu6uf9YKI9Wqr5y4mJpfpmF2WKpr2uE-SFDeL5JrRFqJnGPDXv0vc6NQyP92Xxvfsc6yc0TUVSwOOYMEzWsdyKfgRSyBWLuZ71GcrfcDVRo0QxjDj2kVblZGodM4IgwP09WBPbfL_h1oMFo05o7dvb7bQqN2oectR1BSDTV4etECK7Nq2A4WyzrB0BmALiZD2KGbZ7Puri4pgJ0aqPjeu6uEA5hnTmmZ_RAmG5prxLmXc1Z6Pin2oW4-5nU-q7mCfnmqzc3B5qJ3J-C6AL9xWfhjbmWvzs5DEy7x7cuVTz5adXVSboLDS3yZWESqouKZZmsEj3p1Xk0ez06MgXVKPuf-1koEMm4FU4YFmFtxXEx8B1aB2lqQNAsGtkps1Cl2YMSvDg2z5CIZSguri3Yu0MC217__xIo1PNpT4AQBfPjcA5EMhsh4decS9GGp_WE=",
+      "id": "rs_04423760fe452159016ad39796f4c087d091d44c2cec8f81b0",
+      "summary": [],
+      "type": "reasoning"
+    },
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\n  \"clip_id\": \"vfp_active_006\",\n  \"summary\": \"A simplified cyan person-like figure carrying a small rectangular shape moves from the left toward the right beneath a large curved arch. Thin diagonal lines fill the dark blue background.\",\n  \"tone_tags\": [\"detached\"],\n  \"emotion_tags\": [],\n  \"color_tags\": [\"navy\", \"teal\"],\n  \"camera_tags\": [\"static\"],\n  \"motion_tags\": [\"measured\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"The cyan figure is positioned on the left side beneath the curved arch.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The figure appears near the center, still holding a small outlined rectangle.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The figure is positioned on the right side while the large arch remains in place.\"\n    }\n  ],\n  \"overall_confidence\": 0.91\n}",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_04423760fe452159016ad39799511087d0bee2baa28c5e1850",
+      "phase": "final_answer",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "status": "completed",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "description": null,
+      "name": "video_analysis_prediction",
+      "schema": {
+        "additionalProperties": false,
+        "description": "Model output normalized before deterministic scoring.",
+        "properties": {
+          "audio_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "audio_tags": {
+            "items": {
+              "enum": [
+                "alarm",
+                "drone",
+                "heartbeat",
+                "muzak",
+                "percussion",
+                "radio",
+                "silent",
+                "soft_music",
+                "speech",
+                "voiceover"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "camera_tags": {
+            "items": {
+              "enum": [
+                "cross_cut",
+                "crash_zoom",
+                "handheld_jitter",
+                "locked_two_shot",
+                "lateral_track",
+                "overhead_reveal",
+                "profile_closeup",
+                "slow_pull_back",
+                "slow_push_in",
+                "static",
+                "whip_pan",
+                "wide_master"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "clip_id": {
+            "description": "Local validation: minLength=1",
+            "type": "string"
+          },
+          "color_tags": {
+            "items": {
+              "enum": [
+                "amber",
+                "desaturated",
+                "gold",
+                "green",
+                "magenta",
+                "monochrome",
+                "navy",
+                "neon",
+                "red",
+                "sepia",
+                "teal",
+                "violet"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "continuity_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "continuity_status": {
+            "enum": [
+              "intact",
+              "broken",
+              "ambiguous"
+            ],
+            "type": "string"
+          },
+          "emotion_tags": {
+            "items": {
+              "enum": [
+                "anger",
+                "grief",
+                "hesitation",
+                "isolation",
+                "nostalgia",
+                "panic",
+                "relief",
+                "resolve",
+                "suspicion",
+                "tenderness",
+                "vulnerability",
+                "wonder"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "additionalProperties": false,
+              "description": "Evidence tied to one submitted image in the ordered frame packet.",
+              "properties": {
+                "cue": {
+                  "description": "Local validation: minLength=1",
+                  "type": "string"
+                },
+                "frame_index": {
+                  "description": "Local validation: minimum=0, maximum=4",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "frame_index",
+                "cue"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "motion_tags": {
+            "items": {
+              "enum": [
+                "abrupt_cut",
+                "escalating",
+                "fast_lateral",
+                "jitter",
+                "match_cut",
+                "measured",
+                "pulsing_light",
+                "slow_drift",
+                "spiral_orbit",
+                "stillness"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "overall_confidence": {
+            "description": "Local validation: minimum=0.0, maximum=1.0",
+            "type": "number"
+          },
+          "summary": {
+            "description": "Local validation: minLength=1",
+            "type": "string"
+          },
+          "tone_tags": {
+            "items": {
+              "enum": [
+                "detached",
+                "hopeful",
+                "intimate",
+                "mournful",
+                "nostalgic",
+                "ominous",
+                "playful",
+                "regretful",
+                "surreal",
+                "tense",
+                "triumphant",
+                "urgent"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "clip_id",
+          "summary",
+          "tone_tags",
+          "emotion_tags",
+          "color_tags",
+          "camera_tags",
+          "motion_tags",
+          "continuity_status",
+          "continuity_notes",
+          "audio_tags",
+          "audio_notes",
+          "evidence",
+          "overall_confidence"
+        ],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "json_schema"
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2890,
+    "input_tokens_details": {
+      "cache_write_tokens": 2887,
+      "cached_tokens": 0
+    },
+    "output_tokens": 429,
+    "output_tokens_details": {
+      "reasoning_tokens": 178
+    },
+    "total_tokens": 3319
+  },
+  "user": null
+}

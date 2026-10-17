@@ -1,0 +1,78 @@
+{
+  "arm": "sol",
+  "name": "native-sol-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.0099835,
+    "latencyMs": 7809,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6.1-sol",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0aec9ed305ebdbd1016ad39736995487d093a9ca1875492816",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified human-shaped icons, beige on the left and light blue on the right, stand against a dark blue background above a dark horizontal band. Their silhouettes gradually grow taller and slightly wider while retaining their positions; a pale rounded rectangle remains on the blue figure's lower torso.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\"],\"camera_tags\":[\"locked_two_shot\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Both figures retain their left-right arrangement and bottom alignment as their silhouettes gradually enlarge across the ordered samples.\",\"The pale rounded rectangle stays on the blue figure's lower torso throughout.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A beige icon stands on the left and a light-blue icon on the right, with a pale outlined rounded rectangle on the blue torso.\"},{\"frame_index\":2,\"cue\":\"Both silhouettes extend higher and slightly wider than in the first sample, while their bottoms remain aligned with the same dark band.\"},{\"frame_index\":4,\"cue\":\"The figures have taller bodies and higher heads, with the blue figure's pale torso rectangle still at the same lower position.\"}],\"overall_confidence\":0.96}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0aec9ed305ebdbd1016ad39736995487d093a9ca1875492816",
+      "model": "gpt-6.1-sol",
+      "raw_envelope_bytes": 8639,
+      "raw_envelope_path": "output/evals/deepseek1017-20261017/native/sol/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "e1fbb469164a4e38d614e992717e6330c703ecf9e89effcbfe77672c0a90ddb6",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 276,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3166
+      }
+    },
+    "tokenUsage": {
+      "completion": 276,
+      "completionDetails": {
+        "reasoning": 0
+      },
+      "prompt": 2890,
+      "total": 3166
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

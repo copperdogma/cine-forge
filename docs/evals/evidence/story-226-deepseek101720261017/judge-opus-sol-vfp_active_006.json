@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.02061",
+  "latency_ms": 8617,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1738,
+    "path": "output/evals/deepseek1017-20261017/judge-opus-sol-vfp_active_006-raw.json",
+    "sha256": "d0c8fae7328c0c4caa4b75e147ce2a01ad4cf32fd66d4dfea0d78195f576d848"
+  },
+  "reason": "The summary correctly identifies the cyan icon moving left-to-right beneath an arch against a dark blue background with diagonal lines, which is broadly consistent with the reference's description of a cyan abstract runner moving laterally through a blue tunnel with rain-like streaks. However, there are several mismatches: (1) Tone: the model says 'detached' while the reference says 'urgent, tense' \u2014 this is a significant mismatch. (2) Motion: the model says 'measured' while the reference says 'fast_lateral' \u2014 the lateral movement is correct but the speed characterization differs substantially. (3) Camera: the model says only 'static' while the reference includes both 'static' and 'wide_master' \u2014 partial match. (4) Color tags match well (navy/teal). (5) Continuity is correctly identified as intact with the small rectangle noted. (6) Emotion tags are correctly empty. (7) Audio tags are correctly empty. (8) Evidence is frame-grounded with 3 entries covering frames 0, 2, and 4. The tone and motion mismatches are significant enough to prevent a passing score, as 'measured' vs 'fast_lateral' and 'detached' vs 'urgent/tense' represent substantially different readings of the visual content.",
+  "request_id": "msg_011Cg84oMEvGjkXnmKPTiKuL",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2602,
+    "output_tokens": 304,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

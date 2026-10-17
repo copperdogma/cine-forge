@@ -1,5 +1,13 @@
 # Changelog
 
+## [2026-10-17-01] — Preserve DeepSeek1017 ordered-frame screen (Scout 097)
+
+### Added
+- Retain exact Cloudflare native/parity receipts, fresh Sol/Luna references, full-source reviews, source adjudication, settled spend, and offline verification.
+
+### Changed
+- Quarantine candidate scores after inconsistent native token accounting; preserve the visible-growth miss as diagnostic evidence only. Retain research references without changing a product default or claiming autonomous QA.
+
 ## [2026-10-16-01] — Screen Nemotron on ordered frames (Scout 096)
 
 ### Added

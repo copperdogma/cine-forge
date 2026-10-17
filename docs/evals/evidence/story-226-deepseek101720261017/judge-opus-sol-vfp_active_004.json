@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.019325",
+  "latency_ms": 8276,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1474,
+    "path": "output/evals/deepseek1017-20261017/judge-opus-sol-vfp_active_004-raw.json",
+    "sha256": "3dc3c32ee48c41989b4d387b59dc96ac3ba5cf1b072deee1a3763b70d52bc03f"
+  },
+  "reason": "The summary correctly identifies the red-to-blue color change between frames 1 and 2 and the static composition, which matches the reference. However, there are several issues: (1) continuity_status is 'intact' when the reference says 'broken' due to the color change - this is a significant factual error; (2) color_tags includes 'red' but omits blue (though the reference notes generic 'blue' isn't in allowed color_tags, the model still missed noting the change properly); (3) motion_tags includes 'stillness' when reference says none; (4) tone_tags includes 'detached' when reference says none; (5) camera_tags only has 'static' but misses 'wide_master'; (6) audio_tags and audio_notes are empty, which is correct. The continuity_status being wrong ('intact' vs 'broken') is a major error that significantly impacts the score. The evidence entries are reasonably grounded in the actual frames, and the frame-level observations are accurate.",
+  "request_id": "msg_011Cg84nALJdQ6kGPnto5U5N",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2635,
+    "output_tokens": 246,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

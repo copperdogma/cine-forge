@@ -1,0 +1,78 @@
+{
+  "arm": "sol",
+  "name": "subject-sol-vfp_active_004",
+  "response": {
+    "cached": false,
+    "cost": 0.0109035,
+    "latencyMs": 8698,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "prop_swap_continuity_break",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_004",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+      ],
+      "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6.1-sol",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0da143f3819fba8a016ad39780ca8887d0a7b5c5db6d72df1b",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\n  \"clip_id\": \"vfp_active_004\",\n  \"summary\": \"A minimalist graphic shows two overlapping brown rectangular forms against a dark navy background. A small white-outlined central shape changes from red to blue between samples 1 and 2, while the composition remains fixed.\",\n  \"tone_tags\": [\"detached\"],\n  \"emotion_tags\": [],\n  \"color_tags\": [\"navy\", \"red\"],\n  \"camera_tags\": [\"static\"],\n  \"motion_tags\": [\"stillness\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [\n    \"The central outlined shape changes from red in frame 1 to blue in frame 2 without changing position or size; the surrounding geometry remains unchanged.\"\n  ],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A small red shape with clipped corners and a white outline sits on a gray-brown rectangle above a wider dark-brown base.\"\n    },\n    {\n      \"frame_index\": 1,\n      \"cue\": \"The central shape remains red, with the rectangular forms and background boundary in the same positions.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The central shape is now blue, retaining its white outline, dimensions, and position.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The blue outlined shape and both brown rectangular forms retain the same arrangement against the dark background.\"\n    }\n  ],\n  \"overall_confidence\": 0.98\n}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0da143f3819fba8a016ad39780ca8887d0a7b5c5db6d72df1b",
+      "model": "gpt-6.1-sol",
+      "raw_envelope_bytes": 10725,
+      "raw_envelope_path": "output/evals/deepseek1017-20261017/subject/sol/vfp_active_004-raw-envelope.json",
+      "raw_envelope_sha256": "467e71b9fc89aeb66e0b0e054654eb0519e9ac1f9f9bf72ea8bb91d34e478467",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 368,
+        "output_tokens_details": {
+          "reasoning_tokens": 25
+        },
+        "total_tokens": 3258
+      }
+    },
+    "tokenUsage": {
+      "completion": 343,
+      "completionDetails": {
+        "reasoning": 25
+      },
+      "prompt": 2890,
+      "total": 3258
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/prop_swap_continuity_break",
+    "clip_id": "prop_swap_continuity_break",
+    "evaluation_id": "vfp_active_004",
+    "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+    "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+  }
+}
