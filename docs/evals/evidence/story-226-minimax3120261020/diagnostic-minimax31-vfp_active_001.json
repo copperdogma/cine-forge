@@ -1,0 +1,17 @@
+{
+  "arm": "minimax31",
+  "name": "diagnostic-minimax31-vfp_active_001",
+  "qualification": "capability-only-unenforced-schema",
+  "response": {
+    "cost": 0,
+    "latencyMs": 15507,
+    "output": "{\n  \"clip_id\": \"vfp_active_001\",\n  \"summary\": \"A minimalist graphic shows two simplified human figures standing apart against a dark navy gradient, with the left figure in warm amber and the right in pale blue with a light rectangular form over its lower torso. Across the ordered samples, both figures gradually enlarge while their floor line and side-by-side arrangement remain stable.\",\n  \"tone_tags\": [\n    \"detached\"\n  ],\n  \"emotion_tags\": [\n    \"isolation\"\n  ],\n  \"color_tags\": [\n    \"amber\",\n    \"desaturated\",\n    \"navy\"\n  ],\n  \"camera_tags\": [\n    \"locked_two_shot\",\n    \"slow_push_in\"\n  ],\n  \"motion_tags\": [\n    \"measured\",\n    \"stillness\"\n  ],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [\n    \"The two figures retain the same left-right order, colors, shapes, and shared floor baseline across all five samples.\",\n    \"The gradual increase in figure size is consistent throughout the sequence, with no directly visible cut or spatial discontinuity.\"\n  ],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"Two stylized figures stand separated on a dark floor, with an amber figure on the left and a pale-blue figure with a light rectangular torso overlay on the right.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"Both figures remain upright in the same positions while appearing slightly larger against the dark blue gradient.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The figures occupy more of the frame than in the first sample, while their lower edges remain aligned with the same floor line.\"\n    }\n  ],\n  \"overall_confidence\": 0.97\n}"
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

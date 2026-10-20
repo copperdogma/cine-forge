@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.019385",
+  "latency_ms": 9348,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1526,
+    "path": "output/evals/minimax31-20261020/judge-opus-sol-vfp_active_001-raw.json",
+    "sha256": "6aac09ad44cf1dc83adacfb54b412fbf3592a72fc77a2147984513615a747ac6"
+  },
+  "reason": "The summary correctly captures the two figures, their positions (left/right), the gradual size increase across frames, and the pale rectangle on the right figure. Continuity is correctly marked as intact. Motion tag 'measured' matches. However, there are notable issues: (1) Tone is 'detached' instead of 'intimate' - a mismatch. (2) Color tags include only 'navy' but miss 'teal' which is present in the reference and visible in the gradient background. (3) The summary claims both figures grow taller and wider, which aligns with reference observation of enlargement, but also adds claims about figures' bases remaining aligned which may not be precisely verifiable. (4) Audio tags and notes are empty as required. (5) Evidence entries are grounded at frames 0, 2, and 4 with reasonable observations. (6) The description of the prop as 'cream inset' / 'white-outlined cream rectangle' is acceptable for the pale rectangle. The tone mismatch and missing 'teal' color tag prevent a passing score.",
+  "request_id": "msg_011CgE3NCJNBvzwX3bCrJcCd",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2622,
+    "output_tokens": 251,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

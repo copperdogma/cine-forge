@@ -1,5 +1,13 @@
 # Changelog
 
+## [2026-10-20-01] — Preserve MiniMax GA ordered-frame contract stop (Scout 099)
+
+### Added
+- Preserve strict-request rejection, one locally schema-valid capability diagnostic, fresh same-input Sol/Luna controls, independent reviews, source caveats, settled spend and offline verification.
+
+### Changed
+- Defer MiniMax adoption because the required strict contract is unqualified; retain existing research references. Remaining candidate cases are unmeasured, and no product default changes.
+
 ## [2026-10-17-01] — Preserve DeepSeek1017 ordered-frame screen (Scout 097)
 
 ### Added

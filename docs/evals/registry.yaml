@@ -2415,6 +2415,23 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "053"
+        story: attempts/053-minimax31-ordered-frame-contract-stop.md
+        date: 2026-10-20
+        status: inconclusive
+        approach: "Scout099 item4 exactGA free/Minimax high32768: strict13-key request404 Filter by Parameters; one require_parameters=false locally valid capability-only diagnostic. First dialogue .6368/15.507s/$0 vs fresh Sol.74665/Luna.62285; all0/1passes. Remaining cases not measured; no production parity, semantic ranking promotion or default change."
+        worker_model: "Codex GPT6.1 owner"
+        subject_model: "minimax/minimax-m3.1-flash:free / Minimax high32768"
+        git_sha: "01527226f8047f2af4db231091f690e314e11950+minimax3120261020-hash-freeze"
+        result_file: benchmarks/results/video-understanding-minimax31-first-v4-20261020.json
+        contract_manifest: docs/evals/story-226-minimax3120261020-evidence.json
+        evidence_status: first-case-diagnostic-strict-contract-blocked
+        spend_usd_mixed_reported_and_estimated: 0.073644545
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: qualified-strict-contract-or-new-checkpoint
+            note: "Require source-backed route strict enforcement and new owner qualification; metadata alone insufficient. Source/scorer validity repair before broader qualification; no unchanged semantic retry or effort sweep."
+
       - id: "052"
         story: attempts/052-deepseek1017-ordered-frame-screen.md
         date: 2026-10-17

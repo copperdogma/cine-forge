@@ -1,0 +1,44 @@
+{
+  "checks": [
+    {
+      "command": "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python benchmarks/scripts/build_video_understanding_truth_v4.py --check",
+      "result": "13 source overlay files match"
+    },
+    {
+      "command": "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m pytest tests/unit/test_video_analysis_schema.py tests/unit/test_video_understanding_dataset.py tests/unit/test_video_understanding_scorer_adversarial.py tests/unit/test_video_understanding_gpt6_contract.py -q",
+      "result": "42 passed"
+    },
+    {
+      "command": "/Users/cam/Documents/Projects/cine-forge/.venv/bin/python -m ruff check benchmarks/scripts/report_minimax31_video_comparison.py benchmarks/scripts/run_minimax31_video_comparison.py",
+      "result": "pass"
+    },
+    {
+      "command": "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python scripts/check_eval_registry.py",
+      "result": "pass"
+    },
+    {
+      "command": "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python scripts/check_truth_audit_ledger.py",
+      "result": "pass"
+    },
+    {
+      "command": "/Users/cam/Documents/Projects/cine-forge/.venv/bin/python scripts/build_eval_contract_manifest.py --check",
+      "result": "pass"
+    },
+    {
+      "command": "node scripts/methodology-graph.js build; node scripts/methodology-graph.js check",
+      "result": "current outputs, preexisting architecture audit/UI freshness warnings"
+    },
+    {
+      "command": "PYTHONPATH=src /Users/cam/Documents/Projects/cine-forge/.venv/bin/python benchmarks/scripts/report_minimax31_video_comparison.py --verify",
+      "result": "retained receipt/ledger/score/hash replay passes"
+    },
+    {
+      "command": "git diff --check",
+      "result": "pass"
+    }
+  ],
+  "date": "2026-10-20",
+  "runtime_changes": false,
+  "temporary_credentials": "none injected; existing owner variables unchanged",
+  "ui_changes": false
+}

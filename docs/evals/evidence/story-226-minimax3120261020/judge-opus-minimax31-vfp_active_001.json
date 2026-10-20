@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.020535",
+  "latency_ms": 10270,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1612,
+    "path": "output/evals/minimax31-20261020/judge-opus-minimax31-vfp_active_001-raw.json",
+    "sha256": "973bb41927ea449d2323c015b7babea03f732669f9569eb4416267313814094a"
+  },
+  "reason": "The summary correctly identifies two figures, their left-right arrangement, the pale rectangle on the right figure, and the gradual enlargement across frames. Continuity is correctly marked as intact. Motion tag 'measured' matches. However, there are several issues: (1) camera_tags includes 'slow_push_in' which is an invented camera mechanism - the reference explicitly states no camera mechanism is established and camera push-in must not count as body growth. This is a penalizable invention. (2) Tone is 'detached' vs reference 'intimate' - while tone can be ambiguous, these are quite different. (3) Emotion tag 'isolation' is invented - reference lists no emotion tags. (4) Color tags include 'amber' and 'desaturated' but miss 'teal'; 'navy' is correct. The reference specifies navy and teal. (5) audio_tags and audio_notes are empty as required, which is correct. (6) Evidence entries are grounded in frames 0, 2, and 4 which is acceptable. The camera mechanism invention and emotion tag invention are significant penalties that bring the score below the passing threshold.",
+  "request_id": "msg_011CgE3LFhhKL8B1LgQTLiZn",
+  "score": 0.65,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2757,
+    "output_tokens": 270,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

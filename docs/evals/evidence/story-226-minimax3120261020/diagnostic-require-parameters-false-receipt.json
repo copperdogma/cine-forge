@@ -1,0 +1,33 @@
+{
+  "latency_ms": 15507,
+  "model": "minimax/minimax-m3.1-flash:free",
+  "provider": "Minimax",
+  "raw": {
+    "bytes": 12956,
+    "path": "docs/evals/evidence/story-226-minimax3120261020/diagnostic-require-parameters-false-raw.json",
+    "sha256": "b35bf3795beee2e5da80d8fc41e419d795274bbdbc0f76db3f7a8ff946a32850"
+  },
+  "usage": {
+    "completion_tokens": 1471,
+    "completion_tokens_details": {
+      "audio_tokens": 0,
+      "image_tokens": 0,
+      "reasoning_tokens": 1083
+    },
+    "cost": 0,
+    "cost_details": {
+      "upstream_inference_completions_cost": 0,
+      "upstream_inference_cost": 0,
+      "upstream_inference_prompt_cost": 0
+    },
+    "is_byok": false,
+    "prompt_tokens": 2627,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cache_write_tokens": 0,
+      "cached_tokens": 197,
+      "video_tokens": 0
+    },
+    "total_tokens": 4098
+  }
+}

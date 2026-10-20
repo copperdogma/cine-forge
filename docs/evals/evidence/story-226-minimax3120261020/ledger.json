@@ -1,0 +1,75 @@
+[
+  {
+    "accounted_usd": "0",
+    "arm": "minimax31",
+    "estimated": false,
+    "name": "native-minimax31-vfp_active_001",
+    "outcome": "HTTP404 Filter by Parameters before inference",
+    "reservation_usd": "0",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0",
+    "arm": "minimax31",
+    "estimated": true,
+    "name": "diagnostic-require-parameters-false",
+    "reservation_usd": "0",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.020535",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-minimax31-vfp_active_001",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0100135",
+    "arm": "sol",
+    "estimated": true,
+    "name": "native-sol-vfp_active_001",
+    "reservation_usd": "0.10596",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0033047",
+    "arm": "sol",
+    "estimated": true,
+    "name": "subject-sol-vfp_active_001",
+    "reservation_usd": "0.10596",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.019385",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-sol-vfp_active_001",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0005881749999999999",
+    "arm": "luna",
+    "estimated": true,
+    "name": "native-luna-vfp_active_001",
+    "reservation_usd": "0.00395",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.00020817",
+    "arm": "luna",
+    "estimated": true,
+    "name": "subject-luna-vfp_active_001",
+    "reservation_usd": "0.00395",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.01961",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-luna-vfp_active_001",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  }
+]

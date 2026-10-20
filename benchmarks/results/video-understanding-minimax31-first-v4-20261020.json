@@ -1,0 +1,141 @@
+{
+  "base_git_sha": "01527226f8047f2af4db231091f690e314e11950",
+  "candidate": "minimax/minimax-m3.1-flash:free",
+  "candidate_reasoning_tokens": 1083,
+  "candidate_remaining_cases": "prop/motion not measured",
+  "cap_usd": "4",
+  "controls_remaining_cases": "prop/motion not run after strict transport stop",
+  "date": "2026-10-20",
+  "ledger": [
+    {
+      "accounted_usd": "0",
+      "arm": "minimax31",
+      "estimated": false,
+      "name": "native-minimax31-vfp_active_001",
+      "outcome": "HTTP404 Filter by Parameters before inference",
+      "reservation_usd": "0",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0",
+      "arm": "minimax31",
+      "estimated": true,
+      "name": "diagnostic-require-parameters-false",
+      "reservation_usd": "0",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.020535",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-minimax31-vfp_active_001",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0100135",
+      "arm": "sol",
+      "estimated": true,
+      "name": "native-sol-vfp_active_001",
+      "reservation_usd": "0.10596",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0033047",
+      "arm": "sol",
+      "estimated": true,
+      "name": "subject-sol-vfp_active_001",
+      "reservation_usd": "0.10596",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.019385",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_001",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0005881749999999999",
+      "arm": "luna",
+      "estimated": true,
+      "name": "native-luna-vfp_active_001",
+      "reservation_usd": "0.00395",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.00020817",
+      "arm": "luna",
+      "estimated": true,
+      "name": "subject-luna-vfp_active_001",
+      "reservation_usd": "0.00395",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01961",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_001",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    }
+  ],
+  "limits": "One exposed synthetic case, no p95/generalization or six-case promotion. Candidate correctly observes growth, but unsupported slow_push_in is not evidence of mechanism. Tone, emotion, color and keyword grades retain source/scorer ambiguity. Candidate exceeds15s. Router price0 is not direct API economics. Other effort levels unmeasured; no within-task calibration.",
+  "max_tokens": 32768,
+  "provider": "Minimax",
+  "requested_effort": "high",
+  "rows": [
+    {
+      "arm": "minimax31",
+      "combined": 0.6368,
+      "comparison_boundary": "same-input first-case diagnostic; candidate schema unenforced",
+      "cost_usd": 0,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.6236 | overall=0.624 | uncertainty=0.030 | summary=1.00 | tone=0.00 | emotion=0.00 | color=0.40 | camera=1.00 | motion=0.67 | continuity=0.92 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached | emotion: unexpected=isolation | color: teal, unexpected=amber, unexpected=desaturated | motion: unexpected=stillness | continuity: unexpected=The gradual increase in figure size is consistent throughout the sequence, with no directly visible cut or spatial discontinuity.",
+        "score": 0.6236
+      },
+      "dual_pass": false,
+      "latency_ms": 15507,
+      "n": 1,
+      "qualified_strict_transport": false,
+      "rubric": 0.65
+    },
+    {
+      "arm": "sol",
+      "combined": 0.74665,
+      "comparison_boundary": "same-input first-case diagnostic; candidate schema unenforced",
+      "cost_usd": 0.0033047,
+      "deterministic": {
+        "pass": true,
+        "reason": "overall=0.773 | uncertainty=0.040 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.50 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached | color: teal | continuity: The pale rectangle stays beside the right figure across all five frames., unexpected=The cream figure remains on the left and the blue figure on the right throughout, with the background boundary and figure bases maintaining their positions., unexpected=Both figures progressively increase in height and width across consecutive samples; the cream inset remains on the lower blue figure.",
+        "score": 0.7733
+      },
+      "dual_pass": false,
+      "latency_ms": 7661,
+      "n": 1,
+      "qualified_strict_transport": true,
+      "rubric": 0.72
+    },
+    {
+      "arm": "luna",
+      "combined": 0.62285,
+      "comparison_boundary": "same-input first-case diagnostic; candidate schema unenforced",
+      "cost_usd": 0.00020817,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.6957 | overall=0.696 | uncertainty=0.120 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached | color: teal | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "score": 0.6957
+      },
+      "dual_pass": false,
+      "latency_ms": 5009,
+      "n": 1,
+      "qualified_strict_transport": true,
+      "rubric": 0.55
+    }
+  ],
+  "spend_usd_mixed_reported_estimated": "0.0736445449999999999",
+  "unknown_exposure_usd": "0",
+  "verdict": "Defer candidate adoption: required strict contract unavailable. No qualified winner. Retain maintained Sol quality/Luna economy references."
+}
