@@ -5,7 +5,6 @@ from pathlib import Path
 
 import pytest
 
-from cine_forge.ai.video import VideoGenerationResult
 from cine_forge.modules.generation.render_adapter_v1.main import run_module
 from cine_forge.schemas import GeneratedVideoArtifact, Scene
 from cine_forge.schemas.design_study import DesignStudyState
@@ -15,6 +14,10 @@ from cine_forge.services.design_study_backfill import (
 )
 from cine_forge.services.design_study_backfill_store import write_design_study_state
 from cine_forge.services.injected_assets import InjectedAssetService
+from tests.render_accounting_fixtures import (
+    fixture_video_prices,  # noqa: F401 - pytest fixture registration
+    fixture_video_result,
+)
 from tests.render_fixtures import seed_render_project
 from tests.storyboard_fixtures import metadata, reference_raster_bytes, seed_storyboard_project
 
@@ -223,6 +226,7 @@ def test_default_design_study_backfill_restores_existing_selected_state_to_manif
 
 
 @pytest.mark.unit
+@pytest.mark.usefixtures("fixture_video_prices")
 def test_render_adapter_backfills_design_studies_before_reference_resolution(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -237,8 +241,8 @@ def test_render_adapter_backfills_design_studies_before_reference_resolution(
     _add_owen_and_console_bibles(project_dir)
 
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
-        lambda *, request, engine_pack: VideoGenerationResult(
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
+        lambda *, request, engine_pack: fixture_video_result(
             video_bytes=b"fake-mp4",
             media_type="video/mp4",
             model_used=engine_pack.target_model,
@@ -279,6 +283,10 @@ def test_render_adapter_backfills_design_studies_before_reference_resolution(
         if artifact["artifact_type"] == "generated_video"
     )
     generated_video = GeneratedVideoArtifact.model_validate(video_payload)
+    assert generated_video.cost_is_complete is True
+    assert len(generated_video.cost_receipts) == 1
+    assert generated_video.cost_receipts[0].component == "video"
+    assert "Synthetic transport" in generated_video.cost_receipts[0].reason
     assert any(
         item.input_id == "character_visual_owen"
         for item in generated_video.resolved_inputs

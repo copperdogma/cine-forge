@@ -1,0 +1,21 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__ test_media_receipt_identity_rejects_changed_amount_but_dedupes_exact_copy ___
+
+    @pytest.mark.unit
+    def test_media_receipt_identity_rejects_changed_amount_but_dedupes_exact_copy():
+        raw = json.loads(FIXTURE.read_text())["video_receipt"]
+        receipt = CostReceipt.model_validate(raw)
+        rows = []
+        for _ in range(2):
+            record_media_receipts(rows, [receipt], scene_id="scene_001", entity_id="unit_001")
+        assert len(rows) == 1
+        raw["cost"]["estimated_cost_usd"] += .1
+        conflicting = CostReceipt.model_validate(raw)
+>       with pytest.raises(ValueError, match="conflicting cost receipt"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/unit/test_render_adapter_accounting.py:32: Failed
+=========================== short test summary info ============================
+FAILED tests/unit/test_render_adapter_accounting.py::test_media_receipt_identity_rejects_changed_amount_but_dedupes_exact_copy

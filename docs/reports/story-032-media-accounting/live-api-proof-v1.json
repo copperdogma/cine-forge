@@ -1,0 +1,84 @@
+{
+  "health": 200,
+  "preflights": {
+    "current_scene": {
+      "http": 200,
+      "status": "soft_block",
+      "blockers": [
+        {
+          "kind": "soft_block",
+          "label": "Video provider unavailable",
+          "detail": "Google veo-3.1-generate-preview is unavailable: Veo 3.1 preview shut down 2026-10-22",
+          "action_label": null,
+          "action_path": null
+        }
+      ]
+    },
+    "all_scenes": {
+      "http": 200,
+      "status": "soft_block",
+      "blockers": [
+        {
+          "kind": "soft_block",
+          "label": "Video provider unavailable",
+          "detail": "Google veo-3.1-generate-preview is unavailable: Veo 3.1 preview shut down 2026-10-22",
+          "action_label": null,
+          "action_path": null
+        }
+      ]
+    }
+  },
+  "blocked_starts": {
+    "current_scene": {
+      "http": 422,
+      "response": {
+        "code": "scene_action_blocked",
+        "message": "Render can't run for scene_001 yet.",
+        "hint": "Google veo-3.1-generate-preview is unavailable: Veo 3.1 preview shut down 2026-10-22"
+      }
+    },
+    "all_scenes": {
+      "http": 422,
+      "response": {
+        "code": "scene_action_blocked",
+        "message": "Render can't run for all scenes yet.",
+        "hint": "Google veo-3.1-generate-preview is unavailable: Veo 3.1 preview shut down 2026-10-22"
+      }
+    }
+  },
+  "historical_replay": {
+    "resume": {
+      "http": 409,
+      "response": {
+        "code": "unresolved_media_cost",
+        "message": "Run 'run-88a073f3' has unresolved media cost and cannot be replayed safely.",
+        "hint": "Reconcile the original provider job and its charge before resuming or retrying. Historical media output has no recorded charge."
+      }
+    },
+    "retry-failed-stage": {
+      "http": 409,
+      "response": {
+        "code": "unresolved_media_cost",
+        "message": "Run 'run-88a073f3' has unresolved media cost and cannot be replayed safely.",
+        "hint": "Reconcile the original provider job and its charge before resuming or retrying. Historical media output has no recorded charge."
+      }
+    }
+  },
+  "costs": {
+    "open-frequency": {
+      "http": 200,
+      "total_cost_usd": 0.0809394,
+      "cost_is_complete": true,
+      "run_count": 1,
+      "uncertain_receipt_count": 0
+    },
+    "brick-steel-full-retired": {
+      "http": 200,
+      "total_cost_usd": 2.12812405,
+      "cost_is_complete": false,
+      "run_count": 33,
+      "uncertain_receipt_count": 9
+    }
+  },
+  "new_run_directories": []
+}

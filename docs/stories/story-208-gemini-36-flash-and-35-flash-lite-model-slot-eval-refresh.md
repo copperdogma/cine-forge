@@ -96,6 +96,40 @@ made them non-decision-grade under the repaired contracts.
 - [x] The named root paths are handled after their dependencies: `full-script-throughput`, `real-ai-previz-runtime`, and `final-render-provider-floor` each received repaired contracts plus a concrete source-backed live-run deferral rather than an unjustified paid rerun.
 - [x] Focused checks, honest full unit and full test suites, scorer mutation tests, fixture validators, lint, schema loads, applicable API/driver/generator/provider smokes, methodology checks, compromise checks, and `git diff --check` pass; visual artifacts are manually reinspected where changed.
 
+## Historical Contract Follow-Up (2026-10-23)
+
+Story 201's required full-unit run found one pre-existing failure: the historical
+Story 213 manifest test compares frozen hashes with mutable live source files.
+Scheduled Story 213 work-log additions trigger another exception-list failure.
+This is the same eval-evidence integrity boundary owned by Story 208; reopen
+this story rather than creating a new shell or mixing the repair into keyframe
+product scope. Cam's goal authorizes continuing triage and fixing issues.
+
+- [x] Preserve the historical Story 213 manifest and the pre-existing dirty
+  Story 213, registry, attempt note, deploy log, and image outputs byte-for-byte.
+- [x] Archive all 36 manifest-referenced files at their original recorded
+  SHA-256 values. Record original path, archive path, source Git commit, size,
+  and hash for each file. State explicitly that this is an assembled historical
+  bundle, not one coherent historical checkout.
+- [x] Verify historical completeness and integrity against archived bytes;
+  reject missing/mutated archives. Remove the mutable-live-file exception list.
+- [x] Keep live-contract drift checks fail-closed; roll the current manifest
+  builder/test/ledger to new immutable v21, preserving v20 and all original
+  manifests. Generate v21 only after final current-contract edits settle.
+- [x] Run focused archive/manifest and ledger checks, Ruff, current-manifest
+  check, methodology compile/check, and diff hygiene. Reuse the 2,215 unaffected
+  passing full-unit results from Story 201; rerun every changed dependency.
+
+**Approach / structural fit:** reuse `docs/evals/snapshots/` and
+`test_video_understanding_v4_archive.py`; deterministic byte identity belongs in
+code, with no model, scorer, prompt, golden, paid run, or adoption change. No new
+ADR applies to this narrow provenance repair beyond existing immutable-artifact
+and eval-truth contracts. `test_eval_contract_manifest.py` and
+`build_eval_contract_manifest.py` are below 400 lines; the ledger is a large
+data file, not a class/module to extract. Parent owns story/state/integration;
+a strong inherited eval worker owns the explicit archive/test/builder/ledger
+shard because a provenance mistake can invalidate decisions.
+
 ## Out of Scope
 
 - Changing production defaults without a clear maintained quality, latency, and cost win plus explicit user approval.
@@ -311,6 +345,54 @@ exists.
 
 This expanded plan changes maintained goldens, scorers, test selection, visual fixtures, and the interpretation of historical eval evidence. Per `/build-story`, implementation starts only after explicit human approval of this plan. Approval does not authorize commit or push.
 
+## UI Test Inventory Follow-Up (2026-10-23)
+
+The next full triage found a remaining fail-open boundary in the same audit
+owner. Removing the real new UI test and captured fixture from ledger paths
+**in memory** returns no discovered-inventory error and removes both from the
+contract manifest, although Makefile's test-ui target runs the test. Baseline:
+`docs/reports/story-208-ui-test-inventory/baseline.json`.
+
+This bounded follow-up is authorized by Cam's ongoing triage/fix goal. It does
+not reopen model decisions, semantic goldens, retained-media placement, or the
+older approved broad audit. Reuse the checker's canonical inventory pattern;
+no new ADR or model call is required. ADR-001/003 were reviewed; neither directly governs UI-test inventory discovery. The methodology canonical-ownership rule and existing checker contract settle this narrow implementation, with no ADR decision change.
+
+- [x] Discover maintained `ui/tests/*.test.ts` using the same selection boundary
+  as Makefile and regular fixture files under `ui/tests/fixtures/`. Require
+  explicit test_suite ownership; declared discovery is not proof of review.
+- [x] Missing modules/fixtures, wrong-kind claims and duplicate ownership fail
+  closed. Correct multi-file UI-suite ownership passes; all other canonical
+  inventory semantics remain unchanged.
+- [x] Add deterministic regressions before implementation and reproduce the
+  actual removed-path mutation after repair. Existing source hashes and the
+  historical archive remain unchanged.
+- [x] Run focused ledger/manifest/suite-boundary tests, checker/builder Ruff,
+  real terminal-ledger validation, methodology compile/check and diff hygiene.
+  Generate one new current snapshot only after source and canon settle.
+
+### Implementation plan and fit
+
+1. Parent owns story, triage evidence, ledger notes, final snapshot and review.
+   A cheaper focused worker may edit only `scripts/check_truth_audit_ledger.py`
+   and `tests/unit/test_truth_audit_ledger.py` after adding baseline regressions.
+2. `check_truth_audit_ledger.py` is507 lines with no class; keep the new ownership
+   responsibility in a focused helper below100 lines, delegated from its
+   existing83-line discovered-inventory function. Do not widen the unrelated
+   one-canonical-path-per-row rule: a test suite legitimately owns many files.
+   Tests are330 lines and exempt from class-size rules. `make check-size` ran;
+   unrelated large source/UI files remain untouched.
+3. Use existing canonical path/owner diagnostics and explicit paths, preserving
+   failure on missing terminal evidence and pending audits. Fixtures include
+   maintained data irrespective of extension; ignore only manifest-excluded
+   cache/OS metadata, with the policy explicit and locally tested.
+4. No product/UI/schema/API behavior changes, so no new browser or backend
+   product run is needed. Reuse final Story185 UI proof and earlier unaffected
+   backend-suite evidence. No score/registry/model/default changes. Preserve all
+   existing dirty work and exact retained-dataset rejection.
+5. Independent strong review checks realistic omission and boundary mutations.
+   Stop after the checker catches drift and current declared inventory passes.
+
 ## Work Log
 
 20260721-1706 - discovery-and-plan: the canonical checkout was one commit behind `origin/main` and contained an unrelated `docs/deploy-log.md` edit, so work moved to a clean `codex/gemini-36-35-eval-20260721` worktree based on `f5a3ffb`. Live discovery found both exact Google IDs with all provider keys available. It correctly marked `gemini-3.6-flash` new but falsely marked `gemini-3.5-flash-lite` tested because the registry contains Gemini 3.5 Flash. Reviewed the Ideal/spec methodology lane, C2/C3/C5 hold state, ADR-001, ADR-003, Stories 204/207, current benchmark configs, and `make check-size`. The approved bounded plan is to reuse seven maintained Gemini lanes, leave prompts/scorers/goldens/defaults unchanged, and decide from quality, latency, cost, and mismatch evidence.
@@ -394,3 +476,21 @@ This expanded plan changes maintained goldens, scorers, test selection, visual f
 20260722-final-storyboard-retained-evidence - the authorized v8 retry completed the exact two-case template-grid versus per-frame storyboard matrix at `4/4` runtime success and `$1.3825646`. A final retention rehearsal exposed one direct gate defect: the string `storyboard_grid_mode=off` was truthy, so the materializer incorrectly demanded source grids from the per-frame comparator. The v9 repair distinguishes off-mode from active grids and adds focused regression coverage. The resulting Git-visible packet contains four sequences and a 91-file, 12,368,207-byte inventory with manifest SHA-256 `6bf488777cd23f374204ac273ba2dcd114eb18c9b24ee039f52da65909dceef6`; all 59 generated frames, four full grids, reference cards, storyboard artifacts, targets, and metadata were manually inspected or hash/decoder checked. The first four-row Promptfoo pass had zero transport errors but one unparseable Opus rubric response, so a bounded no-cache retry replaced only that row in a provenance-stamped decision matrix while preserving both raw files. The final report records template-grid `python=0.6962`, `rubric=0.615`, `identity=0.3972`, mean total `366,968ms`, and `$0.272`; per-frame `python=0.6331`, `rubric=0.770`, `identity=0.1871`, mean total `645,751ms`, and `$0.420`. Both pass packet identity, evidence grounding, and runtime provenance while failing the story-specificity and identity-consistency hard dimensions. Manual inspection separates image-generation misses—material per-frame identity drift, subdued storm cues, and unclear receiver/lantern/boot staging—from GPT-5.4 under-reading of some visible tower/catwalk, receiver, and template-grid identity evidence; both are model-wrong and non-runtime-blocking, but they belong to different models. Abstract transport-card appearance is not a quality golden. Decision: no promotion, no default change, keep template-grid only as the faster/cheaper and comparatively more coherent value hold. Next falsifiable step: bind these exact bytes to the evidence commit, promote two current registry rows with that SHA, and run final validation.
 
 20260722-story-done - closed Story 208 after binding the fresh storyboard packet to local media commit `347e9933ac87610c682bdf9bb9fec0ed81d3eb6b` and its immutable attribution correction to `ad7ad9d482382c9d2fc24f940594edf8cc40d20f`, then promoting exactly two explicit decision-grade registry rows. Both rows preserve `overall: null` because packet analysis failed the story-specificity and identity-consistency hard dimensions; packet identity, `evidence=1.0`, and both runtime contracts passed. The correction addendum separates image-generator misses from GPT-5.4 analyzer under-reading, records both as model-wrong and non-runtime-blocking, and leaves the abstract reference cards as transport controls rather than visual goldens. The retained-media gate resolves all 91 files and proves their bytes unchanged from the cited commit. Final validation passed `2,044/2,044` unit tests, `2,129` backend tests with `5` explicit skips, `21/21` UI tests, UI lint, TypeScript, production build, repository Ruff, all `25` registry evals, all `165/165` terminal truth-ledger rows, all `286` retained result JSON files, `98` YAML files, `510` strict JSON files, the two JSONC TypeScript configs, methodology compile/check, compromise reporting, skill synchronization, size reporting, manifest v9 across `922` files with bundle SHA-256 `817f7426c744eb8e4b46c21e04816506c21d0adad874a732743611d208afb191`, and diff hygiene. No provider call occurred during final validation. Close-now disposition: the repaired QA, ordered-frame, storyboard provenance, registry, and documentation gates are complete; adjacent scorer synonyms, native video/audio coverage, realistic reference fixtures, and other repaired-lane reruns remain explicit follow-up because they do not change these final decisions. Recommended next step: `/check-in-diff`.
+
+20261023-0836 — reopened for historical-contract integrity: Story 201 full unit run returned 2,215 passed and one failure in `test_story_213_manifest_is_hash_complete_for_final_qa_contract`. Inspection confirms the five-path evolved-live exception list now encounters a sixth historical/live mismatch solely because Story 213 already had scheduled-note edits at turn start. Chosen repair archives every pinned source byte with per-file source commits, preserves the original manifest and existing dirt, and validates current contracts separately at new v21. Existing Story 208 owns this evidence boundary. No provider/eval call or runtime-default change. Next: bounded archive/test/builder/ledger implementation and targeted validation.
+
+20261023-0841 — archive implementation/review: strong eval worker preserved all36 source files under `docs/evals/snapshots/story-213-model-eval-contract-v1/`; parent independently replayed every source-commit/path via `git show`, SHA256, byte length, and Git blob identity. Archive source bytes total1282559; index17486bytes at `c1058aa1de26761beae32974ea3b726d80e6a44f8cc47bbfe627a51642201821`. The source manifest remains exactly `b435160923151db6b62b5d3fe12eddd79795a3f7d0047796aa3309aa0f4aa2d2` from a8b13f8; its earlier Git revisions are explicitly acknowledged, and per-file source commits do not imply one coherent checkout. Historical checking no longer touches evolving live paths; all13 focused manifest tests pass, including missing/mutated/symlink/provenance mutations, and Ruff passes. Builder/test/ledger select newv21 while oldv20 is byte-identical to HEAD. An intermediate combined run passed63 tests and only failed the ledger-presence check because v21 generation is deliberately deferred until current state settles; rerun that dependency after generation. No model evaluation or score changed: this is harness provenance binding, not an unclassified model/golden mismatch. No paid call, commit, push, or existing-dirt edit. Next: independent narrow review, final current-manifest generation and check, and closure.
+
+20261023-0842 — independent review / scope completion: a separate strong worker replayed all36 Git-source mappings and found no archive-byte or containment defect. It did demonstrate that ledger-owned `benchmarks/runtime_tasks/script-bible-runtime.yaml` is absent from the current manifest because `ALLOWED_PREFIXES` omits `benchmarks/runtime_tasks/`; changing that live path's hash leaves the bundle unchanged. Accepted as a small existing hole in this follow-up's explicit live-contract fail-closed boundary: add that prefix and a selection/drift regression before v21 generation. Separately, a broader registry check reports extra retained-media inventory from the pre-existing untracked storyboard directories. Do not delete/move them or mutate registry history; preserve and investigate that ambient-workspace/evidence-scope issue as the next triage candidate. It is not an archive/source mismatch and no model score was recomputed.
+
+20261023-0848 — follow-up validated and reclosed: all14 manifest tests and the65 combined affected tests pass. Independent review accepted the archive source/containment proof and caught one pre-existing live-contract omission; adding `benchmarks/runtime_tasks/` makes both the selection and drift regression pass, and review then found no material findings. Truth-ledger and current-manifest validation pass; full backend/test plus builder Ruff and diff hygiene pass. v21 froze993 selected files with bundle SHA256 `6f427d2605b16dabf466ca4adcacd5376ad12a25b9cc27f80a4a0eaa511cc998`. Because final story/state closure changes a selected source, preservev21 and roll the final snapshot to newv22 rather than rewriting any version. The source manifest and v20 remain byte-identical to their recorded Git versions; all36 archived source-commit mappings were independently replayed. The broader registry diagnostic is not a repaired-code failure: its91 declared retained files are present and unchanged, but44 untracked files already present at turn start violate the deliberately exact dataset inventory. Keep the gate strict and preserve that unrelated working material; record it as a workspace ownership/placement health flag for later disposition, without reclassifying old scores or claiming the primary checkout's registry check is green. This bounded provenance follow-up is complete; no new model/scored eval, provider call, default, commit, or push. `/learning-review` considered: existing immutable-snapshot and browser-verification patterns already cover the lessons, so no live skill or personal memory change is warranted.
+
+20261023-0933 — contract-inventory-maintenance: Story185 UIregressions and planningclosure rollcurrentmanifest forward throughimmutablev23(interimstate) tov24(final995declaredfiles,bundle416e806c9cb50e08212198d52a73cf1d4ef63b499151113b05202cd871b439af). The UItestsuite now explicitlyowns the seventh testmodule and capturedneeds_reviewfixture; the suitepassed25tests. v21/v22/v23 andoriginalStory213manifest/archive remainunchanged. Focusedmanifest/ledgerchecks pass; no newmodelscore orruntime default.
+
+20261023-0929 — reopened for UI inventory drift: previous goal turn completed185 and current direct triage facts show no ready stories, while broad product scope remains. Five neutral lanes compared232 fresh FP1 readiness,197 reference fidelity and Export focus; architecture then demonstrated a fresh actual false-green inventory gap. Parent reproduced removal of the real UI health module/fixture from ledger paths in memory: zero checker errors and both absent from manifest selection. This newly demonstrated harness defect is immediately actionable in the existing208 boundary and prevents another manual-only omission, so it wins this bounded pass over232 requiring provider/intake readiness and197 requiring a new representative experiment. No paid/API/model work starts. Scoped plan and validation above preserve immutable snapshots and unrelated dirt. Next: failing regressions, focused discovery/ownership repair, independent review and one settled snapshot.
+
+20261023-0933 — implementation, validation and reclosure: discovered UI modules and recursive fixture inputs now require one explicit test-suite owner; missing, wrong-kind and duplicate claims fail while multi-file suite ownership remains valid. New regressions first failed3/passed2, then passed; a separate symlink regression pass first failed2/2 before explicit linked-root/module/fixture/directory rejection. All31 ledger tests and5 suite-boundary tests pass, with targeted Ruff and real require-terminal ledger validation. Parent replayed the actual removed-test, removed-fixture, and combined mutations through full validate_ledger: each now fails at the canonical inventory boundary. Independent strong review repeated the actual mutation and cleared the implementation. Original Story213 manifest/index hashes remain exact; unrelated registry/deploy/inbox/Story213 dirt remains+8/+2/+8/+8. Checker579 lines contains no class; new discovery/ownership helpers are focused and below100 lines. T0 immutable evidence/unrelated work preserved; T1 explicit diagnostics; T2 existing canonical pattern; T3 no new subsystem; T4 baseline/repair JSON and report; T5 removes manual drift detection. Reclose208 under /validate and /mark-story-done; refresh generated views after this final log and freeze one new currentv25 snapshot, keepingv24 and older versions unchanged. No product/UI/AI/schema behavior or score changes; previous unaffected suite evidence is reused proportionately. No provider call, commit or push. Next: continue authorized triage; /finish-and-push only if Cam requests landing.
+
+20261023-1029 — settled-contract: The232/233/005 batch rolls current owned contracts forward to immutablev26 (996files, bundle54b6ea55ef7e60631841192187b83412117013bd3987ce00fb3052ca65c56b7d), explicitly including the extracted heading helper. Actual manifestcheck and terminal truthledgercheck pass;45manifest/ledger tests pass. Earlier21–25bundle identities and original213manifest hash remain unchanged. No scores/defaults changed. Story-only final logs do not invalidate selected bytes. No commit/push; existing no-implicit-commit rule retained.
+
+20261023-1200 — integration provenance: independently landed remote canonicalv21/v22 take their existing names; this task’s unlanded provisionalv21/v22 bytes are preserved unchanged under docs/evals/snapshots/triage-goal-20261023-provisional-manifests/ with explicit source/hash distinction. Localv23-v27 remain unchanged. The final current snapshot binds the integrated tree; earlier work-log version labels describe their original checkpoints.

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Clock, DollarSign, Film, Video } from 'lucide-react'
+import { Clock, Film, Video } from 'lucide-react'
 import {
   formatLatencyMs,
   formatPreviewIntent,
@@ -7,6 +7,7 @@ import {
   parsePreviewProvenance,
 } from '@/components/preview-provenance'
 import { RenderInputUsageCard } from '@/components/RenderInputUsageCard'
+import { GeneratedVideoCost } from '@/components/GeneratedVideoCost'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -17,7 +18,6 @@ import {
   asString,
   asStringArray,
   formatDuration,
-  formatMoney,
   formatToken,
   parseRenderInputUsage,
   type RenderArtifactRefView,
@@ -45,7 +45,6 @@ type GeneratedVideoView = {
   targetModel: string | null
   enginePackId: string | null
   requestId: string | null
-  estimatedCostUsd: number | null
   notes: string[]
   resolvedInputs: RenderInputUsageView[]
   providerParams: Record<string, unknown>
@@ -55,7 +54,6 @@ type GeneratedVideoView = {
 
 function parseGeneratedVideo(data: Record<string, unknown>): GeneratedVideoView {
   const video = asRecord(data.video)
-  const cost = asRecord(data.cost)
   const generationParams = asRecord(data.generation_params)
   const providerParams = asRecord(generationParams?.provider_params) ?? {}
   const promptRef = asRecord(data.prompt_ref)
@@ -74,7 +72,6 @@ function parseGeneratedVideo(data: Record<string, unknown>): GeneratedVideoView 
     targetModel: asString(data.target_model),
     enginePackId: asString(data.engine_pack_id),
     requestId: asString(data.request_id),
-    estimatedCostUsd: asNumber(cost?.estimated_cost_usd),
     notes: asStringArray(data.notes),
     resolvedInputs: asArray(data.resolved_inputs)
       .map(parseRenderInputUsage)
@@ -98,10 +95,70 @@ function formatClipWindow(startSeconds: number | null, endSeconds: number | null
   return `${start} - ${end}`
 }
 
+function GeneratedVideoHeader({ render, data }: {
+  render: GeneratedVideoView
+  data: Record<string, unknown>
+}) {
+  const sceneLabel = render.sceneNumber !== null
+    ? `Scene ${render.sceneNumber}`
+    : 'Generated Video'
+  return (
+    <CardHeader className="pb-4">
+      <div className="flex min-w-0 flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0 space-y-1">
+          <CardTitle>{sceneLabel}</CardTitle>
+          <CardDescription>
+            {render.sceneHeading ?? 'Scene-level generated render'}
+          </CardDescription>
+        </div>
+        <div className="flex min-w-0 max-w-full flex-wrap gap-2">
+          {render.targetProvider && (
+            <Badge variant="secondary">{formatToken(render.targetProvider)}</Badge>
+          )}
+          {render.renderUnit === 'render_clip' && (
+            <Badge variant="secondary">Render Clip</Badge>
+          )}
+          {render.renderClipId && (
+            <Badge variant="outline">{render.renderClipId}</Badge>
+          )}
+          {formatClipWindow(render.renderClipStartSeconds, render.renderClipEndSeconds) && (
+            <Badge variant="outline">
+              {formatClipWindow(render.renderClipStartSeconds, render.renderClipEndSeconds)}
+            </Badge>
+          )}
+          {formatPreviewMode(render.previewProvenance?.mode ?? null) && (
+            <Badge variant="secondary">{formatPreviewMode(render.previewProvenance?.mode ?? null)}</Badge>
+          )}
+          {formatPreviewIntent(render.previewProvenance?.fidelityIntent ?? null) && (
+            <Badge variant="outline">{formatPreviewIntent(render.previewProvenance?.fidelityIntent ?? null)}</Badge>
+          )}
+          {render.targetModel && <Badge variant="outline">{render.targetModel}</Badge>}
+          {render.enginePackId && (
+            <Badge variant="outline" className="gap-1">
+              <Film className="h-3 w-3" />
+              {render.enginePackId}
+            </Badge>
+          )}
+          {formatDuration(render.durationSeconds) && (
+            <Badge variant="outline" className="gap-1">
+              <Clock className="h-3 w-3" />
+              {formatDuration(render.durationSeconds)}
+            </Badge>
+          )}
+          {render.resolution && <Badge variant="outline">{render.resolution}</Badge>}
+          {render.aspectRatio && <Badge variant="outline">{render.aspectRatio}</Badge>}
+          {formatLatencyMs(render.previewProvenance?.generationLatencyMs ?? null) && (
+            <Badge variant="outline">{formatLatencyMs(render.previewProvenance?.generationLatencyMs ?? null)}</Badge>
+          )}
+          <GeneratedVideoCost data={data} />
+        </div>
+      </div>
+    </CardHeader>
+  )
+}
+
 export function GeneratedVideoViewer({ data, projectId }: GeneratedVideoViewerProps) {
   const render = parseGeneratedVideo(data)
-  const sceneLabel =
-    render.sceneNumber !== null ? `Scene ${render.sceneNumber}` : 'Generated Video'
   const videoUrl = render.videoPath ? getAssetFileUrl(projectId, render.videoPath) : null
   const providerParamsJson = JSON.stringify(render.providerParams, null, 2)
   const promptHref =
@@ -112,62 +169,7 @@ export function GeneratedVideoViewer({ data, projectId }: GeneratedVideoViewerPr
   return (
     <div className="space-y-4">
       <Card className="gap-0">
-        <CardHeader className="pb-4">
-          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-            <div className="space-y-1">
-              <CardTitle>{sceneLabel}</CardTitle>
-              <CardDescription>
-                {render.sceneHeading ?? 'Scene-level generated render'}
-              </CardDescription>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {render.targetProvider && (
-                <Badge variant="secondary">{formatToken(render.targetProvider)}</Badge>
-              )}
-              {render.renderUnit === 'render_clip' && (
-                <Badge variant="secondary">Render Clip</Badge>
-              )}
-              {render.renderClipId && (
-                <Badge variant="outline">{render.renderClipId}</Badge>
-              )}
-              {formatClipWindow(render.renderClipStartSeconds, render.renderClipEndSeconds) && (
-                <Badge variant="outline">
-                  {formatClipWindow(render.renderClipStartSeconds, render.renderClipEndSeconds)}
-                </Badge>
-              )}
-              {formatPreviewMode(render.previewProvenance?.mode ?? null) && (
-                <Badge variant="secondary">{formatPreviewMode(render.previewProvenance?.mode ?? null)}</Badge>
-              )}
-              {formatPreviewIntent(render.previewProvenance?.fidelityIntent ?? null) && (
-                <Badge variant="outline">{formatPreviewIntent(render.previewProvenance?.fidelityIntent ?? null)}</Badge>
-              )}
-              {render.targetModel && <Badge variant="outline">{render.targetModel}</Badge>}
-              {render.enginePackId && (
-                <Badge variant="outline" className="gap-1">
-                  <Film className="h-3 w-3" />
-                  {render.enginePackId}
-                </Badge>
-              )}
-              {formatDuration(render.durationSeconds) && (
-                <Badge variant="outline" className="gap-1">
-                  <Clock className="h-3 w-3" />
-                  {formatDuration(render.durationSeconds)}
-                </Badge>
-              )}
-              {render.resolution && <Badge variant="outline">{render.resolution}</Badge>}
-              {render.aspectRatio && <Badge variant="outline">{render.aspectRatio}</Badge>}
-              {formatMoney(render.estimatedCostUsd) && (
-                <Badge variant="outline" className="gap-1">
-                  <DollarSign className="h-3 w-3" />
-                  {formatMoney(render.estimatedCostUsd)}
-                </Badge>
-              )}
-              {formatLatencyMs(render.previewProvenance?.generationLatencyMs ?? null) && (
-                <Badge variant="outline">{formatLatencyMs(render.previewProvenance?.generationLatencyMs ?? null)}</Badge>
-              )}
-            </div>
-          </div>
-        </CardHeader>
+        <GeneratedVideoHeader render={render} data={data} />
         <CardContent className="space-y-4">
           {videoUrl ? (
             <video

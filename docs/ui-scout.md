@@ -15,12 +15,13 @@ Machine-readable freshness source: `docs/methodology/state.yaml` `ui_scout`
 
 | Scenario | Goal | Last Checked | Notes |
 |---|---|---|---|
-| FP1 — Full Pipeline Canonical Fixture | A fresh project on the canonical short screenplay should reach the current honest downstream boundary through surfaced navigation and still feel polished, obvious, and honest | 2026-04-12 | Latest rerun passed. Story 164 raised the honest downstream boundary from “Render tab is reachable” to “a real scene render lands surfaced prompt/video/validation detail through the normal Scene Workspace route,” while also fixing the surfaced `/api/runs/{id}/state` polling race exposed during that render verification. |
+| FP1 — Full Pipeline Canonical Fixture | A fresh project on the canonical short screenplay should reach the current honest downstream boundary through surfaced navigation and still feel polished, obvious, and honest | 2026-10-23 (partial) | Latest attempt stopped at fresh-project Render preflight under its bounded spend envelope; media generation/details remain unverified. Guidance defects repaired in233;032 now exposes the current retired-provider blocker and incomplete media cost evidence. Last complete Pass remains2026-04-12;232 owns the continuation. |
 
 ## Run Index
 
 | Date | Scenario | Project | Follow-Up | Status |
 |---|---|---|---|---|
+| [2026-10-23 local bounded walkthrough](ui-scout/2026-10-23-open-frequency-local.md) | FP1 | `open-frequency` | [232](stories/story-232-canonical-full-pipeline-ui-recheck.md), [233](stories/story-233-first-use-next-action-truth.md) | Blocked before media; Issues Found |
 | [2026-04-12 local scene-render validation](ui-scout/2026-04-12-open-frequency-render-story-164-local.md) | FP1 | `open-frequency-render-story-164` | — | Pass |
 | [2026-04-10 local validation](ui-scout/2026-04-10-open-frequency-local-validation.md) | FP1 | `open-frequency-3` | — | Pass |
 | [2026-04-10 local recheck](ui-scout/2026-04-10-open-frequency-local-recheck.md) | FP1 | `open-frequency` | [158](stories/story-158-fresh-run-event-polling-stops-racing-missing-event-logs.md) | Issues Found |

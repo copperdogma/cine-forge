@@ -1,19 +1,21 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 import pytest
 
+from cine_forge.modules.ingest.scene_breakdown_v1.heading import _parse_heading
 from cine_forge.modules.ingest.scene_breakdown_v1.main import (
     _ActionLineEntities,
     _extract_action_line_entities,
     _extract_elements,
     _is_plausible_character_name,
     _normalize_character_name,
-    _parse_heading,
     _split_into_scene_chunks,
     run_module,
 )
+from cine_forge.schemas import Scene, SceneIndex
 
 # ---------------------------------------------------------------------------
 # Heading parsing
@@ -71,6 +73,24 @@ def test_parse_heading_multi_segment_location() -> None:
     result = _parse_heading("INT. RUDDY & GREENE BUILDING - ELEVATOR - NIGHT")
     assert result["time_of_day"] == "NIGHT"
     assert "Ruddy" in result["location"]
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    ("heading", "location", "time_of_day"),
+    [
+        ("INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN", "High School Gym Shelter", "PRE-DAWN"),
+        ("EXT. WIND-SWEPT WATER TOWER - NIGHT", "Wind-Swept Water Tower", "NIGHT"),
+        ("INT. NORTH-EAST WING - PRE-DAWN - FLASHBACK", "North-East Wing", "PRE-DAWN"),
+        ("INT. NORTH-EAST WING - UNKNOWN HOUR", "North-East Wing - Unknown Hour", "UNSPECIFIED"),
+    ],
+)
+def test_parse_heading_spaced_delimiters_preserve_compounds(
+    heading: str, location: str, time_of_day: str
+) -> None:
+    result = _parse_heading(heading)
+    assert result["location"] == location
+    assert result["time_of_day"] == time_of_day
 
 
 # ---------------------------------------------------------------------------
@@ -212,6 +232,51 @@ def _canonical_input(script_text: str = SAMPLE_FOUNTAIN) -> dict[str, Any]:
             "normalization_model": "mock",
         }
     }
+
+
+@pytest.mark.unit
+def test_open_frequency_canonical_heading_and_index_without_ai(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    script_text = (
+        Path(__file__).parents[1] / "fixtures/ingest_inputs/open_frequency_short.fountain"
+    ).read_text()
+    monkeypatch.setattr(
+        "cine_forge.modules.ingest.scene_breakdown_v1.main.validate_fountain_structure",
+        lambda _: type("R", (), {"parseable": True, "coverage": 0.8, "parser_backend": "test"})(),
+    )
+
+    def forbid_ai(**_: Any) -> None:
+        pytest.fail("deterministic canonical regression must not call a provider")
+
+    monkeypatch.setattr("cine_forge.modules.ingest.scene_breakdown_v1.main.call_llm", forbid_ai)
+    result = run_module(
+        inputs=_canonical_input(script_text),
+        params={"work_model": "mock", "max_workers": 1},
+        context={},
+    )
+    scenes = [
+        Scene.model_validate(a["data"])
+        for a in result["artifacts"]
+        if a["artifact_type"] == "scene"
+    ]
+    index = SceneIndex.model_validate(
+        next(a["data"] for a in result["artifacts"] if a["artifact_type"] == "scene_index")
+    )
+    assert len(scenes) == index.total_scenes == 4
+    scene3 = scenes[2]
+    expected_line = script_text.splitlines().index("INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN") + 1
+    assert scene3.heading == "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN"
+    assert scene3.location == "High School Gym Shelter"
+    assert scene3.time_of_day == "PRE-DAWN"
+    assert scene3.source_span.start_line == expected_line
+    assert scene3.source_span.end_line >= expected_line
+    assert index.entries[2].location == scene3.location
+    assert index.entries[2].time_of_day == scene3.time_of_day
+    assert index.entries[2].source_span == scene3.source_span
+    assert scene3.location in index.unique_locations
+    assert result["cost"]["estimated_cost_usd"] == 0
+    assert result["cost"]["call_count"] == 0
 
 
 @pytest.mark.unit

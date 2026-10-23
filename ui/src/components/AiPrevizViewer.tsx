@@ -14,6 +14,8 @@ import {
   formatAdoptionState,
 } from '@/components/previz-panel-support'
 import { RenderInputUsageCard } from '@/components/RenderInputUsageCard'
+import { GeneratedVideoCost } from '@/components/GeneratedVideoCost'
+import { PrevizCostExample } from '@/components/PrevizCostExample'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -24,7 +26,6 @@ import {
   asString,
   asStringArray,
   formatDuration,
-  formatMoney,
   formatToken,
   parseRenderInputUsage,
   type RenderInputUsageView,
@@ -32,7 +33,7 @@ import {
 import { getAssetFileUrl } from '@/lib/api/assets'
 import { mediaValidationStatus } from '@/lib/health'
 import { usePrevizAdoptionStatus } from '@/lib/hooks'
-import type { ArtifactHealthDetails } from '@/lib/types'
+import type { ArtifactHealthDetails, PrevizLaneStatus } from '@/lib/types'
 
 type AiPrevizViewerProps = {
   data: Record<string, unknown>
@@ -130,11 +131,197 @@ function formatClipWindow(startSeconds: number | null, endSeconds: number | null
   return `${start} - ${end}`
 }
 
+function AiPrevizHeader({ previz, aiPrevizStatus, data }: {
+  previz: AiPrevizView
+  aiPrevizStatus?: PrevizLaneStatus
+  data: Record<string, unknown>
+}) {
+  const sceneLabel = previz.sceneNumber !== null ? `Scene ${previz.sceneNumber}` : 'AI Previz'
+  const costBadge = aiPrevizCostBadge(aiPrevizStatus)
+  return (
+    <CardHeader className="pb-4">
+      <div className="flex min-w-0 flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0 space-y-1">
+          <CardTitle>{sceneLabel}</CardTitle>
+          <CardDescription>
+            {previz.sceneHeading ?? 'Low-fidelity AI previz clip for planning review'}
+          </CardDescription>
+        </div>
+        <div className="flex min-w-0 max-w-full flex-wrap gap-2">
+          {aiPrevizStatus && (
+            <Badge
+              variant={aiPrevizStatus.adoption_state === 'experimental_manual' ? 'outline' : 'secondary'}
+            >
+              {formatAdoptionState(aiPrevizStatus.adoption_state)}
+            </Badge>
+          )}
+          {formatPreviewMode(previz.previewProvenance?.mode ?? null) && (
+            <Badge variant="secondary">
+              {formatPreviewMode(previz.previewProvenance?.mode ?? null)}
+            </Badge>
+          )}
+          {previz.renderUnit === 'render_clip' && (
+            <Badge variant="secondary">Render Clip</Badge>
+          )}
+          {previz.renderClipId && (
+            <Badge variant="outline">{previz.renderClipId}</Badge>
+          )}
+          {formatClipWindow(previz.renderClipStartSeconds, previz.renderClipEndSeconds) && (
+            <Badge variant="outline">
+              {formatClipWindow(previz.renderClipStartSeconds, previz.renderClipEndSeconds)}
+            </Badge>
+          )}
+          {previz.sourceShotIds.length > 0 && (
+            <Badge variant="outline">Shots {previz.sourceShotIds.join(', ')}</Badge>
+          )}
+          {formatPreviewIntent(previz.previewProvenance?.fidelityIntent ?? null) && (
+            <Badge variant="outline">
+              {formatPreviewIntent(previz.previewProvenance?.fidelityIntent ?? null)}
+            </Badge>
+          )}
+          {previz.targetProvider && (
+            <Badge variant="outline">{formatToken(previz.targetProvider)}</Badge>
+          )}
+          {previz.targetModel && <Badge variant="outline">{previz.targetModel}</Badge>}
+          {previz.enginePackId && (
+            <Badge variant="outline" className="gap-1">
+              <Film className="h-3 w-3" />
+              {previz.enginePackId}
+            </Badge>
+          )}
+          {formatDuration(previz.durationSeconds) && (
+            <Badge variant="outline" className="gap-1">
+              <Clock className="h-3 w-3" />
+              {formatDuration(previz.durationSeconds)}
+            </Badge>
+          )}
+          {previz.resolution && <Badge variant="outline">{previz.resolution}</Badge>}
+          {previz.aspectRatio && <Badge variant="outline">{previz.aspectRatio}</Badge>}
+          {formatConsistencyStrategy(previz.previewProvenance?.consistencyStrategy ?? null) && (
+            <Badge variant="outline">
+              {formatConsistencyStrategy(previz.previewProvenance?.consistencyStrategy ?? null)}
+            </Badge>
+          )}
+          {formatPromptProfile(previz.previewProvenance?.promptProfile ?? null) && (
+            <Badge variant="outline">
+              {formatPromptProfile(previz.previewProvenance?.promptProfile ?? null)}
+            </Badge>
+          )}
+          {formatPrerequisiteStrategy(previz.previewProvenance?.prerequisiteStrategy ?? null) && (
+            <Badge variant="outline">
+              {formatPrerequisiteStrategy(previz.previewProvenance?.prerequisiteStrategy ?? null)}
+            </Badge>
+          )}
+          {formatLatencyMs(previz.previewProvenance?.generationLatencyMs ?? null) && (
+            <Badge variant="outline" className="gap-1">
+              <Timer className="h-3 w-3" />
+              {formatLatencyMs(previz.previewProvenance?.generationLatencyMs ?? null)}
+            </Badge>
+          )}
+          {costBadge && (
+            <Badge
+              variant="outline"
+              className="h-auto max-w-full min-w-0 shrink whitespace-normal break-words justify-start text-left"
+            >
+              Current recipe: {costBadge}
+            </Badge>
+          )}
+          <GeneratedVideoCost data={data} />
+        </div>
+      </div>
+    </CardHeader>
+  )
+}
+
+function AiPrevizContext({ previz, aiPrevizStatus, validationStatus, extraBlockers }: {
+  previz: AiPrevizView
+  aiPrevizStatus?: PrevizLaneStatus
+  validationStatus: ReturnType<typeof mediaValidationStatus>
+  extraBlockers: string[]
+}) {
+  return (
+    <>
+      <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-sm text-amber-100">
+        <div className="flex items-start gap-2">
+          <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
+          <p>
+            This clip is previz, not final footage. Use it to judge camera placement,
+            blocking, motion, pacing, and location readability without obsessing over polish.
+          </p>
+        </div>
+      </div>
+
+      {(previz.previewProvenance?.prerequisiteStrategy
+        || (previz.previewProvenance?.reusedArtifactTypes?.length ?? 0) > 0
+        || (previz.previewProvenance?.autoBuildArtifactTypes?.length ?? 0) > 0
+        || (previz.previewProvenance?.missingOptionalArtifactTypes?.length ?? 0) > 0) && (
+        <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 px-4 py-3 text-sm text-foreground/90">
+          <div className="space-y-1">
+            {formatPrerequisiteStrategy(previz.previewProvenance?.prerequisiteStrategy ?? null) && (
+              <p>
+                Prep strategy:{' '}
+                {formatPrerequisiteStrategy(previz.previewProvenance?.prerequisiteStrategy ?? null)}
+              </p>
+            )}
+            {(previz.previewProvenance?.reusedArtifactTypes?.length ?? 0) > 0 && (
+              <p>
+                Reused:{' '}
+                {previz.previewProvenance?.reusedArtifactTypes
+                  .map(token => formatToken(token) ?? token)
+                  .join(', ')}
+              </p>
+            )}
+            {(previz.previewProvenance?.autoBuildArtifactTypes?.length ?? 0) > 0 && (
+              <p>
+                Auto-built:{' '}
+                {previz.previewProvenance?.autoBuildArtifactTypes
+                  .map(token => formatToken(token) ?? token)
+                  .join(', ')}
+              </p>
+            )}
+            {(previz.previewProvenance?.missingOptionalArtifactTypes?.length ?? 0) > 0 && (
+              <p>
+                Missing optional context:{' '}
+                {previz.previewProvenance?.missingOptionalArtifactTypes
+                  .map(token => formatToken(token) ?? token)
+                  .join(', ')}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {validationStatus && (
+        <div className={`rounded-lg border px-4 py-3 text-sm ${validationToneClass(validationStatus.label)}`}>
+          <div className="space-y-1">
+            <p className="font-medium">{validationStatus.label}</p>
+            <p>{validationStatus.description}</p>
+          </div>
+        </div>
+      )}
+
+      {aiPrevizStatus && (
+        <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 px-4 py-3 text-sm text-foreground/90">
+          <div className="space-y-1">
+            <p>{aiPrevizStatus.reason}</p>
+            {aiPrevizStatus.cost.status === 'blocked' && aiPrevizStatus.cost.reason && (
+              <p>Current recipe cost blocker: {aiPrevizStatus.cost.reason}</p>
+            )}
+            {extraBlockers.map(blocker => (
+              <p key={blocker}>{blocker}</p>
+            ))}
+          </div>
+        </div>
+      )}
+
+    </>
+  )
+}
+
 export function AiPrevizViewer({ data, projectId, health, healthDetails }: AiPrevizViewerProps) {
   const previz = parseAiPreviz(data)
   const { data: previzStatus } = usePrevizAdoptionStatus(projectId)
   const aiPrevizStatus = previzStatus?.ai_previz
-  const sceneLabel = previz.sceneNumber !== null ? `Scene ${previz.sceneNumber}` : 'AI Previz'
   const videoUrl = previz.videoPath ? getAssetFileUrl(projectId, previz.videoPath) : null
   const promptHref = artifactHref(projectId, previz.promptRef)
   const validationHref = (
@@ -144,7 +331,6 @@ export function AiPrevizViewer({ data, projectId, health, healthDetails }: AiPre
     ? artifactHref(projectId, parseArtifactLink(healthDetails.source_artifact_ref))
     : null
   const validationStatus = mediaValidationStatus(health, healthDetails)
-  const costBadge = aiPrevizCostBadge(aiPrevizStatus)
   const extraBlockers = (aiPrevizStatus?.blocker_reasons ?? [])
     .filter(blocker => blocker !== aiPrevizStatus?.reason)
     .slice(0, 2)
@@ -152,168 +338,15 @@ export function AiPrevizViewer({ data, projectId, health, healthDetails }: AiPre
   return (
     <div className="space-y-4">
       <Card className="gap-0">
-        <CardHeader className="pb-4">
-          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-            <div className="space-y-1">
-              <CardTitle>{sceneLabel}</CardTitle>
-              <CardDescription>
-                {previz.sceneHeading ?? 'Low-fidelity AI previz clip for planning review'}
-              </CardDescription>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {aiPrevizStatus && (
-                <Badge
-                  variant={aiPrevizStatus.adoption_state === 'experimental_manual' ? 'outline' : 'secondary'}
-                >
-                  {formatAdoptionState(aiPrevizStatus.adoption_state)}
-                </Badge>
-              )}
-              {formatPreviewMode(previz.previewProvenance?.mode ?? null) && (
-                <Badge variant="secondary">
-                  {formatPreviewMode(previz.previewProvenance?.mode ?? null)}
-                </Badge>
-              )}
-              {previz.renderUnit === 'render_clip' && (
-                <Badge variant="secondary">Render Clip</Badge>
-              )}
-              {previz.renderClipId && (
-                <Badge variant="outline">{previz.renderClipId}</Badge>
-              )}
-              {formatClipWindow(previz.renderClipStartSeconds, previz.renderClipEndSeconds) && (
-                <Badge variant="outline">
-                  {formatClipWindow(previz.renderClipStartSeconds, previz.renderClipEndSeconds)}
-                </Badge>
-              )}
-              {previz.sourceShotIds.length > 0 && (
-                <Badge variant="outline">Shots {previz.sourceShotIds.join(', ')}</Badge>
-              )}
-              {formatPreviewIntent(previz.previewProvenance?.fidelityIntent ?? null) && (
-                <Badge variant="outline">
-                  {formatPreviewIntent(previz.previewProvenance?.fidelityIntent ?? null)}
-                </Badge>
-              )}
-              {previz.targetProvider && (
-                <Badge variant="outline">{formatToken(previz.targetProvider)}</Badge>
-              )}
-              {previz.targetModel && <Badge variant="outline">{previz.targetModel}</Badge>}
-              {previz.enginePackId && (
-                <Badge variant="outline" className="gap-1">
-                  <Film className="h-3 w-3" />
-                  {previz.enginePackId}
-                </Badge>
-              )}
-              {formatDuration(previz.durationSeconds) && (
-                <Badge variant="outline" className="gap-1">
-                  <Clock className="h-3 w-3" />
-                  {formatDuration(previz.durationSeconds)}
-                </Badge>
-              )}
-              {previz.resolution && <Badge variant="outline">{previz.resolution}</Badge>}
-              {previz.aspectRatio && <Badge variant="outline">{previz.aspectRatio}</Badge>}
-              {formatConsistencyStrategy(previz.previewProvenance?.consistencyStrategy ?? null) && (
-                <Badge variant="outline">
-                  {formatConsistencyStrategy(previz.previewProvenance?.consistencyStrategy ?? null)}
-                </Badge>
-              )}
-              {formatPromptProfile(previz.previewProvenance?.promptProfile ?? null) && (
-                <Badge variant="outline">
-                  {formatPromptProfile(previz.previewProvenance?.promptProfile ?? null)}
-                </Badge>
-              )}
-              {formatPrerequisiteStrategy(previz.previewProvenance?.prerequisiteStrategy ?? null) && (
-                <Badge variant="outline">
-                  {formatPrerequisiteStrategy(previz.previewProvenance?.prerequisiteStrategy ?? null)}
-                </Badge>
-              )}
-              {formatLatencyMs(previz.previewProvenance?.generationLatencyMs ?? null) && (
-                <Badge variant="outline" className="gap-1">
-                  <Timer className="h-3 w-3" />
-                  {formatLatencyMs(previz.previewProvenance?.generationLatencyMs ?? null)}
-                </Badge>
-              )}
-              {costBadge && <Badge variant="outline">{costBadge}</Badge>}
-            </div>
-          </div>
-        </CardHeader>
+        <AiPrevizHeader previz={previz} aiPrevizStatus={aiPrevizStatus} data={data} />
         <CardContent className="space-y-4">
-          <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-sm text-amber-100">
-            <div className="flex items-start gap-2">
-              <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
-              <p>
-                This clip is previz, not final footage. Use it to judge camera placement,
-                blocking, motion, pacing, and location readability without obsessing over polish.
-              </p>
-            </div>
-          </div>
-
-          {(previz.previewProvenance?.prerequisiteStrategy
-            || (previz.previewProvenance?.reusedArtifactTypes?.length ?? 0) > 0
-            || (previz.previewProvenance?.autoBuildArtifactTypes?.length ?? 0) > 0
-            || (previz.previewProvenance?.missingOptionalArtifactTypes?.length ?? 0) > 0) && (
-            <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 px-4 py-3 text-sm text-foreground/90">
-              <div className="space-y-1">
-                {formatPrerequisiteStrategy(previz.previewProvenance?.prerequisiteStrategy ?? null) && (
-                  <p>
-                    Prep strategy:{' '}
-                    {formatPrerequisiteStrategy(previz.previewProvenance?.prerequisiteStrategy ?? null)}
-                  </p>
-                )}
-                {(previz.previewProvenance?.reusedArtifactTypes?.length ?? 0) > 0 && (
-                  <p>
-                    Reused:{' '}
-                    {previz.previewProvenance?.reusedArtifactTypes
-                      .map(token => formatToken(token) ?? token)
-                      .join(', ')}
-                  </p>
-                )}
-                {(previz.previewProvenance?.autoBuildArtifactTypes?.length ?? 0) > 0 && (
-                  <p>
-                    Auto-built:{' '}
-                    {previz.previewProvenance?.autoBuildArtifactTypes
-                      .map(token => formatToken(token) ?? token)
-                      .join(', ')}
-                  </p>
-                )}
-                {(previz.previewProvenance?.missingOptionalArtifactTypes?.length ?? 0) > 0 && (
-                  <p>
-                    Missing optional context:{' '}
-                    {previz.previewProvenance?.missingOptionalArtifactTypes
-                      .map(token => formatToken(token) ?? token)
-                      .join(', ')}
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
-
-          {validationStatus && (
-            <div className={`rounded-lg border px-4 py-3 text-sm ${validationToneClass(validationStatus.label)}`}>
-              <div className="space-y-1">
-                <p className="font-medium">{validationStatus.label}</p>
-                <p>{validationStatus.description}</p>
-              </div>
-            </div>
-          )}
-
-          {aiPrevizStatus && (
-            <div className="rounded-lg border border-sky-500/20 bg-sky-500/5 px-4 py-3 text-sm text-foreground/90">
-              <div className="space-y-1">
-                <p>{aiPrevizStatus.reason}</p>
-                {aiPrevizStatus.cost.status === 'blocked' && aiPrevizStatus.cost.reason && (
-                  <p>Cost blocker: {aiPrevizStatus.cost.reason}</p>
-                )}
-                {aiPrevizStatus.cost.status === 'estimated' && (
-                  <p>
-                    Estimated cost for the active recipe defaults:{' '}
-                    {formatMoney(aiPrevizStatus.cost.estimated_cost_usd ?? null) ?? 'n/a'}.
-                  </p>
-                )}
-                {extraBlockers.map(blocker => (
-                  <p key={blocker}>{blocker}</p>
-                ))}
-              </div>
-            </div>
-          )}
+          <AiPrevizContext
+            previz={previz}
+            aiPrevizStatus={aiPrevizStatus}
+            validationStatus={validationStatus}
+            extraBlockers={extraBlockers}
+          />
+          <PrevizCostExample status={aiPrevizStatus} />
 
           <div className="flex flex-wrap gap-2">
             {promptHref && (

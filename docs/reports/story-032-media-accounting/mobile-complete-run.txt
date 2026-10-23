@@ -1,0 +1,258 @@
+- heading "Command Palette" [level=2]
+- paragraph: Search for a command to run...
+- main:
+  - button "Open navigation":
+  - navigation "Breadcrumb":
+    - link "Open Frequency":
+      - /url: /open-frequency
+    - link "Runs":
+      - /url: /open-frequency/runs
+    - generic: run-fae39865
+  - button "Open chat":
+  - button "Script":
+  - button "World":
+  - button "Direction":
+  - button "Shots":
+  - button "Storyboards":
+  - button "Production":
+  - button "Back":
+    - text: Back
+  - heading "Script IntakeComplete" [level=1]
+  - paragraph: run-fae39865
+  - generic: Done
+  - text: Recorded cost estimate
+  - generic: $0.0809
+  - text: Duration
+  - generic: 1m 16s
+  - text: Model
+  - generic "claude-sonnet-4-6": sonnet-4-6
+  - text: Stages
+  - generic: 5/5
+  - generic: Ingest
+  - generic: 0.0s
+  - generic: Normalize
+  - generic: 0.0s
+  - generic: Breakdown Scenes
+  - generic: $0.0146
+  - generic: 19.5s
+  - generic: Script Bible
+  - generic: $0.0455
+  - generic: 55.9s
+  - generic: Project Config
+  - generic: $0.0209
+  - generic: 20.1s
+  - text: Run Cost Breakdown
+  - paragraph: Stage, model, role, and scene cost estimates for this run.
+  - link "CSV":
+    - /url: /api/projects/open-frequency/export/costs.csv?run_id=run-fae39865
+    - text: CSV
+  - link "JSON":
+    - /url: /api/projects/open-frequency/export/costs.json?run_id=run-fae39865
+    - text: JSON
+  - generic: Run total estimate
+  - generic: $0.0809
+  - generic: Stages
+  - generic: "5"
+  - generic: Models Used
+  - generic: "2"
+  - generic: Scene Attribution
+  - generic: "4"
+  - paragraph: Cost figures are estimates from recorded usage and prices, not provider bills.
+  - generic: Budget Status
+  - generic: project budget
+  - generic: ok
+  - generic: $0.0809 known estimated use of $5.0000 limit
+  - generic: Estimated remaining $4.9191
+  - generic: run budget
+  - generic: ok
+  - generic: $0.0809 known estimated use of $5.0000 limit
+  - generic: Estimated remaining $4.9191
+  - generic: By Stage
+  - generic: ingest
+  - generic: code · done
+  - generic: $0.0000
+  - generic: Estimated stage cost · 0.0s
+  - generic: Calls 1
+  - generic: Attempts 1
+  - generic: Module $0.0000
+  - generic: Role $0.0000
+  - generic: normalize
+  - generic: code · done
+  - generic: $0.0000
+  - generic: Estimated stage cost · 0.0s
+  - generic: Calls 1
+  - generic: Attempts 1
+  - generic: Module $0.0000
+  - generic: Role $0.0000
+  - generic: breakdown_scenes
+  - generic: claude-sonnet-4-6 · done
+  - generic: $0.0146
+  - generic: Estimated stage cost · 19.5s
+  - generic: Calls 4
+  - generic: Attempts 1
+  - generic: Module $0.0146
+  - generic: Role $0.0000
+  - generic: script_bible
+  - generic: claude-sonnet-4-6 · done
+  - generic: $0.0455
+  - generic: Estimated stage cost · 55.9s
+  - generic: Calls 1
+  - generic: Attempts 1
+  - generic: Module $0.0455
+  - generic: Role $0.0000
+  - generic: project_config
+  - generic: claude-sonnet-4-6 · done
+  - generic: $0.0209
+  - generic: Estimated stage cost · 20.1s
+  - generic: Calls 1
+  - generic: Attempts 1
+  - generic: Module $0.0209
+  - generic: Role $0.0000
+  - generic: By Model
+  - generic: claude-sonnet-4-6
+  - generic: $0.0809
+  - generic: Estimated model cost
+  - generic: Calls 6
+  - generic: In 11635
+  - generic: Out 3613
+  - generic: code
+  - generic: $0.0000
+  - generic: Estimated model cost
+  - generic: Calls 2
+  - generic: In 0
+  - generic: Out 0
+  - generic: By Role
+  - generic: No role-attributed cost data recorded.
+  - generic: By Scene
+  - generic: scene_001
+  - generic: allocated
+  - generic: $0.0036
+  - generic: Estimated scene cost
+  - generic: 1 calls · stages breakdown_scenes
+  - generic: Equal allocation from stage 'breakdown_scenes' across 4 scene outputs.
+  - generic: scene_002
+  - generic: allocated
+  - generic: $0.0036
+  - generic: Estimated scene cost
+  - generic: 1 calls · stages breakdown_scenes
+  - generic: Equal allocation from stage 'breakdown_scenes' across 4 scene outputs.
+  - generic: scene_003
+  - generic: allocated
+  - generic: $0.0036
+  - generic: Estimated scene cost
+  - generic: 1 calls · stages breakdown_scenes
+  - generic: Equal allocation from stage 'breakdown_scenes' across 4 scene outputs.
+  - generic: scene_004
+  - generic: allocated
+  - generic: $0.0036
+  - generic: Estimated scene cost
+  - generic: 1 calls · stages breakdown_scenes
+  - generic: Equal allocation from stage 'breakdown_scenes' across 4 scene outputs.
+  - heading "Scene Overview" [level=2]
+  - button "1 INT Community Radio Studio NIGHT INT. COMMUNITY RADIO STUDIO - NIGHT":
+    - generic: "1"
+    - generic: INT
+    - heading "Community Radio Studio" [level=4]
+    - paragraph: NIGHT
+    - paragraph: INT. COMMUNITY RADIO STUDIO - NIGHT
+  - button "2 EXT Water Tower Catwalk NIGHT EXT. WATER TOWER CATWALK - NIGHT":
+    - generic: "2"
+    - generic: EXT
+    - heading "Water Tower Catwalk" [level=4]
+    - paragraph: NIGHT
+    - paragraph: EXT. WATER TOWER CATWALK - NIGHT
+  - button "3 INT High School Gym Shelter - Pre DAWN INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN":
+    - generic: "3"
+    - generic: INT
+    - heading "High School Gym Shelter - Pre" [level=4]
+    - paragraph: DAWN
+    - paragraph: INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN
+  - button "4 INT Community Radio Studio MORNING INT. COMMUNITY RADIO STUDIO - MORNING":
+    - generic: "4"
+    - generic: INT
+    - heading "Community Radio Studio" [level=4]
+    - paragraph: MORNING
+    - paragraph: INT. COMMUNITY RADIO STUDIO - MORNING
+  - heading "Event Log" [level=2]
+  - generic: 09:54:50
+  - generic: pipeline_started
+  - generic: 09:54:50
+  - generic: •
+  - generic: ingest
+  - generic: stage_started
+  - generic: 09:54:50
+  - generic: •
+  - generic: ingest
+  - generic: artifact_saved
+  - generic: 09:54:50
+  - generic: •
+  - generic: ingest
+  - generic: stage_finished
+  - generic: 09:54:50
+  - generic: •
+  - generic: normalize
+  - generic: stage_started
+  - generic: 09:54:50
+  - generic: •
+  - generic: normalize
+  - generic: artifact_saved
+  - generic: 09:54:50
+  - generic: •
+  - generic: normalize
+  - generic: stage_finished
+  - generic: 09:54:50
+  - generic: •
+  - generic: script_bible
+  - generic: stage_started
+  - generic: 09:54:50
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: stage_started
+  - generic: 09:54:52
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: artifact_saved
+  - generic: 09:54:52
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: artifact_saved
+  - generic: 09:54:52
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: artifact_saved
+  - generic: 09:55:09
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: artifact_saved
+  - generic: 09:55:09
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: artifact_saved
+  - generic: 09:55:09
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: stage_finished
+  - generic: 09:55:46
+  - generic: •
+  - generic: script_bible
+  - generic: artifact_saved
+  - generic: 09:55:46
+  - generic: •
+  - generic: script_bible
+  - generic: stage_finished
+  - generic: 09:55:46
+  - generic: •
+  - generic: project_config
+  - generic: stage_started
+  - generic: 09:56:06
+  - generic: •
+  - generic: project_config
+  - generic: artifact_saved
+  - generic: 09:56:06
+  - generic: •
+  - generic: project_config
+  - generic: stage_finished
+  - generic: 09:56:06
+  - generic: pipeline_finished
+  - button "Clone settings to new run"
+- region "Notifications alt+T"

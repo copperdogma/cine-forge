@@ -2,12 +2,17 @@
 
 from __future__ import annotations
 
+import math
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-from cine_forge.modules.generation.render_adapter_v1.support import load_engine_pack
+from cine_forge.ai.video_pricing import VideoPricingError, resolve_video_price
+from cine_forge.modules.generation.render_adapter_v1.support import (
+    load_engine_pack,
+    normalize_duration_seconds,
+)
 from cine_forge.schemas import (
     EnginePack,
     PrevizAdoptionStatus,
@@ -230,30 +235,46 @@ class PrevizAdoptionService:
         params: dict[str, Any],
         engine_pack: EnginePack,
     ) -> PrevizCostEvidence:
-        raw_rate = engine_pack.request_defaults.get("benchmark_cost_per_second_usd")
-        if raw_rate not in (None, ""):
-            duration_seconds = self._duration_seconds(params=params, engine_pack=engine_pack) or 0.0
+        raw_duration = params.get("duration_seconds")
+        if (
+            isinstance(raw_duration, bool)
+            or not isinstance(raw_duration, (int, float))
+            or not math.isfinite(raw_duration)
+            or raw_duration <= 0
+        ):
             return PrevizCostEvidence(
-                status="estimated",
-                estimated_cost_usd=round(float(raw_rate) * duration_seconds, 4),
+                status="blocked",
                 reason=(
-                    "Estimated from the recorded engine-pack benchmark rate and the current "
-                    "recipe duration."
+                    "Recipe duration is missing or invalid; "
+                    "no video price example is available."
                 ),
             )
+        try:
+            duration, _ = normalize_duration_seconds(
+                float(raw_duration), engine_pack.limits.supported_durations_seconds,
+            )
+            resolution = self._resolution(params=params, engine_pack=engine_pack)
+            if resolution not in engine_pack.limits.supported_resolutions:
+                raise VideoPricingError(
+                    f"Resolution {resolution!r} is not supported by {engine_pack.pack_id}."
+                )
+            price = resolve_video_price(
+                provider=engine_pack.provider,
+                model=engine_pack.target_model,
+                resolution=resolution,
+            )
+        except (ValueError, VideoPricingError) as exc:
+            return PrevizCostEvidence(status="blocked", reason=str(exc))
         return PrevizCostEvidence(
-            status="blocked",
-            estimated_cost_usd=None,
-            reason=self._pricing_blocker_reason(engine_pack),
-        )
-
-    def _pricing_blocker_reason(self, engine_pack: EnginePack) -> str:
-        for note in engine_pack.known_limitations:
-            if "pricing" in note.lower():
-                return note
-        return (
-            f"{engine_pack.pack_id} does not have a recorded benchmark or provider pricing rate, "
-            "so AI-previz cost cannot yet be estimated honestly."
+            status="estimated",
+            estimated_cost_usd=round(price.unit_price_usd * duration, 4),
+            duration_seconds=duration,
+            price=price,
+            reason=(
+                "Video-only recipe-default example for one generated clip; excludes compiler, "
+                "automatic design-study backfill, validation, and additional clips. "
+                "Prepared clip durations may differ."
+            ),
         )
 
     def _candidate_score(self, engine_pack_id: str) -> dict[str, Any] | None:
@@ -376,10 +397,14 @@ class PrevizAdoptionService:
         return str(value) if value not in (None, "") else None
 
     def _duration_seconds(self, *, params: dict[str, Any], engine_pack: EnginePack) -> float | None:
-        value = params.get("duration_seconds") or engine_pack.request_defaults.get(
-            "benchmark_default_duration_seconds"
-        )
-        if isinstance(value, (int, float)):
+        _ = engine_pack
+        value = params.get("duration_seconds")
+        if (
+            not isinstance(value, bool)
+            and isinstance(value, (int, float))
+            and math.isfinite(value)
+            and value > 0
+        ):
             return float(value)
         return None
 

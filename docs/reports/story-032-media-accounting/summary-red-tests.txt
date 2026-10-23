@@ -1,0 +1,118 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+____ test_receipt_summary_exposes_unknown_charges_instead_of_complete_total ____
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-344/test_receipt_summary_exposes_u0')
+
+    @pytest.mark.unit
+    def test_receipt_summary_exposes_unknown_charges_instead_of_complete_total(tmp_path: Path) -> None:
+        write_receipt_run(tmp_path)
+        summary = CostTrackingService(tmp_path).build_run_summary(run_id="media-run")
+        payload = summary.model_dump(mode="json")
+    
+>       assert payload.get("cost_is_complete") is False
+E       AssertionError: assert None is False
+E        +  where None = <built-in method get of dict object at 0x10d65ba80>('cost_is_complete')
+E        +    where <built-in method get of dict object at 0x10d65ba80> = {'budget_config': {'budget_warning_threshold_ratio': 0.8, 'default_run_budget_limit_usd': None, 'project_budget_limit_...ole invocation cost logs.', 'kind': 'exact'}, 'call_count': 1, 'entity_ids': [], 'estimated_cost_usd': 0.5, ...}], ...}.get
+
+tests/unit/test_cost_receipt_summaries.py:77: AssertionError
+____ test_receipt_summary_attributes_real_models_and_preserves_role_totals _____
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-344/test_receipt_summary_attribute0')
+
+    @pytest.mark.unit
+    def test_receipt_summary_attributes_real_models_and_preserves_role_totals(tmp_path: Path) -> None:
+        write_receipt_run(tmp_path)
+        summary = CostTrackingService(tmp_path).build_run_summary(run_id="media-run")
+        models = {row.model: row for row in summary.by_model}
+    
+>       assert set(models) == {"compiler-model", "video-model", "judge-model"}
+E       AssertionError: assert {'compiler-mo...'judge-model'} == {'compiler-mo...'video-model'}
+E         
+E         Extra items in the left set:
+E         'compiler-model+video-model'
+E         Extra items in the right set:
+E         'video-model'
+E         'compiler-model'
+E         Use -v to get more diff
+
+tests/unit/test_cost_receipt_summaries.py:89: AssertionError
+__ test_receipt_scenes_use_exact_evidence_and_unknown_scene_stays_incomplete ___
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-344/test_receipt_scenes_use_exact_0')
+
+    @pytest.mark.unit
+    def test_receipt_scenes_use_exact_evidence_and_unknown_scene_stays_incomplete(tmp_path: Path) -> None:
+        write_receipt_run(tmp_path)
+        summary = CostTrackingService(tmp_path).build_run_summary(run_id="media-run")
+        scenes = {row.scene_id: row for row in summary.by_scene}
+    
+>       assert scenes["scene_001"].estimated_cost_usd == pytest.approx(1.8)
+E       assert 0.9 == 1.8 ± 1.8e-06
+E         
+E         comparison failed
+E         Obtained: 0.9
+E         Expected: 1.8 ± 1.8e-06
+
+tests/unit/test_cost_receipt_summaries.py:106: AssertionError
+_ test_project_summary_propagates_uncertainty_and_does_not_rank_incomplete_trends _
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-344/test_project_summary_propagate0')
+
+    @pytest.mark.unit
+    def test_project_summary_propagates_uncertainty_and_does_not_rank_incomplete_trends(
+        tmp_path: Path,
+    ) -> None:
+        project = write_receipt_run(tmp_path)
+        write_receipt_run(tmp_path, run_id="media-run-2", start=20)
+        write_receipt_run(tmp_path, run_id="media-run-3", start=30)
+        write_receipt_run(tmp_path, run_id="media-run-4", start=40)
+        summary = CostTrackingService(tmp_path).build_project_summary(
+            project_id="cost-project", project_path=project,
+        )
+    
+>       assert summary.cost_is_complete is False
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_cost_receipt_summaries.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = ProjectCostSummary(project_id='cost-project', total_cost_usd=9.2, run_count=4, runs=[RunCostOverview(run_id='media-run...get_limit_usd=None, default_run_budget_limit_usd=None, budget_warning_threshold_ratio=0.8, stage_budget_limits_usd={}))
+item = 'cost_is_complete'
+
+    def __getattr__(self, item: str) -> Any:
+        private_attributes = object.__getattribute__(self, '__private_attributes__')
+        if item in private_attributes:
+            attribute = private_attributes[item]
+            if hasattr(attribute, '__get__'):
+                return attribute.__get__(self, type(self))  # type: ignore
+    
+            try:
+                # Note: self.__pydantic_private__ cannot be None if self.__private_attributes__ has items
+                return self.__pydantic_private__[item]  # type: ignore
+            except KeyError as exc:
+                raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}') from exc
+        else:
+            # `__pydantic_extra__` can fail to be set if the model is not yet fully initialized.
+            # See `BaseModel.__repr_args__` for more details
+            try:
+                pydantic_extra = object.__getattribute__(self, '__pydantic_extra__')
+            except AttributeError:
+                pydantic_extra = None
+    
+            if pydantic_extra and item in pydantic_extra:
+                return pydantic_extra[item]
+            else:
+                if hasattr(self.__class__, item):
+                    return super().__getattribute__(item)  # Raises AttributeError if appropriate
+                else:
+                    # this is the current error
+>                   raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+E                   AttributeError: 'ProjectCostSummary' object has no attribute 'cost_is_complete'
+
+.venv/lib/python3.14/site-packages/pydantic/main.py:1026: AttributeError
+=========================== short test summary info ============================
+FAILED tests/unit/test_cost_receipt_summaries.py::test_receipt_summary_exposes_unknown_charges_instead_of_complete_total
+FAILED tests/unit/test_cost_receipt_summaries.py::test_receipt_summary_attributes_real_models_and_preserves_role_totals
+FAILED tests/unit/test_cost_receipt_summaries.py::test_receipt_scenes_use_exact_evidence_and_unknown_scene_stays_incomplete
+FAILED tests/unit/test_cost_receipt_summaries.py::test_project_summary_propagates_uncertainty_and_does_not_rank_incomplete_trends

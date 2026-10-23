@@ -18,7 +18,7 @@ Story IDs are identifiers, not sequencing proof. Legacy suffix IDs such as `003b
 
 ## Current Execution Map
 
-Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first render route, and Stories 191-196 closed the Brick & Steel production-readiness, design-study lifecycle, prompt truth, render-clip planning, multi-clip rendering, xAI previz readiness, and product-truth scrub wave. Story 196 found the current surfaced route healthy and created Story 201 for a focused keyframe-affordance follow-up. Story 202 closed the high-priority scene-generation follow-up from the inbox: default design-study still backfill plus a still-image prompt compiler for render/AI-previz consistency. Story 203 closed render-adapter decomposition so the render/previz lane no longer depends on one 2,630-line module owner. Story 198 closed the Brick & Steel character-adjudication build, while Stories 185, 197, and 199 hold routed UI, reference-pack, and casting/table-read decisions.
+Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first render route, and Stories 191-196 closed the Brick & Steel production-readiness, design-study lifecycle, prompt truth, render-clip planning, multi-clip rendering, xAI previz readiness, and product-truth scrub wave. Story 196 found the current surfaced route healthy and created Story 201 for a focused keyframe-affordance follow-up. Story 202 closed the high-priority scene-generation follow-up from the inbox: default design-study still backfill plus a still-image prompt compiler for render/AI-previz consistency. Story 203 closed render-adapter decomposition so the render/previz lane no longer depends on one 2,630-line module owner. Story 198 closed the Brick & Steel character-adjudication build. Story 185 closed screenplay-first Home and supporting-surface placement; Stories 197 and 199 retain reference-pack and casting/table-read decisions.
 
 ### Pending — Ready To Build Now
 
@@ -30,9 +30,7 @@ No stories currently in progress.
 
 ### Pending — Ready, But Sequence-Sensitive
 
-| Story | Why |
-|---|---|
-| **201** Keyframe Affordance Truth | Focused follow-up from Story 196: fix the Render/Previz keyframe warning so missing optional keyframes either have a real route or no longer appear as actionable hidden homework. |
+No stories currently need the sequence-sensitive lane.
 
 ### Draft — Scope Or Decision Needed First
 
@@ -104,12 +102,12 @@ No blocked lines currently need attention.
 ## Active Focus
 
 - Active categories: `spec:6`, `spec:7`
-- UI scout freshness: attention needed — last run 2026-04-12 is 191 days old against a 14-day cadence
+- UI scout freshness: attention needed — FP1 (Full Pipeline Canonical Fixture) still has unresolved issues (follow-up stories: 232)
 - Sequencing bias: `scene-generation-completion` — Keep `spec:6` / `spec:7` as the active product lane even after Story 164 closed the first surfaced real-scene render route. The next slice should deepen scene-generation completeness from that honest operator path instead of retreating to throughput-only or eval-polish work.
 - Sequencing bias: `pipeline-throughput-efficiency` — Keep screenplay-throughput and per-stage efficiency measurement visible, but do not let it displace scene-generation completeness while the operator-facing render path is still not feature complete. Use measured hotspot truth when throughput work resumes.
 - Sequencing bias: `ui-product-truth-scouting` — If CineForge has not been walked through recently on the canonical full-pipeline fixture, triage should treat stale or awaiting-recheck UI product-truth coverage as real execution risk rather than assuming the surfaced path still feels coherent.
-- Active campaign `ui-product-truth-scouting` (stories: 196, 201): Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage. Story 196 is the current Brick & Steel product-truth scrub created from inbox triage; Story 201 is the focused keyframe-affordance follow-up found during that scrub.
-- Active campaign `scene-generation-completion` (stories: 164, 165, 166, 167, 168, 169, 170, 191, 192, 193, 194, 195, 201, 202, 203): Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair; Story 192 closed the separate GPT-image design-study completion/error follow-up. Story 193 closed the scene-duration/render-clip planning artifact, Story 194 closed the dependent multi-clip scene-render execution slice, Story 195 closed the production xAI AI-previz readiness surface for the shipped lane, Story 202 closed the default design-study still-image backfill plus still-image prompt compiler requested from the inbox, and Story 203 closed the render-adapter decomposition/validation cleanup. Story 201 remains the current pending scene-generation truth follow-up for keyframe affordance honesty.
+- Active campaign `ui-product-truth-scouting` (stories: 185, 196, 201, 232): Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage. Story 196 closed the Brick & Steel scrub and Story 201 closed its optional-keyframe follow-up. Story 185 closed screenplay-first Home placement with representative desktop/mobile evidence and honest cut review status; Story232 attempted a fresh canonical walkthrough on2026-10-23 but stopped before media under its bounded envelope; full FP1 remains blocked. Story233 closed the observed first-use guidance repair and reopened005 closed the PRE-DAWN parser regression; targeted repairs do not claim a full Pass.
+- Active campaign `scene-generation-completion` (stories: 164, 165, 166, 167, 168, 169, 170, 191, 192, 193, 194, 195, 197, 201, 202, 203, 228): Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair; Story 192 closed the separate GPT-image design-study completion/error follow-up. Story 193 closed the scene-duration/render-clip planning artifact, Story 194 closed the dependent multi-clip scene-render execution slice, Story 195 closed the production xAI AI-previz readiness surface for the shipped lane, Story 202 closed the default design-study still-image backfill plus still-image prompt compiler requested from the inbox, and Story 203 closed the render-adapter decomposition/validation cleanup. Story 201 closed optional-keyframe affordance honesty; Story 197 owns the remaining reference-fidelity proof boundary and Story 228 owns the original music-video pilot draft. Continue from their measured gaps and input/spend gates rather than repeating exhausted evaluations.
 
 ## Story Index
 
@@ -132,7 +130,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 185 | Project Home Script Hierarchy and Supporting Surface Placement | High | Draft | — | spec:2, spec:5, spec:10 | 093, 142, 166, 167 | [story-185](stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md) |
 | 048 | PDF Input Preview Uses Binary Decode Instead of Text Extraction | High | Done | — | spec:2, spec:5 | — | [story-048](stories/story-048-pdf-input-preview-decode.md) |
 | 049 | Import Normalization Format Suite | High | Done | — | spec:2, spec:8 | — | [story-049](stories/story-049-import-normalization-format-suite.md) |
 | 054 | Liberty Church Character Artifact Cleanup Inventory | High | Done | — | spec:2, spec:3, spec:5, spec:8 | 008, 041 | [story-054](stories/story-054-liberty-church-character-artifact-cleanup-inventory.md) |
@@ -146,6 +143,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 135 | Brick & Steel PDF Normalization Regression | High | Done | — | spec:2, spec:8 | 004, 064 | [story-135](stories/story-135-screenplay-normalization-brick-steel-pdf-regression.md) |
 | 142 | Initial Intake Should Not Self-Stale | High | Done | — | spec:1, spec:2, spec:5 | 031, 062, 127 | [story-142](stories/story-142-intake-onboarding-should-not-self-stale.md) |
 | 148 | Scene-Scoped Planning and Honest Downstream Generation | High | Done | — | spec:2, spec:5, spec:6, spec:7, spec:10 | 025, 028, 099, 132, 143, 144 | [story-148](stories/story-148-scene-scoped-planning-and-honest-downstream-generation.md) |
+| 185 | Project Home Script Hierarchy and Supporting Surface Placement | High | Done | — | spec:2, spec:5, spec:10 | 093, 142, 166, 167 | [story-185](stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md) |
 | 189 | GPT-5.5 Frontier Eval Refresh | High | Done | — | spec:2, spec:3, spec:8 | 035 | [story-189](stories/story-189-gpt-55-frontier-eval-refresh.md) |
 | 198 | Brick & Steel Character Adjudication | High | Done | — | spec:2, spec:3, spec:5, spec:8 | 055, 081, 097, 124, 129 | [story-198](stories/story-198-brick-steel-character-adjudication.md) |
 | 200 | Grok 4.3 Text and Image Reasoning Eval Refresh | High | Done | — | spec:2, spec:4, spec:6, spec:7, spec:8 | 035 | [story-200](stories/story-200-grok-43-text-image-reasoning-eval-refresh.md) |
@@ -253,6 +251,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
+| 232 | Canonical Full-Pipeline UI Recheck | High | Blocked | The declared bounded media envelope cannot be checked from the current fresh Render preflight:… | spec:5, spec:6, spec:7 | 156, 185, 201 | [story-232](stories/story-232-canonical-full-pipeline-ui-recheck.md) |
 | 228 | Original Music Video Pilot | Medium | Draft | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 032, 166, 167 | [story-228](stories/story-228-original-music-video-pilot.md) |
 | 114 | Driver Progress Events | Medium | Deferred | — | spec:1, spec:5 | 115, 116 | [story-114](stories/story-114-driver-progress-events.md) |
 | 011e | Operator Console — UX Golden Path | Unknown | Deferred | — | spec:5 | 011d | [story-011e](stories/story-011e-ux-golden-path.md) |
@@ -294,6 +293,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 195 | Production xAI Previz Readiness | High | Done | — | spec:5, spec:6, spec:7, spec:8, spec:10 | 176, 184, 194 | [story-195](stories/story-195-production-xai-previz-readiness.md) |
 | 196 | Brick & Steel Product Truth Scrub | High | Done | — | spec:5, spec:6, spec:7, spec:10 | 139, 180, 191, 192, 193, 194 | [story-196](stories/story-196-brick-steel-product-truth-scrub.md) |
 | 230 | Nano Banana 2.1 Image Defaults | High | Done | — | spec:5, spec:7, spec:8 | — | [story-230](stories/story-230-nano-banana21-image-defaults.md) |
+| 233 | First-Use Next-Action Truth | High | Done | — | spec:5, spec:6, spec:7 | 181, 201 | [story-233](stories/story-233-first-use-next-action-truth.md) |
 | 011c | Resource-oriented Routing | Medium | Done | — | spec:5 | — | [story-011c](stories/story-011c-resource-oriented-routing.md) |
 | 042 | Wire Mock UI to Real APIs | Medium | Done | — | spec:5 | — | [story-042](stories/story-042-wire-mock-ui-to-apis.md) |
 | 044 | Mobile-Friendly UI | Medium | Done | — | spec:5 | 043 | [story-044](stories/story-044-mobile-friendly-ui.md) |
@@ -322,7 +322,6 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 
 | ID | Title | Priority | Status | Blocker | Categories | Depends On | Link |
 |---|---|---|---|---|---|---|---|
-| 201 | Keyframe Affordance Truth | Medium | Pending | — | spec:6, spec:7, spec:10 | 027, 149, 194, 196 | [story-201](stories/story-201-keyframe-affordance-truth.md) |
 | 143 | AI-Generated Low-Fidelity Previz | High | Done | — | spec:6, spec:7, spec:10 | 028, 029, 030, 056, 119, 137, 140 | [story-143](stories/story-143-ai-generated-low-fidelity-previz.md) |
 | 177 | OpenTimelineIO Narrative Interchange Export | High | Done | — | spec:6, spec:7, spec:10 | 130 | [story-177](stories/story-177-otio-narrative-interchange-export.md) |
 | 188 | Storyboard Grid Beat Router and Motion-Handoff Scout | High | Done | — | spec:6, spec:7, spec:8 | 186 | [story-188](stories/story-188-storyboard-grid-beat-router-and-motion-handoff-scout.md) |
@@ -332,6 +331,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 203 | Render Adapter Scene-Generation Decomposition | High | Done | — | spec:6, spec:7, spec:11 | 191, 193, 194, 202 | [story-203](stories/story-203-render-adapter-scene-generation-decomposition.md) |
 | 130 | Export Fidelity: Narrative Metadata + Callsheets | Medium | Done | — | spec:6, spec:7, spec:10 | 012, 013, 058 | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |
 | 173 | Stale Coverage Graph Node Removal | Medium | Done | — | spec:6 | 025 | [story-173](stories/story-173-stale-coverage-graph-node-removal.md) |
+| 201 | Keyframe Affordance Truth | Medium | Done | — | spec:6, spec:7, spec:10 | 027, 149, 194, 196 | [story-201](stories/story-201-keyframe-affordance-truth.md) |
 | 137 | Previz Fidelity Upgrade | Low | Done | — | spec:6, spec:7, spec:10 | 027, 028, 030 | [story-137](stories/story-137-previz-fidelity-upgrade.md) |
 | 025 | Shot Planning | Unknown | Done | — | spec:6 | 011, 012, 013, 020, 021, 022 | [story-025](stories/story-025-shot-planning.md) |
 | 026 | Storyboard Generation (Optional) | Unknown | Done | — | spec:6, spec:10 | 013, 025 | [story-026](stories/story-026-storyboard-generation.md) |

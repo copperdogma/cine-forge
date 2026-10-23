@@ -1,0 +1,39 @@
+ "Project Cut":
+  - heading "Project Cut" [level=2]
+  - paragraph: Review, assemble, and validate the playable cut for this project.
+  - generic: Final Output
+  - generic: Partial Coverage
+  - generic: v1
+  - text: Needs Review
+  - generic: 10 generated clips · 6 scenes
+  - generic: 14.0s
+  - generic: "Assemble a project-level playable cut from the current generated scene renders. This first slice stays honest: it never swaps in storyboards or previz when a scene is missing from the rendered cut."
+  - link "Open Artifact Detail":
+    - /url: /brick-steel-full-retired/artifacts/final_output/project/1
+    - text: Open Artifact Detail
+  - link "Validation Detail":
+    - /url: /brick-steel-full-retired/artifacts/media_validation/project/1
+    - text: Validation Detail
+  - button "Refresh Final Output" [active]:
+    - text: Refresh Final Output
+  - paragraph: The current cut includes 1 scene and explicitly omits 5 scenes that still lack render coverage.
+  - paragraph: No semantic review model was configured.
+  - generic: Validation
+  - generic: Needs Review
+  - generic: No semantic review model was configured.
+  - paragraph: Project final output
+  - link "Validation Detail":
+    - /url: /brick-steel-full-retired/artifacts/media_validation/project/1
+    - text: Validation Detail
+  - generic: deterministic_only
+  - generic: 5_evenly_spaced_jpegs_v1
+  - generic: project
+  - generic: Partial Coverage
+  - generic: 1 included / 5 omitted
+  - generic: "semantic: skipped"
+  - img "Validation sample at 2.34s"
+  - img "Validation sample at 4.681s"
+  - img "Validation sample at 7.021s"
+  - button "Close"
+  - button "Close":
+    - generic: Close

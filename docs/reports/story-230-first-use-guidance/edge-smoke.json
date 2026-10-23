@@ -1,0 +1,21 @@
+{
+  "kind": "synthetic browser response interception",
+  "representativeProductEvidence": false,
+  "storedArtifactsChanged": false,
+  "cases": [
+    {
+      "case": "synthetic no input/no artifacts",
+      "nonRepresentative": true,
+      "button": "Open Script",
+      "noDeepPromise": true
+    },
+    {
+      "case": "synthetic existing character bible with empty props",
+      "nonRepresentative": true,
+      "noDeepPromise": true,
+      "button": "Open Script",
+      "honestEmptyDescription": true
+    }
+  ],
+  "cleanup": "Fetch interception patterns cleared; tab reloaded to real server responses"
+}

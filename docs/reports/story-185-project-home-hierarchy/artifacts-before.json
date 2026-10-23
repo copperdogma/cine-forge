@@ -1,0 +1,4366 @@
+{
+  "brick-steel-full-retired": [
+    {
+      "artifact_type": "ai_previz_prompt",
+      "entity_id": "scene_001",
+      "latest_version": 2,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "character_bible",
+          "entity_id": "sparrow",
+          "version": 2,
+          "path": "artifacts/character_bible/sparrow/v2.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-05T13:50:28.439785+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_prompt",
+      "entity_id": "scene_001_clip_001",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266162+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_prompt",
+      "entity_id": "scene_001_clip_002",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266180+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_prompt",
+      "entity_id": "scene_001_clip_003",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266196+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_prompt",
+      "entity_id": "scene_001_clip_004",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266210+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_prompt",
+      "entity_id": "scene_001_clip_005",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266224+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_prompt",
+      "entity_id": "scene_001_clip_006",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266238+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_prompt",
+      "entity_id": "scene_001_clip_007",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266252+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_prompt",
+      "entity_id": "scene_001_clip_008",
+      "latest_version": 4,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266296+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_video",
+      "entity_id": "scene_001",
+      "latest_version": 2,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "character_bible",
+          "entity_id": "sparrow",
+          "version": 2,
+          "path": "artifacts/character_bible/sparrow/v2.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-05T13:50:28.439792+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_video",
+      "entity_id": "scene_001_clip_001",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266172+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_video",
+      "entity_id": "scene_001_clip_002",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266188+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_video",
+      "entity_id": "scene_001_clip_003",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266203+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_video",
+      "entity_id": "scene_001_clip_004",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266217+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_video",
+      "entity_id": "scene_001_clip_005",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266232+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_video",
+      "entity_id": "scene_001_clip_006",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266246+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_video",
+      "entity_id": "scene_001_clip_007",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266259+00:00"
+      }
+    },
+    {
+      "artifact_type": "ai_previz_video",
+      "entity_id": "scene_001_clip_008",
+      "latest_version": 4,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266303+00:00"
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_boy_band",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_brick",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_cognito",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_dan",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_handsome_man",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_jack",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_minion",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_point_blank_sniper",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_scorpio",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_sparrow",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_steel",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "location_brick_s_patio",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "location_brick_s_pool",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "location_garage",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "location_palatial_mansion",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "location_trailer_home",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "location_wooden_shack",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "prop_leupold_mark_4_scope",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "canonical_script",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_and_performance",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_and_performance",
+      "entity_id": "scene_001",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "character_bible",
+          "entity_id": "sparrow",
+          "version": 2,
+          "path": "artifacts/character_bible/sparrow/v2.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-05T13:50:28.439671+00:00"
+      }
+    },
+    {
+      "artifact_type": "character_bible",
+      "entity_id": "boy_band",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_bible",
+      "entity_id": "brick",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_bible",
+      "entity_id": "cognito",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_bible",
+      "entity_id": "dan",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_bible",
+      "entity_id": "handsome_man",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_bible",
+      "entity_id": "jack",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_bible",
+      "entity_id": "minion",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_bible",
+      "entity_id": "point_blank_sniper",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_bible",
+      "entity_id": "scorpio",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_bible",
+      "entity_id": "sparrow",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_bible",
+      "entity_id": "steel",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_index",
+      "entity_id": "project",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_brick_scene_001",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_brick_scene_004",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_brick_scene_005",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_cognito_scene_004",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_dan_scene_002",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_handsome_man_scene_006",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_jack_scene_002",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_minion_scene_006",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_point_blank_sniper_scene_004",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_scorpio_scene_004",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_sparrow_scene_004",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_steel_scene_001",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_steel_scene_003",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_steel_scene_004",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_steel_scene_005",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "location_brick_s_patio_scene_001",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "location_brick_s_pool_scene_003",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "location_garage_scene_005",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "location_palatial_mansion_scene_006",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "location_trailer_home_scene_002",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "location_wooden_shack_scene_004",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-02f35012",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-0ac6d849",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-0f62f8e2",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-1481994c",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-1d36879e",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-204d1fe5",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-374d8463",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-3c675a11",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-40a174f1",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-40f34b3f",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-460d8154",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-5f906093",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-63e296e7",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-72fa806f",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-8279064e",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-83ce40c8",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-88a073f3",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-94103c1a",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-98486b3a",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-9b476294",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-a54631df",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-a5baa37c",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-b1bb65b3",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-b8b0b381",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-c4d09780",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-cb49c0c4",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-d0d15ac5",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-d1c2c9a9",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-f386966b",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-f70999d4",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-fc8b1cdc",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "entity_discovery_results",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "entity_graph",
+      "entity_id": "project",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_001_clip_001",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266324+00:00"
+      }
+    },
+    {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_001_clip_002",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266337+00:00"
+      }
+    },
+    {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_001_clip_003",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266354+00:00"
+      }
+    },
+    {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_001_clip_004",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266368+00:00"
+      }
+    },
+    {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_001_clip_005",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266381+00:00"
+      }
+    },
+    {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_001_clip_006",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266395+00:00"
+      }
+    },
+    {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_001_clip_007",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266408+00:00"
+      }
+    },
+    {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_001_clip_008",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266422+00:00"
+      }
+    },
+    {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_002_clip_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_002_clip_002",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "intent_mood",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "location_bible",
+      "entity_id": "brick_s_patio",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "location_bible",
+      "entity_id": "brick_s_pool",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "location_bible",
+      "entity_id": "garage",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "location_bible",
+      "entity_id": "palatial_mansion",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "location_bible",
+      "entity_id": "trailer_home",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "location_bible",
+      "entity_id": "wooden_shack",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "look_and_feel",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "look_and_feel",
+      "entity_id": "scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "look_and_feel_index",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "media_validation",
+      "entity_id": "scene_001",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": "media_validation",
+        "reason": "The sampled frames clearly depict a readable daytime backyard patio scene with two distinct characters, patio furniture, a grill, and consistent staging suitable for previs review.",
+        "trigger_ref": {
+          "artifact_type": "ai_previz_video",
+          "entity_id": "scene_001",
+          "version": 2,
+          "path": "artifacts/ai_previz_video/scene_001/v2.json"
+        },
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001",
+          "version": 2,
+          "path": "artifacts/media_validation/scene_001/v2.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": 0.94,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-29T21:42:12.365978+00:00"
+      }
+    },
+    {
+      "artifact_type": "media_validation",
+      "entity_id": "scene_001_clip_001",
+      "latest_version": 4,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": "media_validation",
+        "reason": "The sampled frames show a coherent bright suburban patio establishing scene with two men in matching dark jackets, a screen door behind Brick, an unused barbecue, empty patio seating, and no visible blocking defects. The clip appears usable for the stated scene scope.",
+        "trigger_ref": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_001",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_001/v1.json"
+        },
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_001",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_001/v4.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": 0.92,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-30T04:25:54.042512+00:00"
+      }
+    },
+    {
+      "artifact_type": "media_validation",
+      "entity_id": "scene_001_clip_002",
+      "latest_version": 4,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": "media_validation",
+        "reason": "The sampled frames show a coherent sunlit suburban patio scene with Brick seated at the table and Steel entering from the house carrying beers, then joining him. The locked-off composition, ordinary backyard setting, and restrained action match the intended beat and tone well enough for production readiness based on the sample.",
+        "trigger_ref": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_002",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_002/v1.json"
+        },
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_002",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_002/v4.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": 0.93,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-30T04:25:54.072780+00:00"
+      }
+    },
+    {
+      "artifact_type": "media_validation",
+      "entity_id": "scene_001_clip_003",
+      "latest_version": 4,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": "media_validation",
+        "reason": "The sampled frames show a coherent live-action suburban patio scene in bright midday light with two older men, a grill, drinks on the table, and the standing character moving into position beside the seated character. The camera appears locked off and the scene matches the intended patio dialogue setup and tone.",
+        "trigger_ref": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_003",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_003/v1.json"
+        },
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_003",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_003/v4.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": 0.93,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-30T04:25:54.100453+00:00"
+      }
+    },
+    {
+      "artifact_type": "media_validation",
+      "entity_id": "scene_001_clip_004",
+      "latest_version": 4,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": "media_validation",
+        "reason": "The sampled frames consistently show two older men seated together on a suburban patio, holding and then drinking from cans in a still, conversational setup. The outdoor setting, 16:9 framing, and calm beat match the scene intent, and there are no visible blocking visual issues in the sample packet.",
+        "trigger_ref": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_004",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_004/v1.json"
+        },
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_004",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_004/v4.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": 0.91,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-30T04:25:54.128483+00:00"
+      }
+    },
+    {
+      "artifact_type": "media_validation",
+      "entity_id": "scene_001_clip_005",
+      "latest_version": 4,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": "media_validation",
+        "reason": "The sampled frames show a coherent live-action suburban patio scene matching the requested setting and tone: two older men in black leather jackets sit at an outdoor table with beers, the patio includes a gas barbecue, potted plant, screen porch, hose, and overgrown lawn, and the composition supports the intended quiet post-toast beat.",
+        "trigger_ref": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_005",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_005/v1.json"
+        },
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_005",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_005/v4.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": 0.93,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-30T04:25:54.159674+00:00"
+      }
+    },
+    {
+      "artifact_type": "media_validation",
+      "entity_id": "scene_001_clip_006",
+      "latest_version": 4,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": "media_validation",
+        "reason": "The sampled frames consistently show a static two-shot on a suburban patio with both retired detectives seated across a table, maintaining eye contact and a quiet, still beat that matches the scene intent. No blocking visual issues are evident in the sample.",
+        "trigger_ref": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_006",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_006/v1.json"
+        },
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_006",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_006/v4.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": 0.93,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-30T04:25:54.188699+00:00"
+      }
+    },
+    {
+      "artifact_type": "media_validation",
+      "entity_id": "scene_001_clip_007",
+      "latest_version": 4,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": "media_validation",
+        "reason": "The sampled frames show a coherent daytime patio scene with two seated men holding beer bottles, matching the requested outdoor setup and quiet, grounded tone. Framing is stable and the scene appears production-usable from the provided evidence.",
+        "trigger_ref": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_007",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_007/v1.json"
+        },
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_007",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_007/v4.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": 0.86,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-30T04:25:54.216678+00:00"
+      }
+    },
+    {
+      "artifact_type": "media_validation",
+      "entity_id": "scene_001_clip_008",
+      "latest_version": 4,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": "media_validation",
+        "reason": "The sampled frames show a consistent live-action suburban patio setup with two older men in grounded casual attire, matching the scene intent and visual continuity. No blocking visual issues are evident in the sample packet.",
+        "trigger_ref": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_008",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_008/v1.json"
+        },
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_008",
+          "version": 4,
+          "path": "artifacts/media_validation/scene_001_clip_008/v4.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": 0.86,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-30T04:25:54.249216+00:00"
+      }
+    },
+    {
+      "artifact_type": "preference_signal",
+      "entity_id": "project",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "project_config",
+      "entity_id": "project",
+      "latest_version": 3,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "prop_bible",
+      "entity_id": "leupold_mark_4_scope",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "raw_input",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "render_clip_plan",
+      "entity_id": "scene_001",
+      "latest_version": 2,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266149+00:00"
+      }
+    },
+    {
+      "artifact_type": "render_clip_plan",
+      "entity_id": "scene_002",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_001_clip_001",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266317+00:00"
+      }
+    },
+    {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_001_clip_002",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266331+00:00"
+      }
+    },
+    {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_001_clip_003",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266347+00:00"
+      }
+    },
+    {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_001_clip_004",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266361+00:00"
+      }
+    },
+    {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_001_clip_005",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266374+00:00"
+      }
+    },
+    {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_001_clip_006",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266388+00:00"
+      }
+    },
+    {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_001_clip_007",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266401+00:00"
+      }
+    },
+    {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_001_clip_008",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "timeline",
+          "entity_id": "project",
+          "version": 21,
+          "path": "artifacts/timeline/project/v21.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:48:23.266415+00:00"
+      }
+    },
+    {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_002_clip_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_002_clip_002",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "rhythm_and_flow",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "rhythm_and_flow",
+      "entity_id": "scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "rhythm_and_flow_index",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_002",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_003",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_004",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_005",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_006",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene_index",
+      "entity_id": "project",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "script_bible",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "shot_plan",
+      "entity_id": "scene_001",
+      "latest_version": 10,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "character_bible",
+          "entity_id": "sparrow",
+          "version": 2,
+          "path": "artifacts/character_bible/sparrow/v2.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-05T13:50:28.440133+00:00"
+      }
+    },
+    {
+      "artifact_type": "shot_plan",
+      "entity_id": "scene_002",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "sound_and_music",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "sound_and_music",
+      "entity_id": "scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "sound_and_music_index",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "story_world",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "storyboard",
+      "entity_id": "scene_001",
+      "latest_version": 3,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "character_bible",
+          "entity_id": "sparrow",
+          "version": 2,
+          "path": "artifacts/character_bible/sparrow/v2.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-05T13:50:28.440154+00:00"
+      }
+    },
+    {
+      "artifact_type": "storyboard",
+      "entity_id": "scene_002",
+      "latest_version": 1,
+      "health": "stale",
+      "health_details": {
+        "health": "stale",
+        "source_kind": "structural_invalidation",
+        "reason": "Upstream artifact changed and this artifact now needs review.",
+        "trigger_ref": {
+          "artifact_type": "track_manifest",
+          "entity_id": "project",
+          "version": 34,
+          "path": "artifacts/track_manifest/project/v34.json"
+        },
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": "2026-05-06T02:50:19.318219+00:00"
+      }
+    },
+    {
+      "artifact_type": "timeline",
+      "entity_id": "project",
+      "latest_version": 22,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "track_manifest",
+      "entity_id": "project",
+      "latest_version": 35,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    }
+  ],
+  "brick-steel-full-retired-3": [
+    {
+      "artifact_type": "canonical_script",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "cost_report",
+      "entity_id": "run-9ced3cc1",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "project_config",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "raw_input",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_002",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_003",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_004",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_005",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_006",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene_index",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "script_bible",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    }
+  ],
+  "story-194-ui-check-88201": [
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_mara",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "location_lab",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "bible_manifest",
+      "entity_id": "location_roof",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "canonical_script",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "character_bible",
+      "entity_id": "mara",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_mara_scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_owen_scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "continuity_state",
+      "entity_id": "location_lab_scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "final_output",
+      "entity_id": "project",
+      "latest_version": 3,
+      "health": "needs_review",
+      "health_details": {
+        "health": "needs_review",
+        "source_kind": "media_validation",
+        "reason": "No semantic review model was configured.",
+        "trigger_ref": null,
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "project",
+          "version": 3,
+          "path": "artifacts/media_validation/project/v3.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": 0.65,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-29T17:37:25.389568+00:00"
+      }
+    },
+    {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_001_clip_001",
+      "latest_version": 1,
+      "health": "needs_review",
+      "health_details": {
+        "health": "needs_review",
+        "source_kind": "media_validation",
+        "reason": "Deterministic validation passed with 1 warning(s) that need review.",
+        "trigger_ref": null,
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_001",
+          "version": 1,
+          "path": "artifacts/media_validation/scene_001_clip_001/v1.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": "Artifact duration is 8.00s but ffprobe observed 4.00s.",
+        "confidence": 0.65,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-29T16:56:23.654869+00:00"
+      }
+    },
+    {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_001_clip_002",
+      "latest_version": 1,
+      "health": "needs_review",
+      "health_details": {
+        "health": "needs_review",
+        "source_kind": "media_validation",
+        "reason": "Deterministic validation passed with 1 warning(s) that need review.",
+        "trigger_ref": null,
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_002",
+          "version": 1,
+          "path": "artifacts/media_validation/scene_001_clip_002/v1.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": "Artifact duration is 8.00s but ffprobe observed 4.00s.",
+        "confidence": 0.65,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-29T16:56:23.656929+00:00"
+      }
+    },
+    {
+      "artifact_type": "injected_asset_manifest",
+      "entity_id": "project__project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "injected_asset_manifest",
+      "entity_id": "scene__scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "intent_mood",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "keyframe",
+      "entity_id": "scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "location_bible",
+      "entity_id": "lab",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "look_and_feel",
+      "entity_id": "scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "media_validation",
+      "entity_id": "project",
+      "latest_version": 3,
+      "health": "needs_review",
+      "health_details": {
+        "health": "needs_review",
+        "source_kind": "media_validation",
+        "reason": "No semantic review model was configured.",
+        "trigger_ref": {
+          "artifact_type": "final_output",
+          "entity_id": "project",
+          "version": 3,
+          "path": "artifacts/final_output/project/v3.json"
+        },
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "project",
+          "version": 3,
+          "path": "artifacts/media_validation/project/v3.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": 0.65,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-29T17:37:25.389568+00:00"
+      }
+    },
+    {
+      "artifact_type": "media_validation",
+      "entity_id": "scene_001_clip_001",
+      "latest_version": 1,
+      "health": "needs_review",
+      "health_details": {
+        "health": "needs_review",
+        "source_kind": "media_validation",
+        "reason": "Deterministic validation passed with 1 warning(s) that need review.",
+        "trigger_ref": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_001",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_001/v1.json"
+        },
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_001",
+          "version": 1,
+          "path": "artifacts/media_validation/scene_001_clip_001/v1.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": "Artifact duration is 8.00s but ffprobe observed 4.00s.",
+        "confidence": 0.65,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-29T16:56:23.654869+00:00"
+      }
+    },
+    {
+      "artifact_type": "media_validation",
+      "entity_id": "scene_001_clip_002",
+      "latest_version": 1,
+      "health": "needs_review",
+      "health_details": {
+        "health": "needs_review",
+        "source_kind": "media_validation",
+        "reason": "Deterministic validation passed with 1 warning(s) that need review.",
+        "trigger_ref": {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_002",
+          "version": 1,
+          "path": "artifacts/generated_video/scene_001_clip_002/v1.json"
+        },
+        "source_artifact_ref": {
+          "artifact_type": "media_validation",
+          "entity_id": "scene_001_clip_002",
+          "version": 1,
+          "path": "artifacts/media_validation/scene_001_clip_002/v1.json"
+        },
+        "upstream_change_summary": null,
+        "suggested_revision": "Artifact duration is 8.00s but ffprobe observed 4.00s.",
+        "confidence": 0.65,
+        "assessing_role": "media_validation_v1",
+        "decided_by": null,
+        "updated_at": "2026-04-29T16:56:23.656929+00:00"
+      }
+    },
+    {
+      "artifact_type": "project_config",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "render_clip_plan",
+      "entity_id": "scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_001_clip_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_001_clip_002",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "scene_index",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "shot_plan",
+      "entity_id": "scene_001",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "timeline",
+      "entity_id": "project",
+      "latest_version": 1,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    },
+    {
+      "artifact_type": "track_manifest",
+      "entity_id": "project",
+      "latest_version": 2,
+      "health": "valid",
+      "health_details": {
+        "health": "valid",
+        "source_kind": null,
+        "reason": null,
+        "trigger_ref": null,
+        "source_artifact_ref": null,
+        "upstream_change_summary": null,
+        "suggested_revision": null,
+        "confidence": null,
+        "assessing_role": null,
+        "decided_by": null,
+        "updated_at": null
+      }
+    }
+  ]
+}

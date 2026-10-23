@@ -1,0 +1,22 @@
+{
+  "source_fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+  "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+  "actual": {
+    "int_ext": "INT",
+    "location": "High School Gym Shelter - Pre",
+    "time_of_day": "DAWN"
+  },
+  "expected": {
+    "int_ext": "INT",
+    "location": "High School Gym Shelter",
+    "time_of_day": "PRE-DAWN"
+  },
+  "git_sha": "714802a53275a959ffb250c355ce13ae8e6d85ae",
+  "git_source_path": "src/cine_forge/modules/ingest/scene_breakdown_v1/main.py",
+  "replay": "Only original parser function and its literal constants, plus stdlib re; no current helper imported",
+  "replayed_source_sha256": "500a8c3dd2073a6bf849eb5eb960002c8ad05af1f9ce8857505d192c179e9a74",
+  "original_runtime_artifact": "output/open-frequency/artifacts/scene/scene_003/v1.json",
+  "original_runtime_artifact_sha256": "6c8c5148699563bfd1224cd05919e670598055b6f4c897c45feb4bc72d62a6d0",
+  "matches_unchanged_original_runtime": true,
+  "provenance_correction": "A later current-code import probe accidentally overwrote the first before capture. This corrected baseline is independently replayed from exact Git source and cross-checked against the unchanged real v1 runtime artifact."
+}

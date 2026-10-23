@@ -65,6 +65,27 @@ class DefaultDesignStudyBackfillService:
         self.asset_service = InjectedAssetService(project_dir)
         self.image_model = image_model
 
+    def generation_required(self, scene: Scene) -> bool:
+        """Inspect whether this scene needs a new image without writing or generating.
+
+        Existing selected state can be restored later by backfill_scene; that restoration
+        does not require a paid image call and must not make preparation mutate the bible.
+        """
+        for target in _targets_for_scene(scene):
+            if self._existing_reference_reason(target) is not None:
+                continue
+            if load_bible_data(self.store, self.project_dir, target.entity_key) is None:
+                continue
+            state = read_design_study_state(self.project_dir, target.entity_key)
+            if state and state.selected_final_filename:
+                selected = (
+                    bible_dir(self.project_dir, target.entity_key) / state.selected_final_filename
+                )
+                if selected.exists():
+                    continue
+            return True
+        return False
+
     def backfill_scene(self, scene: Scene) -> DesignStudyBackfillResult:
         result = DesignStudyBackfillResult(scene_id=scene.scene_id)
         prompt_context = load_design_study_prompt_context(self.store, self.project_dir)

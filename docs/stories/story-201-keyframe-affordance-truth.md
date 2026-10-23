@@ -1,7 +1,7 @@
 ---
 id: "201"
 title: "Keyframe Affordance Truth"
-status: "Pending"
+status: "Done"
 priority: "Medium"
 ideal_refs:
   - "vision-level preference: easy, fun, and engaging"
@@ -42,7 +42,7 @@ legacy_system: ""
 # Story 201 - Keyframe Affordance Truth
 
 **Priority**: Medium
-**Status**: Pending
+**Status**: Done
 **Ideal Refs**: easy/fun/engaging, R7, R8, R11, R12
 **Spec Refs**: spec:6.4, spec:7.1, spec:10.3
 **ADR Refs**: ADR-002, ADR-003
@@ -61,12 +61,12 @@ Make keyframe truth honest on the surfaced scene-generation path. The current Br
 
 ## Acceptance Criteria
 
-- [ ] Render and AI-previz preflight no longer surface `Keyframes missing` as an actionable warning unless there is a real current-scene route to create/review keyframes.
-- [ ] If keyframes remain user-facing, the Scene Workspace exposes a coherent generation/review route with artifact detail links and immutable version truth.
-- [ ] If keyframes are only optional render-support substrate for now, the UI copy says that plainly and does not offer self-referential `Open Render` actions.
-- [ ] Focused backend tests cover scene-action preflight classification for missing optional keyframes.
-- [ ] Browser verification covers desktop and mobile Scene Workspace Render on a representative project with and without keyframe artifacts or with a documented no-keyframe fixture.
-- [ ] The story does not resurrect deterministic previz/animatics as shipped product flow unless a separate measured decision proves that is the right direction.
+- [x] Render and AI-previz preflight no longer surface `Keyframes missing` as an actionable warning unless there is a real current-scene route to create/review keyframes.
+- [x] If keyframes remain user-facing, the Scene Workspace exposes a coherent generation/review route with artifact detail links and immutable version truth.
+- [x] If keyframes are only optional render-support substrate for now, the UI copy says that plainly and does not offer self-referential `Open Render` actions.
+- [x] Focused backend tests cover scene-action preflight classification for missing optional keyframes.
+- [x] Browser verification covers desktop and mobile Scene Workspace Render on a representative project with and without keyframe artifacts or with a documented no-keyframe fixture.
+- [x] The story does not resurrect deterministic previz/animatics as shipped product flow unless a separate measured decision proves that is the right direction.
 
 ## Out of Scope
 
@@ -87,32 +87,32 @@ Make keyframe truth honest on the surfaced scene-generation path. The current Br
 
 ## Tasks
 
-- [ ] Trace current keyframe support after Story 149: recipe availability, graph node status, schema registration, artifact-detail viewer, and scene-action preflight.
-- [ ] Decide whether missing keyframes should be a no-action optional note, a route to an existing generation flow, or a route to a new focused keyframe action.
-- [ ] Implement the smallest honest fix in `scene_actions.py` and the Scene Workspace UI, avoiding new branches in oversized files where possible.
-- [ ] Add focused tests for missing-keyframe preflight and any UI helper text or action path changed.
-- [ ] Verify Brick & Steel `scene_001?tab=render` and `scene_001?tab=previz` on desktop and mobile with clean console/page/HTTP output.
-- [ ] Check whether the chosen implementation makes any existing code, helper paths, or docs redundant; remove them or create a concrete follow-up.
-- [ ] Run required checks for touched scope:
-  - [ ] Backend minimum: `make test-unit PYTHON=.venv/bin/python`
-  - [ ] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
-  - [ ] UI (if touched): `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and `pnpm --dir ui run build`
-- [ ] If story metadata or methodology state changes: `pnpm methodology:compile` and `pnpm methodology:check`
-- [ ] If evals or goldens are changed: run `/improve-eval` or equivalent mismatch investigation, classify all mismatches, and update `docs/evals/registry.yaml`
-- [ ] Search all docs and update any related to what we touched.
-- [ ] Verify adherence to Central Tenets (0-5):
-  - [ ] **T0 - Data Safety:** Are existing keyframe artifacts preserved?
-  - [ ] **T1 - AI-Coded:** Is the keyframe state/action obvious to future agents?
-  - [ ] **T2 - Architect for 100x:** Did we avoid rebuilding dead deterministic previz substrate?
-  - [ ] **T3 - Fewer Files:** Is the fix localized to the preflight/UI owner?
-  - [ ] **T4 - Verbose Artifacts:** Does browser/API evidence prove the affordance truth?
-  - [ ] **T5 - Ideal vs Today:** Does the scene-generation path feel less like hidden homework?
+- [x] Trace current keyframe support after Story 149: recipe availability, graph node status, schema registration, artifact-detail viewer, and scene-action preflight.
+- [x] Decide whether missing keyframes should be a no-action optional note, a route to an existing generation flow, or a route to a new focused keyframe action.
+- [x] Implement the smallest honest fix in `scene_actions.py` and the Scene Workspace UI, avoiding new branches in oversized files where possible.
+- [x] Add focused tests for missing-keyframe preflight and any UI helper text or action path changed.
+- [x] Verify Brick & Steel `scene_001?tab=render` and `scene_001?tab=previz` on desktop and mobile with clean console/page/HTTP output.
+- [x] Check whether the chosen implementation makes any existing code, helper paths, or docs redundant; remove them or create a concrete follow-up.
+- [x] Run required checks for touched scope:
+  - [x] Backend minimum: `make test-unit PYTHON=.venv/bin/python` (2,215 unaffected passes reused; historical check repaired in Story 208 and rerun with its affected consumers)
+  - [x] Backend lint: `.venv/bin/python -m ruff check src/ tests/`
+  - [x] UI (if touched): `pnpm --dir ui run lint`, `pnpm --dir ui exec tsc -b`, and `pnpm --dir ui run build`
+- [x] If story metadata or methodology state changes: `pnpm methodology:compile` and `pnpm methodology:check`
+- [x] If evals or goldens are changed: run `/improve-eval` or equivalent mismatch investigation, classify all mismatches, and update `docs/evals/registry.yaml`
+- [x] Search all docs and update any related to what we touched.
+- [x] Verify adherence to Central Tenets (0-5):
+  - [x] **T0 - Data Safety:** Are existing keyframe artifacts preserved?
+  - [x] **T1 - AI-Coded:** Is the keyframe state/action obvious to future agents?
+  - [x] **T2 - Architect for 100x:** Did we avoid rebuilding dead deterministic previz substrate?
+  - [x] **T3 - Fewer Files:** Is the fix localized to the preflight/UI owner?
+  - [x] **T4 - Verbose Artifacts:** Does browser/API evidence prove the affordance truth?
+  - [x] **T5 - Ideal vs Today:** Does the scene-generation path feel less like hidden homework?
 
 ## Workflow Gates
 
-- [ ] Build complete: implementation finished, required checks run, and human summary shared
-- [ ] Validation complete or explicitly skipped by user
-- [ ] Story marked done via `/mark-story-done`
+- [x] Build complete: implementation finished, required checks run, and human summary shared
+- [x] Validation complete or explicitly skipped by user
+- [x] Story marked done via `/mark-story-done`
 
 ## Blocker Summary
 
@@ -151,11 +151,63 @@ N/A
 
 ## Plan
 
-1. Inspect current keyframe code/recipe/UI substrate after Story 149.
-2. Choose the honest affordance: actionable route if real, optional note if not.
-3. Patch preflight/UI copy narrowly and add focused regression tests.
-4. Verify desktop/mobile Scene Workspace Render and Previz against Brick & Steel.
+Authorized by Cam's 2026-10-23 instruction to keep triaging and fixing issues;
+continue build, validation, and closure within that scope without a separate
+permission stop. No commit, push, deployment, paid generation, new dependency,
+or public/schema contract change is needed.
+
+1. Capture a deterministic regression fixture before changing runtime code.
+   Cover Render and AI Previz, current/all scenes, and absent/valid/stale
+   keyframe artifacts. Missing optional keyframes must not create warnings,
+   auto-build work, or a circular action. Other prerequisites remain truthful.
+2. Delete the obsolete missing-keyframe warning in `scene_actions.py`; leave
+   supported locked-keyframe consumption and immutable artifact review intact.
+   In `GeneratedVideoPanel.tsx`, explain that keyframes are optional and used
+   when available, rather than adding a generation route or a new note kind.
+3. Run focused scene-action/API tests, full backend unit tests and Ruff, plus
+   UI lint, `tsc -b`, and build. These preserve this story's explicit gates.
+   This is plumbing/copy, not AI-capability work; no model discovery, paid
+   evaluation, golden changes, or registry score updates are warranted.
+4. Restart the backend, then inspect normal API preflight and desktop/mobile
+   Render + AI Previz on the existing driver-produced Brick & Steel project.
+   Its no-keyframe condition is documented by Story 196 and reconfirmed on
+   disk. Do not seed or copy artifacts for browser acceptance; present/absent/
+   stale permutations are isolated unit fixtures only. Capture screenshots,
+   console/page/HTTP status, and before/after JSON. Do not refresh full FP1
+   freshness from this narrower verification.
+5. Review acceptance and redundancy, update this work log, validate, and mark
+   done only after evidence passes; regenerate methodology and changelog.
+
+**Repo fit / alternatives:** ADR-002 requires useful preflight actions;
+ADR-003 owns scene controls. Both shipped recipes consume keyframes optionally,
+and neither builds them. The render adapter already consumes locked keyframes
+when present. Deleting a non-actionable warning and explaining optional use
+preserves these contracts with less scaffolding than rebuilding an orphaned
+generation route or adding a schema/UI informational-item type.
+
+**Structural check:** `make check-size` ran before finalizing this plan.
+`scene_actions.py` is 929 lines and its generation preflight is oversized;
+this change removes its final warning block and adds no logic, so no
+extraction is warranted for this deletion. `GeneratedVideoPanel.tsx` is 660
+lines; only existing description text changes, with no new component/class
+responsibility. `test_scene_actions.py` is 641 lines (test file exemption).
+No `SceneWorkspacePage` (1030) or `PrevizPanel` (952) changes are needed.
+
+**Risks / boundaries:** Never remove genuine missing-direction or provider
+credential warnings. A standalone helper without provider-env loading reports missing Previz credentials;
+the normal API process resolves the existing xAI configuration. Credential
+readiness must continue to reflect the actual process environment. Supported keyframe schema, viewer,
+reference selection, media, locks, and version history remain intact. The graph
+keyframe node is still supported substrate; this story does not claim a new
+user-facing generation flow. Existing registry/Story 213/deploy-log and image
+benchmark dirt belongs to prior work and will not be edited.
 
 ## Work Log
 
 20260504-2120 - story-created: routed from Story 196 product-truth scrub. Evidence: browser pass on `brick-steel-full-retired/scenes/scene_001?tab=render` showed a clean rendered scene with 8 clips, but preflight still warned `Keyframes missing` and offered no real generation/review path; artifact snapshot confirmed no `keyframe` artifact for `scene_001`. Next step: `/build-story 201` when this affordance lane becomes active.
+
+20261023-0826 — exploration/plan: direct current-code and preflight reproduction confirms Story 196's keyframe dead end still exists. Brick & Steel scene_001 has no keyframe artifact; Render emits `Keyframes missing` plus `Open Render` on the Render tab. AI Previz has no keyframe warning and honestly reports unavailable local xAI credentials. Recipes accept optional keyframe inputs, while no shipped recipe generates them; adapter/viewer support remains useful. Applied ADR-002/003 and spec:6.4/7.1/10.3 (climb/hold); pure deletion plus optional-copy is the smallest sufficient repair. Five neutral triage packets ranked this above realistic-reference fixture work and stale FP1 UI scouting; worker sizing used cheaper sol/luna for factual story/inbox/health scans and inherited stronger judgment for architecture/evals. Existing dirt preserved. Next: baseline regression, runtime deletion, representative API/browser proof.
+
+20261023-0841 — build and validation: removed the obsolete Render-only keyframe warning/action and shortened the Render explanation after desktop/mobile inspection. New 12-case regression first failed four absent/stale Render cases, then all12 passed; complete scene-action suite passed31. API current/all-scene Render and Previz preserve genuine planning/direction work without keyframe homework. Normal driver-produced Brick & Steel scene_001 (eight saved render clips, no keyframes) passed desktop1600x1100/mobile390x844 Render+Previz inspection with empty console logs. Four screenshots, scoped DOM excerpts, before/after JSON, limitations, triage ranking and operator spot-check are in `docs/reports/story-201-keyframe-affordance-truth/report.md`. Existing keyframe schemas/viewer/locks/versions and adapter consumption remain unchanged; the generation-route conditional acceptance is satisfied by choosing the explicitly allowed optional-support branch. UI lint/tsc/build and full backend/test Ruff pass. Full unit run:2215passed/one pre-existing historical/live-manifest failure; Story208 owns and repairs that provenance defect without editing dirty Story213/registry. Current methodology compile/check passed after reconciling two stale audit counts for already-evolved Story213. No scored eval, paid call, new schema or runtime-default change. Broad unit evidence is reused for unchanged dependencies and the affected manifest/ledger paths are rerun. Next: final generated current-manifest/closure checks, then resume neutral triage.
+
+20261023-0848 — story-done: `/validate` found no remaining keyframe defect and `/mark-story-done` closed Story201 under Cam's continuing-fix authorization. All acceptance branches are satisfied through the optional-support route, with real desktop/mobile proof and retained artifact history. The required broad unit run supplied2215 unaffected passes; after the separate historical-check repair, the65 affected scene-action/manifest/ledger tests pass. Full Ruff, final UI lint/tsc/build, truth-ledger check, current-manifest check, methodology compile/check and diff hygiene pass. Validation evidence is reused where code/environment/check configuration is unchanged, rather than repeating the full suite for documentation. Broader registry consistency still correctly rejects44 pre-existing untracked media extras beside91 intact recorded files; this is preserved ambient work, not a new keyframe defect, and no gate was weakened. Current-state closure needs a new immutable manifest after the already-producedv21 interim snapshot; finalv22 captures the settled state. Optional operator check: Brick & Steel scene001 → Render, then Previz. Goal continues with triage; no commit or push was authorized.

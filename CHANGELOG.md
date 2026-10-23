@@ -1,5 +1,51 @@
 # Changelog
 
+## [2026-10-23-05] — Account for media work and qualify readiness estimates
+
+### Fixed
+- Include compiler and video estimates once, preserve known costs and clips on
+  partial failure, and show unresolved charges without misleading remainders.
+- Prevent blind media replay and bearer credentials on returned media downloads.
+- Reject retired or unpriced media before paid work. Reuse checked runtime prices
+  for explicitly scoped video examples without changing provider quality gates.
+
+## [2026-10-23-04] — Preserve compound scene-heading fields (Story 005)
+
+### Fixed
+- Preserve hyphens within location names and time labels such as PRE-DAWN,
+  preventing the time prefix from becoming part of a location name.
+- Extract heading parsing into a focused module and retain canonical-fixture,
+  schema and dynamic-loader regression proof without rewriting old artifacts.
+
+## [2026-10-23-03] — Make first-use next actions truthful (Story 233)
+
+### Fixed
+- Explain automatic shot preparation consistently on Render and AI Previz;
+  remove clip-planning links back to the active tab.
+- Give empty character, location and prop lists a useful next step that matches
+  project state, using the existing Deep Breakdown or Script screens.
+
+## [2026-10-23-02] — Make Project Home screenplay-first (Story 185)
+
+### Changed
+- Keep the screenplay visible with clear Scenes, Script Bible, Project Cut, and
+  Export actions; show only actionable health alerts above it.
+- Preserve pending assembly when the cut dialog closes and label clip/scene
+  counts and review-needed media truthfully across cut and previz surfaces.
+
+## [2026-10-23-01] — Keep optional keyframes out of setup warnings (Story 201)
+
+### Fixed
+- Render no longer warns about missing optional keyframes or sends the operator
+  back to the same tab to resolve them; its explanation now makes optional
+  framing support clear and fits more comfortably on mobile.
+- Repair historical eval-contract validation with exact archived source bytes
+  and restore current manifest coverage for maintained runtime-task YAML
+  contracts (Story 208 follow-up), preserving existing evidence and model defaults.
+- Fail the audit when a maintained UI test or fixture is undeclared, multiply
+  owned, assigned the wrong owner kind, or symlinked.
+
+
 ## [2026-10-20-01] — Preserve MiniMax GA ordered-frame contract stop (Scout 099)
 
 ### Added

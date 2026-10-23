@@ -308,6 +308,158 @@ def test_ledger_requires_one_row_owner_per_discovered_path(tmp_path: Path) -> No
 
 
 @pytest.mark.unit
+def test_ledger_discovers_ui_test_and_nested_regular_fixture(tmp_path: Path) -> None:
+    test = tmp_path / "ui/tests/media-validation-health.test.ts"
+    fixture = tmp_path / "ui/tests/fixtures/nested/media-validation-needs-review.json"
+    for path in (test, fixture):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("maintained", encoding="utf-8")
+
+    errors = _validate(tmp_path, [_surface()])
+
+    assert any(
+        "ledger missing canonical test_suite paths:" in error
+        and "ui/tests/media-validation-health.test.ts" in error
+        and "ui/tests/fixtures/nested/media-validation-needs-review.json" in error
+        for error in errors
+    )
+
+
+@pytest.mark.unit
+def test_ledger_accepts_multi_file_pending_ui_suite_owner(tmp_path: Path) -> None:
+    paths = [
+        "ui/tests/media-validation-health.test.ts",
+        "ui/tests/fixtures/nested/captured-packet.custom",
+    ]
+    for relative in paths:
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("maintained", encoding="utf-8")
+
+    surface = _surface(paths=["tests/evidence.txt", *paths], audit_status="pending")
+    assert _validate(tmp_path, [surface]) == []
+    assert any(
+        "truth-audit surfaces remain pending" in error
+        for error in _validate(tmp_path, [surface], require_terminal=True)
+    )
+
+
+@pytest.mark.unit
+def test_ledger_rejects_wrong_kind_ui_test_claim(tmp_path: Path) -> None:
+    path = "ui/tests/media-validation-health.test.ts"
+    test = tmp_path / path
+    test.parent.mkdir(parents=True)
+    test.write_text("maintained", encoding="utf-8")
+
+    errors = _validate(
+        tmp_path,
+        [_surface(kind="promptfoo_task", paths=["tests/evidence.txt", path])],
+        expectations={"promptfoo_task": 1},
+    )
+
+    assert any(path in error and "wrong kind" in error for error in errors)
+
+
+@pytest.mark.unit
+def test_ledger_rejects_duplicate_ui_fixture_claim(tmp_path: Path) -> None:
+    path = "ui/tests/fixtures/media-validation-needs-review.json"
+    fixture = tmp_path / path
+    fixture.parent.mkdir(parents=True)
+    fixture.write_text("maintained", encoding="utf-8")
+
+    errors = _validate(
+        tmp_path,
+        [
+            _surface(id="ui-suite-a", paths=["tests/evidence.txt", path]),
+            _surface(id="ui-suite-b", paths=["tests/evidence.txt", path]),
+        ],
+    )
+
+    assert any(
+        "ledger duplicates canonical test_suite paths:" in error and path in error
+        for error in errors
+    )
+
+
+@pytest.mark.unit
+def test_ui_fixture_discovery_excludes_cache_and_os_files(tmp_path: Path) -> None:
+    fixture_root = tmp_path / "ui/tests/fixtures"
+    for relative in (
+        "node_modules/ignored.json",
+        "__pycache__/ignored.json",
+        ".pytest_cache/ignored.json",
+        "cache.pyc",
+        "cache.pyo",
+        ".DS_Store",
+    ):
+        path = fixture_root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("generated", encoding="utf-8")
+
+    assert _validate(tmp_path, [_surface()]) == []
+
+
+@pytest.mark.unit
+def test_ledger_rejects_symlinked_ui_test_module(tmp_path: Path) -> None:
+    target = tmp_path / "real-test.ts"
+    target.write_text("maintained", encoding="utf-8")
+    link = tmp_path / "ui/tests/linked.test.ts"
+    link.parent.mkdir(parents=True)
+    link.symlink_to(target)
+
+    errors = _validate(
+        tmp_path, [_surface(paths=["tests/evidence.txt", "ui/tests/linked.test.ts"])]
+    )
+
+    assert any("ui/tests/linked.test.ts" in error and "symlink" in error for error in errors)
+
+
+@pytest.mark.unit
+def test_ledger_rejects_symlinked_ui_fixture_directory(tmp_path: Path) -> None:
+    target = tmp_path / "real-fixtures"
+    target.mkdir()
+    (target / "packet.json").write_text("maintained", encoding="utf-8")
+    link = tmp_path / "ui/tests/fixtures/linked"
+    link.parent.mkdir(parents=True)
+    link.symlink_to(target, target_is_directory=True)
+
+    errors = _validate(
+        tmp_path, [_surface(paths=["tests/evidence.txt", "ui/tests/fixtures/linked"])]
+    )
+
+    assert any("ui/tests/fixtures/linked" in error and "symlink" in error for error in errors)
+
+
+@pytest.mark.unit
+def test_ledger_rejects_symlinked_ui_fixture_file(tmp_path: Path) -> None:
+    target = tmp_path / "packet.json"
+    target.write_text("maintained", encoding="utf-8")
+    link = tmp_path / "ui/tests/fixtures/linked.json"
+    link.parent.mkdir(parents=True)
+    link.symlink_to(target)
+
+    errors = _validate(
+        tmp_path, [_surface(paths=["tests/evidence.txt", "ui/tests/fixtures/linked.json"])]
+    )
+
+    assert any("ui/tests/fixtures/linked.json" in error and "symlink" in error for error in errors)
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize("relative", ["ui", "ui/tests", "ui/tests/fixtures"])
+def test_ledger_rejects_symlinked_ui_inventory_root(tmp_path: Path, relative: str) -> None:
+    target = tmp_path / "external-inventory"
+    target.mkdir()
+    link = tmp_path / relative
+    link.parent.mkdir(parents=True, exist_ok=True)
+    link.symlink_to(target, target_is_directory=True)
+
+    errors = _validate(tmp_path, [_surface()])
+
+    assert any(relative in error and "symlink" in error for error in errors)
+
+
+@pytest.mark.unit
 def test_ledger_rejects_missing_discovered_registry_eval_id(tmp_path: Path) -> None:
     registry = tmp_path / "docs/evals/registry.yaml"
     registry.parent.mkdir(parents=True)

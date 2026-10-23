@@ -1,80 +1,37 @@
-"""Thin video-generation wrapper for OpenAI, Google, and xAI video APIs.
-
-Provider keys prefer ``CINE_FORGE_*`` env names and fall back to the generic
-provider names inside this repo process when needed.
-"""
+"""Priced asynchronous video generation with submission-safe failure evidence."""
 
 from __future__ import annotations
 
-import base64
-import io
 import json
+import math
 import time
-import urllib.error
 import urllib.parse
-import urllib.request
 import uuid
-from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any, Literal
+from collections.abc import Callable
+from typing import Any
 
-from PIL import Image, ImageOps
-
+from cine_forge.ai.video_http import _read_string, _request_bytes, _request_json
+from cine_forge.ai.video_pricing import VideoPricingError, resolve_video_price
+from cine_forge.ai.video_types import (
+    VideoGenerationError,
+    VideoGenerationRequest,
+    VideoGenerationResult,
+    VideoReferenceInput,
+)
 from cine_forge.env import require_env
 from cine_forge.schemas import EnginePack
+from cine_forge.schemas.media_cost import CostReceipt, VideoPrice
+from cine_forge.schemas.models import CostRecord
 
-OPENAI_BASE_URL = "https://api.openai.com/v1"
-GOOGLE_BASE_URL = "https://generativelanguage.googleapis.com/v1beta"
 XAI_BASE_URL = "https://api.x.ai/v1"
-
-
-class VideoGenerationError(RuntimeError):
-    """Terminal error raised when a video-generation request fails."""
-
-    def __init__(
-        self,
-        message: str,
-        *,
-        retryable: bool = False,
-        status_code: int | None = None,
-    ) -> None:
-        super().__init__(message)
-        self.retryable = retryable
-        self.status_code = status_code
-
-
-@dataclass(frozen=True)
-class VideoReferenceInput:
-    """Local image input passed to the target provider."""
-
-    path: Path
-    media_type: str
-    usage: Literal["input_reference", "reference_image", "last_frame"]
-
-
-@dataclass(frozen=True)
-class VideoGenerationRequest:
-    """Normalized request payload for the provider transport layer."""
-
-    prompt: str
-    duration_seconds: int
-    resolution: str
-    aspect_ratio: str
-    first_frame: VideoReferenceInput | None = None
-    last_frame: VideoReferenceInput | None = None
-    reference_images: list[VideoReferenceInput] = field(default_factory=list)
-    provider_params: dict[str, Any] = field(default_factory=dict)
-
-
-@dataclass(frozen=True)
-class VideoGenerationResult:
-    """Normalized response returned by the provider transport layer."""
-
-    video_bytes: bytes
-    media_type: str
-    model_used: str
-    request_id: str | None = None
-    provider_job_id: str | None = None
+# Public transport contracts stay available from this module.
+__all__ = [
+    "VideoGenerationError",
+    "VideoGenerationRequest",
+    "VideoGenerationResult",
+    "VideoReferenceInput",
+    "generate_video",
+]
 
 
 def generate_video(
@@ -82,508 +39,274 @@ def generate_video(
     request: VideoGenerationRequest,
     engine_pack: EnginePack,
 ) -> VideoGenerationResult:
-    """Generate a video using the provider described by *engine_pack*."""
-    retry_policy = engine_pack.retry_policy
-    attempts = retry_policy.max_attempts
-    last_error: VideoGenerationError | None = None
+    """Generate only a qualified prompt-only request with an auditable estimate."""
+    price = resolve_video_price(
+        provider=engine_pack.provider,
+        model=engine_pack.target_model,
+        resolution=request.resolution,
+    )
+    _validate_priced_request(request)
+    try:
+        api_key = require_env("XAI_API_KEY")
+    except RuntimeError as exc:
+        raise VideoGenerationError(str(exc)) from exc
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+    response = _submit_xai(request=request, engine_pack=engine_pack, headers=headers, price=price)
+    job_id = _read_string(response, "request_id")
+    if not job_id:
+        raise _uncertain_failure(
+            "xAI video response missing request_id; submission outcome is unknown",
+            price=price,
+            request=request,
+            provider_response={"submission": response},
+        )
+    evidence = {"submission": response}
+    try:
+        status = _poll_xai(job_id=job_id, engine_pack=engine_pack, headers=headers)
+        evidence["result"] = status
+        returned_model = _read_string(status, "model") or engine_pack.target_model
+        video = status.get("video")
+        video_url = _read_string(video, "url") if isinstance(video, dict) else None
+        if not video_url:
+            raise VideoGenerationError("xAI video result missing output URL")
+        _validate_download_url(video_url)
+        video_bytes = _retry_existing_job(
+            lambda: _request_bytes(url=video_url, method="GET", headers={}, timeout=300),
+            engine_pack,
+        )
+    except VideoGenerationError as exc:
+        evidence.update(exc.provider_response)
+        raise _uncertain_failure(
+            str(exc),
+            price=price,
+            request=request,
+            provider_job_id=job_id,
+            provider_response=evidence,
+        ) from exc
+    receipt = _output_receipt(price, request.duration_seconds, job_id, status)
+    return VideoGenerationResult(
+        video_bytes=video_bytes,
+        media_type="video/mp4",
+        model_used=returned_model,
+        request_id=job_id,
+        provider_job_id=job_id,
+        cost_receipts=[receipt],
+        provider_response=evidence,
+    )
 
-    for attempt in range(1, attempts + 1):
+
+def _validate_download_url(url: str) -> None:
+    try:
+        parsed = urllib.parse.urlsplit(url)
+        valid = parsed.scheme == "https" and bool(parsed.hostname)
+    except ValueError as exc:
+        raise VideoGenerationError("xAI video output URL must be a valid HTTPS URL") from exc
+    if not valid:
+        raise VideoGenerationError("xAI video output URL must use HTTPS")
+
+
+def _validate_priced_request(request: VideoGenerationRequest) -> None:
+    if request.first_frame or request.last_frame or request.reference_images:
+        raise VideoPricingError("xAI video input media is not qualified for this prompt-only price")
+    variants = sorted(key for key, value in request.provider_params.items() if value is not None)
+    if variants:
+        raise VideoPricingError(f"Unpriced xAI video provider parameter variants: {variants}")
+    if isinstance(request.duration_seconds, bool) or not isinstance(request.duration_seconds, int):
+        raise VideoPricingError(
+            "Video duration must be an explicit positive integer number of seconds"
+        )
+    if request.duration_seconds <= 0:
+        raise VideoPricingError("Video duration must be positive before submission")
+
+
+def _submit_xai(
+    *,
+    request: VideoGenerationRequest,
+    engine_pack: EnginePack,
+    headers: dict[str, str],
+    price: VideoPrice,
+) -> dict[str, Any]:
+    payload = {
+        "model": engine_pack.target_model,
+        "prompt": request.prompt,
+        "duration": request.duration_seconds,
+        "resolution": request.resolution,
+    }
+    if request.aspect_ratio:
+        payload["aspect_ratio"] = request.aspect_ratio
+    for attempt in range(engine_pack.retry_policy.max_attempts):
         try:
-            if engine_pack.provider == "openai":
-                return _generate_video_openai(request=request, engine_pack=engine_pack)
-            if engine_pack.provider == "google":
-                return _generate_video_google(request=request, engine_pack=engine_pack)
-            if engine_pack.provider == "xai":
-                return _generate_video_xai(request=request, engine_pack=engine_pack)
-            raise VideoGenerationError(f"Unsupported video provider: {engine_pack.provider}")
+            return _request_json(
+                url=f"{XAI_BASE_URL}/videos/generations",
+                method="POST",
+                headers=headers,
+                body=json.dumps(payload).encode("utf-8"),
+                timeout=120,
+            )
         except VideoGenerationError as exc:
-            last_error = exc
-            if attempt >= attempts or not _should_retry(exc, engine_pack):
+            # A timeout, broken connection, or server failure cannot prove rejection.
+            if exc.status_code is None or exc.status_code == 408 or exc.status_code >= 500:
+                raise _uncertain_failure(
+                    str(exc),
+                    price=price,
+                    request=request,
+                    provider_response=exc.provider_response,
+                ) from exc
+            if attempt + 1 >= engine_pack.retry_policy.max_attempts or not _should_retry(
+                exc, engine_pack
+            ):
                 raise
-            time.sleep(retry_policy.poll_interval_seconds)
+            time.sleep(engine_pack.retry_policy.poll_interval_seconds)
+    raise AssertionError("retry policy requires at least one attempt")
 
-    raise last_error or VideoGenerationError("Video generation failed")
+
+def _poll_xai(
+    *,
+    job_id: str,
+    engine_pack: EnginePack,
+    headers: dict[str, str],
+) -> dict[str, Any]:
+    started_at = time.monotonic()
+    while True:
+        status_payload = _retry_existing_job(
+            lambda: _request_json(
+                url=f"{XAI_BASE_URL}/videos/{urllib.parse.quote(job_id, safe='')}",
+                method="GET",
+                headers=headers,
+                timeout=60,
+            ),
+            engine_pack,
+        )
+        status = _read_string(status_payload, "status")
+        if status == "done":
+            return status_payload
+        if status != "pending":
+            error = status_payload.get("error")
+            detail = _read_string(error, "message") if isinstance(error, dict) else None
+            raise VideoGenerationError(
+                detail or f"xAI video job ended with status={status or 'unknown'}",
+                provider_job_id=job_id,
+                provider_response={"result": status_payload},
+            )
+        if time.monotonic() - started_at > engine_pack.retry_policy.max_poll_seconds:
+            raise VideoGenerationError(
+                f"xAI video job {job_id} timed out after "
+                f"{engine_pack.retry_policy.max_poll_seconds:g}s waiting for completion",
+                provider_job_id=job_id,
+                provider_response={"result": status_payload},
+            )
+        time.sleep(engine_pack.retry_policy.poll_interval_seconds)
+
+
+def _retry_existing_job[T](operation: Callable[[], T], engine_pack: EnginePack) -> T:
+    """Only retry GET polling/download work, preserving the accepted job identity."""
+    for attempt in range(engine_pack.retry_policy.max_attempts):
+        try:
+            return operation()
+        except VideoGenerationError as exc:
+            if attempt + 1 >= engine_pack.retry_policy.max_attempts or not _should_retry(
+                exc, engine_pack
+            ):
+                raise
+            time.sleep(engine_pack.retry_policy.poll_interval_seconds)
+    raise AssertionError("retry policy requires at least one attempt")
 
 
 def _should_retry(error: VideoGenerationError, engine_pack: EnginePack) -> bool:
     if not error.retryable:
         return False
-    retry_statuses = set(engine_pack.retry_policy.retryable_http_statuses)
-    if error.status_code in retry_statuses:
+    if error.status_code in engine_pack.retry_policy.retryable_http_statuses:
         return True
-    message = str(error).lower()
     return any(
-        token.lower() in message for token in engine_pack.retry_policy.retryable_error_substrings
+        token.lower() in str(error).lower()
+        for token in engine_pack.retry_policy.retryable_error_substrings
     )
 
 
-def _generate_video_openai(
+def _output_receipt(
+    price: VideoPrice,
+    requested_seconds: int,
+    job_id: str,
+    result: dict[str, Any],
+) -> CostReceipt:
+    model = _read_string(result, "model") or price.model
+    video = result.get("video")
+    reported = video.get("duration") if isinstance(video, dict) else None
+    seconds = reported if reported is not None else requested_seconds
+    valid_seconds = (
+        isinstance(seconds, (int, float))
+        and not isinstance(seconds, bool)
+        and math.isfinite(seconds)
+        and seconds > 0
+    )
+    reason = None
+    if model != price.model:
+        reason = f"Returned video model {model} has no qualified price; requested {price.model}"
+    elif not valid_seconds:
+        reason = f"Provider returned invalid output duration {reported!r}; billing quantity unknown"
+    if reason:
+        return CostReceipt(
+            receipt_id=f"video:{price.provider}:{job_id}",
+            component="video",
+            model=model,
+            provider=price.provider,
+            provider_job_id=job_id,
+            status="uncertain",
+            price=price if model == price.model else None,
+            quantity=seconds if valid_seconds else None,
+            reason=reason,
+        )
+    quantity_basis = (
+        "provider-reported output duration"
+        if reported is not None
+        else "resolved request duration; provider did not return output duration"
+    )
+    return CostReceipt(
+        receipt_id=f"video:{price.provider}:{job_id}",
+        component="video",
+        model=model,
+        provider=price.provider,
+        provider_job_id=job_id,
+        price=price,
+        quantity=seconds,
+        cost=CostRecord(
+            model=model,
+            input_tokens=0,
+            output_tokens=0,
+            estimated_cost_usd=round(seconds * price.unit_price_usd, 8),
+            request_id=job_id,
+        ),
+        reason=f"List-price estimate using {quantity_basis}; not provider billing",
+    )
+
+
+def _uncertain_failure(
+    message: str,
     *,
+    price: VideoPrice,
     request: VideoGenerationRequest,
-    engine_pack: EnginePack,
-) -> VideoGenerationResult:
-    try:
-        api_key = require_env("OPENAI_API_KEY")
-    except RuntimeError as exc:
-        raise VideoGenerationError(str(exc)) from exc
-
-    fields: list[tuple[str, str]] = [
-        ("prompt", request.prompt),
-        ("model", engine_pack.target_model),
-        ("size", request.resolution),
-        ("seconds", str(request.duration_seconds)),
-    ]
-    files: list[tuple[str, str, bytes, str]] = []
-    if request.first_frame is not None:
-        filename, file_bytes, media_type = _prepare_openai_input_reference(
-            request.first_frame,
-            request.resolution,
-        )
-        files.append(
-            (
-                "input_reference",
-                filename,
-                file_bytes,
-                media_type,
-            )
-        )
-
-    body, content_type = _encode_multipart_form(fields=fields, files=files)
-    response = _request_json(
-        url=f"{OPENAI_BASE_URL}/videos",
-        method="POST",
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": content_type,
-        },
-        body=body,
-        timeout=120,
+    provider_job_id: str | None = None,
+    provider_response: dict[str, Any] | None = None,
+) -> VideoGenerationError:
+    result = (provider_response or {}).get("result")
+    returned_model = _read_string(result, "model") if isinstance(result, dict) else None
+    receipt_model = returned_model or price.model
+    receipt = CostReceipt(
+        receipt_id=f"video:{price.provider}:{provider_job_id or uuid.uuid4().hex}",
+        component="video",
+        model=receipt_model,
+        provider=price.provider,
+        status="uncertain",
+        provider_job_id=provider_job_id,
+        price=price if receipt_model == price.model else None,
+        quantity=request.duration_seconds,
+        reason=f"Provider charge unknown: {message}",
     )
-    video_id = _read_string(response, "id")
-    if not video_id:
-        raise VideoGenerationError(f"OpenAI video response missing id: {response}")
-
-    job = response
-    poll_started_at = time.monotonic()
-    while job.get("status") in {"queued", "in_progress"}:
-        _raise_if_poll_timed_out(
-            provider="OpenAI",
-            provider_job_id=video_id,
-            started_at=poll_started_at,
-            engine_pack=engine_pack,
-        )
-        time.sleep(engine_pack.retry_policy.poll_interval_seconds)
-        job = _request_json(
-            url=f"{OPENAI_BASE_URL}/videos/{video_id}",
-            method="GET",
-            headers={"Authorization": f"Bearer {api_key}"},
-            timeout=60,
-        )
-
-    status = _read_string(job, "status")
-    if status != "completed":
-        error = job.get("error") if isinstance(job.get("error"), dict) else {}
-        message = _read_string(error, "message") or f"OpenAI video job ended with status={status}"
-        code = _read_string(error, "code")
-        raise VideoGenerationError(
-            f"{message}{f' ({code})' if code else ''}",
-            retryable=False,
-        )
-
-    content_url = f"{OPENAI_BASE_URL}/videos/{video_id}/content"
-    video_bytes = _request_bytes(
-        url=content_url,
-        method="GET",
-        headers={"Authorization": f"Bearer {api_key}"},
-        timeout=300,
-    )
-    return VideoGenerationResult(
-        video_bytes=video_bytes,
-        media_type="video/mp4",
-        model_used=engine_pack.target_model,
-        request_id=video_id,
-        provider_job_id=video_id,
-    )
-
-
-def _prepare_openai_input_reference(
-    reference: VideoReferenceInput,
-    resolution: str,
-) -> tuple[str, bytes, str]:
-    target_size = _openai_resolution_size(resolution)
-    original_bytes = reference.path.read_bytes()
-    if target_size is None:
-        return reference.path.name, original_bytes, reference.media_type
-
-    with Image.open(io.BytesIO(original_bytes)) as image:
-        if image.size == target_size:
-            return reference.path.name, original_bytes, reference.media_type
-
-        fitted = ImageOps.fit(
-            image.convert("RGB"),
-            target_size,
-            method=Image.Resampling.LANCZOS,
-            centering=(0.5, 0.5),
-        )
-        buffer = io.BytesIO()
-        fitted.save(buffer, format="PNG")
-        return f"{reference.path.stem}_openai_input.png", buffer.getvalue(), "image/png"
-
-
-def _openai_resolution_size(resolution: str) -> tuple[int, int] | None:
-    if "x" not in resolution:
-        return None
-    width_text, height_text = resolution.lower().split("x", 1)
-    try:
-        return int(width_text), int(height_text)
-    except ValueError:
-        return None
-
-
-def _generate_video_google(
-    *,
-    request: VideoGenerationRequest,
-    engine_pack: EnginePack,
-) -> VideoGenerationResult:
-    try:
-        api_key = require_env("GEMINI_API_KEY")
-    except RuntimeError as exc:
-        raise VideoGenerationError(str(exc)) from exc
-
-    instance: dict[str, Any] = {"prompt": request.prompt}
-    if request.first_frame is not None:
-        instance["image"] = _google_image_payload(request.first_frame)
-    if request.last_frame is not None:
-        instance["lastFrame"] = _google_image_payload(request.last_frame)
-    if request.reference_images:
-        instance["referenceImages"] = [
-            {
-                "image": _google_image_payload(item),
-                "referenceType": "asset",
-            }
-            for item in request.reference_images
-        ]
-
-    parameters: dict[str, Any] = {}
-    if request.resolution:
-        parameters["resolution"] = request.resolution
-    if request.aspect_ratio:
-        parameters["aspectRatio"] = request.aspect_ratio
-    if request.duration_seconds:
-        parameters["durationSeconds"] = request.duration_seconds
-    for key, value in request.provider_params.items():
-        if value is not None:
-            parameters[key] = value
-
-    payload: dict[str, Any] = {"instances": [instance]}
-    if parameters:
-        payload["parameters"] = parameters
-
-    response = _request_json(
-        url=f"{GOOGLE_BASE_URL}/models/{engine_pack.target_model}:predictLongRunning",
-        method="POST",
-        headers={
-            "x-goog-api-key": api_key,
-            "Content-Type": "application/json",
-        },
-        body=json.dumps(payload).encode("utf-8"),
-        timeout=120,
-    )
-    operation_name = _read_string(response, "name")
-    if not operation_name:
-        raise VideoGenerationError(f"Google video response missing operation name: {response}")
-
-    status = response
-    poll_started_at = time.monotonic()
-    while status.get("done") is not True:
-        _raise_if_poll_timed_out(
-            provider="Google",
-            provider_job_id=operation_name,
-            started_at=poll_started_at,
-            engine_pack=engine_pack,
-        )
-        time.sleep(engine_pack.retry_policy.poll_interval_seconds)
-        status = _request_json(
-            url=f"{GOOGLE_BASE_URL}/{urllib.parse.quote(operation_name, safe='/')}",
-            method="GET",
-            headers={"x-goog-api-key": api_key},
-            timeout=60,
-        )
-
-    error = status.get("error")
-    if isinstance(error, dict):
-        message = _read_string(error, "message") or "Google video generation failed"
-        code = _read_string(error, "status")
-        raise VideoGenerationError(
-            f"{message}{f' ({code})' if code else ''}",
-            retryable=False,
-        )
-
-    video_uri = _google_video_uri(status)
-    if not video_uri:
-        raise VideoGenerationError(f"Google video operation missing output URI: {status}")
-
-    video_bytes = _request_bytes(
-        url=video_uri,
-        method="GET",
-        headers={"x-goog-api-key": api_key},
-        timeout=300,
-    )
-    return VideoGenerationResult(
-        video_bytes=video_bytes,
-        media_type="video/mp4",
-        model_used=engine_pack.target_model,
-        request_id=operation_name,
-        provider_job_id=operation_name,
-    )
-
-
-def _generate_video_xai(
-    *,
-    request: VideoGenerationRequest,
-    engine_pack: EnginePack,
-) -> VideoGenerationResult:
-    try:
-        api_key = require_env("XAI_API_KEY")
-    except RuntimeError as exc:
-        raise VideoGenerationError(str(exc)) from exc
-
-    payload: dict[str, Any] = {
-        "model": engine_pack.target_model,
-        "prompt": request.prompt,
-        "duration": request.duration_seconds,
-    }
-    if request.aspect_ratio:
-        payload["aspect_ratio"] = request.aspect_ratio
-    if request.resolution:
-        payload["resolution"] = request.resolution
-    for key, value in request.provider_params.items():
-        if value is not None:
-            payload[key] = value
-
-    response = _request_json(
-        url=f"{XAI_BASE_URL}/videos/generations",
-        method="POST",
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-        },
-        body=json.dumps(payload).encode("utf-8"),
-        timeout=120,
-    )
-    request_id = _read_string(response, "request_id")
-    if not request_id:
-        raise VideoGenerationError(f"xAI video response missing request_id: {response}")
-
-    status_payload = _request_json(
-        url=f"{XAI_BASE_URL}/videos/{urllib.parse.quote(request_id, safe='')}",
-        method="GET",
-        headers={"Authorization": f"Bearer {api_key}"},
-        timeout=60,
-    )
-    status = _read_string(status_payload, "status")
-    poll_started_at = time.monotonic()
-    while status == "pending":
-        _raise_if_poll_timed_out(
-            provider="xAI",
-            provider_job_id=request_id,
-            started_at=poll_started_at,
-            engine_pack=engine_pack,
-        )
-        time.sleep(engine_pack.retry_policy.poll_interval_seconds)
-        status_payload = _request_json(
-            url=f"{XAI_BASE_URL}/videos/{urllib.parse.quote(request_id, safe='')}",
-            method="GET",
-            headers={"Authorization": f"Bearer {api_key}"},
-            timeout=60,
-        )
-        status = _read_string(status_payload, "status")
-
-    if status != "done":
-        error = status_payload.get("error") if isinstance(status_payload.get("error"), dict) else {}
-        message = _read_string(error, "message") or (
-            f"xAI video job ended with status={status or 'unknown'}"
-        )
-        code = _read_string(error, "code") or _read_string(error, "type")
-        raise VideoGenerationError(
-            f"{message}{f' ({code})' if code else ''}",
-            retryable=False,
-        )
-
-    video_url = _xai_video_url(status_payload)
-    if not video_url:
-        raise VideoGenerationError(f"xAI video result missing output URL: {status_payload}")
-
-    video_bytes = _request_bytes(
-        url=video_url,
-        method="GET",
-        headers={"Authorization": f"Bearer {api_key}"},
-        timeout=300,
-    )
-    return VideoGenerationResult(
-        video_bytes=video_bytes,
-        media_type="video/mp4",
-        model_used=_read_string(status_payload, "model") or engine_pack.target_model,
-        request_id=request_id,
-        provider_job_id=request_id,
-    )
-
-
-def _raise_if_poll_timed_out(
-    *,
-    provider: str,
-    provider_job_id: str,
-    started_at: float,
-    engine_pack: EnginePack,
-) -> None:
-    elapsed_seconds = time.monotonic() - started_at
-    max_poll_seconds = float(engine_pack.retry_policy.max_poll_seconds)
-    if elapsed_seconds <= max_poll_seconds:
-        return
-    raise VideoGenerationError(
-        f"{provider} video job {provider_job_id} timed out after "
-        f"{max_poll_seconds:g}s waiting for completion",
+    return VideoGenerationError(
+        message,
         retryable=False,
+        cost_receipts=[receipt],
+        provider_job_id=provider_job_id,
+        provider_response=provider_response,
+        submission_uncertain=True,
     )
-
-
-def _request_json(
-    *,
-    url: str,
-    method: str,
-    headers: dict[str, str],
-    body: bytes | None = None,
-    timeout: int = 60,
-) -> dict[str, Any]:
-    req = urllib.request.Request(url, data=body, headers=headers, method=method)
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            raw = resp.read()
-    except urllib.error.HTTPError as exc:
-        detail = exc.read().decode("utf-8", errors="replace")
-        raise VideoGenerationError(
-            f"HTTP {exc.code}: {detail}",
-            retryable=exc.code in {408, 429, 500, 502, 503, 504},
-            status_code=exc.code,
-        ) from exc
-    except urllib.error.URLError as exc:
-        raise VideoGenerationError(
-            f"Network error: {exc.reason}",
-            retryable=True,
-        ) from exc
-
-    try:
-        payload = json.loads(raw)
-    except json.JSONDecodeError as exc:
-        raise VideoGenerationError("Video API returned invalid JSON") from exc
-    if not isinstance(payload, dict):
-        raise VideoGenerationError(f"Expected dict JSON response, got: {type(payload)!r}")
-    return payload
-
-
-def _request_bytes(
-    *,
-    url: str,
-    method: str,
-    headers: dict[str, str],
-    timeout: int = 120,
-) -> bytes:
-    req = urllib.request.Request(url, headers=headers, method=method)
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            return resp.read()
-    except urllib.error.HTTPError as exc:
-        detail = exc.read().decode("utf-8", errors="replace")
-        raise VideoGenerationError(
-            f"HTTP {exc.code}: {detail}",
-            retryable=exc.code in {408, 429, 500, 502, 503, 504},
-            status_code=exc.code,
-        ) from exc
-    except urllib.error.URLError as exc:
-        raise VideoGenerationError(
-            f"Network error: {exc.reason}",
-            retryable=True,
-        ) from exc
-
-
-def _encode_multipart_form(
-    *,
-    fields: list[tuple[str, str]],
-    files: list[tuple[str, str, bytes, str]],
-) -> tuple[bytes, str]:
-    boundary = f"----cineforge-{uuid.uuid4().hex}"
-    chunks: list[bytes] = []
-
-    for name, value in fields:
-        chunks.extend(
-            [
-                f"--{boundary}\r\n".encode(),
-                f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode(),
-                value.encode("utf-8"),
-                b"\r\n",
-            ]
-        )
-
-    for field_name, filename, content, media_type in files:
-        chunks.extend(
-            [
-                f"--{boundary}\r\n".encode(),
-                (
-                    f'Content-Disposition: form-data; name="{field_name}"; '
-                    f'filename="{filename}"\r\n'
-                ).encode(),
-                f"Content-Type: {media_type}\r\n\r\n".encode(),
-                content,
-                b"\r\n",
-            ]
-        )
-
-    chunks.append(f"--{boundary}--\r\n".encode())
-    return b"".join(chunks), f"multipart/form-data; boundary={boundary}"
-
-
-def _google_image_payload(reference: VideoReferenceInput) -> dict[str, Any]:
-    return {
-        "bytesBase64Encoded": base64.b64encode(reference.path.read_bytes()).decode("ascii"),
-        "mimeType": reference.media_type,
-    }
-
-
-def _google_video_uri(payload: dict[str, Any]) -> str | None:
-    response = payload.get("response")
-    if not isinstance(response, dict):
-        return None
-
-    generated = response.get("generateVideoResponse")
-    if isinstance(generated, dict):
-        samples = generated.get("generatedSamples")
-        if isinstance(samples, list) and samples:
-            first = samples[0]
-            if isinstance(first, dict):
-                video = first.get("video")
-                if isinstance(video, dict):
-                    return _read_string(video, "uri")
-
-    generated_videos = response.get("generatedVideos")
-    if isinstance(generated_videos, list) and generated_videos:
-        first = generated_videos[0]
-        if isinstance(first, dict):
-            video = first.get("video")
-            if isinstance(video, dict):
-                return _read_string(video, "uri")
-
-    return None
-
-
-def _xai_video_url(payload: dict[str, Any]) -> str | None:
-    video = payload.get("video")
-    if not isinstance(video, dict):
-        return None
-    return _read_string(video, "url")
-
-
-def _read_string(payload: dict[str, Any], key: str) -> str | None:
-    value = payload.get(key)
-    if isinstance(value, str) and value.strip():
-        return value
-    return None

@@ -20,6 +20,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field
 
 from cine_forge.ai import call_llm, validate_fountain_structure
+from cine_forge.modules.ingest.scene_breakdown_v1.heading import SCENE_HEADING_RE, _parse_heading
 from cine_forge.modules.ingest.scene_breakdown_v1.model_selection import resolve_work_model
 from cine_forge.schemas import (
     ArtifactHealth,
@@ -38,9 +39,6 @@ logger = logging.getLogger(__name__)
 # Constants
 # ---------------------------------------------------------------------------
 
-SCENE_HEADING_RE = re.compile(
-    r"^(INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)\s*[A-Z0-9]", flags=re.IGNORECASE
-)
 TRANSITION_RE = re.compile(
     r"^("
     r"[A-Z][A-Z0-9 '\-]+TO:"
@@ -69,11 +67,6 @@ CHAR_MOD_RE = re.compile(
     r"\s*\((V\.O\.|O\.S\.|CONT['\u2019]D|OFF|ON RADIO)\)\s*$", re.IGNORECASE
 )
 DEFAULT_TONE = "neutral"
-VALID_TIME_OF_DAY = {
-    "DAY", "NIGHT", "DAWN", "DUSK", "MORNING", "EVENING", "AFTERNOON",
-    "LATER", "MOMENTS LATER", "SAME TIME", "MAGIC HOUR", "SUNSET",
-    "SUNRISE", "CONTINUOUS",
-}
 CHARACTER_STOPWORDS = {
     "A", "AN", "AND", "AS", "AT", "BACK", "BLACK", "BEGIN",
     "BEGINFLASHBACK", "BOOM", "CONT", "CRACK", "CRASH", "CREAK", "DING",
@@ -103,11 +96,6 @@ CHARACTER_STOPWORDS = {
     # Other common false positives
     "MEANWHILE", "SUDDENLY", "THEN", "FINALLY", "NOTE", "TITLE",
     "SERIES OF SHOTS", "BACK TO SCENE", "RESUME", "OMITTED", "THE END",
-}
-
-_NARRATIVE_MODIFIERS = {
-    "PAST", "PRESENT", "FLASHBACK", "(FLASHBACK)", "BACK TO PRESENT",
-    "(BACK TO PRESENT)", "SAME", "INTERCUT", "STOCK",
 }
 
 # ---------------------------------------------------------------------------
@@ -585,51 +573,6 @@ def _extract_scene_deterministic(
         "provenance": [item.model_dump(mode="json") for item in provenance],
         "confidence": _overall_confidence(provenance, inferences),
     }
-
-
-# ---------------------------------------------------------------------------
-# Heading parsing
-# ---------------------------------------------------------------------------
-
-
-def _parse_heading(heading: str) -> dict[str, str]:
-    cleaned_heading = heading.strip().rstrip("\\")
-    normalized = cleaned_heading.upper()
-    int_ext = "INT/EXT"
-    if normalized.startswith("INT/EXT.") or normalized.startswith("I/E."):
-        int_ext = "INT/EXT"
-    elif normalized.startswith("INT."):
-        int_ext = "INT"
-    elif normalized.startswith("EXT."):
-        int_ext = "EXT"
-
-    content = re.sub(
-        r"^(INT/EXT\.|I/E\.|INT\.|EXT\.|EST\.)\s*", "", cleaned_heading, flags=re.I
-    )
-    segments = [
-        segment.strip() for segment in re.split(r"\s*-\s*", content) if segment.strip()
-    ]
-    if not segments:
-        return {"int_ext": int_ext, "location": "UNKNOWN", "time_of_day": "UNSPECIFIED"}
-    if len(segments) == 1:
-        return {
-            "int_ext": int_ext,
-            "location": segments[0].title(),
-            "time_of_day": "UNSPECIFIED",
-        }
-
-    while len(segments) > 1 and segments[-1].strip("()").upper() in _NARRATIVE_MODIFIERS:
-        segments = segments[:-1]
-
-    time_of_day = segments[-1].upper()
-    if time_of_day in VALID_TIME_OF_DAY:
-        location_segments = segments[:-1]
-    else:
-        time_of_day = "UNSPECIFIED"
-        location_segments = segments
-
-    location = " - ".join(seg.title() for seg in location_segments)
-    return {"int_ext": int_ext, "location": location, "time_of_day": time_of_day}
 
 
 # ---------------------------------------------------------------------------

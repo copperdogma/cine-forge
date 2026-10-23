@@ -1,0 +1,44 @@
+- tabpanel "Render":
+    - generic: Render
+    - generic: "Selected: Current scene"
+    - generic: From shot plan v10
+    - generic: 8 clips
+    - generic: "Render turns the current shot plan, direction, and references into scene video. Keyframes are optional: it can proceed without them and uses locked frames when available. Prompt and video details show how references were used. Choose Current Scene to refine this moment or All Scenes for a broader pass."
+    - button "Refresh Render for Current Scene":
+      - text: Refresh Render for Current Scene
+    - paragraph: Execution Scope
+    - button "Current Scene"
+    - button "All Scenes"
+    - generic: Warnings
+    - paragraph: Render can run for scene_001 with warnings.
+    - paragraph: Shot planning
+    - paragraph: This run will build shot plans first.
+    - link "Open Shots":
+      - /url: /brick-steel-full-retired/scenes/scene_001?tab=shots
+      - text: Open Shots
+    - paragraph: Render clip planning
+    - paragraph: This run will estimate scene duration and render clip boundaries first.
+    - link "Open Render":
+      - /url: /brick-steel-full-retired/scenes/scene_001?tab=render
+      - text: Open Render
+    - generic: Shot / Render Units
+    - generic: 4 shots
+    - generic: 8 render clips
+    - generic: 8 generated videos
+    - generic: Render turns EXT. BRICK'S PATIO - DAY into provider-bounded render clips when a render clip plan exists. A render clip may map to one shot, multiple shots, or a fallback beat.
+    - generic: "Current saved output set: 8 render-clip generated videos for this scene."
+    - text: Planned Shots
+    - paragraph: Shot 1
+    - generic: 001_A
+    - generic: Wide / Full Shot
+    - generic: 18s
+    - paragraph: Establishing master — sells the gorgeous-day irony, the patio's negative space, and Brick's solitary stillness before Steel enters
+    - paragraph: Brick sits motionless, beer-less, staring at nothing in particular. Cicadas drone. A distant lawnmower cuts in. The screen door squeaks and thuds as Steel emerges carrying two cans, crossing toward the table.
+    - paragraph: "Camera: Locked off, static"
+    - paragraph: "Dialogue: STEEL: Beer's ready! / BRICK: Are they cold? / STEEL: Does a bear crap in the woods?"
+    - paragraph: Shot 2
+    - generic: 001_B
+    - generic: Medium Two-Shot
+    - generic: 22s
+    - paragraph: Primary dialogue and emotional anchor — carries the toast, the long drink, and the full weight of the long beat
+    - paragraph: Steel raises his beer. Brick mirrors him. They drink long and well. Then stillness. The lawnmower fades out mid-beat, l

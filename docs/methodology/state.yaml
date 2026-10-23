@@ -14,7 +14,9 @@
       "story_coverage": "partial",
       "product_need": "Artifacts, decisions, and runtime operations stay immutable, auditable, and safe to revise.",
       "tech_need": "Snapshot versioning, dependency-aware invalidation, AI/runtime boundary discipline, and durable audit metadata.",
-      "absorbs": ["Foundation & Artifact Runtime (old 1)"],
+      "absorbs": [
+        "Foundation & Artifact Runtime (old 1)"
+      ],
       "notes": [
         "Core substrate exists. Current work here is mostly maintenance, decomposition, and verification hardening rather than a missing-system climb."
       ],
@@ -26,7 +28,9 @@
       "story_coverage": "partial",
       "product_need": "CineForge can accept story inputs in multiple formats and turn them into a coherent, browsable understanding quickly enough to start creative work.",
       "tech_need": "Ingestion, normalization, canonical script handling, project configuration, script-bible extraction, and scene understanding.",
-      "absorbs": ["Script Understanding Pipeline (old 2)"],
+      "absorbs": [
+        "Script Understanding Pipeline (old 2)"
+      ],
       "notes": [
         "The two-tier scene split remains justified while single-pass scene understanding is still below the required quality/latency bar.",
         "Long-form screenplay throughput is a standing climb requirement: measure the honest story-lane boundary and use detector-backed stage budgets instead of anecdotal 'the pipeline feels slow' tuning."
@@ -39,7 +43,9 @@
       "story_coverage": "partial",
       "product_need": "Characters, locations, props, and continuity states persist as first-class world knowledge.",
       "tech_need": "Bible folders, relationship edges, and state snapshots over story time.",
-      "absorbs": ["World Building & Continuity (old 3)"],
+      "absorbs": [
+        "World Building & Continuity (old 3)"
+      ],
       "notes": [
         "Core substrate exists. Remaining work is mostly quality refinement, continuity detection depth, and better downstream reuse of the world model."
       ],
@@ -51,7 +57,9 @@
       "story_coverage": "partial",
       "product_need": "Creative roles and characters should feel like collaborators who understand the story deeply and shape it across disciplines.",
       "tech_need": "Role hierarchy, style packs, transcripts, suggestion artifacts, and concern-group direction artifacts.",
-      "absorbs": ["Role System & Creative Direction (old 4)"],
+      "absorbs": [
+        "Role System & Creative Direction (old 4)"
+      ],
       "notes": [
         "Capability gating remains an honest hold-state compromise until one broadly usable multimodal model removes the need for per-role modality declarations."
       ],
@@ -63,7 +71,9 @@
       "story_coverage": "partial",
       "product_need": "The operator should feel like they are working with their story, not administering a pipeline.",
       "tech_need": "Control modes, explanation surfaces, stage-progression rules, interaction models, and readiness signals that keep the UI honest.",
-      "absorbs": ["Operator Console & Interactive UX (old 5)"],
+      "absorbs": [
+        "Operator Console & Interactive UX (old 5)"
+      ],
       "notes": [
         "The app shell and user flows exist. Current work is about clarity, polish, transparency, and closing remaining UX holes.",
         "A standing requirement now exists to keep a canonical short screenplay plus recurring full-pipeline manual walkthrough in the dedicated internal ui-scout lane so UI completeness and polish stay inspectable on the honest current product path."
@@ -76,7 +86,9 @@
       "story_coverage": "partial",
       "product_need": "Creative intent becomes concrete planning artifacts usable by humans and generation models.",
       "tech_need": "Coverage strategy, shot definitions, storyboard and animatic assets, and optional keyframes linked to upstream direction.",
-      "absorbs": ["Shot Planning & Visualization (old 6)"],
+      "absorbs": [
+        "Shot Planning & Visualization (old 6)"
+      ],
       "notes": [
         "Shot planning, storyboard generation, deterministic previz baseline, and the operator-facing AI-previz surface now exist as real substrate.",
         "This category stays in climb because deterministic previz is still only fallback/control while fast useful AI previz remains unfinished.",
@@ -90,7 +102,9 @@
       "story_coverage": "partial",
       "product_need": "CineForge can compile direction into generation requests and carry user-provided assets through the same pipeline.",
       "tech_need": "Render-adapter compilation, engine-pack knowledge, error handling, and origin-agnostic asset injection.",
-      "absorbs": ["Generation & Export (old 7)"],
+      "absorbs": [
+        "Generation & Export (old 7)"
+      ],
       "notes": [
         "Render-adapter compilation, engine-pack knowledge, error handling, origin-agnostic asset injection, runtime media validation, and AI-previz generation exist as real substrate.",
         "This category stays in climb because richer export fidelity and broader media-validation coverage remain unfinished."
@@ -103,7 +117,9 @@
       "story_coverage": "partial",
       "product_need": "AI cost, quality, and model tradeoffs are visible enough that operators can trust the system.",
       "tech_need": "Cost tracking, QA patterns, current eval registry discipline, and model-slot strategy.",
-      "absorbs": ["AI Platform, Model Selection & Validation (old 8)"],
+      "absorbs": [
+        "AI Platform, Model Selection & Validation (old 8)"
+      ],
       "notes": [
         "Current work here is primarily value maintenance, benchmark refresh, and compromise monitoring rather than missing substrate.",
         "Throughput and output-volume optimization should be driven by runtime detectors and measured stage budgets, not one-off model or prompt tweaks.",
@@ -117,7 +133,9 @@
       "story_coverage": "partial",
       "product_need": "Long-running collaboration should preserve context, transcripts, and operating-mode intent without losing provenance.",
       "tech_need": "Canonical memory artifacts, working-memory summaries, and explicit operating-mode rules.",
-      "absorbs": ["Memory & Collaboration (old 9)"],
+      "absorbs": [
+        "Memory & Collaboration (old 9)"
+      ],
       "notes": [
         "The canonical vs working-memory split remains justified while context windows and memory persistence are still constrained."
       ],
@@ -129,7 +147,9 @@
       "story_coverage": "partial",
       "product_need": "Users can inspect pacing, order, and best-available playback throughout the pipeline.",
       "tech_need": "Independent timeline artifacts, stacked tracks, and the always-playable fallback rule.",
-      "absorbs": ["None — new explicit category extracted from existing spec/stories"],
+      "absorbs": [
+        "None \u2014 new explicit category extracted from existing spec/stories"
+      ],
       "notes": [
         "Timeline substrate exists but still relies on continued trust/readiness work as generated-video and previz lanes evolve."
       ],
@@ -141,7 +161,9 @@
       "story_coverage": "partial",
       "product_need": "CineForge still needs explicit planning scaffolding while current AI cannot yet build and verify large repo changes from the ideal in one shot.",
       "tech_need": "Story lifecycle tracking, methodology state, compiled graph joins, generated planning views, triage skills, workflow gates, AGENTS instructions, runbooks, and verbose work logs.",
-      "absorbs": ["Planning Infrastructure & Agent Tooling (legacy authored build-map/story-index package)"],
+      "absorbs": [
+        "Planning Infrastructure & Agent Tooling (legacy authored build-map/story-index package)"
+      ],
       "notes": [
         "Story 134 and Story 136 established the current authored build-map/spec stack.",
         "Story 145 landed the graph+state migration, replacing the authored planning surface with structured state, compiled joins, generated views, and hard linting.",
@@ -237,7 +259,10 @@
     }
   },
   "roadmap": {
-    "active_focus": ["spec:6", "spec:7"],
+    "active_focus": [
+      "spec:6",
+      "spec:7"
+    ],
     "sequencing_bias": [
       {
         "target": "scene-generation-completion",
@@ -256,68 +281,103 @@
       {
         "id": "methodology-graph-state-migration",
         "status": "completed",
-        "story_refs": ["145"],
+        "story_refs": [
+          "145"
+        ],
         "notes": "Replaced hand-authored build-map/story-index planning surfaces with state, graph, generated views, and hard linting."
       },
       {
         "id": "problem-first-story-workflow-repair",
         "status": "completed",
-        "story_refs": ["147"],
+        "story_refs": [
+          "147"
+        ],
         "notes": "Aligned problem-first triage, honest Draft/Pending/Blocked transitions, anti-fragmentation rules, blocked-story metadata, and post-close-out planning-truth validation after the graph+state migration."
       },
       {
         "id": "ui-product-truth-scouting",
         "status": "active",
-        "story_refs": ["196", "201"],
-        "notes": "Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage. Story 196 is the current Brick & Steel product-truth scrub created from inbox triage; Story 201 is the focused keyframe-affordance follow-up found during that scrub."
+        "story_refs": [
+          "196",
+          "201",
+          "185",
+          "232"
+        ],
+        "notes": "Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage. Story 196 closed the Brick & Steel scrub and Story 201 closed its optional-keyframe follow-up. Story 185 closed screenplay-first Home placement with representative desktop/mobile evidence and honest cut review status; Story232 attempted a fresh canonical walkthrough on2026-10-23 but stopped before media under its bounded envelope; full FP1 remains blocked. Story233 closed the observed first-use guidance repair and reopened005 closed the PRE-DAWN parser regression; targeted repairs do not claim a full Pass."
       },
       {
         "id": "scene-generation-completion",
         "status": "active",
-        "story_refs": ["164", "165", "166", "167", "168", "169", "170", "191", "192", "193", "194", "195", "201", "202", "203"],
-        "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair; Story 192 closed the separate GPT-image design-study completion/error follow-up. Story 193 closed the scene-duration/render-clip planning artifact, Story 194 closed the dependent multi-clip scene-render execution slice, Story 195 closed the production xAI AI-previz readiness surface for the shipped lane, Story 202 closed the default design-study still-image backfill plus still-image prompt compiler requested from the inbox, and Story 203 closed the render-adapter decomposition/validation cleanup. Story 201 remains the current pending scene-generation truth follow-up for keyframe affordance honesty."
+        "story_refs": [
+          "164",
+          "165",
+          "166",
+          "167",
+          "168",
+          "169",
+          "170",
+          "191",
+          "192",
+          "193",
+          "194",
+          "195",
+          "201",
+          "202",
+          "203",
+          "197",
+          "228"
+        ],
+        "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair; Story 192 closed the separate GPT-image design-study completion/error follow-up. Story 193 closed the scene-duration/render-clip planning artifact, Story 194 closed the dependent multi-clip scene-render execution slice, Story 195 closed the production xAI AI-previz readiness surface for the shipped lane, Story 202 closed the default design-study still-image backfill plus still-image prompt compiler requested from the inbox, and Story 203 closed the render-adapter decomposition/validation cleanup. Story 201 closed optional-keyframe affordance honesty; Story 197 owns the remaining reference-fidelity proof boundary and Story 228 owns the original music-video pilot draft. Continue from their measured gaps and input/spend gates rather than repeating exhausted evaluations."
       }
     ]
   },
   "stories_index": {
     "current_execution_map": {
-      "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first render route, and Stories 191-196 closed the Brick & Steel production-readiness, design-study lifecycle, prompt truth, render-clip planning, multi-clip rendering, xAI previz readiness, and product-truth scrub wave. Story 196 found the current surfaced route healthy and created Story 201 for a focused keyframe-affordance follow-up. Story 202 closed the high-priority scene-generation follow-up from the inbox: default design-study still backfill plus a still-image prompt compiler for render/AI-previz consistency. Story 203 closed render-adapter decomposition so the render/previz lane no longer depends on one 2,630-line module owner. Story 198 closed the Brick & Steel character-adjudication build, while Stories 185, 197, and 199 hold routed UI, reference-pack, and casting/table-read decisions.",
+      "summary": "Phases 0\u20135 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first render route, and Stories 191-196 closed the Brick & Steel production-readiness, design-study lifecycle, prompt truth, render-clip planning, multi-clip rendering, xAI previz readiness, and product-truth scrub wave. Story 196 found the current surfaced route healthy and created Story 201 for a focused keyframe-affordance follow-up. Story 202 closed the high-priority scene-generation follow-up from the inbox: default design-study still backfill plus a still-image prompt compiler for render/AI-previz consistency. Story 203 closed render-adapter decomposition so the render/previz lane no longer depends on one 2,630-line module owner. Story 198 closed the Brick & Steel character-adjudication build. Story 185 closed screenplay-first Home and supporting-surface placement; Stories 197 and 199 retain reference-pack and casting/table-read decisions.",
       "lanes": [
         {
           "id": "pending-ready",
-          "title": "Pending — Ready To Build Now",
-          "statuses": ["Pending"],
+          "title": "Pending \u2014 Ready To Build Now",
+          "statuses": [
+            "Pending"
+          ],
           "empty_message": "No stories currently fit this lane.",
           "story_notes": {}
         },
         {
           "id": "in-progress",
           "title": "In Progress",
-          "statuses": ["In Progress"],
+          "statuses": [
+            "In Progress"
+          ],
           "empty_message": "No stories currently in progress.",
           "story_notes": {}
         },
         {
           "id": "pending-sequence-sensitive",
-          "title": "Pending — Ready, But Sequence-Sensitive",
-          "statuses": ["Pending"],
+          "title": "Pending \u2014 Ready, But Sequence-Sensitive",
+          "statuses": [
+            "Pending"
+          ],
           "empty_message": "No stories currently need the sequence-sensitive lane.",
-          "story_notes": {
-            "201": "Focused follow-up from Story 196: fix the Render/Previz keyframe warning so missing optional keyframes either have a real route or no longer appear as actionable hidden homework."
-          }
+          "story_notes": {}
         },
         {
           "id": "blocked",
-          "title": "Blocked — Dependency Chain Not Ready Yet",
-          "statuses": ["Blocked"],
+          "title": "Blocked \u2014 Dependency Chain Not Ready Yet",
+          "statuses": [
+            "Blocked"
+          ],
           "health_flag": true,
           "empty_message": "No blocked lines currently need attention.",
           "story_notes": {}
         },
         {
           "id": "draft",
-          "title": "Draft — Scope Or Decision Needed First",
-          "statuses": ["Draft"],
+          "title": "Draft \u2014 Scope Or Decision Needed First",
+          "statuses": [
+            "Draft"
+          ],
           "empty_message": "No draft stories currently need review.",
           "story_notes": {
             "138": "Deliberate follow-up from Story 032. It owns configurable cost profiles, predictive model-cost comparison, and optional per-stage budget caps, but still needs tighter design before it should move to Pending.",
@@ -333,8 +393,10 @@
         },
         {
           "id": "deferred",
-          "title": "Deferred — Intentionally Parked",
-          "statuses": ["Deferred"],
+          "title": "Deferred \u2014 Intentionally Parked",
+          "statuses": [
+            "Deferred"
+          ],
           "empty_message": "No stories currently deferred.",
           "story_notes": {}
         }
@@ -358,16 +420,16 @@
         "id": "phase-summary",
         "title": "Phase Summary",
         "lines": [
-          "- **Phase 0 — Foundation** (001–002): Project scaffolding and pipeline infrastructure. Artifact store with immutability, snapshot versioning, dependency graph, audit metadata, cost tracking hooks, and structural validation.",
-          "- **Phase 1 — MVP Pipeline** (003–007): First working pipeline: script in -> canonical script + scenes + project config out. End-to-end smoke test.",
-          "- **Phase 2 — World Building** (008–011): Folder-based bibles (characters, locations, props), entity relationship graph, continuity state tracking.",
-          "- **Phase 2.5 — UI** (011b–011c): Production-quality Operator Console and resource-oriented routing. Research-driven design, then build. Foundation for later UI surfaces.",
-          "- **Phase 3 — Timeline** (012–013): Timeline data artifact with scene/story ordering, stacked tracks, and always-playable rule.",
-          "- **Phase 4 — Role System** (014–019): Role hierarchy, Director + Canon Guardians, style pack loading, suggestion/decision lifecycle, inter-role communication, and human interaction modes.",
-          "- **Phase 5 — Creative Direction** (020–023, 093–097, 099–100): Intent-first director's vision model, concern groups, and scene workspace.",
-          "- **Phase 6 — Shot Planning & Visualization** (025–027, 137, 143, 144): Coverage strategy, storyboards, animatics, keyframes, and AI-previz.",
-          "- **Phase 7 — Generation** (028–030, 140): Render adapter, user asset injection, generated-output QA, and media validation.",
-          "- **Phase 8 — Cross-Cutting Polish** (031–034): Semantic impact assessment, cost dashboards and budget caps, memory model, and in-app style pack creator."
+          "- **Phase 0 \u2014 Foundation** (001\u2013002): Project scaffolding and pipeline infrastructure. Artifact store with immutability, snapshot versioning, dependency graph, audit metadata, cost tracking hooks, and structural validation.",
+          "- **Phase 1 \u2014 MVP Pipeline** (003\u2013007): First working pipeline: script in -> canonical script + scenes + project config out. End-to-end smoke test.",
+          "- **Phase 2 \u2014 World Building** (008\u2013011): Folder-based bibles (characters, locations, props), entity relationship graph, continuity state tracking.",
+          "- **Phase 2.5 \u2014 UI** (011b\u2013011c): Production-quality Operator Console and resource-oriented routing. Research-driven design, then build. Foundation for later UI surfaces.",
+          "- **Phase 3 \u2014 Timeline** (012\u2013013): Timeline data artifact with scene/story ordering, stacked tracks, and always-playable rule.",
+          "- **Phase 4 \u2014 Role System** (014\u2013019): Role hierarchy, Director + Canon Guardians, style pack loading, suggestion/decision lifecycle, inter-role communication, and human interaction modes.",
+          "- **Phase 5 \u2014 Creative Direction** (020\u2013023, 093\u2013097, 099\u2013100): Intent-first director's vision model, concern groups, and scene workspace.",
+          "- **Phase 6 \u2014 Shot Planning & Visualization** (025\u2013027, 137, 143, 144): Coverage strategy, storyboards, animatics, keyframes, and AI-previz.",
+          "- **Phase 7 \u2014 Generation** (028\u2013030, 140): Render adapter, user asset injection, generated-output QA, and media validation.",
+          "- **Phase 8 \u2014 Cross-Cutting Polish** (031\u2013034): Semantic impact assessment, cost dashboards and budget caps, memory model, and in-app style pack creator."
         ]
       },
       {
@@ -395,15 +457,17 @@
     "cadence": {
       "max_days_without_run": 14
     },
-    "last_run_at": "2026-04-12",
-    "last_run_story_id": "164",
+    "last_run_at": "2026-10-23",
+    "last_run_story_id": "232",
     "scenarios": {
       "FP1": {
         "label": "Full Pipeline Canonical Fixture",
-        "last_checked": "2026-04-12",
-        "latest_report": "2026-04-12-open-frequency-render-story-164-local",
-        "status": "pass",
-        "follow_up_story_refs": []
+        "last_checked": "2026-10-23",
+        "latest_report": "2026-10-23-open-frequency-local",
+        "status": "issues_found",
+        "follow_up_story_refs": [
+          "232"
+        ]
       }
     }
   },
@@ -414,8 +478,25 @@
     "domains": {
       "methodology_tooling": {
         "last_audited_at": "2026-04-18",
-        "recent_story_refs": ["145", "146", "147", "154", "172", "209", "210", "211", "212", "214", "215", "217", "218", "220"],
-        "stories_since_audit": 9,
+        "recent_story_refs": [
+          "145",
+          "146",
+          "147",
+          "154",
+          "172",
+          "208",
+          "209",
+          "210",
+          "211",
+          "212",
+          "213",
+          "214",
+          "215",
+          "217",
+          "218",
+          "220"
+        ],
+        "stories_since_audit": 10,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
@@ -423,15 +504,43 @@
       },
       "driver_and_runtime": {
         "last_audited_at": "2026-03-02",
-        "recent_story_refs": ["115", "116", "117", "183", "187"],
+        "recent_story_refs": [
+          "115",
+          "116",
+          "117",
+          "183",
+          "187"
+        ],
         "stories_since_audit": 2,
         "open_findings": [],
         "manual_priority": "normal"
       },
       "ingest_and_world_building": {
         "last_audited_at": "2026-04-18",
-        "recent_story_refs": ["163", "164", "165", "166", "167", "168", "169", "183", "187", "202", "210", "211", "212", "214", "215", "217", "218", "220"],
-        "stories_since_audit": 11,
+        "recent_story_refs": [
+          "163",
+          "164",
+          "165",
+          "166",
+          "167",
+          "168",
+          "169",
+          "183",
+          "187",
+          "202",
+          "208",
+          "210",
+          "211",
+          "212",
+          "213",
+          "214",
+          "215",
+          "217",
+          "218",
+          "220",
+          "005"
+        ],
+        "stories_since_audit": 13,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
@@ -439,30 +548,82 @@
       },
       "api_service_and_operator_console": {
         "last_audited_at": "2026-04-24",
-        "recent_story_refs": ["139", "169", "170", "171", "174", "175", "177", "178", "179", "180", "181", "182", "184", "185", "192", "202", "228"],
-        "stories_since_audit": 5,
-        "open_findings": [
-          "Project Home still stacks Script Bible, healthy Artifact Health, and Final Output above the screenplay; Story 185 is the existing owner and should resolve placement rather than creating a second shell."
+        "recent_story_refs": [
+          "139",
+          "169",
+          "170",
+          "171",
+          "174",
+          "175",
+          "177",
+          "178",
+          "179",
+          "180",
+          "181",
+          "182",
+          "184",
+          "185",
+          "192",
+          "201",
+          "202",
+          "228",
+          "233",
+          "032",
+          "195"
         ],
+        "stories_since_audit": 9,
+        "open_findings": [],
         "manual_priority": "normal",
-        "last_result": "open_finding",
-        "last_summary": "2026-04-24 audit after Stories 169-185 found no new duplicate API/shell subsystem: live capability smoke stays separate from cheap dependency health, chat failure containment remains in the chat loader/store/boundary seam, the Radix ScrollArea crash was replaced by a narrow ref-stable wrapper, and Scene Workspace guidance/start_from reuse lives in focused workflow/preflight helpers. The real remaining surface-placement drift is already captured by Story 185: Project Home still lets supporting Script Bible, healthy Artifact Health, and Final Output surfaces compete above the screenplay despite the design rule that the screenplay is the home page. Keep oversized `ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `ui/src/pages/SceneWorkspacePage.tsx`, `ui/src/pages/ProjectHome.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`, and new `src/cine_forge/services/provider_capability_smoke.py` as watchpoints, but do not create a broad cleanup story from this audit."
+        "last_result": "clean",
+        "last_summary": "The 2026-04-24 audit found no duplicate API/shell subsystem and assigned Home placement drift to Story 185. Its 2026-10-23 follow-up now clears that owned finding: Home is screenplay-first, full Bible/Cut controls use on-demand dialogs, and artifact health appears only when actionable. Focused header/Bible extraction reduced ProjectHome from612 to216 lines; the persistent cut controller preserves pending operation ownership. The shared needs_review presentation fix retains honest cut/previz status. Representative desktop/mobile verification and independent review passed. Other oversized API/shell/SceneWorkspace watchpoints remain; this narrow repair does not reset the full architecture-audit date or FP1 walkthrough freshness. Story032 reuses the cost summary contract across run/project/media UI, extracts preflight and replay guards, and suppresses incomplete spend remainders and replay. The singular and dedicated run routes share metrics. Oversized untouched orchestration and workspace responsibilities remain watchpoints; this is not a full domain audit. Story195 reuses canonical current video pricing for explicitly scoped recipe-default examples, removing duplicate benchmark-price ownership without changing quality/default gates. No full-audit date reset."
       },
       "creative_direction_and_chat": {
         "last_audited_at": "2026-03-31",
-        "recent_story_refs": ["141", "144", "148", "175", "178"],
+        "recent_story_refs": [
+          "141",
+          "144",
+          "148",
+          "175",
+          "178"
+        ],
         "stories_since_audit": 3,
         "open_findings": [],
         "manual_priority": "normal"
       },
       "generation_and_visualization": {
         "last_audited_at": "2026-04-18",
-        "recent_story_refs": ["165", "166", "167", "168", "169", "170", "171", "173", "174", "175", "177", "178", "180", "181", "186", "188", "190", "192", "202", "203", "228"],
-        "stories_since_audit": 13,
+        "recent_story_refs": [
+          "165",
+          "166",
+          "167",
+          "168",
+          "169",
+          "170",
+          "171",
+          "173",
+          "174",
+          "175",
+          "177",
+          "178",
+          "180",
+          "181",
+          "186",
+          "188",
+          "190",
+          "192",
+          "201",
+          "202",
+          "203",
+          "208",
+          "228",
+          "032",
+          "195"
+        ],
+        "stories_since_audit": 17,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
-        "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem, Story 186 keeps storyboard quality measurement inside the established benchmark/runtime/report pattern, Story 188 is scoped as a follow-up candidate against that same eval rather than a second storyboard stack, and Story 190 keeps the next storyboard work focused on identity/reference stability under that same eval boundary. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
+        "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem, Story 186 keeps storyboard quality measurement inside the established benchmark/runtime/report pattern, Story 188 is scoped as a follow-up candidate against that same eval rather than a second storyboard stack, and Story 190 keeps the next storyboard work focused on identity/reference stability under that same eval boundary. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared. Story032 media-accounting follow-up extracts render execution, input preparation, receipts and video transport/pricing into focused owners. It removes retired transports, preserves partial costs and uncertain jobs, and leaves current-provider quality and prepare/inspect work explicit in138/232. This narrow repair does not reset the full-audit date. Story195 reuses canonical current video pricing for explicitly scoped recipe-default examples, removing duplicate benchmark-price ownership without changing quality/default gates. No full-audit date reset."
       }
     }
   }

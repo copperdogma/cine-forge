@@ -2,20 +2,16 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useHistoryBack } from '@/lib/use-history-back'
 import {
-  Clock,
   Loader2,
-  DollarSign,
-  Layers,
-  Cpu,
   ArrowLeft,
   Package,
   AlertCircle,
-  Play,
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { RunCostSummaryPanel } from '@/components/RunCostSummaryPanel'
+import { RunDetailHeader, RunDetailMetrics } from '@/components/RunDetailOverview'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { RunEventLog, type RunEvent } from '@/components/RunEventLog'
@@ -29,10 +25,10 @@ import {
   useRunEvents,
   useRunState,
 } from '@/lib/hooks'
-import { RECIPE_NAMES, getOrderedStageIds, getSceneScopeLabel, getSceneScopeTargetLabel } from '@/lib/constants'
+import { getOrderedStageIds, getSceneScopeLabel, getSceneScopeTargetLabel } from '@/lib/constants'
 import { toast } from 'sonner'
 import { formatDuration } from '@/lib/format'
-import { StatusBadge, StatusIcon } from '@/components/StatusBadge'
+import { StatusIcon } from '@/components/StatusBadge'
 import { humanizeStageName } from '@/lib/chat-messages'
 
 // Derive overall status from stage states
@@ -248,7 +244,6 @@ export default function RunDetail() {
   const runState = runStateResponse
 
   const { state } = runState
-  const recipeName = state.recipe_id.replace('recipe-', '').replace(/-/g, ' ')
   const sceneScope = readSceneScope(state.runtime_params.scene_scope)
   const sceneActionPreflight = readSceneActionPreflight(state.runtime_params.scene_action_preflight)
   const startFrom = typeof state.runtime_params.start_from === 'string'
@@ -303,153 +298,78 @@ export default function RunDetail() {
     ? mapApiEventsToRunEvents(eventsResponse.events)
     : []
 
-  const canRetryFailedStage = overallStatus === 'failed' && !!runId && !retryFailedStage.isPending
+  // The detailed cost response is authoritative. A false flag in live run state
+  // closes the replay controls immediately while the summary refetches.
+  const costRecordComplete = runCostSummary?.cost_is_complete === true
+    && state.cost_is_complete !== false
+  const costAmount = runCostSummary?.total_cost_usd ?? state.total_cost_usd
+  const costCaption = state.cost_is_complete === false || runCostSummary?.cost_is_complete === false
+    ? 'Known estimated subtotal'
+    : runCostSummary
+      ? 'Recorded cost estimate'
+      : 'Recorded estimate · completeness unknown'
+
+  async function resumePipeline(nextRunBudgetLimitUsd?: number) {
+    if (!costRecordComplete || !runId) return
+    try {
+      const result = await resumeRun.mutateAsync({
+        runId,
+        projectId,
+        runBudgetLimitUsd: nextRunBudgetLimitUsd,
+      })
+      navigate(`/${projectId}/run/${result.run_id}`)
+      toast.success('Pipeline resumed')
+    } catch (err) {
+      toast.error('Failed to resume: ' + (err instanceof Error ? err.message : 'Unknown error'))
+    }
+  }
+
+  async function retryPipeline() {
+    if (!costRecordComplete || !runId) return
+    try {
+      const result = await retryFailedStage.mutateAsync({ runId, projectId })
+      navigate(`/${projectId}/run/${result.run_id}`)
+    } catch (err) {
+      toast.error('Failed to retry: ' + (err instanceof Error ? err.message : 'Unknown error'))
+    }
+  }
 
   return (
     <div className="w-full min-w-0">
-      {/* Header with back button */}
-      <div className="mb-6">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="mb-3 -ml-2"
-          onClick={goBack}
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
-        </Button>
+      <RunDetailHeader
+        recipeId={state.recipe_id}
+        runId={state.run_id}
+        overallStatus={overallStatus}
+        canReplay={costRecordComplete}
+        retryPending={retryFailedStage.isPending}
+        resumePending={resumeRun.isPending}
+        onBack={goBack}
+        onResume={() => { void resumePipeline() }}
+        onRetry={() => { void retryPipeline() }}
+      />
 
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight mb-1">
-              {RECIPE_NAMES[state.recipe_id] || recipeName}
-              {isRunning && <span className="ml-2 text-muted-foreground font-normal">Running</span>}
-              {overallStatus === 'done' && <span className="ml-2 text-muted-foreground font-normal">Complete</span>}
-              {overallStatus === 'failed' && <span className="ml-2 text-muted-foreground font-normal">Failed</span>}
-              {overallStatus === 'paused' && <span className="ml-2 text-muted-foreground font-normal">Paused</span>}
-            </h1>
-            <p className="text-muted-foreground text-sm">
-              {state.run_id}
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            {overallStatus === 'paused' && (
-              <Button
-                size="sm"
-                className="gap-1.5"
-                disabled={resumeRun.isPending}
-                onClick={async () => {
-                  try {
-                    const result = await resumeRun.mutateAsync({
-                      runId: runId!,
-                      projectId,
-                    })
-                    navigate(`/${projectId}/run/${result.run_id}`)
-                    toast.success("Pipeline resumed")
-                  } catch (err) {
-                    toast.error("Failed to resume: " + (err instanceof Error ? err.message : "Unknown error"))
-                  }
-                }}
-              >
-                <Play className="h-3.5 w-3.5" />
-                Resume Pipeline
-              </Button>
-            )}
-            {canRetryFailedStage && (
-              <Button
-                size="sm"
-                onClick={async () => {
-                  const result = await retryFailedStage.mutateAsync({
-                    runId: runId!,
-                    projectId,
-                  })
-                  navigate(`/${projectId}/run/${result.run_id}`)
-                }}
-              >
-                Retry Failed Stage
-              </Button>
-            )}
-            <StatusBadge status={overallStatus} />
-          </div>
-        </div>
-      </div>
-
-      {/* Summary cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4 mb-6">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
-              <DollarSign className="h-3.5 w-3.5" />
-              Total Cost
-            </div>
-            <div className="text-xl font-bold">
-              ${state.total_cost_usd.toFixed(2)}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
-              <Clock className="h-3.5 w-3.5" />
-              Duration
-            </div>
-            <div className="text-xl font-bold">
-              {formatDuration(duration)}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
-              <Cpu className="h-3.5 w-3.5" />
-              Model
-            </div>
-            <div className="text-sm font-medium truncate" title={state.runtime_params.default_model as string}>
-              {(state.runtime_params.default_model as string || 'Unknown').replace('claude-', '')}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
-              <Layers className="h-3.5 w-3.5" />
-              Stages
-            </div>
-            <div className="text-xl font-bold">
-              {completedStages}/{totalStages}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <RunDetailMetrics
+        totalCostUsd={costAmount}
+        costLabel={costCaption}
+        durationSeconds={duration}
+        defaultModel={String(state.runtime_params.default_model || 'Unknown')}
+        completedStages={completedStages}
+        totalStages={totalStages}
+      />
 
       {projectId && runCostSummary && (
         <div className="mb-6">
           <RunCostSummaryPanel
             projectId={projectId}
-            summary={runCostSummary}
-            resumeAction={{
+            summary={costRecordComplete
+              ? runCostSummary
+              : { ...runCostSummary, cost_is_complete: false }}
+            resumeAction={costRecordComplete ? {
               isPending: resumeRun.isPending,
               onResume: (nextRunBudgetLimitUsd?: number) => {
-                void (async () => {
-                  try {
-                    const result = await resumeRun.mutateAsync({
-                      runId: runId!,
-                      projectId,
-                      runBudgetLimitUsd: nextRunBudgetLimitUsd,
-                    })
-                    navigate(`/${projectId}/run/${result.run_id}`)
-                    toast.success("Pipeline resumed")
-                  } catch (err) {
-                    toast.error(
-                      "Failed to resume: " + (err instanceof Error ? err.message : "Unknown error")
-                    )
-                  }
-                })()
+                void resumePipeline(nextRunBudgetLimitUsd)
               },
-            }}
+            } : undefined}
           />
         </div>
       )}

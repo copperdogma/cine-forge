@@ -6,11 +6,11 @@ from pathlib import Path
 import pytest
 import yaml
 
-from cine_forge.ai.video import VideoGenerationResult
-from cine_forge.modules.generation.render_adapter_v1.main import (
+from cine_forge.execution_errors import ModuleCostError
+from cine_forge.modules.generation.render_adapter_v1.dialogue_contracts import (
     _ensure_dialogue_prompt_contract,
-    run_module,
 )
+from cine_forge.modules.generation.render_adapter_v1.main import run_module
 from cine_forge.modules.generation.render_adapter_v1.support import load_engine_pack
 from cine_forge.modules.timeline.track_system_v1.main import best_for_scene
 from cine_forge.schemas import (
@@ -21,9 +21,16 @@ from cine_forge.schemas import (
     TrackManifest,
 )
 from cine_forge.services import InjectedAssetService
+from tests.render_accounting_fixtures import (
+    fixture_video_prices,  # noqa: F401 - pytest fixture registration
+)
+from tests.render_accounting_fixtures import (
+    fixture_video_result as VideoGenerationResult,
+)
 from tests.render_fixtures import seed_render_project
 from tests.storyboard_fixtures import reference_raster_bytes
 
+pytestmark = pytest.mark.usefixtures("fixture_video_prices")
 
 @pytest.mark.unit
 def test_load_engine_pack_supports_story_143_previz_candidate_packs() -> None:
@@ -76,7 +83,7 @@ def test_run_module_defaults_final_render_to_google_veo31(
     captured: dict[str, str] = {}
 
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda *, request, engine_pack: (
             captured.setdefault("engine_pack_id", engine_pack.pack_id),
             VideoGenerationResult(
@@ -158,8 +165,7 @@ def test_run_module_generates_prompt_video_and_track_entries(
                             "section_id": "look_and_feel",
                             "title": "Look & Feel",
                             "body": (
-                                "Cold practical spill, hard monitor highlights, "
-                                "divided frames."
+                                "Cold practical spill, hard monitor highlights, divided frames."
                             ),
                             "source_artifact_types": ["look_and_feel"],
                         },
@@ -173,8 +179,7 @@ def test_run_module_generates_prompt_video_and_track_entries(
                             "section_id": "character_and_performance",
                             "title": "Character & Performance",
                             "body": (
-                                "Keep Mara's posture taut and Owen rigid within the "
-                                "frame geometry."
+                                "Keep Mara's posture taut and Owen rigid within the frame geometry."
                             ),
                             "source_artifact_types": ["character_and_performance", "shot_plan"],
                         },
@@ -194,8 +199,7 @@ def test_run_module_generates_prompt_video_and_track_entries(
                             "section_id": "keyframes",
                             "title": "Keyframe Constraints",
                             "body": (
-                                "Match the locked opening frame exactly before "
-                                "introducing motion."
+                                "Match the locked opening frame exactly before introducing motion."
                             ),
                             "source_artifact_types": ["keyframe"],
                         },
@@ -246,7 +250,7 @@ def test_run_module_generates_prompt_video_and_track_entries(
         _fake_call_llm,
     )
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         _fake_generate_video,
     )
 
@@ -518,7 +522,7 @@ def test_run_module_builds_clip_local_render_prompts(
         )
 
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         _fake_generate_video,
     )
 
@@ -558,10 +562,7 @@ def test_run_module_builds_clip_local_render_prompts(
     assert "BRICK: FOURTH ONLY." in compiler_prompts[3]
     assert "THIRD ACTION ONLY" not in compiler_prompts[3]
     assert "STEEL: THIRD ONLY." not in compiler_prompts[3]
-    assert [
-        (artifact.render_unit, artifact.render_clip_id)
-        for artifact in prompt_artifacts
-    ] == [
+    assert [(artifact.render_unit, artifact.render_clip_id) for artifact in prompt_artifacts] == [
         ("render_clip", f"{scene_id}_clip_001"),
         ("render_clip", f"{scene_id}_clip_002"),
         ("render_clip", f"{scene_id}_clip_003"),
@@ -604,12 +605,10 @@ def test_run_module_builds_clip_local_render_prompts(
     assert "THIRD ACTION ONLY" in compiler_prompts[0]
     assert "FOURTH ACTION ONLY" not in compiler_prompts[0]
     assert [
-        (artifact.render_unit, artifact.render_clip_id)
-        for artifact in selected_prompt_artifacts
+        (artifact.render_unit, artifact.render_clip_id) for artifact in selected_prompt_artifacts
     ] == [("render_clip", f"{scene_id}_clip_003")]
     assert [
-        (artifact.render_unit, artifact.render_clip_id)
-        for artifact in selected_video_artifacts
+        (artifact.render_unit, artifact.render_clip_id) for artifact in selected_video_artifacts
     ] == [("render_clip", f"{scene_id}_clip_003")]
 
 
@@ -638,11 +637,9 @@ def test_dialogue_prompt_contract_does_not_duplicate_quoted_speaker_lines(
             }
         )
     ]
-    plan = base_plan.model_copy(
-        update={"shots": shots, "total_estimated_duration_seconds": 8.0}
-    )
+    plan = base_plan.model_copy(update={"shots": shots, "total_estimated_duration_seconds": 8.0})
     prompt_text = (
-        'Live-action 8-second patio scene. Exact dialogue, spoken verbatim: '
+        "Live-action 8-second patio scene. Exact dialogue, spoken verbatim: "
         'STEEL: "Beer\'s ready!" BRICK: "Are they cold?" '
         'STEEL: "Does a bear crap in the woods?" STEEL: "To retirement." '
         'BRICK: "To retirement." STEEL: "Screw retirement." '
@@ -694,8 +691,7 @@ def test_run_module_allows_advisory_missing_prompt_inputs(
                             "section_id": "shot_definition",
                             "title": "Shot Definition",
                             "body": (
-                                "Use the planned slow push and preserve the confrontation "
-                                "geometry."
+                                "Use the planned slow push and preserve the confrontation geometry."
                             ),
                             "source_artifact_types": ["shot_plan"],
                         },
@@ -741,7 +737,7 @@ def test_run_module_allows_advisory_missing_prompt_inputs(
         _fake_call_llm,
     )
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda *, request, engine_pack: VideoGenerationResult(
             video_bytes=b"fake-mp4",
             media_type="video/mp4",
@@ -826,9 +822,7 @@ def test_run_module_synthesizes_required_character_state_when_compiler_omits_it(
                         "injected_assets",
                     ],
                     "missing_inputs": ["character_bible_state"],
-                    "operator_notes": [
-                        "Compiler omitted one required world-state section."
-                    ],
+                    "operator_notes": ["Compiler omitted one required world-state section."],
                 }
             ),
             {
@@ -846,7 +840,7 @@ def test_run_module_synthesizes_required_character_state_when_compiler_omits_it(
         _fake_call_llm,
     )
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda *, request, engine_pack: VideoGenerationResult(
             video_bytes=b"fake-mp4",
             media_type="video/mp4",
@@ -929,11 +923,11 @@ def test_run_module_rejects_blocking_prompt_gaps(
         _fake_call_llm,
     )
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda **_: pytest.fail("video generation should not start when blocking gaps remain"),
     )
 
-    with pytest.raises(ValueError, match="provider_contract"):
+    with pytest.raises(ModuleCostError, match="provider_contract"):
         run_module(
             inputs=seeded["inputs"],
             params={
@@ -953,13 +947,13 @@ def test_run_module_generates_ai_previz_artifacts_and_track_entries(
     seeded = seed_render_project(tmp_path, include_keyframe=True, include_scene_image=True)
 
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.compile_render_prompt",
+        "cine_forge.modules.generation.render_adapter_v1.unit_prompt.compile_render_prompt",
         lambda *args, **kwargs: pytest.fail(
             "render prompt compilation should not run for ai_previz mode"
         ),
     )
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda *, request, engine_pack: VideoGenerationResult(
             video_bytes=b"fake-mp4",
             media_type="video/mp4",
@@ -1131,7 +1125,7 @@ def test_run_module_generates_clip_local_ai_previz_outputs(
     video_prompts: list[str] = []
 
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.compile_render_prompt",
+        "cine_forge.modules.generation.render_adapter_v1.unit_prompt.compile_render_prompt",
         lambda *args, **kwargs: pytest.fail(
             "render prompt compilation should not run for ai_previz mode"
         ),
@@ -1148,7 +1142,7 @@ def test_run_module_generates_clip_local_ai_previz_outputs(
         )
 
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         _fake_generate_video,
     )
 
@@ -1165,20 +1159,20 @@ def test_run_module_generates_clip_local_ai_previz_outputs(
     )
 
     prompt_outputs = [
-        artifact for artifact in result["artifacts"]
+        artifact
+        for artifact in result["artifacts"]
         if artifact["artifact_type"] == "ai_previz_prompt"
     ]
     video_outputs = [
-        artifact for artifact in result["artifacts"]
+        artifact
+        for artifact in result["artifacts"]
         if artifact["artifact_type"] == "ai_previz_video"
     ]
     prompt_artifacts = [
-        CompiledRenderPrompt.model_validate(artifact["data"])
-        for artifact in prompt_outputs
+        CompiledRenderPrompt.model_validate(artifact["data"]) for artifact in prompt_outputs
     ]
     generated_videos = [
-        GeneratedVideoArtifact.model_validate(artifact["data"])
-        for artifact in video_outputs
+        GeneratedVideoArtifact.model_validate(artifact["data"]) for artifact in video_outputs
     ]
 
     assert [artifact["entity_id"] for artifact in prompt_outputs] == [
@@ -1225,11 +1219,13 @@ def test_run_module_generates_clip_local_ai_previz_outputs(
         },
     )
     selected_prompt_outputs = [
-        artifact for artifact in selected_result["artifacts"]
+        artifact
+        for artifact in selected_result["artifacts"]
         if artifact["artifact_type"] == "ai_previz_prompt"
     ]
     selected_video_outputs = [
-        artifact for artifact in selected_result["artifacts"]
+        artifact
+        for artifact in selected_result["artifacts"]
         if artifact["artifact_type"] == "ai_previz_video"
     ]
 
@@ -1253,13 +1249,13 @@ def test_run_module_defaults_ai_previz_to_shipped_xai_lane(
     captured: dict[str, str] = {}
 
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.compile_render_prompt",
+        "cine_forge.modules.generation.render_adapter_v1.unit_prompt.compile_render_prompt",
         lambda *args, **kwargs: pytest.fail(
             "render prompt compilation should not run for ai_previz mode"
         ),
     )
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda *, request, engine_pack: (
             captured.setdefault("engine_pack_id", engine_pack.pack_id),
             VideoGenerationResult(
@@ -1316,7 +1312,7 @@ def test_run_module_rejects_hard_locked_audio_for_non_upload_pack(
         ),
     )
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda **_: pytest.fail("video generation should not start when capability checks fail"),
     )
 
@@ -1363,7 +1359,7 @@ def test_run_module_prefers_soft_locked_project_reference_for_openai_input_refer
     assert manifest is not None
     seeded["inputs"]["injected_asset_manifest"] = [manifest.model_dump(mode="json")]
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda *, request, engine_pack: VideoGenerationResult(
             video_bytes=b"fake-mp4",
             media_type="video/mp4",
@@ -1425,7 +1421,7 @@ def test_run_module_rejects_hard_locked_image_when_pack_cannot_honor_it(
         ),
     )
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda **_: pytest.fail("video generation should not start when image constraints fail"),
     )
 
@@ -1451,7 +1447,7 @@ def test_run_module_uses_reference_images_for_google_pack_without_keyframe_guida
     captured: dict[str, object] = {}
 
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda *, request, engine_pack: (
             captured.setdefault("video_request", request),
             VideoGenerationResult(
@@ -1509,7 +1505,7 @@ def test_run_module_keeps_google_reference_images_prompt_only_when_keyframe_guid
     captured: dict[str, object] = {}
 
     monkeypatch.setattr(
-        "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda *, request, engine_pack: (
             captured.setdefault("video_request", request),
             VideoGenerationResult(

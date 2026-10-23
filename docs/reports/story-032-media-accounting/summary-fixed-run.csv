@@ -1,0 +1,10 @@
+section,id,status,model,scope,call_count,input_tokens,output_tokens,estimated_cost_usd,module_cost_usd,role_cost_usd,duration_seconds,limit_usd,consumed_usd,remaining_usd,attribution_kind,attribution_basis,notes,cost_is_complete,cost_status,uncertain_cost_count,component,provider,provider_job_id,scene_id,entity_id
+overview,media-run,failed,,,,,,2.3,,,,,,,,,recipe_id=media; Known subtotal; unresolved provider charges excluded.,False,known_subtotal,1,,,,,
+stage,render,failed,compiler-model+video-model,,4,150,30,2.3,1.8,0.5,0.0,,,,,,Known subtotal; unresolved provider charges excluded.,False,known_subtotal,1,,,,,
+model,video-model,,video-model,,2,0,0,1.6,,,,,,,,,Known subtotal; unresolved provider charges excluded.,False,known_subtotal,1,,,,,
+model,judge-model,,judge-model,,1,50,10,0.5,,,,,,,,,,True,estimated,0,,,,,
+model,compiler-model,,compiler-model,,1,100,20,0.2,,,,,,,,,,True,estimated,0,,,,,
+role,reviewer,,judge-model,,1,50,10,0.5,,,,,,,exact,Derived from exact role invocation cost logs.,stages=render; scenes=scene_002; entities=,,,,,,,,
+scene,scene_001,,,,2,100,20,1.8,,,,,,,exact,Exact receipt evidence from 'compile-1'. Exact receipt evidence from 'video-1'.,stages=render; ,True,estimated,0,,,,,
+scene,scene_002,,,,2,50,10,0.5,,,,,,,exact,Exact receipt evidence from 'video-2'. Exact role invocation cost from 'reviewer'.,stages=render; Known subtotal; unresolved provider charges excluded.,False,known_subtotal,1,,,,,
+uncertain_cost,video-2,uncertain,video-model,,,,,,,,,,,,,,Accepted job could not be polled.,False,uncertain,,video,test-provider,video-2,scene_002,

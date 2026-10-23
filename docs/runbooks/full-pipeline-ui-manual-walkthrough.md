@@ -73,7 +73,12 @@ Run this sequence exactly unless the shipped UI changes in the same diff.
    `/open-frequency/scenes/scene_001?tab=shots`
    `/open-frequency/scenes/scene_001?tab=storyboard`
    `/open-frequency/scenes/scene_001?tab=render`
-   From the surfaced Render panel, run `Run Render for Current Scene`.
+   Inspect the surfaced Render preflight for Current Scene and All Scenes before
+   starting work. As of2026-10-23, the configured Veo3.1 preview target is retired,
+   so both scopes must explain the provider blocker before paid prerequisites or
+   video submission. Record that outcome as blocked / issues found, never Pass.
+   Resume `Run Render for Current Scene` only after a current target is qualified
+   and the bounded work and cost can be inspected (Stories138/232).
    Pass if the scene workspace remains usable, the downstream tabs are reachable
    through surfaced navigation, the scene tutorial keeps the default path obvious
    through Shot Planning, Storyboard, and Render, the Render tab stays honest
@@ -81,7 +86,10 @@ Run this sequence exactly unless the shipped UI changes in the same diff.
    appropriate, the Storyboard tab uses the batch `gemini-nano-banana-2.1` template-grid
    first pass instead of issuing one provider call per shot by default, and the
    same panel then exposes `Prompt Detail`, `Video Detail`, and `Validation
-   Detail` for the resulting scene render.
+   Detail` for a resulting scene render when a qualified provider is available.
+   Saved media and run figures must identify estimates; incomplete receipts must
+   show known subtotals and unresolved evidence, without budget remaining or blind
+   replay. A correct blocker is useful trust evidence, not full-path completion.
 7. Spot-check the same project on mobile at minimum on:
    `/open-frequency`
    `/open-frequency/scenes/scene_001?tab=render`

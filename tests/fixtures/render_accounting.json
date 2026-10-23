@@ -1,0 +1,14 @@
+{
+  "description": "Synthetic known estimates for deterministic Story032 regression; no provider price assertion.",
+  "compiler_cost": {
+    "model": "fixture-compiler", "input_tokens": 120, "output_tokens": 90,
+    "estimated_cost_usd": 0.012, "request_id": "fixture-compile", "latency_seconds": 0.2
+  },
+  "video_receipt": {
+    "receipt_id": "fixture-video", "component": "video", "model": "grok-imagine-video",
+    "status": "estimated", "provider": "xai", "provider_job_id": "fixture-job",
+    "quantity": 8,
+    "cost": {"model": "grok-imagine-video", "input_tokens": 0, "output_tokens": 0, "estimated_cost_usd": 0.4},
+    "reason": "Synthetic fixture cost; transport is replaced and no provider call is made."
+  }
+}

@@ -1,3 +1,6 @@
+import type { CostRecord } from './cost-types'
+export type { BudgetConfig, BudgetHealth, BudgetScope, BudgetStatus, CostAttribution, CostAttributionKind, CostReceipt, CostRecord, ModelCostSummary, ProjectCostSummary, ProjectCostTrend, ProjectCostTrendPoint, RoleCostSummary, RunCostOverview, RunCostSummary, SceneCostSummary, StageCostSummary, VideoPrice } from './cost-types'
+
 // API response types matching the FastAPI backend models.
 
 export type ApiError = {
@@ -259,129 +262,6 @@ export type StageState = {
   started_at?: number | null
 }
 
-export type BudgetScope = 'project' | 'run' | 'stage'
-export type BudgetHealth = 'ok' | 'warning' | 'limit_reached'
-export type CostAttributionKind = 'exact' | 'allocated' | 'unattributed'
-
-export type BudgetConfig = {
-  project_budget_limit_usd?: number | null
-  default_run_budget_limit_usd?: number | null
-  budget_warning_threshold_ratio: number
-  stage_budget_limits_usd: Record<string, number>
-}
-
-export type BudgetStatus = {
-  scope: BudgetScope
-  limit_usd: number
-  consumed_usd: number
-  remaining_usd: number
-  warning_threshold_ratio: number
-  warning_threshold_usd: number
-  health: BudgetHealth
-  message?: string | null
-}
-
-export type CostAttribution = {
-  kind: CostAttributionKind
-  basis: string
-}
-
-export type StageCostSummary = {
-  stage_id: string
-  status: string
-  model_used?: string | null
-  call_count: number
-  attempt_count: number
-  input_tokens: number
-  output_tokens: number
-  estimated_cost_usd: number
-  module_cost_usd: number
-  role_cost_usd: number
-  duration_seconds: number
-  artifact_count: number
-  pause_reason?: string | null
-}
-
-export type ModelCostSummary = {
-  model: string
-  call_count: number
-  input_tokens: number
-  output_tokens: number
-  estimated_cost_usd: number
-}
-
-export type RoleCostSummary = {
-  role_id: string
-  models: string[]
-  call_count: number
-  input_tokens: number
-  output_tokens: number
-  estimated_cost_usd: number
-  stage_ids: string[]
-  scene_ids: string[]
-  entity_ids: string[]
-  attribution: CostAttribution
-}
-
-export type SceneCostSummary = {
-  scene_id: string
-  call_count: number
-  input_tokens: number
-  output_tokens: number
-  estimated_cost_usd: number
-  stage_ids: string[]
-  attribution: CostAttribution
-}
-
-export type RunCostOverview = {
-  run_id: string
-  recipe_id: string
-  status: string
-  started_at?: number | null
-  finished_at?: number | null
-  total_cost_usd: number
-  duration_seconds: number
-}
-
-export type ProjectCostTrendPoint = {
-  run_id: string
-  started_at?: number | null
-  total_cost_usd: number
-}
-
-export type ProjectCostTrend = {
-  direction: 'up' | 'down' | 'flat' | 'insufficient_data'
-  recent_average_usd: number
-  previous_average_usd: number
-  delta_usd: number
-}
-
-export type RunCostSummary = {
-  run_id: string
-  project_id: string
-  recipe_id: string
-  status: string
-  started_at?: number | null
-  finished_at?: number | null
-  total_cost_usd: number
-  stages: StageCostSummary[]
-  by_model: ModelCostSummary[]
-  by_role: RoleCostSummary[]
-  by_scene: SceneCostSummary[]
-  budget_config: BudgetConfig
-  budget_statuses: BudgetStatus[]
-}
-
-export type ProjectCostSummary = {
-  project_id: string
-  total_cost_usd: number
-  run_count: number
-  runs: RunCostOverview[]
-  trend_points: ProjectCostTrendPoint[]
-  trend: ProjectCostTrend
-  budget_config: BudgetConfig
-}
-
 export type RunStateResponse = {
   run_id: string
   state: {
@@ -393,6 +273,7 @@ export type RunStateResponse = {
     stage_order?: string[]
     runtime_params: RunRuntimeParams
     total_cost_usd: number
+    cost_is_complete?: boolean
   }
   background_error?: string | null
 }
@@ -407,15 +288,6 @@ export type ArtifactRef = {
   entity_id: string | null
   version: number
   path: string
-}
-
-export type CostRecord = {
-  model: string
-  input_tokens: number
-  output_tokens: number
-  estimated_cost_usd: number
-  latency_seconds?: number | null
-  request_id?: string | null
 }
 
 export type ArtifactHealthDetails = {
@@ -474,43 +346,7 @@ export type ArtifactDetailResponse = {
   bible_files?: Record<string, unknown>
 }
 
-export type PrevizCostEvidence = {
-  status: 'verified' | 'estimated' | 'blocked'
-  estimated_cost_usd?: number | null
-  reason?: string | null
-}
-
-export type PrevizLaneStatus = {
-  lane_id: 'ai_previz'
-  label: string
-  candidate_label?: string | null
-  latency_class: 'fast' | 'slow'
-  adoption_state: 'default' | 'recommended_optional' | 'experimental_manual'
-  reason: string
-  intended_use: string
-  fidelity_disclosure: string
-  blocker_reasons: string[]
-  overall_score?: number | null
-  baseline_score?: number | null
-  score_margin?: number | null
-  measured_at?: string | null
-  latency_ms?: number | null
-  latency_budget_ms?: number | null
-  regenerate_reuse_latency_ms?: number | null
-  regenerate_full_latency_ms?: number | null
-  engine_pack_id?: string | null
-  target_model?: string | null
-  resolution?: string | null
-  duration_seconds?: number | null
-  consistency_strategy?: string | null
-  cost: PrevizCostEvidence
-  validation_stage_enabled: boolean
-}
-
-export type PrevizAdoptionStatus = {
-  policy_summary: string
-  ai_previz: PrevizLaneStatus
-}
+export type { PrevizAdoptionStatus, PrevizCostEvidence, PrevizLaneStatus } from './previz-types'
 
 export type ArtifactEditRequest = {
   data: Record<string, unknown>

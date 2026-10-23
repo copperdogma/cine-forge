@@ -1,0 +1,12 @@
+{
+  "head": "714802a53275a959ffb250c355ce13ae8e6d85ae",
+  "classification": {
+    "driver-red-v1.txt": "setup failure missingrecipe description; not regression evidence",
+    "driver-red-v2.txt": "pre-repair driver actually invokes cost-bearingfixture, loses exceptionreceipts and lacks successful receiptpersistence"
+  },
+  "source_sha256": {
+    "src/cine_forge/driver/engine.py": "c54e99f780036cea0a3bdb1adb6b9249e835f189b38f8614d970c958b6beafdd",
+    "src/cine_forge/driver/cost_records.py": "d053ac3fcb1a188988e399537f8d745e74b3ee8d4786dfbaf96251417d68bda1",
+    "tests/integration/test_media_cost_receipts.py": "64ceb76dfd6c621667164d0e777767b87fc30dbfdc2d0fb645946813dc680583"
+  }
+}

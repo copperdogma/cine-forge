@@ -1,0 +1,10 @@
+{
+  "base_head": "714802a",
+  "snapshot": "docs/evals/story-208-contract-manifest-v25.json",
+  "files": 995,
+  "bundle_sha256": "752d449977abf54102e57c9331f86e46cf33dc6842e7ecd191bff5cb93e4f2ae",
+  "changed_code": {
+    "scripts/check_truth_audit_ledger.py": "e7b2d16514fb3ebfa27b0f0e670ae9e014c481719da0cbe6cefd716bcc364dad",
+    "tests/unit/test_truth_audit_ledger.py": "7d5184ee94055c36381346a4eba8aec9861708fe21d5f3bcb60debcc54bc9119"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "run_id": "story-185-home-final-output-20261023",
+  "recipe": "configs/recipes/recipe-final-output.yaml",
+  "project": "brick-steel-full-retired",
+  "runtime_params": {
+    "input_file": "/Users/cam/Documents/Projects/cine-forge/output/brick-steel-full-retired/inputs/4679ff2e_Brick-_-Steel.pdf",
+    "accept_config": true
+  },
+  "total_cost_usd": 0.0,
+  "stages": {
+    "final_output": {
+      "status": "done",
+      "model_used": "code+ffmpeg",
+      "call_count": 1,
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "model": "code",
+          "provider": "code",
+          "status": "success",
+          "duration_seconds": 12.437
+        }
+      ],
+      "final_error_class": null,
+      "artifact_refs": [
+        {
+          "artifact_type": "final_output",
+          "entity_id": "project",
+          "version": 1,
+          "path": "artifacts/final_output/project/v1.json"
+        }
+      ],
+      "duration_seconds": 12.4599,
+      "cost_usd": 0.0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "pause_reason": null,
+      "started_at": 1792768193.819521
+    },
+    "final_output_validation": {
+      "status": "done",
+      "model_used": "code+ffmpeg",
+      "call_count": 1,
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "model": "code",
+          "provider": "code",
+          "status": "success",
+          "duration_seconds": 1.229
+        }
+      ],
+      "final_error_class": null,
+      "artifact_refs": [
+        {
+          "artifact_type": "media_validation",
+          "entity_id": "project",
+          "version": 1,
+          "path": "artifacts/media_validation/project/v1.json"
+        }
+      ],
+      "duration_seconds": 1.2551,
+      "cost_usd": 0.0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "pause_reason": null,
+      "started_at": 1792768206.281684
+    }
+  },
+  "note": "Normal driver with existing real pipeline inputs; no semantic review model configured. Local validation only; no media-quality acceptance."
+}

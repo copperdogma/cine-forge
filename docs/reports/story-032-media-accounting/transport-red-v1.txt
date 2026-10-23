@@ -1,0 +1,88 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+____________ test_success_preserves_resolved_request_price_and_job _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10da20d60>
+
+    def test_success_preserves_resolved_request_price_and_job(monkeypatch):
+        monkeypatch.setenv("XAI_API_KEY", "offline-test")
+        monkeypatch.setattr("cine_forge.ai.video.time.sleep", lambda *_: None)
+        monkeypatch.setattr("cine_forge.ai.video._request_bytes", lambda **_: b"video")
+        monkeypatch.setattr("cine_forge.ai.video._request_json", lambda **kw: (
+            {"request_id": "paid-job"} if kw["method"] == "POST" else {
+                "status": "done", "model": "grok-imagine-video",
+                "video": {"url": "https://example.invalid/video.mp4"},
+            }
+        ))
+        result = generate_video(request=_request(), engine_pack=load_engine_pack("xai_grok_imagine_video"))
+>       receipt = result.cost_receipts[0]
+                  ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'VideoGenerationResult' object has no attribute 'cost_receipts'
+
+tests/unit/test_video_accounting.py:30: AttributeError
+_____________ test_accepted_job_failure_never_submits_again[poll] ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10da20c30>
+failure_point = 'poll'
+
+    @pytest.mark.parametrize("failure_point", ["poll", "download"])
+    def test_accepted_job_failure_never_submits_again(monkeypatch, failure_point):
+        post_count = 0
+        monkeypatch.setenv("XAI_API_KEY", "offline-test")
+        monkeypatch.setattr("cine_forge.ai.video.time.sleep", lambda *_: None)
+    
+        def fail():
+            raise VideoGenerationError("HTTP 503: temporary failure", retryable=True, status_code=503)
+    
+        def json_call(**kw):
+            nonlocal post_count
+            if kw["method"] == "POST":
+                post_count += 1
+                return {"request_id": "accepted-paid-job"}
+            if failure_point == "poll":
+                fail()
+            return {"status": "done", "video": {"url": "https://example.invalid/video.mp4"}}
+    
+        monkeypatch.setattr("cine_forge.ai.video._request_json", json_call)
+        monkeypatch.setattr("cine_forge.ai.video._request_bytes", lambda **_: fail())
+        with pytest.raises(VideoGenerationError) as caught:
+            generate_video(request=_request(), engine_pack=load_engine_pack("xai_grok_imagine_video"))
+>       assert post_count == 1
+E       assert 2 == 1
+
+tests/unit/test_video_accounting.py:60: AssertionError
+___________ test_accepted_job_failure_never_submits_again[download] ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10d9ab2f0>
+failure_point = 'download'
+
+    @pytest.mark.parametrize("failure_point", ["poll", "download"])
+    def test_accepted_job_failure_never_submits_again(monkeypatch, failure_point):
+        post_count = 0
+        monkeypatch.setenv("XAI_API_KEY", "offline-test")
+        monkeypatch.setattr("cine_forge.ai.video.time.sleep", lambda *_: None)
+    
+        def fail():
+            raise VideoGenerationError("HTTP 503: temporary failure", retryable=True, status_code=503)
+    
+        def json_call(**kw):
+            nonlocal post_count
+            if kw["method"] == "POST":
+                post_count += 1
+                return {"request_id": "accepted-paid-job"}
+            if failure_point == "poll":
+                fail()
+            return {"status": "done", "video": {"url": "https://example.invalid/video.mp4"}}
+    
+        monkeypatch.setattr("cine_forge.ai.video._request_json", json_call)
+        monkeypatch.setattr("cine_forge.ai.video._request_bytes", lambda **_: fail())
+        with pytest.raises(VideoGenerationError) as caught:
+            generate_video(request=_request(), engine_pack=load_engine_pack("xai_grok_imagine_video"))
+>       assert post_count == 1
+E       assert 2 == 1
+
+tests/unit/test_video_accounting.py:60: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_video_accounting.py::test_success_preserves_resolved_request_price_and_job
+FAILED tests/unit/test_video_accounting.py::test_accepted_job_failure_never_submits_again[poll]
+FAILED tests/unit/test_video_accounting.py::test_accepted_job_failure_never_submits_again[download]

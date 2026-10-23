@@ -1,0 +1,52 @@
+{
+  "supersedes": "transport-verification-v2.json",
+  "offline_only": true,
+  "validation": "51 active client/accounting/pricing tests passed; Ruff passed",
+  "removal": "Deleted executable retired Sora/Veo transports, retired frame/multipart helpers, and four retired-only mechanical tests. No production consumer remained. Existing retirement no-network tests retained in test_video_pricing.py.",
+  "removed_paths": [
+    "src/cine_forge/ai/video_legacy.py",
+    "src/cine_forge/ai/video_inputs.py"
+  ],
+  "credential_boundary": "API submit/poll retain Bearer authorization. Returned media URL must initially use valid HTTPS; download requests contain no Authorization. Offline test invokes stdlib HTTPRedirectHandler and verifies initial CDN and cross-host redirected requests contain no bearer. No host allowlist added.",
+  "files": {
+    "src/cine_forge/ai/video.py": {
+      "lines": 312,
+      "largest_function": 59,
+      "sha256": "78760a4fd66330cd79fb5faea07c6fc9a32ec3443a38ad2ba70f25f9d2604662"
+    },
+    "src/cine_forge/ai/video_http.py": {
+      "lines": 85,
+      "largest_function": 39,
+      "sha256": "497a930bc70a0cf5a87376d5c9ac1c514f41d2fbc53aa7e49e47669cb6948b80"
+    },
+    "src/cine_forge/ai/video_pricing.py": {
+      "lines": 46,
+      "largest_function": 16,
+      "sha256": "7288e739b61091d33dafa3bf49e782ffdb3d94b6cc71ad0e92142538304b58e6"
+    },
+    "src/cine_forge/ai/video_types.py": {
+      "lines": 68,
+      "largest_function": 18,
+      "sha256": "86b214680a2d84bcd200654272f0dfa8e03f98f0a4749d3f8989a6f5b5fe77fd"
+    },
+    "tests/unit/test_video_client.py": {
+      "lines": 199,
+      "largest_function": 47,
+      "sha256": "a3b93af59e8fde6d67553135dd6dfb074a4c236dbc78785190735ed4c96e8fa2"
+    },
+    "tests/unit/test_video_accounting.py": {
+      "lines": 363,
+      "largest_function": 44,
+      "sha256": "171dfb6f1eb5fbeea09ae44471e5efeb925333f5636b9a1ceac5b24f7c0e5ba4"
+    },
+    "tests/unit/test_video_pricing.py": {
+      "lines": 97,
+      "largest_function": 16,
+      "sha256": "461409944f83eedb28bb7fc8ce4e289058c4a0912c1503339525a9861a8ce9f8"
+    }
+  },
+  "limits": [
+    "Prices are checked list-price estimates, not provider billing.",
+    "No live endpoint/account access, output quality, or crash-recovery proof."
+  ]
+}

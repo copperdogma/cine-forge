@@ -1,0 +1,56 @@
+"""Deterministic Fountain scene-heading grammar."""
+
+import re
+
+SCENE_HEADING_RE = re.compile(
+    r"^(INT\.|EXT\.|INT/EXT\.|I/E\.|EST\.)\s*[A-Z0-9]", flags=re.IGNORECASE
+)
+VALID_TIME_OF_DAY = {
+    "PRE-DAWN", "DAY", "NIGHT", "DAWN", "DUSK", "MORNING", "EVENING", "AFTERNOON",
+    "LATER", "MOMENTS LATER", "SAME TIME", "MAGIC HOUR", "SUNSET",
+    "SUNRISE", "CONTINUOUS",
+}
+_NARRATIVE_MODIFIERS = {
+    "PAST", "PRESENT", "FLASHBACK", "(FLASHBACK)", "BACK TO PRESENT",
+    "(BACK TO PRESENT)", "SAME", "INTERCUT", "STOCK",
+}
+
+
+def _parse_heading(heading: str) -> dict[str, str]:
+    cleaned_heading = heading.strip().rstrip("\\")
+    normalized = cleaned_heading.upper()
+    int_ext = "INT/EXT"
+    if normalized.startswith("INT/EXT.") or normalized.startswith("I/E."):
+        int_ext = "INT/EXT"
+    elif normalized.startswith("INT."):
+        int_ext = "INT"
+    elif normalized.startswith("EXT."):
+        int_ext = "EXT"
+
+    content = re.sub(
+        r"^(INT/EXT\.|I/E\.|INT\.|EXT\.|EST\.)\s*", "", cleaned_heading, flags=re.I
+    )
+    segments = [
+        segment.strip() for segment in re.split(r"\s+-\s+", content) if segment.strip()
+    ]
+    if not segments:
+        return {"int_ext": int_ext, "location": "UNKNOWN", "time_of_day": "UNSPECIFIED"}
+    if len(segments) == 1:
+        return {
+            "int_ext": int_ext,
+            "location": segments[0].title(),
+            "time_of_day": "UNSPECIFIED",
+        }
+
+    while len(segments) > 1 and segments[-1].strip("()").upper() in _NARRATIVE_MODIFIERS:
+        segments = segments[:-1]
+
+    time_of_day = segments[-1].upper()
+    if time_of_day in VALID_TIME_OF_DAY:
+        location_segments = segments[:-1]
+    else:
+        time_of_day = "UNSPECIFIED"
+        location_segments = segments
+
+    location = " - ".join(seg.title() for seg in location_segments)
+    return {"int_ext": int_ext, "location": location, "time_of_day": time_of_day}

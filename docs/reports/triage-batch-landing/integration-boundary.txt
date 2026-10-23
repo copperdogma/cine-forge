@@ -1,0 +1,24 @@
+..................s....F.......s...............ss....................... [ 97%]
+..                                                                       [100%]
+=================================== FAILURES ===================================
+_ test_final_output_recipe_builds_partial_cut_from_preserved_render_batch_failure _
+tests/integration/test_final_output_integration.py:173: in test_final_output_recipe_builds_partial_cut_from_preserved_render_batch_failure
+    engine.run(
+src/cine_forge/driver/engine.py:253: in run
+    result = self._execute_single_stage(
+src/cine_forge/driver/engine.py:462: in _execute_single_stage
+    module_result, active_attempt_model = run_module_with_retry(
+src/cine_forge/driver/module_execution.py:42: in run_module_with_retry
+    result = module_runner(
+src/cine_forge/modules/generation/render_adapter_v1/main.py:54: in run_module
+    validate_video_target(provider=engine_pack.provider, model=engine_pack.target_model)
+src/cine_forge/ai/video_pricing.py:24: in validate_video_target
+    raise VideoPricingError(
+E   cine_forge.ai.video_pricing.VideoPricingError: Google veo-3.1-generate-preview is unavailable: Veo 3.1 preview shut down 2026-10-22
+----------------------------- Captured stdout call -----------------------------
+[integration-render-partial-for-final-output] Stage 'render_clip_planning' starting...
+[integration-render-partial-for-final-output] Stage 'render_clip_planning' done in 0.0285s (cost $0.0000; total $0.0000).
+[integration-render-partial-for-final-output] Stage 'render' starting...
+[integration-render-partial-for-final-output] Stage 'render' failed: Google veo-3.1-generate-preview is unavailable: Veo 3.1 preview shut down 2026-10-22
+=========================== short test summary info ============================
+FAILED tests/integration/test_final_output_integration.py::test_final_output_recipe_builds_partial_cut_from_preserved_render_batch_failure

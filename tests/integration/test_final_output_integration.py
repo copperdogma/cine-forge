@@ -4,7 +4,6 @@ from pathlib import Path
 
 import pytest
 
-from cine_forge.ai.video import VideoGenerationResult
 from cine_forge.driver.engine import DriverEngine
 from cine_forge.schemas import (
     ArtifactHealth,
@@ -12,6 +11,7 @@ from cine_forge.schemas import (
     FinalOutputArtifact,
     MediaValidationArtifact,
 )
+from tests.render_accounting_fixtures import fixture_video_result
 from tests.render_fixtures import seed_final_output_project
 from tests.storyboard_fixtures import seed_storyboard_project
 
@@ -155,7 +155,8 @@ def test_final_output_recipe_builds_partial_cut_from_preserved_render_batch_fail
         call_count["value"] += 1
         if "scene_002" in request.prompt:
             raise RuntimeError("synthetic second-scene failure")
-        return VideoGenerationResult(
+        return fixture_video_result(
+            fixture_cost_usd=0.4,
             video_bytes=clip_bytes,
             media_type="video/mp4",
             model_used=engine_pack.target_model,
@@ -167,9 +168,12 @@ def test_final_output_recipe_builds_partial_cut_from_preserved_render_batch_fail
         "cine_forge.modules.generation.render_adapter_v1.prompting.call_llm",
         _fake_call_llm,
     )
-    monkeypatch.setattr("cine_forge.ai.video.generate_video", _fake_generate_video)
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
+        _fake_generate_video,
+    )
 
-    with pytest.raises(RuntimeError, match="preserved 2 successful render unit"):
+    with pytest.raises(RuntimeError, match="preserved 1 successful render unit"):
         engine.run(
             recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
             run_id="integration-render-partial-for-final-output",
@@ -177,10 +181,10 @@ def test_final_output_recipe_builds_partial_cut_from_preserved_render_batch_fail
             start_from="render_clip_planning",
             runtime_params={
                 "scene_scope": {"mode": "all_scenes", "scene_ids": []},
-                "engine_pack_id": "google_veo31",
+                "engine_pack_id": "xai_grok_imagine_video",
                 "compiler_model": "gpt-5.4-mini",
                 "planner_model": "mock",
-                "duration_seconds": 8,
+                "duration_seconds": 4,
             },
         )
 

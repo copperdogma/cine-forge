@@ -1,0 +1,817 @@
+{
+  "artifacts": [
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "data": {
+        "scene_id": "scene_001",
+        "scene_number": 1,
+        "heading": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        "location": "Community Radio Studio",
+        "time_of_day": "NIGHT",
+        "int_ext": "INT",
+        "characters_present": [
+          "ARIA",
+          "JUNE",
+          "KELL",
+          "NOAH"
+        ],
+        "characters_present_ids": [
+          "aria",
+          "june",
+          "kell",
+          "noah"
+        ],
+        "props_mentioned": [],
+        "elements": [
+          {
+            "element_type": "scene_heading",
+            "content": "INT. COMMUNITY RADIO STUDIO - NIGHT"
+          },
+          {
+            "element_type": "action",
+            "content": "Rain rattles the skylight. Old consoles hum under emergency power."
+          },
+          {
+            "element_type": "action",
+            "content": "ARIA threads a tape reel while NOAH coaxes a signal out of a battered mixer."
+          },
+          {
+            "element_type": "action",
+            "content": "JUNE covers a whiteboard with road closures, shelter names, and call signs."
+          },
+          {
+            "element_type": "action",
+            "content": "KELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag."
+          },
+          {
+            "element_type": "character",
+            "content": "KELL"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Bridge is closed. Cell towers are dead. The hill relay is our only shot."
+          },
+          {
+            "element_type": "character",
+            "content": "NOAH"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Please tell me that antenna is less cursed than it looks."
+          },
+          {
+            "element_type": "character",
+            "content": "KELL"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "It only tried to kill me once."
+          },
+          {
+            "element_type": "character",
+            "content": "JUNE"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Good. Tonight we don't have time for a second opinion."
+          },
+          {
+            "element_type": "action",
+            "content": "Aria flips a switch. The ON AIR sign flickers, then dies again."
+          },
+          {
+            "element_type": "character",
+            "content": "ARIA"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Give me ten minutes and one miracle."
+          },
+          {
+            "element_type": "character",
+            "content": "JUNE"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Take fifteen. Keep the miracle."
+          },
+          {
+            "element_type": "transition",
+            "content": "CUT TO:"
+          }
+        ],
+        "narrative_beats": [],
+        "tone_mood": "neutral",
+        "tone_shifts": [],
+        "source_span": {
+          "start_line": 5,
+          "end_line": 36
+        },
+        "inferences": [],
+        "provenance": [
+          {
+            "field_name": "heading",
+            "method": "parser",
+            "evidence": "Extracted from first non-empty scene line",
+            "confidence": 0.95
+          },
+          {
+            "field_name": "int_ext",
+            "method": "rule",
+            "evidence": "Parsed heading prefix token",
+            "confidence": 0.92
+          },
+          {
+            "field_name": "time_of_day",
+            "method": "rule",
+            "evidence": "Parsed heading suffix segment",
+            "confidence": 0.9
+          },
+          {
+            "field_name": "location",
+            "method": "rule",
+            "evidence": "Parsed heading core location segment",
+            "confidence": 0.88
+          },
+          {
+            "field_name": "characters_present",
+            "method": "rule",
+            "evidence": "Collected from dialogue character cues",
+            "confidence": 0.84
+          }
+        ],
+        "confidence": 0.898
+      },
+      "metadata": {
+        "intent": "Represent one screenplay scene as structured data for downstream modules",
+        "rationale": "Structural extraction with LLM action-line entity extraction",
+        "alternatives_considered": [
+          "single monolithic scene list artifact"
+        ],
+        "confidence": 0.898,
+        "source": "code",
+        "schema_version": "1.0.0",
+        "health": "valid",
+        "annotations": {
+          "scene_number": 1,
+          "source_span": {
+            "start_line": 5,
+            "end_line": 36
+          },
+          "parser_backend": "fountain-tools",
+          "boundary_uncertain": false,
+          "boundary_reason": "",
+          "ai_enrichment_used": false,
+          "discovery_tier": "structural"
+        }
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_002",
+      "data": {
+        "scene_id": "scene_002",
+        "scene_number": 2,
+        "heading": "EXT. WATER TOWER CATWALK - NIGHT",
+        "location": "Water Tower Catwalk",
+        "time_of_day": "NIGHT",
+        "int_ext": "EXT",
+        "characters_present": [
+          "ARIA",
+          "JUNE",
+          "NOAH"
+        ],
+        "characters_present_ids": [
+          "aria",
+          "june",
+          "noah"
+        ],
+        "props_mentioned": [],
+        "elements": [
+          {
+            "element_type": "scene_heading",
+            "content": "EXT. WATER TOWER CATWALK - NIGHT"
+          },
+          {
+            "element_type": "action",
+            "content": "Wind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy."
+          },
+          {
+            "element_type": "action",
+            "content": "Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail."
+          },
+          {
+            "element_type": "action",
+            "content": "The canvas tool bag swings in the gusts. Somewhere in the valley, a siren rises and cuts out."
+          },
+          {
+            "element_type": "character",
+            "content": "NOAH"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "I miss boring weather."
+          },
+          {
+            "element_type": "character",
+            "content": "ARIA"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "You miss boring jobs."
+          },
+          {
+            "element_type": "action",
+            "content": "Noah plugs the cable into a handheld receiver. Static spits, then settles into a thin human voice."
+          },
+          {
+            "element_type": "character",
+            "content": "UNKNOWN VOICE (RADIO)"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Red Creek station... if anyone hears this... north shelter needs insulin and dry blankets."
+          },
+          {
+            "element_type": "action",
+            "content": "Aria and Noah freeze."
+          },
+          {
+            "element_type": "character",
+            "content": "ARIA"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "June, do you copy?"
+          },
+          {
+            "element_type": "character",
+            "content": "JUNE (RADIO)"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Loud enough to make me useful."
+          },
+          {
+            "element_type": "action",
+            "content": "Aria smiles for the first time all night and tightens the last bolt."
+          },
+          {
+            "element_type": "transition",
+            "content": "CUT TO:"
+          }
+        ],
+        "narrative_beats": [],
+        "tone_mood": "neutral",
+        "tone_shifts": [],
+        "source_span": {
+          "start_line": 37,
+          "end_line": 67
+        },
+        "inferences": [],
+        "provenance": [
+          {
+            "field_name": "heading",
+            "method": "parser",
+            "evidence": "Extracted from first non-empty scene line",
+            "confidence": 0.95
+          },
+          {
+            "field_name": "int_ext",
+            "method": "rule",
+            "evidence": "Parsed heading prefix token",
+            "confidence": 0.92
+          },
+          {
+            "field_name": "time_of_day",
+            "method": "rule",
+            "evidence": "Parsed heading suffix segment",
+            "confidence": 0.9
+          },
+          {
+            "field_name": "location",
+            "method": "rule",
+            "evidence": "Parsed heading core location segment",
+            "confidence": 0.88
+          },
+          {
+            "field_name": "characters_present",
+            "method": "rule",
+            "evidence": "Collected from dialogue character cues",
+            "confidence": 0.84
+          }
+        ],
+        "confidence": 0.898
+      },
+      "metadata": {
+        "intent": "Represent one screenplay scene as structured data for downstream modules",
+        "rationale": "Structural extraction with LLM action-line entity extraction",
+        "alternatives_considered": [
+          "single monolithic scene list artifact"
+        ],
+        "confidence": 0.898,
+        "source": "code",
+        "schema_version": "1.0.0",
+        "health": "valid",
+        "annotations": {
+          "scene_number": 2,
+          "source_span": {
+            "start_line": 37,
+            "end_line": 67
+          },
+          "parser_backend": "fountain-tools",
+          "boundary_uncertain": false,
+          "boundary_reason": "",
+          "ai_enrichment_used": false,
+          "discovery_tier": "structural"
+        }
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_003",
+      "data": {
+        "scene_id": "scene_003",
+        "scene_number": 3,
+        "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+        "location": "High School Gym Shelter",
+        "time_of_day": "PRE-DAWN",
+        "int_ext": "INT",
+        "characters_present": [
+          "JUNE",
+          "KELL",
+          "MAYA",
+          "NOAH"
+        ],
+        "characters_present_ids": [
+          "june",
+          "kell",
+          "maya",
+          "noah"
+        ],
+        "props_mentioned": [],
+        "elements": [
+          {
+            "element_type": "scene_heading",
+            "content": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN"
+          },
+          {
+            "element_type": "action",
+            "content": "Cots line the basketball court. Handwritten signs point toward MEDICINE, MEALS, and MESSAGES."
+          },
+          {
+            "element_type": "action",
+            "content": "June records updates at a folding table while Kell sorts flashlight batteries into a tackle box."
+          },
+          {
+            "element_type": "action",
+            "content": "MAYA, a teenager in a soaked marching-band jacket, approaches with a flyer for a missing dog named COMET."
+          },
+          {
+            "element_type": "character",
+            "content": "MAYA"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Can the station announce this too?"
+          },
+          {
+            "element_type": "character",
+            "content": "JUNE"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "If we're naming roads and insulin drops, we can name dogs."
+          },
+          {
+            "element_type": "character",
+            "content": "KELL"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Comet better be worth interrupting the weather report."
+          },
+          {
+            "element_type": "character",
+            "content": "MAYA"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "He stole my grilled cheese and slept through the evacuation. He's family."
+          },
+          {
+            "element_type": "action",
+            "content": "Noah's voice crackles over a tabletop radio."
+          },
+          {
+            "element_type": "character",
+            "content": "NOAH (RADIO)"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "East road is open one lane. Bridge crew wants no heavy trucks till daylight."
+          },
+          {
+            "element_type": "action",
+            "content": "June writes the update beneath NORTH SHELTER on the whiteboard, then takes Maya's flyer."
+          },
+          {
+            "element_type": "character",
+            "content": "JUNE"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Spell his name for the broadcast."
+          },
+          {
+            "element_type": "character",
+            "content": "MAYA"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "C-O-M-E-T. Like the fast kind of star."
+          },
+          {
+            "element_type": "transition",
+            "content": "CUT TO:"
+          }
+        ],
+        "narrative_beats": [],
+        "tone_mood": "neutral",
+        "tone_shifts": [],
+        "source_span": {
+          "start_line": 68,
+          "end_line": 102
+        },
+        "inferences": [],
+        "provenance": [
+          {
+            "field_name": "heading",
+            "method": "parser",
+            "evidence": "Extracted from first non-empty scene line",
+            "confidence": 0.95
+          },
+          {
+            "field_name": "int_ext",
+            "method": "rule",
+            "evidence": "Parsed heading prefix token",
+            "confidence": 0.92
+          },
+          {
+            "field_name": "time_of_day",
+            "method": "rule",
+            "evidence": "Parsed heading suffix segment",
+            "confidence": 0.9
+          },
+          {
+            "field_name": "location",
+            "method": "rule",
+            "evidence": "Parsed heading core location segment",
+            "confidence": 0.88
+          },
+          {
+            "field_name": "characters_present",
+            "method": "rule",
+            "evidence": "Collected from dialogue character cues",
+            "confidence": 0.84
+          }
+        ],
+        "confidence": 0.898
+      },
+      "metadata": {
+        "intent": "Represent one screenplay scene as structured data for downstream modules",
+        "rationale": "Structural extraction with LLM action-line entity extraction",
+        "alternatives_considered": [
+          "single monolithic scene list artifact"
+        ],
+        "confidence": 0.898,
+        "source": "code",
+        "schema_version": "1.0.0",
+        "health": "valid",
+        "annotations": {
+          "scene_number": 3,
+          "source_span": {
+            "start_line": 68,
+            "end_line": 102
+          },
+          "parser_backend": "fountain-tools",
+          "boundary_uncertain": false,
+          "boundary_reason": "",
+          "ai_enrichment_used": false,
+          "discovery_tier": "structural"
+        }
+      }
+    },
+    {
+      "artifact_type": "scene",
+      "entity_id": "scene_004",
+      "data": {
+        "scene_id": "scene_004",
+        "scene_number": 4,
+        "heading": "INT. COMMUNITY RADIO STUDIO - MORNING",
+        "location": "Community Radio Studio",
+        "time_of_day": "MORNING",
+        "int_ext": "INT",
+        "characters_present": [
+          "ARIA",
+          "JUNE",
+          "KELL",
+          "MAYA"
+        ],
+        "characters_present_ids": [
+          "aria",
+          "june",
+          "kell",
+          "maya"
+        ],
+        "props_mentioned": [],
+        "elements": [
+          {
+            "element_type": "scene_heading",
+            "content": "INT. COMMUNITY RADIO STUDIO - MORNING"
+          },
+          {
+            "element_type": "action",
+            "content": "Wet coats hang from every chair. Pale sunlight cuts through the storm residue on the windows."
+          },
+          {
+            "element_type": "action",
+            "content": "Aria pins a hand-drawn map beside the console. Noah labels a notebook DAY TWO."
+          },
+          {
+            "element_type": "action",
+            "content": "June tapes a new sign over the door: OPEN FREQUENCY."
+          },
+          {
+            "element_type": "action",
+            "content": "Kell enters with a loaf of warm bread wrapped in foil. Maya follows close behind with a muddy, sleepy COMET in her arms."
+          },
+          {
+            "element_type": "character",
+            "content": "MAYA"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "He was under the vending machine in the band room."
+          },
+          {
+            "element_type": "character",
+            "content": "KELL"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Smart dog. Dry floor, free snacks."
+          },
+          {
+            "element_type": "action",
+            "content": "June laughs, reaches for the microphone, and nods at Aria."
+          },
+          {
+            "element_type": "character",
+            "content": "JUNE"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Red Creek, morning bulletin. East road is open, north shelter is stocked, and one missing dog has been recovered with zero remorse."
+          },
+          {
+            "element_type": "action",
+            "content": "Noah pushes up a brass-heavy cassette cue. The room brightens with music."
+          },
+          {
+            "element_type": "character",
+            "content": "ARIA"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "Put that on repeat between updates."
+          },
+          {
+            "element_type": "character",
+            "content": "JUNE"
+          },
+          {
+            "element_type": "dialogue",
+            "content": "No. Once is joy. Twice is branding."
+          },
+          {
+            "element_type": "action",
+            "content": "The ON AIR sign steadies into a solid red glow as the four of them settle back to work."
+          }
+        ],
+        "narrative_beats": [],
+        "tone_mood": "neutral",
+        "tone_shifts": [],
+        "source_span": {
+          "start_line": 103,
+          "end_line": 132
+        },
+        "inferences": [],
+        "provenance": [
+          {
+            "field_name": "heading",
+            "method": "parser",
+            "evidence": "Extracted from first non-empty scene line",
+            "confidence": 0.95
+          },
+          {
+            "field_name": "int_ext",
+            "method": "rule",
+            "evidence": "Parsed heading prefix token",
+            "confidence": 0.92
+          },
+          {
+            "field_name": "time_of_day",
+            "method": "rule",
+            "evidence": "Parsed heading suffix segment",
+            "confidence": 0.9
+          },
+          {
+            "field_name": "location",
+            "method": "rule",
+            "evidence": "Parsed heading core location segment",
+            "confidence": 0.88
+          },
+          {
+            "field_name": "characters_present",
+            "method": "rule",
+            "evidence": "Collected from dialogue character cues",
+            "confidence": 0.84
+          }
+        ],
+        "confidence": 0.898
+      },
+      "metadata": {
+        "intent": "Represent one screenplay scene as structured data for downstream modules",
+        "rationale": "Structural extraction with LLM action-line entity extraction",
+        "alternatives_considered": [
+          "single monolithic scene list artifact"
+        ],
+        "confidence": 0.898,
+        "source": "code",
+        "schema_version": "1.0.0",
+        "health": "valid",
+        "annotations": {
+          "scene_number": 4,
+          "source_span": {
+            "start_line": 103,
+            "end_line": 132
+          },
+          "parser_backend": "fountain-tools",
+          "boundary_uncertain": false,
+          "boundary_reason": "",
+          "ai_enrichment_used": false,
+          "discovery_tier": "structural"
+        }
+      }
+    },
+    {
+      "artifact_type": "scene_index",
+      "entity_id": "project",
+      "include_stage_lineage": true,
+      "data": {
+        "total_scenes": 4,
+        "unique_locations": [
+          "Community Radio Studio",
+          "High School Gym Shelter",
+          "Water Tower Catwalk"
+        ],
+        "unique_characters": [
+          "ARIA",
+          "JUNE",
+          "KELL",
+          "MAYA",
+          "NOAH"
+        ],
+        "estimated_runtime_minutes": 4.0,
+        "scenes_passed_qa": 4,
+        "scenes_need_review": 0,
+        "entries": [
+          {
+            "scene_id": "scene_001",
+            "scene_number": 1,
+            "heading": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+            "location": "Community Radio Studio",
+            "time_of_day": "NIGHT",
+            "characters_present": [
+              "ARIA",
+              "JUNE",
+              "KELL",
+              "NOAH"
+            ],
+            "characters_present_ids": [
+              "aria",
+              "june",
+              "kell",
+              "noah"
+            ],
+            "props_mentioned": [],
+            "source_span": {
+              "start_line": 5,
+              "end_line": 36
+            },
+            "tone_mood": "neutral"
+          },
+          {
+            "scene_id": "scene_002",
+            "scene_number": 2,
+            "heading": "EXT. WATER TOWER CATWALK - NIGHT",
+            "location": "Water Tower Catwalk",
+            "time_of_day": "NIGHT",
+            "characters_present": [
+              "ARIA",
+              "JUNE",
+              "NOAH"
+            ],
+            "characters_present_ids": [
+              "aria",
+              "june",
+              "noah"
+            ],
+            "props_mentioned": [],
+            "source_span": {
+              "start_line": 37,
+              "end_line": 67
+            },
+            "tone_mood": "neutral"
+          },
+          {
+            "scene_id": "scene_003",
+            "scene_number": 3,
+            "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+            "location": "High School Gym Shelter",
+            "time_of_day": "PRE-DAWN",
+            "characters_present": [
+              "JUNE",
+              "KELL",
+              "MAYA",
+              "NOAH"
+            ],
+            "characters_present_ids": [
+              "june",
+              "kell",
+              "maya",
+              "noah"
+            ],
+            "props_mentioned": [],
+            "source_span": {
+              "start_line": 68,
+              "end_line": 102
+            },
+            "tone_mood": "neutral"
+          },
+          {
+            "scene_id": "scene_004",
+            "scene_number": 4,
+            "heading": "INT. COMMUNITY RADIO STUDIO - MORNING",
+            "location": "Community Radio Studio",
+            "time_of_day": "MORNING",
+            "characters_present": [
+              "ARIA",
+              "JUNE",
+              "KELL",
+              "MAYA"
+            ],
+            "characters_present_ids": [
+              "aria",
+              "june",
+              "kell",
+              "maya"
+            ],
+            "props_mentioned": [],
+            "source_span": {
+              "start_line": 103,
+              "end_line": 132
+            },
+            "tone_mood": "neutral"
+          }
+        ]
+      },
+      "metadata": {
+        "intent": "Provide aggregated table-of-contents for extracted scene artifacts",
+        "rationale": "Expose quick scene-level lookup from structural breakdown",
+        "alternatives_considered": [
+          "derive index at read-time only"
+        ],
+        "confidence": 0.95,
+        "source": "code",
+        "schema_version": "1.0.0",
+        "health": "valid",
+        "annotations": {
+          "parser_backend": "fountain-tools",
+          "screenplay_parseable_input": true,
+          "screenplay_parse_coverage_input": 0.5,
+          "discovery_tier": "structural"
+        }
+      }
+    }
+  ],
+  "cost": {
+    "model": "mock",
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "estimated_cost_usd": 0.0,
+    "call_count": 0
+  }
+}

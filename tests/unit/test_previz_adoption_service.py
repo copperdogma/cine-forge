@@ -187,7 +187,7 @@ def test_previz_adoption_service_keeps_ai_previz_primary_when_cost_is_blocked(
         "outside the 6000 ms fast-previz target" in blocker
         for blocker in status.ai_previz.blocker_reasons
     )
-    assert any("pricing" in blocker.lower() for blocker in status.ai_previz.blocker_reasons)
+    assert any("Veo 3.1" in blocker for blocker in status.ai_previz.blocker_reasons)
     assert "only shipped operator-facing lane" in status.policy_summary.lower()
 
 
@@ -196,10 +196,10 @@ def test_previz_adoption_service_can_clear_default_gate_when_cost_and_margin_are
 ) -> None:
     recipe_path = tmp_path / "recipe-ai-previz-generation.yaml"
     registry_path = tmp_path / "registry.yaml"
-    _write_recipe(recipe_path, engine_pack_id="google_veo31_fast")
+    _write_recipe(recipe_path, engine_pack_id="xai_grok_imagine_video", resolution="480p")
     _write_registry(
         registry_path,
-        candidate_label="Veo 3.1 Fast Previz",
+        candidate_label="Grok Imagine Previz",
         candidate_overall=0.86,
         baseline_overall=0.80,
         latency_ms=3200,
@@ -209,10 +209,12 @@ def test_previz_adoption_service_can_clear_default_gate_when_cost_and_margin_are
         recipe_path=recipe_path,
         registry_path=registry_path,
         engine_pack_loader=lambda _pack_id: _engine_pack(
-            pack_id="google_veo31_fast",
-            target_model="veo-3.1-fast-generate-preview",
-            cost_per_second=0.05,
+            pack_id="xai_grok_imagine_video",
+            target_model="grok-imagine-video",
+            cost_per_second=99.0,
             pricing_note="Prompt-only fixture limitation.",
+            provider="xai",
+            default_resolution="480p",
         ),
     )
 
@@ -342,7 +344,123 @@ def test_previz_adoption_service_supports_shipped_xai_lane_when_it_clears_qualit
     assert any(
         "61387 ms" in blocker for blocker in status.ai_previz.blocker_reasons
     )
-    assert any("pricing" in blocker.lower() for blocker in status.ai_previz.blocker_reasons)
+    assert status.ai_previz.cost.status == "estimated"
+    assert status.ai_previz.cost.estimated_cost_usd == 0.2
+    assert status.ai_previz.cost.duration_seconds == 4
+    assert status.ai_previz.cost.price is not None
+    assert status.ai_previz.cost.price.provider == "xai"
+    assert status.ai_previz.cost.price.resolution == "480p"
+
+
+def test_active_recipe_uses_current_xai_price_without_benchmark_rate(tmp_path: Path) -> None:
+    registry_path = tmp_path / "registry.yaml"
+    _write_registry(
+        registry_path, candidate_label="Grok Imagine Previz",
+        candidate_overall=0.8413, baseline_overall=0.8380, latency_ms=17611,
+    )
+    status = PrevizAdoptionService(registry_path=registry_path).build_status()
+    cost = status.ai_previz.cost
+    assert status.ai_previz.engine_pack_id == "xai_grok_imagine_video"
+    assert cost.status == "estimated"
+    assert cost.basis == "recipe_default_video_example"
+    assert cost.duration_seconds == 4
+    assert cost.estimated_cost_usd == 0.2
+    assert cost.price is not None
+    assert cost.price.model == "grok-imagine-video"
+    assert cost.price.unit_price_usd == 0.05
+    assert cost.price.source_url == "https://docs.x.ai/developers/models/grok-imagine-video"
+    assert cost.price.checked_on.isoformat() == "2026-10-23"
+
+
+@pytest.mark.parametrize("duration", ["missing", None, 0, -1, float("nan"), float("inf")])
+def test_current_price_example_blocks_invalid_recipe_duration(
+    tmp_path: Path, duration: float | str | None,
+) -> None:
+    recipe_path = tmp_path / "recipe.yaml"
+    registry_path = tmp_path / "registry.yaml"
+    _write_recipe(recipe_path, engine_pack_id="xai_grok_imagine_video", resolution="480p")
+    recipe = yaml.safe_load(recipe_path.read_text())
+    if duration == "missing":
+        recipe["stages"][0]["params"].pop("duration_seconds")
+    else:
+        recipe["stages"][0]["params"]["duration_seconds"] = duration
+    recipe_path.write_text(yaml.safe_dump(recipe))
+    _write_registry(
+        registry_path, candidate_label="Grok Imagine Previz",
+        candidate_overall=0.84, baseline_overall=0.80, latency_ms=3000,
+    )
+    status = PrevizAdoptionService(
+        recipe_path=recipe_path, registry_path=registry_path,
+        engine_pack_loader=lambda _pack_id: _engine_pack(
+            pack_id="xai_grok_imagine_video", target_model="grok-imagine-video",
+            cost_per_second=99.0, pricing_note="fixture", provider="xai",
+            default_resolution="480p",
+        ),
+    ).build_status()
+    assert status.ai_previz.cost.status == "blocked"
+    assert status.ai_previz.cost.estimated_cost_usd is None
+    assert status.ai_previz.duration_seconds is None
+
+
+def test_current_price_example_normalizes_duration_and_blocks_unknown_resolution(
+    tmp_path: Path,
+) -> None:
+    recipe_path = tmp_path / "recipe.yaml"
+    registry_path = tmp_path / "registry.yaml"
+    _write_recipe(
+        recipe_path, engine_pack_id="xai_grok_imagine_video",
+        duration_seconds=5, resolution="480p",
+    )
+    _write_registry(
+        registry_path, candidate_label="Grok Imagine Previz",
+        candidate_overall=0.84, baseline_overall=0.80, latency_ms=3000,
+    )
+    service = PrevizAdoptionService(
+        recipe_path=recipe_path, registry_path=registry_path,
+        engine_pack_loader=lambda _pack_id: _engine_pack(
+            pack_id="xai_grok_imagine_video", target_model="grok-imagine-video",
+            cost_per_second=99.0, pricing_note="fixture", provider="xai",
+            default_resolution="480p",
+        ),
+    )
+    quoted = service.build_status().ai_previz.cost
+    assert quoted.duration_seconds == 6
+    assert quoted.estimated_cost_usd == 0.3
+    recipe = yaml.safe_load(recipe_path.read_text())
+    recipe["stages"][0]["params"]["resolution"] = "1080p"
+    recipe_path.write_text(yaml.safe_dump(recipe))
+    blocked = service.build_status().ai_previz.cost
+    assert blocked.status == "blocked"
+    assert blocked.estimated_cost_usd is None
+
+
+@pytest.mark.parametrize(
+    ("pack_id", "provider", "model", "resolution"),
+    [
+        ("google_veo31_fast", "google", "veo-3.1-fast-generate-preview", "720p"),
+        ("unknown_pack", "xai", "unknown-video-model", "480p"),
+    ],
+)
+def test_benchmark_rate_cannot_price_retired_or_unqualified_video(
+    tmp_path: Path, pack_id: str, provider: str, model: str, resolution: str,
+) -> None:
+    recipe_path = tmp_path / "recipe.yaml"
+    registry_path = tmp_path / "registry.yaml"
+    _write_recipe(recipe_path, engine_pack_id=pack_id, resolution=resolution)
+    _write_registry(
+        registry_path, candidate_label="Grok Imagine Previz",
+        candidate_overall=0.84, baseline_overall=0.80, latency_ms=3000,
+    )
+    cost = PrevizAdoptionService(
+        recipe_path=recipe_path, registry_path=registry_path,
+        engine_pack_loader=lambda _pack_id: _engine_pack(
+            pack_id=pack_id, target_model=model, cost_per_second=99.0,
+            pricing_note="fixture", provider=provider,
+            default_resolution=resolution,
+        ),
+    ).build_status().ai_previz.cost
+    assert cost.status == "blocked"
+    assert cost.estimated_cost_usd is None
 
 
 @pytest.mark.parametrize(

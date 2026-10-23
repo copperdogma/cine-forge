@@ -1,0 +1,19 @@
+{
+  "fixture_path": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+  "fixture_bytes": 3447,
+  "fixture_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+  "uploaded_input_path": "output/open-frequency/inputs/136c8cac_open_frequency_short.fountain",
+  "uploaded_input_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+  "identical_bytes": true,
+  "project_id": "open-frequency",
+  "ingest_run_id": "run-fae39865",
+  "git_sha": "714802a",
+  "dirty_checkout": true,
+  "budgets": {
+    "slug": "open-frequency",
+    "display_name": "Open Frequency",
+    "project_budget_limit_usd": 5.0,
+    "default_run_budget_limit_usd": 5.0
+  },
+  "source": "Fresh project via normal UI / -> /new, filechooser setFiles, create project, Settings/Pipeline, Break Down Script"
+}

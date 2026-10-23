@@ -6,10 +6,12 @@ import { toast } from 'sonner'
 import { AiPrevizViewer } from '@/components/AiPrevizViewer'
 import { HealthBadge } from '@/components/HealthBadge'
 import { MediaValidationViewer } from '@/components/MediaValidationViewer'
+import { PrevizCostExample } from '@/components/PrevizCostExample'
 import {
   aiPrevizCostBadge,
   formatAdoptionState,
   previzDescription,
+  previzPlaybackSummary,
 } from '@/components/previz-panel-support'
 import { SceneActionControls } from '@/components/SceneActionControls'
 import { ScenePlanUnitSummary } from '@/components/ScenePlanUnitSummary'
@@ -655,7 +657,14 @@ export function PrevizPanel({
               {aiPrevizStatus?.candidate_label && (
                 <Badge variant="outline">{aiPrevizStatus.candidate_label}</Badge>
               )}
-              {aiPrevizCostLabel && <Badge variant="outline">{aiPrevizCostLabel}</Badge>}
+              {aiPrevizCostLabel && (
+                <Badge
+                  variant="outline"
+                  className="h-auto max-w-full min-w-0 shrink whitespace-normal break-words justify-start text-left"
+                >
+                  {aiPrevizCostLabel}
+                </Badge>
+              )}
               {firstPassLatencyMs !== null && (
                 <Badge variant="outline">First pass {formatLatencyMs(firstPassLatencyMs)}</Badge>
               )}
@@ -693,6 +702,7 @@ export function PrevizPanel({
               </div>
             </div>
           )}
+          <PrevizCostExample status={aiPrevizStatus} />
           <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-sm text-amber-100">
             <div className="space-y-1">
               <p>
@@ -811,19 +821,14 @@ export function PrevizPanel({
 
           {aiPrevizData && (
             <p className="text-sm text-muted-foreground">
-              {hasIncompleteCurrentClipSet
-                ? `Current AI previz has ${previzClipArtifactCount} of ${plannedClipCount} render-clip players for ${sceneHeading}. Regenerate to fill the missing clip.`
-                : validationStatus?.label === 'Validation Pending'
-                ? hasClipPrevizOutputs
-                  ? `Latest AI previz clips are playable for ${sceneHeading}. Validation is still pending.`
-                  : `Latest AI previz clip is playable for ${sceneHeading}. Validation is still pending.`
-                : validationStatus?.label === 'Validation Failed'
-                  ? hasClipPrevizOutputs
-                    ? `Latest AI previz clips are playable for ${sceneHeading}, but validation flagged at least one for follow-up.`
-                    : `Latest AI previz clip is playable for ${sceneHeading}, but validation flagged it for follow-up.`
-                  : hasClipPrevizOutputs
-                    ? `Latest AI previz clips are ready for ${sceneHeading}. The players appear below.`
-                    : `Latest AI previz clip is ready for ${sceneHeading}. The viewer appears below.`}
+              {previzPlaybackSummary({
+                sceneHeading,
+                hasIncompleteCurrentClipSet,
+                previzClipArtifactCount,
+                plannedClipCount,
+                hasClipPrevizOutputs,
+                validationStatus,
+              })}
             </p>
           )}
           {!aiPrevizData && !aiPrevizRunActive && !aiPrevizLoading && !hasAnyClipPrevizArtifacts && (

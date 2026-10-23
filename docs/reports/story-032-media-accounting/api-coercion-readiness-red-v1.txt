@@ -1,0 +1,144 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ test_service_start_run_applies_coerced_scene_preflight_start_from _______
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-431/test_service_start_run_applies0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x112b0c9d0>
+
+    def test_service_start_run_applies_coerced_scene_preflight_start_from(
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        service = OperatorConsoleService(workspace_root=tmp_path)
+        project_id = service.create_project_from_slug("coerced-scene-run", "Coerced Scene Run")
+        project_path = service.require_project_path(project_id)
+        (project_path / "inputs").mkdir(parents=True, exist_ok=True)
+        input_path = project_path / "inputs" / "script.fountain"
+        input_path.write_text("INT. LAB - NIGHT\nMARA\nGo.\n", encoding="utf-8")
+    
+        store = ArtifactStore(project_dir=project_path)
+        metadata = ArtifactMetadata(
+            intent="seed",
+            rationale="test fixture",
+            confidence=1.0,
+            source="code",
+            producing_module="tests.unit",
+        )
+        store.save_artifact(
+            artifact_type="canonical_script",
+            entity_id="project",
+            data={"title": "Test", "script_text": input_path.read_text(encoding="utf-8")},
+            metadata=metadata,
+        )
+        scene_index_ref = store.save_artifact(
+            artifact_type="scene_index",
+            entity_id="project",
+            data={"entries": [{"scene_id": "scene_001", "scene_number": 1}]},
+            metadata=metadata,
+        )
+        store.save_artifact(
+            artifact_type="scene",
+            entity_id="scene_001",
+            data={
+                "scene_id": "scene_001", "scene_number": 1, "heading": "INT. LAB - NIGHT",
+                "location": "Lab", "time_of_day": "NIGHT", "int_ext": "INT",
+                "tone_mood": "neutral", "source_span": {"start_line": 1, "end_line": 3},
+                "confidence": 1.0,
+            },
+            metadata=metadata,
+        )
+        store.save_artifact(
+            artifact_type="timeline",
+            entity_id="project",
+            data={"scenes": []},
+            metadata=metadata.model_copy(update={"lineage": [scene_index_ref]}),
+        )
+        store.save_artifact(
+            artifact_type="scene_index",
+            entity_id="project",
+            data={"entries": [{"scene_id": "scene_001", "scene_number": 1}]},
+            metadata=metadata.model_copy(update={"lineage": [scene_index_ref]}),
+        )
+        store.save_artifact(
+            artifact_type="track_manifest",
+            entity_id="project",
+            data={"tracks": []},
+            metadata=metadata,
+        )
+        store.save_artifact(
+            artifact_type="shot_plan",
+            entity_id="scene_001",
+            data={"scene_id": "scene_001", "shots": []},
+            metadata=metadata,
+        )
+    
+        captured: dict[str, object] = {}
+    
+        def _fake_start_run(project_id_arg: str, request: dict[str, object]) -> str:
+            captured["project_id"] = project_id_arg
+            captured["request"] = request
+            return "run-coerced-scene"
+    
+        monkeypatch.setattr(service._orchestrator, "start_run", _fake_start_run)
+    
+>       run_id = service.start_run(
+            project_id,
+            {
+                "input_file": str(input_path),
+                "default_model": "gpt-5.4-mini",
+                "recipe_id": "ai_previz_generation",
+                "accept_config": True,
+                "start_from": "render_clip_planning",
+                "scene_scope": {"mode": "current_scene", "scene_ids": ["scene_001"]},
+            },
+        )
+
+tests/unit/test_api.py:572: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/cine_forge/api/service.py:1234: in start_run
+    apply_run_start_preflight(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def apply_run_start_preflight(
+        *,
+        project_id: str,
+        request: dict[str, Any],
+        preview: Callable[..., SceneActionPreflight],
+    ) -> None:
+        scope = SceneExecutionScope.model_validate(request.get("scene_scope") or {})
+        request["scene_scope"] = scope.model_dump(mode="json")
+        if request.get("render_clip_ids") and not (
+            scope.mode == "current_scene" and len(scope.scene_ids) == 1
+        ):
+            raise ServiceError(
+                code="render_clip_scope_required",
+                message="Render clip regeneration requires a single current scene scope.",
+                hint="Select the scene that owns the clip, then regenerate that one render clip.",
+                status_code=422,
+            )
+        recipe_id = str(request.get("recipe_id") or "mvp_ingest")
+        end_at = request.get("end_at")
+        if not scope.is_scene_scoped and not recipe_has_media_stage(
+            recipe_id, request.get("start_from"), end_at,
+        ):
+            return
+        preflight = preview(
+            project_id,
+            recipe_id=recipe_id,
+            scene_scope=scope,
+            start_from=request.get("start_from"),
+            end_at=end_at,
+        )
+        if preflight.status == "soft_block":
+            blocker = next((item for item in preflight.items if item.kind == "soft_block"), None)
+>           raise ServiceError(
+                code="scene_action_blocked",
+                message=preflight.summary or "Scene action is blocked.",
+                hint=blocker.detail if blocker else None,
+                status_code=422,
+            )
+E           cine_forge.api.exceptions.ServiceError: AI Previz can't run for scene_001 yet.
+
+src/cine_forge/api/run_start_preflight.py:45: ServiceError
+=========================== short test summary info ============================
+FAILED tests/unit/test_api.py::test_service_start_run_applies_coerced_scene_preflight_start_from

@@ -1,0 +1,43 @@
+{
+  "cost_is_complete": true,
+  "uncertain_cost_receipts": [],
+  "project_id": "open-frequency",
+  "total_cost_usd": 0.0809394,
+  "run_count": 1,
+  "runs": [
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-fae39865",
+      "recipe_id": "mvp_ingest",
+      "status": "done",
+      "started_at": 1792770890.293188,
+      "finished_at": 1792770966.407101,
+      "total_cost_usd": 0.0809394,
+      "duration_seconds": 76.1139
+    }
+  ],
+  "trend_points": [
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-fae39865",
+      "started_at": 1792770890.293188,
+      "total_cost_usd": 0.0809394
+    }
+  ],
+  "trend": {
+    "cost_is_complete": true,
+    "uncertain_cost_receipts": [],
+    "direction": "insufficient_data",
+    "recent_average_usd": 0.0809394,
+    "previous_average_usd": 0.0,
+    "delta_usd": 0.0809394
+  },
+  "budget_config": {
+    "project_budget_limit_usd": 5.0,
+    "default_run_budget_limit_usd": 5.0,
+    "budget_warning_threshold_ratio": 0.8,
+    "stage_budget_limits_usd": {}
+  }
+}

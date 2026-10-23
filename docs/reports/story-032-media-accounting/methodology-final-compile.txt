@@ -1,0 +1,10 @@
+
+> @ methodology:compile /Users/cam/Documents/Projects/cine-forge
+> node scripts/methodology-graph.js build
+
+Wrote docs/methodology/graph.json
+Wrote docs/stories.md
+Wrote docs/build-map.md
+Methodology warnings:
+- Architecture audit domains due or carrying open findings: methodology_tooling, ingest_and_world_building, generation_and_visualization
+- UI scout freshness due: attention needed — FP1 (Full Pipeline Canonical Fixture) still has unresolved issues (follow-up stories: 229)

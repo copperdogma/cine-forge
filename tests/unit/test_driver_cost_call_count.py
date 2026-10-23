@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from cine_forge.driver.engine import _cost_call_count
+from cine_forge.driver.cost_records import _cost_call_count
 
 pytestmark = pytest.mark.unit
 

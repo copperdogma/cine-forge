@@ -5,11 +5,13 @@
  */
 import { useMemo, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { Users, MapPin, Wrench, Clapperboard, Share } from 'lucide-react'
+import { Users, Share } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ListSkeleton, EmptyState, ErrorState } from '@/components/StateViews'
+import { ListSkeleton, ErrorState } from '@/components/StateViews'
+import { EntityListEmptyState, sectionConfig } from '@/components/entity-list-config'
+import type { BibleArtifactType, EntitySection } from '@/components/entity-list-config'
 import { EntityListControls } from '@/components/EntityListControls'
 import { ExportModal } from '@/components/ExportModal'
 import { HealthBadge } from '@/components/HealthBadge'
@@ -17,65 +19,7 @@ import { ProminenceBadge } from '@/components/ProminenceBadge'
 import { type SortMode, type ViewDensity, type SortDirection, type ProminenceFilter } from '@/lib/types'
 import { useEntityDetails, useEntityGraph, useScenes, useStickyPreference } from '@/lib/hooks'
 import { cn, formatEntityName } from '@/lib/utils'
-import type { ExportScope } from '@/lib/api'
-
-// --- Config ---
-
-export type EntitySection = 'characters' | 'locations' | 'props' | 'scenes'
-
-type BibleArtifactType = 'character_bible' | 'location_bible' | 'prop_bible'
-
-const sectionConfig: Record<EntitySection, {
-  icon: typeof Users
-  color: string
-  label: string
-  description: string
-  artifactType: BibleArtifactType | 'scene'
-  exportScope: ExportScope
-  emptyTitle: string
-  emptyDescription: string
-}> = {
-  characters: {
-    icon: Users,
-    color: 'text-amber-400',
-    label: 'Characters',
-    description: 'All characters discovered in your screenplay',
-    artifactType: 'character_bible',
-    exportScope: 'characters',
-    emptyTitle: 'No characters yet',
-    emptyDescription: 'Run the world-building pipeline to extract character profiles',
-  },
-  locations: {
-    icon: MapPin,
-    color: 'text-rose-400',
-    label: 'Locations',
-    description: 'All locations discovered in your screenplay',
-    artifactType: 'location_bible',
-    exportScope: 'locations',
-    emptyTitle: 'No locations yet',
-    emptyDescription: 'Run the world-building pipeline to extract location profiles',
-  },
-  props: {
-    icon: Wrench,
-    color: 'text-orange-400',
-    label: 'Props',
-    description: 'All props discovered in your screenplay',
-    artifactType: 'prop_bible',
-    exportScope: 'props',
-    emptyTitle: 'No props yet',
-    emptyDescription: 'Run the world-building pipeline to extract prop details',
-  },
-  scenes: {
-    icon: Clapperboard,
-    color: 'text-primary',
-    label: 'Scenes',
-    description: 'All scenes extracted from your screenplay',
-    artifactType: 'scene',
-    exportScope: 'scenes',
-    emptyTitle: 'No scenes yet',
-    emptyDescription: 'Run the pipeline to extract scenes from your screenplay',
-  },
-}
+export type { EntitySection } from '@/components/entity-list-config'
 
 // --- Sort helpers ---
 
@@ -481,13 +425,7 @@ export default function EntityListPage({ section }: { section: EntitySection }) 
   }
 
   if (!data || data.length === 0) {
-    return (
-      <EmptyState
-        icon={config.icon}
-        title={config.emptyTitle}
-        description={config.emptyDescription}
-      />
-    )
+    return <EntityListEmptyState section={section} projectId={projectId!} />
   }
 
   // Render card list

@@ -1,0 +1,179 @@
+- heading "Command Palette" [level=2]
+- paragraph: Search for a command to run...
+- complementary:
+  - link "CineForge":
+    - /url: /
+    - generic: CineForge
+  - navigation "Project navigation":
+    - link "Script":
+      - /url: /open-frequency
+      - generic: Script
+    - link "Intent":
+      - /url: /open-frequency/intent
+      - generic: Intent
+    - link "Scenes 4":
+      - /url: /open-frequency/scenes
+      - generic: Scenes
+      - generic: "4"
+    - link "Characters":
+      - /url: /open-frequency/characters
+      - generic: Characters
+    - link "Locations":
+      - /url: /open-frequency/locations
+      - generic: Locations
+    - link "Props":
+      - /url: /open-frequency/props
+      - generic: Props
+    - link "Inbox":
+      - /url: /open-frequency/inbox
+      - generic: Inbox
+    - button "World":
+      - generic: World
+    - button "Advanced":
+      - generic: Advanced
+  - button "v2026.10.23-04"
+- main:
+  - button "Hide sidebar":
+  - navigation "Breadcrumb":
+    - link "Open Frequency":
+      - /url: /open-frequency
+    - link "Scenes":
+      - /url: /open-frequency/scenes
+    - generic: Scene 001
+  - button "Open command palette":
+    - generic: ⌘K
+  - button "Show panel":
+  - button "Script":
+    - generic: Script
+    - generic: 5/5
+  - button "World":
+    - generic: World
+  - button "Direction":
+    - generic: Direction
+  - button "Shots":
+    - generic: Shots
+  - button "Storyboards":
+    - generic: Storyboards
+  - button "Production":
+    - generic: Production
+  - button "Back":
+    - text: Back
+  - button "Previous scene [Left Arrow]" [disabled]:
+  - generic: Script Order
+  - button "Next scene [Right Arrow]":
+  - button "Export":
+    - text: Export
+  - heading "INT. COMMUNITY RADIO STUDIO - NIGHT" [level=1]
+  - generic: Current
+  - generic: Scene
+  - generic: ·
+  - generic: "#1"
+  - button "View in Script":
+    - text: View in Script
+  - generic: Focused workspace
+  - generic: Production
+  - paragraph: This scene is already focused on final scene generation. The selected panel below is where CineForge shows render preflight, scene video, and trust artifacts.
+  - button "Jump to selected panel"
+  - generic: Scene tutorial • Step 1 of 3
+  - 'heading "Next: build the shot plan" [level=2]'
+  - paragraph: After direction work, turn this scene into a cuttable shot list. Storyboards and the final render build from that structure.
+  - generic: Shot Plan
+  - generic: Storyboard
+  - generic: Render
+  - link "Open Shots":
+    - /url: /open-frequency/scenes/scene_001?tab=shots
+  - generic: Community Radio Studio
+  - generic: ARIA
+  - generic: JUNE
+  - generic: KELL
+  - generic: NOAH
+  - generic: Scene Reference Stack
+  - generic: Attach dialogue takes, temp score, blocking clips, and script-side PDFs directly to this scene. These assets stay scene-scoped and merge with project references downstream.
+  - paragraph: Sound & Music and the track system read project + scene audio from this stack. Visual entity design-study picks remain inherited from the linked character/location/prop pages.
+  - generic: 0 uploaded
+  - generic: 0 active
+  - paragraph: Next upload defaults
+  - paragraph: dialogue audio · soft lock
+  - paragraph: These apply immediately to the next files you drop or browse.
+  - button "Edit defaults"
+  - paragraph: Drag references here or browse
+  - paragraph: Multi-select works for scout photos, mood boards, clips, and documents.
+  - paragraph: Images JPG, PNG, WEBP · Video MP4, MOV · Audio WAV, MP3, AAC · Docs PDF, TXT
+  - button "Browse files":
+    - text: Browse files
+  - tablist:
+    - tab "All" [selected]
+    - tab "Visual"
+    - tab "Audio"
+    - tab "Video"
+    - tab "Docs"
+  - paragraph: No references match the current filter
+  - paragraph: Upload a batch above or switch the filter to browse the full reference stack.
+  - tablist:
+    - tab "Overview"
+    - tab "Look & Feel": Look & Feel
+    - tab "Sound & Music": Sound & Music
+    - tab "Rhythm & Flow": Rhythm & Flow
+    - tab "Performance": Performance
+    - tab "Story World": Story World
+    - tab "Shots": Shots
+    - tab "Storyboard": Storyboard
+    - tab "Previz": Previz
+    - tab "Render" [selected]: Render
+  - tabpanel "Render":
+    - generic: Render
+    - generic: "Selected: All scenes"
+    - generic: "Render turns the current shot plan, direction, and references into scene video. Keyframes are optional: it can proceed without them and uses locked frames when available. Prompt and video details show how references were used. Choose Current Scene to refine this moment or All Scenes for a broader pass."
+    - button "Run Scene Renders for All Scenes" [disabled]:
+      - text: Run Scene Renders for All Scenes
+    - paragraph: Execution Scope
+    - button "Current Scene"
+    - button "All Scenes" [active]
+    - generic: Soft Block
+    - paragraph: Render can't run for all scenes yet.
+    - paragraph: Video provider unavailable
+    - paragraph: "Google veo-3.1-generate-preview is unavailable: Veo 3.1 preview shut down 2026-10-22"
+    - paragraph: Timeline
+    - paragraph: This run will build the project timeline first.
+    - paragraph: Track manifest
+    - paragraph: This run will register baseline track rows before generating scene outputs.
+    - paragraph: Shot planning
+    - paragraph: This run will build shot plans for the missing scenes first.
+    - link "Open Scenes":
+      - /url: /open-frequency/scenes
+      - text: Open Scenes
+    - paragraph: Render clip planning
+    - paragraph: This run will estimate scene duration and render clip boundaries for the missing scenes first.
+    - link "Open Scenes":
+      - /url: /open-frequency/scenes
+      - text: Open Scenes
+    - paragraph: Continuity tracking missing
+    - paragraph: Scene planning can still run, but state carry-over and continuity checks will rely more on scene text and may need cleanup later.
+    - link "Open Continuity":
+      - /url: /open-frequency/world/continuity
+      - text: Open Continuity
+    - paragraph: Rhythm & Flow missing
+    - paragraph: Rhythm & Flow is missing for 4 scenes. CineForge can still continue, but those outputs will lean more on AI defaults.
+    - link "Open Scenes":
+      - /url: /open-frequency/scenes
+      - text: Open Scenes
+    - paragraph: Look & Feel missing
+    - paragraph: Look & Feel is missing for 4 scenes. CineForge can still continue, but those outputs will lean more on AI defaults.
+    - link "Open Scenes":
+      - /url: /open-frequency/scenes
+      - text: Open Scenes
+    - paragraph: Sound & Music missing
+    - paragraph: Sound & Music is missing for 4 scenes. CineForge can still continue, but those outputs will lean more on AI defaults.
+    - link "Open Scenes":
+      - /url: /open-frequency/scenes
+      - text: Open Scenes
+    - generic: Shot / Render Units
+    - generic: Render turns INT. COMMUNITY RADIO STUDIO - NIGHT into provider-bounded render clips when a render clip plan exists. A render clip may map to one shot, multiple shots, or a fallback beat.
+    - generic: No shot plan is available for this scene yet. Starting Render here will build the shot plan first.
+    - text: Render Clip Plan
+    - generic: No render clip plan exists yet. The Render action will estimate scene duration and split this scene into provider-bounded clips before final video generation.
+    - heading "No scene render for this scene yet" [level=3]
+    - paragraph: Render compiles the provider-ready prompt, stores it for audit, and generates the scene video for all scenes. The resulting prompt and video artifacts keep the resolved reference usage visible so provider-input demotions stay honest. Use the scope controls above to widen or narrow the run.
+    - button "Run Scene Renders for All Scenes" [disabled]:
+      - text: Run Scene Renders for All Scenes
+- region "Notifications alt+T"

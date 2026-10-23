@@ -1,0 +1,36 @@
+node --test ui/tests/*.test.ts
+✔ idle chat state allows a single automatic load attempt (0.794708ms)
+✔ error chat state blocks automatic reload and sync retries (0.080625ms)
+✔ loading and ready states do not re-arm background fetching (0.055875ms)
+✔ error messages stay operator-visible (0.056375ms)
+✔ scene-work next step uses the scenes route as the default path (0.6785ms)
+✔ deep breakdown completion copy signals scene-work readiness (0.107708ms)
+✔ design-study progress text describes active and failed rounds (2.624208ms)
+✔ design-study failure summary preserves provider debug context (0.430833ms)
+✔ Nano Banana failures identify Google Images and retain the exact model (0.119875ms)
+✔ a real locally checked cut awaiting semantic review is not called failed (0.373833ms)
+✔ validation labels distinguish review, failure, success, and obsolete reports (0.071625ms)
+✔ AI previz never calls review-needed media ready in either clip layout (0.116958ms)
+✔ AI previz preserves pending, failed, ready, and incomplete guidance (0.849583ms)
+✔ current recipe cost badge labels one priced video example and never invents a blocked amount (9.894625ms)
+✔ run progress recovery message links to run details (0.584125ms)
+✔ run progress recovery reports once and clears the active run (0.138625ms)
+✔ concern-group tabs point users to shot planning first when no downstream scene work exists (1.012583ms)
+✔ shot-planning tabs advance to storyboard once a shot plan exists (0.182875ms)
+✔ render becomes the final recommended step after storyboard generation (0.191ms)
+✔ render tab flips to a terminal state once a scene video exists (0.138541ms)
+✔ scene workspace routes omit the tab parameter for overview (0.357041ms)
+✔ scene workspace routes preserve explicit downstream tabs (0.055625ms)
+✔ pipeline phases map to the expected scene workspace tabs (0.047916ms)
+✔ recipe completions map to the expected scene workspace tabs (0.045792ms)
+✔ single concern-group creative runs expose their matching scene workspace tab (0.316333ms)
+✔ single-scene run labels name the scene instead of showing batch progress (0.100959ms)
+✔ multi-scene concern runs keep batch progress totals (0.043667ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 116.685584

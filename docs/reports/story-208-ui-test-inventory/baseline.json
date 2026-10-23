@@ -1,0 +1,8 @@
+{
+  "mutation": "Remove actual maintained UI test and real captured fixture from ledger paths in memory only.",
+  "checker_errors": [],
+  "files_omitted_from_current_manifest": [
+    "ui/tests/media-validation-health.test.ts",
+    "ui/tests/fixtures/media-validation-needs-review.json"
+  ]
+}

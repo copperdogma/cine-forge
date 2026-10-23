@@ -1,0 +1,37 @@
+{
+  "review_finding": "Complete run B reported project remaining allowance despite unresolved charges in prior run A.",
+  "red": {
+    "log": "history-budget-red-v2.txt",
+    "result": "2 failed,1 passed before fix: explicit uncertainty and historical media evidence gap both returned project status; complete history control passed.",
+    "fixture": "tests/unit/test_cost_receipt_summaries.py::test_complete_run_budget_excludes_incomplete_project_history",
+    "frozen_baseline": {
+      "prior_run_known_subtotal_usd": 2.3,
+      "current_run_known_estimate_usd": 0.5,
+      "stored_project_cost_baseline_usd": 2.3,
+      "project_limit_usd": 10,
+      "run_limit_usd": 5
+    }
+  },
+  "fix": "Reuse canonical stage evidence summarization across project history without recursively building run summaries; omit only project-scope budget status if any other project run has incomplete accounting. Current complete run keeps its run-scope status and4.5 remaining. Complete project history retains both statuses.",
+  "green": {
+    "log": "history-budget-green-v1.txt",
+    "tests_passed": 23,
+    "scope": "Cost tracking/receipts, run CSV export, cost API, existing budget guard tests."
+  },
+  "api_coercion": {
+    "red_log": "api-coercion-readiness-red-v1.txt",
+    "green_log": "api-coercion-readiness-green-v1.txt",
+    "tests_passed": 44,
+    "classification": "Existing API start_from-coercion unit test relied on developer xAI key. Explicit synthetic prefixed credential keeps real readiness/coercion active; orchestrator remains stubbed and no worker/provider is dispatched. No lifecycle bypass added."
+  },
+  "ruff": "post-review-ruff-v1.txt",
+  "files_sha256": {
+    "src/cine_forge/services/cost_tracking.py": "7789fa73ea44dac2b7575dda70365d1174fc7a9419780f53c8644fbc91e0aac8",
+    "tests/unit/test_cost_receipt_summaries.py": "1a991734d7c359a1c022f5585203ebe2f2d0aae175c541950ba33cddd9eacf98",
+    "tests/unit/test_api.py": "9ace1e6fed5071335538166d461d5f613721ab887498682f84a2415543a1f946"
+  },
+  "limits": [
+    "Offline deterministic fixtures; no provider requests, new prices, artifact rerating, commits, UI edits or planning changes.",
+    "Parent retains broad-unit rerun and independent review ownership."
+  ]
+}

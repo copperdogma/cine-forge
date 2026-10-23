@@ -1,0 +1,76 @@
+........................................................................ [  2%]
+........................................................................ [  5%]
+........................................................................ [  8%]
+........................................................................ [ 11%]
+........................................................................ [ 14%]
+........................................................................ [ 17%]
+........................................................................ [ 20%]
+........................................................................ [ 23%]
+........................................................................ [ 26%]
+........................................................................ [ 29%]
+........................................................................ [ 32%]
+........................................................................ [ 35%]
+........................................................................ [ 38%]
+........................................................................ [ 41%]
+........................................................................ [ 44%]
+............................F........................................... [ 47%]
+........................................................................ [ 50%]
+........................................................................ [ 53%]
+........................................................................ [ 56%]
+........................................................................ [ 59%]
+........................................................................ [ 62%]
+........................................................................ [ 65%]
+........................................................................ [ 68%]
+........................................................................ [ 71%]
+.........F.............................................................. [ 74%]
+.........F.............................................................. [ 77%]
+........................................................................ [ 80%]
+........................................................................ [ 83%]
+........................................................................ [ 86%]
+........................................................................ [ 89%]
+........................................................................ [ 92%]
+........................................................................ [ 95%]
+........................................................................ [ 98%]
+.......................................                                  [100%]
+=================================== FAILURES ===================================
+_____ test_tracked_verification_needs_no_local_receipts_or_provider_calls ______
+tests/unit/test_gpt61_video_verification.py:25: in test_tracked_verification_needs_no_local_receipts_or_provider_calls
+    verifier.main()
+benchmarks/scripts/verify_gpt61_video_comparison.py:15: in main
+    run.check_freeze()
+benchmarks/scripts/run_gpt61_video_comparison.py:111: in check_freeze
+    assert (actual["sha256"], actual["bytes"]) == (item["sha256"], item["bytes"]), (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Frozen bytes changed: benchmarks/providers/video_understanding_provider.py
+_________ test_retired_backfill_with_actual_work_fails_before_compiler _________
+src/cine_forge/modules/generation/render_adapter_v1/orchestration.py:90: in ensure_backfill_ready
+    validate_image_backfill_target(model=image_model)
+src/cine_forge/ai/image_pricing.py:18: in validate_image_backfill_target
+    raise ValueError(
+E   ValueError: No qualified current automatic image-backfill price for gemini-nano-banana-2.1. Supply an existing reference or qualify the model before generation.
+
+The above exception was the direct cause of the following exception:
+tests/unit/test_render_adapter_accounting.py:388: in test_retired_backfill_with_actual_work_fails_before_compiler
+    main.run_module(
+src/cine_forge/modules/generation/render_adapter_v1/main.py:75: in run_module
+    ensure_backfill_ready(store=store, scenes=scenes, image_model=backfill_model)
+src/cine_forge/modules/generation/render_adapter_v1/orchestration.py:92: in ensure_backfill_ready
+    raise ValueError(
+E   ValueError: Default design-study backfill requires new images for scene_001. No qualified current automatic image-backfill price for gemini-nano-banana-2.1. Supply an existing reference or qualify the model before generation.
+
+During handling of the above exception, another exception occurred:
+tests/unit/test_render_adapter_accounting.py:387: in test_retired_backfill_with_actual_work_fails_before_compiler
+    with pytest.raises(ValueError, match="Imagen 4.*shut down"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: 'Imagen 4.*shut down'
+E     Actual message: 'Default design-study backfill requires new images for scene_001. No qualified current automatic image-backfill price for gemini-nano-banana-2.1. Supply an existing reference or qualify the model before generation.'
+___ test_previz_blocks_retired_image_backfill_only_when_generation_is_needed ___
+tests/unit/test_scene_actions.py:212: in test_previz_blocks_retired_image_backfill_only_when_generation_is_needed
+    assert any("Imagen 4" in item.detail for item in after.items if item.kind == "soft_block")
+E   assert False
+E    +  where False = any(<generator object test_previz_blocks_retired_image_backfill_only_when_generation_is_needed.<locals>.<genexpr> at 0x110639970>)
+=========================== short test summary info ============================
+FAILED tests/unit/test_gpt61_video_verification.py::test_tracked_verification_needs_no_local_receipts_or_provider_calls
+FAILED tests/unit/test_render_adapter_accounting.py::test_retired_backfill_with_actual_work_fails_before_compiler
+FAILED tests/unit/test_scene_actions.py::test_previz_blocks_retired_image_backfill_only_when_generation_is_needed

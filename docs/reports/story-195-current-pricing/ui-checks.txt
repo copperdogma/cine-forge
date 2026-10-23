@@ -1,0 +1,10 @@
+Story 195 current recipe pricing UI checks — 2026-10-23
+
+Scope: PrevizCostEvidence/Lane/Adoption types moved to previz-types.ts; current-recipe badge and priced video-example disclosure shown in PrevizPanel and AiPrevizViewer. Saved-video artifact cost remains a separate receipt-based display.
+
+PASS  pnpm --dir ui run lint
+PASS  pnpm --dir ui exec tsc -b
+PASS  pnpm --dir ui run build (Vite emitted only its existing >500 kB chunk advisory)
+PASS  make test-ui — 26 tests, 0 failures, including the 4s/$0.20 example and blocked-price badge check.
+
+Browser proof is owned by the parent task. No provider calls were made for these UI checks.

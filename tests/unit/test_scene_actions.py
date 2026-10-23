@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -90,6 +91,12 @@ def _seed_scene_action_project(tmp_path: Path) -> Path:
             "scene_id": "scene_001",
             "scene_number": 1,
             "heading": "INT. LAB - NIGHT",
+            "location": "Lab",
+            "time_of_day": "NIGHT",
+            "int_ext": "INT",
+            "tone_mood": "neutral",
+            "source_span": {"start_line": 1, "end_line": 3},
+            "confidence": 1.0,
         },
         metadata=_metadata(),
     )
@@ -130,6 +137,130 @@ def _save_scene_artifact(
 def _configure_xai(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("CINE_FORGE_XAI_API_KEY", "test-xai-key")
     monkeypatch.delenv("XAI_API_KEY", raising=False)
+
+
+@pytest.mark.unit
+def test_retired_render_blocks_before_paid_preparation_for_all_scenes(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="render_generation",
+        scene_scope=SceneExecutionScope(mode="all_scenes"),
+    )
+    assert preflight.status == "soft_block"
+    assert any("Veo 3.1" in item.detail for item in preflight.items if item.kind == "soft_block")
+
+
+@pytest.mark.unit
+def test_render_clip_preparation_stops_before_retired_video_provider(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="render_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+        end_at="render_clip_planning",
+    )
+    assert not any("Veo 3.1" in item.detail for item in preflight.items)
+
+
+@pytest.mark.unit
+def test_render_validation_only_slice_does_not_recheck_video_target(tmp_path: Path) -> None:
+    project_dir = _seed_scene_action_project(tmp_path)
+    preflight = build_scene_action_preflight(
+        project_path=project_dir,
+        recipe_id="render_generation",
+        scene_scope=SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"]),
+        start_from="validate_media",
+    )
+    assert not any("Veo 3.1" in item.detail for item in preflight.items)
+
+
+@pytest.mark.unit
+def test_previz_blocks_unpriced_image_backfill_only_when_generation_is_needed(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _configure_xai(monkeypatch)
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    scope = SceneExecutionScope(mode="current_scene", scene_ids=["scene_001"])
+    before = build_scene_action_preflight(
+        project_path=project_dir, recipe_id="ai_previz_generation", scene_scope=scope,
+    )
+    assert not any("image-backfill price" in item.detail for item in before.items)
+    store.save_artifact(
+        artifact_type="scene", entity_id="scene_001",
+        data={
+            "scene_id": "scene_001", "scene_number": 1, "heading": "INT. LAB - NIGHT",
+            "location": "Lab", "time_of_day": "NIGHT", "int_ext": "INT",
+            "tone_mood": "neutral", "source_span": {"start_line": 1, "end_line": 3},
+            "confidence": 1.0,
+        }, metadata=_metadata(),
+    )
+    store.save_bible_entry(
+        entity_type="location", entity_id="lab", display_name="Lab",
+        files=[{
+            "filename": "master_definition_v1.json", "purpose": "master_definition",
+            "version": 1, "provenance": "ai_extracted",
+        }],
+        data_files={"master_definition_v1.json": json.dumps({"name": "Lab"})},
+        metadata=_metadata(),
+    )
+    after = build_scene_action_preflight(
+        project_path=project_dir, recipe_id="ai_previz_generation", scene_scope=scope,
+    )
+    assert after.status == "soft_block"
+    assert any(
+        "gemini-nano-banana-2.1" in item.detail
+        and "No qualified current automatic image-backfill price" in item.detail
+        for item in after.items if item.kind == "soft_block"
+    )
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize("recipe_id", ["render_generation", "ai_previz_generation"])
+@pytest.mark.parametrize("scope_mode", ["current_scene", "all_scenes"])
+@pytest.mark.parametrize("keyframe_health", [None, ArtifactHealth.VALID, ArtifactHealth.STALE])
+def test_optional_keyframes_do_not_create_preflight_work(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    recipe_id: str,
+    scope_mode: str,
+    keyframe_health: ArtifactHealth | None,
+) -> None:
+    """Mechanical fixture: optional framing support must never become setup homework."""
+    _configure_xai(monkeypatch)
+    project_dir = _seed_scene_action_project(tmp_path)
+    store = ArtifactStore(project_dir=project_dir)
+    for artifact_type in ("timeline", "track_manifest", "continuity_index"):
+        _save_project_artifact(store, artifact_type, {})
+    for artifact_type in (
+        "shot_plan", "render_clip_plan", "rhythm_and_flow", "look_and_feel", "sound_and_music",
+    ):
+        _save_scene_artifact(store, artifact_type, "scene_001", {"scene_id": "scene_001"})
+    if keyframe_health is not None:
+        _save_scene_artifact(
+            store, "keyframe", "scene_001", {"scene_id": "scene_001"}, health=keyframe_health,
+        )
+    scope = SceneExecutionScope(
+        mode=scope_mode, scene_ids=["scene_001"] if scope_mode == "current_scene" else [],
+    )
+
+    preflight = build_scene_action_preflight(
+        project_path=project_dir, recipe_id=recipe_id, scene_scope=scope,
+    )
+
+    assert preflight.status == (
+        "soft_block" if recipe_id == "render_generation" else "ready"
+    )
+    assert [item.label for item in preflight.items] == (
+        ["Video provider unavailable"] if recipe_id == "render_generation" else []
+    )
+    assert preflight.auto_build_artifact_types == []
+    assert preflight.missing_optional_artifact_types == []
+    assert preflight.start_from == ("render" if recipe_id == "render_generation" else "ai_previz")
+    assert store.list_versions("keyframe", "scene_001") == (
+        [] if keyframe_health is None else [store.latest_ref("keyframe", "scene_001")]
+    )
 
 
 def _assert_missing_items_have_actions(preflight) -> None:
@@ -639,3 +770,53 @@ def test_animatics_preflight_soft_blocks_removed_capability(tmp_path: Path) -> N
     assert preflight.status == "soft_block"
     assert preflight.summary == "Animatics is no longer available for scene_001."
     assert any(item.label == "Deterministic baseline removed" for item in preflight.items)
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize("recipe_id", ["render_generation", "ai_previz_generation"])
+@pytest.mark.parametrize("scope_mode", ["current_scene", "all_scenes"])
+@pytest.mark.parametrize("has_foundation", [False, True])
+def test_clip_plan_autobuild_has_only_useful_navigation(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    recipe_id: str,
+    scope_mode: str,
+    has_foundation: bool,
+) -> None:
+    """Fresh-project regression: an automatic prerequisite is not a current-tab fix."""
+    _configure_xai(monkeypatch)
+    project_dir = _seed_scene_action_project(tmp_path)
+    if has_foundation:
+        store = ArtifactStore(project_dir=project_dir)
+        for artifact_type in ("timeline", "track_manifest"):
+            _save_project_artifact(store, artifact_type, {})
+    scope = SceneExecutionScope(
+        mode=scope_mode, scene_ids=["scene_001"] if scope_mode == "current_scene" else [],
+    )
+    preflight = build_scene_action_preflight(
+        project_path=project_dir, recipe_id=recipe_id, scene_scope=scope,
+    )
+
+    clip_item = next(item for item in preflight.items if item.label == "Render clip planning")
+    assert clip_item.kind == "auto_build"
+    assert "render_clip_plan" in preflight.auto_build_artifact_types
+    assert "shot_plan" in preflight.auto_build_artifact_types
+    if scope_mode == "current_scene":
+        assert clip_item.action_label is None
+        assert clip_item.action_path is None
+    else:
+        assert clip_item.action_label == "Open Scenes"
+        assert clip_item.action_path == "scenes"
+    # Optional context is still honest and repairable; the self-link fix must not
+    # remove real warning routes or disguise missing direction as ready.
+    assert preflight.status == (
+        "soft_block" if recipe_id == "render_generation" else "warn"
+    )
+    continuity = next(
+        item for item in preflight.items if item.label == "Continuity tracking missing"
+    )
+    assert continuity.action_path == "world/continuity"
+    look = next(item for item in preflight.items if item.label == "Look & Feel missing")
+    assert look.action_path == (
+        "scenes/scene_001?tab=look_and_feel" if scope_mode == "current_scene" else "scenes"
+    )

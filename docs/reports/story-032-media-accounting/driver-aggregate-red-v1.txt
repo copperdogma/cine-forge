@@ -1,0 +1,30 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______ test_invalid_module_aggregate_preserves_valid_incurred_receipts ________
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-408/test_invalid_module_aggregate_0')
+
+    @pytest.mark.integration
+    def test_invalid_module_aggregate_preserves_valid_incurred_receipts(tmp_path: Path) -> None:
+        recipe = _mechanical_recipe(tmp_path, fail=False, invalid_aggregate=True)
+        with pytest.raises(ValueError, match="estimated_cost_usd"):
+            DriverEngine(workspace_root=tmp_path).run(
+                recipe_path=recipe, run_id="invalid-aggregate", force=True,
+            )
+        state = json.loads((tmp_path / "output/runs/invalid-aggregate/run_state.json").read_text())
+>       assert state["total_cost_usd"] == pytest.approx(.21)
+E       assert 0.0 == 0.21 ± 2.1e-07
+E         
+E         comparison failed
+E         Obtained: 0.0
+E         Expected: 0.21 ± 2.1e-07
+
+tests/integration/test_media_cost_receipts.py:131: AssertionError
+----------------------------- Captured stdout call -----------------------------
+[invalid-aggregate] Stage 'generate' starting...
+[invalid-aggregate] Stage 'generate' failed: 1 validation error for CostRecord
+estimated_cost_usd
+  Input should be a valid number, unable to parse string as a number [type=float_parsing, input_value='invalid', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/float_parsing
+=========================== short test summary info ============================
+FAILED tests/integration/test_media_cost_receipts.py::test_invalid_module_aggregate_preserves_valid_incurred_receipts

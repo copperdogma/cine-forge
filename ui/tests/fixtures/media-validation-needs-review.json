@@ -1,0 +1,27 @@
+{
+  "provenance": "Captured2026-10-23 from normal recipe-final-output run story-185-home-final-output-20261023; local probes passed, semantic model unconfigured.",
+  "group": {
+    "artifact_type": "final_output",
+    "entity_id": "project",
+    "latest_version": 1,
+    "health": "needs_review",
+    "health_details": {
+      "health": "needs_review",
+      "source_kind": "media_validation",
+      "reason": "No semantic review model was configured.",
+      "trigger_ref": null,
+      "source_artifact_ref": {
+        "artifact_type": "media_validation",
+        "entity_id": "project",
+        "version": 1,
+        "path": "artifacts/media_validation/project/v1.json"
+      },
+      "upstream_change_summary": null,
+      "suggested_revision": null,
+      "confidence": 0.65,
+      "assessing_role": "media_validation_v1",
+      "decided_by": null,
+      "updated_at": "2026-10-23T15:10:07.516286+00:00"
+    }
+  }
+}

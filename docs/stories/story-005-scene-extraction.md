@@ -22,7 +22,8 @@ category_refs:
   - "spec:8"
 compromise_refs: []
 input_coverage_refs: []
-architecture_domains: []
+architecture_domains:
+  - "ingest_and_world_building"
 roadmap_tags: []
 legacy_system: ""
 ---
@@ -387,6 +388,14 @@ Because scenes are independent artifacts, a QA failure in one scene doesn't bloc
 
 ## Work Log
 
+20261023-1029 — settled-contract: The232/233/005 batch rolls current owned contracts forward to immutablev26 (996files, bundle54b6ea55ef7e60631841192187b83412117013bd3987ce00fb3052ca65c56b7d), explicitly including the extracted heading helper. Actual manifestcheck and terminal truthledgercheck pass;45manifest/ledger tests pass. Earlier21–25bundle identities and original213manifest hash remain unchanged. No scores/defaults changed. Story-only final logs do not invalidate selected bytes. No commit/push; existing no-implicit-commit rule retained.
+
+20261023-1024 — mark-story-done-regression: Current heading-delimiter slice meets all ACs with50 focused tests, fullRuff, real-parser dynamic execution/schema proof, corrected independently replayed baseline and two clean source reviews. Closed005 again while retaining its historical completion and new regression evidence. No original artifact was rewritten; no UI or model score/default changed. Changelog updated. Next: settle the current contract snapshot and continue triage; /finish-and-push only on explicit Cam landing authorization.
+
+20261023-1024 — validate-regression: Five new cases failed before the delimiter repair;36 module tests and50 total module/model-selection/telemetry/schema tests pass, as does fullRuff. Extracted58-line heading owner reduced main893→836, preserving dynamic loading through absolute imports. Parent executed the exact normal232 canonical v1 with the real installed Fountain parser, dynamic spec loader, mockAI and call_llm forbidden:4 typedscenes/index, scene003HighSchoolGymShelter/PRE-DAWN and span68–102, zero calls/cost. Old v1 outputs untouched. The raw-fixture unit probe has63–95 spans because its supplied text differs; report distinguishes both. Strong review caught a parent current-code probe overwriting the baseline; corrected via exactHEAD714802a parser AST replay, sourcehash and unchanged originalscenev1 hash, then independentreview cleared. AdditionalCLIreview finds no source regressions. Initialdry-run missedaccept_config and failedbeforestages; correctednewrunID passed. AllcurrentACs/build/validationmet; report docs/reports/story-005-heading-delimiters/report.md contains limits and evidence. Next: close005 current slice, compile/check and roll current immutablecontract forward once for the settled batch. No paid eval/default change or commit/push.
+
+20261023-1018 — reopen-plan: Fresh normal232 artifacts demonstrate PRE-DAWN corruption despite green QA flags. Existing005 owns extraction and tests;061 optimizes scene extraction rather than defining a new parser owner. Reopened005Pending for the precise current-slice AC/tasks/plan above, retaining all historicalcompletion evidence. Bounded research read existing005 parser decision and officialFountain syntax; the latter demonstrates spaced separators, not a full location/time grammar. Currentschemaaccepts literal string time; no provider/default change or newADRneeded. Next: compilePending, beginfixture-first repair with zero paidcalls.
+
 - 2026-02-12 — Updated Story 005 scope to deterministic-first extraction with open-source parser adapter strategy, explicit field provenance, and disagreement handling for critical scene fields (`/Users/cam/Documents/Projects/cine-forge/docs/stories/story-005-scene-extraction.md`).
 
 ### 20260212-1456 — Story format and checklist verification
@@ -438,3 +447,108 @@ Because scenes are independent artifacts, a QA failure in one scene doesn't bloc
 - **Result:** Success.
 - **Notes:** Updated `/Users/cam/Documents/Projects/cine-forge/src/cine_forge/modules/ingest/scene_extract_v1/main.py` to enforce deterministic-first gating (AI enrichment only for unresolved fields), add a parser adapter boundary (`_SceneParserAdapter`), annotate and validate boundary uncertainty for fallback chunking, and broaden action-line character mention extraction. Updated tests in `/Users/cam/Documents/Projects/cine-forge/tests/unit/test_scene_extract_module.py` and `/Users/cam/Documents/Projects/cine-forge/tests/unit/test_scene_extract_benchmarks.py` to verify enrichment skipping and non-tautological fallback behavior across environments.
 - **Next:** No additional Story 005 work required; downstream Story 010/011 can proceed.
+
+
+## 2026-10-23 Regression Slice — Heading Delimiters
+
+The fresh Story232 canonical run preserved four headings but parsed scene003
+`INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN` as location `High School Gym Shelter - Pre`
+and time `DAWN`. The failed input already exists in the canonical fixture;
+exact runtime evidence is captured in docs/reports/story-229-canonical-ui/artifact-review.json.
+This is the same extraction subsystem, artifact contract and success surface
+as005, so reopen this owner rather than create another parser microstory.
+
+### Acceptance Criteria — Current Slice
+
+- [x] Preserve intra-word hyphens in locations and recognized compound times;
+  canonical scene003 yields High School Gym Shelter / PRE-DAWN.
+- [x] Existing multi-segment locations and trailing narrative modifiers retain
+  their current meaning. Unknown trailing text stays conservative rather than
+  silently becoming a time label.
+- [x] An actual canonical-fixture module regression proves corrected scene and
+  scene-index values, source spans and schema validity; deterministic execution
+  makes no paid calls. Keep prior runtime artifacts immutable.
+- [x] Focused parser/module/schema and driver-import checks plus Ruff pass;
+  record representative output inspection and any explicit validation limits.
+
+### Tasks — Current Slice
+
+- [x] Capture red canonical and hyphenated-location/compound-time regressions.
+- [x] Extract heading grammar/constants from893-line driver-loaded main.py into
+  a focused helper before changing logic. Use absolute package imports; update
+  all call sites/tests directly, with no compatibility wrapper.
+- [x] Recognize spaced heading separators without splitting punctuation inside
+  words. Add the observed PRE-DAWN label to the existing finite time vocabulary;
+  preserve conservative unknown-time behavior and narrative-modifier handling.
+- [x] Exercise the canonical fixture through run_module with deterministic,
+  mock AI settings; validate Scene/SceneIndex boundaries, inspect output,
+  and prove no inference calls. Existing mocked-QA tests still cover AI boundaries.
+- [x] Run focused tests, schema consumers, dynamic driver import/dry-run and
+  Ruff; no model benchmark or default change.
+- [x] Update research/report, parent UI-scout follow-up, work log and generated
+  methodology; then validate and close this bounded reopened slice.
+- [x] T0: original runtime artifacts remain immutable.
+- [x] T1: heading parsing has a focused owner.
+- [x] T2: no inference scaffold or new model.
+- [x] T3: main.py shrank893→836; heading.py is58 lines.
+- [x] T4: exact old-source replay and typed new outputs are retained.
+- [x] T5: derived location/time match the screenplay.
+
+## Workflow Gates
+
+- [x] Build complete: implementation finished, required checks run, and human summary shared
+- [x] Validation complete or explicitly skipped by user
+- [x] Story marked done via /mark-story-done
+
+## Blocker Summary
+
+N/A
+
+## Blocker Evidence
+
+N/A
+
+## Unblock Condition
+
+N/A
+
+## Architectural Fit — Current Slice
+
+Current scene_breakdown_v1/main.py893 lines is a known large owner. First extract
+its focused heading parser/constants; do not grow run_module or add a class.
+Existing Scene/SceneIndex Pydantic contracts accept string time labels. This is
+literal grammar/source identity, not semantic inference or a new layer protocol.
+No new ADR governs a delimiter repair; ADR003 and screenplay-source doctrine
+apply. Existing005 research selected deterministic-first parsing, retained here.
+
+## Files to Modify — Current Slice
+
+- src/cine_forge/modules/ingest/scene_breakdown_v1/main.py (893) — delegate grammar
+- src/cine_forge/modules/ingest/scene_breakdown_v1/heading.py (new focused helper)
+- tests/unit/test_scene_breakdown_module.py (current module tests) — red/green contracts
+- docs/research/story-005-scene-parser-eval.md — bounded source/decision note
+- docs/reports/story-005-heading-delimiters/ — inspected regression output
+- This story and Story232 report — actual ownership and result
+
+## Plan
+
+Current plan supersedes the completed historical plan only for this regression.
+1. Add failures from the existing Open Frequency fixture and common compound
+   location/time headings before changing source. No copied runtime artifacts
+   are used as new product data.
+2. Extract the small grammar owner into heading.py, use absolute imports, and
+   distinguish whitespace-delimited separators from hyphens inside tokens.
+   Keep finite known-time recognition; PRE-DAWN is explicit observed source text.
+3. Test literal field fidelity and actual module outputs. An AI-only or decision
+   model would add cost/uncertainty to a source-copy grammar task; existing code
+   is the simplest baseline. No semantic capability/default comparison is needed.
+4. Validate typed boundaries and dynamic import, inspect the repaired scene003
+   and aggregate locations, and preserve the old v1 outputs. No browser recheck
+   is needed for a parser-only repair; the earlier232 UI baseline remains history.
+5. Read the official Fountain syntax and existing005 parser research before
+   choosing the delimiter. Fountain demonstrates spaced scene-heading dashes
+   but does not specify our location/time decomposition; record that inference
+   and local proof rather than claiming standards conformance from examples.
+6. Parent owns docs/review/closure; focused worker owns main.py, new heading.py
+   and existing module tests. Existing continuous triage-and-fix authorization
+   covers this bounded regression and validation; no paid run or new dependency.

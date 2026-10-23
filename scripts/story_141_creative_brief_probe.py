@@ -31,13 +31,13 @@ from scripts.story_141_creative_brief_probe_support import (
 from tests.render_fixtures import seed_render_project
 
 from cine_forge.ai.llm import call_llm
-from cine_forge.modules.generation.render_adapter_v1.main import (
-    _build_source_maps,
-    _collect_resolved_inputs,
+from cine_forge.modules.generation.render_adapter_v1.prompt_context import (
     _context_blocks,
     _scene_block,
 )
 from cine_forge.modules.generation.render_adapter_v1.prompting import _build_prompt
+from cine_forge.modules.generation.render_adapter_v1.resolved_inputs import _collect_resolved_inputs
+from cine_forge.modules.generation.render_adapter_v1.source_inputs import _build_source_maps
 from cine_forge.modules.generation.render_adapter_v1.support import load_engine_pack
 from cine_forge.schemas import Scene, ShotPlan
 from cine_forge.services import InjectedAssetService
