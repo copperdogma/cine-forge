@@ -3,6 +3,14 @@ Triaged via `/triage-inbox` skill. Processed items are deleted — the inbox is 
 
 ## Untriaged
 
+- 2026-10-21 - From self-email: **Todo: Cineforge: PJ Ace (@PJaccetturo) 18 likes · 3 replies**
+  - Email body: https://x.com/pjaccetturo/status/2112899203701547153?s=12&t=uFZE-MuhgWdh1YErEZzLtQ
+  - Original: [Gmail message](https://mail.google.com/mail/u/?authuser=cam.marsollier%40gmail.com#all/1a15eb73b27c0455). Imported 2026-10-23; untriaged.
+
+- 2026-10-12 - From self-email: **Todo Cineforge use threejs animatics as motion and blocking reference?**
+  - Email body: https://x.com/henrydaubrez/status/2109160952348422353?s=12&t=uFZE-MuhgWdh1YErEZzLtQ
+  - Original: [Gmail message](https://mail.google.com/mail/u/?authuser=cam.marsollier%40gmail.com#all/1a132364c5bdb407). Imported 2026-10-23; untriaged.
+
 - 2026-05-06 - From Conductor inbox: OpenAI's 2026-05-05 GPT-5.5
   Instant release says the ChatGPT default now uses GPT-5.5 Instant and the
   API exposure is `chat-latest`. Treat this as a cheap/default-lane challenger,
