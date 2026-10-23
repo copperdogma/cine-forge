@@ -11,15 +11,7 @@ import { RECIPE_NAMES } from '@/lib/constants'
 import { timeAgo } from '@/lib/format'
 import { StatusIcon, StatusBadge } from '@/components/StatusBadge'
 import { PageHeader } from '@/components/PageHeader'
-
-function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 4,
-    maximumFractionDigits: 4,
-  }).format(value)
-}
+import { formatCost } from '@/lib/cost-format'
 
 function RunListSkeleton() {
   return (
@@ -92,6 +84,8 @@ export default function ProjectRuns() {
     )
   }
 
+  const costOverviewByRunId = new Map(projectCosts?.runs.map((run) => [run.run_id, run]))
+
   return (
     <div className="w-full">
       <PageHeader title="Run History" subtitle="All pipeline runs for this project" />
@@ -136,8 +130,17 @@ export default function ProjectRuns() {
                     )}
                   </div>
                 </div>
-                <span className="text-xs text-muted-foreground shrink-0">
-                  {formatCurrency(run.total_cost_usd)}
+                <span className="text-right text-xs text-muted-foreground shrink-0">
+                  <span className="block">
+                    {formatCost(costOverviewByRunId.get(run.run_id)?.total_cost_usd ?? run.total_cost_usd)}
+                  </span>
+                  <span className="block">
+                    {costOverviewByRunId.get(run.run_id)?.cost_is_complete === false
+                      ? 'Known estimated subtotal'
+                      : costOverviewByRunId.has(run.run_id)
+                        ? 'Recorded estimate'
+                        : 'Estimate · completeness unknown'}
+                  </span>
                 </span>
               </button>
               {i < runs.length - 1 && <Separator />}

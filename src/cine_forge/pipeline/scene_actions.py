@@ -7,6 +7,7 @@ from typing import Any
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.env import provider_env_names, resolve_env
+from cine_forge.pipeline.media_readiness import media_readiness_items
 from cine_forge.schemas import ArtifactHealth, ArtifactRef
 from cine_forge.schemas.scene_scope import (
     SceneActionPreflight,
@@ -273,6 +274,11 @@ def build_scene_action_preflight(
         if recipe_id == "ai_previz_generation":
             _apply_ai_previz_prerequisite_strategy(preflight)
 
+    preflight.items.extend(media_readiness_items(
+        recipe_id, preflight.start_from, end_at,
+        project_path=project_path, scene_ids=scene_ids,
+    ))
+
     if any(item.kind == "soft_block" for item in preflight.items):
         preflight.status = "soft_block"
         preflight.summary = f"{action_label} can't run for {scope_label} yet."
@@ -417,12 +423,8 @@ def _intent_mood_missing_item(detail: str) -> SceneActionPreflightItem:
     )
 
 
-def _populate_generation_preflight(
-    *,
-    preflight: SceneActionPreflight,
-    store: ArtifactStore,
-    recipe_id: str,
-    scene_ids: list[str],
+def _populate_generation_foundation_preflight(
+    *, preflight: SceneActionPreflight, store: ArtifactStore,
 ) -> None:
     timeline_needs_build = not _has_healthy_project_artifact(store, "timeline")
     track_manifest_needs_build = not _has_healthy_project_artifact(store, "track_manifest")
@@ -456,6 +458,16 @@ def _populate_generation_preflight(
             action_label="Open Continuity",
             action_path="world/continuity",
         ))
+
+
+def _populate_generation_preflight(
+    *,
+    preflight: SceneActionPreflight,
+    store: ArtifactStore,
+    recipe_id: str,
+    scene_ids: list[str],
+) -> None:
+    _populate_generation_foundation_preflight(preflight=preflight, store=store)
 
     if recipe_id in {
         "storyboard_generation",
@@ -537,73 +549,49 @@ def _populate_generation_preflight(
             ))
 
     if recipe_id in {"ai_previz_generation", "render_generation"}:
-        missing_render_clip_plan = _missing_or_unhealthy_scene_artifact_count(
-            store,
-            "render_clip_plan",
-            scene_ids,
-            preflight.scene_scope,
-        )
-        render_clip_plan_needs_build = missing_render_clip_plan != 0
-        if render_clip_plan_needs_build:
-            render_clip_plan_build_count = missing_render_clip_plan or len(scene_ids) or 1
-            _append_unique(preflight.auto_build_artifact_types, "render_clip_plan")
-            preflight.items.append(SceneActionPreflightItem(
-                kind="auto_build",
-                label="Render clip planning",
-                detail=_auto_build_detail(
-                    preflight.scene_scope,
-                    render_clip_plan_build_count,
-                    "This run will estimate scene duration and render clip boundaries first.",
-                    (
-                        "This run will estimate scene duration and render clip boundaries "
-                        "for the missing scenes first."
-                    ),
-                ),
-                action_label=_scene_tab_action_label(
-                    preflight.scene_scope,
-                    "Open Previz" if recipe_id == "ai_previz_generation" else "Open Render",
-                    "Open Scenes",
-                ),
-                action_path=_scene_tab_action_path(
-                    preflight.scene_scope,
-                    scene_ids,
-                    "previz" if recipe_id == "ai_previz_generation" else "render",
-                ),
-            ))
-        else:
-            _append_unique(preflight.reused_artifact_types, "render_clip_plan")
+        _populate_render_clip_preflight(preflight=preflight, store=store, scene_ids=scene_ids)
 
-    if recipe_id == "render_generation":
-        missing_keyframes = _missing_or_unhealthy_scene_artifact_count(
-            store,
-            "keyframe",
-            scene_ids,
-            preflight.scene_scope,
+
+def _render_clip_autobuild_item(
+    scope: SceneExecutionScope, scene_build_count: int,
+) -> SceneActionPreflightItem:
+    return SceneActionPreflightItem(
+        kind="auto_build",
+        label="Render clip planning",
+        detail=_auto_build_detail(
+            scope,
+            scene_build_count,
+            "This run will estimate scene duration and render clip boundaries first.",
+            (
+                "This run will estimate scene duration and render clip boundaries "
+                "for the missing scenes first."
+            ),
+        ),
+        # This information is displayed on the active Render/Previz tab.
+        # A current-tab link cannot repair an automatic prerequisite.
+        action_label="Open Scenes" if scope.mode == "all_scenes" else None,
+        action_path="scenes" if scope.mode == "all_scenes" else None,
+    )
+
+
+def _populate_render_clip_preflight(
+    *, preflight: SceneActionPreflight, store: ArtifactStore, scene_ids: list[str],
+) -> None:
+    missing_render_clip_plan = _missing_or_unhealthy_scene_artifact_count(
+        store,
+        "render_clip_plan",
+        scene_ids,
+        preflight.scene_scope,
+    )
+    render_clip_plan_needs_build = missing_render_clip_plan != 0
+    if render_clip_plan_needs_build:
+        render_clip_plan_build_count = missing_render_clip_plan or len(scene_ids) or 1
+        _append_unique(preflight.auto_build_artifact_types, "render_clip_plan")
+        preflight.items.append(
+            _render_clip_autobuild_item(preflight.scene_scope, render_clip_plan_build_count)
         )
-        if missing_keyframes:
-            preflight.items.append(SceneActionPreflightItem(
-                kind="warning",
-                label="Keyframes missing",
-                detail=_warning_detail(
-                    preflight.scene_scope,
-                    missing_keyframes,
-                    (
-                        "No keyframes are locked for this scene yet. Render will "
-                        "proceed prompt-first and may need a later framing pass."
-                    ),
-                    (
-                        f"Keyframes are missing for {missing_keyframes} scenes. "
-                        "Those renders will proceed prompt-first and may need a "
-                        "later framing pass."
-                    ),
-                ),
-                action_label=_scene_tab_action_label(
-                    preflight.scene_scope,
-                    "Open Render",
-                    "Open Scenes",
-                ),
-                action_path=_scene_tab_action_path(preflight.scene_scope, scene_ids, "render"),
-            ))
+    else:
+        _append_unique(preflight.reused_artifact_types, "render_clip_plan")
 
 
 def _project_has_input(project_path: Path) -> bool:
@@ -761,29 +749,7 @@ def _cascade_full_generation_prep_autobuilds(
     ))
 
     _append_unique(preflight.auto_build_artifact_types, "render_clip_plan")
-    preflight.items.append(SceneActionPreflightItem(
-        kind="auto_build",
-        label="Render clip planning",
-        detail=_auto_build_detail(
-            preflight.scene_scope,
-            scene_build_count,
-            "This run will estimate scene duration and render clip boundaries first.",
-            (
-                "This run will estimate scene duration and render clip boundaries "
-                "for the missing scenes first."
-            ),
-        ),
-        action_label=_scene_tab_action_label(
-            preflight.scene_scope,
-            "Open Previz" if recipe_id == "ai_previz_generation" else "Open Render",
-            "Open Scenes",
-        ),
-        action_path=_scene_tab_action_path(
-            preflight.scene_scope,
-            scene_ids,
-            "previz" if recipe_id == "ai_previz_generation" else "render",
-        ),
-    ))
+    preflight.items.append(_render_clip_autobuild_item(preflight.scene_scope, scene_build_count))
 
 
 def _coerced_generation_start_stage(preflight: SceneActionPreflight) -> str | None:

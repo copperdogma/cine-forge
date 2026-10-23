@@ -1,0 +1,63 @@
+{
+  "recipe_id": "ai_previz_generation",
+  "recipe_name": "AI Previz",
+  "start_from": null,
+  "end_at": null,
+  "scene_scope": {
+    "mode": "all_scenes",
+    "scene_ids": []
+  },
+  "status": "warn",
+  "summary": "AI Previz can run for all scenes with warnings. xAI AI Previz credentials are configured.",
+  "prerequisite_strategy": "one_pass_previz_prep",
+  "reused_artifact_types": [
+    "timeline",
+    "track_manifest"
+  ],
+  "auto_build_artifact_types": [
+    "shot_plan",
+    "render_clip_plan"
+  ],
+  "missing_optional_artifact_types": [
+    "rhythm_and_flow",
+    "look_and_feel",
+    "sound_and_music"
+  ],
+  "items": [
+    {
+      "kind": "auto_build",
+      "label": "Shot planning",
+      "detail": "This run will build shot plans for the missing scenes first.",
+      "action_label": "Open Scenes",
+      "action_path": "scenes"
+    },
+    {
+      "kind": "warning",
+      "label": "Rhythm & Flow missing",
+      "detail": "Rhythm & Flow is missing for 5 scenes. CineForge can still continue, but those outputs will lean more on AI defaults.",
+      "action_label": "Open Scenes",
+      "action_path": "scenes"
+    },
+    {
+      "kind": "warning",
+      "label": "Look & Feel missing",
+      "detail": "Look & Feel is missing for 5 scenes. CineForge can still continue, but those outputs will lean more on AI defaults.",
+      "action_label": "Open Scenes",
+      "action_path": "scenes"
+    },
+    {
+      "kind": "warning",
+      "label": "Sound & Music missing",
+      "detail": "Sound & Music is missing for 5 scenes. CineForge can still continue, but those outputs will lean more on AI defaults.",
+      "action_label": "Open Scenes",
+      "action_path": "scenes"
+    },
+    {
+      "kind": "auto_build",
+      "label": "Render clip planning",
+      "detail": "This run will estimate scene duration and render clip boundaries for the missing scenes first.",
+      "action_label": "Open Scenes",
+      "action_path": "scenes"
+    }
+  ]
+}

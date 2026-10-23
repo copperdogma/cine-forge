@@ -1,0 +1,21 @@
+{
+  "source_project": "open-frequency",
+  "ingest_run_id": "run-fae39865",
+  "recorded_cost_usd": 0.0809394,
+  "stages": {
+    "breakdown_scenes": "done",
+    "ingest": "done",
+    "normalize": "done",
+    "project_config": "done",
+    "script_bible": "done"
+  },
+  "scene_ids": [
+    "scene_001",
+    "scene_002",
+    "scene_003",
+    "scene_004"
+  ],
+  "media_generation_artifact_types_present": [],
+  "unchanged_ingest_state": true,
+  "fixture_hash": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+}

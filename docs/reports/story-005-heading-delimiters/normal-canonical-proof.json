@@ -1,0 +1,195 @@
+{
+  "input": "output/open-frequency/artifacts/canonical_script/project/v1.json",
+  "source_sha256": "1c2b7a2ef07e93a118108fd3f0ab9757fd2c8c58e820e3b920aee59792555805",
+  "loaded_module": "/Users/cam/Documents/Projects/cine-forge/src/cine_forge/modules/ingest/scene_breakdown_v1/main.py",
+  "dynamic_import": "spec_from_file_location / exec_module",
+  "real_fountain_parser": true,
+  "ai_mode": "mock, call_llm forbidden",
+  "typed_scene_count": 4,
+  "scene3": {
+    "scene_id": "scene_003",
+    "scene_number": 3,
+    "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+    "location": "High School Gym Shelter",
+    "time_of_day": "PRE-DAWN",
+    "int_ext": "INT",
+    "characters_present": [
+      "JUNE",
+      "KELL",
+      "MAYA",
+      "NOAH"
+    ],
+    "characters_present_ids": [
+      "june",
+      "kell",
+      "maya",
+      "noah"
+    ],
+    "props_mentioned": [],
+    "elements": [
+      {
+        "element_type": "scene_heading",
+        "content": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN"
+      },
+      {
+        "element_type": "action",
+        "content": "Cots line the basketball court. Handwritten signs point toward MEDICINE, MEALS, and MESSAGES."
+      },
+      {
+        "element_type": "action",
+        "content": "June records updates at a folding table while Kell sorts flashlight batteries into a tackle box."
+      },
+      {
+        "element_type": "action",
+        "content": "MAYA, a teenager in a soaked marching-band jacket, approaches with a flyer for a missing dog named COMET."
+      },
+      {
+        "element_type": "character",
+        "content": "MAYA"
+      },
+      {
+        "element_type": "dialogue",
+        "content": "Can the station announce this too?"
+      },
+      {
+        "element_type": "character",
+        "content": "JUNE"
+      },
+      {
+        "element_type": "dialogue",
+        "content": "If we're naming roads and insulin drops, we can name dogs."
+      },
+      {
+        "element_type": "character",
+        "content": "KELL"
+      },
+      {
+        "element_type": "dialogue",
+        "content": "Comet better be worth interrupting the weather report."
+      },
+      {
+        "element_type": "character",
+        "content": "MAYA"
+      },
+      {
+        "element_type": "dialogue",
+        "content": "He stole my grilled cheese and slept through the evacuation. He's family."
+      },
+      {
+        "element_type": "action",
+        "content": "Noah's voice crackles over a tabletop radio."
+      },
+      {
+        "element_type": "character",
+        "content": "NOAH (RADIO)"
+      },
+      {
+        "element_type": "dialogue",
+        "content": "East road is open one lane. Bridge crew wants no heavy trucks till daylight."
+      },
+      {
+        "element_type": "action",
+        "content": "June writes the update beneath NORTH SHELTER on the whiteboard, then takes Maya's flyer."
+      },
+      {
+        "element_type": "character",
+        "content": "JUNE"
+      },
+      {
+        "element_type": "dialogue",
+        "content": "Spell his name for the broadcast."
+      },
+      {
+        "element_type": "character",
+        "content": "MAYA"
+      },
+      {
+        "element_type": "dialogue",
+        "content": "C-O-M-E-T. Like the fast kind of star."
+      },
+      {
+        "element_type": "transition",
+        "content": "CUT TO:"
+      }
+    ],
+    "narrative_beats": [],
+    "tone_mood": "neutral",
+    "tone_shifts": [],
+    "source_span": {
+      "start_line": 68,
+      "end_line": 102
+    },
+    "inferences": [],
+    "provenance": [
+      {
+        "field_name": "heading",
+        "method": "parser",
+        "evidence": "Extracted from first non-empty scene line",
+        "confidence": 0.95
+      },
+      {
+        "field_name": "int_ext",
+        "method": "rule",
+        "evidence": "Parsed heading prefix token",
+        "confidence": 0.92
+      },
+      {
+        "field_name": "time_of_day",
+        "method": "rule",
+        "evidence": "Parsed heading suffix segment",
+        "confidence": 0.9
+      },
+      {
+        "field_name": "location",
+        "method": "rule",
+        "evidence": "Parsed heading core location segment",
+        "confidence": 0.88
+      },
+      {
+        "field_name": "characters_present",
+        "method": "rule",
+        "evidence": "Collected from dialogue character cues",
+        "confidence": 0.84
+      }
+    ],
+    "confidence": 0.898
+  },
+  "index_scene3": {
+    "scene_id": "scene_003",
+    "scene_number": 3,
+    "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+    "location": "High School Gym Shelter",
+    "time_of_day": "PRE-DAWN",
+    "characters_present": [
+      "JUNE",
+      "KELL",
+      "MAYA",
+      "NOAH"
+    ],
+    "characters_present_ids": [
+      "june",
+      "kell",
+      "maya",
+      "noah"
+    ],
+    "props_mentioned": [],
+    "source_span": {
+      "start_line": 68,
+      "end_line": 102
+    },
+    "tone_mood": "neutral"
+  },
+  "unique_locations": [
+    "Community Radio Studio",
+    "High School Gym Shelter",
+    "Water Tower Catwalk"
+  ],
+  "cost": {
+    "model": "mock",
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "estimated_cost_usd": 0.0,
+    "call_count": 0
+  },
+  "old_artifact_bytes_unchanged": true
+}

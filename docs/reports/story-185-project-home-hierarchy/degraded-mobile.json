@@ -1,0 +1,132 @@
+{
+  "project": "brick-steel-full-retired",
+  "width": 390,
+  "height": 844,
+  "label": "degraded-mobile",
+  "healthy": false,
+  "layout": {
+    "height": 844,
+    "script": {
+      "height": 3734.21875,
+      "left": 16,
+      "top": 462,
+      "width": 358
+    },
+    "scrollWidth": 390,
+    "width": 390
+  },
+  "checks": [
+    {
+      "name": "Screenplay starts in initial viewport",
+      "pass": true,
+      "detail": {
+        "height": 844,
+        "script": {
+          "height": 3734.21875,
+          "left": 16,
+          "top": 462,
+          "width": 358
+        },
+        "scrollWidth": 390,
+        "width": 390
+      }
+    },
+    {
+      "name": "No page horizontal overflow",
+      "pass": true,
+      "detail": {
+        "height": 844,
+        "script": {
+          "height": 3734.21875,
+          "left": 16,
+          "top": 462,
+          "width": 358
+        },
+        "scrollWidth": 390,
+        "width": 390
+      }
+    },
+    {
+      "name": "Scenes visible without chat",
+      "pass": true
+    },
+    {
+      "name": "No persistent Artifact Health card",
+      "pass": true
+    },
+    {
+      "name": "No persistent Final Output card",
+      "pass": true
+    },
+    {
+      "name": "Actionable alert follows real health",
+      "pass": true
+    },
+    {
+      "name": "Script Bible fits viewport",
+      "pass": true,
+      "detail": {
+        "bottom": 801.796875,
+        "clientWidth": 356,
+        "right": 374,
+        "scrollTop": 0,
+        "scrollWidth": 356,
+        "x": 16,
+        "y": 42.203125
+      }
+    },
+    {
+      "name": "Bible retains story details",
+      "pass": true
+    },
+    {
+      "name": "Script Bible restores focus",
+      "pass": true,
+      "detail": "Script Bible"
+    },
+    {
+      "name": "Project Cut fits viewport",
+      "pass": true,
+      "detail": {
+        "bottom": 721.25,
+        "clientWidth": 356,
+        "right": 374,
+        "scrollTop": 0,
+        "scrollWidth": 356,
+        "x": 16,
+        "y": 122.75
+      }
+    },
+    {
+      "name": "Clip and scene count labels",
+      "pass": true
+    },
+    {
+      "name": "Project Cut restores focus",
+      "pass": true,
+      "detail": "Project Cut"
+    },
+    {
+      "name": "Export fits viewport",
+      "pass": true,
+      "detail": {
+        "bottom": 682.5,
+        "clientWidth": 372,
+        "right": 382,
+        "scrollTop": 0,
+        "scrollWidth": 372,
+        "x": 8,
+        "y": 161.5
+      }
+    },
+    {
+      "name": "Screenplay and project data exports reachable",
+      "pass": true
+    },
+    {
+      "name": "Existing export closes",
+      "pass": true
+    }
+  ],
+  "consoleErrors": []
+}

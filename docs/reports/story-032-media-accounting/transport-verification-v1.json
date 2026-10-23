@@ -1,0 +1,59 @@
+{
+  "offline_only": true,
+  "validation": "51 focused video client/accounting/pricing tests passed; Ruff passed",
+  "red_source_was_head": true,
+  "head": "714802a53275a959ffb250c355ce13ae8e6d85ae",
+  "red_report_sha256": "99ddb8a69672b93bed2049751918f605ddf5652e7db079edb687b36445a845e3",
+  "files": {
+    "src/cine_forge/ai/video.py": {
+      "lines": 301,
+      "largest_function": 58,
+      "sha256": "7f696711c56adcc3a5e1de80789f2e5f463c4e32249576a3dd490f9899e8097b"
+    },
+    "src/cine_forge/ai/video_http.py": {
+      "lines": 85,
+      "largest_function": 39,
+      "sha256": "497a930bc70a0cf5a87376d5c9ac1c514f41d2fbc53aa7e49e47669cb6948b80"
+    },
+    "src/cine_forge/ai/video_inputs.py": {
+      "lines": 89,
+      "largest_function": 34,
+      "sha256": "082b793f90918e934118a61843649232133e28965693a60cbcf536894393b3e8"
+    },
+    "src/cine_forge/ai/video_legacy.py": {
+      "lines": 260,
+      "largest_function": 96,
+      "sha256": "1f42faa5582200817aeb2b0cd65e03eac8ccd7806447914bfba42b78a11bc1c1"
+    },
+    "src/cine_forge/ai/video_pricing.py": {
+      "lines": 46,
+      "largest_function": 16,
+      "sha256": "7288e739b61091d33dafa3bf49e782ffdb3d94b6cc71ad0e92142538304b58e6"
+    },
+    "src/cine_forge/ai/video_types.py": {
+      "lines": 68,
+      "largest_function": 18,
+      "sha256": "86b214680a2d84bcd200654272f0dfa8e03f98f0a4749d3f8989a6f5b5fe77fd"
+    },
+    "tests/unit/test_video_client.py": {
+      "lines": 356,
+      "largest_function": 73,
+      "sha256": "1047ef97907967a995b9c3fd408a4b38654b392f85c8158af2af2fbd81bdfc96"
+    },
+    "tests/unit/test_video_accounting.py": {
+      "lines": 294,
+      "largest_function": 34,
+      "sha256": "8cb66503f24c30428cd39d39a80b17f9f76ee484790a8247ceb7cd74ac16d585"
+    },
+    "tests/unit/test_video_pricing.py": {
+      "lines": 97,
+      "largest_function": 16,
+      "sha256": "461409944f83eedb28bb7fc8ce4e289058c4a0912c1503339525a9861a8ce9f8"
+    }
+  },
+  "limits": [
+    "Prices are checked list-price estimates, not provider billing.",
+    "No live endpoint/account access, output quality, or crash-recovery proof.",
+    "Retired OpenAI/Google low-level fixtures only preserve historical serialization mechanics."
+  ]
+}

@@ -1,0 +1,80 @@
+[
+  {
+    "view": "desktop",
+    "surface": "Render current scene",
+    "noSelfLink": true,
+    "autoBuildCopy": true,
+    "clipPlanningInfo": true,
+    "continuityRepair": "/open-frequency/world/continuity"
+  },
+  {
+    "view": "desktop",
+    "surface": "Previz current scene",
+    "noSelfLink": true,
+    "autoBuildCopy": true
+  },
+  {
+    "view": "desktop",
+    "surface": "Previz all scenes",
+    "openScenesLinks": 5,
+    "noSelfLink": true
+  },
+  {
+    "view": "desktop",
+    "surface": "Characters",
+    "landsOnAvailableDeepBreakdown": true
+  },
+  {
+    "view": "desktop",
+    "surface": "Locations",
+    "landsOnAvailableDeepBreakdown": true
+  },
+  {
+    "view": "desktop",
+    "surface": "Props",
+    "landsOnAvailableDeepBreakdown": true
+  },
+  {
+    "view": "mobile",
+    "surface": "Characters",
+    "landsOnAvailableDeepBreakdown": true,
+    "geometry": {
+      "scrollWidth": 390,
+      "width": 390
+    }
+  },
+  {
+    "view": "mobile",
+    "surface": "Locations",
+    "landsOnAvailableDeepBreakdown": true,
+    "geometry": {
+      "scrollWidth": 390,
+      "width": 390
+    }
+  },
+  {
+    "view": "mobile",
+    "surface": "Props",
+    "landsOnAvailableDeepBreakdown": true,
+    "geometry": {
+      "scrollWidth": 390,
+      "width": 390
+    }
+  },
+  {
+    "view": "mobile",
+    "surface": "Render current scene",
+    "noSelfLink": true,
+    "autoBuildCopy": true,
+    "geometry": {
+      "scrollWidth": 390,
+      "width": 390
+    }
+  },
+  {
+    "view": "mobile",
+    "surface": "Previz current scene",
+    "noSelfLink": true,
+    "autoBuildCopy": true
+  }
+]

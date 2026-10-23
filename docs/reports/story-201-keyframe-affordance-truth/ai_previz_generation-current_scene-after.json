@@ -1,0 +1,40 @@
+{
+  "recipe_id": "ai_previz_generation",
+  "recipe_name": "AI Previz",
+  "start_from": null,
+  "end_at": null,
+  "scene_scope": {
+    "mode": "current_scene",
+    "scene_ids": [
+      "scene_001"
+    ]
+  },
+  "status": "warn",
+  "summary": "AI Previz can run for scene_001 with warnings. xAI AI Previz credentials are configured.",
+  "prerequisite_strategy": "one_pass_previz_prep",
+  "reused_artifact_types": [
+    "timeline",
+    "track_manifest"
+  ],
+  "auto_build_artifact_types": [
+    "shot_plan",
+    "render_clip_plan"
+  ],
+  "missing_optional_artifact_types": [],
+  "items": [
+    {
+      "kind": "auto_build",
+      "label": "Shot planning",
+      "detail": "This run will build shot plans first.",
+      "action_label": "Open Shots",
+      "action_path": "scenes/scene_001?tab=shots"
+    },
+    {
+      "kind": "auto_build",
+      "label": "Render clip planning",
+      "detail": "This run will estimate scene duration and render clip boundaries first.",
+      "action_label": "Open Previz",
+      "action_path": "scenes/scene_001?tab=previz"
+    }
+  ]
+}

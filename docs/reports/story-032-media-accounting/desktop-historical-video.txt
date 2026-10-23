@@ -1,0 +1,164 @@
+- heading "Command Palette" [level=2]
+- paragraph: Search for a command to run...
+- complementary:
+  - link "CineForge":
+    - /url: /
+    - generic: CineForge
+  - navigation "Project navigation":
+    - link "Script":
+      - /url: /brick-steel-full-retired
+      - generic: Script
+    - link "Intent":
+      - /url: /brick-steel-full-retired/intent
+      - generic: Intent
+    - link "Scenes 6":
+      - /url: /brick-steel-full-retired/scenes
+      - generic: Scenes
+      - generic: "6"
+    - link "Characters 11":
+      - /url: /brick-steel-full-retired/characters
+      - generic: Characters
+      - generic: "11"
+    - link "Locations 6":
+      - /url: /brick-steel-full-retired/locations
+      - generic: Locations
+      - generic: "6"
+    - link "Props 1":
+      - /url: /brick-steel-full-retired/props
+      - generic: Props
+      - generic: "1"
+    - link "Inbox 61":
+      - /url: /brick-steel-full-retired/inbox
+      - generic: Inbox
+      - generic: "61"
+    - button "World":
+      - generic: World
+    - button "Advanced" [expanded]:
+      - generic: Advanced
+    - link "Runs":
+      - /url: /brick-steel-full-retired/runs
+      - generic: Runs
+    - link "Artifacts":
+      - /url: /brick-steel-full-retired/artifacts
+      - generic: Artifacts
+    - button "Settings":
+      - generic: Settings
+  - button "v2026.10.23-04"
+- main:
+  - button "Hide sidebar":
+  - navigation "Breadcrumb":
+    - 'link "Brick & Steel: Full Retired"':
+      - /url: /brick-steel-full-retired
+    - link "Artifacts":
+      - /url: /brick-steel-full-retired/artifacts
+    - generic: Ai Previz Video — scene_001
+  - button "Open command palette":
+    - generic: ⌘K
+  - button "Show panel":
+  - button "Script":
+    - generic: Script
+    - generic: 5/5
+  - button "World":
+    - generic: World
+    - generic: 6/6
+  - button "Direction":
+    - generic: Direction
+    - generic: 6/6
+  - button "Shots":
+    - generic: Shots
+    - generic: 1/1
+  - button "Storyboards":
+    - generic: Storyboards
+    - generic: 2/3
+  - button "Production":
+    - generic: Production
+    - generic: 3/3
+  - button "Back":
+    - text: Back
+  - heading "EXT. BRICK'S PATIO - DAY" [level=1]
+  - text: Stale
+  - generic: AI Previz
+  - generic: ·
+  - generic: scene_001
+  - generic: ·
+  - text: v1
+  - button "Edit":
+    - text: Edit
+  - complementary:
+    - heading "Version History" [level=2]:
+      - text: Version History
+    - 'button "Switch to version 2, health: stale"':
+      - generic: v2
+      - text: Stale
+      - text: 4/29/2026, 3:42:08 PM
+    - 'button "Switch to version 1, health: stale, currently selected"':
+      - generic: v1
+      - text: Stale
+      - text: 4/29/2026, 3:07:55 PM
+  - main:
+    - heading "Impact Assessment" [level=2]
+    - paragraph: Impact actions only apply to the latest version of an artifact. Open the newest version to preview or resolve this state.
+    - heading "Metadata" [level=2]
+    - paragraph: Producing Module
+    - paragraph: render_adapter_v1
+    - paragraph: Created At
+    - paragraph: 4/29/2026, 3:07:55 PM
+    - paragraph: Intent
+    - paragraph: Scene-level AI previz clip for blocking, camera, and motion review.
+    - paragraph: Provenance
+    - generic: render_adapter_v1
+    - generic: •
+    - generic: 84%
+    - heading "Content" [level=2]
+    - button "View Raw JSON":
+      - text: View Raw JSON
+    - generic: Scene 1
+    - generic: EXT. BRICK'S PATIO - DAY
+    - generic: Experimental / Manual
+    - generic: AI previz
+    - generic: Blocking review
+    - generic: Xai
+    - generic: grok-imagine-video
+    - text: xai_grok_imagine_video
+    - text: 4s
+    - generic: 480p
+    - generic: 16:9
+    - generic: Prompt-only consistency
+    - generic: Standard prompt
+    - generic: Refresh render clips from current shot plan
+    - text: 28.3s
+    - generic: "Current recipe: Cost blocked"
+    - text: "Recorded estimate · completeness unknown: $0.00"
+    - status: This saved video has no cost-completeness record. Its amount is an unverified historical estimate.
+    - paragraph: This clip is previz, not final footage. Use it to judge camera placement, blocking, motion, pacing, and location readability without obsessing over polish.
+    - paragraph: "Prep strategy: Refresh render clips from current shot plan"
+    - paragraph: "Reused: Track Manifest, Shot Plan"
+    - paragraph: "Grok Imagine Previz is still the intended previz lane, but it remains blocked. No previz-usefulness score was found for the active engine pack `xai_grok_imagine_video`."
+    - paragraph: "Current recipe cost blocker: xai_grok_imagine_video does not have a recorded benchmark or provider pricing rate, so AI-previz cost cannot yet be estimated honestly."
+    - paragraph: "No previz-usefulness score was found for the active engine pack `xai_grok_imagine_video`."
+    - paragraph: xai_grok_imagine_video does not have a recorded benchmark or provider pricing rate, so AI-previz cost cannot yet be estimated honestly.
+    - link "Prompt Detail":
+      - /url: /brick-steel-full-retired/artifacts/ai_previz_prompt/scene_001/1
+      - text: Prompt Detail
+    - paragraph: consistency_strategy=prompt_only
+    - paragraph: prompt_profile=standard
+    - paragraph: style_profile=cineforge_low_fidelity_previz_v1
+    - paragraph: "Character visual reference: brick_braddock stayed prompt-only because xai_grok_imagine_video ran out of image slots."
+    - paragraph: "Character visual reference: dick_steel stayed prompt-only because xai_grok_imagine_video ran out of image slots."
+    - generic: "Inputs: bible_manifest, character_injected_image, look_and_feel, rhythm_and_flow, scene, shot_plan, sound_and_music"
+    - generic: Resolved Inputs
+    - paragraph: "Character visual reference: brick_braddock"
+    - paragraph: artifacts/bibles/character_brick_braddock/design_study_r1_img1.jpg
+    - generic: Prompt Context
+    - generic: Character Injected Image
+    - generic: Selected Visual Reference
+    - generic: bible_manifest v2
+    - paragraph: "Media type: image/jpeg"
+    - paragraph: "Character visual reference: dick_steel"
+    - paragraph: artifacts/bibles/character_dick_steel/design_study_r1_img3.jpg
+    - generic: Prompt Context
+    - generic: Character Injected Image
+    - generic: Selected Visual Reference
+    - generic: bible_manifest v2
+    - paragraph: "Media type: image/jpeg"
+- region "Notifications alt+T"

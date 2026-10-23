@@ -8,6 +8,7 @@ from typing import Any
 from pydantic import BaseModel, Field
 
 from cine_forge.schemas import ArtifactRef
+from cine_forge.schemas.media_cost import CostReceipt
 
 
 class StageStatus(StrEnum):
@@ -35,6 +36,8 @@ class StageRunState(BaseModel):
     artifact_refs: list[ArtifactRef] = Field(default_factory=list)
     duration_seconds: float = Field(ge=0.0, default=0.0)
     cost_usd: float = Field(ge=0.0, default=0.0)
+    cost_is_complete: bool = True
+    cost_receipts: list[CostReceipt] = Field(default_factory=list)
     input_tokens: int = Field(ge=0, default=0)
     output_tokens: int = Field(ge=0, default=0)
     started_at: float | None = None
@@ -51,6 +54,7 @@ class RunState(BaseModel):
     stages: dict[str, StageRunState]
     runtime_params: dict[str, Any] = Field(default_factory=dict)
     total_cost_usd: float = Field(ge=0.0)
+    cost_is_complete: bool = True
     project_cost_baseline_usd: float = Field(ge=0.0, default=0.0)
     budget_warning_scopes: list[str] = Field(default_factory=list)
     stage_order: list[str] = Field(default_factory=list)

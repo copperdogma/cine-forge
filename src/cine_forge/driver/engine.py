@@ -19,9 +19,10 @@ from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.artifact_persister import ArtifactPersister
 from cine_forge.driver.budget_guard import BudgetDecision, BudgetGuard
 from cine_forge.driver.canon_gate_runner import StageCanonGate
-from cine_forge.driver.cost_records import _coerce_cost, _cost_call_count
+from cine_forge.driver.cost_records import record_module_result_cost
 from cine_forge.driver.discovery import ModuleManifest, discover_modules
 from cine_forge.driver.event_emitter import EventEmitter
+from cine_forge.driver.module_execution import run_module_with_retry
 from cine_forge.driver.recipe import (
     Recipe,
     RecipeStage,
@@ -458,7 +459,7 @@ class DriverEngine:
                         stage_overrides=retry_config.stage_max_attempt_overrides,
                     ),
                 )
-                module_result, active_attempt_model = self._run_module_with_retry(
+                module_result, active_attempt_model = run_module_with_retry(
                     module_runner=module_runner,
                     module_inputs=module_inputs,
                     stage=stage,
@@ -471,35 +472,22 @@ class DriverEngine:
                     stage_state=stage_state,
                     state_lock=state_lock,
                     emitter=emitter,
-                    state_path=state_path,
                     run_state=run_state,
+                    project_dir=self.project_dir,
+                    retry_policy=self.retry_policy,
+                    write_run_state=lambda: self._write_run_state(state_path, run_state),
                 )
                 outputs = module_result.get("artifacts", [])
-                cost_record = _coerce_cost(module_result.get("cost"))
-                raw_cost = module_result.get("cost")
-                call_count = _cost_call_count(raw_cost)
-                model_used = module_result.get("model")
-                if not model_used and cost_record:
-                    model_used = cost_record.model
-                if not model_used and active_attempt_model:
-                    model_used = active_attempt_model
-
                 with state_lock:
+                    cost_record = record_module_result_cost(
+                        module_result, stage_state=stage_state, run_state=run_state,
+                    )
+                    model_used = module_result.get("model")
+                    if not model_used and cost_record:
+                        model_used = cost_record.model
+                    if not model_used and active_attempt_model:
+                        model_used = active_attempt_model
                     stage_state["model_used"] = model_used or "code"
-                    stage_state["call_count"] += call_count
-                    if cost_record:
-                        stage_state["cost_usd"] = round(
-                            float(stage_state.get("cost_usd", 0.0) or 0.0)
-                            + cost_record.estimated_cost_usd,
-                            8,
-                        )
-                        stage_state["input_tokens"] += cost_record.input_tokens
-                        stage_state["output_tokens"] += cost_record.output_tokens
-                        run_state["total_cost_usd"] = round(
-                            float(run_state.get("total_cost_usd", 0.0) or 0.0)
-                            + cost_record.estimated_cost_usd,
-                            8,
-                        )
 
                 persisted_outputs = persister.persist_batch(outputs, cost_record)
 
@@ -588,136 +576,6 @@ class DriverEngine:
                 run_state=run_state,
             )
             raise
-
-    def _run_module_with_retry(
-        self,
-        module_runner: Callable[..., dict[str, Any]],
-        module_inputs: dict[str, Any],
-        stage: RecipeStage,
-        stage_id: str,
-        run_id: str,
-        resolved_runtime_params: dict[str, Any],
-        persister: ArtifactPersister,
-        model_attempt_plan: list[str],
-        retry_config: RetryConfig,
-        stage_state: dict[str, Any],
-        state_lock: threading.Lock,
-        emitter: EventEmitter,
-        state_path: Path,
-        run_state: dict[str, Any],
-    ) -> tuple[dict[str, Any], str | None]:
-        """Run a module with retry/fallback logic. Returns (module_result, active_model)."""
-        if model_attempt_plan:
-            with state_lock:
-                stage_state["model_used"] = model_attempt_plan[0]
-        active_attempt_model: str | None = None
-        attempt_index = 0
-        while True:
-            active_attempt_model = (
-                model_attempt_plan[attempt_index]
-                if model_attempt_plan
-                else None
-            )
-            params_for_attempt = (
-                self.retry_policy.with_stage_model_override(stage.params, active_attempt_model)
-                if active_attempt_model
-                else stage.params
-            )
-            attempt_started = time.time()
-            try:
-                module_result = module_runner(
-                    inputs=module_inputs,
-                    params=params_for_attempt,
-                    context={
-                        "run_id": run_id,
-                        "stage_id": stage_id,
-                        "runtime_params": resolved_runtime_params,
-                        "project_dir": str(self.project_dir),
-                        "announce_artifact": persister.announce,
-                    },
-                )
-                with state_lock:
-                    stage_state["attempt_count"] += 1
-                    stage_state["attempts"].append(
-                        {
-                            "attempt": stage_state["attempt_count"],
-                            "model": active_attempt_model or "code",
-                            "provider": self.retry_policy.provider_from_model(
-                                active_attempt_model or "code"
-                            ),
-                            "status": "success",
-                            "duration_seconds": round(
-                                time.time() - attempt_started, 4
-                            ),
-                        }
-                    )
-                return module_result, active_attempt_model
-            except Exception as attempt_exc:  # noqa: BLE001
-                error_message = str(attempt_exc)
-                transient = self.retry_policy.is_retryable_stage_error(attempt_exc)
-                with state_lock:
-                    stage_state["attempt_count"] += 1
-                    stage_state["attempts"].append(
-                        {
-                            "attempt": stage_state["attempt_count"],
-                            "model": active_attempt_model or "code",
-                            "provider": self.retry_policy.provider_from_model(
-                                active_attempt_model or "code"
-                            ),
-                            "status": "failed",
-                            "error": error_message,
-                            "error_class": attempt_exc.__class__.__name__,
-                            "error_code": self.retry_policy.extract_error_code(error_message),
-                            "request_id": self.retry_policy.extract_request_id(error_message),
-                            "transient": transient,
-                            "duration_seconds": round(
-                                time.time() - attempt_started, 4
-                            ),
-                        }
-                    )
-                next_attempt_index = self.retry_policy.next_healthy_attempt_index(
-                    model_attempt_plan,
-                    start_index=attempt_index + 1,
-                )
-                has_fallback = next_attempt_index is not None
-                if has_fallback and transient:
-                    assert next_attempt_index is not None
-                    next_model = model_attempt_plan[next_attempt_index]
-                    skipped_models = model_attempt_plan[
-                        attempt_index + 1 : next_attempt_index
-                    ]
-                    retry_delay_seconds = self.retry_policy.fallback_retry_delay_seconds(
-                        attempt=attempt_index,
-                        base_delay_seconds=retry_config.base_delay_seconds,
-                        jitter_ratio=retry_config.jitter_ratio,
-                    )
-                    with state_lock:
-                        emitter.emit(ProgressEvent(
-                            event=EventType.stage_retrying,
-                            stage_id=stage_id,
-                            attempt=stage_state["attempt_count"] + 1,
-                            reason=error_message,
-                            error_code=self.retry_policy.extract_error_code(error_message),
-                            request_id=self.retry_policy.extract_request_id(error_message),
-                            retry_delay_seconds=retry_delay_seconds,
-                        ))
-                        emitter.emit(ProgressEvent(
-                            event=EventType.stage_fallback,
-                            stage_id=stage_id,
-                            from_model=active_attempt_model,
-                            to_model=next_model,
-                            reason=error_message,
-                            error_code=self.retry_policy.extract_error_code(error_message),
-                            request_id=self.retry_policy.extract_request_id(error_message),
-                            skipped_models=skipped_models,
-                        ))
-                        stage_state["model_used"] = next_model
-                        self._write_run_state(state_path, run_state)
-                    if retry_delay_seconds > 0:
-                        time.sleep(retry_delay_seconds)
-                    attempt_index = next_attempt_index
-                    continue
-                raise
 
     def _handle_stage_failure(
         self,

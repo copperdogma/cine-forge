@@ -1,0 +1,22 @@
+{
+  "classification": "Deterministic regression discovered in the in-progress Story032 driver, not a replay of original HEAD behavior.",
+  "fixture": "tests/integration/test_media_cost_receipts.py::test_invalid_module_aggregate_preserves_valid_incurred_receipts",
+  "input": "Two valid known receipts (.01 compiler + .20 video) with a malformed aggregate estimated_cost_usd string.",
+  "red": {
+    "output": "driver-aggregate-red-v1.txt",
+    "assertion": "Persisted total0.0 instead of known .21; driver parsed aggregate before recording receipts."
+  },
+  "green": {
+    "output": "driver-aggregate-green-v1.txt",
+    "passed": 9
+  },
+  "change": "Record valid incurred receipts before parsing aggregate at engine success boundary. Aggregate remains rejected and stage fails honestly.",
+  "source_hashes_after_fix": {
+    "src/cine_forge/driver/engine.py": "aa1d53449ecb0747b6480b5a660c76e24e18883df09080e91d707dc512461976",
+    "src/cine_forge/driver/cost_records.py": "3b70824d405275ceb99edf1b9d9fbb3177dc01557f99980ddcb63e22eba46259",
+    "tests/integration/test_media_cost_receipts.py": "dc5c4cffaca8a0513ba61f51aeb33c607c3519f7f9b7eb6c5ed55af805e3ba5f"
+  },
+  "limits": [
+    "Offline mechanical fixture; no provider request, generated-media quality score, historical bill reconstruction, or exact pre-fix source archive."
+  ]
+}

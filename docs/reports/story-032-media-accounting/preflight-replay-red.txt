@@ -1,0 +1,102 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+____ test_incomplete_media_cost_blocks_replay_before_new_run[resume-paused] ____
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-384/test_incomplete_media_cost_blo0')
+action = 'resume', stage_status = 'paused'
+
+    @pytest.mark.parametrize("action,stage_status", [
+        ("resume", "paused"), ("retry", "failed"),
+    ])
+    def test_incomplete_media_cost_blocks_replay_before_new_run(
+        tmp_path: Path, action: str, stage_status: str,
+    ) -> None:
+        service = OperatorConsoleService(workspace_root=tmp_path)
+        run_dir = tmp_path / "output" / "runs" / "run-uncertain"
+        run_dir.mkdir(parents=True)
+        (run_dir / "run_state.json").write_text(json.dumps({
+            "run_id": "run-uncertain", "recipe_id": "render_generation",
+            "cost_is_complete": False,
+            "stages": {"render": {
+                "status": stage_status, "cost_is_complete": False,
+                "cost_receipts": [{
+                    "receipt_id": "video-1", "component": "video", "model": "grok-imagine-video",
+                    "status": "uncertain", "cost": None, "reason": "provider accepted request",
+                    "provider_job_id": "job-123",
+                }],
+            }},
+        }))
+        with pytest.raises(ServiceError) as exc:
+            if action == "resume":
+>               service.resume_run("run-uncertain")
+
+tests/unit/test_api.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/cine_forge/api/service.py:1055: in resume_run
+    return self._orchestrator.resume_run(run_id, overrides=overrides)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/cine_forge/api/run_orchestrator.py:238: in resume_run
+    run_meta = json.loads(run_meta_path.read_text(encoding="utf-8"))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/Cellar/python@3.14/3.14.0/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py:792: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-384/test_incomplete_media_cost_blo0/output/runs/run-uncertain/operator_console_run_meta.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-384/test_incomplete_media_cost_blo0/output/runs/run-uncertain/operator_console_run_meta.json'
+
+/usr/local/Cellar/python@3.14/3.14.0/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py:776: FileNotFoundError
+____ test_incomplete_media_cost_blocks_replay_before_new_run[retry-failed] _____
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-384/test_incomplete_media_cost_blo1')
+action = 'retry', stage_status = 'failed'
+
+    @pytest.mark.parametrize("action,stage_status", [
+        ("resume", "paused"), ("retry", "failed"),
+    ])
+    def test_incomplete_media_cost_blocks_replay_before_new_run(
+        tmp_path: Path, action: str, stage_status: str,
+    ) -> None:
+        service = OperatorConsoleService(workspace_root=tmp_path)
+        run_dir = tmp_path / "output" / "runs" / "run-uncertain"
+        run_dir.mkdir(parents=True)
+        (run_dir / "run_state.json").write_text(json.dumps({
+            "run_id": "run-uncertain", "recipe_id": "render_generation",
+            "cost_is_complete": False,
+            "stages": {"render": {
+                "status": stage_status, "cost_is_complete": False,
+                "cost_receipts": [{
+                    "receipt_id": "video-1", "component": "video", "model": "grok-imagine-video",
+                    "status": "uncertain", "cost": None, "reason": "provider accepted request",
+                    "provider_job_id": "job-123",
+                }],
+            }},
+        }))
+        with pytest.raises(ServiceError) as exc:
+            if action == "resume":
+                service.resume_run("run-uncertain")
+            else:
+                service.retry_failed_stage("run-uncertain")
+>       assert exc.value.code == "unresolved_media_cost"
+E       AssertionError: assert 'recipe_not_found' == 'unresolved_media_cost'
+E         
+E         - unresolved_media_cost
+E         + recipe_not_found
+
+tests/unit/test_api.py:70: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_api.py::test_incomplete_media_cost_blocks_replay_before_new_run[resume-paused]
+FAILED tests/unit/test_api.py::test_incomplete_media_cost_blocks_replay_before_new_run[retry-failed]

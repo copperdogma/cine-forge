@@ -1,0 +1,26 @@
+{
+  "src/cine_forge/modules/generation/render_adapter_v1/main.py": {
+    "sha256": "8bdde8b38880254568d189f8790a03d7b476e82713a9fc1cdc3860e4a960b6dd",
+    "size_bytes": 33741
+  },
+  "src/cine_forge/modules/generation/render_adapter_v1/outputs.py": {
+    "sha256": "5ab0141f03d09d7677411531305b5e30700e85c6f7a7485f7d5af434cc989850",
+    "size_bytes": 13261
+  },
+  "src/cine_forge/modules/generation/render_adapter_v1/orchestration.py": {
+    "sha256": "9eabdb8dc5c880725ceb633d594e2c84c306097ec8cc6af8da2d8b2d0effd298",
+    "size_bytes": 7992
+  },
+  "tests/unit/test_render_adapter_accounting.py": {
+    "sha256": "237f70b95583a4e06efe5e887e82a063288db7d56cebce6f199c7d444b69f361",
+    "size_bytes": 4138
+  },
+  "tests/fixtures/render_accounting.json": {
+    "sha256": "69513571e715c5459c7e8a4ddc4e3333bca250c95e4ac976a8fac841c94ad461",
+    "size_bytes": 723
+  },
+  "docs/reports/story-032-media-accounting/render-red-pytest.txt": {
+    "sha256": "ddc27734216f3a98866e64a42176df384db8efcab35d156dc6225f52a964f8b7",
+    "size_bytes": 16294
+  }
+}

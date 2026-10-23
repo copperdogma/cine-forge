@@ -11,16 +11,13 @@ import {
   Circle,
   XCircle,
   FileText,
-  DollarSign,
-  Clock,
-  Cpu,
-  Layers,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { RunCostSummaryPanel } from '@/components/RunCostSummaryPanel'
+import { RunDetailMetrics } from '@/components/RunDetailOverview'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { SceneStrip } from '@/components/SceneStrip'
@@ -388,8 +385,18 @@ export default function ProjectRun() {
 
     const completedStages = Object.values(stages).filter(s => s.status === 'done' || s.status === 'skipped_reused').length
     const totalStages = stageIds.length
-    const totalCost = runCostSummary?.total_cost_usd
+    const costRecordComplete = !!runStateData?.state
+      && runCostSummary?.cost_is_complete === true
+      && runStateData.state.cost_is_complete !== false
+    const recordedCostUsd = runCostSummary?.total_cost_usd
+      ?? runStateData?.state.total_cost_usd
       ?? Object.values(stages).reduce((acc, s) => acc + (s.cost_usd || 0), 0)
+    const costCaption = runStateData?.state.cost_is_complete === false
+      || runCostSummary?.cost_is_complete === false
+      ? 'Known estimated subtotal'
+      : runCostSummary
+        ? 'Recorded cost estimate'
+        : 'Recorded estimate · completeness unknown'
 
     const duration = runStateData?.state.finished_at && runStateData?.state.started_at
       ? runStateData.state.finished_at - runStateData.state.started_at
@@ -411,6 +418,7 @@ export default function ProjectRun() {
     }
 
     const handleResumeRun = async (nextRunBudgetLimitUsd?: number) => {
+      if (!costRecordComplete) return
       try {
         const result = await resumeRunMutation.mutateAsync({
           runId: runId!,
@@ -471,56 +479,14 @@ export default function ProjectRun() {
           </Card>
         )}
 
-        {/* Summary cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 gap-4 mb-6">
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
-                <DollarSign className="h-3.5 w-3.5" />
-                Total Cost
-              </div>
-              <div className="text-xl font-bold">
-                ${totalCost.toFixed(2)}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
-                <Clock className="h-3.5 w-3.5" />
-                Duration
-              </div>
-              <div className="text-xl font-bold">
-                {formatDuration(duration)}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
-                <Cpu className="h-3.5 w-3.5" />
-                Model
-              </div>
-              <div className="text-sm font-medium truncate" title={runStateData?.state.runtime_params.default_model as string}>
-                {(runStateData?.state.runtime_params.default_model as string || 'Unknown').replace('claude-', '')}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
-                <Layers className="h-3.5 w-3.5" />
-                Stages
-              </div>
-              <div className="text-xl font-bold">
-                {completedStages}/{totalStages}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <RunDetailMetrics
+          totalCostUsd={recordedCostUsd}
+          costLabel={costCaption}
+          durationSeconds={duration}
+          defaultModel={String(runStateData?.state.runtime_params.default_model || 'Unknown')}
+          completedStages={completedStages}
+          totalStages={totalStages}
+        />
 
         <Card>
           <CardContent className="py-4 px-0">
@@ -575,11 +541,13 @@ export default function ProjectRun() {
         {projectId && runCostSummary && (
           <RunCostSummaryPanel
             projectId={projectId}
-            summary={runCostSummary}
-            resumeAction={{
+            summary={costRecordComplete
+              ? runCostSummary
+              : { ...runCostSummary, cost_is_complete: false }}
+            resumeAction={costRecordComplete ? {
               isPending: resumeRunMutation.isPending,
               onResume: handleResumeRun,
-            }}
+            } : undefined}
           />
         )}
 

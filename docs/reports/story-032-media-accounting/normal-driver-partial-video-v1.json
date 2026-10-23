@@ -1,0 +1,360 @@
+{
+  "data": {
+    "aspect_ratio": "16:9",
+    "cost": {
+      "estimated_cost_usd": 0.41,
+      "input_tokens": 120,
+      "latency_seconds": null,
+      "model": "gpt-5.4-mini+veo-3.1-generate-preview",
+      "output_tokens": 90,
+      "request_id": "video-1"
+    },
+    "cost_is_complete": true,
+    "cost_receipts": [
+      {
+        "component": "compiler",
+        "cost": {
+          "estimated_cost_usd": 0.01,
+          "input_tokens": 120,
+          "latency_seconds": 0.2,
+          "model": "gpt-5.4-mini",
+          "output_tokens": 90,
+          "request_id": "compile-scene_001"
+        },
+        "entity_id": "scene_001_clip_001",
+        "model": "gpt-5.4-mini",
+        "price": null,
+        "provider": null,
+        "provider_job_id": null,
+        "quantity": null,
+        "reason": "Compiler estimate returned by the language-model transport.",
+        "receipt_id": "compiler:df4adc4d-9d02-4380-b6aa-b377f4d80083",
+        "scene_id": "scene_001",
+        "status": "estimated"
+      },
+      {
+        "component": "video",
+        "cost": {
+          "estimated_cost_usd": 0.4,
+          "input_tokens": 0,
+          "latency_seconds": null,
+          "model": "veo-3.1-generate-preview",
+          "output_tokens": 0,
+          "request_id": null
+        },
+        "entity_id": "scene_001_clip_001",
+        "model": "veo-3.1-generate-preview",
+        "price": null,
+        "provider": null,
+        "provider_job_id": "job-1",
+        "quantity": null,
+        "reason": "Synthetic transport estimate; no claim about live pricing or lifecycle.",
+        "receipt_id": "mechanical-fixture:e150ddd0-27c7-48b3-9480-3136b8cff404",
+        "scene_id": "scene_001",
+        "status": "estimated"
+      }
+    ],
+    "duration_seconds": 8.0,
+    "engine_pack_id": "google_veo31",
+    "fallback_beat_ids": [],
+    "generation_params": {
+      "aspect_ratio": "16:9",
+      "duration_seconds": 8,
+      "provider_params": {},
+      "resolution": "720p"
+    },
+    "keyframe_ref": null,
+    "notes": [
+      "Aspect ratio '2.39:1' is not directly supported; mapped to 16:9.",
+      "Requested duration 7.0s normalized to supported duration 8s.",
+      "Render clip scene_001_clip_001 covers scene time 0-7s.",
+      "Rendering planned clip scene_001_clip_001 from a 2-clip scene render plan.",
+      "Adapter synthesized fallback sections for: character_and_performance, character_bible_state, injected_assets, location_bible_state, look_and_feel, render_clip_plan.",
+      "Adapter appended a dialogue timing contract from the shot plan because the compiler omitted: We can still stop this.",
+      "Adapter added dialogue cadence guidance for exact scripted lines."
+    ],
+    "preview_provenance": {
+      "auto_build_artifact_types": [],
+      "consistency_strategy": null,
+      "estimated_cost_usd": 0.41,
+      "fidelity_intent": "render_preview",
+      "generation_latency_ms": 2,
+      "intended_use": [
+        "human_review",
+        "ai_conditioning"
+      ],
+      "missing_optional_artifact_types": [],
+      "mode": "generated_render",
+      "prerequisite_strategy": null,
+      "prompt_profile": null,
+      "reused_artifact_types": [],
+      "upstream_inputs": [
+        "bible_manifest",
+        "character_and_performance",
+        "character_bible",
+        "character_injected_image",
+        "injected_asset_manifest",
+        "intent_mood",
+        "location_bible",
+        "location_injected_image",
+        "look_and_feel",
+        "project_config",
+        "render_clip_plan",
+        "shot_plan"
+      ]
+    },
+    "prompt_ref": {
+      "artifact_type": "render_prompt",
+      "entity_id": "scene_001_clip_001",
+      "path": "artifacts/render_prompt/scene_001_clip_001/v1.json",
+      "version": 1
+    },
+    "render_clip_end_time_seconds": 7.0,
+    "render_clip_id": "scene_001_clip_001",
+    "render_clip_plan_ref": {
+      "artifact_type": "render_clip_plan",
+      "entity_id": "scene_001",
+      "path": "artifacts/render_clip_plan/scene_001/v1.json",
+      "version": 1
+    },
+    "render_clip_start_time_seconds": 0.0,
+    "render_unit": "render_clip",
+    "request_id": "video-1",
+    "resolution": "720p",
+    "resolved_inputs": [
+      {
+        "input_id": "character_visual_mara",
+        "kind": "character_injected_image",
+        "label": "Character visual reference: mara",
+        "lock_status": "selected_visual_reference",
+        "media_type": "image/jpeg",
+        "notes": null,
+        "relative_path": "artifacts/bibles/character_mara/mara_ref.jpg",
+        "required": false,
+        "source_ref": {
+          "artifact_type": "bible_manifest",
+          "entity_id": "character_mara",
+          "path": "artifacts/bibles/character_mara/manifest_v1.json",
+          "version": 1
+        },
+        "used_as": "reference_image"
+      },
+      {
+        "input_id": "location_visual_lab",
+        "kind": "location_injected_image",
+        "label": "Location visual reference: LAB",
+        "lock_status": "selected_visual_reference",
+        "media_type": "image/jpeg",
+        "notes": null,
+        "relative_path": "artifacts/bibles/location_lab/lab_ref.jpg",
+        "required": false,
+        "source_ref": {
+          "artifact_type": "bible_manifest",
+          "entity_id": "location_lab",
+          "path": "artifacts/bibles/location_lab/manifest_v1.json",
+          "version": 1
+        },
+        "used_as": "reference_image"
+      }
+    ],
+    "scene_heading": "INT. LAB - NIGHT",
+    "scene_id": "scene_001",
+    "scene_number": 1,
+    "scene_ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "path": "artifacts/scene/scene_001/v1.json",
+      "version": 1
+    },
+    "shot_plan_ref": {
+      "artifact_type": "shot_plan",
+      "entity_id": "scene_001",
+      "path": "artifacts/shot_plan/scene_001/v1.json",
+      "version": 1
+    },
+    "source_shot_ids": [
+      "SCENE_001_A"
+    ],
+    "target_model": "veo-3.1-generate-preview",
+    "target_provider": "google",
+    "video": {
+      "duration_seconds": 8.0,
+      "media_type": "video/mp4",
+      "relative_path": "artifacts/generated_video_media/scene_001_clip_001/v1/scene_render.mp4"
+    }
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "aspect_ratio": "16:9",
+      "compile_model": "gpt-5.4-mini+veo-3.1-generate-preview",
+      "cost_is_complete": true,
+      "cost_receipts": [
+        {
+          "component": "compiler",
+          "cost": {
+            "estimated_cost_usd": 0.01,
+            "input_tokens": 120,
+            "latency_seconds": 0.2,
+            "model": "gpt-5.4-mini",
+            "output_tokens": 90,
+            "request_id": "compile-scene_001"
+          },
+          "entity_id": "scene_001_clip_001",
+          "model": "gpt-5.4-mini",
+          "price": null,
+          "provider": null,
+          "provider_job_id": null,
+          "quantity": null,
+          "reason": "Compiler estimate returned by the language-model transport.",
+          "receipt_id": "compiler:df4adc4d-9d02-4380-b6aa-b377f4d80083",
+          "scene_id": "scene_001",
+          "status": "estimated"
+        },
+        {
+          "component": "video",
+          "cost": {
+            "estimated_cost_usd": 0.4,
+            "input_tokens": 0,
+            "latency_seconds": null,
+            "model": "veo-3.1-generate-preview",
+            "output_tokens": 0,
+            "request_id": null
+          },
+          "entity_id": "scene_001_clip_001",
+          "model": "veo-3.1-generate-preview",
+          "price": null,
+          "provider": null,
+          "provider_job_id": "job-1",
+          "quantity": null,
+          "reason": "Synthetic transport estimate; no claim about live pricing or lifecycle.",
+          "receipt_id": "mechanical-fixture:e150ddd0-27c7-48b3-9480-3136b8cff404",
+          "scene_id": "scene_001",
+          "status": "estimated"
+        }
+      ],
+      "duration_seconds": 8.0,
+      "engine_pack_id": "google_veo31",
+      "render_clip_id": "scene_001_clip_001",
+      "render_unit": "render_clip",
+      "request_notes": [],
+      "resolution": "720p",
+      "target_model": "veo-3.1-generate-preview",
+      "target_provider": "google"
+    },
+    "confidence": 0.84,
+    "cost_data": null,
+    "created_at": "2026-10-23T17:07:34.529925Z",
+    "health": "valid",
+    "intent": "Scene-level generated video derived from compiled upstream film intent.",
+    "lineage": [
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_001",
+        "path": "artifacts/scene/scene_001/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "shot_plan",
+        "entity_id": "scene_001",
+        "path": "artifacts/shot_plan/scene_001/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "render_clip_plan",
+        "entity_id": "scene_001",
+        "path": "artifacts/render_clip_plan/scene_001/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "render_prompt",
+        "entity_id": "scene_001_clip_001",
+        "path": "artifacts/render_prompt/scene_001_clip_001/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_mara",
+        "path": "artifacts/bibles/character_mara/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_lab",
+        "path": "artifacts/bibles/location_lab/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "project_config",
+        "entity_id": "project",
+        "path": "artifacts/project_config/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "intent_mood",
+        "entity_id": "project",
+        "path": "artifacts/intent_mood/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "shot_plan",
+        "entity_id": "scene_002",
+        "path": "artifacts/shot_plan/scene_002/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "render_clip_plan",
+        "entity_id": "scene_002",
+        "path": "artifacts/render_clip_plan/scene_002/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "look_and_feel",
+        "entity_id": "scene_001",
+        "path": "artifacts/look_and_feel/scene_001/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "look_and_feel",
+        "entity_id": "scene_002",
+        "path": "artifacts/look_and_feel/scene_002/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "owen",
+        "path": "artifacts/character_bible/owen/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "mara",
+        "path": "artifacts/character_bible/mara/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "lab",
+        "path": "artifacts/location_bible/lab/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "roof",
+        "path": "artifacts/location_bible/roof/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "render_adapter_v1",
+    "producing_role": null,
+    "rationale": "Render adapter turns reviewed planning artifacts into a playable high-fidelity preview without mutating upstream creative intent.",
+    "ref": {
+      "artifact_type": "generated_video",
+      "entity_id": "scene_001_clip_001",
+      "path": "artifacts/generated_video/scene_001_clip_001/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "hybrid"
+  }
+}

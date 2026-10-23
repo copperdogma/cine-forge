@@ -1,0 +1,27 @@
+{
+  "kind": "exact unlanded provisional bytes retained after path collision",
+  "task_base": "714802a53275a959ffb250c355ce13ae8e6d85ae",
+  "policy": "Canonical landed remote v21/v22 keep their bytes and paths. These task-produced provisional snapshots were never landed and are archived unchanged, not relabeled as remote snapshots. Local v23-v27 remain unchanged.",
+  "files": [
+    {
+      "original_path": "docs/evals/story-208-contract-manifest-v21.json",
+      "archive_path": "docs/evals/snapshots/triage-goal-20261023-provisional-manifests/story-208-contract-manifest-v21.json",
+      "sha256": "a731a2c798b63c66b942999c3f77f04705c9ba975009e742e2fc1714f7fdc3b3",
+      "bytes": 197869,
+      "provisional_manifest_id": "story-208-eval-contracts-v21",
+      "canonical_remote_sha256": "322d7fdb405d904337c6e331f1beedda8db9a2d10ce1cb2f5543387f54f1a0ae",
+      "canonical_remote_bytes": 188997,
+      "canonical_remote_commit": "ecedeab663f9dc5fc9a176e6faa64bb392934088"
+    },
+    {
+      "original_path": "docs/evals/story-208-contract-manifest-v22.json",
+      "archive_path": "docs/evals/snapshots/triage-goal-20261023-provisional-manifests/story-208-contract-manifest-v22.json",
+      "sha256": "4a5adb0807ff30399140236416ff54643c4593a46b850e204f0e4b2bbdc6e6e3",
+      "bytes": 197869,
+      "provisional_manifest_id": "story-208-eval-contracts-v22",
+      "canonical_remote_sha256": "beedb9df47b8db51a8196304e6326c90743e3d7f554597e1cc786f1c41a1ce4d",
+      "canonical_remote_bytes": 189916,
+      "canonical_remote_commit": "ecedeab663f9dc5fc9a176e6faa64bb392934088"
+    }
+  ]
+}

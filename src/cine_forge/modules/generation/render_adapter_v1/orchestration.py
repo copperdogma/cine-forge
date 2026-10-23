@@ -5,9 +5,11 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Any
 
+from cine_forge.ai.image_pricing import validate_image_backfill_target
 from cine_forge.ai.video import VideoGenerationError
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import RenderClip, RenderClipPlan, Scene, ShotPlan
+from cine_forge.schemas.media_cost import CostReceipt
 from cine_forge.schemas.scene_scope import SceneActionPreflight
 from cine_forge.services.design_study_backfill import DefaultDesignStudyBackfillService
 
@@ -29,6 +31,7 @@ def _render_scene_outputs(
     selected_render_clip_ids: set[str] | None,
     default_design_study_backfill: bool,
     default_design_study_backfill_model: str,
+    cost_receipts: list[CostReceipt],
 ) -> tuple[list[tuple[dict[str, Any], dict[str, Any], dict[str, Any]]], list[dict[str, Any]]]:
     render_clip_plan = source_maps["render_clip_plan"].get(plan.scene_id)
     render_clips = _render_clips_for_scene(
@@ -60,6 +63,7 @@ def _render_scene_outputs(
                     requested_aspect_ratio=requested_aspect_ratio,
                     output_contract=output_contract,
                     scene_action_preflight=scene_action_preflight,
+                    cost_receipts=cost_receipts,
                     render_clip=render_clip,
                 )
             )
@@ -67,7 +71,27 @@ def _render_scene_outputs(
             failures.append(_scene_failure(plan=plan, exc=exc, render_clip=render_clip))
             if _should_abort_remaining_render_units(exc):
                 break
+        if any(receipt.status == "uncertain" for receipt in cost_receipts):
+            break
     return outputs, failures
+
+
+def ensure_backfill_ready(
+    *,
+    store: ArtifactStore,
+    scenes: list[Scene],
+    image_model: str,
+) -> None:
+    """Fail before any paid work if live still generation lacks a qualified price."""
+    service = DefaultDesignStudyBackfillService(store.project_dir, image_model=image_model)
+    missing = [scene.scene_id for scene in scenes if service.generation_required(scene)]
+    if missing:
+        try:
+            validate_image_backfill_target(model=image_model)
+        except ValueError as exc:
+            raise ValueError(
+                f"Default design-study backfill requires new images for {', '.join(missing)}. {exc}"
+            ) from exc
 
 
 def _backfill_default_design_studies(
@@ -95,6 +119,8 @@ def _backfill_default_design_studies(
 
 
 def _should_abort_remaining_render_units(exc: Exception) -> bool:
+    if any(r.status == "uncertain" for r in getattr(exc, "cost_receipts", [])):
+        return True
     if not isinstance(exc, VideoGenerationError):
         return False
     message = str(exc).lower()
@@ -112,9 +138,7 @@ def _render_clips_for_scene(
         clips = list(render_clip_plan.clips)
         if selected_render_clip_ids is None:
             return clips
-        selected_clips = [
-            clip for clip in clips if clip.clip_id in selected_render_clip_ids
-        ]
+        selected_clips = [clip for clip in clips if clip.clip_id in selected_render_clip_ids]
         matched_clip_ids = {clip.clip_id for clip in selected_clips}
         missing_clip_ids = selected_render_clip_ids - matched_clip_ids
         if missing_clip_ids:
@@ -144,9 +168,7 @@ def _ensure_required_render_clip_plans(
     if not bool(params.get("require_render_clip_plan")):
         return
     missing_scene_ids = [
-        plan.scene_id
-        for plan in shot_plans
-        if plan.scene_id not in source_maps["render_clip_plan"]
+        plan.scene_id for plan in shot_plans if plan.scene_id not in source_maps["render_clip_plan"]
     ]
     if not missing_scene_ids:
         return
@@ -221,7 +243,4 @@ def _render_failure_summary(
             f"{success_count} successful render unit(s) but failed for "
             f"{failure_count}/{total_count} render unit(s): {details}."
         )
-    return (
-        "Render generation failed before any render units were preserved: "
-        f"{details}."
-    )
+    return f"Render generation failed before any render units were preserved: {details}."

@@ -121,4 +121,7 @@ To be written during `/build-story`.
 
 ## Work Log
 
+20261023-1048 — bounded substrate investigation: current RunStartRequest and UI payload already support end_at=render_clip_planning, scene_scope and render_clip_ids; normal Render can expose paid preparation then inspect a saved immutable clip plan before media. Preparation itself may call planners; default still backfill adds separate image work. Selected clip IDs are not immutable-version approval.032 was reopened first because video dollars are currently omitted and official current docs show the configured final-render/default-image targets retired. No new cost framework, strict USD5 product cap, or provider default is justified by this inspection. Keep Draft: original profiles/comparison/stage caps are not yet designed or implemented. Evidence: docs/reports/triage-goal-pass-6.md, docs/research/story-032-media-accounting-2026-10-23.md. Next: after032, scope a normal prepare/inspect path using current qualified transport and sourced costs; do not count232 unblocked yet.
+
+
 20260319-1505 — created during Story 032 close-out: captured the deferred cost-profile/model-comparison/per-stage-cap scope in a dedicated Draft story so Story 032 can narrow to the shipped cost-tracking slice. Evidence: Story 032 validation and resume-proof follow-up test. Next step: promote to `Pending` when the comparison and stage-cap design is concrete enough to build.

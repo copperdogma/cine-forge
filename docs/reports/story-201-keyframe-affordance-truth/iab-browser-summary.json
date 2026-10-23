@@ -1,0 +1,350 @@
+{
+  "tool": "Codex in-app browser",
+  "project": "brick-steel-full-retired",
+  "scene": "scene_001",
+  "keyframeArtifacts": 0,
+  "viewports": [
+    {
+      "width": 1600,
+      "height": 1100
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "screens": [
+    "Render",
+    "Previz"
+  ],
+  "keyframeWarningPresent": false,
+  "consoleErrors": [],
+  "networkIssues": [
+    {
+      "sequence": 1751,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.690",
+        "timestamp": 367950.166771,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 1753,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.689",
+        "timestamp": 367950.167981,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 1786,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.691",
+        "timestamp": 367950.183906,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 1787,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.696",
+        "timestamp": 367950.183947,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 1788,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.697",
+        "timestamp": 367950.184008,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 1789,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.695",
+        "timestamp": 367950.184045,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 1790,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.699",
+        "timestamp": 367950.184086,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 1791,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.698",
+        "timestamp": 367950.184143,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 1816,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.709",
+        "timestamp": 367950.435631,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 1817,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.708",
+        "timestamp": 367950.443777,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2125,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.745",
+        "timestamp": 368023.499683,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2137,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.747",
+        "timestamp": 368023.509799,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2139,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.746",
+        "timestamp": 368023.509867,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2152,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.748",
+        "timestamp": 368023.516176,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2163,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.750",
+        "timestamp": 368023.517546,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2165,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.752",
+        "timestamp": 368023.51786,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2167,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.749",
+        "timestamp": 368023.517926,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2193,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.751",
+        "timestamp": 368023.520967,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2213,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.765",
+        "timestamp": 368023.771575,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2214,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.760",
+        "timestamp": 368023.771662,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2215,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.761",
+        "timestamp": 368023.777496,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2216,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.763",
+        "timestamp": 368023.777565,
+        "type": "Media"
+      }
+    },
+    {
+      "sequence": 2217,
+      "source": {
+        "tabId": 1
+      },
+      "method": "Network.loadingFailed",
+      "params": {
+        "canceled": true,
+        "errorText": "net::ERR_ABORTED",
+        "requestId": "82865.764",
+        "timestamp": 368023.779944,
+        "type": "Media"
+      }
+    }
+  ],
+  "eventsComplete": false,
+  "limitation": "Existing normal driver-produced no-keyframe project; no new generation or full FP1 walkthrough.",
+  "networkInterpretation": "Retained events show no HTTP 4xx/5xx or uncaught JS exceptions. Media ERR_ABORTED events are marked canceled while switching tabs. The CDP event buffer truncated earlier events, so this is partial network evidence, not a complete session-wide clean-network claim.",
+  "finalConsoleCheck": "No console errors after final desktop/mobile captures."
+}

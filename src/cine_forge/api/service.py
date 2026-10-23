@@ -16,6 +16,7 @@ from cine_forge.api.artifact_manager import ArtifactManager
 from cine_forge.api.chat_store import ChatStore
 from cine_forge.api.exceptions import ServiceError
 from cine_forge.api.run_orchestrator import RunOrchestrator
+from cine_forge.api.run_start_preflight import apply_run_start_preflight
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.modules.ingest.story_ingest_v1.main import (
     SUPPORTED_FILE_FORMATS,
@@ -1230,46 +1231,9 @@ class OperatorConsoleService:
         if "style_packs" not in merged_request and pj.get("style_packs"):
             merged_request["style_packs"] = pj["style_packs"]
 
-        scene_scope = SceneExecutionScope.model_validate(
-            merged_request.get("scene_scope") or {}
+        apply_run_start_preflight(
+            project_id=project_id, request=merged_request, preview=self.preview_scene_action,
         )
-        merged_request["scene_scope"] = scene_scope.model_dump(mode="json")
-        if merged_request.get("render_clip_ids") and not (
-            scene_scope.mode == "current_scene" and len(scene_scope.scene_ids) == 1
-        ):
-            raise ServiceError(
-                code="render_clip_scope_required",
-                message="Render clip regeneration requires a single current scene scope.",
-                hint=(
-                    "Select the scene that owns the clip, then regenerate that one render clip."
-                ),
-                status_code=422,
-            )
-        if scene_scope.is_scene_scoped:
-            preflight = self.preview_scene_action(
-                project_id,
-                recipe_id=str(merged_request.get("recipe_id") or "mvp_ingest"),
-                scene_scope=scene_scope,
-                start_from=merged_request.get("start_from"),
-                end_at=merged_request.get("end_at"),
-            )
-            if preflight.status == "soft_block":
-                first_issue = preflight.items[0] if preflight.items else None
-                raise ServiceError(
-                    code="scene_action_blocked",
-                    message=preflight.summary or "Scene action is blocked.",
-                    hint=first_issue.detail if first_issue else None,
-                    status_code=422,
-                )
-            if preflight.start_from:
-                merged_request["start_from"] = preflight.start_from
-            else:
-                merged_request.pop("start_from", None)
-            if preflight.end_at:
-                merged_request["end_at"] = preflight.end_at
-            else:
-                merged_request.pop("end_at", None)
-            merged_request["scene_action_preflight"] = preflight.model_dump(mode="json")
 
         return self._orchestrator.start_run(project_id, merged_request)
 

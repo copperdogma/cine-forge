@@ -1,0 +1,8 @@
+{
+  "purpose": "pre-fix offline failing regressions; no provider calls",
+  "sources": {
+    "src/cine_forge/ai/video.py": "104551aea833c4f00045c680d4e956a8c26f7a8f2547dd9972522d79b2ec2408",
+    "tests/unit/test_video_accounting.py": "7bd6ca2d5f5f4fd88b0a4a96ecf2d5f41609586a03ee7cfb3ad2a1a13b606d5f",
+    "docs/reports/story-032-media-accounting/transport-red-v1.txt": "99ddb8a69672b93bed2049751918f605ddf5652e7db079edb687b36445a845e3"
+  }
+}

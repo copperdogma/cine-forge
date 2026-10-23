@@ -1,0 +1,47 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ test_all_scenes_media_start_enforces_preflight_before_orchestrator ______
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-368/test_all_scenes_media_start_en0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1131603e0>
+
+    def test_all_scenes_media_start_enforces_preflight_before_orchestrator(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        service = OperatorConsoleService(workspace_root=tmp_path)
+        project_path = tmp_path / "output" / "project"
+        project_path.mkdir(parents=True)
+        monkeypatch.setattr(service, "require_project_path", lambda _project_id: project_path)
+        monkeypatch.setattr(service._orchestrator, "start_run", lambda *_: pytest.fail("run started"))
+        blocked = SceneActionPreflight.model_validate({
+            "recipe_id": "render_generation", "recipe_name": "Render", "status": "soft_block",
+            "summary": "Render blocked", "scene_scope": {"mode": "all_scenes"},
+            "items": [
+                {"kind": "warning", "label": "Optional source", "detail": "not the blocker"},
+                {"kind": "soft_block", "label": "Video provider unavailable", "detail": "Veo retired"},
+            ],
+        })
+        monkeypatch.setattr(service, "preview_scene_action", lambda *_args, **_kwargs: blocked)
+        with pytest.raises(ServiceError) as exc:
+>           service.start_run("project", {
+                "project_id": "project", "input_file": "script.fountain",
+                "default_model": "mock", "recipe_id": "render_generation",
+                "scene_scope": {"mode": "all_scenes"},
+            })
+
+tests/unit/test_api.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/cine_forge/api/service.py:1274: in start_run
+    return self._orchestrator.start_run(project_id, merged_request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+_ = ('project', {'default_model': 'mock', 'input_file': 'script.fountain', 'project_id': 'project', 'recipe_id': 'render_generation', ...})
+
+>   monkeypatch.setattr(service._orchestrator, "start_run", lambda *_: pytest.fail("run started"))
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: run started
+
+tests/unit/test_api.py:24: Failed
+=========================== short test summary info ============================
+FAILED tests/unit/test_api.py::test_all_scenes_media_start_enforces_preflight_before_orchestrator

@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import csv
+import io
+
 import pytest
 
 from cine_forge.export.cost_report import render_project_cost_csv, render_run_cost_csv
@@ -19,6 +22,7 @@ from cine_forge.schemas import (
     SceneCostSummary,
     StageCostSummary,
 )
+from cine_forge.schemas.media_cost import CostReceipt
 
 
 @pytest.mark.unit
@@ -147,3 +151,59 @@ def test_project_cost_csv_includes_overview_trend_and_run_rows() -> None:
     assert "trend,cost-project" in csv_content
     assert "run,run-002,done" in csv_content
     assert "budget,project" in csv_content
+
+
+@pytest.mark.unit
+def test_cost_exports_mark_subtotals_and_leave_unknown_amount_blank() -> None:
+    receipt = CostReceipt(
+        receipt_id="video-accepted",
+        component="video",
+        model="video-model",
+        status="uncertain",
+        provider="test-provider",
+        provider_job_id="accepted-job",
+        scene_id="scene_001",
+        reason="Accepted provider job could not be polled.",
+    )
+    run = RunCostSummary(
+        run_id="failed-run",
+        project_id="project",
+        recipe_id="render",
+        status="failed",
+        total_cost_usd=0.2,
+        uncertain_cost_receipts=[receipt],
+        budget_statuses=[
+            BudgetStatus(
+                scope=BudgetScope.RUN,
+                limit_usd=5.0,
+                consumed_usd=0.2,
+                remaining_usd=4.8,
+                warning_threshold_ratio=0.8,
+                warning_threshold_usd=4.0,
+                health=BudgetHealth.OK,
+            )
+        ],
+    )
+    project = ProjectCostSummary(
+        project_id="project",
+        total_cost_usd=0.2,
+        run_count=1,
+        uncertain_cost_receipts=[receipt],
+    )
+    for content in (render_run_cost_csv(run), render_project_cost_csv(project)):
+        rows = list(csv.DictReader(io.StringIO(content)))
+        overview = next(row for row in rows if row["section"] == "overview")
+        assert all(row["section"] != "budget" for row in rows)
+        assert overview.get("cost_is_complete") == "False"
+        assert overview["cost_status"] == "known_subtotal"
+        unresolved = next(row for row in rows if row["section"] == "uncertain_cost")
+        assert unresolved["id"] == "video-accepted"
+        assert unresolved["provider_job_id"] == "accepted-job"
+        amount_key = (
+            "estimated_cost_usd" if "estimated_cost_usd" in unresolved else "total_cost_usd"
+        )
+        assert unresolved[amount_key] == ""
+        assert "could not be polled" in unresolved["notes"]
+    exported_json = run.model_dump(mode="json")
+    assert exported_json["cost_is_complete"] is False
+    assert exported_json["uncertain_cost_receipts"][0]["cost"] is None

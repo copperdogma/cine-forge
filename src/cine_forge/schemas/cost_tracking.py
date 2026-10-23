@@ -6,7 +6,9 @@ from datetime import UTC, datetime
 from enum import StrEnum
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
+
+from cine_forge.schemas.media_cost import CostReceipt
 
 
 class BudgetScope(StrEnum):
@@ -62,7 +64,22 @@ class CostAttribution(BaseModel):
     basis: str = Field(min_length=1)
 
 
-class StageCostSummary(BaseModel):
+class CostCompleteness(BaseModel):
+    """Numeric amounts are known subtotals when provider charges are unresolved."""
+
+    cost_is_complete: bool = True
+    uncertain_cost_receipts: list[CostReceipt] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _require_uncertain_receipts(self) -> CostCompleteness:
+        if any(receipt.status != "uncertain" for receipt in self.uncertain_cost_receipts):
+            raise ValueError("uncertain_cost_receipts must contain unresolved charges only")
+        if self.uncertain_cost_receipts:
+            self.cost_is_complete = False
+        return self
+
+
+class StageCostSummary(CostCompleteness):
     """Cost summary for one pipeline stage."""
 
     stage_id: str
@@ -80,7 +97,7 @@ class StageCostSummary(BaseModel):
     pause_reason: str | None = None
 
 
-class ModelCostSummary(BaseModel):
+class ModelCostSummary(CostCompleteness):
     """Aggregate cost totals for one model."""
 
     model: str
@@ -110,7 +127,7 @@ class RoleCostSummary(BaseModel):
     )
 
 
-class SceneCostSummary(BaseModel):
+class SceneCostSummary(CostCompleteness):
     """Aggregate cost totals for one scene within a run."""
 
     scene_id: str
@@ -122,7 +139,7 @@ class SceneCostSummary(BaseModel):
     attribution: CostAttribution
 
 
-class RunCostOverview(BaseModel):
+class RunCostOverview(CostCompleteness):
     """Thin project-history entry for one run."""
 
     run_id: str
@@ -134,7 +151,7 @@ class RunCostOverview(BaseModel):
     duration_seconds: float = Field(ge=0.0)
 
 
-class ProjectCostTrendPoint(BaseModel):
+class ProjectCostTrendPoint(CostCompleteness):
     """One point in the project cost trend series."""
 
     run_id: str
@@ -142,7 +159,7 @@ class ProjectCostTrendPoint(BaseModel):
     total_cost_usd: float = Field(ge=0.0)
 
 
-class ProjectCostTrend(BaseModel):
+class ProjectCostTrend(CostCompleteness):
     """Simple recent-vs-previous trend signal for project run costs."""
 
     direction: Literal["up", "down", "flat", "insufficient_data"] = "insufficient_data"
@@ -151,7 +168,7 @@ class ProjectCostTrend(BaseModel):
     delta_usd: float = 0.0
 
 
-class RunCostSummary(BaseModel):
+class RunCostSummary(CostCompleteness):
     """Detailed cost summary for one run."""
 
     run_id: str
@@ -169,7 +186,7 @@ class RunCostSummary(BaseModel):
     budget_statuses: list[BudgetStatus] = Field(default_factory=list)
 
 
-class ProjectCostSummary(BaseModel):
+class ProjectCostSummary(CostCompleteness):
     """Aggregate cost view across all runs in a project."""
 
     project_id: str

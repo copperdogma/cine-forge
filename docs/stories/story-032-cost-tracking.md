@@ -3,11 +3,14 @@ id: "032"
 title: "Cost Tracking and Budget Management"
 status: "Done"
 priority: "Unknown"
-ideal_refs: []
+ideal_refs:
+  - "R12 (Transparency and Control)"
 spec_refs:
   - "spec:1.6"
   - "spec:8.1"
-adr_refs: []
+adr_refs:
+  - "ADR-002"
+  - "ADR-003"
 depends_on:
   - "002"
   - "014"
@@ -16,7 +19,9 @@ category_refs:
   - "spec:8"
 compromise_refs: []
 input_coverage_refs: []
-architecture_domains: []
+architecture_domains:
+  - "generation_and_visualization"
+  - "api_service_and_operator_console"
 roadmap_tags: []
 legacy_system: ""
 ---
@@ -26,7 +31,7 @@ legacy_system: ""
 **Status**: Done
 **Created**: 2026-02-13
 **Spec Refs**: spec:8.1 (Cost Transparency), spec:1.6 (Metadata & Auditing — cost data in artifacts)
-**ADR Refs**: None found after search; design context: `docs/design/decisions.md` ("Run detail page for power users")
+**ADR Refs**: ADR-002 (preflight before expensive execution), ADR-003 (demand-driven Film lane and project budget settings); design context: `docs/design/decisions.md` ("Run detail page for power users")
 **Depends On**: Story 002 (pipeline foundation — cost recording hooks), Story 014 (role system — per-role cost attribution)
 
 ---
@@ -36,6 +41,33 @@ legacy_system: ""
 Build the cost tracking and budget management system on top of the per-call cost hooks from Story 002. This includes cost dashboards, per-stage and per-run summaries, project/run budget caps, and cost report/export surfaces.
 
 ---
+
+## Current regression slice — media accounting (2026-10-23)
+
+Reopened by the continuous triage/fix goal. The normal232 walkthrough exposed missing media planning; subsequent artifact-first inspection demonstrated video spend omitted from artifacts/module/run totals. Original landed implementation remains evidence, not proof of current media accounting. No commit/push permission.
+
+### Current-slice acceptance
+
+- [x] Before implementation, capture a deterministic failing video-cost/partial-failure fixture and retain baseline evidence.
+- [x] Current supported video price estimates carry exact provider/model/resolution/duration/source/check date; retired or unknown pricing does not become zero or dispatch paid media.
+- [x] Successful video generation costs are added to compiler costs once in immutable video artifacts and driver stage/run/project summaries; failed later units preserve known incurred costs.
+- [x] API credentials remain on submission/polling requests; returned HTTPS media downloads and their redirects receive no API bearer header.
+- [x] Retry handling retains known/uncertain provider job evidence and does not blindly submit again after an accepted job becomes indeterminate.
+- [x] Enabled default still-image backfill either has accounted, qualified costs or fails honestly before work on an unavailable/unpriced target.
+- [x] Existing cost UI shows unresolved charges and known subtotals; stage/model/scene/project/history/trend surfaces do not imply settled totals. API retry/resume cannot blindly replay an uncertain provider job.
+- [x] Focused transport/schema/module/driver/service tests pass; representative artifacts and run state are manually inspected. No numeric AI quality score or provider adoption is claimed.
+
+### Current-slice plan
+
+1. Freeze failing input/cost fixtures first. Define typed price/receipt and cost-bearing failure contracts before use across AI/module/driver boundaries. Reuse CostRecord arithmetic, add only provenance/uncertainty needed to audit estimates.
+2. Extract touched oversized responsibilities first: video.py589 lines; render_adapter main.py910 with run_module>100 and _render_scene>100; engine.py>1000 with stage execution/retry methods>100. `make check-size` captured in output/story-138-check-size.txt. Prefer focused helpers and exact call-site seams; do not add a second ledger or generic budgeting framework.
+3. Implement current price/lifecycle validation, video receipts and module success/partial-failure aggregation. Preserve exact request IDs; fail before unsupported backfill. Known retirement checks do not adopt a new provider.
+4. Connect typed incurred costs to driver retry/failure and success math once; verify no double counts, cost reports and existing budget checks consume corrected totals. Full crash recovery/reservations remain228's distinct scope.
+5. Propagate unknown-charge completeness through run/stage/model/scene/project summaries and JSON/CSV reports. On existing cost panels, label incomplete figures as known subtotals, show provider job/reason and hide misleading budget remaining/resume/trends. Extract existing >100-line UI panel responsibilities before changes; no new dashboard. Frontend costs types move to a focused owner with the central types barrel preserved.
+6. Run proportional affected backend tests +full Ruff; inspect a deterministic normal driver-produced state/artifact chain (explicitly non-quality mock output). If surfaced preflight changes, desktop/mobile normal open-frequency verification with console evidence is required.
+7. Independent review, /validate then /mark-story-done only after current criteria pass. Update accounting docs, Changelog and methodology. Roll immutable eval contract snapshot only after state stabilizes. Broader original profiles/comparison/stage-cap ideas remain138 Draft.
+
+ADR search: ADR002 plan-before-expensive-execution and ADR003 demand-driven Film lane apply to surfaced behavior; no dedicated accounting ADR. spec8.1/C1 hold and spec1.6 own deterministic cost provenance. Chosen code approach follows existing032; AI/decision-model semantic arbitration is unnecessary for prices/identity/math. Broader media prepare/inspect and current-provider output qualification remain visible next work, not implicitly completed by ledger repair.
 
 ## Acceptance Criteria
 
@@ -260,6 +292,9 @@ Model usage should stay visible on cost surfaces so operators can reason about t
 
 ## Work Log
 
+20261023-1046 — reopened/exploration: fresh232 artifact review and neutral triage found video cost omitted, partial failure loses module totals, and enabled default image backfill discards cost. Bounded primary-source research additionally found configured Veo/Sora/Imagen endpoints retired; old benchmark rates cannot be used. Plan above targets deterministic accounting/fail-before-work without changing runtime providers. Evidence: docs/reports/triage-goal-pass-6.md and docs/research/story-032-media-accounting-2026-10-23.md. Next: capture red regression before implementation.
+
+
 *(append-only)*
 20260319-1325 — exploration: confirmed Story 032 is buildable but stale relative to current substrate. Existing repo already tracks per-call artifact cost, per-stage/run totals, project model defaults, and advanced run-detail cost UI, so the missing work is typed cost summaries, project-level history, budget enforcement, export/report surfaces, and accurate by-role/by-scene attribution. Files likely to change: schema layer, engine/run orchestration, role runtime logs, API models/routes, export router, and runs/run-detail/settings UI. Files at risk: oversized `src/cine_forge/driver/engine.py`, `src/cine_forge/api/service.py`, `src/cine_forge/api/run_orchestrator.py`, `ui/src/pages/RunDetail.tsx`, `ui/src/components/ProjectSettings.tsx`, and `ui/src/lib/types.ts`. Consulted `docs/ideal.md`, `docs/spec.md` (`spec:1.6`, `spec:8.1`), Stories 002/014, `docs/design/decisions.md`, `docs/build-map.md`, and `AGENTS.md`; no ADR directly governs cost tracking. Patterns to reuse: project-scoped settings in `project.json`, existing `role_invocations.jsonl`, run-detail/runs power-user surfaces, and shot-list export routing. Surprise/risk: exact by-role and per-scene summaries are not derivable from current run-state totals alone, so the plan folds in explicit run/stage attribution on cost records and will need a transparent allocation policy for batched scene work. Next step: human review of the plan before implementation.
 20260319-1343 — implementation start: promoted story to `In Progress` and started on the schema-first backbone before touching API/UI wiring. First slice is the typed cost/budget contracts plus the run-stage state additions needed to carry tokens, pause reasons, and budget context safely through the engine. Next step: land the new schema/service files and hook them into engine/runtime cost recording.
@@ -268,3 +303,9 @@ Model usage should stay visible on cost surfaces so operators can reason about t
 20260319-1447 — validation: implementation quality is solid for the shipped cost-tracking slice, but the story is not cleanly closable as written. Evidence rerun during validation: `make test-unit PYTHON=.venv/bin/python` passed (`584 passed, 135 deselected, 1 pre-existing warning`); `.venv/bin/python -m ruff check src/ tests/` passed; targeted backend tests passed; `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and `pnpm --dir ui run build` passed; browser verification on `/story-032-ui-smoke/runs`, `/story-032-ui-smoke/run/run-story-032`, and Settings > Pipeline ended with `0` console warnings/errors; API spot checks returned expected cost totals, budget status, and allocated per-scene attribution. Findings: the story still leaves explicit cost-quality profile/comparison acceptance criteria and related tests unchecked, and the "increase budget and resume" path is only partially evidenced because integration coverage stops at pause-at-cap while API coverage only verifies forwarding the resume override. Additional doc drift: `docs/build-map.md` still says no active stories are in progress. Recommended disposition: `Rescope then close` — trim the unimplemented cost-quality profile/comparison slice into a follow-up story, add or explicitly waive end-to-end resume evidence, then run `/mark-story-done`.
 20260319-1509 — rescope: narrowed Story 032 to the shipped cost-tracking slice and moved deferred scope into [Story 138](/Users/cam/.codex/worktrees/9825/cine-forge/docs/stories/story-138-cost-profiles-model-comparison-stage-budgets.md). Added end-to-end resume evidence via `tests/integration/test_cost_budget_pause.py`, which now proves a paused run can resume with a higher budget and complete cleanly through the API. Next step: rerun close-out checks and, if clean, mark the story done.
 20260319-1547 — completion: Story 032 closed after rescoping to the shipped trust surface, creating [Story 138](/Users/cam/.codex/worktrees/9825/cine-forge/docs/stories/story-138-cost-profiles-model-comparison-stage-budgets.md) for the deferred planning/tuning work, and adding end-to-end resume proof. Final evidence: `make test-unit PYTHON=.venv/bin/python` passed (`584 passed, 136 deselected, 1 pre-existing warning`); `.venv/bin/python -m ruff check src/ tests/` passed; `pnpm --dir ui run lint`, `cd ui && npx tsc -b`, and `pnpm --dir ui run build` passed; browser verification from validation remains clean with `0` console warnings/errors. Backlog bookkeeping updated so Story 030 is no longer blocked on Story 032. Next step: `/check-in-diff`.
+
+20261023-1115 — media-accounting implementation and validation in progress: froze real red fixtures before implementation (render-red-v3, driver-red-v2; earlier render-v1/v2 are setup failures). Typed receipts now retain compiler/video estimates, provider price provenance, partial failures and uncertain accepted jobs through artifacts, driver, API summaries and exports. Removed retired transport implementations and separated bearer-authenticated API calls from unauthenticated media downloads. Render adapter and driver execution responsibilities were extracted before adding behavior. Focused affected168 tests and full src/tests Ruff pass; all25 UI helper tests, lint and TypeScript pass. The credential-isolated broader unit pass found one existing API test depending on developer credentials; no production behavior is being relaxed to make it green. A mocked test earlier printed a configured xAI credential in diagnostic output; no network call occurred, persistent saved log was sanitized, and tests now stub the key loader. Tool history cannot be erased by that file edit; credential rotation is a separate operator follow-up. No secret value is recorded here.
+
+20261023-1116 — findings-first review: Codex advisory review accepted P2 historical-project-budget uncertainty (complete run B must not imply complete project spend when prior run A is unresolved). Parent browser review found the surfaced singular `/run/:id` page still had an unqualified cost card despite the dedicated `/runs/:id` fix; the active consumer now reuses the extracted metrics owner. Parent API review found historical replay guarding must reuse canonical inferred completeness rather than raw state fields alone; red fixtures and narrow fixes are underway. Actual normal Open Frequency and historical Brick & Steel runtime projects are used for desktop/mobile verification; seeded mock artifacts remain explicitly mechanical accounting evidence, not provider-quality proof. Story138 remains Draft and232 Blocked; current retired provider defaults are rejected without spending, not silently replaced. Next falsifiable step: affected regressions, final API409/no-new-run proof, browser screenshots/console, settled immutable contract roll and close-out.
+
+20261023-1122 — validation and /mark-story-done: reopened media-accounting slice is complete. Accepted review and browser findings were fixed; final focused Codex review has no actionable findings. Broad credential-free unit run recorded2287passes plus one environment-dependent fixture failure, then the isolated corrected44-test API/scene pass,23-test cost/export/budget pass and82-test historical-replay/API pass covered the affected changes. Separate environment7tests and manifest/ledger45tests pass; full Ruff, UI lint/tsc,25 UI helpers and production build pass. Representative actual projects were inspected at1600x1100 and390x844 with empty warning/error console; real start422 and historical retry/resume409 created no run directories. Mechanical partial-driver outputs were inspected and are not quality proof. Manifestv27 freezes1050files without changing earlier versions. Detailed evidence, hash identities, caveats and security follow-up: docs/reports/story-032-media-accounting/validation.md. The credential incident remains an operator rotation follow-up, not erased by log sanitization. Draft learning candidate recorded; no policy promotion. Existing Story032 Changelog entry retained under the duplicate-entry guard. Story138 remains Draft and232 Blocked; no provider/default/score changed. Continuous goal stays active; no commit/push permission. /finish-and-push is available only if Cam later authorizes landing.

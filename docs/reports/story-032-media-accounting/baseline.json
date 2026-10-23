@@ -1,0 +1,32 @@
+{
+  "git_sha": "714802a53275a959ffb250c355ce13ae8e6d85ae",
+  "source_sha256": {
+    "src/cine_forge/ai/video.py": "104551aea833c4f00045c680d4e956a8c26f7a8f2547dd9972522d79b2ec2408",
+    "src/cine_forge/modules/generation/render_adapter_v1/main.py": "8bdde8b38880254568d189f8790a03d7b476e82713a9fc1cdc3860e4a960b6dd",
+    "src/cine_forge/modules/generation/render_adapter_v1/outputs.py": "5ab0141f03d09d7677411531305b5e30700e85c6f7a7485f7d5af434cc989850",
+    "src/cine_forge/driver/engine.py": "c54e99f780036cea0a3bdb1adb6b9249e835f189b38f8614d970c958b6beafdd"
+  },
+  "scope": "Read-only retained runtime evidence plus deterministic compile-only helper at initial HEAD; no provider calls. This precedes source repair.",
+  "retained_artifact": "output/brick-steel-full-retired/artifacts/ai_previz_video/scene_001/v1.json",
+  "retained_artifact_sha256": "b0eb4cdfacd19fbe5a265b418529cd3ff428e07a9980553de0e7c769beb3abf8",
+  "actual_video_cost": {
+    "estimated_cost_usd": 0.0,
+    "input_tokens": 0,
+    "latency_seconds": null,
+    "model": "code+grok-imagine-video",
+    "output_tokens": 0,
+    "request_id": "f8872e53-13cb-94a7-b7c0-4d16337c7982"
+  },
+  "duration_seconds": 4.0,
+  "expected_current_xai_video_estimate_usd": 0.2,
+  "price_basis": "Research recorded 2026-10-23 xAI480p USD0.05/second, not provider billing",
+  "helper_actual": {
+    "model": "compiler-fixture+grok-imagine-video",
+    "input_tokens": 1,
+    "output_tokens": 1,
+    "estimated_cost_usd": 0.012,
+    "latency_seconds": null,
+    "request_id": null
+  },
+  "helper_expected_including_4s_video_estimate_usd": 0.212
+}

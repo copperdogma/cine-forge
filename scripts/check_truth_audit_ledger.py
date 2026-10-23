@@ -31,6 +31,8 @@ DISCOVERED_PATH_KINDS = {
     "eval_transport": ("benchmarks/providers/", "scripts/"),
 }
 REGISTRY_SURFACE_ID_PREFIX = "registry-eval-"
+UI_FIXTURE_EXCLUDED_PARTS = {"node_modules", "__pycache__", ".pytest_cache"}
+UI_FIXTURE_EXCLUDED_SUFFIXES = {".pyc", ".pyo"}
 
 
 def validate_ledger(
@@ -195,6 +197,8 @@ def _validate_discovered_inventory(
             )
         )
 
+    errors.extend(_validate_ui_test_inventory(surfaces, repo_root))
+
     registry_path = repo_root / "docs/evals/registry.yaml"
     if registry_path.exists():
         registry_ids, discovery_error = _discover_registry_eval_ids(registry_path)
@@ -207,6 +211,74 @@ def _validate_discovered_inventory(
 
 def _relative_paths(repo_root: Path, paths: Any) -> set[str]:
     return {path.relative_to(repo_root).as_posix() for path in paths if path.is_file()}
+
+
+def _discover_ui_test_paths(repo_root: Path) -> tuple[set[str], list[str]]:
+    test_root = repo_root / "ui/tests"
+    fixture_root = test_root / "fixtures"
+    for root in (repo_root / "ui", test_root, fixture_root):
+        if root.is_symlink():
+            return set(), [
+                f"canonical UI test inventory contains symlink: "
+                f"{root.relative_to(repo_root).as_posix()}"
+            ]
+    if not test_root.exists():
+        return set(), []
+
+    expected: set[str] = set()
+    errors: list[str] = []
+    for path in test_root.glob("*.test.ts"):
+        relative = path.relative_to(repo_root).as_posix()
+        if path.is_symlink():
+            errors.append(f"canonical UI test inventory contains symlink: {relative}")
+        elif path.is_file():
+            expected.add(relative)
+
+    if fixture_root.exists():
+        for path in fixture_root.rglob("*"):
+            fixture_parts = path.relative_to(fixture_root).parts
+            if any(part in UI_FIXTURE_EXCLUDED_PARTS for part in fixture_parts):
+                continue
+            if path.suffix in UI_FIXTURE_EXCLUDED_SUFFIXES or path.name == ".DS_Store":
+                continue
+            relative = path.relative_to(repo_root).as_posix()
+            if path.is_symlink():
+                errors.append(f"canonical UI test inventory contains symlink: {relative}")
+            elif path.is_file():
+                expected.add(relative)
+    return expected, errors
+
+
+def _validate_ui_test_inventory(surfaces: list[object], repo_root: Path) -> list[str]:
+    """Require one explicit test-suite owner for every maintained UI test and fixture."""
+    expected_paths, errors = _discover_ui_test_paths(repo_root)
+
+    owners: dict[str, list[tuple[str, str]]] = {}
+    for surface in surfaces:
+        if not isinstance(surface, dict) or not isinstance(surface.get("paths"), list):
+            continue
+        surface_id = str(surface.get("id") or "<unknown>")
+        kind = str(surface.get("kind") or "")
+        for path in surface["paths"]:
+            if isinstance(path, str) and path in expected_paths:
+                owners.setdefault(path, []).append((surface_id, kind))
+
+    for path, claims in sorted(owners.items()):
+        for surface_id, kind in claims:
+            if kind != "test_suite":
+                errors.append(
+                    f"{surface_id}: canonical test_suite path claimed by wrong kind "
+                    f"{kind!r}: {path}"
+                )
+    missing = sorted(path for path in expected_paths if not any(
+        kind == "test_suite" for _, kind in owners.get(path, [])
+    ))
+    if missing:
+        errors.append("ledger missing canonical test_suite paths: " + ", ".join(missing))
+    duplicates = sorted(path for path, claims in owners.items() if len(claims) > 1)
+    if duplicates:
+        errors.append("ledger duplicates canonical test_suite paths: " + ", ".join(duplicates))
+    return errors
 
 
 def _discover_golden_names(spec_path: Path) -> tuple[set[str], str | None]:

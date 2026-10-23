@@ -1,0 +1,34 @@
+{
+  "current_terminal_ledger_errors": [],
+  "omission_mutations": {
+    "ui/tests/media-validation-health.test.ts": {
+      "checker_errors": [
+        "ledger missing canonical test_suite paths: ui/tests/media-validation-health.test.ts"
+      ],
+      "omitted_from_manifest": [
+        "ui/tests/media-validation-health.test.ts"
+      ]
+    },
+    "ui/tests/fixtures/media-validation-needs-review.json": {
+      "checker_errors": [
+        "ledger missing canonical test_suite paths: ui/tests/fixtures/media-validation-needs-review.json"
+      ],
+      "omitted_from_manifest": [
+        "ui/tests/fixtures/media-validation-needs-review.json"
+      ]
+    },
+    "ui/tests/media-validation-health.test.ts + ui/tests/fixtures/media-validation-needs-review.json": {
+      "checker_errors": [
+        "ledger missing canonical test_suite paths: ui/tests/fixtures/media-validation-needs-review.json, ui/tests/media-validation-health.test.ts"
+      ],
+      "omitted_from_manifest": [
+        "ui/tests/media-validation-health.test.ts",
+        "ui/tests/fixtures/media-validation-needs-review.json"
+      ]
+    }
+  },
+  "historical_hashes_unchanged": {
+    "docs/evals/story-213-model-eval-contract-manifest.json": "b435160923151db6b62b5d3fe12eddd79795a3f7d0047796aa3309aa0f4aa2d2",
+    "docs/evals/snapshots/story-213-model-eval-contract-v1/index.json": "c1058aa1de26761beae32974ea3b726d80e6a44f8cc47bbfe627a51642201821"
+  }
+}

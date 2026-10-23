@@ -23,7 +23,7 @@ import {
 import { useChatStore } from '@/lib/chat-store'
 import type { ArtifactGroupSummary, ArtifactHealthDetails } from '@/lib/types'
 
-type FinalOutputCardProps = {
+export type FinalOutputControllerProps = {
   projectId: string
   latestInputPath: string | null
   artifactGroups?: ArtifactGroupSummary[]
@@ -67,59 +67,12 @@ function validationStatusCopy(details: ArtifactHealthDetails | null | undefined)
   return details.reason ?? null
 }
 
-export function FinalOutputCard({
-  projectId,
-  latestInputPath,
-  artifactGroups,
-  sceneCount,
-}: FinalOutputCardProps) {
-  const finalOutputGroup = artifactGroups?.find(group => group.artifact_type === 'final_output')
-  const finalOutputEntityId = finalOutputGroup?.entity_id ?? 'project'
-  const renderedSceneCount = artifactGroups?.filter(group => group.artifact_type === 'generated_video').length ?? 0
-  const { data: finalOutputArtifact } = useArtifact(
-    projectId,
-    'final_output',
-    finalOutputEntityId,
-    finalOutputGroup?.latest_version,
-  )
+function useStartFinalOutput(
+  projectId: string,
+  latestInputPath: string | null,
+  finalOutputGroup: ArtifactGroupSummary | undefined,
+) {
   const startRun = useStartRun()
-  const activeRunId = useChatStore(store => store.activeRunId?.[projectId] ?? null)
-  const { data: runState } = useRunState(activeRunId ?? undefined)
-
-  const hasActiveRun = isRunActive(activeRunId, runState)
-  const finalOutputRunActive = hasActiveRun && runState?.state.recipe_id === 'final_output'
-  const anotherRunActive = hasActiveRun && !!runState && runState.state.recipe_id !== 'final_output'
-  const finalOutputRunFailed =
-    !!activeRunId && runState?.state.recipe_id === 'final_output' && runHasFailed(runState)
-  const finalOutputError = finalOutputRunFailed
-    ? runState?.background_error ?? 'Final output assembly failed. Open run details for more information.'
-    : null
-  const runBlocked = startRun.isPending || hasActiveRun
-  const canStartFinalOutput =
-    !!latestInputPath && renderedSceneCount > 0 && sceneCount > 0 && !runBlocked
-
-  const finalOutputData = finalOutputArtifact?.payload?.data as Record<string, unknown> | undefined
-  const summary = parseSummary(finalOutputData)
-  const healthDetails = finalOutputGroup?.health_details ?? null
-  const validationRef =
-    healthDetails?.source_kind === 'media_validation'
-      || healthDetails?.source_kind === 'media_validation_stale'
-      ? healthDetails.source_artifact_ref
-      : null
-  const { data: validationArtifact } = useArtifact(
-    projectId,
-    validationRef?.artifact_type,
-    validationRef?.entity_id ?? undefined,
-    validationRef?.version,
-  )
-  const validationData = validationArtifact?.payload?.data as Record<string, unknown> | undefined
-  const detailHref = finalOutputGroup
-    ? `/${projectId}/artifacts/final_output/${finalOutputEntityId}/${finalOutputGroup.latest_version}`
-    : null
-  const validationDetailHref = validationRef?.entity_id && validationRef.version
-    ? `/${projectId}/artifacts/${validationRef.artifact_type}/${validationRef.entity_id}/${validationRef.version}`
-    : null
-  const runDetailHref = activeRunId ? `/${projectId}/runs/${activeRunId}` : null
 
   async function handleStartFinalOutput() {
     if (!latestInputPath) return
@@ -145,107 +98,221 @@ export function FinalOutputCard({
     }
   }
 
+  return { startRunPending: startRun.isPending, handleStartFinalOutput }
+}
+
+// This hook stays mounted in ProjectHomeHeader while the dialog view unmounts.
+// eslint-disable-next-line react-refresh/only-export-components
+export function useFinalOutputController({
+  projectId,
+  latestInputPath,
+  artifactGroups,
+  sceneCount,
+}: FinalOutputControllerProps) {
+  const finalOutputGroup = artifactGroups?.find(group => group.artifact_type === 'final_output')
+  const finalOutputEntityId = finalOutputGroup?.entity_id ?? 'project'
+  const renderedClipCount = artifactGroups?.filter(group => group.artifact_type === 'generated_video').length ?? 0
+  const { data: finalOutputArtifact } = useArtifact(
+    projectId,
+    'final_output',
+    finalOutputEntityId,
+    finalOutputGroup?.latest_version,
+  )
+  const { startRunPending, handleStartFinalOutput } = useStartFinalOutput(
+    projectId,
+    latestInputPath,
+    finalOutputGroup,
+  )
+  const activeRunId = useChatStore(store => store.activeRunId?.[projectId] ?? null)
+  const { data: runState } = useRunState(activeRunId ?? undefined)
+
+  const hasActiveRun = isRunActive(activeRunId, runState)
+  const finalOutputRunActive = hasActiveRun && runState?.state.recipe_id === 'final_output'
+  const anotherRunActive = hasActiveRun && !!runState && runState.state.recipe_id !== 'final_output'
+  const finalOutputRunFailed =
+    !!activeRunId && runState?.state.recipe_id === 'final_output' && runHasFailed(runState)
+  const finalOutputError = finalOutputRunFailed
+    ? runState?.background_error ?? 'Final output assembly failed. Open run details for more information.'
+    : null
+  const runBlocked = startRunPending || hasActiveRun
+  const canStartFinalOutput =
+    !!latestInputPath && renderedClipCount > 0 && sceneCount > 0 && !runBlocked
+
+  const finalOutputData = finalOutputArtifact?.payload?.data as Record<string, unknown> | undefined
+  const summary = parseSummary(finalOutputData)
+  const healthDetails = finalOutputGroup?.health_details ?? null
+  const validationRef =
+    healthDetails?.source_kind === 'media_validation'
+      || healthDetails?.source_kind === 'media_validation_stale'
+      ? healthDetails.source_artifact_ref
+      : null
+  const { data: validationArtifact } = useArtifact(
+    projectId,
+    validationRef?.artifact_type,
+    validationRef?.entity_id ?? undefined,
+    validationRef?.version,
+  )
+  const validationData = validationArtifact?.payload?.data as Record<string, unknown> | undefined
+  const detailHref = finalOutputGroup
+    ? `/${projectId}/artifacts/final_output/${finalOutputEntityId}/${finalOutputGroup.latest_version}`
+    : null
+  const validationDetailHref = validationRef?.entity_id && validationRef.version
+    ? `/${projectId}/artifacts/${validationRef.artifact_type}/${validationRef.entity_id}/${validationRef.version}`
+    : null
+  const runDetailHref = activeRunId ? `/${projectId}/runs/${activeRunId}` : null
+
+  return {
+    projectId,
+    latestInputPath,
+    sceneCount,
+    renderedClipCount,
+    finalOutputGroup,
+    summary,
+    healthDetails,
+    validationData,
+    detailHref,
+    validationDetailHref,
+    runDetailHref,
+    anotherRunActive,
+    finalOutputRunActive,
+    finalOutputRunFailed,
+    finalOutputError,
+    canStartFinalOutput,
+    startRunPending,
+    handleStartFinalOutput,
+  }
+}
+
+export type FinalOutputController = ReturnType<typeof useFinalOutputController>
+
+function FinalOutputHeader({ controller }: { controller: FinalOutputController }) {
+  const {
+    summary, finalOutputGroup, healthDetails, renderedClipCount, sceneCount,
+    detailHref, validationDetailHref, canStartFinalOutput, startRunPending,
+    handleStartFinalOutput,
+  } = controller
+  return (
+    <CardHeader className="pb-4">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <CardTitle>Final Output</CardTitle>
+            <Badge variant={summary?.coverageState === 'complete' ? 'secondary' : 'outline'}>
+              {coverageLabel(summary?.coverageState ?? null)}
+            </Badge>
+            {finalOutputGroup && <Badge variant="secondary">v{finalOutputGroup.latest_version}</Badge>}
+            {finalOutputGroup && (
+              <HealthBadge health={finalOutputGroup.health} details={healthDetails} />
+            )}
+            <Badge variant="outline">
+              {renderedClipCount} generated clip{renderedClipCount === 1 ? '' : 's'} · {sceneCount} scene{sceneCount === 1 ? '' : 's'}
+            </Badge>
+            {formatDuration(summary?.durationSeconds ?? null) && (
+              <Badge variant="outline">{formatDuration(summary?.durationSeconds ?? null)}</Badge>
+            )}
+          </div>
+          <CardDescription className="max-w-3xl leading-relaxed">
+            Assemble a project-level playable cut from the current generated scene renders.
+            This first slice stays honest: it never swaps in storyboards or previz when a
+            scene is missing from the rendered cut.
+          </CardDescription>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {detailHref && (
+            <Button asChild variant="outline" size="sm">
+              <Link to={detailHref}>
+                <ExternalLink className="h-3.5 w-3.5" />
+                Open Artifact Detail
+              </Link>
+            </Button>
+          )}
+          {validationDetailHref && (
+            <Button asChild variant="outline" size="sm">
+              <Link to={validationDetailHref}>
+                <ExternalLink className="h-3.5 w-3.5" />
+                Validation Detail
+              </Link>
+            </Button>
+          )}
+          <Button
+            size="sm"
+            className="sm:self-start"
+            onClick={handleStartFinalOutput}
+            disabled={!canStartFinalOutput}
+          >
+            {startRunPending ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : finalOutputGroup ? (
+              <RefreshCw className="h-3.5 w-3.5" />
+            ) : (
+              <Film className="h-3.5 w-3.5" />
+            )}
+            {finalOutputGroup ? 'Refresh Final Output' : 'Assemble Final Output'}
+          </Button>
+        </div>
+      </div>
+    </CardHeader>
+  )
+}
+
+function FinalOutputMessages({ controller }: { controller: FinalOutputController }) {
+  const {
+    latestInputPath, sceneCount, renderedClipCount, anotherRunActive,
+    finalOutputRunActive, summary, healthDetails,
+  } = controller
+  return (
+    <CardContent className="space-y-2 text-sm text-muted-foreground">
+      {!latestInputPath && <p>No screenplay input is available for this project yet.</p>}
+      {sceneCount === 0 && (
+        <p>Scene extraction has not produced a timeline for this project yet.</p>
+      )}
+      {renderedClipCount === 0 && sceneCount > 0 && (
+        <p>
+          Final Output needs at least one generated scene render before CineForge can assemble
+          a project cut.
+        </p>
+      )}
+      {anotherRunActive && (
+        <p>
+          Another pipeline run is already in progress. Wait for it to finish before assembling
+          the project cut.
+        </p>
+      )}
+      {finalOutputRunActive && (
+        <p>
+          Final Output assembly is running now. This card will refresh when the new cut lands.
+        </p>
+      )}
+      {summary && (
+        <p>
+          {summary.coverageState === 'complete'
+            ? `The current cut includes all ${summary.includedCount} rendered scenes in timeline order.`
+            : `The current cut includes ${summary.includedCount} scene${summary.includedCount === 1 ? '' : 's'} and explicitly omits ${summary.omittedCount} scene${summary.omittedCount === 1 ? '' : 's'} that still lack render coverage.`}
+        </p>
+      )}
+      {!summary && renderedClipCount > 0 && !finalOutputRunActive && (
+        <p>
+          CineForge has enough rendered scene media to assemble the first project cut. Start
+          Final Output when you want one playable artifact instead of scene-by-scene review.
+        </p>
+      )}
+      {validationStatusCopy(healthDetails) && <p>{validationStatusCopy(healthDetails)}</p>}
+    </CardContent>
+  )
+}
+
+export function FinalOutputCard({ controller }: { controller: FinalOutputController }) {
+  const {
+    projectId, validationData, healthDetails, validationDetailHref,
+    finalOutputRunFailed, finalOutputError, runDetailHref,
+  } = controller
+
   return (
     <div className="space-y-4">
       <Card className="gap-0">
-        <CardHeader className="pb-4">
-          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <CardTitle>Final Output</CardTitle>
-                <Badge variant={summary?.coverageState === 'complete' ? 'secondary' : 'outline'}>
-                  {coverageLabel(summary?.coverageState ?? null)}
-                </Badge>
-                {finalOutputGroup && <Badge variant="secondary">v{finalOutputGroup.latest_version}</Badge>}
-                {finalOutputGroup && (
-                  <HealthBadge health={finalOutputGroup.health} details={healthDetails} />
-                )}
-                <Badge variant="outline">
-                  {renderedSceneCount}/{sceneCount} scenes rendered
-                </Badge>
-                {formatDuration(summary?.durationSeconds ?? null) && (
-                  <Badge variant="outline">{formatDuration(summary?.durationSeconds ?? null)}</Badge>
-                )}
-              </div>
-              <CardDescription className="max-w-3xl leading-relaxed">
-                Assemble a project-level playable cut from the current generated scene renders.
-                This first slice stays honest: it never swaps in storyboards or previz when a
-                scene is missing from the rendered cut.
-              </CardDescription>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              {detailHref && (
-                <Button asChild variant="outline" size="sm">
-                  <Link to={detailHref}>
-                    <ExternalLink className="h-3.5 w-3.5" />
-                    Open Artifact Detail
-                  </Link>
-                </Button>
-              )}
-              {validationDetailHref && (
-                <Button asChild variant="outline" size="sm">
-                  <Link to={validationDetailHref}>
-                    <ExternalLink className="h-3.5 w-3.5" />
-                    Validation Detail
-                  </Link>
-                </Button>
-              )}
-              <Button
-                size="sm"
-                className="sm:self-start"
-                onClick={handleStartFinalOutput}
-                disabled={!canStartFinalOutput}
-              >
-                {startRun.isPending ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                ) : finalOutputGroup ? (
-                  <RefreshCw className="h-3.5 w-3.5" />
-                ) : (
-                  <Film className="h-3.5 w-3.5" />
-                )}
-                {finalOutputGroup ? 'Refresh Final Output' : 'Assemble Final Output'}
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-2 text-sm text-muted-foreground">
-          {!latestInputPath && <p>No screenplay input is available for this project yet.</p>}
-          {sceneCount === 0 && (
-            <p>Scene extraction has not produced a timeline for this project yet.</p>
-          )}
-          {renderedSceneCount === 0 && sceneCount > 0 && (
-            <p>
-              Final Output needs at least one generated scene render before CineForge can assemble
-              a project cut.
-            </p>
-          )}
-          {anotherRunActive && (
-            <p>
-              Another pipeline run is already in progress. Wait for it to finish before assembling
-              the project cut.
-            </p>
-          )}
-          {finalOutputRunActive && (
-            <p>
-              Final Output assembly is running now. This card will refresh when the new cut lands.
-            </p>
-          )}
-          {summary && (
-            <p>
-              {summary.coverageState === 'complete'
-                ? `The current cut includes all ${summary.includedCount} rendered scenes in timeline order.`
-                : `The current cut includes ${summary.includedCount} scene${summary.includedCount === 1 ? '' : 's'} and explicitly omits ${summary.omittedCount} scene${summary.omittedCount === 1 ? '' : 's'} that still lack render coverage.`}
-            </p>
-          )}
-          {!summary && renderedSceneCount > 0 && !finalOutputRunActive && (
-            <p>
-              CineForge has enough rendered scene media to assemble the first project cut. Start
-              Final Output when you want one playable artifact instead of scene-by-scene review.
-            </p>
-          )}
-          {validationStatusCopy(healthDetails) && <p>{validationStatusCopy(healthDetails)}</p>}
-        </CardContent>
+        <FinalOutputHeader controller={controller} />
+        <FinalOutputMessages controller={controller} />
       </Card>
 
       {validationData && healthDetails?.source_kind === 'media_validation' && (

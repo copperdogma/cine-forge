@@ -1,0 +1,23 @@
+F.                                                                       [100%]
+=================================== FAILURES ===================================
+______ test_retired_render_blocks_before_paid_preparation_for_all_scenes _______
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-360/test_retired_render_blocks_bef0')
+
+    @pytest.mark.unit
+    def test_retired_render_blocks_before_paid_preparation_for_all_scenes(tmp_path: Path) -> None:
+        project_dir = _seed_scene_action_project(tmp_path)
+        preflight = build_scene_action_preflight(
+            project_path=project_dir,
+            recipe_id="render_generation",
+            scene_scope=SceneExecutionScope(mode="all_scenes"),
+        )
+>       assert preflight.status == "soft_block"
+E       AssertionError: assert 'warn' == 'soft_block'
+E         
+E         - soft_block
+E         + warn
+
+tests/unit/test_scene_actions.py:143: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_scene_actions.py::test_retired_render_blocks_before_paid_preparation_for_all_scenes

@@ -3,6 +3,8 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import re
+import shutil
 from pathlib import Path
 
 import pytest
@@ -14,10 +16,60 @@ assert SPEC and SPEC.loader
 manifest = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(manifest)
 
+STORY_213_MANIFEST = "docs/evals/story-213-model-eval-contract-manifest.json"
+STORY_213_ARCHIVE = "docs/evals/snapshots/story-213-model-eval-contract-v1"
+STORY_213_MANIFEST_SHA256 = "b435160923151db6b62b5d3fe12eddd79795a3f7d0047796aa3309aa0f4aa2d2"
+STORY_213_INDEX_SHA256 = "c1058aa1de26761beae32974ea3b726d80e6a44f8cc47bbfe627a51642201821"
+
+
+def _assert_story_213_archive(repo_root: Path) -> None:
+    """Check historical bytes without coupling them to evolving working files."""
+    manifest_bytes = (repo_root / STORY_213_MANIFEST).read_bytes()
+    assert hashlib.sha256(manifest_bytes).hexdigest() == STORY_213_MANIFEST_SHA256
+    payload = json.loads(manifest_bytes)
+    archive_root = repo_root.resolve() / STORY_213_ARCHIVE
+    index_path = archive_root / "index.json"
+    assert index_path.resolve() == index_path
+    index_bytes = index_path.read_bytes()
+    assert hashlib.sha256(index_bytes).hexdigest() == STORY_213_INDEX_SHA256
+    index = json.loads(index_bytes)
+    assert index["schema_version"] == 1
+    assert index["archive_id"] == "story-213-model-eval-contract-v1"
+    assert index["source_manifest"] == {
+        "path": STORY_213_MANIFEST,
+        "sha256": STORY_213_MANIFEST_SHA256,
+        "bytes": len(manifest_bytes),
+        "source_commit": "a8b13f8a35663c931c232557f86d9338be7c5a80",
+    }
+    rows = index["files"]
+    assert index["file_count"] == len(rows) == len(payload["files"]) == 36
+    original_paths = [row["original_path"] for row in rows]
+    archive_paths = [row["archive_path"] for row in rows]
+    assert len(set(original_paths)) == len(rows)
+    assert len(set(archive_paths)) == len(rows)
+    assert set(original_paths) == set(payload["files"])
+    total_bytes = 0
+    for row in rows:
+        original = row["original_path"]
+        relative = row["archive_path"]
+        assert relative == f"{STORY_213_ARCHIVE}/{original}.txt"
+        assert not Path(relative).is_absolute() and ".." not in Path(relative).parts
+        path = repo_root.resolve() / relative
+        assert path.resolve() == path and path.is_relative_to(archive_root)
+        assert path.is_file()
+        data = path.read_bytes()
+        assert hashlib.sha256(data).hexdigest() == row["sha256"] == payload["files"][original]
+        assert type(row["bytes"]) is int and len(data) == row["bytes"]
+        assert re.fullmatch(r"[0-9a-f]{40}", row["source_commit"])
+        blob_identity = hashlib.sha1(f"blob {len(data)}\0".encode() + data).hexdigest()
+        assert blob_identity == row["source_git_blob_oid"]
+        total_bytes += len(data)
+    assert total_bytes == index["total_bytes"]
+
 
 @pytest.mark.unit
 def test_story_213_manifest_is_hash_complete_for_final_qa_contract() -> None:
-    path = REPO_ROOT / "docs/evals/story-213-model-eval-contract-manifest.json"
+    path = REPO_ROOT / STORY_213_MANIFEST
     payload = json.loads(path.read_text())
     required = {
         "docs/evals/attempts/026-qa-pass-production-contract-repair.md",
@@ -30,32 +82,68 @@ def test_story_213_manifest_is_hash_complete_for_final_qa_contract() -> None:
     assert payload["attempts"] == ["024", "025", "026"]
     assert required <= set(payload["files"])
     assert payload["evidence_status"] == "final-contract-hash-complete-fresh-parity-unmeasured"
-    # Story 213's versioned bundle is immutable. These five paths evolved in
-    # later work; all other source bytes still match the historical record.
-    expected_evolved = {
-        "docs/evals/registry.yaml",
-        "benchmarks/providers/script_bible_runtime_provider.py",
-        "benchmarks/runtime_tasks/script-bible-runtime.yaml",
-        "docs/evals/truth-audit-ledger.yaml",
-        "tests/unit/test_eval_contract_manifest.py",
-    }
-    drifted = set()
-    for relative, expected in payload["files"].items():
-        actual = hashlib.sha256((REPO_ROOT / relative).read_bytes()).hexdigest()
-        if actual != expected:
-            drifted.add(relative)
-    assert drifted == expected_evolved
+    # Git recovery verified every per-file source commit. The pinned index and
+    # Git blob identities retain that evidence even in a shallow checkout.
+    _assert_story_213_archive(REPO_ROOT)
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize("mutation", ["missing", "bytes", "symlink", "outside-root"])
+def test_story_213_archive_rejects_missing_or_changed_bytes(
+    tmp_path: Path,
+    mutation: str,
+) -> None:
+    destination = tmp_path / STORY_213_ARCHIVE
+    shutil.copytree(REPO_ROOT / STORY_213_ARCHIVE, destination)
+    historical_manifest = tmp_path / STORY_213_MANIFEST
+    historical_manifest.write_bytes((REPO_ROOT / STORY_213_MANIFEST).read_bytes())
+    row = json.loads((destination / "index.json").read_text())["files"][0]
+    archived = tmp_path / row["archive_path"]
+    if mutation == "bytes":
+        archived.write_bytes(archived.read_bytes() + b"changed")
+    elif mutation == "missing":
+        archived.unlink()
+    else:
+        target = destination / "duplicate.txt" if mutation == "symlink" else tmp_path / "out"
+        archived.rename(target)
+        archived.symlink_to(target)
+    with pytest.raises(AssertionError):
+        _assert_story_213_archive(tmp_path)
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize("mutation", ["duplicate", "missing", "source-commit", "path"])
+def test_story_213_archive_rejects_changed_provenance(
+    tmp_path: Path,
+    mutation: str,
+) -> None:
+    destination = tmp_path / STORY_213_ARCHIVE
+    shutil.copytree(REPO_ROOT / STORY_213_ARCHIVE, destination)
+    (tmp_path / STORY_213_MANIFEST).write_bytes((REPO_ROOT / STORY_213_MANIFEST).read_bytes())
+    index_path = destination / "index.json"
+    index = json.loads(index_path.read_text())
+    if mutation == "duplicate":
+        index["files"][1] = index["files"][0]
+    elif mutation == "missing":
+        index["files"].pop()
+    elif mutation == "source-commit":
+        index["files"][0]["source_commit"] = "0" * 40
+    else:
+        index["files"][0]["archive_path"] = f"{STORY_213_ARCHIVE}/../outside.txt"
+    index_path.write_text(json.dumps(index))
+    with pytest.raises(AssertionError):
+        _assert_story_213_archive(tmp_path)
 
 
 @pytest.mark.unit
 def test_current_story_208_manifest_rolls_forward_without_rewriting_history() -> None:
-    assert manifest.DEFAULT_OUTPUT.name == "story-208-contract-manifest-v20.json"
+    assert manifest.DEFAULT_OUTPUT.name == "story-208-contract-manifest-v28.json"
     payload = manifest.build_manifest(
         REPO_ROOT,
         manifest.DEFAULT_LEDGER,
         manifest.DEFAULT_OUTPUT,
     )
-    assert payload["manifest_id"] == "story-208-eval-contracts-v20"
+    assert payload["manifest_id"] == "story-208-eval-contracts-v28"
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v1.json").exists()
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v2.json").exists()
     assert (REPO_ROOT / "docs/evals/story-208-contract-manifest-v3.json").exists()
@@ -71,18 +159,23 @@ def test_current_story_208_manifest_rolls_forward_without_rewriting_history() ->
 @pytest.mark.unit
 def test_manifest_collects_contracts_but_excludes_result_caches(tmp_path: Path) -> None:
     prompt = tmp_path / "benchmarks/prompts/demo.txt"
+    runtime_task = tmp_path / "benchmarks/runtime_tasks/demo.yaml"
     result = tmp_path / "benchmarks/results/demo.json"
     test = tmp_path / "tests/unit/test_demo.py"
     skill = tmp_path / ".agents/skills/improve-eval/SKILL.md"
     runbook = tmp_path / "docs/runbooks/promptfoo.md"
-    for path in (prompt, result, test, skill, runbook):
+    for path in (prompt, runtime_task, result, test, skill, runbook):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(path.name, encoding="utf-8")
     ledger = {
         "surfaces": [
             {
                 "kind": "prompt",
-                "paths": ["benchmarks/prompts/demo.txt", "benchmarks/results/"],
+                "paths": [
+                    "benchmarks/prompts/demo.txt",
+                    "benchmarks/runtime_tasks/demo.yaml",
+                    "benchmarks/results/",
+                ],
             },
             {"kind": "test_suite", "paths": ["tests/unit/"]},
             {
@@ -103,6 +196,7 @@ def test_manifest_collects_contracts_but_excludes_result_caches(tmp_path: Path) 
     }
 
     assert "benchmarks/prompts/demo.txt" in paths
+    assert "benchmarks/runtime_tasks/demo.yaml" in paths
     assert "tests/unit/test_demo.py" in paths
     assert ".agents/skills/improve-eval/SKILL.md" in paths
     assert "docs/runbooks/promptfoo.md" in paths
@@ -110,17 +204,20 @@ def test_manifest_collects_contracts_but_excludes_result_caches(tmp_path: Path) 
 
 
 @pytest.mark.unit
+@pytest.mark.parametrize(
+    "relative", ["benchmarks/prompts/demo.txt", "benchmarks/runtime_tasks/demo.yaml"]
+)
 def test_manifest_validation_fails_closed_on_contract_drift(
     tmp_path: Path,
+    relative: str,
 ) -> None:
-    prompt = tmp_path / "benchmarks/prompts/demo.txt"
-    prompt.parent.mkdir(parents=True)
-    prompt.write_text("before", encoding="utf-8")
+    contract = tmp_path / relative
+    contract.parent.mkdir(parents=True)
+    contract.write_text("before", encoding="utf-8")
     ledger_path = tmp_path / "docs/evals/truth-audit-ledger.yaml"
     ledger_path.parent.mkdir(parents=True)
     ledger_path.write_text(
-        "as_of: '2026-07-22'\nsurfaces:\n  - kind: prompt\n"
-        "    paths: ['benchmarks/prompts/demo.txt']\n",
+        f"as_of: '2026-07-22'\nsurfaces:\n  - kind: prompt\n    paths: ['{relative}']\n",
         encoding="utf-8",
     )
     output = tmp_path / "docs/evals/manifest.json"
@@ -132,7 +229,7 @@ def test_manifest_validation_fails_closed_on_contract_drift(
     output.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
     assert manifest.validate_manifest(tmp_path, ledger_path, output) == []
 
-    prompt.write_text("after", encoding="utf-8")
+    contract.write_text("after", encoding="utf-8")
 
     errors = manifest.validate_manifest(tmp_path, ledger_path, output)
     assert any("contract bundle drifted" in error for error in errors)

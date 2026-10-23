@@ -1,0 +1,47 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_________ test_failed_driver_run_retains_known_costs_and_uncertain_job _________
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-349/test_failed_driver_run_retains0')
+
+    @pytest.mark.integration
+    def test_failed_driver_run_retains_known_costs_and_uncertain_job(tmp_path: Path) -> None:
+        recipe = _mechanical_recipe(tmp_path, fail=True)
+        engine = DriverEngine(workspace_root=tmp_path)
+        with pytest.raises(RuntimeError, match="terminal media failure"):
+            engine.run(recipe_path=recipe, run_id="receipt-failure", force=True)
+        state = json.loads((tmp_path / "output/runs/receipt-failure/run_state.json").read_text())
+>       assert state["total_cost_usd"] == pytest.approx(.21)
+E       assert 0.0 == 0.21 ± 2.1e-07
+E         
+E         comparison failed
+E         Obtained: 0.0
+E         Expected: 0.21 ± 2.1e-07
+
+tests/integration/test_media_cost_receipts.py:75: AssertionError
+----------------------------- Captured stdout call -----------------------------
+[receipt-failure] Stage 'generate' starting...
+[receipt-failure] Stage 'generate' failed: terminal media failure
+____ test_successful_driver_dedupes_receipts_without_adding_aggregate_twice ____
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-349/test_successful_driver_dedupes0')
+
+    @pytest.mark.integration
+    def test_successful_driver_dedupes_receipts_without_adding_aggregate_twice(tmp_path: Path) -> None:
+        recipe = _mechanical_recipe(tmp_path, fail=False, duplicate=True)
+        state = DriverEngine(workspace_root=tmp_path).run(
+            recipe_path=recipe, run_id="receipt-success", force=True,
+        )
+        assert state["total_cost_usd"] == pytest.approx(.21)
+>       assert state["cost_is_complete"] is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'cost_is_complete'
+
+tests/integration/test_media_cost_receipts.py:92: KeyError
+----------------------------- Captured stdout call -----------------------------
+[receipt-success] Stage 'generate' starting...
+[receipt-success] Stage 'generate' done in 0.0014s (cost $0.2100; total $0.2100).
+[receipt-success] Run complete. Total cost $0.2100.
+=========================== short test summary info ============================
+FAILED tests/integration/test_media_cost_receipts.py::test_failed_driver_run_retains_known_costs_and_uncertain_job
+FAILED tests/integration/test_media_cost_receipts.py::test_successful_driver_dedupes_receipts_without_adding_aggregate_twice

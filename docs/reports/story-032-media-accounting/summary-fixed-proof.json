@@ -1,0 +1,289 @@
+{
+  "fixture_kind": "deterministic service summary fixture; not a provider or driver run",
+  "summary": {
+    "cost_is_complete": false,
+    "uncertain_cost_receipts": [
+      {
+        "receipt_id": "video-2",
+        "component": "video",
+        "model": "video-model",
+        "status": "uncertain",
+        "cost": null,
+        "provider": "test-provider",
+        "provider_job_id": "video-2",
+        "scene_id": "scene_002",
+        "entity_id": null,
+        "price": null,
+        "quantity": null,
+        "reason": "Accepted job could not be polled."
+      }
+    ],
+    "run_id": "media-run",
+    "project_id": "cost-project",
+    "recipe_id": "media",
+    "status": "failed",
+    "started_at": 10.0,
+    "finished_at": 15.0,
+    "total_cost_usd": 2.3,
+    "stages": [
+      {
+        "cost_is_complete": false,
+        "uncertain_cost_receipts": [
+          {
+            "receipt_id": "video-2",
+            "component": "video",
+            "model": "video-model",
+            "status": "uncertain",
+            "cost": null,
+            "provider": "test-provider",
+            "provider_job_id": "video-2",
+            "scene_id": "scene_002",
+            "entity_id": null,
+            "price": null,
+            "quantity": null,
+            "reason": "Accepted job could not be polled."
+          }
+        ],
+        "stage_id": "render",
+        "status": "failed",
+        "model_used": "compiler-model+video-model",
+        "call_count": 4,
+        "attempt_count": 0,
+        "input_tokens": 150,
+        "output_tokens": 30,
+        "estimated_cost_usd": 2.3,
+        "module_cost_usd": 1.8,
+        "role_cost_usd": 0.5,
+        "duration_seconds": 0.0,
+        "artifact_count": 2,
+        "pause_reason": null
+      }
+    ],
+    "by_model": [
+      {
+        "cost_is_complete": false,
+        "uncertain_cost_receipts": [
+          {
+            "receipt_id": "video-2",
+            "component": "video",
+            "model": "video-model",
+            "status": "uncertain",
+            "cost": null,
+            "provider": "test-provider",
+            "provider_job_id": "video-2",
+            "scene_id": "scene_002",
+            "entity_id": null,
+            "price": null,
+            "quantity": null,
+            "reason": "Accepted job could not be polled."
+          }
+        ],
+        "model": "video-model",
+        "call_count": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": 1.6
+      },
+      {
+        "cost_is_complete": true,
+        "uncertain_cost_receipts": [],
+        "model": "judge-model",
+        "call_count": 1,
+        "input_tokens": 50,
+        "output_tokens": 10,
+        "estimated_cost_usd": 0.5
+      },
+      {
+        "cost_is_complete": true,
+        "uncertain_cost_receipts": [],
+        "model": "compiler-model",
+        "call_count": 1,
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "estimated_cost_usd": 0.2
+      }
+    ],
+    "by_role": [
+      {
+        "role_id": "reviewer",
+        "models": [
+          "judge-model"
+        ],
+        "call_count": 1,
+        "input_tokens": 50,
+        "output_tokens": 10,
+        "estimated_cost_usd": 0.5,
+        "stage_ids": [
+          "render"
+        ],
+        "scene_ids": [
+          "scene_002"
+        ],
+        "entity_ids": [],
+        "attribution": {
+          "kind": "exact",
+          "basis": "Derived from exact role invocation cost logs."
+        }
+      }
+    ],
+    "by_scene": [
+      {
+        "cost_is_complete": true,
+        "uncertain_cost_receipts": [],
+        "scene_id": "scene_001",
+        "call_count": 2,
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "estimated_cost_usd": 1.8,
+        "stage_ids": [
+          "render"
+        ],
+        "attribution": {
+          "kind": "exact",
+          "basis": "Exact receipt evidence from 'compile-1'. Exact receipt evidence from 'video-1'."
+        }
+      },
+      {
+        "cost_is_complete": false,
+        "uncertain_cost_receipts": [
+          {
+            "receipt_id": "video-2",
+            "component": "video",
+            "model": "video-model",
+            "status": "uncertain",
+            "cost": null,
+            "provider": "test-provider",
+            "provider_job_id": "video-2",
+            "scene_id": "scene_002",
+            "entity_id": null,
+            "price": null,
+            "quantity": null,
+            "reason": "Accepted job could not be polled."
+          }
+        ],
+        "scene_id": "scene_002",
+        "call_count": 2,
+        "input_tokens": 50,
+        "output_tokens": 10,
+        "estimated_cost_usd": 0.5,
+        "stage_ids": [
+          "render"
+        ],
+        "attribution": {
+          "kind": "exact",
+          "basis": "Exact receipt evidence from 'video-2'. Exact role invocation cost from 'reviewer'."
+        }
+      }
+    ],
+    "budget_config": {
+      "project_budget_limit_usd": null,
+      "default_run_budget_limit_usd": null,
+      "budget_warning_threshold_ratio": 0.8,
+      "stage_budget_limits_usd": {}
+    },
+    "budget_statuses": []
+  },
+  "project_summary": {
+    "cost_is_complete": false,
+    "uncertain_cost_receipts": [
+      {
+        "receipt_id": "video-2",
+        "component": "video",
+        "model": "video-model",
+        "status": "uncertain",
+        "cost": null,
+        "provider": "test-provider",
+        "provider_job_id": "video-2",
+        "scene_id": "scene_002",
+        "entity_id": null,
+        "price": null,
+        "quantity": null,
+        "reason": "Accepted job could not be polled."
+      }
+    ],
+    "project_id": "cost-project",
+    "total_cost_usd": 2.3,
+    "run_count": 1,
+    "runs": [
+      {
+        "cost_is_complete": false,
+        "uncertain_cost_receipts": [
+          {
+            "receipt_id": "video-2",
+            "component": "video",
+            "model": "video-model",
+            "status": "uncertain",
+            "cost": null,
+            "provider": "test-provider",
+            "provider_job_id": "video-2",
+            "scene_id": "scene_002",
+            "entity_id": null,
+            "price": null,
+            "quantity": null,
+            "reason": "Accepted job could not be polled."
+          }
+        ],
+        "run_id": "media-run",
+        "recipe_id": "media",
+        "status": "failed",
+        "started_at": 10.0,
+        "finished_at": 15.0,
+        "total_cost_usd": 2.3,
+        "duration_seconds": 5.0
+      }
+    ],
+    "trend_points": [
+      {
+        "cost_is_complete": false,
+        "uncertain_cost_receipts": [
+          {
+            "receipt_id": "video-2",
+            "component": "video",
+            "model": "video-model",
+            "status": "uncertain",
+            "cost": null,
+            "provider": "test-provider",
+            "provider_job_id": "video-2",
+            "scene_id": "scene_002",
+            "entity_id": null,
+            "price": null,
+            "quantity": null,
+            "reason": "Accepted job could not be polled."
+          }
+        ],
+        "run_id": "media-run",
+        "started_at": 10.0,
+        "total_cost_usd": 2.3
+      }
+    ],
+    "trend": {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "video-2",
+          "component": "video",
+          "model": "video-model",
+          "status": "uncertain",
+          "cost": null,
+          "provider": "test-provider",
+          "provider_job_id": "video-2",
+          "scene_id": "scene_002",
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Accepted job could not be polled."
+        }
+      ],
+      "direction": "insufficient_data",
+      "recent_average_usd": 2.3,
+      "previous_average_usd": 0.0,
+      "delta_usd": 2.3
+    },
+    "budget_config": {
+      "project_budget_limit_usd": null,
+      "default_run_budget_limit_usd": null,
+      "budget_warning_threshold_ratio": 0.8,
+      "stage_budget_limits_usd": {}
+    }
+  }
+}

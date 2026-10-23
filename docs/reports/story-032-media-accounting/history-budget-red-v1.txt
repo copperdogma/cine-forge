@@ -1,0 +1,115 @@
+FF.                                                                      [100%]
+=================================== FAILURES ===================================
+_ test_complete_run_budget_excludes_incomplete_project_history[uncertain_receipt] _
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-437/test_complete_run_budget_exclu0')
+history_evidence = 'uncertain_receipt'
+
+    @pytest.mark.unit
+    @pytest.mark.parametrize("history_evidence", ["uncertain_receipt", "historical_gap", "complete"])
+    def test_complete_run_budget_excludes_incomplete_project_history(
+        tmp_path: Path, history_evidence: str,
+    ) -> None:
+        project = write_receipt_run(tmp_path, run_id="history-run")
+        history_path = tmp_path / "output/runs/history-run/run_state.json"
+        history = json.loads(history_path.read_text())
+        historical_stage = history["stages"]["render"]
+        if history_evidence == "historical_gap":
+            history.pop("cost_is_complete")
+            historical_stage.pop("cost_is_complete")
+            historical_stage.pop("cost_receipts")
+            historical_stage["artifact_refs"] = [{"artifact_type": "generated_video"}]
+        elif history_evidence == "complete":
+            history["cost_is_complete"] = True
+            historical_stage["cost_is_complete"] = True
+            historical_stage["cost_receipts"] = historical_stage["cost_receipts"][:2]
+        history_path.write_text(json.dumps(history))
+        (project / "project.json").write_text(json.dumps({
+            "project_budget_limit_usd": 10.0, "default_run_budget_limit_usd": 5.0,
+        }))
+        current = tmp_path / "output/runs/complete-run"
+        current.mkdir()
+        (current / "run_meta.json").write_text(json.dumps({
+            "project_id": "cost-project", "project_path": str(project),
+        }))
+        (current / "run_state.json").write_text(json.dumps({
+            "run_id": "complete-run", "recipe_id": "text-fixture", "started_at": 20,
+            "finished_at": 25, "total_cost_usd": .5, "cost_is_complete": True,
+            "stage_order": ["work"], "stages": {"work": {
+                "status": "done", "model_used": "text-fixture", "cost_usd": .5,
+                "call_count": 1, "input_tokens": 10, "output_tokens": 5,
+            }},
+        }))
+    
+        summary = CostTrackingService(tmp_path).build_run_summary(run_id="complete-run")
+    
+        assert summary.cost_is_complete is True
+        statuses = {row.scope.value: row for row in summary.budget_statuses}
+        assert statuses["run"].remaining_usd == pytest.approx(4.5)
+        expected_scopes = {"project", "run"} if history_evidence == "complete" else {"run"}
+>       assert set(statuses) == expected_scopes
+E       AssertionError: assert {'project', 'run'} == {'run'}
+E         
+E         Extra items in the left set:
+E         'project'
+E         Use -v to get more diff
+
+tests/unit/test_cost_receipt_summaries.py:186: AssertionError
+_ test_complete_run_budget_excludes_incomplete_project_history[historical_gap] _
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-437/test_complete_run_budget_exclu1')
+history_evidence = 'historical_gap'
+
+    @pytest.mark.unit
+    @pytest.mark.parametrize("history_evidence", ["uncertain_receipt", "historical_gap", "complete"])
+    def test_complete_run_budget_excludes_incomplete_project_history(
+        tmp_path: Path, history_evidence: str,
+    ) -> None:
+        project = write_receipt_run(tmp_path, run_id="history-run")
+        history_path = tmp_path / "output/runs/history-run/run_state.json"
+        history = json.loads(history_path.read_text())
+        historical_stage = history["stages"]["render"]
+        if history_evidence == "historical_gap":
+            history.pop("cost_is_complete")
+            historical_stage.pop("cost_is_complete")
+            historical_stage.pop("cost_receipts")
+            historical_stage["artifact_refs"] = [{"artifact_type": "generated_video"}]
+        elif history_evidence == "complete":
+            history["cost_is_complete"] = True
+            historical_stage["cost_is_complete"] = True
+            historical_stage["cost_receipts"] = historical_stage["cost_receipts"][:2]
+        history_path.write_text(json.dumps(history))
+        (project / "project.json").write_text(json.dumps({
+            "project_budget_limit_usd": 10.0, "default_run_budget_limit_usd": 5.0,
+        }))
+        current = tmp_path / "output/runs/complete-run"
+        current.mkdir()
+        (current / "run_meta.json").write_text(json.dumps({
+            "project_id": "cost-project", "project_path": str(project),
+        }))
+        (current / "run_state.json").write_text(json.dumps({
+            "run_id": "complete-run", "recipe_id": "text-fixture", "started_at": 20,
+            "finished_at": 25, "total_cost_usd": .5, "cost_is_complete": True,
+            "stage_order": ["work"], "stages": {"work": {
+                "status": "done", "model_used": "text-fixture", "cost_usd": .5,
+                "call_count": 1, "input_tokens": 10, "output_tokens": 5,
+            }},
+        }))
+    
+        summary = CostTrackingService(tmp_path).build_run_summary(run_id="complete-run")
+    
+        assert summary.cost_is_complete is True
+        statuses = {row.scope.value: row for row in summary.budget_statuses}
+        assert statuses["run"].remaining_usd == pytest.approx(4.5)
+        expected_scopes = {"project", "run"} if history_evidence == "complete" else {"run"}
+>       assert set(statuses) == expected_scopes
+E       AssertionError: assert {'project', 'run'} == {'run'}
+E         
+E         Extra items in the left set:
+E         'project'
+E         Use -v to get more diff
+
+tests/unit/test_cost_receipt_summaries.py:186: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_cost_receipt_summaries.py::test_complete_run_budget_excludes_incomplete_project_history[uncertain_receipt]
+FAILED tests/unit/test_cost_receipt_summaries.py::test_complete_run_budget_excludes_incomplete_project_history[historical_gap]

@@ -4,7 +4,7 @@ export const ATTENTION_HEALTHS = ['stale', 'needs_revision', 'needs_review', 'co
 export const BIBLE_REVIEW_TYPES = ['character_bible', 'location_bible', 'prop_bible'] as const
 
 export type MediaValidationStatus = {
-  label: 'Validation Pending' | 'Validated' | 'Validation Failed'
+  label: 'Validation Pending' | 'Validated' | 'Validation Failed' | 'Needs Review'
   description: string
   tone: 'pending' | 'validated' | 'failed'
 }
@@ -114,6 +114,14 @@ export function mediaValidationStatus(
   }
 
   if (details.source_kind !== 'media_validation') return null
+
+  if (health === 'needs_review') {
+    return {
+      label: 'Needs Review',
+      description: details.reason ?? 'Validation requires human review before this artifact should drive downstream work.',
+      tone: 'pending',
+    }
+  }
 
   if (health === 'valid' || health === 'healthy' || health === 'confirmed_valid') {
     return {

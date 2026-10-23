@@ -1,0 +1,389 @@
+- heading "Command Palette" [level=2]
+- paragraph: Search for a command to run...
+- complementary:
+  - link "CineForge":
+    - /url: /
+    - generic: CineForge
+  - navigation "Project navigation":
+    - link "Script":
+      - /url: /brick-steel-full-retired
+      - generic: Script
+    - link "Intent":
+      - /url: /brick-steel-full-retired/intent
+      - generic: Intent
+    - link "Scenes 6":
+      - /url: /brick-steel-full-retired/scenes
+      - generic: Scenes
+      - generic: "6"
+    - link "Characters 11":
+      - /url: /brick-steel-full-retired/characters
+      - generic: Characters
+      - generic: "11"
+    - link "Locations 6":
+      - /url: /brick-steel-full-retired/locations
+      - generic: Locations
+      - generic: "6"
+    - link "Props 1":
+      - /url: /brick-steel-full-retired/props
+      - generic: Props
+      - generic: "1"
+    - link "Inbox 61":
+      - /url: /brick-steel-full-retired/inbox
+      - generic: Inbox
+      - generic: "61"
+    - button "World":
+      - generic: World
+    - button "Advanced" [expanded]:
+      - generic: Advanced
+    - link "Runs":
+      - /url: /brick-steel-full-retired/runs
+      - generic: Runs
+    - link "Artifacts":
+      - /url: /brick-steel-full-retired/artifacts
+      - generic: Artifacts
+    - button "Settings":
+      - generic: Settings
+  - button "v2026.10.23-04"
+- main:
+  - button "Hide sidebar":
+  - navigation "Breadcrumb":
+    - 'link "Brick & Steel: Full Retired"':
+      - /url: /brick-steel-full-retired
+    - generic: Runs
+  - button "Open command palette":
+    - generic: ⌘K
+  - button "Show panel":
+  - button "Script":
+    - generic: Script
+    - generic: 5/5
+  - button "World":
+    - generic: World
+    - generic: 6/6
+  - button "Direction":
+    - generic: Direction
+    - generic: 6/6
+  - button "Shots":
+    - generic: Shots
+    - generic: 1/1
+  - button "Storyboards":
+    - generic: Storyboards
+    - generic: 2/3
+  - button "Production":
+    - generic: Production
+    - generic: 3/3
+  - heading "Run History" [level=1]
+  - paragraph: All pipeline runs for this project
+  - button "Start New Run":
+    - text: Start New Run
+  - status:
+    - generic: Project cost is incomplete
+    - paragraph: Some submitted media charges have no reliable amount yet. The displayed amounts are known estimated subtotals, not provider bills. Budget remaining and cost trends may change when these charges are resolved.
+    - list:
+      - listitem: video · code — Historical media generation cost was not recorded; known subtotal only; no current-price backcast.
+      - listitem: video · gpt-5.4-mini+veo-3.1-generate-preview — Historical media generation cost was not recorded; known subtotal only; no current-price backcast.
+      - listitem: video · code+grok-imagine-video — Historical media generation cost was not recorded; known subtotal only; no current-price backcast.
+      - listitem: video · code+grok-imagine-video — Historical media generation cost was not recorded; known subtotal only; no current-price backcast.
+      - listitem: video · code — Historical media generation cost was not recorded; known subtotal only; no current-price backcast.
+      - listitem: video · code+grok-imagine-video — Historical media generation cost was not recorded; known subtotal only; no current-price backcast.
+      - listitem: video · code+grok-imagine-video — Historical media generation cost was not recorded; known subtotal only; no current-price backcast.
+      - listitem: video · code+grok-imagine-video — Historical media generation cost was not recorded; known subtotal only; no current-price backcast.
+      - listitem: video · code+grok-imagine-video — Historical media generation cost was not recorded; known subtotal only; no current-price backcast.
+  - generic: Known estimated subtotal
+  - generic: $2.1281
+  - generic: Tracked Runs
+  - generic: "33"
+  - generic: Recent Average
+  - generic: Unknown
+  - generic: Unresolved charges affect this average
+  - text: Cost Trend
+  - generic: Unknown until charges resolve
+  - text: Project Cost Ledger
+  - paragraph: Historical run cost estimates and budget defaults.
+  - link "CSV":
+    - /url: /api/projects/brick-steel-full-retired/export/costs.csv
+    - text: CSV
+  - link "JSON":
+    - /url: /api/projects/brick-steel-full-retired/export/costs.json
+    - text: JSON
+  - generic: Project Budget Limit
+  - generic: Not set
+  - generic: Default Run Budget
+  - generic: Not set
+  - generic: Trend Points
+  - generic: run-d1c2c9a9
+  - generic: 176d ago
+  - generic: $0.0202
+  - generic: Known estimated subtotal
+  - generic: run-a5baa37c
+  - generic: 176d ago
+  - generic: $0.0205
+  - generic: Known estimated subtotal
+  - generic: run-204d1fe5
+  - generic: 176d ago
+  - generic: $0.1422
+  - generic: Known estimated subtotal
+  - generic: run-40f34b3f
+  - generic: 170d ago
+  - generic: $0.0391
+  - generic: Estimated run cost
+  - generic: run-f386966b
+  - generic: 170d ago
+  - generic: $0.0244
+  - generic: Estimated run cost
+  - generic: run-88a073f3
+  - generic: 170d ago
+  - generic: $0.1449
+  - generic: Known estimated subtotal
+  - generic: Recent Runs
+  - generic: run-88a073f3
+  - generic: render_generation · failed
+  - generic: $0.1449
+  - generic: Known estimated subtotal · 3m 27s
+  - generic: run-f386966b
+  - generic: storyboard_generation · done
+  - generic: $0.0244
+  - generic: Estimated run cost · 48.7s
+  - generic: run-40f34b3f
+  - generic: shot_planning · done
+  - generic: $0.0391
+  - generic: Estimated run cost · 44.1s
+  - generic: run-204d1fe5
+  - generic: render_generation · done
+  - generic: $0.1422
+  - generic: Known estimated subtotal · 9m 13s
+  - generic: run-a5baa37c
+  - generic: ai_previz_generation · done
+  - generic: $0.0205
+  - generic: Known estimated subtotal · 55.0s
+  - button "Scene Renders Failed run-88a073f3 Started 170d ago $0.1449 Known estimated subtotal":
+    - generic: Scene Renders
+    - text: Failed
+    - generic: run-88a073f3
+    - generic: Started 170d ago
+    - generic: $0.1449
+    - generic: Known estimated subtotal
+  - button "Unknown Run Done run-f386966b Started 170d ago $0.0244 Recorded estimate":
+    - generic: Unknown Run
+    - text: Done
+    - generic: run-f386966b
+    - generic: Started 170d ago
+    - generic: $0.0244
+    - generic: Recorded estimate
+  - button "Shot Planning Done run-40f34b3f Started 170d ago $0.0391 Recorded estimate":
+    - generic: Shot Planning
+    - text: Done
+    - generic: run-40f34b3f
+    - generic: Started 170d ago
+    - generic: $0.0391
+    - generic: Recorded estimate
+  - button "Scene Renders Done run-204d1fe5 Started 176d ago $0.1422 Known estimated subtotal":
+    - generic: Scene Renders
+    - text: Done
+    - generic: run-204d1fe5
+    - generic: Started 176d ago
+    - generic: $0.1422
+    - generic: Known estimated subtotal
+  - button "AI Previz Done run-a5baa37c Started 176d ago $0.0205 Known estimated subtotal":
+    - generic: AI Previz
+    - text: Done
+    - generic: run-a5baa37c
+    - generic: Started 176d ago
+    - generic: $0.0205
+    - generic: Known estimated subtotal
+  - button "AI Previz Done run-d1c2c9a9 Started 176d ago $0.0202 Known estimated subtotal":
+    - generic: AI Previz
+    - text: Done
+    - generic: run-d1c2c9a9
+    - generic: Started 176d ago
+    - generic: $0.0202
+    - generic: Known estimated subtotal
+  - button "AI Previz Failed run-0f62f8e2 Started 176d ago $0.2770 Known estimated subtotal":
+    - generic: AI Previz
+    - text: Failed
+    - generic: run-0f62f8e2
+    - generic: Started 176d ago
+    - generic: $0.2770
+    - generic: Known estimated subtotal
+  - button "Unknown Run Done run-9b476294 Started 176d ago $0.0233 Recorded estimate":
+    - generic: Unknown Run
+    - text: Done
+    - generic: run-9b476294
+    - generic: Started 176d ago
+    - generic: $0.0233
+    - generic: Recorded estimate
+  - button "Shot Planning Done run-cb49c0c4 Started 176d ago $0.0435 Recorded estimate":
+    - generic: Shot Planning
+    - text: Done
+    - generic: run-cb49c0c4
+    - generic: Started 176d ago
+    - generic: $0.0435
+    - generic: Recorded estimate
+  - button "AI Previz Done run-b1bb65b3 Started 176d ago $0.0202 Known estimated subtotal":
+    - generic: AI Previz
+    - text: Done
+    - generic: run-b1bb65b3
+    - generic: Started 176d ago
+    - generic: $0.0202
+    - generic: Known estimated subtotal
+  - button "AI Previz Failed run-460d8154 Started 176d ago $0.0000 Known estimated subtotal":
+    - generic: AI Previz
+    - text: Failed
+    - generic: run-460d8154
+    - generic: Started 176d ago
+    - generic: $0.0000
+    - generic: Known estimated subtotal
+  - button "AI Previz Failed run-83ce40c8 Started 176d ago $0.0000 Recorded estimate":
+    - generic: AI Previz
+    - text: Failed
+    - generic: run-83ce40c8
+    - generic: Started 176d ago
+    - generic: $0.0000
+    - generic: Recorded estimate
+  - button "AI Previz Failed run-cea9e0db Started 176d ago $0.2514 Recorded estimate":
+    - generic: AI Previz
+    - text: Failed
+    - generic: run-cea9e0db
+    - generic: Started 176d ago
+    - generic: $0.2514
+    - generic: Recorded estimate
+  - button "AI Previz Failed run-4868f0c4 Started 176d ago $0.0120 Recorded estimate":
+    - generic: AI Previz
+    - text: Failed
+    - generic: run-4868f0c4
+    - generic: Started 176d ago
+    - generic: $0.0120
+    - generic: Recorded estimate
+  - button "AI Previz Failed run-40a174f1 Started 176d ago $0.0105 Recorded estimate":
+    - generic: AI Previz
+    - text: Failed
+    - generic: run-40a174f1
+    - generic: Started 176d ago
+    - generic: $0.0105
+    - generic: Recorded estimate
+  - button "AI Previz Failed run-3c675a11 Started 176d ago $0.0122 Recorded estimate":
+    - generic: AI Previz
+    - text: Failed
+    - generic: run-3c675a11
+    - generic: Started 176d ago
+    - generic: $0.0122
+    - generic: Recorded estimate
+  - button "AI Previz Failed run-1481994c Started 176d ago $0.0100 Recorded estimate":
+    - generic: AI Previz
+    - text: Failed
+    - generic: run-1481994c
+    - generic: Started 176d ago
+    - generic: $0.0100
+    - generic: Recorded estimate
+  - button "AI Previz Failed run-374d8463 Started 176d ago $0.0117 Recorded estimate":
+    - generic: AI Previz
+    - text: Failed
+    - generic: run-374d8463
+    - generic: Started 176d ago
+    - generic: $0.0117
+    - generic: Recorded estimate
+  - button "AI Previz Failed run-8279064e Started 176d ago $0.0121 Recorded estimate":
+    - generic: AI Previz
+    - text: Failed
+    - generic: run-8279064e
+    - generic: Started 176d ago
+    - generic: $0.0121
+    - generic: Recorded estimate
+  - button "AI Previz Failed run-a54631df Started 176d ago $0.0000 Recorded estimate":
+    - generic: AI Previz
+    - text: Failed
+    - generic: run-a54631df
+    - generic: Started 176d ago
+    - generic: $0.0000
+    - generic: Recorded estimate
+  - button "AI Previz Failed run-1d36879e Started 176d ago $0.0000 Recorded estimate":
+    - generic: AI Previz
+    - text: Failed
+    - generic: run-1d36879e
+    - generic: Started 176d ago
+    - generic: $0.0000
+    - generic: Recorded estimate
+  - button "AI Previz Done run-98486b3a Started 176d ago $0.0024 Known estimated subtotal":
+    - generic: AI Previz
+    - text: Done
+    - generic: run-98486b3a
+    - generic: Started 176d ago
+    - generic: $0.0024
+    - generic: Known estimated subtotal
+  - button "AI Previz Done run-02f35012 Started 176d ago $0.0025 Known estimated subtotal":
+    - generic: AI Previz
+    - text: Done
+    - generic: run-02f35012
+    - generic: Started 176d ago
+    - generic: $0.0025
+    - generic: Known estimated subtotal
+  - button "Unknown Run Done run-0ac6d849 Started 176d ago $0.0664 Recorded estimate":
+    - generic: Unknown Run
+    - text: Done
+    - generic: run-0ac6d849
+    - generic: Started 176d ago
+    - generic: $0.0664
+    - generic: Recorded estimate
+  - button "Unknown Run Done run-fc8b1cdc Started 176d ago $0.0242 Recorded estimate":
+    - generic: Unknown Run
+    - text: Done
+    - generic: run-fc8b1cdc
+    - generic: Started 176d ago
+    - generic: $0.0242
+    - generic: Recorded estimate
+  - button "Shot Planning Done run-f70999d4 Started 176d ago $0.0496 Recorded estimate":
+    - generic: Shot Planning
+    - text: Done
+    - generic: run-f70999d4
+    - generic: Started 176d ago
+    - generic: $0.0496
+    - generic: Recorded estimate
+  - button "Shot Planning Done run-d0d15ac5 Started 176d ago $0.1730 Recorded estimate":
+    - generic: Shot Planning
+    - text: Done
+    - generic: run-d0d15ac5
+    - generic: Started 176d ago
+    - generic: $0.1730
+    - generic: Recorded estimate
+  - button "Creative Direction Done run-b8b0b381 Started 176d ago $0.0429 Recorded estimate":
+    - generic: Creative Direction
+    - text: Done
+    - generic: run-b8b0b381
+    - generic: Started 176d ago
+    - generic: $0.0429
+    - generic: Recorded estimate
+  - button "Creative Direction Done run-c4d09780 Started 176d ago $0.0472 Recorded estimate":
+    - generic: Creative Direction
+    - text: Done
+    - generic: run-c4d09780
+    - generic: Started 176d ago
+    - generic: $0.0472
+    - generic: Recorded estimate
+  - button "Creative Direction Done run-72fa806f Started 176d ago $0.0629 Recorded estimate":
+    - generic: Creative Direction
+    - text: Done
+    - generic: run-72fa806f
+    - generic: Started 176d ago
+    - generic: $0.0629
+    - generic: Recorded estimate
+  - button "Creative Direction Done run-63e296e7 Started 176d ago $0.0573 Recorded estimate":
+    - generic: Creative Direction
+    - text: Done
+    - generic: run-63e296e7
+    - generic: Started 176d ago
+    - generic: $0.0573
+    - generic: Recorded estimate
+  - button "World Building Done run-94103c1a Started 176d ago $0.4458 Recorded estimate":
+    - generic: World Building
+    - text: Done
+    - generic: run-94103c1a
+    - generic: Started 176d ago
+    - generic: $0.4458
+    - generic: Recorded estimate
+  - button "Script Intake Done run-5f906093 Started 176d ago $0.0789 Recorded estimate":
+    - generic: Script Intake
+    - text: Done
+    - generic: run-5f906093
+    - generic: Started 176d ago
+    - generic: $0.0789
+    - generic: Recorded estimate
+- region "Notifications alt+T"

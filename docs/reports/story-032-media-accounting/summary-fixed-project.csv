@@ -1,0 +1,5 @@
+section,id,status,started_at,finished_at,total_cost_usd,duration_seconds,direction,recent_average_usd,previous_average_usd,delta_usd,limit_usd,warning_threshold_ratio,notes,model,cost_is_complete,cost_status,uncertain_cost_count,component,provider,provider_job_id,scene_id,entity_id
+overview,cost-project,,,,2.3,,,,,,,,run_count=1; Known subtotal; unresolved provider charges excluded.,,False,known_subtotal,1,,,,,
+trend,cost-project,,,,,,insufficient_data,2.3,0.0,2.3,,,Known subtotal; unresolved provider charges excluded.,,False,known_subtotal,1,,,,,
+run,media-run,failed,10.0,15.0,2.3,5.0,,,,,,,recipe_id=media; Known subtotal; unresolved provider charges excluded.,,False,known_subtotal,1,,,,,
+uncertain_cost,video-2,uncertain,,,,,,,,,,,Accepted job could not be polled.,video-model,False,uncertain,,video,test-provider,video-2,scene_002,

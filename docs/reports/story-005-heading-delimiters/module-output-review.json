@@ -1,0 +1,34 @@
+{
+  "fixture": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+  "deterministic_mock": true,
+  "scene_count": 4,
+  "scene3": {
+    "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+    "location": "High School Gym Shelter",
+    "time_of_day": "PRE-DAWN",
+    "source_span": {
+      "start_line": 63,
+      "end_line": 95
+    }
+  },
+  "index_scene3": {
+    "location": "High School Gym Shelter",
+    "time_of_day": "PRE-DAWN",
+    "source_span": {
+      "start_line": 63,
+      "end_line": 95
+    }
+  },
+  "unique_locations": [
+    "Community Radio Studio",
+    "High School Gym Shelter",
+    "Water Tower Catwalk"
+  ],
+  "cost": {
+    "model": "mock",
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "estimated_cost_usd": 0.0,
+    "call_count": 0
+  }
+}

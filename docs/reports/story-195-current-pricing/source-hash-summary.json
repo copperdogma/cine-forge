@@ -1,0 +1,28 @@
+{
+  "case": "configured-shipped-ai-previz-video-example",
+  "provider_calls": 0,
+  "engine_pack_id": "xai_grok_imagine_video",
+  "target_model": "grok-imagine-video",
+  "cost": {
+    "status": "estimated",
+    "estimated_cost_usd": 0.2,
+    "reason": "Video-only recipe-default example for one generated clip; excludes compiler, automatic design-study backfill, validation, and additional clips. Prepared clip durations may differ.",
+    "basis": "recipe_default_video_example",
+    "duration_seconds": 4,
+    "price": {
+      "provider": "xai",
+      "model": "grok-imagine-video",
+      "resolution": "480p",
+      "unit": "USD/second",
+      "unit_price_usd": 0.05,
+      "source_url": "https://docs.x.ai/developers/models/grok-imagine-video",
+      "checked_on": "2026-10-23"
+    }
+  },
+  "source_sha256": {
+    "configs/recipes/recipe-ai-previz-generation.yaml": "4810c86052a476c84b48869aed4e57e143a5d7037d147394488a9903331efaf5",
+    "src/cine_forge/modules/generation/render_adapter_v1/engine_packs/grok-imagine-video.yaml": "f47f437192bbcfc167b6fd564cb85edc33ed1e6eaf5ea641bbe5790f1f0b7ded",
+    "src/cine_forge/ai/video_pricing.py": "7288e739b61091d33dafa3bf49e782ffdb3d94b6cc71ad0e92142538304b58e6",
+    "src/cine_forge/services/previz_adoption.py": "42f383aef67f16fcf0ea6f168bab0369c0cf4e8af016441656c945e2dd634cce"
+  }
+}

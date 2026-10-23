@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+import json
 import shutil
 from pathlib import Path
 
 import pytest
 
-from cine_forge.ai.video import VideoGenerationResult
 from cine_forge.driver.engine import DriverEngine
 from cine_forge.modules.timeline.track_system_v1.main import best_for_scene
 from cine_forge.schemas import (
@@ -16,9 +16,16 @@ from cine_forge.schemas import (
     RenderClipPlan,
     TrackManifest,
 )
+from tests.render_accounting_fixtures import (
+    fixture_video_prices,  # noqa: F401 - pytest fixture registration
+)
+from tests.render_accounting_fixtures import (
+    fixture_video_result as VideoGenerationResult,
+)
 from tests.render_fixtures import seed_render_project
 from tests.storyboard_fixtures import seed_storyboard_project
 
+pytestmark = pytest.mark.usefixtures("fixture_video_prices")
 
 @pytest.mark.integration
 def test_render_recipe_starting_at_render_requires_cached_clip_plan(tmp_path: Path) -> None:
@@ -170,7 +177,10 @@ def test_render_recipe_persists_prompt_video_and_track_entries(
         "cine_forge.modules.generation.render_adapter_v1.prompting.call_llm",
         _fake_call_llm,
     )
-    monkeypatch.setattr("cine_forge.ai.video.generate_video", _fake_generate_video)
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
+        _fake_generate_video,
+    )
 
     run_state = engine.run(
         recipe_path=workspace_root / "configs" / "recipes" / "recipe-render-generation.yaml",
@@ -326,6 +336,7 @@ def test_render_recipe_preserves_partial_success_when_later_scene_fails(
         if call_count["value"] == 2:
             raise RuntimeError("synthetic second-scene failure")
         return VideoGenerationResult(
+            fixture_cost_usd=0.4,
             video_bytes=clip_bytes,
             media_type="video/mp4",
             model_used=engine_pack.target_model,
@@ -337,7 +348,10 @@ def test_render_recipe_preserves_partial_success_when_later_scene_fails(
         "cine_forge.modules.generation.render_adapter_v1.prompting.call_llm",
         _fake_call_llm,
     )
-    monkeypatch.setattr("cine_forge.ai.video.generate_video", _fake_generate_video)
+    monkeypatch.setattr(
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
+        _fake_generate_video,
+    )
 
     with pytest.raises(RuntimeError, match="preserved 3 successful render unit"):
         engine.run(
@@ -371,6 +385,7 @@ def test_render_recipe_preserves_partial_success_when_later_scene_fails(
         generated_video = GeneratedVideoArtifact.model_validate(
             engine.store.load_artifact(generated_video_refs[0]).data
         )
+        assert generated_video.cost.estimated_cost_usd == pytest.approx(0.41)
         assert generated_video.render_unit == "render_clip"
         assert generated_video.render_clip_id == entity_id
         assert generated_video.prompt_ref.key() == render_prompt_refs[0].key()
@@ -384,9 +399,27 @@ def test_render_recipe_preserves_partial_success_when_later_scene_fails(
     ]
     assert [entry.render_clip_id for entry in generated_entries] == generated_entities
     assert (
-        best_for_scene(manifest, scene_id="scene_001")["selected_track_type"]
-        == "generated_video"
+        best_for_scene(manifest, scene_id="scene_001")["selected_track_type"] == "generated_video"
     )
+
+    state_path = (
+        workspace_root
+        / "output"
+        / "runs"
+        / "integration-render-partial-preserved"
+        / "run_state.json"
+    )
+    state = json.loads(state_path.read_text())
+    render = state["stages"]["render"]
+    assert render["status"] == "failed"
+    assert call_count["value"] == 4
+    # Four paid compiler calls (including the failed unit) plus three successful videos.
+    assert render["cost_usd"] == pytest.approx(1.24)
+    assert state["total_cost_usd"] == pytest.approx(1.24)
+    assert len(render["cost_receipts"]) == 7
+    assert len({r["receipt_id"] for r in render["cost_receipts"]}) == 7
+    assert sum(r["component"] == "compiler" for r in render["cost_receipts"]) == 4
+    assert sum(r["component"] == "video" for r in render["cost_receipts"]) == 3
 
 
 @pytest.mark.integration
@@ -495,7 +528,7 @@ def test_render_recipe_allows_warning_level_prompt_gaps(
         _fake_call_llm,
     )
     monkeypatch.setattr(
-        "cine_forge.ai.video.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda *, request, engine_pack: VideoGenerationResult(
             video_bytes=clip_bytes,
             media_type="video/mp4",
@@ -559,7 +592,7 @@ def test_render_recipe_persists_reference_conditioned_truth_for_google_pack(
         / "clip.mp4"
     ).read_bytes()
     monkeypatch.setattr(
-        "cine_forge.ai.video.generate_video",
+        "cine_forge.modules.generation.render_adapter_v1.render_unit.generate_video",
         lambda *, request, engine_pack: VideoGenerationResult(
             video_bytes=clip_bytes,
             media_type="video/mp4",

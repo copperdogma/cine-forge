@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import math
 from typing import Any, Literal
 
 from pydantic import BaseModel, Field, model_validator
 
 from .creative_brief import VisualCreativeBrief
+from .media_cost import CostReceipt, VideoPrice
 from .models import ArtifactRef, CostRecord
 from .preview import MediaFile, PreviewProvenance
 
@@ -102,11 +104,26 @@ class PrevizPromptContract(BaseModel):
 
 
 class PrevizCostEvidence(BaseModel):
-    """Cost evidence or blocker behind the current AI-previz lane."""
+    """Current list-price example for one recipe-default video, not a run quote."""
 
     status: PrevizCostStatus = "blocked"
     estimated_cost_usd: float | None = Field(default=None, ge=0.0)
     reason: str | None = None
+    basis: Literal["recipe_default_video_example"] = "recipe_default_video_example"
+    duration_seconds: int | None = Field(default=None, ge=1)
+    price: VideoPrice | None = None
+
+    @model_validator(mode="after")
+    def _require_estimate_evidence(self) -> PrevizCostEvidence:
+        if self.status == "estimated" and (
+            self.price is None
+            or self.duration_seconds is None
+            or self.estimated_cost_usd is None
+        ):
+            raise ValueError("Estimated previz video cost needs price and duration evidence")
+        if self.status == "blocked" and self.estimated_cost_usd is not None:
+            raise ValueError("Blocked previz pricing cannot supply a cost amount")
+        return self
 
 
 class PrevizLaneStatus(BaseModel):
@@ -229,6 +246,8 @@ class GeneratedVideoArtifact(BaseModel):
     engine_pack_id: str = Field(min_length=1)
     request_id: str | None = None
     cost: CostRecord
+    cost_is_complete: bool = False
+    cost_receipts: list[CostReceipt] = Field(default_factory=list)
     resolved_inputs: list[RenderResolvedInput] = Field(default_factory=list)
     notes: list[str] = Field(default_factory=list)
     preview_provenance: PreviewProvenance | None = None
@@ -249,6 +268,29 @@ class GeneratedVideoArtifact(BaseModel):
                 raise ValueError("render_clip render units require start time")
             if self.render_clip_end_time_seconds is None:
                 raise ValueError("render_clip render units require end time")
+        return self
+
+    @model_validator(mode="after")
+    def _validate_cost_evidence(self) -> GeneratedVideoArtifact:
+        if self.cost_is_complete and (
+            not any(r.component == "video" for r in self.cost_receipts)
+            or any(r.status != "estimated" for r in self.cost_receipts)
+        ):
+            raise ValueError(
+                "complete video cost requires estimated video receipts and no uncertainty"
+            )
+        if not self.cost_receipts:
+            return self
+        if len({r.receipt_id for r in self.cost_receipts}) != len(self.cost_receipts):
+            raise ValueError("video artifact cost receipts must have unique identities")
+        known = [r.cost for r in self.cost_receipts if r.cost is not None]
+        expected = math.fsum(record.estimated_cost_usd for record in known)
+        if not math.isclose(self.cost.estimated_cost_usd, expected, rel_tol=0, abs_tol=1e-8):
+            raise ValueError("video artifact cost must match its known receipt subtotal")
+        if self.cost.input_tokens != sum(record.input_tokens for record in known) or (
+            self.cost.output_tokens != sum(record.output_tokens for record in known)
+        ):
+            raise ValueError("video artifact token counts must match its known receipts")
         return self
 
 

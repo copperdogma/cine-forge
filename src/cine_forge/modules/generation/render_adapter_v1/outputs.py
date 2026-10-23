@@ -88,9 +88,7 @@ def _prompt_artifact_dict(
     *,
     output_contract: dict[str, Any],
 ) -> dict[str, Any]:
-    entity_id = _render_artifact_entity_id(
-        prompt_artifact.scene_id, prompt_artifact.render_clip_id
-    )
+    entity_id = _render_artifact_entity_id(prompt_artifact.scene_id, prompt_artifact.render_clip_id)
     return {
         "artifact_type": output_contract["prompt_artifact_type"],
         "entity_id": entity_id,
@@ -140,9 +138,7 @@ def _video_artifact_dict(
     request_notes: list[str],
     output_contract: dict[str, Any],
 ) -> dict[str, Any]:
-    entity_id = _render_artifact_entity_id(
-        generated_video.scene_id, generated_video.render_clip_id
-    )
+    entity_id = _render_artifact_entity_id(generated_video.scene_id, generated_video.render_clip_id)
     return {
         "artifact_type": output_contract["video_artifact_type"],
         "entity_id": entity_id,
@@ -175,6 +171,8 @@ def _video_artifact_dict(
                 "aspect_ratio": generated_video.aspect_ratio,
                 "request_notes": request_notes,
                 "compile_model": compile_cost.get("model"),
+                "cost_receipts": [r.model_dump(mode="json") for r in generated_video.cost_receipts],
+                "cost_is_complete": generated_video.cost_is_complete,
             },
         },
     }
@@ -323,8 +321,6 @@ def _preview_cost_value(
     scene_cost: dict[str, Any],
     output_contract: dict[str, Any],
 ) -> float | None:
-    if output_contract["prompt_mode"] == "ai_previz":
-        return None
     return float(scene_cost.get("estimated_cost_usd", 0.0) or 0.0)
 
 

@@ -1,0 +1,189 @@
+- heading "Command Palette" [level=2]
+- paragraph: Search for a command to run...
+- main:
+  - button "Open navigation":
+  - navigation "Breadcrumb":
+    - 'link "Brick & Steel: Full Retired"':
+      - /url: /brick-steel-full-retired
+    - link "Runs":
+      - /url: /brick-steel-full-retired/runs
+    - generic: run-88a073f3
+  - button "Open chat":
+  - button "Script":
+  - button "World":
+  - button "Direction":
+  - button "Shots":
+  - button "Storyboards":
+  - button "Production":
+  - button "Back":
+    - text: Back
+  - heading "Scene RendersFailed" [level=1]
+  - paragraph: run-88a073f3
+  - generic: Failed
+  - alert:
+    - paragraph: "Render generation preserved 2 successful render unit(s) but failed for 1/3 render unit(s): scene_002:scene_002_clip_003 (ValueError: render_adapter_v1 prompt for scene_002 is incomplete: Exact Vietnamese dialogue line for JACK)."
+  - text: Known estimated subtotal
+  - generic: $0.1449
+  - text: Duration
+  - generic: 3m 27s
+  - text: Model
+  - generic "gpt-5.4-mini"
+  - text: Stages
+  - generic: 1/3
+  - generic: Render Clip Planning
+  - generic: $0.1449
+  - generic: 31.7s
+  - generic: Render
+  - generic: 2m 55s
+  - generic: Validate Media
+  - generic: 0s
+  - text: Run Cost Breakdown
+  - paragraph: Stage, model, role, and scene cost estimates for this run.
+  - link "CSV":
+    - /url: /api/projects/brick-steel-full-retired/export/costs.csv?run_id=run-88a073f3
+    - text: CSV
+  - link "JSON":
+    - /url: /api/projects/brick-steel-full-retired/export/costs.json?run_id=run-88a073f3
+    - text: JSON
+  - status:
+    - generic: Run cost is incomplete
+    - paragraph: Some submitted media charges have no reliable amount yet. The displayed amounts are known estimated subtotals, not provider bills. Budget remaining and cost trends may change when these charges are resolved.
+    - list:
+      - listitem: video · code — Historical media generation cost was not recorded; known subtotal only; no current-price backcast.
+  - generic: Known estimated subtotal
+  - generic: $0.1449
+  - generic: Stages
+  - generic: "3"
+  - generic: Models Used
+  - generic: "2"
+  - generic: Scene Attribution
+  - generic: "1"
+  - generic: By Stage
+  - generic: render_clip_planning
+  - generic: claude-opus-4-6 · done
+  - generic: $0.1449
+  - generic: Estimated stage cost · 31.7s
+  - generic: Calls 1
+  - generic: Attempts 1
+  - generic: Module $0.1449
+  - generic: Role $0.0000
+  - generic: render
+  - generic: code · failed
+  - generic: $0.0000
+  - generic: Known estimated subtotal · 2m 55s
+  - generic: Calls 0
+  - generic: Attempts 1
+  - generic: Module $0.0000
+  - generic: Role $0.0000
+  - generic: validate_media
+  - generic: code · failed
+  - generic: $0.0000
+  - generic: Estimated stage cost · 0s
+  - generic: Calls 0
+  - generic: Attempts 0
+  - generic: Module $0.0000
+  - generic: Role $0.0000
+  - generic: By Model
+  - generic: claude-opus-4-6
+  - generic: $0.1449
+  - generic: Estimated model cost
+  - generic: Calls 1
+  - generic: In 1912
+  - generic: Out 1550
+  - generic: code
+  - generic: $0.0000
+  - generic: Known estimated subtotal
+  - generic: Calls 0
+  - generic: In 0
+  - generic: Out 0
+  - generic: By Role
+  - generic: No role-attributed cost data recorded.
+  - generic: By Scene
+  - generic: scene_002
+  - generic: allocated
+  - generic: $0.1449
+  - generic: Estimated scene cost
+  - generic: 1 calls · stages render_clip_planning
+  - generic: Equal allocation from stage 'render_clip_planning' across 1 scene outputs.
+  - heading "Scene Overview" [level=2]
+  - button "1 EXT Brick'S Patio DAY EXT. BRICK'S PATIO - DAY":
+    - generic: "1"
+    - generic: EXT
+    - heading "Brick'S Patio" [level=4]
+    - paragraph: DAY
+    - paragraph: EXT. BRICK'S PATIO - DAY
+  - button "2 INT Trailer Home DAY INT. TRAILER HOME - DAY":
+    - generic: "2"
+    - generic: INT
+    - heading "Trailer Home" [level=4]
+    - paragraph: DAY
+    - paragraph: INT. TRAILER HOME - DAY
+  - button "3 EXT Brick'S Pool DAY EXT. BRICK'S POOL - DAY":
+    - generic: "3"
+    - generic: EXT
+    - heading "Brick'S Pool" [level=4]
+    - paragraph: DAY
+    - paragraph: EXT. BRICK'S POOL - DAY
+  - button "4 EXT Wooden Shack DAY EXT. WOODEN SHACK - DAY":
+    - generic: "4"
+    - generic: EXT
+    - heading "Wooden Shack" [level=4]
+    - paragraph: DAY
+    - paragraph: EXT. WOODEN SHACK - DAY
+  - button "5 INT Garage DAY INT. GARAGE - DAY":
+    - generic: "5"
+    - generic: INT
+    - heading "Garage" [level=4]
+    - paragraph: DAY
+    - paragraph: INT. GARAGE - DAY
+  - button "6 EXT Palatial Mansion DAY EXT. PALATIAL MANSION - DAY":
+    - generic: "6"
+    - generic: EXT
+    - heading "Palatial Mansion" [level=4]
+    - paragraph: DAY
+    - paragraph: EXT. PALATIAL MANSION - DAY
+  - heading "Event Log" [level=2]
+  - generic: 20:50:52
+  - generic: pipeline_started
+  - generic: 20:50:52
+  - generic: •
+  - generic: render_clip_planning
+  - generic: stage_started
+  - generic: 20:51:24
+  - generic: •
+  - generic: render_clip_planning
+  - generic: artifact_saved
+  - generic: 20:51:24
+  - generic: •
+  - generic: render_clip_planning
+  - generic: stage_finished
+  - generic: 20:51:24
+  - generic: •
+  - generic: render
+  - generic: stage_started
+  - generic: 20:54:19
+  - generic: •
+  - generic: render
+  - generic: artifact_saved
+  - generic: 20:54:19
+  - generic: •
+  - generic: render
+  - generic: artifact_saved
+  - generic: 20:54:19
+  - generic: •
+  - generic: render
+  - generic: artifact_saved
+  - generic: 20:54:19
+  - generic: •
+  - generic: render
+  - generic: artifact_saved
+  - generic: 20:54:19
+  - generic: •
+  - generic: render
+  - generic: artifact_saved
+  - generic: 20:54:19
+  - generic: •
+  - generic: render
+  - generic: "Render generation preserved 2 successful render unit(s) but failed for 1/3 render unit(s): scene_002:scene_002_clip_003 (ValueError: render_adapter_v1 prompt for scene_002 is incomplete: Exact Vietnamese dialogue line for JACK)."
+  - button "Clone settings to new run"
+- region "Notifications alt+T"

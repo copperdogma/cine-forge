@@ -15,19 +15,16 @@ from cine_forge.schemas import (
     BudgetHealth,
     BudgetScope,
     BudgetStatus,
-    CostAttribution,
-    CostAttributionKind,
     CostReport,
-    ModelCostSummary,
     ProjectCostSummary,
     ProjectCostTrend,
     ProjectCostTrendPoint,
     RoleCostSummary,
     RunCostOverview,
     RunCostSummary,
-    SceneCostSummary,
-    StageCostSummary,
 )
+from cine_forge.schemas.media_cost import CostReceipt
+from cine_forge.services.cost_summary_stages import summarize_stages
 
 
 @dataclass(frozen=True)
@@ -43,6 +40,7 @@ class RoleInvocationCostRecord:
     estimated_cost_usd: float
     input_tokens: int
     output_tokens: int
+    request_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -87,19 +85,13 @@ def build_effective_budget_config(
 
     return BudgetConfig(
         project_budget_limit_usd=(
-            float(project_limit)
-            if project_limit is not None
-            else base.project_budget_limit_usd
+            float(project_limit) if project_limit is not None else base.project_budget_limit_usd
         ),
         default_run_budget_limit_usd=(
-            float(run_limit)
-            if run_limit is not None
-            else base.default_run_budget_limit_usd
+            float(run_limit) if run_limit is not None else base.default_run_budget_limit_usd
         ),
         budget_warning_threshold_ratio=(
-            float(threshold)
-            if threshold is not None
-            else base.budget_warning_threshold_ratio
+            float(threshold) if threshold is not None else base.budget_warning_threshold_ratio
         ),
         stage_budget_limits_usd=dict(base.stage_budget_limits_usd),
     )
@@ -142,11 +134,7 @@ def run_status_from_state(state: dict[str, Any]) -> str:
 
     raw_stage_order = state.get("stage_order")
     if isinstance(raw_stage_order, list) and raw_stage_order:
-        stage_ids = [
-            str(stage_id)
-            for stage_id in raw_stage_order
-            if str(stage_id) in stage_map
-        ]
+        stage_ids = [str(stage_id) for stage_id in raw_stage_order if str(stage_id) in stage_map]
     else:
         stage_ids = list(stage_map.keys())
 
@@ -250,6 +238,19 @@ class CostTrackingService:
             total += float(run_data.state.get("total_cost_usd", 0.0) or 0.0)
         return round(total, 8)
 
+    def historical_project_cost_is_complete(
+        self, *, project_path: Path, exclude_run_id: str | None = None,
+    ) -> bool:
+        """Check historical estimate coverage without recursively building summaries."""
+        for run_data in self.iter_project_runs(project_path):
+            if run_data.run_id == exclude_run_id:
+                continue
+            if not summarize_stages(
+                run_data.state, [], run_id=run_data.run_id,
+            ).cost_is_complete:
+                return False
+        return True
+
     def build_run_summary(
         self,
         *,
@@ -263,172 +264,7 @@ class CostTrackingService:
         project_path = project_path or run_data.project_path
         state = run_data.state
         role_records = self._load_role_records(project_path=project_path, run_id=run_id)
-        role_records_by_stage = self._group_role_records_by_stage(role_records)
-        stage_order = list(state.get("stage_order") or state.get("stages", {}).keys())
-
-        stage_summaries: list[StageCostSummary] = []
-        by_model_mut = defaultdict(lambda: {
-            "call_count": 0,
-            "input_tokens": 0,
-            "output_tokens": 0,
-            "estimated_cost_usd": 0.0,
-        })
-        scene_mut: dict[str, dict[str, Any]] = {}
-
-        for stage_id in stage_order:
-            stage = state.get("stages", {}).get(stage_id, {}) or {}
-            stage_role_records = role_records_by_stage.get(stage_id, [])
-
-            role_call_count = len(stage_role_records)
-            role_input_tokens = sum(record.input_tokens for record in stage_role_records)
-            role_output_tokens = sum(record.output_tokens for record in stage_role_records)
-            role_cost_usd = round(
-                sum(record.estimated_cost_usd for record in stage_role_records),
-                8,
-            )
-
-            total_call_count = int(stage.get("call_count", 0) or 0)
-            total_input_tokens = int(stage.get("input_tokens", 0) or 0)
-            total_output_tokens = int(stage.get("output_tokens", 0) or 0)
-            total_cost_usd = float(stage.get("cost_usd", 0.0) or 0.0)
-
-            module_call_count = max(total_call_count - role_call_count, 0)
-            module_input_tokens = max(total_input_tokens - role_input_tokens, 0)
-            module_output_tokens = max(total_output_tokens - role_output_tokens, 0)
-            module_cost_usd = round(max(total_cost_usd - role_cost_usd, 0.0), 8)
-
-            stage_summary = StageCostSummary(
-                stage_id=stage_id,
-                status=str(stage.get("status", "pending")),
-                model_used=(
-                    str(stage.get("model_used"))
-                    if stage.get("model_used") is not None
-                    else None
-                ),
-                call_count=total_call_count,
-                attempt_count=int(stage.get("attempt_count", 0) or 0),
-                input_tokens=total_input_tokens,
-                output_tokens=total_output_tokens,
-                estimated_cost_usd=round(total_cost_usd, 8),
-                module_cost_usd=module_cost_usd,
-                role_cost_usd=role_cost_usd,
-                duration_seconds=float(stage.get("duration_seconds", 0.0) or 0.0),
-                artifact_count=(
-                    len(stage.get("artifact_refs", []))
-                    if isinstance(stage.get("artifact_refs"), list)
-                    else 0
-                ),
-                pause_reason=stage.get("pause_reason"),
-            )
-            stage_summaries.append(stage_summary)
-
-            model_name = stage_summary.model_used or "code"
-            if module_cost_usd > 0.0 or module_call_count > 0:
-                bucket = by_model_mut[model_name]
-                bucket["call_count"] += module_call_count
-                bucket["input_tokens"] += module_input_tokens
-                bucket["output_tokens"] += module_output_tokens
-                bucket["estimated_cost_usd"] += module_cost_usd
-
-            scene_ids = _scene_ids_for_stage(stage)
-            if scene_ids:
-                split_costs = _split_float(module_cost_usd, len(scene_ids))
-                split_calls = _split_int(module_call_count, len(scene_ids))
-                split_inputs = _split_int(module_input_tokens, len(scene_ids))
-                split_outputs = _split_int(module_output_tokens, len(scene_ids))
-                for idx, scene_id in enumerate(scene_ids):
-                    entry = scene_mut.setdefault(
-                        scene_id,
-                        {
-                            "call_count": 0,
-                            "input_tokens": 0,
-                            "output_tokens": 0,
-                            "estimated_cost_usd": 0.0,
-                            "stage_ids": set(),
-                            "notes": [],
-                            "has_allocated": False,
-                            "has_exact": False,
-                        },
-                    )
-                    entry["call_count"] += split_calls[idx]
-                    entry["input_tokens"] += split_inputs[idx]
-                    entry["output_tokens"] += split_outputs[idx]
-                    entry["estimated_cost_usd"] += split_costs[idx]
-                    entry["stage_ids"].add(stage_id)
-                    entry["has_allocated"] = True
-                    entry["notes"].append(
-                        "Equal allocation from stage "
-                        f"'{stage_id}' across {len(scene_ids)} scene outputs."
-                    )
-
-        for record in role_records:
-            bucket = by_model_mut[record.model]
-            bucket["call_count"] += 1
-            bucket["input_tokens"] += record.input_tokens
-            bucket["output_tokens"] += record.output_tokens
-            bucket["estimated_cost_usd"] += record.estimated_cost_usd
-
-            if record.scene_id:
-                entry = scene_mut.setdefault(
-                    record.scene_id,
-                    {
-                        "call_count": 0,
-                        "input_tokens": 0,
-                        "output_tokens": 0,
-                        "estimated_cost_usd": 0.0,
-                        "stage_ids": set(),
-                        "notes": [],
-                        "has_allocated": False,
-                        "has_exact": False,
-                    },
-                )
-                entry["call_count"] += 1
-                entry["input_tokens"] += record.input_tokens
-                entry["output_tokens"] += record.output_tokens
-                entry["estimated_cost_usd"] += record.estimated_cost_usd
-                if record.stage_id:
-                    entry["stage_ids"].add(record.stage_id)
-                entry["has_exact"] = True
-                entry["notes"].append(
-                    f"Exact role invocation cost from '{record.role_id}'."
-                )
-
-        by_model = [
-            ModelCostSummary(
-                model=model,
-                call_count=values["call_count"],
-                input_tokens=values["input_tokens"],
-                output_tokens=values["output_tokens"],
-                estimated_cost_usd=round(values["estimated_cost_usd"], 8),
-            )
-            for model, values in sorted(
-                by_model_mut.items(),
-                key=lambda item: (-item[1]["estimated_cost_usd"], item[0]),
-            )
-            if values["call_count"] > 0 or values["estimated_cost_usd"] > 0.0
-        ]
-
-        by_role = self._build_role_summaries(role_records)
-        by_scene = [
-            SceneCostSummary(
-                scene_id=scene_id,
-                call_count=entry["call_count"],
-                input_tokens=entry["input_tokens"],
-                output_tokens=entry["output_tokens"],
-                estimated_cost_usd=round(entry["estimated_cost_usd"], 8),
-                stage_ids=sorted(entry["stage_ids"]),
-                attribution=CostAttribution(
-                    kind=(
-                        CostAttributionKind.ALLOCATED
-                        if entry["has_allocated"]
-                        else CostAttributionKind.EXACT
-                    ),
-                    basis=" ".join(dict.fromkeys(entry["notes"])),
-                ),
-            )
-            for scene_id, entry in sorted(scene_mut.items())
-            if entry["estimated_cost_usd"] > 0.0 or entry["call_count"] > 0
-        ]
+        details = summarize_stages(state, role_records, run_id=run_id)
 
         budget_config = build_effective_budget_config(
             project_path=project_path,
@@ -444,11 +280,21 @@ class CostTrackingService:
             )
             or 0.0
         )
-        budget_statuses = calculate_budget_statuses(
-            total_cost_usd=float(state.get("total_cost_usd", 0.0) or 0.0),
-            project_cost_baseline_usd=project_cost_baseline_usd,
-            budget_config=budget_config,
+        budget_statuses = (
+            calculate_budget_statuses(
+                total_cost_usd=float(state.get("total_cost_usd", 0.0) or 0.0),
+                project_cost_baseline_usd=project_cost_baseline_usd,
+                budget_config=budget_config,
+            )
+            if details.cost_is_complete
+            else []
         )
+        if any(row.scope == BudgetScope.PROJECT for row in budget_statuses) and not (
+            self.historical_project_cost_is_complete(
+                project_path=project_path, exclude_run_id=run_id,
+            )
+        ):
+            budget_statuses = [row for row in budget_statuses if row.scope != BudgetScope.PROJECT]
 
         return RunCostSummary(
             run_id=run_id,
@@ -458,10 +304,12 @@ class CostTrackingService:
             started_at=state.get("started_at"),
             finished_at=state.get("finished_at"),
             total_cost_usd=round(float(state.get("total_cost_usd", 0.0) or 0.0), 8),
-            stages=stage_summaries,
-            by_model=by_model,
-            by_role=by_role,
-            by_scene=by_scene,
+            stages=details.summaries,
+            by_model=details.dimensions.model_summaries(),
+            by_role=self._build_role_summaries(role_records),
+            by_scene=details.dimensions.scene_summaries(),
+            cost_is_complete=details.cost_is_complete,
+            uncertain_cost_receipts=details.uncertain,
             budget_config=budget_config,
             budget_statuses=budget_statuses,
         )
@@ -492,6 +340,8 @@ class CostTrackingService:
                 finished_at=summary.finished_at,
                 total_cost_usd=summary.total_cost_usd,
                 duration_seconds=_duration_seconds(summary.started_at, summary.finished_at),
+                cost_is_complete=summary.cost_is_complete,
+                uncertain_cost_receipts=summary.uncertain_cost_receipts,
             )
             for summary in run_summaries
         ]
@@ -508,22 +358,11 @@ class CostTrackingService:
                 run_id=item.run_id,
                 started_at=item.started_at,
                 total_cost_usd=item.total_cost_usd,
+                cost_is_complete=item.cost_is_complete,
+                uncertain_cost_receipts=item.uncertain_cost_receipts,
             )
             for item in chronological
         ]
-
-        recent = chronological[-3:]
-        previous = chronological[-6:-3]
-        recent_average = _average([item.total_cost_usd for item in recent])
-        previous_average = _average([item.total_cost_usd for item in previous])
-        if not previous:
-            direction = "insufficient_data"
-        elif recent_average > previous_average + 1e-9:
-            direction = "up"
-        elif recent_average + 1e-9 < previous_average:
-            direction = "down"
-        else:
-            direction = "flat"
 
         return ProjectCostSummary(
             project_id=project_id,
@@ -531,12 +370,9 @@ class CostTrackingService:
             run_count=len(run_overviews),
             runs=run_overviews,
             trend_points=trend_points,
-            trend=ProjectCostTrend(
-                direction=direction,
-                recent_average_usd=recent_average,
-                previous_average_usd=previous_average,
-                delta_usd=round(recent_average - previous_average, 8),
-            ),
+            trend=_build_project_trend(chronological),
+            cost_is_complete=all(run.cost_is_complete for run in run_overviews),
+            uncertain_cost_receipts=_uncertain_receipts(run_overviews),
             budget_config=load_project_budget_config(project_path),
         )
 
@@ -638,19 +474,10 @@ class CostTrackingService:
                     ),
                     input_tokens=int(cost_data.get("input_tokens", 0) or 0),
                     output_tokens=int(cost_data.get("output_tokens", 0) or 0),
+                    request_id=cost_data.get("request_id"),
                 )
             )
         return records
-
-    @staticmethod
-    def _group_role_records_by_stage(
-        records: list[RoleInvocationCostRecord],
-    ) -> dict[str, list[RoleInvocationCostRecord]]:
-        grouped: dict[str, list[RoleInvocationCostRecord]] = defaultdict(list)
-        for record in records:
-            if record.stage_id is not None:
-                grouped[record.stage_id].append(record)
-        return grouped
 
     @staticmethod
     def _build_role_summaries(
@@ -737,46 +564,6 @@ def _build_budget_status(
     )
 
 
-def _scene_ids_for_stage(stage: dict[str, Any]) -> list[str]:
-    refs = stage.get("artifact_refs", [])
-    if not isinstance(refs, list):
-        return []
-    scene_ids: set[str] = set()
-    for ref in refs:
-        if not isinstance(ref, dict):
-            continue
-        entity_id = ref.get("entity_id")
-        if _is_exact_scene_id(entity_id):
-            scene_ids.add(str(entity_id))
-    return sorted(scene_ids)
-
-
-def _is_exact_scene_id(value: Any) -> bool:
-    if not isinstance(value, str):
-        return False
-    parts = value.split("_")
-    return len(parts) == 2 and parts[0] == "scene" and parts[1].isdigit()
-
-
-def _split_int(total: int, parts: int) -> list[int]:
-    if parts <= 0:
-        return []
-    base, remainder = divmod(int(total), parts)
-    return [base + (1 if idx < remainder else 0) for idx in range(parts)]
-
-
-def _split_float(total: float, parts: int) -> list[float]:
-    if parts <= 0:
-        return []
-    if parts == 1:
-        return [round(total, 8)]
-    base = round(total / parts, 8)
-    values = [base for _ in range(parts - 1)]
-    tail = round(total - sum(values), 8)
-    values.append(tail)
-    return values
-
-
 def _duration_seconds(started_at: float | None, finished_at: float | None) -> float:
     if started_at is None or finished_at is None:
         return 0.0
@@ -787,3 +574,36 @@ def _average(values: list[float]) -> float:
     if not values:
         return 0.0
     return round(sum(values) / len(values), 8)
+
+
+def _uncertain_receipts(runs: list[RunCostOverview]) -> list[CostReceipt]:
+    return list(
+        {
+            receipt.receipt_id: receipt for run in runs for receipt in run.uncertain_cost_receipts
+        }.values()
+    )
+
+
+def _build_project_trend(chronological: list[RunCostOverview]) -> ProjectCostTrend:
+    recent = chronological[-3:]
+    previous = chronological[-6:-3]
+    recent_average = _average([item.total_cost_usd for item in recent])
+    previous_average = _average([item.total_cost_usd for item in previous])
+    compared = previous + recent
+    complete = all(item.cost_is_complete for item in compared)
+    if not previous or not complete:
+        direction = "insufficient_data"
+    elif recent_average > previous_average + 1e-9:
+        direction = "up"
+    elif recent_average + 1e-9 < previous_average:
+        direction = "down"
+    else:
+        direction = "flat"
+    return ProjectCostTrend(
+        direction=direction,
+        cost_is_complete=complete,
+        uncertain_cost_receipts=_uncertain_receipts(compared),
+        recent_average_usd=recent_average,
+        previous_average_usd=previous_average,
+        delta_usd=round(recent_average - previous_average, 8),
+    )

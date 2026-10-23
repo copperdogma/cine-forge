@@ -1,0 +1,332 @@
+- heading "Command Palette" [level=2]
+- paragraph: Search for a command to run...
+- complementary:
+  - link "CineForge":
+    - /url: /
+    - generic: CineForge
+  - navigation "Project navigation":
+    - link "Script":
+      - /url: /open-frequency
+      - generic: Script
+    - link "Intent":
+      - /url: /open-frequency/intent
+      - generic: Intent
+    - link "Scenes 4":
+      - /url: /open-frequency/scenes
+      - generic: Scenes
+      - generic: "4"
+    - link "Characters":
+      - /url: /open-frequency/characters
+      - generic: Characters
+    - link "Locations":
+      - /url: /open-frequency/locations
+      - generic: Locations
+    - link "Props":
+      - /url: /open-frequency/props
+      - generic: Props
+    - link "Inbox":
+      - /url: /open-frequency/inbox
+      - generic: Inbox
+    - button "World":
+      - generic: World
+    - button "Advanced" [expanded]:
+      - generic: Advanced
+    - link "Runs":
+      - /url: /open-frequency/runs
+      - generic: Runs
+    - link "Artifacts":
+      - /url: /open-frequency/artifacts
+      - generic: Artifacts
+    - button "Settings":
+      - generic: Settings
+  - button "v2026.10.23-04"
+- main:
+  - button "Hide sidebar":
+  - navigation "Breadcrumb":
+    - link "Open Frequency":
+      - /url: /open-frequency
+    - generic: Runs
+  - button "Open command palette":
+    - generic: ⌘K
+  - button "Show panel":
+  - button "Script":
+    - generic: Script
+    - generic: 5/5
+  - button "World":
+    - generic: World
+  - button "Direction":
+    - generic: Direction
+  - button "Shots":
+    - generic: Shots
+  - button "Storyboards":
+    - generic: Storyboards
+  - button "Production":
+    - generic: Production
+  - button "Back":
+    - text: Back
+  - heading "Script IntakeComplete" [level=1]
+  - paragraph: run-fae39865
+  - text: Done
+  - text: Recorded cost estimate
+  - generic: $0.0809
+  - text: Duration
+  - generic: 1m 16s
+  - text: Model
+  - generic "claude-sonnet-4-6": sonnet-4-6
+  - text: Stages
+  - generic: 5/5
+  - text: Run Cost Breakdown
+  - paragraph: Stage, model, role, and scene cost estimates for this run.
+  - link "CSV":
+    - /url: /api/projects/open-frequency/export/costs.csv?run_id=run-fae39865
+    - text: CSV
+  - link "JSON":
+    - /url: /api/projects/open-frequency/export/costs.json?run_id=run-fae39865
+    - text: JSON
+  - generic: Run total estimate
+  - generic: $0.0809
+  - generic: Stages
+  - generic: "5"
+  - generic: Models Used
+  - generic: "2"
+  - generic: Scene Attribution
+  - generic: "4"
+  - paragraph: Cost figures are estimates from recorded usage and prices, not provider bills.
+  - generic: Budget Status
+  - generic: project budget
+  - generic: ok
+  - generic: $0.0809 known estimated use of $5.0000 limit
+  - generic: Estimated remaining $4.9191
+  - generic: run budget
+  - generic: ok
+  - generic: $0.0809 known estimated use of $5.0000 limit
+  - generic: Estimated remaining $4.9191
+  - generic: By Stage
+  - generic: ingest
+  - generic: code · done
+  - generic: $0.0000
+  - generic: Estimated stage cost · 0.0s
+  - generic: Calls 1
+  - generic: Attempts 1
+  - generic: Module $0.0000
+  - generic: Role $0.0000
+  - generic: normalize
+  - generic: code · done
+  - generic: $0.0000
+  - generic: Estimated stage cost · 0.0s
+  - generic: Calls 1
+  - generic: Attempts 1
+  - generic: Module $0.0000
+  - generic: Role $0.0000
+  - generic: breakdown_scenes
+  - generic: claude-sonnet-4-6 · done
+  - generic: $0.0146
+  - generic: Estimated stage cost · 19.5s
+  - generic: Calls 4
+  - generic: Attempts 1
+  - generic: Module $0.0146
+  - generic: Role $0.0000
+  - generic: script_bible
+  - generic: claude-sonnet-4-6 · done
+  - generic: $0.0455
+  - generic: Estimated stage cost · 55.9s
+  - generic: Calls 1
+  - generic: Attempts 1
+  - generic: Module $0.0455
+  - generic: Role $0.0000
+  - generic: project_config
+  - generic: claude-sonnet-4-6 · done
+  - generic: $0.0209
+  - generic: Estimated stage cost · 20.1s
+  - generic: Calls 1
+  - generic: Attempts 1
+  - generic: Module $0.0209
+  - generic: Role $0.0000
+  - generic: By Model
+  - generic: claude-sonnet-4-6
+  - generic: $0.0809
+  - generic: Estimated model cost
+  - generic: Calls 6
+  - generic: In 11635
+  - generic: Out 3613
+  - generic: code
+  - generic: $0.0000
+  - generic: Estimated model cost
+  - generic: Calls 2
+  - generic: In 0
+  - generic: Out 0
+  - generic: By Role
+  - generic: No role-attributed cost data recorded.
+  - generic: By Scene
+  - generic: scene_001
+  - generic: allocated
+  - generic: $0.0036
+  - generic: Estimated scene cost
+  - generic: 1 calls · stages breakdown_scenes
+  - generic: Equal allocation from stage 'breakdown_scenes' across 4 scene outputs.
+  - generic: scene_002
+  - generic: allocated
+  - generic: $0.0036
+  - generic: Estimated scene cost
+  - generic: 1 calls · stages breakdown_scenes
+  - generic: Equal allocation from stage 'breakdown_scenes' across 4 scene outputs.
+  - generic: scene_003
+  - generic: allocated
+  - generic: $0.0036
+  - generic: Estimated scene cost
+  - generic: 1 calls · stages breakdown_scenes
+  - generic: Equal allocation from stage 'breakdown_scenes' across 4 scene outputs.
+  - generic: scene_004
+  - generic: allocated
+  - generic: $0.0036
+  - generic: Estimated scene cost
+  - generic: 1 calls · stages breakdown_scenes
+  - generic: Equal allocation from stage 'breakdown_scenes' across 4 scene outputs.
+  - generic: Execution Scope
+  - generic: "Selected: All scenes"
+  - generic: stage_order=[ingest, normalize, breakdown_scenes, script_bible, project_config]
+  - paragraph: This run targeted all scenes.
+  - paragraph: "Executed stages: Ingest -> Normalize -> Breakdown Scenes -> Script Bible -> Project Config."
+  - generic: Pipeline Stages
+  - generic: ingest
+  - generic: code
+  - generic: 1 AI call • 1 artifact
+  - generic: 0.0s
+  - generic: normalize
+  - generic: code
+  - generic: 1 AI call • 1 artifact
+  - generic: 0.0s
+  - generic: script bible
+  - generic: sonnet-4-6
+  - generic: 1 AI call • 1 artifact
+  - generic: 55.9s
+  - generic: $0.05
+  - generic: breakdown scenes
+  - generic: sonnet-4-6
+  - generic: 4 AI calls • 5 artifacts
+  - generic: 19.5s
+  - generic: $0.01
+  - generic: project config
+  - generic: sonnet-4-6
+  - generic: 1 AI call • 1 artifact
+  - generic: 20.1s
+  - generic: $0.02
+  - heading "Artifacts Produced (9)" [level=2]
+  - link "raw_input v1 • ingest":
+    - /url: /open-frequency/artifacts/raw_input/project/1
+    - generic: raw_input
+    - generic: v1 • ingest
+  - link "canonical_script v1 • normalize":
+    - /url: /open-frequency/artifacts/canonical_script/project/1
+    - generic: canonical_script
+    - generic: v1 • normalize
+  - link "script_bible v1 • script bible":
+    - /url: /open-frequency/artifacts/script_bible/project/1
+    - generic: script_bible
+    - generic: v1 • script bible
+  - link "scene v1 • breakdown scenes":
+    - /url: /open-frequency/artifacts/scene/scene_002/1
+    - generic: scene
+    - generic: v1 • breakdown scenes
+  - link "scene v1 • breakdown scenes":
+    - /url: /open-frequency/artifacts/scene/scene_001/1
+    - generic: scene
+    - generic: v1 • breakdown scenes
+  - link "scene v1 • breakdown scenes":
+    - /url: /open-frequency/artifacts/scene/scene_004/1
+    - generic: scene
+    - generic: v1 • breakdown scenes
+  - link "scene v1 • breakdown scenes":
+    - /url: /open-frequency/artifacts/scene/scene_003/1
+    - generic: scene
+    - generic: v1 • breakdown scenes
+  - link "scene_index v1 • breakdown scenes":
+    - /url: /open-frequency/artifacts/scene_index/project/1
+    - generic: scene_index
+    - generic: v1 • breakdown scenes
+  - link "project_config v1 • project config":
+    - /url: /open-frequency/artifacts/project_config/project/1
+    - generic: project_config
+    - generic: v1 • project config
+  - heading "Event Log" [level=2]
+  - generic: 09:54:50
+  - generic: "{\"event\":\"pipeline_started\",\"run_id\":\"run-fae39865\",\"stage_ids\":[\"ingest\",\"normalize\",\"breakdown_scenes\",\"script_bible\",\"project_config\"],\"ts\":1792770890.3602629}"
+  - generic: 09:54:50
+  - generic: •
+  - generic: ingest
+  - generic: "{\"event\":\"stage_started\",\"stage_id\":\"ingest\",\"ts\":1792770890.363981}"
+  - generic: 09:54:50
+  - generic: •
+  - generic: ingest
+  - generic: "{\"artifact_type\":\"raw_input\",\"entity_id\":\"project\",\"event\":\"artifact_saved\",\"stage_id\":\"ingest\",\"ts\":1792770890.369236}"
+  - generic: 09:54:50
+  - generic: •
+  - generic: ingest
+  - generic: "{\"artifacts\":[{\"artifact_type\":\"raw_input\",\"entity_id\":\"project\",\"path\":\"artifacts/raw_input/project/v1.json\",\"version\":1}],\"cost_usd\":0,\"event\":\"stage_finished\",\"input_tokens\":0,\"output_tokens\":0,\"stage_id\":\"ingest\",\"ts\":1792770890.369611}"
+  - generic: 09:54:50
+  - generic: •
+  - generic: normalize
+  - generic: "{\"event\":\"stage_started\",\"stage_id\":\"normalize\",\"ts\":1792770890.372194}"
+  - generic: 09:54:50
+  - generic: •
+  - generic: normalize
+  - generic: "{\"artifact_type\":\"canonical_script\",\"entity_id\":\"project\",\"event\":\"artifact_saved\",\"stage_id\":\"normalize\",\"ts\":1792770890.393249}"
+  - generic: 09:54:50
+  - generic: •
+  - generic: normalize
+  - generic: "{\"artifacts\":[{\"artifact_type\":\"canonical_script\",\"entity_id\":\"project\",\"path\":\"artifacts/canonical_script/project/v1.json\",\"version\":1}],\"cost_usd\":0,\"event\":\"stage_finished\",\"input_tokens\":0,\"output_tokens\":0,\"stage_id\":\"normalize\",\"ts\":1792770890.3941278}"
+  - generic: 09:54:50
+  - generic: •
+  - generic: script_bible
+  - generic: "{\"event\":\"stage_started\",\"stage_id\":\"script_bible\",\"ts\":1792770890.398174}"
+  - generic: 09:54:50
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: "{\"event\":\"stage_started\",\"stage_id\":\"breakdown_scenes\",\"ts\":1792770890.399303}"
+  - generic: 09:54:52
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: "{\"artifact_type\":\"scene\",\"entity_id\":\"scene_002\",\"event\":\"artifact_saved\",\"stage_id\":\"breakdown_scenes\",\"ts\":1792770892.09428}"
+  - generic: 09:54:52
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: "{\"artifact_type\":\"scene\",\"entity_id\":\"scene_001\",\"event\":\"artifact_saved\",\"stage_id\":\"breakdown_scenes\",\"ts\":1792770892.096483}"
+  - generic: 09:54:52
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: "{\"artifact_type\":\"scene\",\"entity_id\":\"scene_004\",\"event\":\"artifact_saved\",\"stage_id\":\"breakdown_scenes\",\"ts\":1792770892.192105}"
+  - generic: 09:55:09
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: "{\"artifact_type\":\"scene\",\"entity_id\":\"scene_003\",\"event\":\"artifact_saved\",\"stage_id\":\"breakdown_scenes\",\"ts\":1792770909.9235241}"
+  - generic: 09:55:09
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: "{\"artifact_type\":\"scene_index\",\"entity_id\":\"project\",\"event\":\"artifact_saved\",\"stage_id\":\"breakdown_scenes\",\"ts\":1792770909.926421}"
+  - generic: 09:55:09
+  - generic: •
+  - generic: breakdown_scenes
+  - generic: "{\"artifacts\":[{\"artifact_type\":\"scene\",\"entity_id\":\"scene_002\",\"path\":\"artifacts/scene/scene_002/v1.json\",\"version\":1},{\"artifact_type\":\"scene\",\"entity_id\":\"scene_001\",\"path\":\"artifacts/scene/scene_001/v1.json\",\"version\":1},{\"artifact_type\":\"scene\",\"entity_id\":\"scene_004\",\"path\":\"artifacts/scene/scene_004/v1.json\",\"version\":1},{\"artifact_type\":\"scene\",\"entity_id\":\"scene_003\",\"path\":\"artifacts/scene/scene_003/v1.json\",\"version\":1},{\"artifact_type\":\"scene_index\",\"entity_id\":\"project\",\"path\":\"artifacts/scene_index/project/v1.json\",\"version\":1}],\"cost_usd\":0.014574,\"event\":\"stage_finished\",\"input_tokens\":3583,\"output_tokens\":255,\"stage_id\":\"breakdown_scenes\",\"ts\":1792770909.926694}"
+  - generic: 09:55:46
+  - generic: •
+  - generic: script_bible
+  - generic: "{\"artifact_type\":\"script_bible\",\"entity_id\":\"project\",\"event\":\"artifact_saved\",\"stage_id\":\"script_bible\",\"ts\":1792770946.3122728}"
+  - generic: 09:55:46
+  - generic: •
+  - generic: script_bible
+  - generic: "{\"artifacts\":[{\"artifact_type\":\"script_bible\",\"entity_id\":\"project\",\"path\":\"artifacts/script_bible/project/v1.json\",\"version\":1}],\"cost_usd\":0.045471,\"event\":\"stage_finished\",\"input_tokens\":2817,\"output_tokens\":2468,\"stage_id\":\"script_bible\",\"ts\":1792770946.3126311}"
+  - generic: 09:55:46
+  - generic: •
+  - generic: project_config
+  - generic: "{\"event\":\"stage_started\",\"stage_id\":\"project_config\",\"ts\":1792770946.314406}"
+  - generic: 09:56:06
+  - generic: •
+  - generic: project_config
+  - generic: "{\"artifact_type\":\"project_config\",\"entity_id\":\"project\",\"event\":\"artifact_saved\",\"stage_id\":\"project_config\",\"ts\":1792770966.404574}"
+  - generic: 09:56:06
+  - generic: •
+  - generic: project_config
+  - generic: "{\"artifacts\":[{\"artifact_type\":\"project_config\",\"entity_id\":\"project\",\"path\":\"artifacts/project_config/project/v1.json\",\"version\":1}],\"cost_usd\":0.0208944,\"event\":\"stage_finished\",\"input_tokens\":5235,\"output_tokens\":890,\"stage_id\":\"project_config\",\"ts\":1792770966.4058619}"
+  - generic: 09:56:06
+  - generic: "{\"event\":\"pipeline_finished\",\"run_id\":\"run-fae39865\",\"success\":true,\"total_cost_usd\":0.0809394,\"ts\":1792770966.4085639}"
+- region "Notifications alt+T"

@@ -1,0 +1,304 @@
+{
+  "schema_version": 1,
+  "archive_id": "story-213-model-eval-contract-v1",
+  "created_on": "2026-10-23",
+  "source_manifest": {
+    "path": "docs/evals/story-213-model-eval-contract-manifest.json",
+    "sha256": "b435160923151db6b62b5d3fe12eddd79795a3f7d0047796aa3309aa0f4aa2d2",
+    "bytes": 6310,
+    "source_commit": "a8b13f8a35663c931c232557f86d9338be7c5a80"
+  },
+  "provenance_policy": "Each archived file was recovered from its own recorded Git commit and verified against the existing manifest SHA-256. These assembled historical bytes do not represent one coherent checkout. The source manifest had prior revisions; this archive freezes only the exact manifest digest recorded here, without rewriting that history.",
+  "file_count": 36,
+  "total_bytes": 1282559,
+  "files": [
+    {
+      "original_path": "benchmarks/golden/README.md",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/golden/README.md.txt",
+      "sha256": "b493a620e13f4ba177b326a5624227c873e98feb463562367a96e0c0aadc4118",
+      "bytes": 17156,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "f234b10f5620549f0399eb339e2f4a11c662435d"
+    },
+    {
+      "original_path": "benchmarks/golden/_verification-checklist.md",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/golden/_verification-checklist.md.txt",
+      "sha256": "ebdcf2bc4b84fe5ff990d80e3a88fd372c55a536186b958fdd1442a7e3b87478",
+      "bytes": 11076,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "ecca637d826106035e9c61e6418f2111078a4e08"
+    },
+    {
+      "original_path": "benchmarks/golden/golden_validation_additional.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/golden/golden_validation_additional.py.txt",
+      "sha256": "07db5cf96aa41d99a7835a9e1d17a4d85fea3f9c9e9fec3c33f5cff771fca1ef",
+      "bytes": 24299,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "4fb093c102e04e918f2c5f48b542ada6c1f88050"
+    },
+    {
+      "original_path": "benchmarks/golden/golden_validation_specs.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/golden/golden_validation_specs.py.txt",
+      "sha256": "304e3d1a1285099a27fbb841bd7210f726f40e0a4b6a0e711fb9380d71e24ef5",
+      "bytes": 13680,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "b168fb064406a577a4a18f3be0e81ab2dac3a1ff"
+    },
+    {
+      "original_path": "benchmarks/golden/open-frequency-script-bible.json",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/golden/open-frequency-script-bible.json.txt",
+      "sha256": "1bcef2cef929850f025a64701edf3b04bcdb7b88f5e916f753aea76d91232368",
+      "bytes": 3899,
+      "source_commit": "d1a1284fb6dfd1ceafd1419782c8fe74d2e143b3",
+      "source_git_blob_oid": "fe0da04c0bf872d1d304c0f9f33972b49b237a77"
+    },
+    {
+      "original_path": "benchmarks/golden/qa-pass-golden.json",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/golden/qa-pass-golden.json.txt",
+      "sha256": "fea7b91f27f090195ffb8686633d601ec59952a123fe923146fe816dcd92d93e",
+      "bytes": 4163,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "5a8abef88c4c268e88b36b1986df7c03acf4c78e"
+    },
+    {
+      "original_path": "benchmarks/prompts/qa-pass.txt",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/prompts/qa-pass.txt.txt",
+      "sha256": "eccc40df6dd240ebcbd25fd2373808528f962710bd8bc8d6b87be35d0c53ceed",
+      "bytes": 3293,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "b7a47e35a19a199d4d9b866f94351d3789df8a8f"
+    },
+    {
+      "original_path": "benchmarks/prompts/script-bible-runtime-marker.txt",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/prompts/script-bible-runtime-marker.txt.txt",
+      "sha256": "636a2e3031b731546a6deccc15ff98acd6f360765a77112976f74384abd30e19",
+      "bytes": 142,
+      "source_commit": "f01e86567a7466b234e45fdcbda45efbaf9edf19",
+      "source_git_blob_oid": "dc715bbc8e52249e55689b4fb7ce59d3484e7b20"
+    },
+    {
+      "original_path": "benchmarks/providers/qa_runtime_provider.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/providers/qa_runtime_provider.py.txt",
+      "sha256": "5288667783bb68cc0c0838181541b281539634456f5e75ba9076e753e8eb4f78",
+      "bytes": 5784,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "2fd2500ffe47211c5b19a3b914312f2c7592d122"
+    },
+    {
+      "original_path": "benchmarks/providers/script_bible_runtime_provider.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/providers/script_bible_runtime_provider.py.txt",
+      "sha256": "38480b2ac63f7273e5109e7f2602ecbbe5ab73d7cacedce7a5bb1a4306c3fef0",
+      "bytes": 33376,
+      "source_commit": "a8b13f8a35663c931c232557f86d9338be7c5a80",
+      "source_git_blob_oid": "f0838d8cb7dedf1f60448f39b927b5afb2808787"
+    },
+    {
+      "original_path": "benchmarks/results/deepseek-v4-pro-openrouter-route-probes-2026-08-13.json",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/results/deepseek-v4-pro-openrouter-route-probes-2026-08-13.json.txt",
+      "sha256": "861318dba5f4682e64e2bf2db61a6b82eb99e90b0c9c729e6b49af36e18346fe",
+      "bytes": 1544,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "554b573eb32aa4ce6419d33905d816586d3c9561"
+    },
+    {
+      "original_path": "benchmarks/results/qa-pass-gemini37flash-current-runtime-2026-08-13.json",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/results/qa-pass-gemini37flash-current-runtime-2026-08-13.json.txt",
+      "sha256": "56c342c72cd941cc63b65ad8d1832659f28156873acb64fae17348fb311cca2f",
+      "bytes": 96504,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "83591ce17827632900b8b0fe300b5b29be4cb545"
+    },
+    {
+      "original_path": "benchmarks/results/qa-pass-gemini37flash-known-good-2026-08-13.json",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/results/qa-pass-gemini37flash-known-good-2026-08-13.json.txt",
+      "sha256": "a03c547f45b4e8916dd27ec15f757ead8e9b33de8d03040b0da44da1e0270785",
+      "bytes": 37456,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "6862ca1123fe721edd792a17491da85f66e32ddf"
+    },
+    {
+      "original_path": "benchmarks/results/qa-pass-gemini37flash-known-good-retry-2026-08-13.json",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/results/qa-pass-gemini37flash-known-good-retry-2026-08-13.json.txt",
+      "sha256": "dc11554843e5c6c66e262df1b9b3b787b4239083ce3859964d8a73d121c08500",
+      "bytes": 60228,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "29929e47201ed0c78bc3b67b506ea308a3d43617"
+    },
+    {
+      "original_path": "benchmarks/results/qa-pass-gpt41mini-current-runtime-2026-08-13.json",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/results/qa-pass-gpt41mini-current-runtime-2026-08-13.json.txt",
+      "sha256": "8624b7fc0fa3b538b7a7cc85e3132b245d6ebc360aac4bb5fbeb265c26974647",
+      "bytes": 98279,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "22aed40bfca80a04ca472c905c0a76f4cbfd8569"
+    },
+    {
+      "original_path": "benchmarks/results/qa-pass-gpt41mini-current-runtime-v2-2026-08-13.json",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/results/qa-pass-gpt41mini-current-runtime-v2-2026-08-13.json.txt",
+      "sha256": "607d7385c158b5990e6379698d4d4eb8234ecce2943d44a3fb5198cc54b16eac",
+      "bytes": 97889,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "fd272b9a8d36cf4c847022ddb1c898a9d6deb019"
+    },
+    {
+      "original_path": "benchmarks/runtime_tasks/script-bible-runtime.yaml",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/runtime_tasks/script-bible-runtime.yaml.txt",
+      "sha256": "747dbb2a447d631aab00d807a9f8769e851cd97139d51907d7944b843620b999",
+      "bytes": 7717,
+      "source_commit": "a8b13f8a35663c931c232557f86d9338be7c5a80",
+      "source_git_blob_oid": "d169c4e6811b1d9de0d7fb4c3d5ca75d6f0d1b6a"
+    },
+    {
+      "original_path": "benchmarks/scorers/qa_pass_scorer.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/scorers/qa_pass_scorer.py.txt",
+      "sha256": "c52728b6e2aa44eeba01ef6e43f78d3caaf731ec72d639174297d6bc0b316791",
+      "bytes": 25743,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "a78ab4174539745e111943e685ef39d0837ba008"
+    },
+    {
+      "original_path": "benchmarks/scorers/script_bible_scorer.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/scorers/script_bible_scorer.py.txt",
+      "sha256": "87a3fa7a91ff47a7edf63ea2bbacae7cb16412e205542359da19f2e224f1c6d9",
+      "bytes": 20039,
+      "source_commit": "3832dee7f397978d441f4914edd8df5e7eb2e6ed",
+      "source_git_blob_oid": "cde1ab87abb169115bb236c5e1ba823076287d28"
+    },
+    {
+      "original_path": "benchmarks/tasks/qa-pass.yaml",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/benchmarks/tasks/qa-pass.yaml.txt",
+      "sha256": "f855738092377e11c4ae84065db9ba688fd2d9c90a50685b3f89d25cc2b6b4f0",
+      "bytes": 9098,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "d58ecf422759491d300e42b06af9ac8f19af0cf0"
+    },
+    {
+      "original_path": "docs/evals/attempts/024-qa-pass-gemini-37-flash.md",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/docs/evals/attempts/024-qa-pass-gemini-37-flash.md.txt",
+      "sha256": "d7412094ff72d83f5fcb93fa283b8f1450c4773d258c5b26611e57b76db373de",
+      "bytes": 4827,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "684cd7e4350c8b6961514c2d0e775d418900bebb"
+    },
+    {
+      "original_path": "docs/evals/attempts/025-script-bible-deepseek-v4-pro.md",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/docs/evals/attempts/025-script-bible-deepseek-v4-pro.md.txt",
+      "sha256": "53841132f3ff5e5d9c0f040017ed03355067e71f14775b0515cf783dc2843ee1",
+      "bytes": 5244,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "4339eb9841a7a24cb767bff39a16937896714dad"
+    },
+    {
+      "original_path": "docs/evals/attempts/026-qa-pass-production-contract-repair.md",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/docs/evals/attempts/026-qa-pass-production-contract-repair.md.txt",
+      "sha256": "6efe1a509697c44656632767e6a589e4a4f98b119b8b8622a5d8ba6ab245fbc8",
+      "bytes": 10627,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "499a38ab461033dccd434d3d719ed52d78b4e255"
+    },
+    {
+      "original_path": "docs/evals/registry.yaml",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/docs/evals/registry.yaml.txt",
+      "sha256": "c0f56e78c3a963858d7d1071974b69fed368930aeaf8f3531ddbaf5a4e92de76",
+      "bytes": 284889,
+      "source_commit": "a8b13f8a35663c931c232557f86d9338be7c5a80",
+      "source_git_blob_oid": "2f525f0a5020c7676a570895c9d228cafd9d7f09"
+    },
+    {
+      "original_path": "docs/evals/truth-audit-ledger.yaml",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/docs/evals/truth-audit-ledger.yaml.txt",
+      "sha256": "8476d5f32d303fb19ce1a7d9b784c768eee357a38441e6a7c27759cdc677e1ec",
+      "bytes": 239340,
+      "source_commit": "94861914623fff237ffb4ab379fa9f995a58da1e",
+      "source_git_blob_oid": "ff1f9dc7dc9a72ff05ef50bf69a7277e4d698fde"
+    },
+    {
+      "original_path": "docs/stories/story-213-gemini-37-flash-and-deepseek-v4-pro-bounded-evals.md",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/docs/stories/story-213-gemini-37-flash-and-deepseek-v4-pro-bounded-evals.md.txt",
+      "sha256": "0e6ec79959ae3c5d4321b7081d698e289c23eb82b998ba832dd8a13ada66152d",
+      "bytes": 20737,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "53308b46927df804dd583d58225d55c49361b020"
+    },
+    {
+      "original_path": "src/cine_forge/ai/qa.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/src/cine_forge/ai/qa.py.txt",
+      "sha256": "46048622c3d910808eb4344e3eb161b9ec1c28e89ed5a008ce2bb6a84f799837",
+      "bytes": 4106,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "0deca88aeaf8068623bfd783b04bd1a8e87f6fe5"
+    },
+    {
+      "original_path": "src/cine_forge/modules/ingest/script_bible_v1/main.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/src/cine_forge/modules/ingest/script_bible_v1/main.py.txt",
+      "sha256": "7361da008a1d058fcae7e9e8733128a60e459d4677612a7f11681bdeda54376d",
+      "bytes": 7150,
+      "source_commit": "d1a1284fb6dfd1ceafd1419782c8fe74d2e143b3",
+      "source_git_blob_oid": "2acf074530a1ad77a9665091371a5265eefc827a"
+    },
+    {
+      "original_path": "src/cine_forge/schemas/script_bible.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/src/cine_forge/schemas/script_bible.py.txt",
+      "sha256": "42059ab3ed41cf6ae989af2827602683da404ca51ca2e904d36a562a048218cb",
+      "bytes": 2864,
+      "source_commit": "c4965ced1aaa78be4e0b86174ba28cce517bde99",
+      "source_git_blob_oid": "71c8980b732ba52b151f3cd3ac1298fbd216eac4"
+    },
+    {
+      "original_path": "tests/fixtures/ingest_inputs/open_frequency_short.fountain",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/tests/fixtures/ingest_inputs/open_frequency_short.fountain.txt",
+      "sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+      "bytes": 3447,
+      "source_commit": "8aa1c960a6f098e4b0d6c75e1b052c2b7f538d7e",
+      "source_git_blob_oid": "b1b545371f919e499af1bdbd8b0df383ceed0788"
+    },
+    {
+      "original_path": "tests/unit/test_eval_contract_manifest.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/tests/unit/test_eval_contract_manifest.py.txt",
+      "sha256": "65ecb7484ecdca3865d1a68d7f4bcb0aa4268383d1110077db5366f9c26421a1",
+      "bytes": 6860,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "7f618d81d471f6309ebfa4938a15f9a25a7ae7b4"
+    },
+    {
+      "original_path": "tests/unit/test_golden_validator.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/tests/unit/test_golden_validator.py.txt",
+      "sha256": "2d33f8e88b2019bbacc5a34ced6d5c72e60033de59b1bc4e81bcecc45187ada8",
+      "bytes": 12274,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "a117bdd0405fd6d22fe207e0fa66b4f07275c880"
+    },
+    {
+      "original_path": "tests/unit/test_methodology_graph.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/tests/unit/test_methodology_graph.py.txt",
+      "sha256": "9de4ebd1f5fb3dd039ee1e9b3658af23ddc58dae2c7fa7b957616423fae7dc82",
+      "bytes": 43324,
+      "source_commit": "77264d1a3fac6c18aaf982f43c52bdefcfdaccf8",
+      "source_git_blob_oid": "67996de3ed8e3552266446634cadd5faef460aad"
+    },
+    {
+      "original_path": "tests/unit/test_openrouter_script_bible_provider.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/tests/unit/test_openrouter_script_bible_provider.py.txt",
+      "sha256": "6d669eed7f52fb53bb933574ca83492baa330dcdd5291b08ce94d803dcdc1d80",
+      "bytes": 18957,
+      "source_commit": "a8b13f8a35663c931c232557f86d9338be7c5a80",
+      "source_git_blob_oid": "63a9146a85d1c0737ff6200a7bb1e1570c21cfd3"
+    },
+    {
+      "original_path": "tests/unit/test_qa_pass_scorer.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/tests/unit/test_qa_pass_scorer.py.txt",
+      "sha256": "4a020c7020e0f9ef08bc3081e68b94e48c2f78c0d78e684e9a903a14660296e1",
+      "bytes": 43043,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "bd7435939051fd2e2dd85582d15a2076824e2f61"
+    },
+    {
+      "original_path": "tests/unit/test_qa_runtime_provider.py",
+      "archive_path": "docs/evals/snapshots/story-213-model-eval-contract-v1/tests/unit/test_qa_runtime_provider.py.txt",
+      "sha256": "1084dadf5e123b2f3374dd71d369d82511f4d1e241f7f82ba23722ed7557e531",
+      "bytes": 3505,
+      "source_commit": "17e4a8bd7c08f13c4489c64abf1b03338adb16f6",
+      "source_git_blob_oid": "a3e0b0ebfed99f83d91b578541b2669c5212ccaa"
+    }
+  ]
+}

@@ -226,8 +226,10 @@ export function ScenePlanUnitSummary({
 
         {shots.length === 0 ? (
           <div className="rounded-lg border border-dashed border-border px-4 py-5 text-sm text-muted-foreground">
-            No shot plan is available for this scene yet. Run Shots first so downstream generation
-            has visible coverage to work from.
+            No shot plan is available for this scene yet.{' '}
+            {mode === 'previz'
+              ? 'Starting AI Previz here will build the shot plan first.'
+              : 'Starting Render here will build the shot plan first.'}
           </div>
         ) : (
           <div className="space-y-2">

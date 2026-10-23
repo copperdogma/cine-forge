@@ -58,6 +58,60 @@ legacy_system: ""
 
 Make the shipped production AI-previz lane honestly ready. The current shipped AI-previz default uses `xai_grok_imagine_video`, but the production Brick & Steel route reports that `CINE_FORGE_XAI_API_KEY` / `XAI_API_KEY` is missing, and the current cheap dependency and live-smoke surfaces do not clearly prove the xAI previz lane is configured. This story closes the operator-health gap: production must either have a working xAI previz lane or surface the exact missing credential before a user spends time on the scene.
 
+## Current follow-up — current-price readiness (2026-10-23)
+
+The continuous triage/fix goal reopens the existing readiness seam after032
+introduced canonical runtime video pricing. No production deployment, credential
+change, provider call or adoption/default change is authorized by this follow-up.
+
+### Current acceptance
+
+- [x] Capture a deterministic pre-fix service/API fixture showing active xAI
+  readiness says price unavailable while canonical pricing is available.
+- [x] Readiness estimates use the same exact provider/model/resolution price
+  contract as runtime, with source/date and a positive supported duration.
+  Retired/unknown targets stay blocked even if old benchmark metadata has a rate.
+- [x] The UI identifies the amount as a recipe-default single-video example;
+  compiler, reference-image backfill, validation, extra clips and provider billing
+  are excluded. Actual clip-plan durations may differ. No scene/run quote is implied.
+- [x] Existing usefulness/latency/validation gates and model defaults remain
+  unchanged. No provider quality or live access is claimed from price availability.
+- [x] Offline service/schema/API and affected UI checks pass; actual normal
+  project desktop/mobile browser inspection shows sourced pricing and separate
+  saved-video uncertainty. No xAI live use before operator key rotation.
+
+### Current plan and repo fit
+
+1. Freeze the current configured recipe/pack +canonical price contradiction before
+   changing behavior. Reuse current checked price evidence from
+   docs/research/story-032-media-accounting-2026-10-23.md; do not infer fresh rates
+   from benchmark metadata or call providers.
+2. Schema first: extend existing PrevizCostEvidence with typed VideoPrice and
+   example duration/basis. Keep this an operator readiness estimate, not a new
+   receipt ledger or general work-planning API. No new event type.
+3. Replace PrevizAdoptionService's duplicate benchmark-rate path with canonical
+   resolve_video_price and shared duration normalization. Remove the obsolete
+   pricing-note fallback. Fail honestly for unknown duration/price/retirement.
+   Exact math/provenance is deterministic; no AI/decision model belongs here.
+4. Reuse existing cost badge/viewer surfaces for per-example copy and source
+   details. Keep historical artifact cost evidence separate. Extract the existing
+   previz types from649-line types.ts before adding fields; retain its canonical
+   barrel exports. No new dashboard, profile selector or budget framework.
+5. Run red/green service and boundary tests, affected schema/API checks, full Ruff,
+   UI lint/tsc/build and maintained25 helper tests. Existing actual Open Frequency
+   and historical Brick projects support representative desktop/mobile proof;
+   no fresh media generation is needed to judge estimate disclosure.
+6. Findings-first review, /validate and /mark-story-done after evidence passes.
+   Roll a new immutable contract snapshot only after source/state settles;
+   preserve v27 and unrelated dirty work. Broader prepare/inspect remains138.
+
+Structure: PrevizAdoptionService392 lines, methods touched <100; render schema325;
+AiPrevizViewer400 with extracted header/context; types.ts649 requires type-owner
+extraction first. `make check-size` evidence: output/story-195-check-size.txt.
+ADR002 preflight/plan-before-expensive-work and003 demand-driven Film lane apply;
+no accounting-specific ADR. The active goal already authorizes this bounded
+issue repair and its validation; no new permission or paid operation is needed.
+
 ## Eval Ladder Context
 
 - **Root Ideal need**: R7/R10/R11 require a user to generate and inspect useful scene previz without discovering missing credentials only after clicking the expensive path.
@@ -223,3 +277,7 @@ N/A
 20260430-1233 - build-complete: implemented xAI production-readiness plumbing without changing the shipped provider default or printing secrets. Changes: `ProviderKey` now includes `xai`; dependency health now probes xAI `grok-imagine-video` model access through the cheap video-generation model metadata endpoint; cached/live smoke now includes `xai_ai_previz_video_default` with `engine_pack_id=xai_grok_imagine_video`; AI-previz scene preflight now soft-blocks with `CINE_FORGE_XAI_API_KEY` / legacy `XAI_API_KEY` guidance when credentials are unavailable and reports configured xAI readiness in the preflight summary when present; deployment docs now include the preferred Fly secret, verification sequence, and cheap-vs-live smoke split. Tests added/updated: provider dependency health, provider capability smoke, API health serialization, and scene-action preflight. Validation evidence: focused tests passed (`28 passed`); `.venv/bin/python -m ruff check src/ tests/` passed; `make test-unit PYTHON=.venv/bin/python` passed (`846 passed, 183 deselected, 1 warning`); `pnpm methodology:check` passed with existing architecture/UI freshness warnings only. Runtime evidence: local API on `127.0.0.1:8011` returned health `ok` version `2026.04.30-02`; local `/api/health/dependencies` reported Anthropic/Google/OpenAI/xAI all `ok` with xAI accepted env vars and no secret values; local cached `/api/health/live-smoke` includes `xai_ai_previz_video_default` with `engine_pack_id=xai_grok_imagine_video`; local Brick & Steel `brick-steel-full-retired-3` AI-previz preflight for `scene_001` returned `warn` with summary `xAI AI Previz credentials are configured`. Production evidence remains pre-deploy: `https://cineforge.copper-dog.com/api/health/dependencies?refresh=1` still reports only Anthropic/Google/OpenAI, cached `/api/health/live-smoke` still omits xAI, and production Brick & Steel `brick-steel-full-retired` AI-previz preflight still reports only generic warnings. No Fly secret, deploy, or paid `POST /api/health/live-smoke` was run because it was not explicitly approved. Next step: `/validate 195`, then explicit deploy/production verification approval if validation is clean.
 20260430-1218 - exploration/planning: confirmed Story 195 is buildable and should stay focused on provider readiness rather than changing the shipped xAI default. Evidence: production dependency health omits xAI while Anthropic/Google/OpenAI report ok; cached live smoke has no xAI AI-previz probe; current focused unit baseline is 24 passed; local code already has xAI env aliases, xAI video transport, `xai_grok_imagine_video`, and AI-previz recipe/default adoption paths. ADRs consulted: ADR-002 and ADR-003. Relevant specs: spec:5.3, spec:5.5, spec:6.3, spec:7.1, spec:8.2, spec:8.3, spec:10.3. Structural risk: `provider_capability_smoke.py`, `scene_actions.py`, `api/service.py`, and `test_scene_actions.py` are large; implementation should avoid adding logic to `api/service.py` and should prefer focused provider/preflight helpers. Next step: human approval for the implementation plan.
 20260430-1133 - story-created: created from approved inbox triage. Evidence: inbox production xAI missing-key note, current shipped xAI AI-previz context from Stories 176/194, and current health/live-smoke surfaces that did not show xAI readiness. Next step: `/build-story 195`.
+
+20261023-1128 — pass7 exploration/plan: new canonical032 price contract exposes duplicate readiness-price ownership. Active xAI pack has no benchmark rate, so readiness falsely reports unavailable pricing. This is the smallest concrete prerequisite for138 planning;195 already owns this exact operator-readiness surface. Preserve quality gates/defaults and historical bytes. Schema/service/UI owners and validation boundary are recorded above. Continuous goal covers the bounded repair; no provider call, deployment or commit/push. Next: retained red fixture, typed contract and canonical price reuse.
+
+20261023-1137 — /validate and /mark-story-done: current-price readiness follow-up complete. Retained pre-fix contradiction, canonical price/source/date, positive normalized duration and explicit single-video example; bogus benchmark rates, retired and unknown targets stay blocked.61 service/schema/API and26UI tests pass, lint/tsc/build clean. Actual historical Brick artifact desktop1600x1100/mobile390x844 shows source/date/exclusions and separate unverified saved-video cost, no overflow or console warnings/errors. API200 returns4s480pUSD.20 atcheckedUSD.05/second and remains experimental_manual withoutqualityscore. Strong read-only review clean; finalCodex/merged-tree checks recorded in report. No provider calls, production deployment or freshqualityclaim. User explicitly authorized finish,validate,commit/push and stop afterward. Return control to /finish-and-push; report docs/reports/story-195-current-pricing/report.md.

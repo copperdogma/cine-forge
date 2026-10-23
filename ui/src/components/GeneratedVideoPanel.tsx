@@ -424,12 +424,10 @@ export function GeneratedVideoPanel({
                 )}
               </div>
               <CardDescription className="max-w-3xl leading-relaxed">
-                Render compiles the current shot plan, concern-group direction, keyframes, and
-                available references into provider-ready render prompts, then records which
-                references became direct provider inputs versus prompt-only context before
-                generating scene media. Stay depth-first on this scene when you want to test one
-                moment quickly, or switch to all scenes when you want a broader pass. This tab
-                always resolves back to the latest output for {sceneHeading}.
+                Render turns the current shot plan, direction, and references into scene video.
+                Keyframes are optional: it can proceed without them and uses locked frames when
+                available. Prompt and video details show how references were used. Choose Current
+                Scene to refine this moment or All Scenes for a broader pass.
               </CardDescription>
             </div>
 

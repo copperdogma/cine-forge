@@ -1,0 +1,110 @@
+[
+  {
+    "file": "src/cine_forge/ai/video.py",
+    "file_lines": 312,
+    "largest_function": 59,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/ai/video_http.py",
+    "file_lines": 85,
+    "largest_function": 39,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/ai/video_pricing.py",
+    "file_lines": 46,
+    "largest_function": 16,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/ai/video_types.py",
+    "file_lines": 68,
+    "largest_function": 18,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/ai/image_pricing.py",
+    "file_lines": 21,
+    "largest_function": 18,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/driver/module_execution.py",
+    "file_lines": 132,
+    "largest_function": 72,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/driver/cost_records.py",
+    "file_lines": 127,
+    "largest_function": 30,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/schemas/media_cost.py",
+    "file_lines": 60,
+    "largest_function": 18,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/services/cost_summary_stages.py",
+    "file_lines": 219,
+    "largest_function": 75,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/services/cost_summary_dimensions.py",
+    "file_lines": 205,
+    "largest_function": 24,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/modules/generation/render_adapter_v1/render_unit.py",
+    "file_lines": 169,
+    "largest_function": 88,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/modules/generation/render_adapter_v1/unit_prompt.py",
+    "file_lines": 158,
+    "largest_function": 69,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/modules/generation/render_adapter_v1/accounting.py",
+    "file_lines": 63,
+    "largest_function": 22,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/modules/generation/render_adapter_v1/execution.py",
+    "file_lines": 188,
+    "largest_function": 93,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/modules/generation/render_adapter_v1/source_inputs.py",
+    "file_lines": 336,
+    "largest_function": 68,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/modules/generation/render_adapter_v1/unit_preparation.py",
+    "file_lines": 123,
+    "largest_function": 75,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/modules/generation/render_adapter_v1/unit_artifacts.py",
+    "file_lines": 166,
+    "largest_function": 74,
+    "oversized": []
+  },
+  {
+    "file": "src/cine_forge/modules/generation/render_adapter_v1/main.py",
+    "file_lines": 108,
+    "largest_function": 74,
+    "oversized": []
+  }
+]

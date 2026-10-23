@@ -1,0 +1,356 @@
+{
+  "budget_warning_scopes": [],
+  "cost_is_complete": true,
+  "dry_run": false,
+  "finished_at": null,
+  "instrumented": false,
+  "project_cost_baseline_usd": 0.0,
+  "recipe_id": "render_generation",
+  "run_id": "integration-render-partial-preserved",
+  "runtime_params": {
+    "compiler_model": "gpt-5.4-mini",
+    "duration_seconds": 8,
+    "engine_pack_id": "google_veo31",
+    "planner_model": "mock",
+    "scene_scope": {
+      "mode": "all_scenes",
+      "scene_ids": []
+    }
+  },
+  "stage_order": [
+    "render_clip_planning",
+    "render",
+    "validate_media"
+  ],
+  "stages": {
+    "render": {
+      "artifact_refs": [
+        {
+          "artifact_type": "render_prompt",
+          "entity_id": "scene_001_clip_001",
+          "path": "artifacts/render_prompt/scene_001_clip_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_001_clip_001",
+          "path": "artifacts/generated_video/scene_001_clip_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "render_prompt",
+          "entity_id": "scene_002_clip_001",
+          "path": "artifacts/render_prompt/scene_002_clip_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_002_clip_001",
+          "path": "artifacts/generated_video/scene_002_clip_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "render_prompt",
+          "entity_id": "scene_002_clip_002",
+          "path": "artifacts/render_prompt/scene_002_clip_002/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "generated_video",
+          "entity_id": "scene_002_clip_002",
+          "path": "artifacts/generated_video/scene_002_clip_002/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "track_manifest",
+          "entity_id": "project",
+          "path": "artifacts/track_manifest/project/v2.json",
+          "version": 2
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 0.0324,
+          "error": "Render generation preserved 3 successful render unit(s) but failed for 1/4 render unit(s): scene_001:scene_001_clip_002 (RuntimeError: synthetic second-scene failure).",
+          "error_class": "ModuleCostError",
+          "error_code": null,
+          "model": "code",
+          "provider": "code",
+          "request_id": null,
+          "status": "failed",
+          "transient": false
+        }
+      ],
+      "call_count": 7,
+      "cost_is_complete": true,
+      "cost_receipts": [
+        {
+          "component": "compiler",
+          "cost": {
+            "estimated_cost_usd": 0.01,
+            "input_tokens": 120,
+            "latency_seconds": 0.2,
+            "model": "gpt-5.4-mini",
+            "output_tokens": 90,
+            "request_id": "compile-scene_001"
+          },
+          "entity_id": "scene_001_clip_001",
+          "model": "gpt-5.4-mini",
+          "price": null,
+          "provider": null,
+          "provider_job_id": null,
+          "quantity": null,
+          "reason": "Compiler estimate returned by the language-model transport.",
+          "receipt_id": "compiler:df4adc4d-9d02-4380-b6aa-b377f4d80083",
+          "scene_id": "scene_001",
+          "status": "estimated"
+        },
+        {
+          "component": "video",
+          "cost": {
+            "estimated_cost_usd": 0.4,
+            "input_tokens": 0,
+            "latency_seconds": null,
+            "model": "veo-3.1-generate-preview",
+            "output_tokens": 0,
+            "request_id": null
+          },
+          "entity_id": "scene_001_clip_001",
+          "model": "veo-3.1-generate-preview",
+          "price": null,
+          "provider": null,
+          "provider_job_id": "job-1",
+          "quantity": null,
+          "reason": "Synthetic transport estimate; no claim about live pricing or lifecycle.",
+          "receipt_id": "mechanical-fixture:e150ddd0-27c7-48b3-9480-3136b8cff404",
+          "scene_id": "scene_001",
+          "status": "estimated"
+        },
+        {
+          "component": "compiler",
+          "cost": {
+            "estimated_cost_usd": 0.01,
+            "input_tokens": 120,
+            "latency_seconds": 0.2,
+            "model": "gpt-5.4-mini",
+            "output_tokens": 90,
+            "request_id": "compile-scene_001"
+          },
+          "entity_id": "scene_001_clip_002",
+          "model": "gpt-5.4-mini",
+          "price": null,
+          "provider": null,
+          "provider_job_id": null,
+          "quantity": null,
+          "reason": "Compiler estimate returned by the language-model transport.",
+          "receipt_id": "compiler:0600c227-ea0d-43dc-860f-87948dacae18",
+          "scene_id": "scene_001",
+          "status": "estimated"
+        },
+        {
+          "component": "compiler",
+          "cost": {
+            "estimated_cost_usd": 0.01,
+            "input_tokens": 120,
+            "latency_seconds": 0.2,
+            "model": "gpt-5.4-mini",
+            "output_tokens": 90,
+            "request_id": "compile-scene_001"
+          },
+          "entity_id": "scene_002_clip_001",
+          "model": "gpt-5.4-mini",
+          "price": null,
+          "provider": null,
+          "provider_job_id": null,
+          "quantity": null,
+          "reason": "Compiler estimate returned by the language-model transport.",
+          "receipt_id": "compiler:4255e134-d4b9-4d31-8b15-5ff9ddfd7ae1",
+          "scene_id": "scene_002",
+          "status": "estimated"
+        },
+        {
+          "component": "video",
+          "cost": {
+            "estimated_cost_usd": 0.4,
+            "input_tokens": 0,
+            "latency_seconds": null,
+            "model": "veo-3.1-generate-preview",
+            "output_tokens": 0,
+            "request_id": null
+          },
+          "entity_id": "scene_002_clip_001",
+          "model": "veo-3.1-generate-preview",
+          "price": null,
+          "provider": null,
+          "provider_job_id": "job-3",
+          "quantity": null,
+          "reason": "Synthetic transport estimate; no claim about live pricing or lifecycle.",
+          "receipt_id": "mechanical-fixture:618cb627-169d-4b78-85eb-d296b12d243e",
+          "scene_id": "scene_002",
+          "status": "estimated"
+        },
+        {
+          "component": "compiler",
+          "cost": {
+            "estimated_cost_usd": 0.01,
+            "input_tokens": 120,
+            "latency_seconds": 0.2,
+            "model": "gpt-5.4-mini",
+            "output_tokens": 90,
+            "request_id": "compile-scene_001"
+          },
+          "entity_id": "scene_002_clip_002",
+          "model": "gpt-5.4-mini",
+          "price": null,
+          "provider": null,
+          "provider_job_id": null,
+          "quantity": null,
+          "reason": "Compiler estimate returned by the language-model transport.",
+          "receipt_id": "compiler:bdfbb959-2484-4790-841e-a38c73da884e",
+          "scene_id": "scene_002",
+          "status": "estimated"
+        },
+        {
+          "component": "video",
+          "cost": {
+            "estimated_cost_usd": 0.4,
+            "input_tokens": 0,
+            "latency_seconds": null,
+            "model": "veo-3.1-generate-preview",
+            "output_tokens": 0,
+            "request_id": null
+          },
+          "entity_id": "scene_002_clip_002",
+          "model": "veo-3.1-generate-preview",
+          "price": null,
+          "provider": null,
+          "provider_job_id": "job-4",
+          "quantity": null,
+          "reason": "Synthetic transport estimate; no claim about live pricing or lifecycle.",
+          "receipt_id": "mechanical-fixture:c48f1e15-ac64-4ab8-a0d0-77feaf4df8db",
+          "scene_id": "scene_002",
+          "status": "estimated"
+        }
+      ],
+      "cost_usd": 1.24,
+      "duration_seconds": 0.0338,
+      "final_error_class": "ModuleCostError",
+      "input_tokens": 480,
+      "model_used": "code",
+      "output_tokens": 360,
+      "pause_reason": null,
+      "started_at": 1792775254.513186,
+      "status": "failed"
+    },
+    "render_clip_planning": {
+      "artifact_refs": [
+        {
+          "artifact_type": "render_clip_plan",
+          "entity_id": "scene_001",
+          "path": "artifacts/render_clip_plan/scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "render_clip_plan",
+          "entity_id": "scene_002",
+          "path": "artifacts/render_clip_plan/scene_002/v1.json",
+          "version": 1
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 0.0138,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0,
+      "duration_seconds": 0.015,
+      "final_error_class": null,
+      "input_tokens": 0,
+      "model_used": "code",
+      "output_tokens": 0,
+      "pause_reason": null,
+      "started_at": 1792775254.493835,
+      "status": "done"
+    },
+    "shot_planning": {
+      "artifact_refs": [],
+      "attempt_count": 0,
+      "attempts": [],
+      "call_count": 0,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0,
+      "duration_seconds": 0.0,
+      "final_error_class": null,
+      "input_tokens": 0,
+      "model_used": null,
+      "output_tokens": 0,
+      "pause_reason": null,
+      "started_at": null,
+      "status": "pending"
+    },
+    "timeline": {
+      "artifact_refs": [],
+      "attempt_count": 0,
+      "attempts": [],
+      "call_count": 0,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0,
+      "duration_seconds": 0.0,
+      "final_error_class": null,
+      "input_tokens": 0,
+      "model_used": null,
+      "output_tokens": 0,
+      "pause_reason": null,
+      "started_at": null,
+      "status": "pending"
+    },
+    "tracks": {
+      "artifact_refs": [],
+      "attempt_count": 0,
+      "attempts": [],
+      "call_count": 0,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0,
+      "duration_seconds": 0.0,
+      "final_error_class": null,
+      "input_tokens": 0,
+      "model_used": null,
+      "output_tokens": 0,
+      "pause_reason": null,
+      "started_at": null,
+      "status": "pending"
+    },
+    "validate_media": {
+      "artifact_refs": [],
+      "attempt_count": 0,
+      "attempts": [],
+      "call_count": 0,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0,
+      "duration_seconds": 0.0,
+      "final_error_class": null,
+      "input_tokens": 0,
+      "model_used": null,
+      "output_tokens": 0,
+      "pause_reason": null,
+      "started_at": null,
+      "status": "pending"
+    }
+  },
+  "started_at": 1792775254.466752,
+  "total_cost_usd": 1.24
+}

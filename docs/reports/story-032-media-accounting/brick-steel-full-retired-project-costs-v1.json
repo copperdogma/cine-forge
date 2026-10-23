@@ -1,0 +1,1073 @@
+{
+  "cost_is_complete": false,
+  "uncertain_cost_receipts": [
+    {
+      "receipt_id": "historical-media:run-88a073f3:render",
+      "component": "video",
+      "model": "code",
+      "status": "uncertain",
+      "cost": null,
+      "provider": null,
+      "provider_job_id": null,
+      "scene_id": null,
+      "entity_id": null,
+      "price": null,
+      "quantity": null,
+      "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+    },
+    {
+      "receipt_id": "historical-media:run-204d1fe5:render",
+      "component": "video",
+      "model": "gpt-5.4-mini+veo-3.1-generate-preview",
+      "status": "uncertain",
+      "cost": null,
+      "provider": null,
+      "provider_job_id": null,
+      "scene_id": null,
+      "entity_id": null,
+      "price": null,
+      "quantity": null,
+      "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+    },
+    {
+      "receipt_id": "historical-media:run-a5baa37c:ai_previz",
+      "component": "video",
+      "model": "code+grok-imagine-video",
+      "status": "uncertain",
+      "cost": null,
+      "provider": null,
+      "provider_job_id": null,
+      "scene_id": null,
+      "entity_id": null,
+      "price": null,
+      "quantity": null,
+      "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+    },
+    {
+      "receipt_id": "historical-media:run-d1c2c9a9:ai_previz",
+      "component": "video",
+      "model": "code+grok-imagine-video",
+      "status": "uncertain",
+      "cost": null,
+      "provider": null,
+      "provider_job_id": null,
+      "scene_id": null,
+      "entity_id": null,
+      "price": null,
+      "quantity": null,
+      "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+    },
+    {
+      "receipt_id": "historical-media:run-0f62f8e2:ai_previz",
+      "component": "video",
+      "model": "code",
+      "status": "uncertain",
+      "cost": null,
+      "provider": null,
+      "provider_job_id": null,
+      "scene_id": null,
+      "entity_id": null,
+      "price": null,
+      "quantity": null,
+      "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+    },
+    {
+      "receipt_id": "historical-media:run-b1bb65b3:ai_previz",
+      "component": "video",
+      "model": "code+grok-imagine-video",
+      "status": "uncertain",
+      "cost": null,
+      "provider": null,
+      "provider_job_id": null,
+      "scene_id": null,
+      "entity_id": null,
+      "price": null,
+      "quantity": null,
+      "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+    },
+    {
+      "receipt_id": "historical-media:run-460d8154:ai_previz",
+      "component": "video",
+      "model": "code+grok-imagine-video",
+      "status": "uncertain",
+      "cost": null,
+      "provider": null,
+      "provider_job_id": null,
+      "scene_id": null,
+      "entity_id": null,
+      "price": null,
+      "quantity": null,
+      "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+    },
+    {
+      "receipt_id": "historical-media:run-98486b3a:ai_previz",
+      "component": "video",
+      "model": "code+grok-imagine-video",
+      "status": "uncertain",
+      "cost": null,
+      "provider": null,
+      "provider_job_id": null,
+      "scene_id": null,
+      "entity_id": null,
+      "price": null,
+      "quantity": null,
+      "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+    },
+    {
+      "receipt_id": "historical-media:run-02f35012:ai_previz",
+      "component": "video",
+      "model": "code+grok-imagine-video",
+      "status": "uncertain",
+      "cost": null,
+      "provider": null,
+      "provider_job_id": null,
+      "scene_id": null,
+      "entity_id": null,
+      "price": null,
+      "quantity": null,
+      "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+    }
+  ],
+  "project_id": "brick-steel-full-retired",
+  "total_cost_usd": 2.12812405,
+  "run_count": 33,
+  "runs": [
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-88a073f3:render",
+          "component": "video",
+          "model": "code",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-88a073f3",
+      "recipe_id": "render_generation",
+      "status": "failed",
+      "started_at": 1778035852.475133,
+      "finished_at": 1778036060.119912,
+      "total_cost_usd": 0.14493,
+      "duration_seconds": 207.6448
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-f386966b",
+      "recipe_id": "storyboard_generation",
+      "status": "done",
+      "started_at": 1778035770.594374,
+      "finished_at": 1778035819.341727,
+      "total_cost_usd": 0.024351,
+      "duration_seconds": 48.7474
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-40f34b3f",
+      "recipe_id": "shot_planning",
+      "status": "done",
+      "started_at": 1778035703.1616051,
+      "finished_at": 1778035747.212533,
+      "total_cost_usd": 0.0391482,
+      "duration_seconds": 44.0509
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-204d1fe5:render",
+          "component": "video",
+          "model": "gpt-5.4-mini+veo-3.1-generate-preview",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-204d1fe5",
+      "recipe_id": "render_generation",
+      "status": "done",
+      "started_at": 1777522600.748084,
+      "finished_at": 1777523154.287076,
+      "total_cost_usd": 0.142158,
+      "duration_seconds": 553.539
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-a5baa37c:ai_previz",
+          "component": "video",
+          "model": "code+grok-imagine-video",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-a5baa37c",
+      "recipe_id": "ai_previz_generation",
+      "status": "done",
+      "started_at": 1777522520.303823,
+      "finished_at": 1777522575.32165,
+      "total_cost_usd": 0.02045475,
+      "duration_seconds": 55.0178
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-d1c2c9a9:ai_previz",
+          "component": "video",
+          "model": "code+grok-imagine-video",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-d1c2c9a9",
+      "recipe_id": "ai_previz_generation",
+      "status": "done",
+      "started_at": 1777521892.4486048,
+      "finished_at": 1777521949.9057522,
+      "total_cost_usd": 0.02018175,
+      "duration_seconds": 57.4571
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-0f62f8e2:ai_previz",
+          "component": "video",
+          "model": "code",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-0f62f8e2",
+      "recipe_id": "ai_previz_generation",
+      "status": "failed",
+      "started_at": 1777518056.766103,
+      "finished_at": 1777518436.986967,
+      "total_cost_usd": 0.277035,
+      "duration_seconds": 380.2209
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-9b476294",
+      "recipe_id": "storyboard_generation",
+      "status": "done",
+      "started_at": 1777517920.6614752,
+      "finished_at": 1777517971.60434,
+      "total_cost_usd": 0.023253,
+      "duration_seconds": 50.9429
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-cb49c0c4",
+      "recipe_id": "shot_planning",
+      "status": "done",
+      "started_at": 1777515757.863157,
+      "finished_at": 1777515799.158116,
+      "total_cost_usd": 0.0435422,
+      "duration_seconds": 41.295
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-b1bb65b3:ai_previz",
+          "component": "video",
+          "model": "code+grok-imagine-video",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-b1bb65b3",
+      "recipe_id": "ai_previz_generation",
+      "status": "done",
+      "started_at": 1777505652.081693,
+      "finished_at": 1777505992.077546,
+      "total_cost_usd": 0.02020425,
+      "duration_seconds": 339.9959
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-460d8154:ai_previz",
+          "component": "video",
+          "model": "code+grok-imagine-video",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-460d8154",
+      "recipe_id": "ai_previz_generation",
+      "status": "failed",
+      "started_at": 1777505040.296291,
+      "finished_at": 1777505313.222621,
+      "total_cost_usd": 0.0,
+      "duration_seconds": 272.9263
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-83ce40c8",
+      "recipe_id": "ai_previz_generation",
+      "status": "failed",
+      "started_at": 1777504785.504252,
+      "finished_at": 1777504785.6740391,
+      "total_cost_usd": 0.0,
+      "duration_seconds": 0.1698
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-cea9e0db",
+      "recipe_id": "ai_previz_generation",
+      "status": "failed",
+      "started_at": 1777504194.372361,
+      "finished_at": 1777504768.179252,
+      "total_cost_usd": 0.251355,
+      "duration_seconds": 573.8069
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-4868f0c4",
+      "recipe_id": "ai_previz_generation",
+      "status": "failed",
+      "started_at": 1777503951.964941,
+      "finished_at": 1777503999.9274418,
+      "total_cost_usd": 0.0119576,
+      "duration_seconds": 47.9625
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-40a174f1",
+      "recipe_id": "ai_previz_generation",
+      "status": "failed",
+      "started_at": 1777503796.759743,
+      "finished_at": 1777503826.452985,
+      "total_cost_usd": 0.0105416,
+      "duration_seconds": 29.6932
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-3c675a11",
+      "recipe_id": "ai_previz_generation",
+      "status": "failed",
+      "started_at": 1777503666.647601,
+      "finished_at": 1777503692.508422,
+      "total_cost_usd": 0.0121656,
+      "duration_seconds": 25.8608
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-1481994c",
+      "recipe_id": "ai_previz_generation",
+      "status": "failed",
+      "started_at": 1777503606.420151,
+      "finished_at": 1777503625.59203,
+      "total_cost_usd": 0.0100136,
+      "duration_seconds": 19.1719
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-374d8463",
+      "recipe_id": "ai_previz_generation",
+      "status": "failed",
+      "started_at": 1777503003.992175,
+      "finished_at": 1777503025.9788759,
+      "total_cost_usd": 0.0116856,
+      "duration_seconds": 21.9867
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-8279064e",
+      "recipe_id": "ai_previz_generation",
+      "status": "failed",
+      "started_at": 1777502221.678475,
+      "finished_at": 1777502245.8313658,
+      "total_cost_usd": 0.0120576,
+      "duration_seconds": 24.1529
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-a54631df",
+      "recipe_id": "ai_previz_generation",
+      "status": "failed",
+      "started_at": 1777501285.617333,
+      "finished_at": 1777501295.900172,
+      "total_cost_usd": 0.0,
+      "duration_seconds": 10.2828
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-1d36879e",
+      "recipe_id": "ai_previz_generation",
+      "status": "failed",
+      "started_at": 1777501280.016696,
+      "finished_at": 1777501280.3132212,
+      "total_cost_usd": 0.0,
+      "duration_seconds": 0.2965
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-98486b3a:ai_previz",
+          "component": "video",
+          "model": "code+grok-imagine-video",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-98486b3a",
+      "recipe_id": "ai_previz_generation",
+      "status": "done",
+      "started_at": 1777498905.5510862,
+      "finished_at": 1777498932.38047,
+      "total_cost_usd": 0.00239475,
+      "duration_seconds": 26.8294
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-02f35012:ai_previz",
+          "component": "video",
+          "model": "code+grok-imagine-video",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-02f35012",
+      "recipe_id": "ai_previz_generation",
+      "status": "done",
+      "started_at": 1777496847.378494,
+      "finished_at": 1777496880.566005,
+      "total_cost_usd": 0.00246675,
+      "duration_seconds": 33.1875
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-0ac6d849",
+      "recipe_id": "storyboard_generation",
+      "status": "done",
+      "started_at": 1777496635.9732502,
+      "finished_at": 1777496729.485985,
+      "total_cost_usd": 0.0664282,
+      "duration_seconds": 93.5127
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-fc8b1cdc",
+      "recipe_id": "storyboard_generation",
+      "status": "done",
+      "started_at": 1777495859.796167,
+      "finished_at": 1777495921.415073,
+      "total_cost_usd": 0.024243,
+      "duration_seconds": 61.6189
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-f70999d4",
+      "recipe_id": "shot_planning",
+      "status": "done",
+      "started_at": 1777495654.240906,
+      "finished_at": 1777495708.2102022,
+      "total_cost_usd": 0.0496072,
+      "duration_seconds": 53.9693
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-d0d15ac5",
+      "recipe_id": "shot_planning",
+      "status": "done",
+      "started_at": 1777488347.482702,
+      "finished_at": 1777488757.186774,
+      "total_cost_usd": 0.172998,
+      "duration_seconds": 409.7041
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-b8b0b381",
+      "recipe_id": "creative_direction",
+      "status": "done",
+      "started_at": 1777487379.11282,
+      "finished_at": 1777487432.695887,
+      "total_cost_usd": 0.04287,
+      "duration_seconds": 53.5831
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-c4d09780",
+      "recipe_id": "creative_direction",
+      "status": "done",
+      "started_at": 1777487311.380519,
+      "finished_at": 1777487370.1223528,
+      "total_cost_usd": 0.047205,
+      "duration_seconds": 58.7418
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-72fa806f",
+      "recipe_id": "creative_direction",
+      "status": "done",
+      "started_at": 1777487087.117167,
+      "finished_at": 1777487159.7344158,
+      "total_cost_usd": 0.06288,
+      "duration_seconds": 72.6172
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-63e296e7",
+      "recipe_id": "creative_direction",
+      "status": "done",
+      "started_at": 1777485751.115218,
+      "finished_at": 1777485821.089494,
+      "total_cost_usd": 0.057333,
+      "duration_seconds": 69.9743
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-94103c1a",
+      "recipe_id": "world_building",
+      "status": "done",
+      "started_at": 1777485417.763123,
+      "finished_at": 1777485569.3535192,
+      "total_cost_usd": 0.4457512,
+      "duration_seconds": 151.5904
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-5f906093",
+      "recipe_id": "mvp_ingest",
+      "status": "done",
+      "started_at": 1777485075.311151,
+      "finished_at": 1777485147.3717601,
+      "total_cost_usd": 0.0789122,
+      "duration_seconds": 72.0606
+    }
+  ],
+  "trend_points": [
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-5f906093",
+      "started_at": 1777485075.311151,
+      "total_cost_usd": 0.0789122
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-94103c1a",
+      "started_at": 1777485417.763123,
+      "total_cost_usd": 0.4457512
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-63e296e7",
+      "started_at": 1777485751.115218,
+      "total_cost_usd": 0.057333
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-72fa806f",
+      "started_at": 1777487087.117167,
+      "total_cost_usd": 0.06288
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-c4d09780",
+      "started_at": 1777487311.380519,
+      "total_cost_usd": 0.047205
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-b8b0b381",
+      "started_at": 1777487379.11282,
+      "total_cost_usd": 0.04287
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-d0d15ac5",
+      "started_at": 1777488347.482702,
+      "total_cost_usd": 0.172998
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-f70999d4",
+      "started_at": 1777495654.240906,
+      "total_cost_usd": 0.0496072
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-fc8b1cdc",
+      "started_at": 1777495859.796167,
+      "total_cost_usd": 0.024243
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-0ac6d849",
+      "started_at": 1777496635.9732502,
+      "total_cost_usd": 0.0664282
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-02f35012:ai_previz",
+          "component": "video",
+          "model": "code+grok-imagine-video",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-02f35012",
+      "started_at": 1777496847.378494,
+      "total_cost_usd": 0.00246675
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-98486b3a:ai_previz",
+          "component": "video",
+          "model": "code+grok-imagine-video",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-98486b3a",
+      "started_at": 1777498905.5510862,
+      "total_cost_usd": 0.00239475
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-1d36879e",
+      "started_at": 1777501280.016696,
+      "total_cost_usd": 0.0
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-a54631df",
+      "started_at": 1777501285.617333,
+      "total_cost_usd": 0.0
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-8279064e",
+      "started_at": 1777502221.678475,
+      "total_cost_usd": 0.0120576
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-374d8463",
+      "started_at": 1777503003.992175,
+      "total_cost_usd": 0.0116856
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-1481994c",
+      "started_at": 1777503606.420151,
+      "total_cost_usd": 0.0100136
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-3c675a11",
+      "started_at": 1777503666.647601,
+      "total_cost_usd": 0.0121656
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-40a174f1",
+      "started_at": 1777503796.759743,
+      "total_cost_usd": 0.0105416
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-4868f0c4",
+      "started_at": 1777503951.964941,
+      "total_cost_usd": 0.0119576
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-cea9e0db",
+      "started_at": 1777504194.372361,
+      "total_cost_usd": 0.251355
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-83ce40c8",
+      "started_at": 1777504785.504252,
+      "total_cost_usd": 0.0
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-460d8154:ai_previz",
+          "component": "video",
+          "model": "code+grok-imagine-video",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-460d8154",
+      "started_at": 1777505040.296291,
+      "total_cost_usd": 0.0
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-b1bb65b3:ai_previz",
+          "component": "video",
+          "model": "code+grok-imagine-video",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-b1bb65b3",
+      "started_at": 1777505652.081693,
+      "total_cost_usd": 0.02020425
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-cb49c0c4",
+      "started_at": 1777515757.863157,
+      "total_cost_usd": 0.0435422
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-9b476294",
+      "started_at": 1777517920.6614752,
+      "total_cost_usd": 0.023253
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-0f62f8e2:ai_previz",
+          "component": "video",
+          "model": "code",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-0f62f8e2",
+      "started_at": 1777518056.766103,
+      "total_cost_usd": 0.277035
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-d1c2c9a9:ai_previz",
+          "component": "video",
+          "model": "code+grok-imagine-video",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-d1c2c9a9",
+      "started_at": 1777521892.4486048,
+      "total_cost_usd": 0.02018175
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-a5baa37c:ai_previz",
+          "component": "video",
+          "model": "code+grok-imagine-video",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-a5baa37c",
+      "started_at": 1777522520.303823,
+      "total_cost_usd": 0.02045475
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-204d1fe5:render",
+          "component": "video",
+          "model": "gpt-5.4-mini+veo-3.1-generate-preview",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-204d1fe5",
+      "started_at": 1777522600.748084,
+      "total_cost_usd": 0.142158
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-40f34b3f",
+      "started_at": 1778035703.1616051,
+      "total_cost_usd": 0.0391482
+    },
+    {
+      "cost_is_complete": true,
+      "uncertain_cost_receipts": [],
+      "run_id": "run-f386966b",
+      "started_at": 1778035770.594374,
+      "total_cost_usd": 0.024351
+    },
+    {
+      "cost_is_complete": false,
+      "uncertain_cost_receipts": [
+        {
+          "receipt_id": "historical-media:run-88a073f3:render",
+          "component": "video",
+          "model": "code",
+          "status": "uncertain",
+          "cost": null,
+          "provider": null,
+          "provider_job_id": null,
+          "scene_id": null,
+          "entity_id": null,
+          "price": null,
+          "quantity": null,
+          "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+        }
+      ],
+      "run_id": "run-88a073f3",
+      "started_at": 1778035852.475133,
+      "total_cost_usd": 0.14493
+    }
+  ],
+  "trend": {
+    "cost_is_complete": false,
+    "uncertain_cost_receipts": [
+      {
+        "receipt_id": "historical-media:run-d1c2c9a9:ai_previz",
+        "component": "video",
+        "model": "code+grok-imagine-video",
+        "status": "uncertain",
+        "cost": null,
+        "provider": null,
+        "provider_job_id": null,
+        "scene_id": null,
+        "entity_id": null,
+        "price": null,
+        "quantity": null,
+        "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+      },
+      {
+        "receipt_id": "historical-media:run-a5baa37c:ai_previz",
+        "component": "video",
+        "model": "code+grok-imagine-video",
+        "status": "uncertain",
+        "cost": null,
+        "provider": null,
+        "provider_job_id": null,
+        "scene_id": null,
+        "entity_id": null,
+        "price": null,
+        "quantity": null,
+        "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+      },
+      {
+        "receipt_id": "historical-media:run-204d1fe5:render",
+        "component": "video",
+        "model": "gpt-5.4-mini+veo-3.1-generate-preview",
+        "status": "uncertain",
+        "cost": null,
+        "provider": null,
+        "provider_job_id": null,
+        "scene_id": null,
+        "entity_id": null,
+        "price": null,
+        "quantity": null,
+        "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+      },
+      {
+        "receipt_id": "historical-media:run-88a073f3:render",
+        "component": "video",
+        "model": "code",
+        "status": "uncertain",
+        "cost": null,
+        "provider": null,
+        "provider_job_id": null,
+        "scene_id": null,
+        "entity_id": null,
+        "price": null,
+        "quantity": null,
+        "reason": "Historical media generation cost was not recorded; known subtotal only; no current-price backcast."
+      }
+    ],
+    "direction": "insufficient_data",
+    "recent_average_usd": 0.0694764,
+    "previous_average_usd": 0.0609315,
+    "delta_usd": 0.0085449
+  },
+  "budget_config": {
+    "project_budget_limit_usd": null,
+    "default_run_budget_limit_usd": null,
+    "budget_warning_threshold_ratio": 0.8,
+    "stage_budget_limits_usd": {}
+  }
+}

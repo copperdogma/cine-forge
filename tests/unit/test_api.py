@@ -13,6 +13,96 @@ from cine_forge.artifacts import ArtifactStore
 from cine_forge.schemas import ArtifactMetadata
 from cine_forge.schemas.scene_scope import SceneActionPreflight, SceneExecutionScope
 
+
+def test_all_scenes_media_start_enforces_preflight_before_orchestrator(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    service = OperatorConsoleService(workspace_root=tmp_path)
+    project_path = tmp_path / "output" / "project"
+    project_path.mkdir(parents=True)
+    monkeypatch.setattr(service, "require_project_path", lambda _project_id: project_path)
+    monkeypatch.setattr(service._orchestrator, "start_run", lambda *_: pytest.fail("run started"))
+    blocked = SceneActionPreflight.model_validate({
+        "recipe_id": "render_generation", "recipe_name": "Render", "status": "soft_block",
+        "summary": "Render blocked", "scene_scope": {"mode": "all_scenes"},
+        "items": [
+            {"kind": "warning", "label": "Optional source", "detail": "not the blocker"},
+            {"kind": "soft_block", "label": "Video provider unavailable", "detail": "Veo retired"},
+        ],
+    })
+    monkeypatch.setattr(service, "preview_scene_action", lambda *_args, **_kwargs: blocked)
+    with pytest.raises(ServiceError) as exc:
+        service.start_run("project", {
+            "project_id": "project", "input_file": "script.fountain",
+            "default_model": "mock", "recipe_id": "render_generation",
+            "scene_scope": {"mode": "all_scenes"},
+        })
+    assert exc.value.code == "scene_action_blocked"
+    assert exc.value.hint == "Veo retired"
+
+
+@pytest.mark.parametrize("action,stage_status", [
+    ("resume", "paused"), ("retry", "failed"),
+])
+def test_incomplete_media_cost_blocks_replay_before_new_run(
+    tmp_path: Path, action: str, stage_status: str,
+) -> None:
+    service = OperatorConsoleService(workspace_root=tmp_path)
+    run_dir = tmp_path / "output" / "runs" / "run-uncertain"
+    run_dir.mkdir(parents=True)
+    (run_dir / "run_state.json").write_text(json.dumps({
+        "run_id": "run-uncertain", "recipe_id": "render_generation",
+        "cost_is_complete": False,
+        "stages": {"render": {
+            "status": stage_status, "cost_is_complete": False,
+            "cost_receipts": [{
+                "receipt_id": "video-1", "component": "video", "model": "grok-imagine-video",
+                "status": "uncertain", "cost": None, "reason": "provider accepted request",
+                "provider_job_id": "job-123",
+            }],
+        }},
+    }))
+    with pytest.raises(ServiceError) as exc:
+        if action == "resume":
+            service.resume_run("run-uncertain")
+        else:
+            service.retry_failed_stage("run-uncertain")
+    assert exc.value.code == "unresolved_media_cost"
+    assert "job-123" in (exc.value.hint or "")
+    assert not any(path.name.startswith("run-uncertain-") for path in run_dir.parent.iterdir())
+
+
+@pytest.mark.parametrize("action,stage_status", [
+    ("resume", "paused"), ("retry", "failed"),
+])
+def test_historical_media_without_receipts_blocks_replay_before_new_run(
+    tmp_path: Path, action: str, stage_status: str,
+) -> None:
+    service = OperatorConsoleService(workspace_root=tmp_path)
+    run_dir = tmp_path / "output" / "runs" / "run-historical-media"
+    run_dir.mkdir(parents=True)
+    (run_dir / "run_state.json").write_text(json.dumps({
+        "run_id": "run-historical-media", "recipe_id": "render_generation",
+        "stage_order": ["render"],
+        "stages": {"render": {
+            "status": stage_status,
+            "artifact_refs": [{
+                "artifact_type": "generated_video", "entity_id": "scene_001__clip_001",
+                "version": 1, "path": "artifacts/generated_video/scene_001__clip_001/v1.json",
+            }],
+        }},
+    }))
+    with pytest.raises(ServiceError) as exc:
+        if action == "resume":
+            service.resume_run("run-historical-media")
+        else:
+            service.retry_failed_stage("run-historical-media")
+    assert exc.value.code == "unresolved_media_cost"
+    assert "historical" in (exc.value.hint or "").lower()
+    assert not any(
+        path.name.startswith("run-historical-media-") for path in run_dir.parent.iterdir()
+    )
+
 pytestmark = pytest.mark.unit
 
 
@@ -394,7 +484,12 @@ def test_service_start_run_persists_scene_scope_and_preflight_context(
     store.save_artifact(
         artifact_type="scene",
         entity_id="scene_001",
-        data={"scene_id": "scene_001", "scene_number": 1, "heading": "INT. LAB - NIGHT"},
+        data={
+            "scene_id": "scene_001", "scene_number": 1, "heading": "INT. LAB - NIGHT",
+            "location": "Lab", "time_of_day": "NIGHT", "int_ext": "INT",
+            "tone_mood": "neutral", "source_span": {"start_line": 1, "end_line": 3},
+            "confidence": 1.0,
+        },
         metadata=metadata,
     )
 
@@ -434,6 +529,9 @@ def test_service_start_run_applies_coerced_scene_preflight_start_from(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    # Exercise real readiness/coercion without relying on developer credentials.
+    # The orchestrator below is stubbed; no provider request can be dispatched.
+    monkeypatch.setenv("CINE_FORGE_XAI_API_KEY", "coerced-scene-offline-fixture")
     service = OperatorConsoleService(workspace_root=tmp_path)
     project_id = service.create_project_from_slug("coerced-scene-run", "Coerced Scene Run")
     project_path = service.require_project_path(project_id)
@@ -464,7 +562,12 @@ def test_service_start_run_applies_coerced_scene_preflight_start_from(
     store.save_artifact(
         artifact_type="scene",
         entity_id="scene_001",
-        data={"scene_id": "scene_001", "scene_number": 1, "heading": "INT. LAB - NIGHT"},
+        data={
+            "scene_id": "scene_001", "scene_number": 1, "heading": "INT. LAB - NIGHT",
+            "location": "Lab", "time_of_day": "NIGHT", "int_ext": "INT",
+            "tone_mood": "neutral", "source_span": {"start_line": 1, "end_line": 3},
+            "confidence": 1.0,
+        },
         metadata=metadata,
     )
     store.save_artifact(

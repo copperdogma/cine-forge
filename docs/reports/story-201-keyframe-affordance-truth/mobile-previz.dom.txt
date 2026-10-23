@@ -1,0 +1,43 @@
+- tabpanel "Previz":
+    - generic: Previz
+    - generic: "Selected: Current scene"
+    - generic: "Shipped lane: AI Previz"
+    - generic: "AI lane: Experimental / Manual"
+    - generic: From shot plan v10
+    - generic: Render clips v2
+    - generic: AI Previz is the shipped generated-motion previz lane. Historical deterministic animatic comparisons remain eval evidence only and are no longer part of the normal previz workflow. AI Previz is the only shipped operator-facing lane, but current generated-motion runtime or evidence still misses the product bar. Historical deterministic animatic comparisons remain eval evidence only. Final footage still lives in the Render tab.
+    - paragraph: Execution Scope
+    - button "Current Scene" [active]
+    - button "All Scenes"
+    - generic: Warnings
+    - paragraph: AI Previz can run for scene_001 with warnings. xAI AI Previz credentials are configured.
+    - paragraph: Shot planning
+    - paragraph: This run will build shot plans first.
+    - link "Open Shots":
+      - /url: /brick-steel-full-retired/scenes/scene_001?tab=shots
+      - text: Open Shots
+    - paragraph: Render clip planning
+    - paragraph: This run will estimate scene duration and render clip boundaries first.
+    - link "Open Previz":
+      - /url: /brick-steel-full-retired/scenes/scene_001?tab=previz
+      - text: Open Previz
+    - generic: AI Previz
+    - generic: Only shipped previz lane
+    - generic: Experimental / Manual
+    - generic: AI video lane
+    - generic: Grok Imagine Previz
+    - generic: Cost blocked
+    - generic: Target ≤ 6.0s
+    - generic: v3
+    - text: Stale
+    - generic: Low-fidelity AI planning clip. This is the intended previz lane, but it remains explicitly non-final footage.
+    - paragraph: "Grok Imagine Previz is still the intended previz lane, but it remains blocked. No previz-usefulness score was found for the active engine pack `xai_grok_imagine_video`."
+    - paragraph: Primary operator-facing previz lane for generated motion, staging, pacing, and camera review before final renders.
+    - paragraph: "Preflight: xai_grok_imagine_video / grok-imagine-video"
+    - paragraph: 480p, 4s, Prompt-only consistency.
+    - paragraph: Final footage still belongs in the Render tab. Keep this lane focused on motion, staging, and operator-readable planning feedback.
+    - paragraph: "Prep strategy: One-pass previz prep."
+    - paragraph: "Reused: Timeline, Track Manifest."
+    - paragraph: "Auto-built: Shot Plan, Render Clip Plan."
+    - link "AI Previz Detail":
+      - /url: /brick-steel-full-retired/artifacts/ai_previz_vi

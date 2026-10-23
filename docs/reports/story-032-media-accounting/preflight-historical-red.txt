@@ -1,0 +1,100 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_ test_historical_media_without_receipts_blocks_replay_before_new_run[resume-paused] _
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-433/test_historical_media_without_0')
+action = 'resume', stage_status = 'paused'
+
+    @pytest.mark.parametrize("action,stage_status", [
+        ("resume", "paused"), ("retry", "failed"),
+    ])
+    def test_historical_media_without_receipts_blocks_replay_before_new_run(
+        tmp_path: Path, action: str, stage_status: str,
+    ) -> None:
+        service = OperatorConsoleService(workspace_root=tmp_path)
+        run_dir = tmp_path / "output" / "runs" / "run-historical-media"
+        run_dir.mkdir(parents=True)
+        (run_dir / "run_state.json").write_text(json.dumps({
+            "run_id": "run-historical-media", "recipe_id": "render_generation",
+            "stage_order": ["render"],
+            "stages": {"render": {
+                "status": stage_status,
+                "artifact_refs": [{
+                    "artifact_type": "generated_video", "entity_id": "scene_001__clip_001",
+                    "version": 1, "path": "artifacts/generated_video/scene_001__clip_001/v1.json",
+                }],
+            }},
+        }))
+        with pytest.raises(ServiceError) as exc:
+            if action == "resume":
+>               service.resume_run("run-historical-media")
+
+tests/unit/test_api.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/cine_forge/api/service.py:1055: in resume_run
+    return self._orchestrator.resume_run(run_id, overrides=overrides)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/cine_forge/api/run_orchestrator.py:240: in resume_run
+    run_meta = json.loads(run_meta_path.read_text(encoding="utf-8"))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/Cellar/python@3.14/3.14.0/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py:792: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-433/test_historical_media_without_0/output/runs/run-historical-media/operator_console_run_meta.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-433/test_historical_media_without_0/output/runs/run-historical-media/operator_console_run_meta.json'
+
+/usr/local/Cellar/python@3.14/3.14.0/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py:776: FileNotFoundError
+_ test_historical_media_without_receipts_blocks_replay_before_new_run[retry-failed] _
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-433/test_historical_media_without_1')
+action = 'retry', stage_status = 'failed'
+
+    @pytest.mark.parametrize("action,stage_status", [
+        ("resume", "paused"), ("retry", "failed"),
+    ])
+    def test_historical_media_without_receipts_blocks_replay_before_new_run(
+        tmp_path: Path, action: str, stage_status: str,
+    ) -> None:
+        service = OperatorConsoleService(workspace_root=tmp_path)
+        run_dir = tmp_path / "output" / "runs" / "run-historical-media"
+        run_dir.mkdir(parents=True)
+        (run_dir / "run_state.json").write_text(json.dumps({
+            "run_id": "run-historical-media", "recipe_id": "render_generation",
+            "stage_order": ["render"],
+            "stages": {"render": {
+                "status": stage_status,
+                "artifact_refs": [{
+                    "artifact_type": "generated_video", "entity_id": "scene_001__clip_001",
+                    "version": 1, "path": "artifacts/generated_video/scene_001__clip_001/v1.json",
+                }],
+            }},
+        }))
+        with pytest.raises(ServiceError) as exc:
+            if action == "resume":
+                service.resume_run("run-historical-media")
+            else:
+                service.retry_failed_stage("run-historical-media")
+>       assert exc.value.code == "unresolved_media_cost"
+E       AssertionError: assert 'recipe_not_found' == 'unresolved_media_cost'
+E         
+E         - unresolved_media_cost
+E         + recipe_not_found
+
+tests/unit/test_api.py:100: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_api.py::test_historical_media_without_receipts_blocks_replay_before_new_run[resume-paused]
+FAILED tests/unit/test_api.py::test_historical_media_without_receipts_blocks_replay_before_new_run[retry-failed]

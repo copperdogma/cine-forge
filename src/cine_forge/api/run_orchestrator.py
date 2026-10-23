@@ -19,6 +19,7 @@ from cine_forge.api.exceptions import ServiceError
 from cine_forge.api.provider_failure_notifications import (
     build_provider_failure_chat_message,
 )
+from cine_forge.api.run_media_guard import require_complete_media_cost
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.engine import DriverEngine
 from cine_forge.schemas import ArtifactRef, RuntimeParams
@@ -219,6 +220,7 @@ class RunOrchestrator:
             )
 
         state = json.loads(state_path.read_text(encoding="utf-8"))
+        require_complete_media_cost(state, run_id)
         stages = state.get("stages", {})
 
         paused_stage_id = next(
@@ -304,6 +306,7 @@ class RunOrchestrator:
             )
 
         state = json.loads(state_path.read_text(encoding="utf-8"))
+        require_complete_media_cost(state, run_id)
         stages = state.get("stages", {})
         failed_stage_id = next(
             (stage_id for stage_id, stage in stages.items() if stage.get("status") == "failed"),

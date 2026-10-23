@@ -1,0 +1,19 @@
+{
+  "scope": "Narrow non-evaluative mechanical regression; POST intercepted before backend execution",
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:5174/api/runs/start",
+    "body": {
+      "project_id": "brick-steel-full-retired",
+      "input_file": "/Users/cam/Documents/Projects/cine-forge/output/brick-steel-full-retired/inputs/4679ff2e_Brick-_-Steel.pdf",
+      "default_model": "gpt-5.4-mini",
+      "recipe_id": "final_output",
+      "accept_config": true,
+      "force": false
+    }
+  },
+  "reopenedAssemblyDisabled": true,
+  "requestCount": 1,
+  "enabledAfterInterceptedFailure": true,
+  "consoleErrorsExpectedFromMock": []
+}

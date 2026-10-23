@@ -1,0 +1,27 @@
+{
+  "classification": "Offline mechanical accounting proof. Normal driver/module/ArtifactStore execution on seeded upstream fixtures and fake media transport; not representative creative quality or current retired-provider support.",
+  "test": "tests/integration/test_render_adapter_integration.py::test_render_recipe_preserves_partial_success_when_later_scene_fails",
+  "source_artifact_path": "/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-422/test_render_recipe_preserves_pcurrent/project/artifacts/generated_video/scene_001_clip_001/v1.json",
+  "artifact": {
+    "file": "normal-driver-partial-video-v1.json",
+    "known_estimate_usd": 0.41,
+    "receipt_components": [
+      "compiler",
+      "video"
+    ],
+    "cost_is_complete": true,
+    "meaning": "All expected estimates accounted for; not provider invoice confirmation."
+  },
+  "run": {
+    "file": "normal-driver-partial-state-v1.json",
+    "render_status": "failed",
+    "known_estimate_usd": 1.24,
+    "receipt_count": 7,
+    "meaning": "Four compiler estimates (.01 each), three successful video fixture estimates (.4 each), fourth video failed; three available clips and track preserved."
+  },
+  "manual_inspection": "Checked artifact prompt reference, clip identity, compiler+video receipt subtotal .41, typed completeness, and failed stage preserving total1.24 with7unique receipt identities.",
+  "sha256": {
+    "normal-driver-partial-video-v1.json": "51340a27ed0f459cb5dea4b3964471e70e944acb3c3de9e1c9a325c497c18f27",
+    "normal-driver-partial-state-v1.json": "ebbeca5a999592e881cc0df4b3bc21429508c6e89f4c158155aa2f9c99e80d51"
+  }
+}

@@ -1,0 +1,120 @@
+...........................F............................................ [ 43%]
+...................F.................................................... [ 86%]
+.......................                                                  [100%]
+=================================== FAILURES ===================================
+________ test_cdn_download_and_stdlib_redirect_never_receive_api_bearer ________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x111e0a890>
+
+    def test_cdn_download_and_stdlib_redirect_never_receive_api_bearer(monkeypatch):
+        import io
+        import urllib.request
+    
+        monkeypatch.setenv("XAI_API_KEY", "api-secret-must-stay-at-api")
+        poll_headers = []
+        download_requests = []
+    
+        def json_call(**kw):
+            if kw["method"] == "POST":
+                return {"request_id": "cdn-job"}
+            poll_headers.append(kw["headers"])
+            return {
+                "status": "done",
+                "model": "grok-imagine-video",
+                "video": {"url": "https://vidgen.x.ai/temporary/clip.mp4", "duration": 4},
+            }
+    
+        def offline_urlopen(request, timeout):
+            download_requests.append(request)
+            redirected = urllib.request.HTTPRedirectHandler().redirect_request(
+                request,
+                None,
+                302,
+                "Found",
+                {},
+                "https://media.example.invalid/redirected.mp4",
+            )
+            download_requests.append(redirected)
+            return io.BytesIO(b"downloaded-video")
+    
+        monkeypatch.setattr("cine_forge.ai.video._request_json", json_call)
+        monkeypatch.setattr("cine_forge.ai.video_http.urllib.request.urlopen", offline_urlopen)
+        result = generate_video(
+            request=_request(),
+            engine_pack=load_engine_pack("xai_grok_imagine_video"),
+        )
+        assert result.video_bytes == b"downloaded-video"
+>       assert poll_headers[0]["Authorization"] == "Bearer api-secret-must-stay-at-api"
+E       AssertionError: assert 'Bearer <redacted-provider-credential>...dSDxSLwGYYbiw' == 'Bearer api-s...t-stay-at-api'
+E         
+E         - Bearer api-secret-must-stay-at-api
+E         + Bearer <redacted-provider-credential>
+
+tests/unit/test_video_accounting.py:335: AssertionError
+___ test_render_adapter_backfills_design_studies_before_reference_resolution ___
+
+obj = <module 'cine_forge.modules.generation.render_adapter_v1.main' from '/Users/cam/Documents/Projects/cine-forge/src/cine_forge/modules/generation/render_adapter_v1/main.py'>
+name = 'generate_video'
+ann = 'cine_forge.modules.generation.render_adapter_v1.main'
+
+    def annotated_getattr(obj: object, name: str, ann: str) -> object:
+        try:
+>           obj = getattr(obj, name)
+                  ^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'cine_forge.modules.generation.render_adapter_v1.main' has no attribute 'generate_video'
+
+.venv/lib/python3.14/site-packages/_pytest/monkeypatch.py:92: AttributeError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-411/test_render_adapter_backfills_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x111e55160>
+
+    @pytest.mark.unit
+    def test_render_adapter_backfills_design_studies_before_reference_resolution(
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        seeded = seed_render_project(
+            tmp_path,
+            include_keyframe=False,
+            include_scene_image=False,
+            include_project_taste_refs=False,
+        )
+        project_dir = seeded["project_dir"]
+        _add_owen_and_console_bibles(project_dir)
+    
+>       monkeypatch.setattr(
+            "cine_forge.modules.generation.render_adapter_v1.main.generate_video",
+            lambda *, request, engine_pack: VideoGenerationResult(
+                video_bytes=b"fake-mp4",
+                media_type="video/mp4",
+                model_used=engine_pack.target_model,
+                request_id="video-backfill-001",
+                provider_job_id="job-backfill-001",
+            ),
+        )
+
+tests/unit/test_design_study_backfill.py:239: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/_pytest/monkeypatch.py:106: in derive_importpath
+    annotated_getattr(target, attr, ann=module)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obj = <module 'cine_forge.modules.generation.render_adapter_v1.main' from '/Users/cam/Documents/Projects/cine-forge/src/cine_forge/modules/generation/render_adapter_v1/main.py'>
+name = 'generate_video'
+ann = 'cine_forge.modules.generation.render_adapter_v1.main'
+
+    def annotated_getattr(obj: object, name: str, ann: str) -> object:
+        try:
+            obj = getattr(obj, name)
+        except AttributeError as e:
+>           raise AttributeError(
+                f"{type(obj).__name__!r} object at {ann} has no attribute {name!r}"
+            ) from e
+E           AttributeError: 'module' object at cine_forge.modules.generation.render_adapter_v1.main has no attribute 'generate_video'
+
+.venv/lib/python3.14/site-packages/_pytest/monkeypatch.py:94: AttributeError
+=========================== short test summary info ============================
+FAILED tests/unit/test_video_accounting.py::test_cdn_download_and_stdlib_redirect_never_receive_api_bearer
+FAILED tests/unit/test_design_study_backfill.py::test_render_adapter_backfills_design_studies_before_reference_resolution

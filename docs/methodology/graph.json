@@ -715,7 +715,9 @@
           "196",
           "198",
           "199",
-          "228"
+          "228",
+          "232",
+          "233"
         ],
         "adrIds": [
           "ADR-002",
@@ -859,7 +861,9 @@
           "202",
           "203",
           "204",
-          "228"
+          "228",
+          "232",
+          "233"
         ],
         "adrIds": [
           "ADR-002",
@@ -976,7 +980,9 @@
           "225",
           "226",
           "227",
-          "228"
+          "228",
+          "232",
+          "233"
         ],
         "adrIds": [
           "ADR-002",
@@ -1919,16 +1925,16 @@
         "evalIds": [],
         "actionability": {
           "sourceKind": "story",
-          "sourceId": "201",
-          "sourcePath": "docs/stories/story-201-keyframe-affordance-truth.md",
-          "recommendedNow": true,
-          "posture": "ready-now",
-          "whyNow": "",
+          "sourceId": "228",
+          "sourcePath": "docs/stories/story-228-original-music-video-pilot.md",
+          "recommendedNow": false,
+          "posture": "draft",
+          "whyNow": "check-in integration: origin/main advanced 25 commits and already owns Story 215, so renumbered this pilot to 228 in an isolated current-main checkout and updated all scout/research links. Regenerated planning state/vie…",
           "lastRelevantAction": {
-            "date": null,
-            "sourceType": "story-status",
-            "source": "docs/stories/story-201-keyframe-affordance-truth.md",
-            "summary": ""
+            "date": "2026-10-04",
+            "sourceType": "story-work-log",
+            "source": "docs/stories/story-228-original-music-video-pilot.md",
+            "summary": "check-in integration: origin/main advanced 25 commits and already owns Story 215, so renumbered this pilot to 228 in an isolated current-main checkout and updated all scout/research links. Regenerated planning state/vie…"
           },
           "storyIds": [
             "191",
@@ -2258,13 +2264,19 @@
         "spec:8"
       ],
       "inputCoverageRefs": [],
-      "architectureDomains": [],
+      "architectureDomains": [
+        "ingest_and_world_building"
+      ],
       "roadmapTags": [],
       "legacySystem": "",
       "blockerSummary": null,
       "blockerEvidence": null,
       "unblockCondition": null,
-      "lastWorkLogEntry": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20261023-1018",
+        "date": "2026-10-23",
+        "summary": "reopen-plan: Fresh normal232 artifacts demonstrate PRE-DAWN corruption despite green QA flags. Existing005 owns extraction and tests;061 optimizes scene extraction rather than defining a new parser owner. Reopened005Pen…"
+      },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
       "actionability": {
@@ -2273,12 +2285,12 @@
         "sourcePath": "docs/stories/story-005-scene-extraction.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "",
+        "whyNow": "reopen-plan: Fresh normal232 artifacts demonstrate PRE-DAWN corruption despite green QA flags. Existing005 owns extraction and tests;061 optimizes scene extraction rather than defining a new parser owner. Reopened005Pen…",
         "lastRelevantAction": {
-          "date": null,
-          "sourceType": "story-status",
+          "date": "2026-10-23",
+          "sourceType": "story-work-log",
           "source": "docs/stories/story-005-scene-extraction.md",
-          "summary": ""
+          "summary": "reopen-plan: Fresh normal232 artifacts demonstrate PRE-DAWN corruption despite green QA flags. Existing005 owns extraction and tests;061 optimizes scene extraction rather than defining a new parser owner. Reopened005Pen…"
         }
       }
     },
@@ -3972,12 +3984,17 @@
       "path": "docs/stories/story-032-cost-tracking.md",
       "status": "Done",
       "priority": "Unknown",
-      "idealRefs": [],
+      "idealRefs": [
+        "R12 (Transparency and Control)"
+      ],
       "specRefs": [
         "spec:1.6",
         "spec:8.1"
       ],
-      "adrIds": [],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
       "compromiseIds": [],
       "dependsOn": [
         "002",
@@ -3988,16 +4005,19 @@
         "spec:8"
       ],
       "inputCoverageRefs": [],
-      "architectureDomains": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
       "roadmapTags": [],
       "legacySystem": "",
       "blockerSummary": null,
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260319-1547",
-        "date": "2026-03-19",
-        "summary": "completion: Story 032 closed after rescoping to the shipped trust surface, creating [Story 138](/Users/cam/.codex/worktrees/9825/cine-forge/docs/stories/story-138-cost-profiles-model-comparison-stage-budgets.md) for the…"
+        "timestamp": "20261023-1122",
+        "date": "2026-10-23",
+        "summary": "validation and /mark-story-done: reopened media-accounting slice is complete. Accepted review and browser findings were fixed; final focused Codex review has no actionable findings. Broad credential-free unit run record…"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -4007,12 +4027,12 @@
         "sourcePath": "docs/stories/story-032-cost-tracking.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "completion: Story 032 closed after rescoping to the shipped trust surface, creating [Story 138](/Users/cam/.codex/worktrees/9825/cine-forge/docs/stories/story-138-cost-profiles-model-comparison-stage-budgets.md) for the…",
+        "whyNow": "validation and /mark-story-done: reopened media-accounting slice is complete. Accepted review and browser findings were fixed; final focused Codex review has no actionable findings. Broad credential-free unit run record…",
         "lastRelevantAction": {
-          "date": "2026-03-19",
+          "date": "2026-10-23",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-032-cost-tracking.md",
-          "summary": "completion: Story 032 closed after rescoping to the shipped trust surface, creating [Story 138](/Users/cam/.codex/worktrees/9825/cine-forge/docs/stories/story-138-cost-profiles-model-comparison-stage-budgets.md) for the…"
+          "summary": "validation and /mark-story-done: reopened media-accounting slice is complete. Accepted review and browser findings were fixed; final focused Codex review has no actionable findings. Broad credential-free unit run record…"
         }
       }
     },
@@ -12047,7 +12067,7 @@
       "id": "185",
       "title": "Project Home Script Hierarchy and Supporting Surface Placement",
       "path": "docs/stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md",
-      "status": "Draft",
+      "status": "Done",
       "priority": "High",
       "idealRefs": [
         "R1 (story understanding)",
@@ -12094,9 +12114,9 @@
       "blockerEvidence": null,
       "unblockCondition": null,
       "lastWorkLogEntry": {
-        "timestamp": "20260504-2128",
-        "date": "2026-05-04",
-        "summary": "validation-addendum: Story 196 validation reran the mobile browser packet and found the Brick & Steel mobile Home route loads without blank screen or browser errors, but does not expose `Start Scene Work` text. Evidence…"
+        "timestamp": "20261023-0933",
+        "date": "2026-10-23",
+        "summary": "final-evidence: immutablecurrentv24 inventories995declaredcontracts includingnewUItest/fixture, bundle416e806c9cb50e08212198d52a73cf1d4ef63b499151113b05202cd871b439af. Ledger/manifestchecks pass;34focusedtests and final…"
       },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
@@ -12105,13 +12125,13 @@
         "sourceId": "185",
         "sourcePath": "docs/stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md",
         "recommendedNow": false,
-        "posture": "draft",
-        "whyNow": "validation-addendum: Story 196 validation reran the mobile browser packet and found the Brick & Steel mobile Home route loads without blank screen or browser errors, but does not expose `Start Scene Work` text. Evidence…",
+        "posture": "completed",
+        "whyNow": "final-evidence: immutablecurrentv24 inventories995declaredcontracts includingnewUItest/fixture, bundle416e806c9cb50e08212198d52a73cf1d4ef63b499151113b05202cd871b439af. Ledger/manifestchecks pass;34focusedtests and final…",
         "lastRelevantAction": {
-          "date": "2026-05-04",
+          "date": "2026-10-23",
           "sourceType": "story-work-log",
           "source": "docs/stories/story-185-project-home-script-hierarchy-and-supporting-surface-placement.md",
-          "summary": "validation-addendum: Story 196 validation reran the mobile browser packet and found the Brick & Steel mobile Home route loads without blank screen or browser errors, but does not expose `Start Scene Work` text. Evidence…"
+          "summary": "final-evidence: immutablecurrentv24 inventories995declaredcontracts includingnewUItest/fixture, bundle416e806c9cb50e08212198d52a73cf1d4ef63b499151113b05202cd871b439af. Ledger/manifestchecks pass;34focusedtests and final…"
         }
       }
     },
@@ -12818,7 +12838,11 @@
       "blockerSummary": null,
       "blockerEvidence": null,
       "unblockCondition": null,
-      "lastWorkLogEntry": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20261023-1137",
+        "date": "2026-10-23",
+        "summary": "/validate and /mark-story-done: current-price readiness follow-up complete. Retained pre-fix contradiction, canonical price/source/date, positive normalized duration and explicit single-video example; bogus benchmark ra…"
+      },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
       "actionability": {
@@ -12827,12 +12851,12 @@
         "sourcePath": "docs/stories/story-195-production-xai-previz-readiness.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "",
+        "whyNow": "/validate and /mark-story-done: current-price readiness follow-up complete. Retained pre-fix contradiction, canonical price/source/date, positive normalized duration and explicit single-video example; bogus benchmark ra…",
         "lastRelevantAction": {
-          "date": null,
-          "sourceType": "story-status",
+          "date": "2026-10-23",
+          "sourceType": "story-work-log",
           "source": "docs/stories/story-195-production-xai-previz-readiness.md",
-          "summary": ""
+          "summary": "/validate and /mark-story-done: current-price readiness follow-up complete. Retained pre-fix contradiction, canonical price/source/date, positive normalized duration and explicit single-video example; bogus benchmark ra…"
         }
       }
     },
@@ -13221,7 +13245,7 @@
       "id": "201",
       "title": "Keyframe Affordance Truth",
       "path": "docs/stories/story-201-keyframe-affordance-truth.md",
-      "status": "Pending",
+      "status": "Done",
       "priority": "Medium",
       "idealRefs": [
         "R11 (production readiness per scene)",
@@ -13268,21 +13292,25 @@
       "blockerSummary": null,
       "blockerEvidence": null,
       "unblockCondition": null,
-      "lastWorkLogEntry": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20261023-0848",
+        "date": "2026-10-23",
+        "summary": "story-done: `/validate` found no remaining keyframe defect and `/mark-story-done` closed Story201 under Cam's continuing-fix authorization. All acceptance branches are satisfied through the optional-support route, with…"
+      },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
       "actionability": {
         "sourceKind": "story",
         "sourceId": "201",
         "sourcePath": "docs/stories/story-201-keyframe-affordance-truth.md",
-        "recommendedNow": true,
-        "posture": "ready-now",
-        "whyNow": "",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "story-done: `/validate` found no remaining keyframe defect and `/mark-story-done` closed Story201 under Cam's continuing-fix authorization. All acceptance branches are satisfied through the optional-support route, with…",
         "lastRelevantAction": {
-          "date": null,
-          "sourceType": "story-status",
+          "date": "2026-10-23",
+          "sourceType": "story-work-log",
           "source": "docs/stories/story-201-keyframe-affordance-truth.md",
-          "summary": ""
+          "summary": "story-done: `/validate` found no remaining keyframe defect and `/mark-story-done` closed Story201 under Cam's continuing-fix authorization. All acceptance branches are satisfied through the optional-support route, with…"
         }
       }
     },
@@ -13783,7 +13811,11 @@
       "blockerSummary": null,
       "blockerEvidence": null,
       "unblockCondition": null,
-      "lastWorkLogEntry": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20261023-1200",
+        "date": "2026-10-23",
+        "summary": "integration provenance: independently landed remote canonicalv21/v22 take their existing names; this task’s unlanded provisionalv21/v22 bytes are preserved unchanged under docs/evals/snapshots/triage-goal-20261023-provi…"
+      },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
       "actionability": {
@@ -13792,12 +13824,12 @@
         "sourcePath": "docs/stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "",
+        "whyNow": "integration provenance: independently landed remote canonicalv21/v22 take their existing names; this task’s unlanded provisionalv21/v22 bytes are preserved unchanged under docs/evals/snapshots/triage-goal-20261023-provi…",
         "lastRelevantAction": {
-          "date": null,
-          "sourceType": "story-status",
+          "date": "2026-10-23",
+          "sourceType": "story-work-log",
           "source": "docs/stories/story-208-gemini-36-flash-and-35-flash-lite-model-slot-eval-refresh.md",
-          "summary": ""
+          "summary": "integration provenance: independently landed remote canonicalv21/v22 take their existing names; this task’s unlanded provisionalv21/v22 bytes are preserved unchanged under docs/evals/snapshots/triage-goal-20261023-provi…"
         }
       }
     },
@@ -14116,7 +14148,11 @@
       "blockerSummary": null,
       "blockerEvidence": null,
       "unblockCondition": null,
-      "lastWorkLogEntry": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20260901-0900",
+        "date": "2026-09-01",
+        "summary": "scheduled DeepSeek V4 Flash Vision Exp follow-through: exact public OpenRouter metadata remains catalog-listed as text+image with DeepSeek and Novita endpoints, but neither exposes provider-enforced forced tools or stri…"
+      },
       "metadataSource": "frontmatter",
       "missingFrontmatterKeys": [],
       "actionability": {
@@ -14125,12 +14161,12 @@
         "sourcePath": "docs/stories/story-213-gemini-37-flash-and-deepseek-v4-pro-bounded-evals.md",
         "recommendedNow": false,
         "posture": "completed",
-        "whyNow": "",
+        "whyNow": "scheduled DeepSeek V4 Flash Vision Exp follow-through: exact public OpenRouter metadata remains catalog-listed as text+image with DeepSeek and Novita endpoints, but neither exposes provider-enforced forced tools or stri…",
         "lastRelevantAction": {
-          "date": null,
-          "sourceType": "story-status",
+          "date": "2026-09-01",
+          "sourceType": "story-work-log",
           "source": "docs/stories/story-213-gemini-37-flash-and-deepseek-v4-pro-bounded-evals.md",
-          "summary": ""
+          "summary": "scheduled DeepSeek V4 Flash Vision Exp follow-through: exact public OpenRouter metadata remains catalog-listed as text+image with DeepSeek and Novita endpoints, but neither exposes provider-enforced forced tools or stri…"
         }
       }
     },
@@ -15074,6 +15110,136 @@
           "sourceType": "story-work-log",
           "source": "docs/stories/story-228-original-music-video-pilot.md",
           "summary": "check-in integration: origin/main advanced 25 commits and already owns Story 215, so renumbered this pilot to 228 in an isolated current-main checkout and updated all scout/research links. Regenerated planning state/vie…"
+        }
+      }
+    },
+    {
+      "id": "232",
+      "title": "Canonical Full-Pipeline UI Recheck",
+      "path": "docs/stories/story-232-canonical-full-pipeline-ui-recheck.md",
+      "status": "Blocked",
+      "priority": "High",
+      "idealRefs": [
+        "R1 (story understanding)",
+        "R10 (playable assembly at every stage)",
+        "R12 (transparency & control)",
+        "vision-level preference: Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:5.6",
+        "spec:6",
+        "spec:7"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "156",
+        "185",
+        "201"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [],
+      "roadmapTags": [
+        "canonical-fixture",
+        "full-pipeline",
+        "ui-product-truth"
+      ],
+      "legacySystem": "",
+      "blockerSummary": "The declared bounded media envelope cannot be checked from the current fresh\nRender preflight: no clip count/cost is exposed before preparation and the\nbudget guard only pauses after a stage/wave. The run stopped before media,\nnot because of credentials or a provider failure. Full FP1 remains incomplete.",
+      "blockerEvidence": "docs/ui-scout/2026-10-23-open-frequency-local.md and\ndocs/reports/story-232-canonical-ui/render-before.txt document the actual fresh\nproject, completed run-fae39865, USD5 UI thresholds, missing upfront media\nestimate and precise unperformed steps. BudgetGuard.evaluate confirms the\nafter-stage/wave pause boundary. User approved existing OpenAI key reuse.",
+      "unblockCondition": "Establish a declared, inspectable bounded media execution path through the\nnormal surfaced workflow, then reassess232 and continue with a new report.\nDo not silently increase spend, fabricate a hard cap, or count targeted233\nguidance verification as complete FP1. No credential decision is pending.",
+      "lastWorkLogEntry": {
+        "timestamp": "20261023-1029",
+        "date": "2026-10-23",
+        "summary": "follow-up:233 guidance and005 literal-heading repairs are independentlyvalidated/Done, with before/after evidence linked from the original report. Canonical ui_scout retains issues_found with232 as the remaining continu…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "232",
+        "sourcePath": "docs/stories/story-232-canonical-full-pipeline-ui-recheck.md",
+        "recommendedNow": false,
+        "posture": "blocked",
+        "whyNow": "follow-up:233 guidance and005 literal-heading repairs are independentlyvalidated/Done, with before/after evidence linked from the original report. Canonical ui_scout retains issues_found with232 as the remaining continu…",
+        "lastRelevantAction": {
+          "date": "2026-10-23",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-232-canonical-full-pipeline-ui-recheck.md",
+          "summary": "follow-up:233 guidance and005 literal-heading repairs are independentlyvalidated/Done, with before/after evidence linked from the original report. Canonical ui_scout retains issues_found with232 as the remaining continu…"
+        }
+      }
+    },
+    {
+      "id": "233",
+      "title": "First-Use Next-Action Truth",
+      "path": "docs/stories/story-233-first-use-next-action-truth.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R11 (production readiness per scene)",
+        "R12 (transparency & control)",
+        "vision-level preference: Easy, fun, and engaging"
+      ],
+      "specRefs": [
+        "spec:5.3",
+        "spec:5.6",
+        "spec:6.4",
+        "spec:7.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [
+        "181",
+        "201"
+      ],
+      "categoryRefs": [
+        "spec:5",
+        "spec:6",
+        "spec:7"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console"
+      ],
+      "roadmapTags": [
+        "first-use-guidance",
+        "ui-product-truth"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20261023-1029",
+        "date": "2026-10-23",
+        "summary": "settled-contract: The232/233/005 batch rolls current owned contracts forward to immutablev26 (996files, bundle54b6ea55ef7e60631841192187b83412117013bd3987ce00fb3052ca65c56b7d), explicitly including the extracted heading…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "233",
+        "sourcePath": "docs/stories/story-233-first-use-next-action-truth.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "settled-contract: The232/233/005 batch rolls current owned contracts forward to immutablev26 (996files, bundle54b6ea55ef7e60631841192187b83412117013bd3987ce00fb3052ca65c56b7d), explicitly including the extracted heading…",
+        "lastRelevantAction": {
+          "date": "2026-10-23",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-233-first-use-next-action-truth.md",
+          "summary": "settled-contract: The232/233/005 batch rolls current owned contracts forward to immutablev26 (996files, bundle54b6ea55ef7e60631841192187b83412117013bd3987ce00fb3052ca65c56b7d), explicitly including the extracted heading…"
         }
       }
     }
@@ -17593,9 +17759,11 @@
           "status": "active",
           "story_refs": [
             "196",
-            "201"
+            "201",
+            "185",
+            "232"
           ],
-          "notes": "Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage. Story 196 is the current Brick & Steel product-truth scrub created from inbox triage; Story 201 is the focused keyframe-affordance follow-up found during that scrub."
+          "notes": "Recurring UI-scout reports should keep the canonical full-pipeline fixture freshly inspected so triage can notice stale or awaiting-recheck product-truth coverage. Story 196 closed the Brick & Steel scrub and Story 201 closed its optional-keyframe follow-up. Story 185 closed screenplay-first Home placement with representative desktop/mobile evidence and honest cut review status; Story232 attempted a fresh canonical walkthrough on2026-10-23 but stopped before media under its bounded envelope; full FP1 remains blocked. Story233 closed the observed first-use guidance repair and reopened005 closed the PRE-DAWN parser regression; targeted repairs do not claim a full Pass."
         },
         {
           "id": "scene-generation-completion",
@@ -17615,15 +17783,17 @@
             "195",
             "201",
             "202",
-            "203"
+            "203",
+            "197",
+            "228"
           ],
-          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair; Story 192 closed the separate GPT-image design-study completion/error follow-up. Story 193 closed the scene-duration/render-clip planning artifact, Story 194 closed the dependent multi-clip scene-render execution slice, Story 195 closed the production xAI AI-previz readiness surface for the shipped lane, Story 202 closed the default design-study still-image backfill plus still-image prompt compiler requested from the inbox, and Story 203 closed the render-adapter decomposition/validation cleanup. Story 201 remains the current pending scene-generation truth follow-up for keyframe affordance honesty."
+          "notes": "Stories 164, 165, 166, 167, 168, and 169 closed the representative scene-render route, the render-refresh reuse loop, the first project-level `final_output` slice, the project-cut validation / trust follow-up, the reference-conditioned scene-generation product-truth slice, and the final-render provider-floor decision on that honest reference-conditioned path. Story 170 closed the missing breadth-first render route. Story 191 closed the Brick & Steel final-render prompt compiler duplicate-dialogue and cadence repair; Story 192 closed the separate GPT-image design-study completion/error follow-up. Story 193 closed the scene-duration/render-clip planning artifact, Story 194 closed the dependent multi-clip scene-render execution slice, Story 195 closed the production xAI AI-previz readiness surface for the shipped lane, Story 202 closed the default design-study still-image backfill plus still-image prompt compiler requested from the inbox, and Story 203 closed the render-adapter decomposition/validation cleanup. Story 201 closed optional-keyframe affordance honesty; Story 197 owns the remaining reference-fidelity proof boundary and Story 228 owns the original music-video pilot draft. Continue from their measured gaps and input/spend gates rather than repeating exhausted evaluations."
         }
       ]
     },
     "stories_index": {
       "current_execution_map": {
-        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first render route, and Stories 191-196 closed the Brick & Steel production-readiness, design-study lifecycle, prompt truth, render-clip planning, multi-clip rendering, xAI previz readiness, and product-truth scrub wave. Story 196 found the current surfaced route healthy and created Story 201 for a focused keyframe-affordance follow-up. Story 202 closed the high-priority scene-generation follow-up from the inbox: default design-study still backfill plus a still-image prompt compiler for render/AI-previz consistency. Story 203 closed render-adapter decomposition so the render/previz lane no longer depends on one 2,630-line module owner. Story 198 closed the Brick & Steel character-adjudication build, while Stories 185, 197, and 199 hold routed UI, reference-pack, and casting/table-read decisions.",
+        "summary": "Phases 0–5 foundation are landed, the first three Phase 6 visualization layers are in place, and the first Phase 7 render substrate now includes runtime media validation for both generated-video and AI-previz outputs. Story 149 closed the AI-only previz truth slice, Story 150 closed the runtime-detector substrate, Story 153 closed the provider-floor measurement slice, Stories 164 and 165 closed the honest scene-render path plus refresh loop, Story 166 closed the project-level final-output playable-assembly slice, Story 167 closed the project-cut validation / trust follow-up, Story 168 closed the reference-conditioned scene-generation product-truth slice, Story 169 closed the final-render provider-floor decision on that representative reference-conditioned route, Story 170 closed the breadth-first render route, and Stories 191-196 closed the Brick & Steel production-readiness, design-study lifecycle, prompt truth, render-clip planning, multi-clip rendering, xAI previz readiness, and product-truth scrub wave. Story 196 found the current surfaced route healthy and created Story 201 for a focused keyframe-affordance follow-up. Story 202 closed the high-priority scene-generation follow-up from the inbox: default design-study still backfill plus a still-image prompt compiler for render/AI-previz consistency. Story 203 closed render-adapter decomposition so the render/previz lane no longer depends on one 2,630-line module owner. Story 198 closed the Brick & Steel character-adjudication build. Story 185 closed screenplay-first Home and supporting-surface placement; Stories 197 and 199 retain reference-pack and casting/table-read decisions.",
         "lanes": [
           {
             "id": "pending-ready",
@@ -17650,9 +17820,7 @@
               "Pending"
             ],
             "empty_message": "No stories currently need the sequence-sensitive lane.",
-            "story_notes": {
-              "201": "Focused follow-up from Story 196: fix the Render/Previz keyframe warning so missing optional keyframes either have a real route or no longer appear as actionable hidden homework."
-            }
+            "story_notes": {}
           },
           {
             "id": "blocked",
@@ -17749,15 +17917,17 @@
       "cadence": {
         "max_days_without_run": 14
       },
-      "last_run_at": "2026-04-12",
-      "last_run_story_id": "164",
+      "last_run_at": "2026-10-23",
+      "last_run_story_id": "232",
       "scenarios": {
         "FP1": {
           "label": "Full Pipeline Canonical Fixture",
-          "last_checked": "2026-04-12",
-          "latest_report": "2026-04-12-open-frequency-render-story-164-local",
-          "status": "pass",
-          "follow_up_story_refs": []
+          "last_checked": "2026-10-23",
+          "latest_report": "2026-10-23-open-frequency-local",
+          "status": "issues_found",
+          "follow_up_story_refs": [
+            "232"
+          ]
         }
       }
     },
@@ -17774,17 +17944,19 @@
             "147",
             "154",
             "172",
+            "208",
             "209",
             "210",
             "211",
             "212",
+            "213",
             "214",
             "215",
             "217",
             "218",
             "220"
           ],
-          "stories_since_audit": 9,
+          "stories_since_audit": 11,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -17816,16 +17988,19 @@
             "183",
             "187",
             "202",
+            "208",
             "210",
             "211",
             "212",
+            "213",
             "214",
             "215",
             "217",
             "218",
-            "220"
+            "220",
+            "005"
           ],
-          "stories_since_audit": 11,
+          "stories_since_audit": 14,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -17849,16 +18024,18 @@
             "184",
             "185",
             "192",
+            "201",
             "202",
-            "228"
+            "228",
+            "233",
+            "032",
+            "195"
           ],
-          "stories_since_audit": 5,
-          "open_findings": [
-            "Project Home still stacks Script Bible, healthy Artifact Health, and Final Output above the screenplay; Story 185 is the existing owner and should resolve placement rather than creating a second shell."
-          ],
+          "stories_since_audit": 9,
+          "open_findings": [],
           "manual_priority": "normal",
-          "last_result": "open_finding",
-          "last_summary": "2026-04-24 audit after Stories 169-185 found no new duplicate API/shell subsystem: live capability smoke stays separate from cheap dependency health, chat failure containment remains in the chat loader/store/boundary seam, the Radix ScrollArea crash was replaced by a narrow ref-stable wrapper, and Scene Workspace guidance/start_from reuse lives in focused workflow/preflight helpers. The real remaining surface-placement drift is already captured by Story 185: Project Home still lets supporting Script Bible, healthy Artifact Health, and Final Output surfaces compete above the screenplay despite the design rule that the screenplay is the home page. Keep oversized `ui/src/lib/use-run-progress.ts`, `ui/src/components/AppShell.tsx`, `ui/src/pages/SceneWorkspacePage.tsx`, `ui/src/pages/ProjectHome.tsx`, `src/cine_forge/api/service.py`, `src/cine_forge/api/app.py`, and new `src/cine_forge/services/provider_capability_smoke.py` as watchpoints, but do not create a broad cleanup story from this audit."
+          "last_result": "clean",
+          "last_summary": "The 2026-04-24 audit found no duplicate API/shell subsystem and assigned Home placement drift to Story 185. Its 2026-10-23 follow-up now clears that owned finding: Home is screenplay-first, full Bible/Cut controls use on-demand dialogs, and artifact health appears only when actionable. Focused header/Bible extraction reduced ProjectHome from612 to216 lines; the persistent cut controller preserves pending operation ownership. The shared needs_review presentation fix retains honest cut/previz status. Representative desktop/mobile verification and independent review passed. Other oversized API/shell/SceneWorkspace watchpoints remain; this narrow repair does not reset the full architecture-audit date or FP1 walkthrough freshness. Story032 reuses the cost summary contract across run/project/media UI, extracts preflight and replay guards, and suppresses incomplete spend remainders and replay. The singular and dedicated run routes share metrics. Oversized untouched orchestration and workspace responsibilities remain watchpoints; this is not a full domain audit. Story195 reuses canonical current video pricing for explicitly scoped recipe-default examples, removing duplicate benchmark-price ownership without changing quality/default gates. No full-audit date reset."
         },
         "creative_direction_and_chat": {
           "last_audited_at": "2026-03-31",
@@ -17894,15 +18071,19 @@
             "188",
             "190",
             "192",
+            "201",
             "202",
             "203",
-            "228"
+            "208",
+            "228",
+            "032",
+            "195"
           ],
-          "stories_since_audit": 13,
+          "stories_since_audit": 17,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
-          "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem, Story 186 keeps storyboard quality measurement inside the established benchmark/runtime/report pattern, Story 188 is scoped as a follow-up candidate against that same eval rather than a second storyboard stack, and Story 190 keeps the next storyboard work focused on identity/reference stability under that same eval boundary. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared."
+          "last_summary": "Audit due after Stories 164-171. Stories 164-171 kept recent render/previz/final-output work in narrower helpers and panel seams rather than adding duplicate subsystems, Story 173 removed the stale `coverage` / `coverage_report` second home from `src/cine_forge/pipeline/graph.py`, Story 174 kept the compact-previz compare inside existing prompt/provenance/runtime seams rather than widening the generation surface, Story 177 extends the existing export / interchange seam without adding a second narrative-metadata subsystem, Story 186 keeps storyboard quality measurement inside the established benchmark/runtime/report pattern, Story 188 is scoped as a follow-up candidate against that same eval rather than a second storyboard stack, and Story 190 keeps the next storyboard work focused on identity/reference stability under that same eval boundary. `render_adapter_v1/main.py`, `shot_plan_v1/main.py`, and `SceneWorkspacePage.tsx` remain oversized watchpoints, but the concrete graph-drift finding is now cleared. Story032 media-accounting follow-up extracts render execution, input preparation, receipts and video transport/pricing into focused owners. It removes retired transports, preserves partial costs and uncertain jobs, and leaves current-provider quality and prepare/inspect work explicit in138/232. This narrow repair does not reset the full-audit date. Story195 reuses canonical current video pricing for explicitly scoped recipe-default examples, removing duplicate benchmark-price ownership without changing quality/default gates. No full-audit date reset."
         }
       }
     }
@@ -17910,8 +18091,8 @@
   "validation": {
     "errors": [],
     "warnings": [
-      "Architecture audit domains due or carrying open findings: ingest_and_world_building, api_service_and_operator_console, generation_and_visualization",
-      "UI scout freshness due: attention needed — last run 2026-04-12 is 175 days old against a 14-day cadence"
+      "Architecture audit domains due or carrying open findings: methodology_tooling, ingest_and_world_building, generation_and_visualization",
+      "UI scout freshness due: attention needed — FP1 (Full Pipeline Canonical Fixture) still has unresolved issues (follow-up stories: 232)"
     ]
   }
 }
