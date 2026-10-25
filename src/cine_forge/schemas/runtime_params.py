@@ -10,6 +10,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
+from cine_forge.schemas.models import ArtifactRef
 from cine_forge.schemas.scene_scope import SceneActionPreflight, SceneExecutionScope
 
 
@@ -57,5 +58,6 @@ class RuntimeParams(BaseModel):
     scene_scope: SceneExecutionScope = Field(default_factory=SceneExecutionScope)
     scene_action_preflight: SceneActionPreflight | None = None
     render_clip_ids: list[str] | None = Field(default=None, min_length=1)
+    media_execution_plan_ref: ArtifactRef | None = None
 
     model_config = {"populate_by_name": True}

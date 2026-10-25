@@ -457,13 +457,13 @@
     "cadence": {
       "max_days_without_run": 14
     },
-    "last_run_at": "2026-10-23",
-    "last_run_story_id": "232",
+    "last_run_at": "2026-10-24",
+    "last_run_story_id": "234",
     "scenarios": {
       "FP1": {
         "label": "Full Pipeline Canonical Fixture",
-        "last_checked": "2026-10-23",
-        "latest_report": "2026-10-23-open-frequency-local",
+        "last_checked": "2026-10-24",
+        "latest_report": "2026-10-24-open-frequency-media-inspection",
         "status": "issues_found",
         "follow_up_story_refs": [
           "232"
@@ -569,9 +569,10 @@
           "228",
           "233",
           "032",
-          "195"
+          "195",
+          "234"
         ],
-        "stories_since_audit": 9,
+        "stories_since_audit": 10,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",
@@ -617,9 +618,10 @@
           "208",
           "228",
           "032",
-          "195"
+          "195",
+          "234"
         ],
-        "stories_since_audit": 17,
+        "stories_since_audit": 18,
         "open_findings": [],
         "manual_priority": "normal",
         "last_result": "clean",

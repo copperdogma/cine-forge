@@ -46,6 +46,7 @@ def execute_render(
     default_design_study_backfill_model: str,
     announce_artifact: Any,
     cost_receipts: list[CostReceipt],
+    prepared_units: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     artifacts: list[dict[str, Any]] = []
     generated_refs: list[GeneratedVideoTrackRef] = []
@@ -75,6 +76,7 @@ def execute_render(
             default_design_study_backfill=default_design_study_backfill,
             default_design_study_backfill_model=default_design_study_backfill_model,
             cost_receipts=cost_receipts,
+            prepared_units=prepared_units,
         )
         failures.extend(scene_failures)
         _preserve_outputs(

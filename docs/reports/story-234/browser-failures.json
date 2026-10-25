@@ -1,0 +1,26 @@
+[
+  {
+    "level": "error",
+    "message": "Error: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.\n    at getRootForUpdatedFiber (http://127.0.0.1:5176/node_modules/.vite/deps/react-dom_client.js?v=c68799ed:3526:128)\n    at enqueueConcurrentHookUpdate (http://127.0.0.1:5176/node_modules/.vite/deps/react-dom_client.js?v=c68799ed:3510:16)\n    at dispatchSetStateInternal (http://127.0.0.1:5176/node_modules/.vite/deps/react-dom_client.js?v=c68799ed:6832:20)\n    at dispatchSetState (http://127.0.0.1:5176/node_modules/.vite/deps/react-dom_client.js?v=c68799ed:6803:9)\n    at setRef (http://127.0.0.1:5176/node_modules/.vite/deps/chunk-R5XSPW3C.js?v=c68799ed:54:12)\n    at http://127.0.0.1:5176/node_modules/.vite/deps/chunk-R5XSPW3C.js?v=c68799ed:63:23\n    at Array.map (<anonymous>)\n    at http://127.0.0.1:5176/node_modules/.vite/deps/chunk-R5XSPW3C.js?v=c68799ed:62:27\n    at setRef (http://127.0.0.1:5176/node_modules/.vite/deps/chunk-R5XSPW3C.js?v=c68799ed:54:12)\n    at http://127.0.0.1:5176/node_modules/.vite/deps/chunk-R5XSPW3C.js?v=c68799ed:63:23",
+    "timestamp": "2026-10-25T03:59:25.012Z",
+    "url": "http://127.0.0.1:5176/node_modules/.vite/deps/react-dom_client.js?v=c68799ed"
+  },
+  {
+    "level": "warn",
+    "message": "%s\n\n%s\n An error occurred in the <button> component. Consider adding an error boundary to your tree to customize error handling behavior.\nVisit https://react.dev/link/error-boundaries to learn more about error boundaries.",
+    "timestamp": "2026-10-25T03:59:25.012Z",
+    "url": "http://127.0.0.1:5176/node_modules/.vite/deps/react-dom_client.js?v=c68799ed"
+  },
+  {
+    "level": "error",
+    "message": "Error: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.\n    at getRootForUpdatedFiber (http://127.0.0.1:5176/node_modules/.vite/deps/react-dom_client.js?v=c68799ed:3526:128)\n    at enqueueConcurrentHookUpdate (http://127.0.0.1:5176/node_modules/.vite/deps/react-dom_client.js?v=c68799ed:3510:16)\n    at dispatchSetStateInternal (http://127.0.0.1:5176/node_modules/.vite/deps/react-dom_client.js?v=c68799ed:6832:20)\n    at dispatchSetState (http://127.0.0.1:5176/node_modules/.vite/deps/react-dom_client.js?v=c68799ed:6803:9)\n    at setRef (http://127.0.0.1:5176/node_modules/.vite/deps/chunk-R5XSPW3C.js?v=c68799ed:54:12)\n    at http://127.0.0.1:5176/node_modules/.vite/deps/chunk-R5XSPW3C.js?v=c68799ed:63:23\n    at Array.map (<anonymous>)\n    at http://127.0.0.1:5176/node_modules/.vite/deps/chunk-R5XSPW3C.js?v=c68799ed:62:27\n    at setRef (http://127.0.0.1:5176/node_modules/.vite/deps/chunk-R5XSPW3C.js?v=c68799ed:54:12)\n    at http://127.0.0.1:5176/node_modules/.vite/deps/chunk-R5XSPW3C.js?v=c68799ed:63:23",
+    "timestamp": "2026-10-25T04:02:44.290Z",
+    "url": "http://127.0.0.1:5176/node_modules/.vite/deps/react-dom_client.js?v=c68799ed"
+  },
+  {
+    "level": "warn",
+    "message": "%s\n\n%s\n An error occurred in the <button> component. Consider adding an error boundary to your tree to customize error handling behavior.\nVisit https://react.dev/link/error-boundaries to learn more about error boundaries.",
+    "timestamp": "2026-10-25T04:02:44.291Z",
+    "url": "http://127.0.0.1:5176/node_modules/.vite/deps/react-dom_client.js?v=c68799ed"
+  }
+]

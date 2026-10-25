@@ -865,7 +865,8 @@
           "204",
           "228",
           "232",
-          "233"
+          "233",
+          "234"
         ],
         "adrIds": [
           "ADR-002",
@@ -987,7 +988,8 @@
           "230",
           "231",
           "232",
-          "233"
+          "233",
+          "234"
         ],
         "adrIds": [
           "ADR-002",
@@ -1136,7 +1138,8 @@
           "228",
           "229",
           "230",
-          "231"
+          "231",
+          "234"
         ],
         "adrIds": [
           "ADR-001",
@@ -1735,7 +1738,8 @@
           "216",
           "217",
           "218",
-          "219"
+          "219",
+          "234"
         ],
         "evalIds": [
           "compromise-C3-tiered-models",
@@ -1794,7 +1798,8 @@
             "216",
             "217",
             "218",
-            "219"
+            "219",
+            "234"
           ],
           "evalIds": [
             "final-render-provider-floor",
@@ -1930,7 +1935,8 @@
           "201",
           "202",
           "203",
-          "228"
+          "228",
+          "234"
         ],
         "evalIds": [],
         "actionability": {
@@ -1959,7 +1965,8 @@
             "201",
             "202",
             "203",
-            "228"
+            "228",
+            "234"
           ],
           "evalIds": []
         }
@@ -15422,6 +15429,79 @@
           "summary": "settled-contract: The232/233/005 batch rolls current owned contracts forward to immutablev26 (996files, bundle54b6ea55ef7e60631841192187b83412117013bd3987ce00fb3052ca65c56b7d), explicitly including the extracted heading…"
         }
       }
+    },
+    {
+      "id": "234",
+      "title": "Inspect and Confirm Scene Media",
+      "path": "docs/stories/story-234-inspect-and-confirm-scene-media.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R10 (playable assembly)",
+        "R11 (production readiness per scene)",
+        "R12 (transparency and control)",
+        "R7 (generate -> react -> refine)",
+        "R8 (cost and quality choices)"
+      ],
+      "specRefs": [
+        "spec:6.3",
+        "spec:7.1",
+        "spec:8.1"
+      ],
+      "adrIds": [
+        "ADR-002",
+        "ADR-003"
+      ],
+      "compromiseIds": [
+        "C3",
+        "C6"
+      ],
+      "dependsOn": [
+        "032",
+        "193",
+        "194",
+        "195"
+      ],
+      "categoryRefs": [
+        "spec:6",
+        "spec:7",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "api_service_and_operator_console",
+        "generation_and_visualization"
+      ],
+      "roadmapTags": [
+        "cost-transparency",
+        "operator-control",
+        "scene-generation"
+      ],
+      "legacySystem": "",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": {
+        "timestamp": "20261024-2216",
+        "date": "2026-10-24",
+        "summary": "Second findings-first review accepted three same-scope defects: approval narrowed the recipe past its existing validation stage; approved-run recovery queued a worker guaranteed to conflict with one-use scope; paused pr…"
+      },
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "234",
+        "sourcePath": "docs/stories/story-234-inspect-and-confirm-scene-media.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "Second findings-first review accepted three same-scope defects: approval narrowed the recipe past its existing validation stage; approved-run recovery queued a worker guaranteed to conflict with one-use scope; paused pr…",
+        "lastRelevantAction": {
+          "date": "2026-10-24",
+          "sourceType": "story-work-log",
+          "source": "docs/stories/story-234-inspect-and-confirm-scene-media.md",
+          "summary": "Second findings-first review accepted three same-scope defects: approval narrowed the recipe past its existing validation stage; approved-run recovery queued a worker guaranteed to conflict with one-use scope; paused pr…"
+        }
+      }
     }
   ],
   "adrs": [
@@ -18169,13 +18249,13 @@
       "cadence": {
         "max_days_without_run": 14
       },
-      "last_run_at": "2026-10-23",
-      "last_run_story_id": "232",
+      "last_run_at": "2026-10-24",
+      "last_run_story_id": "234",
       "scenarios": {
         "FP1": {
           "label": "Full Pipeline Canonical Fixture",
-          "last_checked": "2026-10-23",
-          "latest_report": "2026-10-23-open-frequency-local",
+          "last_checked": "2026-10-24",
+          "latest_report": "2026-10-24-open-frequency-media-inspection",
           "status": "issues_found",
           "follow_up_story_refs": [
             "232"
@@ -18281,9 +18361,10 @@
             "228",
             "233",
             "032",
-            "195"
+            "195",
+            "234"
           ],
-          "stories_since_audit": 9,
+          "stories_since_audit": 10,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -18329,9 +18410,10 @@
             "208",
             "228",
             "032",
-            "195"
+            "195",
+            "234"
           ],
-          "stories_since_audit": 17,
+          "stories_since_audit": 18,
           "open_findings": [],
           "manual_priority": "normal",
           "last_result": "clean",
@@ -18343,7 +18425,7 @@
   "validation": {
     "errors": [],
     "warnings": [
-      "Architecture audit domains due or carrying open findings: methodology_tooling, ingest_and_world_building, generation_and_visualization",
+      "Architecture audit domains due or carrying open findings: methodology_tooling, ingest_and_world_building, api_service_and_operator_console +1 more",
       "UI scout freshness due: attention needed — FP1 (Full Pipeline Canonical Fixture) still has unresolved issues (follow-up stories: 232)"
     ]
   }

@@ -30,7 +30,9 @@ def apply_run_start_preflight(
     recipe_id = str(request.get("recipe_id") or "mvp_ingest")
     end_at = request.get("end_at")
     if not scope.is_scene_scoped and not recipe_has_media_stage(
-        recipe_id, request.get("start_from"), end_at,
+        recipe_id,
+        request.get("start_from"),
+        end_at,
     ):
         return
     preflight = preview(
@@ -57,3 +59,34 @@ def apply_run_start_preflight(
     else:
         request.pop("end_at", None)
     request["scene_action_preflight"] = preflight.model_dump(mode="json")
+
+
+def require_confirmed_media_preflight(
+    *,
+    project_id: str,
+    request: dict[str, Any],
+    preview: Callable[..., SceneActionPreflight],
+) -> None:
+    """Retain readiness guards without rewriting the approved slice or parameters."""
+    scope = SceneExecutionScope.model_validate(request["scene_scope"])
+    result = preview(
+        project_id,
+        recipe_id=request["recipe_id"],
+        scene_scope=scope,
+        start_from=request["start_from"],
+        end_at=request["end_at"],
+    )
+    if result.status == "soft_block":
+        blocker = next((item for item in result.items if item.kind == "soft_block"), None)
+        raise ServiceError(
+            code="scene_action_blocked",
+            message=result.summary,
+            hint=blocker.detail if blocker else None,
+            status_code=422,
+        )
+    if result.start_from != request["start_from"] or result.end_at != request["end_at"]:
+        raise ServiceError(
+            code="media_execution_plan_conflict",
+            message="Preparation changed; inspect again before executing media.",
+            status_code=409,
+        )

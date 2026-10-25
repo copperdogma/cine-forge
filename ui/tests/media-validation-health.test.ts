@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import test from 'node:test'
 import { actionableHealthGroups, healthLabel, mediaValidationStatus } from '../src/lib/health.ts'
 import type { ArtifactGroupSummary } from '../src/lib/types.ts'
-import { aiPrevizCostBadge, previzPlaybackSummary } from '../src/components/previz-panel-support.ts'
+import { aiPrevizCostBadge, hasRenderClipPrevizScope, previzPlaybackSummary } from '../src/components/previz-panel-support.ts'
 import type { PrevizLaneStatus } from '../src/lib/previz-types.ts'
 
 const fixture = JSON.parse(readFileSync(
@@ -92,4 +92,12 @@ test('current recipe cost badge labels one priced video example and never invent
     aiPrevizCostBadge({ cost: { status: 'blocked', reason: 'Price unavailable' } } as PrevizLaneStatus),
     'Cost blocked',
   )
+})
+
+test('one planned or saved render clip uses the clip player and review controls', () => {
+  assert.equal(hasRenderClipPrevizScope(1, true), true, 'a generated single clip must keep its player and actions')
+  assert.equal(hasRenderClipPrevizScope(1, false), true, 'a missing single clip must expose its generation review action')
+  assert.equal(hasRenderClipPrevizScope(0, true), true, 'saved clip outputs remain inspectable without a plan')
+  assert.equal(hasRenderClipPrevizScope(2, true), true)
+  assert.equal(hasRenderClipPrevizScope(0, false), false, 'scene-level output keeps the standalone viewer')
 })

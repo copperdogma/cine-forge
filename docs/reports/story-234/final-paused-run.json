@@ -1,0 +1,41 @@
+{
+  "run_id": "run-5ce1495e",
+  "path": "/Users/cam/Documents/Projects/cine-forge/output/runs/run-5ce1495e/run_state.json",
+  "sha256": "16a462ab3139479d30978aa6481d5f963405ca2b00a39c45a0c550c785bd6875",
+  "stage_order": [
+    "timeline",
+    "tracks",
+    "shot_planning",
+    "render_clip_planning"
+  ],
+  "project_cost_baseline_usd": 0.8635632,
+  "total_cost_usd": 0.0,
+  "stages": {
+    "ai_previz": {
+      "status": "pending",
+      "attempt_count": 0
+    },
+    "render_clip_planning": {
+      "status": "pending",
+      "attempt_count": 0
+    },
+    "shot_planning": {
+      "status": "pending",
+      "attempt_count": 0
+    },
+    "timeline": {
+      "status": "paused",
+      "attempt_count": 0
+    },
+    "tracks": {
+      "status": "pending",
+      "attempt_count": 0
+    },
+    "validate_media": {
+      "status": "pending",
+      "attempt_count": 0
+    }
+  },
+  "budget_restored_usd": 5.0,
+  "all_provider_credentials_disabled": true
+}

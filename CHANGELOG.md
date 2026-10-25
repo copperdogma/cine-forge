@@ -1,5 +1,18 @@
 # Changelog
 
+## [2026-10-25-01] — Inspect and confirm scene media (Story 234)
+
+### Added
+- Prepare, inspect and explicitly confirm current-scene Render or AI Previz clips,
+  with actual normalized work, sourced video estimates, exclusions and blockers.
+- Headless execution-plan inspection and confirmation through the API and CLI.
+
+### Fixed
+- Bind approved scope and source inputs through worker execution; retain selected
+  media validation, one-use approval and concurrent-output protection.
+- Preserve preparation boundaries on recovery and distinguish pauses from success.
+- Keep single-clip previz visible and repair the observed Radix ref-update crash.
+
 ## [2026-10-23-05] — Account for media work and qualify readiness estimates
 
 ### Fixed

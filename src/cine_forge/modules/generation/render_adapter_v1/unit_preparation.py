@@ -58,6 +58,7 @@ def prepare_render_unit(
     requested_aspect_ratio: str | None,
     output_contract: dict[str, Any],
     render_clip: RenderClip | None,
+    validate_price: bool = True,
 ) -> PreparedRenderUnit:
     entity_id = render_unit_entity_id(plan.scene_id, render_clip)
     unit_plan = clipped_shot_plan(plan, render_clip)
@@ -98,11 +99,12 @@ def prepare_render_unit(
         allow_prompt_only_required_media=output_contract["prompt_mode"] == "ai_previz",
     )
     # Prices apply to the shaped request, never stale pack benchmarks or requested defaults.
-    resolve_video_price(
-        provider=engine_pack.provider,
-        model=engine_pack.target_model,
-        resolution=request.resolution,
-    )
+    if validate_price:
+        resolve_video_price(
+            provider=engine_pack.provider,
+            model=engine_pack.target_model,
+            resolution=request.resolution,
+        )
     return PreparedRenderUnit(
         entity_id=entity_id,
         plan=unit_plan,

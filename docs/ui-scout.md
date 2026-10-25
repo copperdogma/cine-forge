@@ -15,12 +15,13 @@ Machine-readable freshness source: `docs/methodology/state.yaml` `ui_scout`
 
 | Scenario | Goal | Last Checked | Notes |
 |---|---|---|---|
-| FP1 — Full Pipeline Canonical Fixture | A fresh project on the canonical short screenplay should reach the current honest downstream boundary through surfaced navigation and still feel polished, obvious, and honest | 2026-10-23 (partial) | Latest attempt stopped at fresh-project Render preflight under its bounded spend envelope; media generation/details remain unverified. Guidance defects repaired in233;032 now exposes the current retired-provider blocker and incomplete media cost evidence. Last complete Pass remains2026-04-12;232 owns the continuation. |
+| FP1 — Full Pipeline Canonical Fixture | A fresh project on the canonical short screenplay should reach the current honest downstream boundary through surfaced navigation and still feel polished, obvious, and honest | 2026-10-24 (partial continuation) | Normal project continued through scene preparation and all/subset inspection on desktop/mobile. Story234 adds explicit confirmation; no live video or full FP1 pass. Provider blockers remain; last complete Pass remains2026-04-12 and232 owns continuation. |
 
 ## Run Index
 
 | Date | Scenario | Project | Follow-Up | Status |
 |---|---|---|---|---|
+| [2026-10-24 media inspection](ui-scout/2026-10-24-open-frequency-media-inspection.md) | FP1 partial continuation | `open-frequency` | [234](stories/story-234-inspect-and-confirm-scene-media.md), [232](stories/story-232-canonical-full-pipeline-ui-recheck.md) | Preparation/inspection pass; media blocked |
 | [2026-10-23 local bounded walkthrough](ui-scout/2026-10-23-open-frequency-local.md) | FP1 | `open-frequency` | [232](stories/story-232-canonical-full-pipeline-ui-recheck.md), [233](stories/story-233-first-use-next-action-truth.md) | Blocked before media; Issues Found |
 | [2026-04-12 local scene-render validation](ui-scout/2026-04-12-open-frequency-render-story-164-local.md) | FP1 | `open-frequency-render-story-164` | — | Pass |
 | [2026-04-10 local validation](ui-scout/2026-04-10-open-frequency-local-validation.md) | FP1 | `open-frequency-3` | — | Pass |

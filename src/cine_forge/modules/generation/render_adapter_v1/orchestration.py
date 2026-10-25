@@ -8,6 +8,8 @@ from typing import Any
 from cine_forge.ai.image_pricing import validate_image_backfill_target
 from cine_forge.ai.video import VideoGenerationError
 from cine_forge.artifacts import ArtifactStore
+from cine_forge.modules.generation.render_adapter_v1.render_units import render_unit_entity_id
+from cine_forge.modules.generation.render_adapter_v1.unit_preparation import PreparedRenderUnit
 from cine_forge.schemas import RenderClip, RenderClipPlan, Scene, ShotPlan
 from cine_forge.schemas.media_cost import CostReceipt
 from cine_forge.schemas.scene_scope import SceneActionPreflight
@@ -32,6 +34,7 @@ def _render_scene_outputs(
     default_design_study_backfill: bool,
     default_design_study_backfill_model: str,
     cost_receipts: list[CostReceipt],
+    prepared_units: dict[str, PreparedRenderUnit] | None = None,
 ) -> tuple[list[tuple[dict[str, Any], dict[str, Any], dict[str, Any]]], list[dict[str, Any]]]:
     render_clip_plan = source_maps["render_clip_plan"].get(plan.scene_id)
     render_clips = _render_clips_for_scene(
@@ -42,7 +45,22 @@ def _render_scene_outputs(
     )
     outputs: list[tuple[dict[str, Any], dict[str, Any], dict[str, Any]]] = []
     failures: list[dict[str, Any]] = []
-    if default_design_study_backfill:
+    if prepared_units is not None:
+        missing = [
+            render_unit_entity_id(plan.scene_id, clip)
+            for clip in render_clips
+            if render_unit_entity_id(plan.scene_id, clip) not in prepared_units
+        ]
+        if missing:
+            raise ValueError("Approved render preparation is missing units: " + ", ".join(missing))
+        if default_design_study_backfill and DefaultDesignStudyBackfillService(
+            store.project_dir, image_model=default_design_study_backfill_model,
+        ).generation_required(scene):
+            raise ValueError(
+                "Approved render preparation now requires new reference images. "
+                "Prepare and inspect the scene again before rendering."
+            )
+    elif default_design_study_backfill:
         _backfill_default_design_studies(
             store=store,
             scene=scene,
@@ -65,6 +83,11 @@ def _render_scene_outputs(
                     scene_action_preflight=scene_action_preflight,
                     cost_receipts=cost_receipts,
                     render_clip=render_clip,
+                    **({
+                        "prepared_unit": prepared_units[
+                            render_unit_entity_id(plan.scene_id, render_clip)
+                        ],
+                    } if prepared_units is not None else {}),
                 )
             )
         except Exception as exc:  # noqa: BLE001
@@ -134,7 +157,7 @@ def _render_clips_for_scene(
     output_contract: dict[str, Any],
     selected_render_clip_ids: set[str] | None = None,
 ) -> list[RenderClip | None]:
-    if render_clip_plan is not None and len(render_clip_plan.clips) > 1:
+    if render_clip_plan is not None:
         clips = list(render_clip_plan.clips)
         if selected_render_clip_ids is None:
             return clips
@@ -153,7 +176,7 @@ def _render_clips_for_scene(
         requested = ", ".join(sorted(selected_render_clip_ids))
         raise ValueError(
             "render_adapter_v1 received render_clip_ids for a scene without a "
-            f"multi-clip render_clip_plan: {scene_id} ({requested})."
+            f"render_clip_plan: {scene_id} ({requested})."
         )
     return [None]
 

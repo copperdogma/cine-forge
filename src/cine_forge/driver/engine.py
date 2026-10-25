@@ -34,11 +34,6 @@ from cine_forge.driver.recipe import (
 from cine_forge.driver.retry_policy import RetryConfig, StageRetryPolicy
 from cine_forge.driver.schema_registry import build_schema_registry
 from cine_forge.driver.state import RunState
-from cine_forge.pipeline.scene_actions import (
-    scene_scope_from_runtime_params,
-    scene_scope_matches_entity_id,
-    scene_scoped_entity_artifact_types,
-)
 from cine_forge.roles import RoleCatalog, RoleContext
 from cine_forge.schemas import (
     ArtifactHealth,
@@ -76,6 +71,58 @@ class DriverEngine:
         human_control_mode: str = "autonomous",
         llm_callable: Callable[..., Any] | None = None,
     ) -> dict[str, Any]:
+        """Validate immutable approval before entering recipe execution."""
+        from cine_forge.driver.run_initialization import (
+            initial_run_state,
+            record_initialization_failure,
+        )
+        from cine_forge.services.media_plan_execution import validate_media_run_envelope
+
+        run_id = run_id or f"run-{uuid.uuid4().hex[:8]}"
+        state_path = self.workspace_root / "output" / "runs" / run_id / "run_state.json"
+        initial = initial_run_state(
+            run_id=run_id, dry_run=dry_run, runtime_params=runtime_params or {},
+            human_control_mode=human_control_mode, instrument=instrument)
+        self._write_run_state(state_path, initial)
+        from cine_forge.driver.media_execution_lock import media_execution_lock
+
+        admitted = False
+        try:
+            with media_execution_lock(
+                project_dir=self.project_dir, recipe_path=recipe_path, start_from=start_from,
+                end_at=end_at, dry_run=dry_run, run_id=run_id,
+            ):
+                checked_params = validate_media_run_envelope(
+                    workspace_root=self.workspace_root, project_dir=self.project_dir,
+                    recipe_path=recipe_path, runtime_params=runtime_params or {},
+                    start_from=start_from, end_at=end_at, run_id=run_id, consume=not dry_run)
+                admitted = True
+                return self._run_recipe(
+                    recipe_path=recipe_path, run_id=run_id, dry_run=dry_run,
+                    start_from=start_from, end_at=end_at, force=force, instrument=instrument,
+                    runtime_params=checked_params, human_control_mode=human_control_mode,
+                    llm_callable=llm_callable,
+                )
+        except Exception as exc:
+            if not admitted:
+                record_initialization_failure(
+                    state=initial, error=exc, start_from=start_from,
+                    state_path=state_path, write_state=self._write_run_state)
+            raise
+
+    def _run_recipe(
+        self,
+        recipe_path: Path,
+        run_id: str | None = None,
+        dry_run: bool = False,
+        start_from: str | None = None,
+        end_at: str | None = None,
+        force: bool = False,
+        instrument: bool = False,
+        runtime_params: dict[str, Any] | None = None,
+        human_control_mode: str = "autonomous",
+        llm_callable: Callable[..., Any] | None = None,
+    ) -> dict[str, Any]:
         run_id = run_id or f"run-{uuid.uuid4().hex[:8]}"
         run_dir = self.workspace_root / "output" / "runs" / run_id
         run_dir.mkdir(parents=True, exist_ok=True)
@@ -83,20 +130,6 @@ class DriverEngine:
         emitter = EventEmitter(events_path)
         state_path = run_dir / "run_state.json"
         resolved_runtime_params = runtime_params or {}
-
-        # 1. Write minimal state immediately so pollers don't 404 during discovery/validation
-        initial_run_state = {
-            "run_id": run_id,
-            "recipe_id": "initializing",
-            "dry_run": dry_run,
-            "started_at": time.time(),
-            "stages": {},
-            "runtime_params": resolved_runtime_params,
-            "human_control_mode": human_control_mode,
-            "total_cost_usd": 0.0,
-            "instrumented": instrument,
-        }
-        self._write_run_state(state_path, initial_run_state)
 
         module_registry = discover_modules(modules_root=self.modules_root)
         recipe = resolve_runtime_params(
@@ -647,130 +680,12 @@ class DriverEngine:
             return "skipped"
         return None
 
-    def _collect_inputs(
-        self,
-        recipe: Recipe,
-        stage_id: str,
-        stage_outputs: dict[str, list[dict[str, Any]]],
-        runtime_params: dict[str, Any],
-    ) -> tuple[dict[str, Any], list[ArtifactRef]]:
-        stage_by_id = {stage.id: stage for stage in recipe.stages}
-        stage = stage_by_id[stage_id]
-        if (
-            not stage.needs
-            and not stage.needs_all
-            and not stage.store_inputs
-            and not stage.store_inputs_optional
-            and not stage.store_inputs_all
-        ):
-            return {}, []
-        collected: dict[str, Any] = {}
-        lineage: list[ArtifactRef] = []
-
-        # Resolve in-recipe stage dependencies.
-        # stage.after is intentionally excluded — ordering only, no data is piped.
-        for dependency in stage.needs:
-            outputs = stage_outputs.get(dependency, [])
-            if not outputs:
-                raise ValueError(
-                    f"Missing required upstream outputs for '{stage_id}': dependency '{dependency}'"
-                )
-            collected[dependency] = outputs[-1]["data"]
-            lineage.append(outputs[-1]["ref"])
-
-        for dependency in stage.needs_all:
-            outputs = stage_outputs.get(dependency, [])
-            if not outputs:
-                raise ValueError(
-                    f"Missing required upstream outputs for '{stage_id}': "
-                    f"dependency '{dependency}' (needs_all)"
-                )
-            collected[dependency] = [o["data"] for o in outputs]
-            lineage.extend([o["ref"] for o in outputs])
-
-        # Resolve store_inputs from artifact store
-        for input_key, artifact_type in stage.store_inputs.items():
-            versions = self.store.list_versions(
-                artifact_type=artifact_type, entity_id="project"
-            )
-            if not versions:
-                raise ValueError(
-                    f"Stage '{stage_id}' store_input '{input_key}' requires "
-                    f"artifact type '{artifact_type}', but none exist in the store. "
-                    f"Run the upstream recipe first."
-                )
-            latest_ref = versions[-1]
-            health = self.store.graph.get_health(latest_ref)
-            if health not in {ArtifactHealth.VALID, ArtifactHealth.CONFIRMED_VALID, None}:
-                raise ValueError(
-                    f"Stage '{stage_id}' store_input '{input_key}': latest "
-                    f"'{artifact_type}' (v{latest_ref.version}) has health "
-                    f"'{health.value if health else 'unknown'}'. Re-run the upstream "
-                    f"recipe to produce a healthy version."
-                )
-            artifact = self.store.load_artifact(artifact_ref=latest_ref)
-            collected[input_key] = artifact.data
-            lineage.append(latest_ref)
-
-        # Resolve optional store_inputs from artifact store
-        for input_key, artifact_type in stage.store_inputs_optional.items():
-            versions = self.store.list_versions(
-                artifact_type=artifact_type, entity_id="project"
-            )
-            if not versions:
-                continue
-            latest_ref = versions[-1]
-            health = self.store.graph.get_health(latest_ref)
-            if health not in {ArtifactHealth.VALID, ArtifactHealth.CONFIRMED_VALID, None}:
-                continue
-            artifact = self.store.load_artifact(artifact_ref=latest_ref)
-            collected[input_key] = artifact.data
-            lineage.append(latest_ref)
-
-        # Resolve store_inputs_all from artifact store
-        scene_scope = scene_scope_from_runtime_params(runtime_params)
-        selected_scene_ids = set(scene_scope.scene_ids)
-        scene_artifact_types = scene_scoped_entity_artifact_types()
-        for input_key, artifact_type in stage.store_inputs_all.items():
-            entities = self.store.list_entities(artifact_type=artifact_type)
-            if not entities:
-                # Permissive: if no entities exist, just return empty list.
-                # This allows "Refine Mode" to work on a fresh run (bootstrapping from nothing).
-                collected[input_key] = []
-                continue
-
-            if scene_scope.is_scene_scoped and artifact_type in scene_artifact_types:
-                entities = [
-                    entity_id
-                    for entity_id in entities
-                    if scene_scope_matches_entity_id(
-                        artifact_type=artifact_type,
-                        entity_id=entity_id,
-                        scene_ids=selected_scene_ids,
-                    )
-                ]
-                if not entities:
-                    collected[input_key] = []
-                    continue
-
-            all_data = []
-            for ent_id in entities:
-                versions = self.store.list_versions(artifact_type=artifact_type, entity_id=ent_id)
-                if not versions:
-                    continue
-                latest_ref = versions[-1]
-                # Skip unhealthy artifacts
-                health = self.store.graph.get_health(latest_ref)
-                if health not in {ArtifactHealth.VALID, ArtifactHealth.CONFIRMED_VALID, None}:
-                    continue
-                
-                artifact = self.store.load_artifact(artifact_ref=latest_ref)
-                all_data.append(artifact.data)
-                lineage.append(latest_ref)
-            
-            collected[input_key] = all_data
-
-        return collected, lineage
+    def _collect_inputs(self, recipe: Recipe, stage_id: str,
+                        stage_outputs: dict[str, list[dict[str, Any]]],
+                        runtime_params: dict[str, Any]) -> tuple[dict[str, Any], list[ArtifactRef]]:
+        from cine_forge.driver.input_collection import collect_inputs
+        return collect_inputs(store=self.store, recipe=recipe, stage_id=stage_id,
+                              stage_outputs=stage_outputs, runtime_params=runtime_params)
 
     @staticmethod
     def _next_stage_id(waves: list[list[str]], current_wave_index: int) -> str | None:

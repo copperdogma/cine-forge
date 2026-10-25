@@ -228,8 +228,8 @@ export function ScenePlanUnitSummary({
           <div className="rounded-lg border border-dashed border-border px-4 py-5 text-sm text-muted-foreground">
             No shot plan is available for this scene yet.{' '}
             {mode === 'previz'
-              ? 'Starting AI Previz here will build the shot plan first.'
-              : 'Starting Render here will build the shot plan first.'}
+              ? 'Prepare the clip plan above to build the shot plan before inspection.'
+              : 'Prepare the clip plan above to build the shot plan before inspection.'}
           </div>
         ) : (
           <div className="space-y-2">
@@ -269,8 +269,8 @@ export function ScenePlanUnitSummary({
             {renderClips.length === 0 ? (
               <div className="rounded-lg border border-dashed border-border px-4 py-5 text-sm text-muted-foreground">
                 {mode === 'previz'
-                  ? 'No render clip plan exists yet. The Previz action will estimate scene duration and split this scene into provider-bounded clips before generating low-fidelity previz.'
-                  : 'No render clip plan exists yet. The Render action will estimate scene duration and split this scene into provider-bounded clips before final video generation.'}
+                  ? 'No render clip plan exists yet. Prepare the plan above, then inspect the durations and costs before confirming low-fidelity previz.'
+                  : 'No render clip plan exists yet. Prepare the plan above, then inspect the durations and costs before confirming video generation.'}
               </div>
             ) : (
               <div className="space-y-2">

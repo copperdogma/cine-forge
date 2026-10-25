@@ -1,0 +1,137 @@
+........................................................................ [  2%]
+........................................................................ [  5%]
+........................................................................ [  8%]
+........................................................................ [ 11%]
+........................................................................ [ 14%]
+........................................................................ [ 17%]
+........................................................................ [ 20%]
+........................................................................ [ 23%]
+........................................................................ [ 26%]
+...F.................................................................... [ 29%]
+........................................................................ [ 32%]
+........................................................................ [ 35%]
+........................................................................ [ 38%]
+........................................................................ [ 41%]
+........................................................................ [ 44%]
+...................................F.................................... [ 47%]
+........................................................................ [ 50%]
+........................................................................ [ 53%]
+........................................................................ [ 56%]
+........................................................................ [ 59%]
+........................................................................ [ 62%]
+........................................................................ [ 65%]
+........................................................................ [ 68%]
+........................................................................ [ 70%]
+........................................................................ [ 73%]
+........................................................................ [ 76%]
+........................................................................ [ 79%]
+........................................................................ [ 82%]
+........................................................................ [ 85%]
+........................................................................ [ 88%]
+........................................................................ [ 91%]
+.........................................F.............................. [ 94%]
+........................................................................ [ 97%]
+...........................................................              [100%]
+=================================== FAILURES ===================================
+_____ test_load_cine_forge_dotenv_uses_worktree_and_shared_checkout_roots ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1157c9f60>
+tmp_path = PosixPath('/private/var/folders/8f/3nlcf3sj1s5bbk1g_3dt3djm0000gn/T/pytest-of-cam/pytest-69/test_load_cine_forge_dotenv_us0')
+
+    def test_load_cine_forge_dotenv_uses_worktree_and_shared_checkout_roots(
+        monkeypatch,
+        tmp_path: Path,
+    ) -> None:
+        worktree_root = tmp_path / "worktree"
+        shared_root = tmp_path / "main-checkout"
+        gitdir = shared_root / ".git" / "worktrees" / "wt1"
+        gitdir.mkdir(parents=True)
+        worktree_root.mkdir()
+    
+        (worktree_root / ".git").write_text(f"gitdir: {gitdir}\n", encoding="utf-8")
+        (gitdir / "commondir").write_text("../..\n", encoding="utf-8")
+        (worktree_root / ".env").write_text(
+            "CINE_FORGE_GEMINI_API_KEY=worktree-key\n",
+            encoding="utf-8",
+        )
+        (shared_root / ".env").write_text(
+            "CINE_FORGE_OPENAI_API_KEY=shared-openai\n"
+            "CINE_FORGE_GEMINI_API_KEY=shared-gemini\n",
+            encoding="utf-8",
+        )
+    
+        for name in (
+            "GEMINI_API_KEY",
+            "CINE_FORGE_GEMINI_API_KEY",
+            "OPENAI_API_KEY",
+            "CINE_FORGE_OPENAI_API_KEY",
+        ):
+            monkeypatch.delenv(name, raising=False)
+    
+        loaded = load_cine_forge_dotenv(worktree_root)
+    
+        assert loaded == (
+            worktree_root / ".env",
+            shared_root / ".env",
+        )
+>       assert resolve_env("GEMINI_API_KEY") == "worktree-key"
+E       AssertionError: assert None == 'worktree-key'
+E        +  where None = resolve_env('GEMINI_API_KEY')
+
+tests/unit/test_env.py:113: AssertionError
+_____ test_tracked_verification_needs_no_local_receipts_or_provider_calls ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x115bd34d0>
+
+    @pytest.mark.unit
+    def test_tracked_verification_needs_no_local_receipts_or_provider_calls(monkeypatch):
+        monkeypatch.setattr(verifier.run, "OUT", ROOT / "output/evals/absent-story226-verifier-test")
+    
+        def reject_network(*args, **kwargs):
+            raise AssertionError("Offline verification attempted a provider call")
+    
+        monkeypatch.setattr(verifier.run.provider.urllib.request, "urlopen", reject_network)
+        original_result = verifier.run.RESULT.read_bytes()
+>       verifier.main()
+
+tests/unit/test_gpt61_video_verification.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+benchmarks/scripts/verify_gpt61_video_comparison.py:15: in main
+    run.check_freeze()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def check_freeze():
+        freeze = json.loads(FREEZE.read_text())
+        for item in freeze["files"]:
+            path = item["path"]
+            if path == "benchmarks/scripts/run_gpt61_video_comparison.py":
+                path = "docs/evals/snapshots/story-226-calltime-run_gpt61_video_comparison.py.txt"
+            actual = inventory(ROOT / path)
+>           assert (actual["sha256"], actual["bytes"]) == (item["sha256"], item["bytes"]), (
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                f"Frozen bytes changed: {item['path']}"
+            )
+E           AssertionError: Frozen bytes changed: benchmarks/providers/video_understanding_provider.py
+
+benchmarks/scripts/run_gpt61_video_comparison.py:111: AssertionError
+___ test_canonical_ledger_has_complete_inventory_and_valid_terminal_evidence ___
+
+    @pytest.mark.unit
+    def test_canonical_ledger_has_complete_inventory_and_valid_terminal_evidence() -> None:
+        errors = checker.validate_ledger(
+            REPO_ROOT / "docs/evals/truth-audit-ledger.yaml",
+            REPO_ROOT,
+            require_terminal=False,
+        )
+>       assert errors == []
+E       AssertionError: assert ['ledger miss...licy.test.ts'] == []
+E         
+E         Left contains one more item: 'ledger missing canonical test_suite paths: ui/tests/media-generation-policy.test.ts'
+E         Use -v to get more diff
+
+tests/unit/test_truth_audit_ledger.py:482: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_env.py::test_load_cine_forge_dotenv_uses_worktree_and_shared_checkout_roots
+FAILED tests/unit/test_gpt61_video_verification.py::test_tracked_verification_needs_no_local_receipts_or_provider_calls
+FAILED tests/unit/test_truth_audit_ledger.py::test_canonical_ledger_has_complete_inventory_and_valid_terminal_evidence
+3 failed, 2432 passed in 166.10s (0:02:46)

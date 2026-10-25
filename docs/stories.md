@@ -329,6 +329,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 193 | Scene Render Clip Plan | High | Done | — | spec:6, spec:7, spec:10 | 191 | [story-193](stories/story-193-scene-render-clip-plan.md) |
 | 194 | Multi-Clip Scene Rendering | High | Done | — | spec:6, spec:7, spec:10 | 193 | [story-194](stories/story-194-multi-clip-scene-rendering.md) |
 | 203 | Render Adapter Scene-Generation Decomposition | High | Done | — | spec:6, spec:7, spec:11 | 191, 193, 194, 202 | [story-203](stories/story-203-render-adapter-scene-generation-decomposition.md) |
+| 234 | Inspect and Confirm Scene Media | High | Done | — | spec:6, spec:7, spec:8 | 032, 193, 194, 195 | [story-234](stories/story-234-inspect-and-confirm-scene-media.md) |
 | 130 | Export Fidelity: Narrative Metadata + Callsheets | Medium | Done | — | spec:6, spec:7, spec:10 | 012, 013, 058 | [story-130](stories/story-130-export-fidelity-narrative-metadata-callsheets.md) |
 | 173 | Stale Coverage Graph Node Removal | Medium | Done | — | spec:6 | 025 | [story-173](stories/story-173-stale-coverage-graph-node-removal.md) |
 | 201 | Keyframe Affordance Truth | Medium | Done | — | spec:6, spec:7, spec:10 | 027, 149, 194, 196 | [story-201](stories/story-201-keyframe-affordance-truth.md) |

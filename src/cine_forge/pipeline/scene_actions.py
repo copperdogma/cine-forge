@@ -7,7 +7,7 @@ from typing import Any
 
 from cine_forge.artifacts import ArtifactStore
 from cine_forge.env import provider_env_names, resolve_env
-from cine_forge.pipeline.media_readiness import media_readiness_items
+from cine_forge.pipeline.media_readiness import media_readiness_items, recipe_has_media_stage
 from cine_forge.schemas import ArtifactHealth, ArtifactRef
 from cine_forge.schemas.scene_scope import (
     SceneActionPreflight,
@@ -191,41 +191,9 @@ def build_scene_action_preflight(
     )
 
     scene_ids = _target_scene_ids(store=store, scene_scope=scene_scope)
-    if not _project_has_input(project_path):
-        preflight.items.append(SceneActionPreflightItem(
-            kind="soft_block",
-            label="No screenplay input",
-            detail="Upload a screenplay or script input before starting this run.",
-            action_label="Upload Screenplay",
-            action_path="/new",
-        ))
-    if not _has_project_artifact(store, "canonical_script"):
-        preflight.items.append(SceneActionPreflightItem(
-            kind="soft_block",
-            label="Script normalization missing",
-            detail="Run the script breakdown path first so CineForge has a canonical script.",
-            action_label="Open Script Breakdown",
-            action_path="intent",
-        ))
-    if not _has_project_artifact(store, "scene_index"):
-        preflight.items.append(SceneActionPreflightItem(
-            kind="soft_block",
-            label="Scene breakdown missing",
-            detail=(
-                "Break the script into scenes first. Scene-scoped generation has no "
-                "target scene without that substrate."
-            ),
-            action_label="Open Script Breakdown",
-            action_path="intent",
-        ))
-    if scene_scope.is_scene_scoped and not scene_ids:
-        preflight.items.append(SceneActionPreflightItem(
-            kind="soft_block",
-            label="Current scene unavailable",
-            detail="The requested scene is missing or no longer exists in the project.",
-            action_label="Open Scenes",
-            action_path="scenes",
-        ))
+    _append_scene_substrate_readiness(
+        preflight, store=store, project_path=project_path,
+        scene_scope=scene_scope, scene_ids=scene_ids)
 
     if recipe_id == "animatics_generation":
         preflight.items.append(SceneActionPreflightItem(
@@ -279,6 +247,54 @@ def build_scene_action_preflight(
         project_path=project_path, scene_ids=scene_ids,
     ))
 
+    return _finish_scene_preflight(
+        preflight, recipe_id=recipe_id, action_label=action_label, scope_label=scope_label)
+
+
+def _append_scene_substrate_readiness(
+    preflight: SceneActionPreflight, *, store: ArtifactStore, project_path: Path,
+    scene_scope: SceneExecutionScope, scene_ids: list[str],
+) -> None:
+    if not _project_has_input(project_path):
+        preflight.items.append(SceneActionPreflightItem(
+            kind="soft_block",
+            label="No screenplay input",
+            detail="Upload a screenplay or script input before starting this run.",
+            action_label="Upload Screenplay",
+            action_path="/new",
+        ))
+    if not _has_project_artifact(store, "canonical_script"):
+        preflight.items.append(SceneActionPreflightItem(
+            kind="soft_block",
+            label="Script normalization missing",
+            detail="Run the script breakdown path first so CineForge has a canonical script.",
+            action_label="Open Script Breakdown",
+            action_path="intent",
+        ))
+    if not _has_project_artifact(store, "scene_index"):
+        preflight.items.append(SceneActionPreflightItem(
+            kind="soft_block",
+            label="Scene breakdown missing",
+            detail=(
+                "Break the script into scenes first. Scene-scoped generation has no "
+                "target scene without that substrate."
+            ),
+            action_label="Open Script Breakdown",
+            action_path="intent",
+        ))
+    if scene_scope.is_scene_scoped and not scene_ids:
+        preflight.items.append(SceneActionPreflightItem(
+            kind="soft_block",
+            label="Current scene unavailable",
+            detail="The requested scene is missing or no longer exists in the project.",
+            action_label="Open Scenes",
+            action_path="scenes",
+        ))
+
+
+
+def _finish_scene_preflight(preflight: SceneActionPreflight, *, recipe_id: str,
+                            action_label: str, scope_label: str) -> SceneActionPreflight:
     if any(item.kind == "soft_block" for item in preflight.items):
         preflight.status = "soft_block"
         preflight.summary = f"{action_label} can't run for {scope_label} yet."
@@ -288,7 +304,9 @@ def build_scene_action_preflight(
     else:
         preflight.status = "ready"
         preflight.summary = f"{action_label} is ready for {scope_label}."
-    if recipe_id == "ai_previz_generation" and resolve_env(_AI_PREVIZ_ENV_NAME):
+    if (recipe_id == "ai_previz_generation"
+            and recipe_has_media_stage(recipe_id, preflight.start_from, preflight.end_at)
+            and resolve_env(_AI_PREVIZ_ENV_NAME)):
         preflight.summary = f"{preflight.summary} xAI AI Previz credentials are configured."
     return preflight
 
@@ -793,6 +811,8 @@ def _apply_ai_previz_prerequisite_strategy(preflight: SceneActionPreflight) -> N
 
 
 def _append_ai_previz_provider_readiness(preflight: SceneActionPreflight) -> None:
+    if not recipe_has_media_stage(preflight.recipe_id, preflight.start_from, preflight.end_at):
+        return
     if resolve_env(_AI_PREVIZ_ENV_NAME):
         return
     accepted_names = provider_env_names(_AI_PREVIZ_ENV_NAME)

@@ -34,6 +34,7 @@ def test_driver_main_merges_params_file_and_cli_overrides(
             run_id: str | None = None,
             dry_run: bool = False,
             start_from: str | None = None,
+            end_at: str | None = None,
             force: bool = False,
             instrument: bool = False,
             runtime_params: dict[str, object] | None = None,
@@ -42,6 +43,7 @@ def test_driver_main_merges_params_file_and_cli_overrides(
             captured["run_id"] = run_id
             captured["dry_run"] = dry_run
             captured["start_from"] = start_from
+            captured["end_at"] = end_at
             captured["force"] = force
             captured["instrument"] = instrument
             captured["runtime_params"] = runtime_params or {}
@@ -56,6 +58,8 @@ def test_driver_main_merges_params_file_and_cli_overrides(
             "configs/recipes/recipe-mvp-ingest.yaml",
             "--run-id",
             "cli-params-test",
+            "--end-at",
+            "render_clip_planning",
             "--params-file",
             str(params_file),
             "--param",
@@ -66,6 +70,7 @@ def test_driver_main_merges_params_file_and_cli_overrides(
     )
 
     driver_cli.main()
+    assert captured["end_at"] == "render_clip_planning"
 
     runtime_params = captured["runtime_params"]
     assert runtime_params["input_file"] == "tests/fixtures/sample_screenplay.fountain"

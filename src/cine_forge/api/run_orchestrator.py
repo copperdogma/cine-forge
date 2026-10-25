@@ -24,6 +24,7 @@ from cine_forge.artifacts import ArtifactStore
 from cine_forge.driver.engine import DriverEngine
 from cine_forge.schemas import ArtifactRef, RuntimeParams
 from cine_forge.services.cost_tracking import CostTrackingService, run_status_from_state
+from cine_forge.services.run_parameters import build_runtime_params
 
 if TYPE_CHECKING:
     from cine_forge.api.chat_store import ChatStore
@@ -41,6 +42,20 @@ def _build_runtime_params_dict(raw: dict[str, Any]) -> dict[str, Any]:
         **{k: v for k, v in raw.items() if k in RuntimeParams.model_fields},
     }
     return RuntimeParams(**filled).model_dump(by_alias=True, exclude_none=True)
+
+
+def _require_new_media_inspection(state: dict[str, Any], run_id: str) -> None:
+    """Consumed media approval never authorizes a recovery worker."""
+    if (state.get("runtime_params") or {}).get("media_execution_plan_ref"):
+        raise ServiceError(
+            code="media_execution_plan_requires_inspection",
+            message=f"Run '{run_id}' used a media execution plan and cannot be replayed.",
+            hint=(
+                "Review this run's outputs and resolve any unknown charges, then prepare "
+                "and inspect the scene again before confirming a new media execution plan."
+            ),
+            status_code=409,
+        )
 
 
 class RunOrchestrator:
@@ -130,45 +145,9 @@ class RunOrchestrator:
                 status_code=500,
             )
 
-        verify_or_qa = request.get("verify_model") or request.get("qa_model")
-        project_budget_limit_usd = (
-            request["project_budget_limit_usd"]
-            if "project_budget_limit_usd" in request
-            else pj.get("project_budget_limit_usd")
-        )
-        run_budget_limit_usd = (
-            request["run_budget_limit_usd"]
-            if "run_budget_limit_usd" in request
-            else pj.get("default_run_budget_limit_usd")
-        )
-        budget_warning_threshold_ratio = (
-            request["budget_warning_threshold_ratio"]
-            if "budget_warning_threshold_ratio" in request
-            else pj.get("budget_warning_threshold_ratio")
-        )
-        params = RuntimeParams(
-            input_file=request["input_file"],
-            default_model=request["default_model"],
-            model=request["default_model"],
-            utility_model=request.get("work_model") or request["default_model"],
-            sota_model=request.get("escalate_model") or request["default_model"],
-            human_control_mode=request.get("human_control_mode") or "autonomous",
-            accept_config=bool(request.get("accept_config", False)),
-            skip_qa=bool(request.get("skip_qa", False)),
-            work_model=request.get("work_model"),
-            verify_model=verify_or_qa,
-            qa_model=verify_or_qa,
-            escalate_model=request.get("escalate_model"),
-            project_budget_limit_usd=project_budget_limit_usd,
-            run_budget_limit_usd=run_budget_limit_usd,
-            budget_warning_threshold_ratio=budget_warning_threshold_ratio,
-            start_from=request.get("start_from"),
-            end_at=request.get("end_at"),
-            scene_scope=request.get("scene_scope") or {},
-            scene_action_preflight=request.get("scene_action_preflight"),
-            render_clip_ids=request.get("render_clip_ids"),
-        )
-        runtime_params = params.model_dump(by_alias=True, exclude_none=True)
+        runtime_params = build_runtime_params(request, pj)
+        if request.get("media_execution_plan_ref"):
+            runtime_params["media_execution_plan_ref"] = request["media_execution_plan_ref"]
 
         run_dir = self.workspace_root / "output" / "runs" / run_id
         self._bootstrap_run_dir(
@@ -188,6 +167,11 @@ class RunOrchestrator:
 
         if config_file:
             runtime_params["config_file"] = str(config_file)
+
+        if request.get("media_execution_plan_ref"):
+            from cine_forge.services.media_plan_execution import claim_media_plan
+            claim_media_plan(project_path, ArtifactRef.model_validate(
+                request["media_execution_plan_ref"]), run_id)
 
         worker = threading.Thread(
             target=self._run_pipeline,
@@ -221,6 +205,7 @@ class RunOrchestrator:
 
         state = json.loads(state_path.read_text(encoding="utf-8"))
         require_complete_media_cost(state, run_id)
+        _require_new_media_inspection(state, run_id)
         stages = state.get("stages", {})
 
         paused_stage_id = next(
@@ -285,6 +270,7 @@ class RunOrchestrator:
                 "force": False,
                 "runtime_params": runtime_params,
                 "start_from": paused_stage_id,
+                "end_at": runtime_params.get("end_at"),
             },
             daemon=True,
         )
@@ -307,6 +293,7 @@ class RunOrchestrator:
 
         state = json.loads(state_path.read_text(encoding="utf-8"))
         require_complete_media_cost(state, run_id)
+        _require_new_media_inspection(state, run_id)
         stages = state.get("stages", {})
         failed_stage_id = next(
             (stage_id for stage_id, stage in stages.items() if stage.get("status") == "failed"),
@@ -402,6 +389,7 @@ class RunOrchestrator:
                 "force": False,
                 "runtime_params": retry_runtime,
                 "start_from": effective_start_from,
+                "end_at": retry_runtime.get("end_at"),
             },
             daemon=True,
         )

@@ -65,3 +65,7 @@ export function previzPlaybackSummary({
   }
   return `${subject} ready for ${sceneHeading}. ${hasClipPrevizOutputs ? 'The players appear below.' : 'The viewer appears below.'}`
 }
+
+export function hasRenderClipPrevizScope(plannedClipCount: number, hasClipArtifacts: boolean): boolean {
+  return plannedClipCount > 0 || hasClipArtifacts
+}

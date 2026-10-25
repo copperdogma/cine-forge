@@ -38,6 +38,9 @@ def run_module(
     context: dict[str, Any],
 ) -> dict[str, Any]:
     """Validate paid targets, then preserve both outputs and incurred call receipts."""
+    if _runtime_params(context).get("media_execution_plan_ref"):
+        from cine_forge.services.media_plan_execution import execute_approved_media
+        return execute_approved_media(inputs=inputs, params=params, context=context)
     store = ArtifactStore(project_dir=_project_dir(context))
     runtime_params = _runtime_params(context)
     shot_plans = sorted(

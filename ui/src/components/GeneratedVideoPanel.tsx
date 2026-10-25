@@ -1,30 +1,27 @@
-import { useState } from 'react'
+import { RenderClipCard } from '@/components/RenderClipCard'
+import { useRef } from 'react'
+import { MediaGenerationControls } from '@/components/MediaGenerationControls'
+import type { MediaGenerationControlsHandle } from '@/components/MediaGenerationControls'
 import { Link } from 'react-router-dom'
-import { AlertCircle, ExternalLink, Film, Loader2, RefreshCw } from 'lucide-react'
-import { toast } from 'sonner'
+import { AlertCircle, ExternalLink, Film, Loader2 } from 'lucide-react'
 import { GeneratedVideoViewer } from '@/components/GeneratedVideoViewer'
 import { HealthBadge } from '@/components/HealthBadge'
 import { MediaValidationViewer } from '@/components/MediaValidationViewer'
 import { RenderPromptViewer } from '@/components/RenderPromptViewer'
-import { SceneActionControls } from '@/components/SceneActionControls'
 import { ScenePlanUnitSummary } from '@/components/ScenePlanUnitSummary'
-import { asArray, asNumber, asRecord, asString, asStringArray, formatDuration } from '@/components/render-utils'
+import { asArray, asRecord, asString } from '@/components/render-utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { getAssetFileUrl } from '@/lib/api/assets'
 import {
   isRunActive,
   runHasFailed,
   useArtifact,
-  useProjectInputs,
   useRunState,
-  useSceneActionPreflight,
-  useStartRun,
 } from '@/lib/hooks'
 import { useChatStore } from '@/lib/chat-store'
-import type { ArtifactGroupSummary, SceneScopeMode } from '@/lib/types'
-import { buildSceneScope, getSceneScopeLabel, getSceneScopeTargetLabel } from '@/lib/constants'
+import type { ArtifactGroupSummary } from '@/lib/types'
+import { getSceneScopeLabel } from '@/lib/constants'
 
 function latestFailedAttemptError(attempts: Array<Record<string, unknown>> | undefined): string | null {
   if (!Array.isArray(attempts)) return null
@@ -81,139 +78,6 @@ type GeneratedVideoPanelProps = {
   generatedVideoGroup?: ArtifactGroupSummary
   generatedVideoGroups?: ArtifactGroupSummary[]
   keyframeGroup?: ArtifactGroupSummary
-}
-
-type RenderClipCardProps = {
-  projectId: string
-  clipId: string
-  videoGroup?: ArtifactGroupSummary
-  promptGroup?: ArtifactGroupSummary
-  canStartRender: boolean
-  pendingClipId: string | null
-  onRegenerateClip: (clipId: string) => void
-}
-
-function clipWindowLabel(startSeconds: number | null, endSeconds: number | null): string | null {
-  if (startSeconds === null || endSeconds === null) return null
-  return `${formatDuration(startSeconds) ?? `${startSeconds}s`} - ${formatDuration(endSeconds) ?? `${endSeconds}s`}`
-}
-
-function RenderClipCard({
-  projectId,
-  clipId,
-  videoGroup,
-  promptGroup,
-  canStartRender,
-  pendingClipId,
-  onRegenerateClip,
-}: RenderClipCardProps) {
-  const { data: videoArtifact, isLoading } = useArtifact(
-    projectId,
-    'generated_video',
-    videoGroup?.entity_id ?? undefined,
-    videoGroup?.latest_version,
-  )
-  const data = videoArtifact?.payload?.data as Record<string, unknown> | undefined
-  const video = asRecord(data?.video)
-  const videoPath = asString(video?.relative_path)
-  const videoUrl = videoPath ? getAssetFileUrl(projectId, videoPath) : null
-  const startSeconds = asNumber(data?.render_clip_start_time_seconds)
-  const endSeconds = asNumber(data?.render_clip_end_time_seconds)
-  const durationSeconds = asNumber(data?.duration_seconds)
-  const sourceShots = asStringArray(data?.source_shot_ids)
-  const clipWindow = clipWindowLabel(startSeconds, endSeconds)
-  const hasClipOutput = !!videoGroup || !!promptGroup
-  const videoHref = videoGroup?.entity_id
-    ? `/${projectId}/artifacts/generated_video/${videoGroup.entity_id}/${videoGroup.latest_version}`
-    : null
-  const promptHref = promptGroup?.entity_id
-    ? `/${projectId}/artifacts/render_prompt/${promptGroup.entity_id}/${promptGroup.latest_version}`
-    : null
-
-  return (
-    <div className="space-y-3 rounded-lg border border-border bg-card/60 px-4 py-3">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="text-sm font-medium">{clipId}</p>
-            {videoGroup ? (
-              <Badge variant="outline">video v{videoGroup.latest_version}</Badge>
-            ) : (
-              <Badge variant="outline">Missing video</Badge>
-            )}
-            {promptGroup ? (
-              <Badge variant="outline">prompt v{promptGroup.latest_version}</Badge>
-            ) : (
-              <Badge variant="outline">Missing prompt</Badge>
-            )}
-            {clipWindow && <Badge variant="secondary">{clipWindow}</Badge>}
-            {formatDuration(durationSeconds) && (
-              <Badge variant="outline">{formatDuration(durationSeconds)}</Badge>
-            )}
-            {sourceShots.length > 0 && (
-              <Badge variant="outline">Shots {sourceShots.join(', ')}</Badge>
-            )}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            {hasClipOutput
-              ? 'Generated video for this render clip.'
-              : 'No generated video has been saved for this render clip yet.'}
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onRegenerateClip(clipId)}
-            disabled={!canStartRender}
-          >
-            {pendingClipId === clipId ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            ) : hasClipOutput ? (
-              <RefreshCw className="h-3.5 w-3.5" />
-            ) : (
-              <Film className="h-3.5 w-3.5" />
-            )}
-            {hasClipOutput ? 'Regenerate Clip' : 'Generate Clip'}
-          </Button>
-          {videoHref && (
-            <Button asChild variant="outline" size="sm">
-              <Link to={videoHref}>
-                <Film className="h-3.5 w-3.5" />
-                Detail
-              </Link>
-            </Button>
-          )}
-          {promptHref && (
-            <Button asChild variant="outline" size="sm">
-              <Link to={promptHref}>
-                <ExternalLink className="h-3.5 w-3.5" />
-                Prompt
-              </Link>
-            </Button>
-          )}
-        </div>
-      </div>
-      {isLoading && videoGroup && (
-        <div className="aspect-video w-full rounded-lg border border-border bg-muted/20 animate-pulse" />
-      )}
-      {!isLoading && videoUrl && (
-        <video
-          controls
-          preload="metadata"
-          className="aspect-video w-full rounded-lg border border-border bg-black"
-          src={videoUrl}
-        />
-      )}
-      {!isLoading && !videoUrl && (
-        <div className="rounded-lg border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
-          {videoGroup
-            ? 'Generated video media is missing for this clip.'
-            : `Generate ${clipId} to create its render video.`}
-        </div>
-      )}
-    </div>
-  )
 }
 
 export function GeneratedVideoPanel({
@@ -273,21 +137,12 @@ export function GeneratedVideoPanel({
     validationRef?.entity_id ?? undefined,
     validationRef?.version,
   )
-  const { data: inputs } = useProjectInputs(projectId)
-  const startRun = useStartRun()
   const activeRunId = useChatStore(store => store.activeRunId?.[projectId] ?? null)
   const { data: runState } = useRunState(activeRunId ?? undefined)
-  const [scope, setScope] = useState<SceneScopeMode>('current_scene')
-  const [pendingClipId, setPendingClipId] = useState<string | null>(null)
-  const sceneScope = buildSceneScope(scope, sceneId)
-  const { data: preflight } = useSceneActionPreflight(projectId, {
-    recipe_id: 'render_generation',
-    scene_scope: sceneScope,
-  })
-
-  const latestInputPath = inputs?.[inputs.length - 1]?.stored_path
+  const controlsRef = useRef<MediaGenerationControlsHandle>(null)
   const hasActiveRun = isRunActive(activeRunId, runState)
   const renderRunActive = hasActiveRun && runState?.state.recipe_id === 'render_generation'
+    && runState.state.runtime_params.end_at !== 'render_clip_planning'
   const anotherRunActive =
     hasActiveRun && !!runState && runState.state.recipe_id !== 'render_generation'
   const renderRunFailed =
@@ -300,10 +155,6 @@ export function GeneratedVideoPanel({
       || latestFailedAttemptError(renderStage?.attempts)
       || 'Scene render failed. Open run details for more information.'
     : null
-  const runBlocked = startRun.isPending || hasActiveRun
-  const canStartRender = !!latestInputPath && !runBlocked && preflight?.status !== 'soft_block'
-  const renderStartFrom = preflight?.start_from ?? undefined
-  const renderReusesShotPlan = renderStartFrom === 'render'
   const promptData = promptArtifact?.payload?.data as Record<string, unknown> | undefined
   const videoData = videoArtifact?.payload?.data as Record<string, unknown> | undefined
   const shotPlanData = shotPlanArtifact?.payload?.data as Record<string, unknown> | undefined
@@ -323,74 +174,9 @@ export function GeneratedVideoPanel({
   const validationDetailHref = validationRef?.entity_id && validationRef.version
     ? `/${projectId}/artifacts/${validationRef.artifact_type}/${validationRef.entity_id}/${validationRef.version}`
     : null
-  const configuredScopeLabel = getSceneScopeLabel(sceneScope)
-  const configuredScopeTarget = getSceneScopeTargetLabel(sceneScope)
   const activeRunScopeLabel = getSceneScopeLabel(runState?.state.runtime_params?.scene_scope)
   const runDetailHref = activeRunId ? `/${projectId}/runs/${activeRunId}` : null
   const currentSceneHasSavedOutput = !!(videoData || promptData || hasSavedRenderOutput)
-
-  async function handleStartRender() {
-    if (!latestInputPath) return
-
-    try {
-      const { run_id } = await startRun.mutateAsync({
-        project_id: projectId,
-        input_file: latestInputPath,
-        default_model: 'gpt-5.4-mini',
-        recipe_id: 'render_generation',
-        accept_config: true,
-        force: !!generatedVideoGroup || !!renderPromptGroup,
-        start_from: renderStartFrom,
-        scene_scope: sceneScope,
-      })
-
-      useChatStore.getState().setActiveRun(projectId, run_id)
-      toast.success(
-        hasSavedRenderOutput
-          ? renderReusesShotPlan
-            ? `Refreshing scene renders from the current shot plan for ${configuredScopeLabel.toLowerCase()}`
-            : `Refreshing scene renders for ${configuredScopeLabel.toLowerCase()}`
-          : renderReusesShotPlan
-            ? `Started scene render generation from the current shot plan for ${configuredScopeLabel.toLowerCase()}`
-            : `Started scene render generation for ${configuredScopeLabel.toLowerCase()}`,
-      )
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to start scene render generation')
-    }
-  }
-
-  async function handleStartRenderClip(clipId: string) {
-    if (!latestInputPath) return
-    setPendingClipId(clipId)
-    try {
-      const { run_id } = await startRun.mutateAsync({
-        project_id: projectId,
-        input_file: latestInputPath,
-        default_model: 'gpt-5.4-mini',
-        recipe_id: 'render_generation',
-        accept_config: true,
-        force: true,
-        start_from: renderStartFrom,
-        scene_scope: buildSceneScope('current_scene', sceneId),
-        render_clip_ids: [clipId],
-      })
-
-      useChatStore.getState().setActiveRun(projectId, run_id)
-      toast.success(`Regenerating render clip ${clipId} for ${sceneHeading}`)
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to start render clip')
-    } finally {
-      setPendingClipId(null)
-    }
-  }
-
-  const actionLabel = scope === 'current_scene'
-    ? (hasSavedRenderOutput
-      ? 'Refresh Render for Current Scene'
-      : 'Run Render for Current Scene')
-    : (hasSavedRenderOutput
-      ? 'Refresh Scene Renders for All Scenes'
-      : 'Run Scene Renders for All Scenes')
 
   return (
     <div className="space-y-4">
@@ -400,7 +186,7 @@ export function GeneratedVideoPanel({
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
                 <CardTitle>Render</CardTitle>
-                <Badge variant="outline">Selected: {configuredScopeLabel}</Badge>
+                <Badge variant="outline">Current scene</Badge>
                 {shotPlanGroup && (
                   <Badge variant="secondary">From shot plan v{shotPlanGroup.latest_version}</Badge>
                 )}
@@ -426,8 +212,8 @@ export function GeneratedVideoPanel({
               <CardDescription className="max-w-3xl leading-relaxed">
                 Render turns the current shot plan, direction, and references into scene video.
                 Keyframes are optional: it can proceed without them and uses locked frames when
-                available. Prompt and video details show how references were used. Choose Current
-                Scene to refine this moment or All Scenes for a broader pass.
+                available. Prompt and video details show how references were used. Inspect the clip
+                plan below before confirming video generation for this scene.
               </CardDescription>
             </div>
 
@@ -456,26 +242,11 @@ export function GeneratedVideoPanel({
                   </Link>
                 </Button>
               )}
-              <Button
-                size="sm"
-                className="sm:self-start"
-                onClick={handleStartRender}
-                disabled={!canStartRender}
-              >
-                {startRun.isPending ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                ) : hasSavedRenderOutput ? (
-                  <RefreshCw className="h-3.5 w-3.5" />
-                ) : (
-                  <Film className="h-3.5 w-3.5" />
-                )}
-                {actionLabel}
-              </Button>
+
             </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-2 text-sm text-muted-foreground">
-          {!latestInputPath && <p>No screenplay input is available for this project yet.</p>}
           {anotherRunActive && (
             <p>
               Another pipeline run is already in progress. Wait for it to finish before starting
@@ -488,20 +259,10 @@ export function GeneratedVideoPanel({
               Stay here and this scene will refresh when the new prompt and render land.
             </p>
           )}
-          {renderReusesShotPlan && (
-            <p>
-              Reuse path: CineForge will keep the current shot plan and rerun only render plus
-              media validation.
-            </p>
-          )}
-          <SceneActionControls
-            scope={scope}
-            onScopeChange={setScope}
-            preflight={preflight}
-            disabled={runBlocked}
-          />
         </CardContent>
       </Card>
+
+      <MediaGenerationControls key={`${projectId}-${sceneId}`} ref={controlsRef} projectId={projectId} sceneId={sceneId} recipeId="render_generation" />
 
       {renderRunFailed && renderError && (
         <Card className="gap-0 border-destructive/40 bg-destructive/5">
@@ -568,7 +329,7 @@ export function GeneratedVideoPanel({
             <div className="space-y-2">
               <h3 className="text-lg font-semibold">Scene render generation is running</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                CineForge is compiling render prompts and generating videos for {configuredScopeTarget}.
+                CineForge is compiling render prompts and generating videos for this scene.
                 When it finishes, this tab will load the latest result for {sceneHeading}.
               </p>
             </div>
@@ -586,19 +347,12 @@ export function GeneratedVideoPanel({
               <h3 className="text-lg font-semibold">No scene render for this scene yet</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Render compiles the provider-ready prompt, stores it for audit, and generates the
-                scene video for {configuredScopeTarget}. The resulting prompt and video artifacts
+                scene video for this scene. The resulting prompt and video artifacts
                 keep the resolved reference usage visible so provider-input demotions stay honest.
-                Use the scope controls above to widen or narrow the run.
+                Prepare and inspect the clips above, then confirm the selected work.
               </p>
             </div>
-            <Button onClick={handleStartRender} disabled={!canStartRender}>
-              {startRun.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Film className="h-4 w-4" />
-              )}
-              {actionLabel}
-            </Button>
+
           </div>
         </div>
       )}
@@ -641,9 +395,9 @@ export function GeneratedVideoPanel({
                   clipId={clipId}
                   videoGroup={videoGroup}
                   promptGroup={promptGroup}
-                  canStartRender={canStartRender}
-                  pendingClipId={pendingClipId}
-                  onRegenerateClip={handleStartRenderClip}
+                  canStartRender={!hasActiveRun}
+                  pendingClipId={null}
+                  onRegenerateClip={clipId => controlsRef.current?.selectClip(clipId)}
                 />
               )
             })}

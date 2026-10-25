@@ -21,6 +21,7 @@ import type { SceneWorkspaceTab } from './constants'
 import { useRunState, useRunEvents } from './hooks/runs'
 import { genericRunFailureMessageId, hasProviderFailureMessage } from './run-failure-messages'
 import { recoverRunProgressUiError } from './run-progress-recovery'
+import { mediaPreparationOutcome } from './media-generation-policy'
 import { getSceneWorkflowGuide } from './scene-workflow'
 import type { StageState, ArtifactGroupSummary } from './types'
 
@@ -378,6 +379,31 @@ export function useRunProgressChat(projectId: string | undefined) {
     const completionAlreadyPersisted = store.getMessages(projectId).some(
       (m) => m.id === `progress_${activeRunId}_complete` || m.id === `progress_${activeRunId}_failed`,
     )
+    const isMediaPreparation = runState.state.runtime_params.end_at === 'render_clip_planning'
+      && ['render_generation', 'ai_previz_generation'].includes(runState.state.recipe_id)
+    const preparationSceneId = runState.state.runtime_params.scene_scope?.scene_ids[0]
+    const existingClipPlan = queryClient.getQueryData<ArtifactGroupSummary[]>(['projects', projectId, 'artifacts'])
+      ?.some(group => group.artifact_type === 'render_clip_plan' && group.entity_id === preparationSceneId) ?? false
+    const preparationOutcome = isMediaPreparation ? mediaPreparationOutcome(runState, existingClipPlan) : null
+    if (runState.state.finished_at && isMediaPreparation
+      && (preparationOutcome === 'paused' || preparationOutcome === 'pending')) {
+      const pausedId = `progress_${activeRunId}_preparation_paused`
+      store.updateMessageType(projectId, `run_started_${activeRunId}`, 'ai_status_done')
+      if (!store.getMessages(projectId).some(message => message.id === pausedId)) {
+        store.addMessage(projectId, {
+          id: pausedId, type: 'ai_suggestion', timestamp: Date.now(),
+          content: preparationOutcome === 'paused'
+            ? 'Clip preparation is paused. Review the run and use Resume when ready.'
+            : 'Clip preparation stopped before the selected work completed. Review the run before continuing.',
+          actions: [{ id: 'review_preparation_run', label: preparationOutcome === 'paused' ? 'Open Run to Resume' : 'Review Run',
+            variant: 'outline', route: `runs/${activeRunId}` }],
+        })
+      }
+      return
+    }
+    if (isMediaPreparation && (preparationOutcome === 'complete' || preparationOutcome === 'existing')) {
+      store.removeMessage(projectId, `progress_${activeRunId}_preparation_paused`)
+    }
     if (runState.state.finished_at) {
       // Keep terminal failure context available to the workspace panels and CTA links.
       const executedStageOrder = (runState.state.stage_order as string[] | undefined)
@@ -456,7 +482,19 @@ export function useRunProgressChat(projectId: string | undefined) {
             ['projects', projectId, 'artifacts'],
           )
 
-          if (recipeId === 'shot_planning') {
+          if (isMediaPreparation && (preparationOutcome === 'complete' || preparationOutcome === 'existing')) {
+            const sceneId = runState.state.runtime_params.scene_scope?.scene_ids[0]
+            store.addMessage(projectId, {
+              id: `progress_${activeRunId}_complete`, type: 'ai_suggestion',
+              content: preparationOutcome === 'existing'
+                ? 'No preparation stages needed to run. Inspect the existing clip plan and estimate, then confirm before generating video.'
+                : 'Clip preparation complete. Inspect the prepared work and estimate, then confirm before generating video.',
+              timestamp: Date.now(),
+              actions: sceneId ? [{ id: 'inspect_media', label: 'Inspect Prepared Clips', variant: 'default',
+                route: buildRelativeSceneWorkspaceRoute(sceneId, recipeId === 'render_generation' ? 'render' : 'previz'),
+              }] : [],
+            })
+          } else if (recipeId === 'shot_planning') {
             const scopeTarget = getSceneScopeTargetLabel(runState.state.runtime_params?.scene_scope)
             const shotPlanRefs = Object.values(stages)
               .flatMap((stage) => stage.artifact_refs)

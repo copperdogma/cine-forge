@@ -22,6 +22,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--run-id", help="Optional run identifier.")
     parser.add_argument("--dry-run", action="store_true", help="Validate and plan only.")
     parser.add_argument("--start-from", help="Start execution from a stage id.")
+    parser.add_argument("--end-at", help="End execution at this stage, inclusive.")
     parser.add_argument("--force", action="store_true", help="Force stage execution.")
     parser.add_argument(
         "--input-file",
@@ -106,6 +107,7 @@ def main() -> None:
             run_id=run_id,
             dry_run=args.dry_run,
             start_from=args.start_from,
+            end_at=args.end_at,
             force=args.force,
             instrument=args.instrument,
             runtime_params=runtime_params or None,

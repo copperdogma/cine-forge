@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from cine_forge.schemas import ArtifactRef, CostRecord, ImpactAssessment
 from cine_forge.schemas.models import ProductionFormat
@@ -121,8 +121,8 @@ class RunStartRequest(BaseModel):
     """Start-run request from GUI runtime form."""
 
     project_id: str = Field(min_length=1)
-    input_file: str = Field(min_length=1)
-    default_model: str = Field(min_length=1)
+    input_file: str | None = Field(default=None, min_length=1)
+    default_model: str | None = Field(default=None, min_length=1)
     work_model: str | None = None
     verify_model: str | None = None
     escalate_model: str | None = None
@@ -143,6 +143,16 @@ class RunStartRequest(BaseModel):
     run_budget_limit_usd: float | None = Field(default=None, ge=0.0)
     budget_warning_threshold_ratio: float | None = Field(default=None, ge=0.0, le=1.0)
     retry_failed_stage_for_run_id: str | None = None
+
+    media_execution_plan_ref: ArtifactRef | None = None
+
+    @model_validator(mode="after")
+    def require_run_inputs(self) -> RunStartRequest:
+        if self.media_execution_plan_ref is None and (
+            not self.input_file or not self.default_model
+        ):
+            raise ValueError("input_file and default_model are required for an ordinary run")
+        return self
 
 
 class RunStartResponse(BaseModel):

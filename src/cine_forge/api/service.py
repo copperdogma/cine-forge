@@ -1221,6 +1221,14 @@ class OperatorConsoleService:
     def start_run(self, project_id: str, request: dict[str, Any]) -> str:
         project_path = self.require_project_path(project_id)
         pj = self._read_project_json(project_path) or {}
+        if request.get("media_execution_plan_ref"):
+            from cine_forge.services.media_plan_execution import confirm_media_request
+            confirmed = confirm_media_request(workspace_root=self.workspace_root,
+                project_dir=project_path, project_id=project_id, request=request)
+            from cine_forge.api.run_start_preflight import require_confirmed_media_preflight
+            require_confirmed_media_preflight(project_id=project_id, request=confirmed,
+                                              preview=self.preview_scene_action)
+            return self._orchestrator.start_run(project_id, confirmed)
 
         merged_request = dict(request)
         for key in PROJECT_MODEL_KEYS:

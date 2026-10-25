@@ -73,12 +73,18 @@ Run this sequence exactly unless the shipped UI changes in the same diff.
    `/open-frequency/scenes/scene_001?tab=shots`
    `/open-frequency/scenes/scene_001?tab=storyboard`
    `/open-frequency/scenes/scene_001?tab=render`
-   Inspect the surfaced Render preflight for Current Scene and All Scenes before
-   starting work. As of2026-10-23, the configured Veo3.1 preview target is retired,
-   so both scopes must explain the provider blocker before paid prerequisites or
-   video submission. Record that outcome as blocked / issues found, never Pass.
-   Resume `Run Render for Current Scene` only after a current target is qualified
-   and the bounded work and cost can be inspected (Stories138/232).
+   Inspect the generation blocker before paying for preparation. In Render and
+   Previz, use `Prepare clip plan`, which stops before video and may use paid
+   text AI. Review the current scene's actual clip durations, target and video-only
+   estimate; select a clip and inspect again before `Confirm and generate`.
+   Selection or source changes require fresh inspection. A full workflow quote
+   and hard spending cap are not provided. Review one scene at a time.
+   As of 2026-10-24, the configured Veo 3.1 preview target is retired and live
+   automatic-reference prices are unqualified. A priced/admissible plan alone
+   does not establish credential or provider readiness. Confirmation must remain
+   blocked when either the plan or generation readiness is blocked. Record the
+   full-path result as blocked / issues found, never Pass, until current targets
+   and the bounded generated result are qualified (Stories 232/234).
    Pass if the scene workspace remains usable, the downstream tabs are reachable
    through surfaced navigation, the scene tutorial keeps the default path obvious
    through Shot Planning, Storyboard, and Render, the Render tab stays honest

@@ -1,0 +1,240 @@
+{
+  "project": "open-frequency",
+  "project_origin": "Normal surfaced intake run-fae39865; continued via surfaced Prepare clip plan on 2026-10-24. No copied or seeded artifacts.",
+  "run_id": "run-a7501f88",
+  "run_state": "/Users/cam/Documents/Projects/cine-forge/output/runs/run-a7501f88/run_state.json",
+  "run_sha256": "70c9fea106517ed01c803fb5f805cbeadfc715aa64be9ac0fc4ff4eb0d10b7ed",
+  "scene_scope": {
+    "mode": "current_scene",
+    "scene_ids": [
+      "scene_001"
+    ]
+  },
+  "end_at": "render_clip_planning",
+  "stages": {
+    "ai_previz": "pending",
+    "render_clip_planning": "done",
+    "shot_planning": "done",
+    "timeline": "done",
+    "tracks": "done",
+    "validate_media": "pending"
+  },
+  "recorded_preparation_estimate_usd": 0.2713494,
+  "clip_plan": "/Users/cam/Documents/Projects/cine-forge/output/open-frequency/artifacts/render_clip_plan/scene_001/v1.json",
+  "clip_plan_sha256": "dd7092267e6180db89118aa1c92eb7eb61548196391b3faf20ceb37877a1eb2e",
+  "planned_clips": 7,
+  "planned_seconds": 48.0,
+  "inspection_plans": [
+    {
+      "path": "/Users/cam/Documents/Projects/cine-forge/output/open-frequency/artifacts/media_execution_plan/plan-40de3dc588ce4651bb498fc7019d29dc/v1.json",
+      "sha256": "20fa783be83a8e55cbe42f2fd74290be1d5f0b55442ecce4fd2db3ab68625d3f",
+      "selection": null,
+      "status": "ready",
+      "units": 7,
+      "video_estimate_usd": 2.4,
+      "total_estimate_usd": null,
+      "blockers": []
+    },
+    {
+      "path": "/Users/cam/Documents/Projects/cine-forge/output/open-frequency/artifacts/media_execution_plan/plan-6ba6bbaa6aa74640a31fa351fa639f94/v1.json",
+      "sha256": "87f8313f60473a26a3755d90f0f5042ff2728c96950af34f6a0b2fe64b401e87",
+      "selection": null,
+      "status": "ready",
+      "units": 7,
+      "video_estimate_usd": 2.4,
+      "total_estimate_usd": null,
+      "blockers": []
+    },
+    {
+      "path": "/Users/cam/Documents/Projects/cine-forge/output/open-frequency/artifacts/media_execution_plan/plan-6d9826352674421cbb4df2bf892ac953/v1.json",
+      "sha256": "629523d6d0b78de0a1b270d9c234f4de67a5478482028453e3146177f2e3dc8e",
+      "selection": [
+        "scene_001_clip_001"
+      ],
+      "status": "ready",
+      "units": 1,
+      "video_estimate_usd": 0.4,
+      "total_estimate_usd": null,
+      "blockers": []
+    }
+  ],
+  "acceptance_limit": "Inspection and preparation control only; no video generated, no provider quality claim.",
+  "render_preparation": {
+    "run_id": "run-4ad6ddfa",
+    "run_state": "/Users/cam/Documents/Projects/cine-forge/output/runs/run-4ad6ddfa/run_state.json",
+    "sha256": "db0308be769824634b1c1df404229aa715484c4419c0109c0e08037e91b032b3",
+    "scene_scope": {
+      "mode": "current_scene",
+      "scene_ids": [
+        "scene_002"
+      ]
+    },
+    "end_at": "render_clip_planning",
+    "stages": {
+      "render": "pending",
+      "render_clip_planning": "done",
+      "shot_planning": "done",
+      "timeline": "done",
+      "tracks": "done",
+      "validate_media": "pending"
+    },
+    "recorded_preparation_estimate_usd": 0.2312416,
+    "browser_transition": "failed: repeated composed-ref update loop under frozen UI code"
+  },
+  "total_recorded_preparation_estimate_usd": 0.7826238,
+  "post_fix_preparation": [
+    {
+      "run_id": "run-0c1d0948",
+      "path": "/Users/cam/Documents/Projects/cine-forge/output/runs/run-0c1d0948/run_state.json",
+      "sha256": "e39932d0b878e76e755880e27d27055786968e2ab2dad128622c51bb084fe651",
+      "scene_scope": {
+        "mode": "current_scene",
+        "scene_ids": [
+          "scene_002"
+        ]
+      },
+      "start_from": "render",
+      "end_at": "render_clip_planning",
+      "started_at": 1792901211.789769,
+      "finished_at": 1792901211.906039,
+      "stages": {
+        "render": "pending",
+        "render_clip_planning": "pending",
+        "shot_planning": "pending",
+        "timeline": "pending",
+        "tracks": "pending",
+        "validate_media": "pending"
+      },
+      "recorded_preparation_estimate_usd": 0.0,
+      "note": "Existing prepared scene; empty selected interval start_from=render after end_at=render_clip_planning. No AI work, cost0; auto-inspection succeeded. Not the fresh transition proof."
+    },
+    {
+      "run_id": "run-70ed8443",
+      "path": "/Users/cam/Documents/Projects/cine-forge/output/runs/run-70ed8443/run_state.json",
+      "sha256": "4f82231848fcd3a20d767480bd1449bfbdae170c0381f6baf51117171e0b95b8",
+      "scene_scope": {
+        "mode": "current_scene",
+        "scene_ids": [
+          "scene_003"
+        ]
+      },
+      "start_from": null,
+      "end_at": "render_clip_planning",
+      "started_at": 1792901251.952235,
+      "finished_at": 1792901382.9725592,
+      "stages": {
+        "ai_previz": "pending",
+        "render_clip_planning": "done",
+        "shot_planning": "done",
+        "timeline": "done",
+        "tracks": "done",
+        "validate_media": "pending"
+      },
+      "recorded_preparation_estimate_usd": 0.2800328,
+      "note": "Fresh scene3 planning, chat open, frozen UI code and Slot1.2.5; completion and auto-inspection succeeded without errors."
+    }
+  ],
+  "post_fix_inspections": [
+    {
+      "path": "/Users/cam/Documents/Projects/cine-forge/output/open-frequency/artifacts/media_execution_plan/plan-ce0a5d3e1c2a410aab0ea82cc43bb089/v1.json",
+      "sha256": "b01852e540e30f46262d26d22fda4014a120adbafeb1d0be2ab7ff08f7d1d317",
+      "scene_id": "scene_002",
+      "recipe_id": "render_generation",
+      "render_clip_ids": null,
+      "status": "blocked",
+      "video_estimate_usd": null,
+      "total_estimate_usd": null,
+      "blockers": [
+        "Google veo-3.1-generate-preview is unavailable: Veo 3.1 preview shut down 2026-10-22"
+      ],
+      "units": 7,
+      "actual_durations_seconds": [
+        8,
+        8,
+        8,
+        6,
+        6,
+        8,
+        8
+      ]
+    },
+    {
+      "path": "/Users/cam/Documents/Projects/cine-forge/output/open-frequency/artifacts/media_execution_plan/plan-8c4ea6603179480d97a4d4d4df31d2bc/v1.json",
+      "sha256": "45e411fd34584b8eddd7d85ff3a2aecb7e173d15d70393cd588bf8f5d8614cf6",
+      "scene_id": "scene_003",
+      "recipe_id": "ai_previz_generation",
+      "render_clip_ids": null,
+      "status": "ready",
+      "video_estimate_usd": 2.9,
+      "total_estimate_usd": null,
+      "blockers": [],
+      "units": 8,
+      "actual_durations_seconds": [
+        8,
+        7,
+        7,
+        6,
+        8,
+        6,
+        8,
+        8
+      ]
+    },
+    {
+      "path": "/Users/cam/Documents/Projects/cine-forge/output/open-frequency/artifacts/media_execution_plan/plan-b2bf04ce17d84c339093e796cf491634/v1.json",
+      "sha256": "345bc638f693fb62be3c1779c9c1a122be3a8328ac27a15814d5e73194b5bde2",
+      "scene_id": "scene_003",
+      "recipe_id": "ai_previz_generation",
+      "render_clip_ids": [
+        "scene_003_clip_001"
+      ],
+      "status": "ready",
+      "video_estimate_usd": 0.4,
+      "total_estimate_usd": null,
+      "blockers": [],
+      "units": 1,
+      "actual_durations_seconds": [
+        8
+      ]
+    },
+    {
+      "path": "/Users/cam/Documents/Projects/cine-forge/output/open-frequency/artifacts/media_execution_plan/plan-85beb3d843aa467098beca49c4aa4bb8/v1.json",
+      "sha256": "6059f2e272343d3c56226bdda447d5dd5f9670c2f9049c86c6c425ed4623d602",
+      "scene_id": "scene_003",
+      "recipe_id": "render_generation",
+      "render_clip_ids": null,
+      "status": "blocked",
+      "video_estimate_usd": null,
+      "total_estimate_usd": null,
+      "blockers": [
+        "Google veo-3.1-generate-preview is unavailable: Veo 3.1 preview shut down 2026-10-22"
+      ],
+      "units": 8,
+      "actual_durations_seconds": [
+        8,
+        8,
+        8,
+        6,
+        8,
+        6,
+        8,
+        8
+      ]
+    }
+  ],
+  "browser": {
+    "desktop": [
+      1440,
+      1000
+    ],
+    "mobile": [
+      390,
+      844
+    ],
+    "mobile_document_width": 390,
+    "console_errors_after_fix": 0,
+    "console_cutoff_utc": "2026-10-25T04:08:00Z",
+    "viewport_override_reset": true,
+    "limits": "No live video; successful confirmation tested through real API/worker/driver with only video generation stubbed."
+  }
+}

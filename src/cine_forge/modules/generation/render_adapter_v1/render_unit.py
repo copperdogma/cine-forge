@@ -43,10 +43,11 @@ def _render_scene(
     scene_action_preflight: SceneActionPreflight | None,
     cost_receipts: list[CostReceipt],
     render_clip: RenderClip | None = None,
+    prepared_unit: PreparedRenderUnit | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     started = time.perf_counter()
     receipt_start = len(cost_receipts)
-    unit = prepare_render_unit(
+    unit = prepared_unit or prepare_render_unit(
         store=store,
         scene=scene,
         plan=plan,

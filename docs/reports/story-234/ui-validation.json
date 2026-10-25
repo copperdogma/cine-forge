@@ -1,0 +1,1351 @@
+{
+  "story": "234",
+  "recorded_at_utc": "2026-10-25T14:32:56.624500+00:00",
+  "workspace": "/Users/cam/.codex/worktrees/triage-batch-integration-20261023/cine-forge",
+  "scope": "Final Story 234 UI tree, including paused preparation, honest empty-interval reuse, single-clip previz visibility, and isolated official Slot 1.2.5 override",
+  "validation_evidence_source": "Successful execution results retained in this Codex agent conversation; checks were not rerun to create this record.",
+  "checks": [
+    {
+      "command": "pnpm --dir ui exec tsc -b --pretty false",
+      "exit_code": 0,
+      "result": "TypeScript project check passed with no diagnostics"
+    },
+    {
+      "command": "pnpm --dir ui run lint",
+      "exit_code": 0,
+      "result": "ESLint passed with no diagnostics"
+    },
+    {
+      "command": "node --test ui/tests/*.test.ts",
+      "exit_code": 0,
+      "result": {
+        "tests": 35,
+        "pass": 35,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 100.424833
+      }
+    },
+    {
+      "command": "pnpm --dir ui run build",
+      "exit_code": 0,
+      "result": {
+        "typescript": "passed",
+        "vite_version": "6.4.1",
+        "transformed_modules": 2264,
+        "vite_duration_seconds": 2.47,
+        "warning": "Some chunks are larger than 500 kB after minification; build succeeded",
+        "outputs": [
+          {
+            "path": "dist/assets/index-BjbDsTfY.js",
+            "size_kb": 1299.8,
+            "gzip_kb": 354.88
+          }
+        ]
+      }
+    }
+  ],
+  "dependency_identity": {
+    "react": {
+      "version": "19.2.4",
+      "entry": "/Users/cam/.codex/worktrees/triage-batch-integration-20261023/cine-forge/ui/node_modules/.pnpm/react@19.2.4/node_modules/react/index.js",
+      "package_json": "/Users/cam/.codex/worktrees/triage-batch-integration-20261023/cine-forge/ui/node_modules/.pnpm/react@19.2.4/node_modules/react/package.json",
+      "entry_sha256": "60caffdecbdc5db3bc4ec4e83df9488345ccb271d07533b9210bf5750918d97e"
+    },
+    "react-dom": {
+      "version": "19.2.4",
+      "entry": "/Users/cam/.codex/worktrees/triage-batch-integration-20261023/cine-forge/ui/node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/index.js",
+      "package_json": "/Users/cam/.codex/worktrees/triage-batch-integration-20261023/cine-forge/ui/node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/package.json",
+      "entry_sha256": "ba1a3e33489f868371561777607e3ee5091df0f7ea3f1a10f789d6b86e4c1505"
+    },
+    "radix-ui": {
+      "version": "1.4.3",
+      "entry": "/Users/cam/.codex/worktrees/triage-batch-integration-20261023/cine-forge/ui/node_modules/.pnpm/radix-ui@1.4.3_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react@19.2.14_react_8630af8f756c6a5269f4297295494860/node_modules/radix-ui/dist/index.js",
+      "package_json": "/Users/cam/.codex/worktrees/triage-batch-integration-20261023/cine-forge/ui/node_modules/.pnpm/radix-ui@1.4.3_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react@19.2.14_react_8630af8f756c6a5269f4297295494860/node_modules/radix-ui/package.json",
+      "entry_sha256": "adba9a863d798d65476d0f83ec474d61bdd3b8976830e2d635c9f14750efdde0"
+    },
+    "@radix-ui/react-slot": {
+      "version": "1.2.5",
+      "entry": "/Users/cam/.codex/worktrees/triage-batch-integration-20261023/cine-forge/ui/node_modules/.pnpm/@radix-ui+react-slot@1.2.5_@types+react@19.2.14_react@19.2.4/node_modules/@radix-ui/react-slot/dist/index.js",
+      "package_json": "/Users/cam/.codex/worktrees/triage-batch-integration-20261023/cine-forge/ui/node_modules/.pnpm/@radix-ui+react-slot@1.2.5_@types+react@19.2.14_react@19.2.4/node_modules/@radix-ui/react-slot/package.json",
+      "entry_sha256": "533ddcdc94fca12b3d8dc8209611da5a36cceed0e15fe30a092f011a63ca8c13"
+    },
+    "@radix-ui/react-compose-refs": {
+      "version": "1.1.2",
+      "entry": "/Users/cam/.codex/worktrees/triage-batch-integration-20261023/cine-forge/ui/node_modules/.pnpm/@radix-ui+react-compose-refs@1.1.2_@types+react@19.2.14_react@19.2.4/node_modules/@radix-ui/react-compose-refs/dist/index.js",
+      "package_json": "/Users/cam/.codex/worktrees/triage-batch-integration-20261023/cine-forge/ui/node_modules/.pnpm/@radix-ui+react-compose-refs@1.1.2_@types+react@19.2.14_react@19.2.4/node_modules/@radix-ui/react-compose-refs/package.json",
+      "entry_sha256": "894772dc349c70f6bf13f641df61c432d152efa503c6508a608a5af2c44707da"
+    }
+  },
+  "slot_owned_compose_refs": {
+    "entry": "/Users/cam/.codex/worktrees/triage-batch-integration-20261023/cine-forge/ui/node_modules/.pnpm/@radix-ui+react-compose-refs@1.1.3_@types+react@19.2.14_react@19.2.4/node_modules/@radix-ui/react-compose-refs/dist/index.js",
+    "version": "1.1.3"
+  },
+  "targeted_fix": {
+    "override": "@radix-ui/react-slot",
+    "version": "1.2.5",
+    "tarball": "https://registry.npmjs.org/@radix-ui/react-slot/-/react-slot-1.2.5.tgz",
+    "integrity": "sha512-rCMO3QsIVKv5JTY5CVbo2MvO77SpEqqYc8AvRE7OWqRDOIqAKjsp+DrmnY9uc8NPdxB5E2z47HTYGeE2+NTptg==",
+    "source_verified": "Slot uses useComposedRefs(forwardedRef, slottableElementRef)",
+    "upstream_fix": "https://github.com/radix-ui/primitives/pull/3899",
+    "upstream_issue": "https://github.com/radix-ui/primitives/issues/3799"
+  },
+  "isolation": {
+    "node_modules_is_symlink": false,
+    "before_receipt": "/private/tmp/cineforge-story234-primary-dependency-before.json",
+    "after_receipt": "/private/tmp/cineforge-story234-primary-dependency-after.json",
+    "primary_package_workspace_lock_hashes_unchanged": true,
+    "install_command": "pnpm --dir ui install --frozen-lockfile --ignore-scripts",
+    "reused_packages": 731,
+    "downloaded_packages": 2,
+    "installed_packages": 733
+  },
+  "runtime_evidence": {
+    "observer": "Parent agent via normal browser workflow; supplied in handoff",
+    "before_error_receipt": "/private/tmp/cineforge-story234-browser-failures.json",
+    "before": "Two normal preparation-completion transitions produced Maximum update depth exceeded in React DOM / Radix composed refs",
+    "after_run_id": "run70ed8443",
+    "after": "Fresh scene 3 preparation completed with chat open, readiness changed 0 to 1, automatic inspection showed 8 clips / 58 seconds, and no new browser errors were reported",
+    "mobile": "Parent reported 390x844 view, one selected clip with USD 0.40 estimate, no overflow; Render blocked/unknown used actual normalized 8-second duration",
+    "acceptance_boundary": "No live paid video generation was performed by this UI agent. A minimal standalone Slot/Tooltip fixture did not reproduce the crash and is not product acceptance evidence."
+  },
+  "changed_ui_files": [
+    "ui/pnpm-lock.yaml",
+    "ui/pnpm-workspace.yaml",
+    "ui/src/components/GeneratedVideoPanel.tsx",
+    "ui/src/components/PrevizPanel.tsx",
+    "ui/src/components/ScenePlanUnitSummary.tsx",
+    "ui/src/components/previz-panel-support.ts",
+    "ui/src/lib/use-run-progress.ts",
+    "ui/tests/media-validation-health.test.ts",
+    "ui/src/components/MediaGenerationControls.tsx",
+    "ui/src/components/MediaGenerationInspection.tsx",
+    "ui/src/components/PrevizClipCards.tsx",
+    "ui/src/components/PrevizLaneEvidence.tsx",
+    "ui/src/components/RenderClipCard.tsx",
+    "ui/src/components/use-previz-artifacts.ts",
+    "ui/src/lib/api/media-generation.ts",
+    "ui/src/lib/hooks/media-generation.ts",
+    "ui/src/lib/hooks/media-preparation.ts",
+    "ui/src/lib/media-generation-policy.ts",
+    "ui/src/lib/media-generation-types.ts",
+    "ui/tests/media-generation-policy.test.ts"
+  ],
+  "ui_file_inventory": {
+    "method": "All Git-tracked UI files plus nonignored untracked UI files; node_modules/dist/ignored outputs excluded",
+    "count": 240,
+    "files": [
+      {
+        "path": "ui/.gitignore",
+        "bytes": 253,
+        "sha256": "fe718e7babb14f3cbad2d97f08889b9ce5215ed3fe0e43b2b8cfbfb3b9b844e8"
+      },
+      {
+        "path": "ui/.jscpd.json",
+        "bytes": 174,
+        "sha256": "174d6fa9187e8b62774a424e8693332b5a78466f23107982f717e1d895b2b31c"
+      },
+      {
+        "path": "ui/README.md",
+        "bytes": 2555,
+        "sha256": "f58b5b17f83db63c09a9f2c059ec435ac8a3feb66f9337391ed5f3f62cff4e63"
+      },
+      {
+        "path": "ui/components.json",
+        "bytes": 462,
+        "sha256": "b738a18a0f136563507e3d5d8632f9c2c4bc8d4d5fb59f5d4aa7f8ee70eebd51"
+      },
+      {
+        "path": "ui/eslint.config.js",
+        "bytes": 690,
+        "sha256": "62331ddbb85f41ef72b76f33c9ed7305e323a55a0731ec49fba76438d15c0f95"
+      },
+      {
+        "path": "ui/index.html",
+        "bytes": 1673,
+        "sha256": "b6df4436a0e954805f92b6a85c0115c1fd92842c40e2d987a274c2cb681fa7cd"
+      },
+      {
+        "path": "ui/package.json",
+        "bytes": 1727,
+        "sha256": "a99fd1273f254c05b2defb952dbbab0d31a8d5c743d4c65427be070f6187e40a"
+      },
+      {
+        "path": "ui/pnpm-lock.yaml",
+        "bytes": 296411,
+        "sha256": "c080beb473f29edb728f0b8adb3e33a49c9599b36f251743652f130d5e3485a6"
+      },
+      {
+        "path": "ui/pnpm-workspace.yaml",
+        "bytes": 69,
+        "sha256": "e11c2a8fc824714cbdc2e06fb64fbe7f25af934b7fedcbffbfa136824649becf"
+      },
+      {
+        "path": "ui/public/apple-touch-icon.png",
+        "bytes": 1105,
+        "sha256": "f4987283e08eda2a22c331a41257e7231da61fc7b960af3e585044095bacd7fd"
+      },
+      {
+        "path": "ui/public/favicon-96x96.png",
+        "bytes": 593,
+        "sha256": "a113d29f3dc76cc4ecc5e13be15a906b06affc5027fa74393c86e62c05f7dc89"
+      },
+      {
+        "path": "ui/public/favicon.ico",
+        "bytes": 476,
+        "sha256": "e8643629c956fd55baf837ffe9105fd76334a21ecbc38405e991f1ca21c4bb4f"
+      },
+      {
+        "path": "ui/public/favicon.svg",
+        "bytes": 1214,
+        "sha256": "338a665ac7e458f57e61db6da9be09769d92c105a469d523328506d47881b942"
+      },
+      {
+        "path": "ui/public/site.webmanifest",
+        "bytes": 376,
+        "sha256": "6384a0d9ed071bb845b6c073f4a69b38b644e25fe51dbb9e187af80d4c914c26"
+      },
+      {
+        "path": "ui/src/App.tsx",
+        "bytes": 3818,
+        "sha256": "f69a7b8517fc68ad18c8e90122ed70a4d490455352b8fbd97b93be619f4a9676"
+      },
+      {
+        "path": "ui/src/components/AiPrevizViewer.tsx",
+        "bytes": 15601,
+        "sha256": "3cfa23f0753a31aa7a946c58620a5a88aa647a90e2723be20535697cacc4922d"
+      },
+      {
+        "path": "ui/src/components/AppShell.tsx",
+        "bytes": 32680,
+        "sha256": "2ce0b20f2a81d10918581d697f8b3c9d5d58db3b43e33c9dbd86d039b56ec6e8"
+      },
+      {
+        "path": "ui/src/components/AppThemeProvider.tsx",
+        "bytes": 4484,
+        "sha256": "78ed7908eed6b4943eacdd6167e91e0bc6f5affa0a769e9e767b38b0d692ddb4"
+      },
+      {
+        "path": "ui/src/components/ArtifactPreview.tsx",
+        "bytes": 9859,
+        "sha256": "0e7fe3773b172706fa8e18ceb4eb4fb0c7e1ed0812be700451c5d61e8f61c9a0"
+      },
+      {
+        "path": "ui/src/components/ArtifactReviewControls.tsx",
+        "bytes": 1894,
+        "sha256": "ba5c7c0131f9f753d9dfa6fb7ff2e7f10d3448d332a4c79e27e023658bf42072"
+      },
+      {
+        "path": "ui/src/components/ArtifactViewers.tsx",
+        "bytes": 45435,
+        "sha256": "dd70b1bdb077ffd72a91257f6bdfad58ba5a9e2fde61bd5adfa714835ca67c59"
+      },
+      {
+        "path": "ui/src/components/ChangelogDialog.tsx",
+        "bytes": 1000,
+        "sha256": "982a954f9c716a77c283daf1918bb13b4893b7012480f24b0dd26b9579d137cb"
+      },
+      {
+        "path": "ui/src/components/CharacterPerformancePanel.tsx",
+        "bytes": 15224,
+        "sha256": "afc7102dfe8b27553207cf3961fce80423347f99828c7090596935a4b7f6057f"
+      },
+      {
+        "path": "ui/src/components/ChatAboutButton.tsx",
+        "bytes": 1278,
+        "sha256": "68a6055fb523df0a074a2d0c4ab26d2e19e09785863076bd71b8a9ca7caca926"
+      },
+      {
+        "path": "ui/src/components/ChatErrorBoundary.tsx",
+        "bytes": 1787,
+        "sha256": "49888b9af97265e7d908c7a39382e9c1b24a06f3732be65eba5c8350264386fc"
+      },
+      {
+        "path": "ui/src/components/ChatPanel.tsx",
+        "bytes": 16660,
+        "sha256": "20713171386c22e1f018039d135564d53f98a46bc2b5c85ed3021279f5ce18be"
+      },
+      {
+        "path": "ui/src/components/CommandPalette.tsx",
+        "bytes": 14290,
+        "sha256": "af459737480507b5063dca5e64808b75cd66bbce6206517fea5fbb34af2f2790"
+      },
+      {
+        "path": "ui/src/components/CompositionBar.tsx",
+        "bytes": 7742,
+        "sha256": "e2df504e2ae4ec2fb363ed08853c43183299c62315f71b3f33ab0327082a5ad0"
+      },
+      {
+        "path": "ui/src/components/ContactSheetRow.tsx",
+        "bytes": 7608,
+        "sha256": "aa9abaa7a83bfb259c346ab9a1977e1ae4424d1dafc8929e388d2c4086ca1828"
+      },
+      {
+        "path": "ui/src/components/CostCompletenessNotice.tsx",
+        "bytes": 1366,
+        "sha256": "3efbf8ae27a8b8ca0a89c3c398ca8ca251faed7e78a89996fd73718da51fc2ac"
+      },
+      {
+        "path": "ui/src/components/DesignStudyImageCard.tsx",
+        "bytes": 10673,
+        "sha256": "921df49b40a8e792509c14d20aa46e07b3f4b96d495bf40a36603422bd5920d4"
+      },
+      {
+        "path": "ui/src/components/DesignStudyRoundStatusPanel.tsx",
+        "bytes": 2849,
+        "sha256": "74414e1d9ca718cd9e4aae5eed300196d54158823eb1907ed7d64af976350ee9"
+      },
+      {
+        "path": "ui/src/components/DesignStudySection.tsx",
+        "bytes": 14250,
+        "sha256": "a7390db8ec8b5c3520278790688121967effbe562c50f8ed4ae29eee9f23949f"
+      },
+      {
+        "path": "ui/src/components/DesignStudySourcesPanel.tsx",
+        "bytes": 6255,
+        "sha256": "9d806628361097ef7bc2360273eaf1cfff84487a15b35e4a407d3e08c6e6807d"
+      },
+      {
+        "path": "ui/src/components/DirectionAnnotation.tsx",
+        "bytes": 8544,
+        "sha256": "b6c3c1fda31862633f33a5bd5eba34eca33e7df6a1882a9a05cd31f93bebf392"
+      },
+      {
+        "path": "ui/src/components/DirectionTab.tsx",
+        "bytes": 11991,
+        "sha256": "effd063e37da4f656d313e48af8b774a5a1281ca6f244df89a7a17c932985de6"
+      },
+      {
+        "path": "ui/src/components/EntityListControls.tsx",
+        "bytes": 4724,
+        "sha256": "38fcf506f183e6fa53063a3a57aa69826b55876e43ab82903d6c2b8c688e34eb"
+      },
+      {
+        "path": "ui/src/components/EntityTimelineView.tsx",
+        "bytes": 11610,
+        "sha256": "e42e3f5ba4b66e296931bfb683362a5a0e9be99c2cf473dc58609ad786c646a4"
+      },
+      {
+        "path": "ui/src/components/ExportModal.tsx",
+        "bytes": 16657,
+        "sha256": "113d742accdef5fafc4d68c756b046c9f087ae4fbb9b36510842b1d548da6d00"
+      },
+      {
+        "path": "ui/src/components/FinalOutputCard.tsx",
+        "bytes": 13259,
+        "sha256": "7846d248eac14f0edd68d1c6940da7441860a3ca07782df1f3a9630fa90bd4db"
+      },
+      {
+        "path": "ui/src/components/FinalOutputViewer.tsx",
+        "bytes": 17092,
+        "sha256": "1cdc7c73ec923218181063e057537b726dfcf6d549f5f6580260487cc3855dd2"
+      },
+      {
+        "path": "ui/src/components/GeneratedVideoCost.tsx",
+        "bytes": 3111,
+        "sha256": "1ef5f194cc89c0da55091418e269890f4c637734e77f600e61d724636137740e"
+      },
+      {
+        "path": "ui/src/components/GeneratedVideoPanel.tsx",
+        "bytes": 18644,
+        "sha256": "c7a095dc82eaf5e409e6fa04453b9b2d616738408bac32802b952adfdf8f3a03"
+      },
+      {
+        "path": "ui/src/components/GeneratedVideoViewer.tsx",
+        "bytes": 9675,
+        "sha256": "1cac84a8db080889d2a381debb3a2148fe2a9051100da5d8b2e717b93d803600"
+      },
+      {
+        "path": "ui/src/components/GlossaryTerm.tsx",
+        "bytes": 3250,
+        "sha256": "3ddb6e6ee2846b13cc9d39fb6fc3ee62e16da581cac8e66826c63fea1e7951f6"
+      },
+      {
+        "path": "ui/src/components/HealthBadge.tsx",
+        "bytes": 5359,
+        "sha256": "b22926bd5ed10fc2cdda736f63c6e4bc4b15a6a4f7c88b9f8fabade16472595d"
+      },
+      {
+        "path": "ui/src/components/ImpactAssessmentCard.tsx",
+        "bytes": 16693,
+        "sha256": "e24f1412c0ac4eb0ad818194d68915359dc4073ab6449f98c1ed9fbf90d113b3"
+      },
+      {
+        "path": "ui/src/components/KeyframeViewer.tsx",
+        "bytes": 7813,
+        "sha256": "4056b55f56e41a5e3a5ab7a183d34bdaa74b6503e17e3041baf6a0f98d30bbbf"
+      },
+      {
+        "path": "ui/src/components/MediaGenerationControls.tsx",
+        "bytes": 6933,
+        "sha256": "78e949dacbe5c2cee6b9b0115762b6b344ab663ec60f516f00b452c8d393ef2a"
+      },
+      {
+        "path": "ui/src/components/MediaGenerationInspection.tsx",
+        "bytes": 3898,
+        "sha256": "b0b64f433d6c623e09f92a5dce6490f76ab9eea847c520c08cb7a72159c45ff3"
+      },
+      {
+        "path": "ui/src/components/MediaValidationViewer.tsx",
+        "bytes": 15361,
+        "sha256": "863268212f4995ed212e5e148dd37d6553800cb1e2a14d97c4e2c1a9eb37f001"
+      },
+      {
+        "path": "ui/src/components/OperationBanner.tsx",
+        "bytes": 5168,
+        "sha256": "2a67a8a6a7d140cca6eb8d1fa74362b47d3e0575da05173a9a8bf667f98c2a4b"
+      },
+      {
+        "path": "ui/src/components/PageHeader.tsx",
+        "bytes": 764,
+        "sha256": "1f4db49b931469d5d803ccda279c33fefec29a865322d24bac176ae0d3bfd407"
+      },
+      {
+        "path": "ui/src/components/PipelineBar.tsx",
+        "bytes": 11300,
+        "sha256": "0f17d6d5f99a0a93a169c60345c8358d9a6d3f54992a0ef19febc5e03a003305"
+      },
+      {
+        "path": "ui/src/components/PreflightCard.tsx",
+        "bytes": 2413,
+        "sha256": "d185633b744e7fb6fbabf1aab32c1ab2d1a4019f06d3c1078e2c3ba2033c525a"
+      },
+      {
+        "path": "ui/src/components/PrevizClipCards.tsx",
+        "bytes": 6873,
+        "sha256": "040a35e6413acfb2435eb5b80ebd9df224f22a686b4047f2d99b65b38bab4cad"
+      },
+      {
+        "path": "ui/src/components/PrevizCostExample.tsx",
+        "bytes": 1368,
+        "sha256": "6f56e9cadcb6a92400c714044e9c9a7a5bca4f9c5b691a6f8388be5be7e1a2f7"
+      },
+      {
+        "path": "ui/src/components/PrevizLaneEvidence.tsx",
+        "bytes": 3066,
+        "sha256": "bdf9bfa3e0a3bdc6b718b6c9ea924f4fda0407a7446b4805df6d73a98d312e7a"
+      },
+      {
+        "path": "ui/src/components/PrevizPanel.tsx",
+        "bytes": 11734,
+        "sha256": "a2a2fbe363c31968d4647d5657fd5341f35e349c1cfbffb4b2663f371a558079"
+      },
+      {
+        "path": "ui/src/components/ProductionFormatModal.tsx",
+        "bytes": 2978,
+        "sha256": "bdd9c94e444e3bdb2096925eb418dbbc9bfd183ccbfb391c6374f79c60a0cf78"
+      },
+      {
+        "path": "ui/src/components/ProductionFormatPill.tsx",
+        "bytes": 3400,
+        "sha256": "653a0ba65b19f026f66ef99408787971182806c500a3f809864a3c4df47b85a2"
+      },
+      {
+        "path": "ui/src/components/ProjectAppearanceSection.tsx",
+        "bytes": 8902,
+        "sha256": "b25629582b7b0c3734f8883c2b3ad82c5637ce780045e7084875ff694e1dde1c"
+      },
+      {
+        "path": "ui/src/components/ProjectBudgetSettingsSection.tsx",
+        "bytes": 2224,
+        "sha256": "73d94f30170dfcdbe322af8a4f525defcfdedd549468de67fac134ddd1c8add4"
+      },
+      {
+        "path": "ui/src/components/ProjectCostHistory.tsx",
+        "bytes": 2584,
+        "sha256": "54f164a4d0a9026a242bd854d4ecb0199a868bb555885dc42f74b504b79d420b"
+      },
+      {
+        "path": "ui/src/components/ProjectCostMetrics.tsx",
+        "bytes": 3178,
+        "sha256": "3a15023335a7ce0ed6196e7628f3a41d95eab57b9318a9bdcb0b93949de0825d"
+      },
+      {
+        "path": "ui/src/components/ProjectCostSummaryPanel.tsx",
+        "bytes": 3078,
+        "sha256": "fa41b465ecb1c9313f7e7391c7a3a5f84f9f6cd9398da6c1805818f9d72dca0e"
+      },
+      {
+        "path": "ui/src/components/ProjectHomeHeader.tsx",
+        "bytes": 8664,
+        "sha256": "910b9051209b45ca572951dc6083b9c30d6c9c5cf373cdda4c8e2a90f5888004"
+      },
+      {
+        "path": "ui/src/components/ProjectPreferenceLearningSection.tsx",
+        "bytes": 9172,
+        "sha256": "67e977bf5457bbdc4e5cd6c4e135295a33a87eb0f1bf0a4e1b8233971dc59585"
+      },
+      {
+        "path": "ui/src/components/ProjectReferencesSection.tsx",
+        "bytes": 903,
+        "sha256": "eb2494d1a522a2ea9b85c2a0c0504d4cf1a7dbabe8f8016a343d91964304167e"
+      },
+      {
+        "path": "ui/src/components/ProjectSettings.tsx",
+        "bytes": 17434,
+        "sha256": "cb883e45c4e653ef2945f6b4cb2111e2bb20372c4d90242c55ed4aa60823e6a0"
+      },
+      {
+        "path": "ui/src/components/ProjectStylePacksSection.tsx",
+        "bytes": 25766,
+        "sha256": "82e38daa8a41058e45bd11160caed98bc8a203ff675d762ea4071fdd85b79155"
+      },
+      {
+        "path": "ui/src/components/ProminenceBadge.tsx",
+        "bytes": 1230,
+        "sha256": "7728bd73f2e7354717aeeb2517874d337874ecc7ede465b6bbe4a7a08906dd35"
+      },
+      {
+        "path": "ui/src/components/ProvenanceBadge.tsx",
+        "bytes": 1772,
+        "sha256": "93e82c1d3c96d0de7f5f76d8518222f40e9197f0680f81899354845d70a60ea2"
+      },
+      {
+        "path": "ui/src/components/RenderClipCard.tsx",
+        "bytes": 5489,
+        "sha256": "5fbdac16f7a5a6a37a64ddd23b28070546cafecbd9496df3a293ae6d36ff7b54"
+      },
+      {
+        "path": "ui/src/components/RenderInputUsageCard.tsx",
+        "bytes": 2543,
+        "sha256": "4663412639a8d182cb7eaf045f668644ba21e17f684627aee5f0f145b46ce68d"
+      },
+      {
+        "path": "ui/src/components/RenderPromptViewer.tsx",
+        "bytes": 19971,
+        "sha256": "583542fce1b48ca6a8b8c5396728327f23d32e528005f3c2ce540eacf837b39c"
+      },
+      {
+        "path": "ui/src/components/RunCostBreakdowns.tsx",
+        "bytes": 6475,
+        "sha256": "c7e281dbe220ac406a9c6e4ae04fdab114b1d549b4b335ea37d520f0ec971673"
+      },
+      {
+        "path": "ui/src/components/RunCostBudgetSection.tsx",
+        "bytes": 5104,
+        "sha256": "5b67d7f693b576de6151b712808eef7f6167e4d8a49f8f22815b4cb4002512cd"
+      },
+      {
+        "path": "ui/src/components/RunCostSummaryPanel.tsx",
+        "bytes": 3789,
+        "sha256": "ce456c9cfb344731ace1e1d76d5d6043c028ddaf34eeaa233f6922b650a915ef"
+      },
+      {
+        "path": "ui/src/components/RunDetailOverview.tsx",
+        "bytes": 4611,
+        "sha256": "b13dfd8a3e23c7653c9a0e6ae91a0f7bb1fc4d140ecf94a4ce393ab1fca69be5"
+      },
+      {
+        "path": "ui/src/components/RunEventLog.tsx",
+        "bytes": 5918,
+        "sha256": "9ddfcbdb4b237deef2dc4c5c8127073ea1288144990de2376e99ba3f9356451d"
+      },
+      {
+        "path": "ui/src/components/RunProgressCard.tsx",
+        "bytes": 7264,
+        "sha256": "4b224c5042bf56fe0b001e26c6e9087f3e742a94acbb6ba29913b1647f772ed8"
+      },
+      {
+        "path": "ui/src/components/SceneActionControls.tsx",
+        "bytes": 4363,
+        "sha256": "250fdeca631660fd2c56c4df43cba28db110ee43d31e18e589aa072b59819b15"
+      },
+      {
+        "path": "ui/src/components/ScenePlanUnitSummary.tsx",
+        "bytes": 13485,
+        "sha256": "44d8d32d656cfbec3442352bfdab4cbb3a402d41e3e0d9751f599ea1f4612257"
+      },
+      {
+        "path": "ui/src/components/SceneStrip.tsx",
+        "bytes": 4505,
+        "sha256": "e62456561a083d2d1a49aa8920818171f0af1d58ae11d6031ac4bec5165702db"
+      },
+      {
+        "path": "ui/src/components/SceneWorkflowGuideCard.tsx",
+        "bytes": 4236,
+        "sha256": "dbc6befb3e6e60c1e05d16fd7fbb249e56d9d12b82d483d02369a26c2a356776"
+      },
+      {
+        "path": "ui/src/components/SceneWorkspaceFocusBanner.tsx",
+        "bytes": 4550,
+        "sha256": "96b6a23d62b6e40e5b5bcd21f92e25bcd165c8c7e1382cc8b97fc53fbd6d77be"
+      },
+      {
+        "path": "ui/src/components/ScreenplayEditor.tsx",
+        "bytes": 15487,
+        "sha256": "2f4755401338e1cfcbd395d8298bbbf52bc35855de4545dfe518fe306d80b725"
+      },
+      {
+        "path": "ui/src/components/ScriptBiblePanel.tsx",
+        "bytes": 3950,
+        "sha256": "1bc7034c2e8a56570f277a3a738c2630de01ce3522cfe4e4559fac8771c1747a"
+      },
+      {
+        "path": "ui/src/components/SelectionChatButton.tsx",
+        "bytes": 1849,
+        "sha256": "0fa724b8857969eb3cfe55cc5c6eedae02c8382eab0515890cd88075b2ea83cb"
+      },
+      {
+        "path": "ui/src/components/ShotPlanViewer.tsx",
+        "bytes": 16209,
+        "sha256": "d30fba80fb7c4a5a9676eae4378fba10af270a703f08185e2a27f60bdf0c23ad"
+      },
+      {
+        "path": "ui/src/components/ShotPlanningPanel.tsx",
+        "bytes": 11381,
+        "sha256": "0006d96ab6516fa57f9954bc01ae8ed21979430c11de2ade9e7085fd933abbfa"
+      },
+      {
+        "path": "ui/src/components/StateViews.tsx",
+        "bytes": 5072,
+        "sha256": "65ecf2cd8206158f37984e12adf07e4e9502146cb188a2ef9628bc9e1508d93e"
+      },
+      {
+        "path": "ui/src/components/StatusBadge.tsx",
+        "bytes": 2060,
+        "sha256": "24906364c5867fbccbebb913e72f9aecf302de580b3828d1e59ff605b4285490"
+      },
+      {
+        "path": "ui/src/components/StoryWorldPanel.tsx",
+        "bytes": 20315,
+        "sha256": "4e85d441d9c1c308aec982a7bd21205dd291704a18628a9eb8c55e3d7ef74be1"
+      },
+      {
+        "path": "ui/src/components/StoryboardPanel.tsx",
+        "bytes": 10952,
+        "sha256": "b0efe86d18265beb95fa5867e329bd8676f4c794c853db99c1f1b174e5133173"
+      },
+      {
+        "path": "ui/src/components/StoryboardViewer.tsx",
+        "bytes": 18102,
+        "sha256": "103844d051596d1964369180635a21631d51ca439914e4ad78e5919a22275c72"
+      },
+      {
+        "path": "ui/src/components/TaskProgressCard.tsx",
+        "bytes": 2453,
+        "sha256": "e225a560eb1b03cd38e0d0cb56d01c8c8d99ba238d6e3473ce60d1b2553212ff"
+      },
+      {
+        "path": "ui/src/components/VariationalReview.tsx",
+        "bytes": 6646,
+        "sha256": "a4ec1d6849eb049b332c644ec556d5799c0e7a5b9a55a539ca9510d71b6e81f4"
+      },
+      {
+        "path": "ui/src/components/VisualMediumCard.tsx",
+        "bytes": 1825,
+        "sha256": "2873fd4185a258b550b45e545c0dd762caf35baabea11d389cb7ac61b27ab1dd"
+      },
+      {
+        "path": "ui/src/components/assets/AssetWaveform.tsx",
+        "bytes": 794,
+        "sha256": "6fc69c24988ce73c4ce146bc018a42996d99c577281340f625cfb69cf6aeaa82"
+      },
+      {
+        "path": "ui/src/components/assets/EntityReferenceStudio.tsx",
+        "bytes": 2291,
+        "sha256": "6c091013a5ae646d7803f29a9124cbfbc586977141ea6821cfa91c0a540fe473"
+      },
+      {
+        "path": "ui/src/components/assets/ReferenceLibraryBrowserPanel.tsx",
+        "bytes": 1103,
+        "sha256": "d50fbb2970096de8898b01dd2ecd1265ab0cd367d1ee6a80b36f5808ce4499ad"
+      },
+      {
+        "path": "ui/src/components/assets/ReferenceLibraryCard.tsx",
+        "bytes": 5539,
+        "sha256": "a0489c2ed5bd3ba90bdba214f2603935e4b2a3ef8b9c9a1671b74110b3071880"
+      },
+      {
+        "path": "ui/src/components/assets/ReferenceLibraryFilterBar.tsx",
+        "bytes": 1576,
+        "sha256": "9e0842eebe019cedf27b9731d30913c0ffff3b0e6cd49c021a69235e12e96f67"
+      },
+      {
+        "path": "ui/src/components/assets/ReferenceLibraryGrid.tsx",
+        "bytes": 1354,
+        "sha256": "9abc2f589eb771cfb667ade88677531020aa6cd06a2a0d42c74bffeb507a45ba"
+      },
+      {
+        "path": "ui/src/components/assets/ReferenceLibraryHeader.tsx",
+        "bytes": 1549,
+        "sha256": "36ca205d70179ef59f905d90808f0b4e3c02fcbbee3fc3b57839503cfc38e98f"
+      },
+      {
+        "path": "ui/src/components/assets/ReferenceLibraryPreviewDialog.tsx",
+        "bytes": 4567,
+        "sha256": "16b10599bd37918a48a4728cd4e6c82c098df48339e82a9324193e74355a082b"
+      },
+      {
+        "path": "ui/src/components/assets/ReferenceLibrarySection.tsx",
+        "bytes": 3665,
+        "sha256": "1d8a8c78c103470ca04d2536c84d27ab702d6e4408ccf383c4302b9fc05f3214"
+      },
+      {
+        "path": "ui/src/components/assets/ReferenceLibraryUploadPanel.tsx",
+        "bytes": 9933,
+        "sha256": "957febda35d0b01a91dba49035e9006e84e2287b647403fd874c9d3727b2d40d"
+      },
+      {
+        "path": "ui/src/components/assets/reference-library-model.ts",
+        "bytes": 9059,
+        "sha256": "4fafc994dedfc40551de0051b1dbd75406b9b580796e096a419d63b56e91eece"
+      },
+      {
+        "path": "ui/src/components/assets/useReferenceLibraryMutations.ts",
+        "bytes": 3028,
+        "sha256": "fe18eaca08964a54986dbf58e52b2010220da415dc888020789f27c0fb85e077"
+      },
+      {
+        "path": "ui/src/components/assets/useReferenceLibraryViewModel.ts",
+        "bytes": 1967,
+        "sha256": "d1cf3f7cceca0315f8edd797ad840056af7ae14fb91c130837accf7251c9e90c"
+      },
+      {
+        "path": "ui/src/components/chat/ActionButton.tsx",
+        "bytes": 7046,
+        "sha256": "555d2c9eb9a8665799f5ed92be0b46a628f67ad0ef40b46683ccd263a3fe0c1d"
+      },
+      {
+        "path": "ui/src/components/chat/ChatMessageItem.tsx",
+        "bytes": 11254,
+        "sha256": "72fa67682825f604f8c95b9437fbba02b6eefdb9b4c2a842152c67a5613346db"
+      },
+      {
+        "path": "ui/src/components/chat/Composer.tsx",
+        "bytes": 11969,
+        "sha256": "f32617af9ba3353df145eeafd8f8d316ccb2a7e9f8ed73b4c7c94dd435a01367"
+      },
+      {
+        "path": "ui/src/components/chat/InteractionModeSelector.tsx",
+        "bytes": 1915,
+        "sha256": "632b68a41b96b0638513b1d203e46db7d8f860d8c6402c4be28498ad815375b0"
+      },
+      {
+        "path": "ui/src/components/chat/ToolIndicator.tsx",
+        "bytes": 537,
+        "sha256": "505f161637f4f5a8a1f560badc869ba780151c0fd34482eb039b0fcc90bbabe8"
+      },
+      {
+        "path": "ui/src/components/chat/config.ts",
+        "bytes": 3757,
+        "sha256": "7137178bbc8812b645cc617a31d2d568781083806c19c1c292a317949995a717"
+      },
+      {
+        "path": "ui/src/components/entity-list-config.tsx",
+        "bytes": 3856,
+        "sha256": "6eb8bc6e75ccda84e6dd5cf11472f1dcf0c884a52284820516975e1603328e32"
+      },
+      {
+        "path": "ui/src/components/intent/CreativeBriefPreviewCard.tsx",
+        "bytes": 3439,
+        "sha256": "627ef305a675091e46f6e010ab53427065f10c2c56474d339e49a5de2420ce06"
+      },
+      {
+        "path": "ui/src/components/intent/IntentTasteStackFields.tsx",
+        "bytes": 6353,
+        "sha256": "19e6b40899d0e119db62eed1dfcb7add34bd9cd4c3626ef0027a51222c3de75a"
+      },
+      {
+        "path": "ui/src/components/preview-provenance.ts",
+        "bytes": 4162,
+        "sha256": "be8c28ace351cd00bc51cd3cf4511e2c8bb82db13b51024bd38c89ca70e68e04"
+      },
+      {
+        "path": "ui/src/components/previz-panel-support.ts",
+        "bytes": 3031,
+        "sha256": "b4af6e51503e6765321cb7badb1285d00501cc3c433b8a0550a443d9fa610730"
+      },
+      {
+        "path": "ui/src/components/render-utils.ts",
+        "bytes": 3048,
+        "sha256": "352c1dd9d7dc5282712f515b5be46afac9031e21d5d23be5eeb6cc1455dc7a6b"
+      },
+      {
+        "path": "ui/src/components/ui/badge.tsx",
+        "bytes": 1761,
+        "sha256": "87c71b49f210e41a7f4f43990c7382442792b1bedba12ac9e37a5aa1b930acf5"
+      },
+      {
+        "path": "ui/src/components/ui/button.tsx",
+        "bytes": 2391,
+        "sha256": "9606056be296d2979e4e8391fadeb6fc7292bf42707f0a7c715161ed4734cb7e"
+      },
+      {
+        "path": "ui/src/components/ui/card.tsx",
+        "bytes": 1987,
+        "sha256": "2040cdff27cd1ed771e0ebbd15abcd73d31f2f1e4be6664bd6816fffd2a87476"
+      },
+      {
+        "path": "ui/src/components/ui/collapsible.tsx",
+        "bytes": 781,
+        "sha256": "eb4ee2a9ddb3c566c509753a79e4f4c9425d9f8474d55f61f8c8694928b6a509"
+      },
+      {
+        "path": "ui/src/components/ui/command.tsx",
+        "bytes": 4804,
+        "sha256": "416cdc19eb9e7301b51f9665b4f1a797534769a6bb58a563808979f460b0b8a2"
+      },
+      {
+        "path": "ui/src/components/ui/dialog.tsx",
+        "bytes": 4294,
+        "sha256": "8911226ab300c5460f771c31f962cd9985b9d8da05d5d335ac95dadeaab94d22"
+      },
+      {
+        "path": "ui/src/components/ui/input.tsx",
+        "bytes": 962,
+        "sha256": "56b7fd30208addbcc2468cfda4f5bc0a55342211deaab61ee35b1c352b1622f1"
+      },
+      {
+        "path": "ui/src/components/ui/popover.tsx",
+        "bytes": 2343,
+        "sha256": "21cebf45021c0a367b9941c895d61a36275636ea176961647c8dac1bea6df926"
+      },
+      {
+        "path": "ui/src/components/ui/resizable.tsx",
+        "bytes": 1801,
+        "sha256": "d8a806ebbd628f3d0ceafe99754a4f59de9ee5804dc8c44769817863c39c8304"
+      },
+      {
+        "path": "ui/src/components/ui/scroll-area.tsx",
+        "bytes": 1969,
+        "sha256": "663ef36a059f06a2af8badf3e55ae0157b99fc37a1b21e68bf6ab432e3e85775"
+      },
+      {
+        "path": "ui/src/components/ui/select.tsx",
+        "bytes": 6353,
+        "sha256": "9b8551781236b51cc744419501208b1846407e4d6973b31180d97613206a20d0"
+      },
+      {
+        "path": "ui/src/components/ui/separator.tsx",
+        "bytes": 680,
+        "sha256": "a0fabdb146d42345e5f3396e786f4f003344798de45f3bf33cbda70176028c95"
+      },
+      {
+        "path": "ui/src/components/ui/sheet.tsx",
+        "bytes": 4188,
+        "sha256": "da11633018b8af9a11eb86a0d64cd63eee031ef86a84ff35e9735f6d35333d49"
+      },
+      {
+        "path": "ui/src/components/ui/skeleton.tsx",
+        "bytes": 276,
+        "sha256": "f2aea81d8baf2b621945382aabac150e3db40f20d19ac1abea7aff805f1dc33c"
+      },
+      {
+        "path": "ui/src/components/ui/sonner.tsx",
+        "bytes": 1102,
+        "sha256": "3253a4b0af4ea5cd36b68d3925711c87f1317d894a2b123a0af5a101980d702b"
+      },
+      {
+        "path": "ui/src/components/ui/tabs.tsx",
+        "bytes": 4160,
+        "sha256": "543415388fe566c0d988fc4382fefab0d6fafaab7fe2e0650203f7414b05c039"
+      },
+      {
+        "path": "ui/src/components/ui/textarea.tsx",
+        "bytes": 759,
+        "sha256": "de4e9fb0fd8e8ed10ea2e475ffe202a922ffe77e3f3edb2c517b0781447ad1b4"
+      },
+      {
+        "path": "ui/src/components/ui/tooltip.tsx",
+        "bytes": 1830,
+        "sha256": "4deaee9de7ae94a6511df1d5cc715cd037f3730c24265af0b0e01f58d9270d70"
+      },
+      {
+        "path": "ui/src/components/use-previz-artifacts.ts",
+        "bytes": 8509,
+        "sha256": "c09500c3e24384c589157ac1952bb7641f3160e4a837241449cc690f499fcefe"
+      },
+      {
+        "path": "ui/src/index.css",
+        "bytes": 14455,
+        "sha256": "100e07815aa590c79f88599e25706db922993242bba2a1e0a5d99397078c3f5f"
+      },
+      {
+        "path": "ui/src/lib/api.ts",
+        "bytes": 423,
+        "sha256": "a32c981cb7e49f8155fef8257750a80685e63973b8b296cdb66d8ca6becf7e67"
+      },
+      {
+        "path": "ui/src/lib/api/artifacts.ts",
+        "bytes": 2726,
+        "sha256": "a5b67d829173a9779845accb21f5bf8ada70b04ee81f150a02a59c8a1833e5fd"
+      },
+      {
+        "path": "ui/src/lib/api/assets.ts",
+        "bytes": 4329,
+        "sha256": "ca12edfec0988112435b9fd91520fdc4e1b1fefbf80117b508c16afe0f0dad79"
+      },
+      {
+        "path": "ui/src/lib/api/chat.ts",
+        "bytes": 3821,
+        "sha256": "c0c87213f7122e1da83bac6d8be858bb12b6a46cd8c1cb4bd1284a740d6806b6"
+      },
+      {
+        "path": "ui/src/lib/api/core.ts",
+        "bytes": 2244,
+        "sha256": "e69eb718510e3130c3aca4ef860cfc345f88ef461270c70e8fe7c4240e92a27d"
+      },
+      {
+        "path": "ui/src/lib/api/design-study.ts",
+        "bytes": 3299,
+        "sha256": "78c86a0ac83129a9f0934ae20f6c7de10dee088d13d8f2a51001e35099717716"
+      },
+      {
+        "path": "ui/src/lib/api/exports.ts",
+        "bytes": 6846,
+        "sha256": "2128e078e01dcb1c69fbd4c0c0b6a4a1aea63fb48baedcf2ab5b625b7cc9fff7"
+      },
+      {
+        "path": "ui/src/lib/api/intent-mood.ts",
+        "bytes": 3962,
+        "sha256": "7cfaaef1f444fdaa16265c10b7cd23d1caae3301954039c5f20893606dec7303"
+      },
+      {
+        "path": "ui/src/lib/api/media-generation.ts",
+        "bytes": 600,
+        "sha256": "2fab851707f161af3c6b4335f1dadb08f501fc5af42ef9bdfc3fdde27cd8a320"
+      },
+      {
+        "path": "ui/src/lib/api/preferences.ts",
+        "bytes": 474,
+        "sha256": "572b0ea6b6145249f36709d656fcb3990f72b701b5c2d5191867c37db62c968f"
+      },
+      {
+        "path": "ui/src/lib/api/projects.ts",
+        "bytes": 3755,
+        "sha256": "9d7b8f06483eb2453e2057a9fb6d9f4f6dce4b86683c3e5e4f1077a7cd08bd15"
+      },
+      {
+        "path": "ui/src/lib/api/runs.ts",
+        "bytes": 1968,
+        "sha256": "ae46959987c37ea9a6e604f5ef7f2b729364ab212aba8e888c1f7f45750eff4a"
+      },
+      {
+        "path": "ui/src/lib/api/scene-actions.ts",
+        "bytes": 483,
+        "sha256": "b6e2d3d596ed6aee8f15b9fd4388787352f857b7cb595f75f525232c4a26a296"
+      },
+      {
+        "path": "ui/src/lib/api/style-packs.ts",
+        "bytes": 2018,
+        "sha256": "91bcdef06c85ab6e07a461961d02da3e84a567b3678863b09893b25a63841ade"
+      },
+      {
+        "path": "ui/src/lib/api/system.ts",
+        "bytes": 548,
+        "sha256": "333112b01ee779d1886cad6a304e466424757fa9d5f9ced07aacd106a4d7e244"
+      },
+      {
+        "path": "ui/src/lib/app-theme-context.ts",
+        "bytes": 693,
+        "sha256": "dc21bae6a36425e5a9d680961e638205c1c038c3adbb230dc0829741ea19b392"
+      },
+      {
+        "path": "ui/src/lib/artifact-meta.ts",
+        "bytes": 3432,
+        "sha256": "21c2b05473d3dea7f3f8e364a6fd41c9d1c9637b8389766df6361ee585c7ada9"
+      },
+      {
+        "path": "ui/src/lib/chat-action-state.ts",
+        "bytes": 1905,
+        "sha256": "4348599db157816907a793c532e8bc21fd9077ff6d9cc9ad79fb41c215f60f19"
+      },
+      {
+        "path": "ui/src/lib/chat-intents.ts",
+        "bytes": 1216,
+        "sha256": "0a02f799a5e8c82da0a408897065e54e77bff2141315fc741ae47d73ada97724"
+      },
+      {
+        "path": "ui/src/lib/chat-load-state.ts",
+        "bytes": 784,
+        "sha256": "13378110d26e383894dc544ea792e9edeb992fdd6544d4261e431758ce1a6992"
+      },
+      {
+        "path": "ui/src/lib/chat-messages.ts",
+        "bytes": 11552,
+        "sha256": "47804f8e708b262b5adc6e506c840c9032c9cd51fcd56ca540784a9a0ae7d7cc"
+      },
+      {
+        "path": "ui/src/lib/chat-store.ts",
+        "bytes": 20535,
+        "sha256": "33a297ba4b7e572ea395ad59ed5b61b9c4599376935af0ca7f3a690852c8de2f"
+      },
+      {
+        "path": "ui/src/lib/constants.ts",
+        "bytes": 12993,
+        "sha256": "9b947a4a1a9c1deae2a0a236fc7fcef18cf7470d63e067e9a895f5e1abd3ec80"
+      },
+      {
+        "path": "ui/src/lib/cost-format.ts",
+        "bytes": 363,
+        "sha256": "c0d1589bfae0b668599cded5669255cb38e19aac637bdad6fb9e09e4fb7fc50a"
+      },
+      {
+        "path": "ui/src/lib/cost-types.ts",
+        "bytes": 4062,
+        "sha256": "22f9c489ca76d0e165ccb3bf55be33c4cd7b7f90797021a219a28a52accda003"
+      },
+      {
+        "path": "ui/src/lib/design-study-status.ts",
+        "bytes": 2269,
+        "sha256": "e6c916786cb4837c8783a165d72a935660d5c6638f44c2af1bb4640ad3648093"
+      },
+      {
+        "path": "ui/src/lib/format.ts",
+        "bytes": 983,
+        "sha256": "73ffc79f5c1780a076542280630cb204a0f2c1d4caa11dac40f67398e653acbc"
+      },
+      {
+        "path": "ui/src/lib/glossary.ts",
+        "bytes": 2263,
+        "sha256": "babb16aaf54e12a719ff547649b365d663032869212401e38bd177f41d8c7850"
+      },
+      {
+        "path": "ui/src/lib/health.ts",
+        "bytes": 4375,
+        "sha256": "4896658a355dd28aab60bdfe5d9563cf1155d53f0be20658adf1763dd50ac103"
+      },
+      {
+        "path": "ui/src/lib/hooks.ts",
+        "bytes": 324,
+        "sha256": "0f38b2b3efe78e2f47868a9ad1c104b163767f8f1403e10b6c605a451ff1f799"
+      },
+      {
+        "path": "ui/src/lib/hooks/artifacts.ts",
+        "bytes": 6936,
+        "sha256": "1361ea290c7288ecde1663bd3edc8552c930c02da2e87b51d9e85174d13b8576"
+      },
+      {
+        "path": "ui/src/lib/hooks/assets.ts",
+        "bytes": 2837,
+        "sha256": "3b3edc3594261f132a4f33162f9bb4fe28a4675e13848ee6667e3f4bffff56db"
+      },
+      {
+        "path": "ui/src/lib/hooks/chat.ts",
+        "bytes": 2672,
+        "sha256": "17d74112e5026fd52b199fa38d84d4709e3904ba5786dbb2549ca68663cffb09"
+      },
+      {
+        "path": "ui/src/lib/hooks/entities.ts",
+        "bytes": 12850,
+        "sha256": "5e577b2e3746ead1ad2c2f1f9218c8f602618681961cb671f7af9284e6eb6ece"
+      },
+      {
+        "path": "ui/src/lib/hooks/export.ts",
+        "bytes": 954,
+        "sha256": "8dd00af6e3272f8c3fa6fa6b86dfc533dc26f0b320ce1eac6bc789e27a9bd254"
+      },
+      {
+        "path": "ui/src/lib/hooks/media-generation.ts",
+        "bytes": 5601,
+        "sha256": "d8072caba6266c9e1c716385334a5177c5db0f5a9942c0637e428c4c14834763"
+      },
+      {
+        "path": "ui/src/lib/hooks/media-preparation.ts",
+        "bytes": 4744,
+        "sha256": "03278b8f64e599e7d70548c1906431e152da4f1deb77bbf4c74142394287b25a"
+      },
+      {
+        "path": "ui/src/lib/hooks/navigation.ts",
+        "bytes": 4069,
+        "sha256": "5fc4e8a74ac8a3b35990e5a227f5e9e74e85697c33a7fda11475f40330f1d346"
+      },
+      {
+        "path": "ui/src/lib/hooks/projects.ts",
+        "bytes": 4094,
+        "sha256": "14fd3b1df6cf1c4847c85843f702e96d385da5b730c3074ebb08bb7dc417cb13"
+      },
+      {
+        "path": "ui/src/lib/hooks/runs.ts",
+        "bytes": 5674,
+        "sha256": "6d66a15f05e6a62eb4ec988ad1dfeed9b52019f53d2a4d3c9e2d0dab5cd4889c"
+      },
+      {
+        "path": "ui/src/lib/hooks/scene-actions.ts",
+        "bytes": 657,
+        "sha256": "3da5fa03171263ceaa1597bee9fa6dfcf3678c5b1fbc0eba2add4b6b67fa996d"
+      },
+      {
+        "path": "ui/src/lib/hooks/search.ts",
+        "bytes": 576,
+        "sha256": "78ab2f951e14ec1dbc65000feb06a2cba9665c2b56f0ef327a8c724a14a042ea"
+      },
+      {
+        "path": "ui/src/lib/inbox-utils.ts",
+        "bytes": 1251,
+        "sha256": "0f1c00d83192d8cb701039397ab484d665be330285022727c91c5f4d9f97427b"
+      },
+      {
+        "path": "ui/src/lib/media-generation-policy.ts",
+        "bytes": 3431,
+        "sha256": "bd7117308820419af6aa55378a8b3b32cee4ade5281a96b12e620131c50fdb1d"
+      },
+      {
+        "path": "ui/src/lib/media-generation-types.ts",
+        "bytes": 1201,
+        "sha256": "ae1316d164602b6f22a24b3372ea85bbf00dc3ba2c1f2c061525d72b57d49ea4"
+      },
+      {
+        "path": "ui/src/lib/notifications.ts",
+        "bytes": 3218,
+        "sha256": "9295e8f3dc06c853434c78e031b89ac16d8cf8309e937d2bf1f184d46ecfc192"
+      },
+      {
+        "path": "ui/src/lib/operation-store.ts",
+        "bytes": 2873,
+        "sha256": "d69977b3d06e010001f01942a36d866bb4124e47a999adc3b97f064d79efff85"
+      },
+      {
+        "path": "ui/src/lib/previz-types.ts",
+        "bytes": 1221,
+        "sha256": "4ff724b30c022493a9ec2ac2cde785884e6e7aeaae18d1f38f5c6f40a6a5d41b"
+      },
+      {
+        "path": "ui/src/lib/production-format.ts",
+        "bytes": 1308,
+        "sha256": "1daa5f7b67305e80808f3dc807b9ebbc20d7d6d24ff86050a1c07728dda1d72e"
+      },
+      {
+        "path": "ui/src/lib/project-models.ts",
+        "bytes": 2718,
+        "sha256": "c03f536002d11dffc14234882aab52d8af6351e0b252bd6abdec0dda2e2f96a3"
+      },
+      {
+        "path": "ui/src/lib/right-panel-context.ts",
+        "bytes": 485,
+        "sha256": "edf2b1ff35e2aa93163c62fe9b985085ebe65582dd82c4ead2a275fa740f2da4"
+      },
+      {
+        "path": "ui/src/lib/right-panel.tsx",
+        "bytes": 1112,
+        "sha256": "12b9684b56c9f887e1a9c9a3d0a7bc633266d3b70709196dafd16a5e73ebdff5"
+      },
+      {
+        "path": "ui/src/lib/run-actions.ts",
+        "bytes": 1284,
+        "sha256": "26be05e9d5aeb41c1fa9b5ecabf38e6f28294a894b92a10ca83ff84b4e6f76ea"
+      },
+      {
+        "path": "ui/src/lib/run-failure-messages.ts",
+        "bytes": 1451,
+        "sha256": "34bfe70848b11be41afe8174f0b11cc4e0a1f2d33f34a3ac0490285827d158f8"
+      },
+      {
+        "path": "ui/src/lib/run-progress-recovery.ts",
+        "bytes": 1475,
+        "sha256": "527f69dfe9be54f74f167ec363c5a54ece674201c9de038b399dcf20de62e850"
+      },
+      {
+        "path": "ui/src/lib/scene-workflow.ts",
+        "bytes": 4054,
+        "sha256": "1a282e265b4d72015c7e2938897bb7671404d4203655f25168c9669946d0d268"
+      },
+      {
+        "path": "ui/src/lib/shortcuts.ts",
+        "bytes": 5347,
+        "sha256": "9865b6e3064b569b2a4bc74435de3d7f30f79b3b94be91bf2dce336c28b53ffd"
+      },
+      {
+        "path": "ui/src/lib/store.ts",
+        "bytes": 409,
+        "sha256": "f607a8867d2567db65ceb749d36272f664856110cd326a13eb8f563a4505ba90"
+      },
+      {
+        "path": "ui/src/lib/theme.ts",
+        "bytes": 3273,
+        "sha256": "0a7e95af10a7a461c6af21543844b8c783949c7ca9440de930b38386b2adf7f7"
+      },
+      {
+        "path": "ui/src/lib/types.ts",
+        "bytes": 15837,
+        "sha256": "79879917607a35f1f7dca4de1abd73a90210d561717457a26f1de4904976d996"
+      },
+      {
+        "path": "ui/src/lib/use-history-back.ts",
+        "bytes": 950,
+        "sha256": "34b2450b04636c52fa57d36096276dbe721b1bdb413829d897e002636b7da4c7"
+      },
+      {
+        "path": "ui/src/lib/use-long-running-action.ts",
+        "bytes": 4924,
+        "sha256": "3659a40feda8e1bb396c05d1ac5918a6caafb29f793ca7786af6138857425c08"
+      },
+      {
+        "path": "ui/src/lib/use-mobile.ts",
+        "bytes": 836,
+        "sha256": "88be0751a0e3441465fcbe9093c75a8298d3a3b916e72310ac114bd2b1ac6cb3"
+      },
+      {
+        "path": "ui/src/lib/use-right-panel.ts",
+        "bytes": 275,
+        "sha256": "fc0c4ecacd648437ed941724e08643e29ac442d611fcf73b4cd4900d9b9c4df5"
+      },
+      {
+        "path": "ui/src/lib/use-run-progress.ts",
+        "bytes": 34855,
+        "sha256": "77170d5a5df96c25b532259d29b7a769403f888fd4dfa33a9cc02786d2ae53ee"
+      },
+      {
+        "path": "ui/src/lib/utils.ts",
+        "bytes": 360,
+        "sha256": "bce8893c30229a3e44522cc17249e679160c8e3f9499fafb3b36da5b1d1cf9a4"
+      },
+      {
+        "path": "ui/src/main.tsx",
+        "bytes": 230,
+        "sha256": "6e9e5807fcbd48b75a96db5cbef36c996262196be42e6d4760dc86babbe61ad2"
+      },
+      {
+        "path": "ui/src/pages/ArtifactDetail.tsx",
+        "bytes": 22657,
+        "sha256": "d8d030f9b8b7ad427218bf61f1564528441775a5a25b1151bee57e3dcf8cb00d"
+      },
+      {
+        "path": "ui/src/pages/ContinuityPage.tsx",
+        "bytes": 7405,
+        "sha256": "71ab774fe96aac49987471a8c97cf3942a6467d9fdb2c1a5ec7a3260d80cbf67"
+      },
+      {
+        "path": "ui/src/pages/EntityDetailPage.tsx",
+        "bytes": 32802,
+        "sha256": "2ab6a00c73265ed8152b0514e4c079cd2be86c927b422923705817a119a8f5de"
+      },
+      {
+        "path": "ui/src/pages/EntityListPage.tsx",
+        "bytes": 18887,
+        "sha256": "ea96623e852bb2e4ce19e73d7d09f126d00b833efe3bccf2f5b95fea911d393d"
+      },
+      {
+        "path": "ui/src/pages/IntentMoodPage.tsx",
+        "bytes": 26071,
+        "sha256": "f42f801112e8c4e347c76f2a17b8ee0eba757bd697c87aaa41cadc990a40a410"
+      },
+      {
+        "path": "ui/src/pages/Landing.tsx",
+        "bytes": 11774,
+        "sha256": "bad6719e4b532722be0ea8cf8b224be192cf94d0ff62212886ff9fe2623d3184"
+      },
+      {
+        "path": "ui/src/pages/NewProject.tsx",
+        "bytes": 9122,
+        "sha256": "08392fe4b31d054bdd76e999d0da1481b9a566034fafa819489a87990d5600a0"
+      },
+      {
+        "path": "ui/src/pages/ProjectArtifacts.tsx",
+        "bytes": 5250,
+        "sha256": "47d547afd64b8946a0123a0f2b0dc3d9bc2e63c7853cf34a5829b37d307466eb"
+      },
+      {
+        "path": "ui/src/pages/ProjectHome.tsx",
+        "bytes": 7978,
+        "sha256": "15588a1c50afb7870ba05a9ea0b6b7ab1105da6367f23cdd2e8e2cd062b4050b"
+      },
+      {
+        "path": "ui/src/pages/ProjectInbox.tsx",
+        "bytes": 17169,
+        "sha256": "828d5ae3f94765362c0e46b648a6550feea7e380e443234840d2fe653c822d5a"
+      },
+      {
+        "path": "ui/src/pages/ProjectRun.tsx",
+        "bytes": 33207,
+        "sha256": "fd2cba355a1c0b7f655a4e68da64b4aeccc9c29e457f508dd5d66e932f9db55f"
+      },
+      {
+        "path": "ui/src/pages/ProjectRuns.tsx",
+        "bytes": 5538,
+        "sha256": "7c109d09171fff3f6eeb27993e4fb8bb1cf2531a5b05595e836ddee4f780d2a2"
+      },
+      {
+        "path": "ui/src/pages/RunDetail.tsx",
+        "bytes": 23411,
+        "sha256": "b4be95429978619d6ffc42e21cf489ad37999c0d4611619840244b7c95bdc81f"
+      },
+      {
+        "path": "ui/src/pages/SceneWorkspacePage.tsx",
+        "bytes": 35799,
+        "sha256": "d23c3ab94b4389084480837754ba204baae021f8dcca6415ee58dfc173050a4f"
+      },
+      {
+        "path": "ui/src/pages/ThemeShowcase.tsx",
+        "bytes": 13820,
+        "sha256": "89f95ee835cdc6f3bb7595f81227405f65832a3231aa024fe26abd8e5f79df01"
+      },
+      {
+        "path": "ui/tests/chat-load-state.test.ts",
+        "bytes": 1118,
+        "sha256": "0fc99d253d711a7ada874caa87a272edffb003bf97fae1d8964ea90a4ddafb3c"
+      },
+      {
+        "path": "ui/tests/chat-next-step-guidance.test.ts",
+        "bytes": 729,
+        "sha256": "1fdcecdc7bfe66c465d26fcf96cddb87d05682a11c05f14b9c3bde6d763a330a"
+      },
+      {
+        "path": "ui/tests/design-study-status.test.ts",
+        "bytes": 3232,
+        "sha256": "d0344aa8dc79aef480c5812c5090f87470769756675295c6866ef8f1366be44d"
+      },
+      {
+        "path": "ui/tests/fixtures/media-validation-needs-review.json",
+        "bytes": 920,
+        "sha256": "a64f35c73adae86aa8ecaba98732bc7ff56c7900c8d37d79b229fc8a96b9ad84"
+      },
+      {
+        "path": "ui/tests/media-generation-policy.test.ts",
+        "bytes": 8115,
+        "sha256": "bc823c799e9fa0a8b9b32b99a14010afb8a365a328f08df958333d3dadf93f0c"
+      },
+      {
+        "path": "ui/tests/media-validation-health.test.ts",
+        "bytes": 4575,
+        "sha256": "61add5fbba55f5c4802919f5cd1d178fd9067f49691cb5dd468f55dd83021f07"
+      },
+      {
+        "path": "ui/tests/run-progress-recovery.test.ts",
+        "bytes": 1734,
+        "sha256": "559dc5376c73bd0af4d2ba383b6f50ae8bfb9392ced189834968771d3c55d65e"
+      },
+      {
+        "path": "ui/tests/scene-workflow-guide.test.ts",
+        "bytes": 1836,
+        "sha256": "6c0ec15064dca9bc5d9cf3de5366a071b3b9c72c4bb6bc8a531d128e37c9f738"
+      },
+      {
+        "path": "ui/tests/scene-workspace-routes.test.ts",
+        "bytes": 2758,
+        "sha256": "59e58394293614aab663d546e77ec1d45d5a988f55005dc485b5a6de75e20bf3"
+      },
+      {
+        "path": "ui/tsconfig.app.json",
+        "bytes": 799,
+        "sha256": "54a3308992304832bea28b20df9111fa62e2bc81b9ced3720da813bae01cbe27"
+      },
+      {
+        "path": "ui/tsconfig.json",
+        "bytes": 213,
+        "sha256": "3f24c40e2f822c632d0448261986f1422a255dc00733640a1f7a565afb42d740"
+      },
+      {
+        "path": "ui/tsconfig.node.json",
+        "bytes": 653,
+        "sha256": "c3dd0fb522feba3596713f51b95bd53d781d845d24aedbfa2ac093d8b39c5120"
+      },
+      {
+        "path": "ui/vite.config.ts",
+        "bytes": 1021,
+        "sha256": "08ab0e83585fea53e6444165c2d81b8728fdec2cda37d961174c229313e09aa4"
+      }
+    ]
+  },
+  "preparation_lifecycle_review": {
+    "complete": "Requires terminal timestamp and nonempty selected stage_order including render_clip_planning, with every selected stage done or skipped_reused.",
+    "paused": "Never emits success or automatically inspects; surfaces the existing run-details Resume route. The paused notification does not mark chat completion, and same-run resume can later complete.",
+    "pending": "Pending or missing selected stage evidence never emits preparation success.",
+    "existing": "An existing clip plan with an empty executed interval is explicitly described as existing work, not newly completed preparation. A loaded preflight starting after clip planning now inspects existing work without queuing this empty interval.",
+    "deterministic_probe": "media-generation-policy.test.ts covers paused with finished_at, pending selected stage, success with unselected downstream pending, skipped_reused success, incomplete empty interval, observed empty interval with existing plan and all recipe stages pending, missing selected stage, explicit failure, background error, and preflight-guided reuse.",
+    "browser_boundary": "Earlier normal success/mobile browser evidence is retained above. This UI agent did not perform a live budget-paused browser test."
+  },
+  "closeout_note": "Two extra EOF blank lines removed after validation; semantic content unchanged. Full tested UI checks remain applicable."
+}

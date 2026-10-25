@@ -123,6 +123,8 @@ def create_app(
     readiness.set_service(service)
     scene_actions.set_service(service)
     style_packs.set_service(service)
+    from cine_forge.api.routers import media_execution_plans
+    app.include_router(media_execution_plans.router, prefix="/api")
     app.include_router(assets.router, prefix="/api")
     app.include_router(costs.router, prefix="/api")
     app.include_router(export.router, prefix="/api")
