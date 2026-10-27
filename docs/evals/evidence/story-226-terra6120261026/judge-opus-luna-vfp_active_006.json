@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.01722",
+  "latency_ms": 8676,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1322,
+    "path": "output/evals/terra61-20261026/judge-opus-luna-vfp_active_006-raw.json",
+    "sha256": "4779cc21b4d83dff090cb7555b78f9b65b39049fc0a44ba9cc018fa85ac87428"
+  },
+  "reason": "The model correctly identifies the cyan figure moving left-to-right, the curved arch, diagonal lines, teal/navy color palette, static camera, intact continuity, and the small rectangle staying with the figure. However, it describes the motion as 'measured' rather than 'fast_lateral', which is a meaningful mismatch given the figure traverses most of the frame width across 5 samples. It misses 'wide_master' camera tag. The tone is tagged as 'detached' rather than 'urgent' or 'tense', which is a significant mismatch. The description of the figure as a 'simple cyan figure' rather than a runner-like abstract shape is acceptable but slightly less precise. Audio fields are empty as required. Overall, the motion speed characterization and tone are notably wrong, preventing a passing score.",
+  "request_id": "msg_011CgRKpL3aUWmTZm11paYao",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2474,
+    "output_tokens": 194,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

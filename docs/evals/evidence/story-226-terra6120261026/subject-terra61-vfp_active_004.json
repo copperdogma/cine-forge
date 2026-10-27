@@ -1,0 +1,78 @@
+{
+  "arm": "terra61",
+  "name": "subject-terra61-vfp_active_004",
+  "response": {
+    "cached": false,
+    "cost": 0.00838925,
+    "latencyMs": 11924,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "prop_swap_continuity_break",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_004",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+      ],
+      "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6.1-terra",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_08b7e1e27540b04e016adf9bf3cd7887d0b2b27883a17f4797",
+      "requested_model": "gpt-6.1-terra",
+      "returned_model": "gpt-6.1-terra",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\n  \"clip_id\": \"vfp_active_004\",\n  \"summary\": \"A small outlined rectangle sits on a brown block against a dark background. Its fill changes from red to blue while the composition remains fixed.\",\n  \"tone_tags\": [\"detached\"],\n  \"emotion_tags\": [],\n  \"color_tags\": [\"navy\", \"red\"],\n  \"camera_tags\": [\"static\"],\n  \"motion_tags\": [\"stillness\"],\n  \"continuity_status\": \"ambiguous\",\n  \"continuity_notes\": [\n    \"The shapes and framing remain in the same positions across the samples.\",\n    \"The outlined rectangle changes from red to blue between frames 1 and 2; whether this is an intentional state change is unclear.\"\n  ],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A red, white-outlined rectangle is centered on a brown block against a dark navy background.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The outlined rectangle is blue, with the surrounding shapes in the same positions.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"The blue rectangle and brown blocks remain in the same arrangement.\"\n    }\n  ],\n  \"overall_confidence\": 0.94\n}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_08b7e1e27540b04e016adf9bf3cd7887d0b2b27883a17f4797",
+      "model": "gpt-6.1-terra",
+      "raw_envelope_bytes": 20672,
+      "raw_envelope_path": "output/evals/terra61-20261026/subject/terra61/vfp_active_004-raw-envelope.json",
+      "raw_envelope_sha256": "75251da9935579de95e181862067578ac3323c72edb6dd73aa52bbfe464836fc",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2892,
+        "input_tokens_details": {
+          "cache_write_tokens": 2889,
+          "cached_tokens": 0
+        },
+        "output_tokens": 955,
+        "output_tokens_details": {
+          "reasoning_tokens": 664
+        },
+        "total_tokens": 3847
+      }
+    },
+    "tokenUsage": {
+      "completion": 291,
+      "completionDetails": {
+        "reasoning": 664
+      },
+      "prompt": 2892,
+      "total": 3847
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/prop_swap_continuity_break",
+    "clip_id": "prop_swap_continuity_break",
+    "evaluation_id": "vfp_active_004",
+    "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+    "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+  }
+}

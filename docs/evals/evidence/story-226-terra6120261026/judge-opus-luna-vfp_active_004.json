@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.018605",
+  "latency_ms": 9879,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1478,
+    "path": "output/evals/terra61-20261026/judge-opus-luna-vfp_active_004-raw.json",
+    "sha256": "97babba6db8281a27ddd7705b3626d0f593ab74de88461535fb67182849e6b93"
+  },
+  "reason": "The summary correctly identifies the red-to-blue color change between frames 1 and 2 and the static composition. Color tags include 'navy' and 'red' matching the reference, but also include 'desaturated' which is not clearly supported. The model lists continuity_status as 'intact' while the reference says 'broken' due to the color change \u2014 this is a meaningful mismatch. The tone tag 'detached' is not supported by the reference (which says none). Emotion tags are correctly empty. Camera tags include 'static' which is correct, but miss 'wide_master'. Motion tags list 'stillness' rather than being empty as the reference specifies. Audio tags are empty which is correct, but audio_notes are also empty which is appropriate. The evidence is well-grounded with 3 entries referencing frames 0, 2, and 4. The main penalties are: continuity marked 'intact' instead of 'broken' (significant error), unsupported tone tag, and minor motion tag issue.",
+  "request_id": "msg_011CgRKnKcDfcK1XEZ2pEv8Q",
+  "score": 0.78,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2496,
+    "output_tokens": 245,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

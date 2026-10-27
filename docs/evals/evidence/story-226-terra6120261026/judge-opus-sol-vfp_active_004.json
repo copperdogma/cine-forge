@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.01837",
+  "latency_ms": 6898,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1373,
+    "path": "output/evals/terra61-20261026/judge-opus-sol-vfp_active_004-raw.json",
+    "sha256": "cea5e7605fb363a3f9d4e81a33b7c10a1ea1a90cb300b639a3918cd648bfaf6d"
+  },
+  "reason": "The summary correctly identifies the red-to-blue color change between frames 1 and 2 (indices 1\u21922) and the static scene. However, continuity_status is 'intact' while the reference says 'broken' (the color change constitutes a continuity break). The tone tag 'detached' is invented \u2014 reference has none. Color_tags include 'red' but miss that generic 'blue' shouldn't appear (it doesn't, so that's fine), but 'red' is acceptable. Camera_tags include 'static' which matches, but miss 'wide_master'. Motion_tags include 'stillness' which is not in the reference (reference has none). Audio_tags and audio_notes are correctly empty. Evidence is well-grounded with 4 entries covering relevant frames. The main penalties are: wrong continuity_status (intact vs broken), invented tone tag, invented motion tag, and missing wide_master camera tag.",
+  "request_id": "msg_011CgRKmnzDfAbZUjoBZtCbC",
+  "score": 0.78,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2554,
+    "output_tokens": 224,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

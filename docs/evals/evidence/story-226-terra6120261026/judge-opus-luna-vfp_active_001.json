@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.0211",
+  "latency_ms": 10604,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1852,
+    "path": "output/evals/terra61-20261026/judge-opus-luna-vfp_active_001-raw.json",
+    "sha256": "5e24e34d75d780de3efb14dbf9b0b18f5c8093ad0ef8873c25bf14ff3370088a"
+  },
+  "reason": "The summary correctly identifies two simplified figures on a dark ground, notes the small light rectangle on the right figure, and observes both figures gradually becoming slightly larger\u2014all matching the reference. Continuity is correctly marked as 'intact' with the rectangle persisting. Motion tag 'measured' matches. However, there are notable issues: (1) Tone is 'detached' and 'surreal' instead of the reference 'intimate'\u2014a mismatch. (2) Color tags include 'gold' which is acceptable for the pale/beige figure, but the reference specifies 'navy, teal' without gold; 'navy' and 'teal' are present which is good. (3) The emotion_tags are correctly empty. (4) Audio_tags are correctly empty but audio_notes are also empty, which is correct. (5) The evidence is grounded in frames 0, 2, and 4 which is acceptable (2-4 entries required). (6) The camera tag 'static' is listed\u2014the reference says camera is ambiguous and excluded from scoring, but asserting 'static' is not strongly wrong given no visible camera movement, though the reference notes the ambiguity around whether figure enlargement implies camera push-in. The tone mismatch ('detached'/'surreal' vs 'intimate') is a meaningful divergence. Overall the analysis is largely correct but the tone miss and minor color tag addition prevent a passing score.",
+  "request_id": "msg_011CgRKduj4wKsMemF9DRcM7",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2555,
+    "output_tokens": 333,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

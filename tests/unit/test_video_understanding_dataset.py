@@ -165,10 +165,14 @@ def test_registry_declares_active_policy_and_quarantines_historical_scores() -> 
         ("GPT-6 Luna / direct Responses low", 0.5299),
         ("Gemini 3.5 Flash-Lite", 0.4188),
     }
+    scout103 = [score for score in entry["scores"]
+                if score["evidence_status"].startswith("bounded-two-case-")]
+    assert len(scout103) == 3
+    assert all("20261026" in score["result_file"] for score in scout103)
     assert all(
         score["evidence_status"] == "contaminated-non-decision-grade"
         for score in entry["scores"]
-        if score not in decision_rows + recent_rejections + current_bounded
+        if score not in decision_rows + recent_rejections + current_bounded + scout103
     )
 
 

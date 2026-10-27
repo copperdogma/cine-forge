@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.0187",
+  "latency_ms": 6880,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1407,
+    "path": "output/evals/terra61-20261026/judge-opus-terra61-vfp_active_004-raw.json",
+    "sha256": "fdf0f3379a5b4b2263147933471fce514c5555b24e6ebf6793992ce181b7e62f"
+  },
+  "reason": "The summary correctly identifies the red-to-blue color change between frames 1 and 2, and the static composition. However, there are several issues: (1) continuity_status is 'ambiguous' instead of 'broken' \u2014 the reference clearly states continuity is broken due to the red-to-blue change. (2) motion_tags includes 'stillness' when the reference specifies no motion tags. (3) color_tags includes 'red' but misses that 'blue' should also be noted (though generic blue isn't in allowed color_tags, 'red' alone is incomplete). (4) tone_tags includes 'detached' when the reference specifies none. (5) camera_tags only has 'static' but misses 'wide_master'. (6) audio_tags and audio_notes are correctly empty. The evidence is well-grounded with correct frame references. The continuity_notes correctly describe the change but the wrong status classification is a significant error.",
+  "request_id": "msg_011CgRKmHAc1G3HWkMDRvXaS",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2575,
+    "output_tokens": 233,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

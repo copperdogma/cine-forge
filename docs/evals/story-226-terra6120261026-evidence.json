@@ -1,0 +1,381 @@
+{
+  "base_git_sha": "6e6783e47eec4d053452c83606e18dc6e96df312",
+  "date": "2026-10-26",
+  "files": [
+    {
+      "path": "benchmarks/results/video-understanding-terra61-vs-sol-luna-v4-20261026-v2.json",
+      "bytes": 14490,
+      "sha256": "73fd005e17aab30f5893fbd5ae1135dd3654a6807aaf6a83382ed89f2d6905b7"
+    },
+    {
+      "path": "benchmarks/results/video-understanding-terra61-vs-sol-luna-v4-20261026.json",
+      "bytes": 14365,
+      "sha256": "a6285e70993af01925761277d533f562701aeea07b55d8d6852ced859c7efa4f"
+    },
+    {
+      "path": "benchmarks/scripts/report_terra61_video_comparison.py",
+      "bytes": 6933,
+      "sha256": "a055dcf3933f60de81a98ababcaa477630956f28f0e05201210fe88563232c71"
+    },
+    {
+      "path": "benchmarks/scripts/run_terra61_video_comparison.py",
+      "bytes": 20433,
+      "sha256": "e0f4418c0b2fbff5e4f8547979dd6012cd680d990f02fc2018ac6d1559ff3c83"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/first-case-decision.json",
+      "bytes": 595,
+      "sha256": "41e3d449b8a10c5cb9a06a9f031946e4960ad396a7cca77064c5052f01bb5b9f"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-luna-vfp_active_001-raw.json",
+      "bytes": 1852,
+      "sha256": "5e24e34d75d780de3efb14dbf9b0b18f5c8093ad0ef8873c25bf14ff3370088a"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-luna-vfp_active_001-request.json",
+      "bytes": 93946,
+      "sha256": "5b038771f51583422c503896cd14e11754972fff2e3efbef5bf95ddcd171aeeb"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-luna-vfp_active_001.json",
+      "bytes": 2028,
+      "sha256": "83c147f476a48bd78cdd6b0ea72dbb813faf1b44bfcad2a5220c7251a09d7391"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-luna-vfp_active_004-raw.json",
+      "bytes": 1478,
+      "sha256": "97babba6db8281a27ddd7705b3626d0f593ab74de88461535fb67182849e6b93"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-luna-vfp_active_004-request.json",
+      "bytes": 79681,
+      "sha256": "cf5f27765e1b4bece674ae2c31826352a8f825b7d2be410585e52395dba9c683"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-luna-vfp_active_004.json",
+      "bytes": 1649,
+      "sha256": "cb5d62dea15c3d274cf4d2330d1194990c5307d2d44c36c2dfee33a4cc4fad64"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-luna-vfp_active_006-raw.json",
+      "bytes": 1322,
+      "sha256": "4779cc21b4d83dff090cb7555b78f9b65b39049fc0a44ba9cc018fa85ac87428"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-luna-vfp_active_006-request.json",
+      "bytes": 308053,
+      "sha256": "a0b683858a8fd42290ce9afc4ae81580356a1aded58d544149612aa6605ef9dc"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-luna-vfp_active_006.json",
+      "bytes": 1489,
+      "sha256": "19faeb459c32c669a1b32b5f598bf762edecefa44ab624a993bbf8c5cd96e405"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-sol-vfp_active_001-raw.json",
+      "bytes": 1557,
+      "sha256": "f9ddf83911ea385fb171625f8cb24a0308ad399cf04c5379d1b8aa4ed561f5c3"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-sol-vfp_active_001-request.json",
+      "bytes": 94102,
+      "sha256": "88d47d77e326d627cbac0c9211062dbfbcdfc9b7c7649c3e65ae26339372ff6b"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-sol-vfp_active_001.json",
+      "bytes": 1721,
+      "sha256": "cbce99fbecb01b44d1bce3ee7e43e45d6acd59a177c9a0e3402fe87f327ba1d9"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-sol-vfp_active_004-raw.json",
+      "bytes": 1373,
+      "sha256": "cea5e7605fb363a3f9d4e81a33b7c10a1ea1a90cb300b639a3918cd648bfaf6d"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-sol-vfp_active_004-request.json",
+      "bytes": 79898,
+      "sha256": "976d00987334b20b812f36dea2a80f62a91bc06816b8a20d9fb997b7139f4c4a"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-sol-vfp_active_004.json",
+      "bytes": 1545,
+      "sha256": "5cf37558b91534f8c1cfd8187fff7e5595b8d53418c62b3b0a6f5eb9ff12bff5"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-sol-vfp_active_006-raw.json",
+      "bytes": 1488,
+      "sha256": "303cf07c560194fcef4042631ebf1570134e46c0b4f0df343f7b71cd0fab7849"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-sol-vfp_active_006-request.json",
+      "bytes": 308220,
+      "sha256": "ad99cdc6fade7ae1a5b16e262aa1f18b74a6889263fbd410a414d5cef585de49"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-sol-vfp_active_006.json",
+      "bytes": 1660,
+      "sha256": "f66f0d3455fd26285f03d857b5b7fe491e884bffade7b810f4e61577ba31bb0d"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-terra61-vfp_active_001-raw.json",
+      "bytes": 1875,
+      "sha256": "a46666fe08e8cfc6d275efe94c130046d4913fd17c9e7546f7432f155a13c84d"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-terra61-vfp_active_001-request.json",
+      "bytes": 94009,
+      "sha256": "05a021c055013c1544f1795c95ff50e0fa379ef4e3019779723c0f592fbadb11"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-terra61-vfp_active_001.json",
+      "bytes": 2052,
+      "sha256": "9813ccdc77680531fc816173e59940fe5796e1bca371b913fccfce13251bfb2c"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-terra61-vfp_active_004-raw.json",
+      "bytes": 1407,
+      "sha256": "fdf0f3379a5b4b2263147933471fce514c5555b24e6ebf6793992ce181b7e62f"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-terra61-vfp_active_004-request.json",
+      "bytes": 79815,
+      "sha256": "96f7cd26c84e5a751b3fabe796b3e05561c4de796cb58d9af4b72055250136a3"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-terra61-vfp_active_004.json",
+      "bytes": 1579,
+      "sha256": "d775b01949a6a628dc41001e2282d49a795477d0a54263306e2615ad15c67fa6"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-terra61-vfp_active_006-raw.json",
+      "bytes": 1388,
+      "sha256": "54e761fc43aea06edec3155bcee2f6db3e09d27a689da3c083a70ea28d57f700"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-terra61-vfp_active_006-request.json",
+      "bytes": 308161,
+      "sha256": "5912c246d0cd1a354d6baf9f93de837529186ca4845de8361e238b5e9e8999cd"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/judge-opus-terra61-vfp_active_006.json",
+      "bytes": 1561,
+      "sha256": "01e13247b8b91ea7fb627b414584bb0c755be09101c30d1aae9b1c274feddf5b"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/ledger.json",
+      "bytes": 3963,
+      "sha256": "0f5c6175e7bb4f41d1057ded7b5f69a5146add10d4571af4b4bd9c8dd5a89288"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/native/luna/vfp_active_001-raw-envelope.json",
+      "bytes": 11967,
+      "sha256": "b616d106cdca227cd9ed511ea2d31fbcb0ae987124f288867b118d776d9c7120"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/native/sol/vfp_active_001-raw-envelope.json",
+      "bytes": 8588,
+      "sha256": "2bde7e08dba585063de0f92c95bb8fcd8b3887c230abbd95722f433df59ccaa7"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/native/terra61/vfp_active_001-raw-envelope.json",
+      "bytes": 14157,
+      "sha256": "6806447df076a5795f1ab7379a7a64ec54f1fa805d657ef1a514a6823615f236"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/native-luna-vfp_active_001-request.json",
+      "bytes": 99011,
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/native-luna-vfp_active_001.json",
+      "bytes": 3613,
+      "sha256": "8088c92b1cb6e01e4672f81d1771cfb54e10472e6d9ac6e1b5fa3e969981ec4e"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/native-sol-vfp_active_001-request.json",
+      "bytes": 99012,
+      "sha256": "35fa150d6cd6d32f95bbd36a143251e5976194aab56531fb570f60c2c0df7460"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/native-sol-vfp_active_001.json",
+      "bytes": 3956,
+      "sha256": "390c02fba234d092e1ab9ce7442f8f2f0f6b80bd0e5b825976d35fdde945bf2f"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/native-terra61-vfp_active_001-request.json",
+      "bytes": 99016,
+      "sha256": "e8b24570e54d9ce207d09b1cc7317aeca5b11cd057c8b139e3acef9d7f4a0eb5"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/native-terra61-vfp_active_001.json",
+      "bytes": 3971,
+      "sha256": "2446493e9d2b3d5a11726508a2a28dd60d080d193298f96dffb1a032a3254399"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/owner-discovery.txt",
+      "bytes": 7997,
+      "sha256": "fff51631a962f3a43e8a63253fead6349ee81af82077470cc46e619c8bc5c4ea"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject/luna/vfp_active_001-raw-envelope.json",
+      "bytes": 12294,
+      "sha256": "cff4bb35ad0293105d2004bc8a4a59764d13c9adc3783557c79844f98df4dacd"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject/luna/vfp_active_004-raw-envelope.json",
+      "bytes": 11118,
+      "sha256": "38430376039213807401f3e70f14346ed0747aeb1fac4d750bda1fe7a039d386"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject/luna/vfp_active_006-raw-envelope.json",
+      "bytes": 11524,
+      "sha256": "877a16a147c15c59fd66e6e195fce22aaa9a3ecb0e1bac8760ecd619dc9cebb9"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject/sol/vfp_active_001-raw-envelope.json",
+      "bytes": 8564,
+      "sha256": "c12b55d465fa15fba928d8b2e0337d366408a226b648eff6b04198f800654c49"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject/sol/vfp_active_004-raw-envelope.json",
+      "bytes": 8582,
+      "sha256": "eea4693edc8d749a6d68983fd134057c1a6b8ed5022e50912e07dcc93850ba05"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject/sol/vfp_active_006-raw-envelope.json",
+      "bytes": 8401,
+      "sha256": "9db072a65fb2cdbc463ed2be83db024aab96f9ef2afd057c7fc511309eb1adf2"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject/terra61/vfp_active_001-raw-envelope.json",
+      "bytes": 14563,
+      "sha256": "780b8a1a6bf59a733ae9e18747025cd484a3e8b53b6700c708b671678648d525"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject/terra61/vfp_active_004-raw-envelope.json",
+      "bytes": 20672,
+      "sha256": "75251da9935579de95e181862067578ac3323c72edb6dd73aa52bbfe464836fc"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject/terra61/vfp_active_006-raw-envelope.json",
+      "bytes": 13090,
+      "sha256": "c26b7e10fe1b8ccb7051b9914049ab3c5137c3019c4200287a1d387c3f590085"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-luna-vfp_active_001-request.json",
+      "bytes": 99011,
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-luna-vfp_active_001.json",
+      "bytes": 3795,
+      "sha256": "f227e4d35f54076d9644e8fba8393441a9cf409361842b085141b6193f9c7ddb"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-luna-vfp_active_004-request.json",
+      "bytes": 85071,
+      "sha256": "999a219b80982ce3d3c0bc1b618c340ebb7f5ad0c9522adb662029667cad4356"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-luna-vfp_active_004.json",
+      "bytes": 3734,
+      "sha256": "86d88bcf129afde799847f23bc3244ae5f2d6b429708b34f123ba5e5a20e6e0f"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-luna-vfp_active_006-request.json",
+      "bytes": 313563,
+      "sha256": "01d478770d07fa488eacdc272b2a30e2eb2d80aed5c7834942257df1b20a813e"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-luna-vfp_active_006.json",
+      "bytes": 3595,
+      "sha256": "11fd32e2f06c3a660a8eef1f3df210614d7f589363d6c47a3646e4793f70adc6"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-sol-vfp_active_001-request.json",
+      "bytes": 99012,
+      "sha256": "35fa150d6cd6d32f95bbd36a143251e5976194aab56531fb570f60c2c0df7460"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-sol-vfp_active_001.json",
+      "bytes": 3946,
+      "sha256": "601999e1a8aa10ec1d0a1378ffebc182beb2237f1d192b01779835ffc2a1050e"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-sol-vfp_active_004-request.json",
+      "bytes": 85072,
+      "sha256": "0151fac5412db8b9f1aebb78001d98f38a3e7dc58b12cb0c452714a753f1fa05"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-sol-vfp_active_004.json",
+      "bytes": 3947,
+      "sha256": "df7b2063a33008c1308ab785f8cc020c04ba44eb80fbdb838d2adeac712b1f07"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-sol-vfp_active_006-request.json",
+      "bytes": 313564,
+      "sha256": "6a83d0876b23e774bd23b066aa47eca234c2356c2060766d32340544a18bd7a4"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-sol-vfp_active_006.json",
+      "bytes": 3756,
+      "sha256": "e39d02dac7609ee22534a6e4e7bca721a1f7adcc34ecc7604243c95920bddc68"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-terra61-vfp_active_001-request.json",
+      "bytes": 99016,
+      "sha256": "e8b24570e54d9ce207d09b1cc7317aeca5b11cd057c8b139e3acef9d7f4a0eb5"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-terra61-vfp_active_001.json",
+      "bytes": 3878,
+      "sha256": "5406da568c3c4c989d445a21c0d7dc020e80b613d03c00ae153a0a552f493588"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-terra61-vfp_active_004-request.json",
+      "bytes": 85076,
+      "sha256": "70e8e7a418bbfd487ebf4e6b77683e63a4ff641944edba00072395260f6ba9af"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-terra61-vfp_active_004.json",
+      "bytes": 3891,
+      "sha256": "ca0cfdb9688dec0ab4a0160cd422be0ff97ef41b6806088baadcbf8408ecaebc"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-terra61-vfp_active_006-request.json",
+      "bytes": 313568,
+      "sha256": "73def364f2cdd5c2d754ec42b7e04483534c5e05eee74e581969339d166c581e"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/subject-terra61-vfp_active_006.json",
+      "bytes": 3723,
+      "sha256": "5812d3e711e54a532cfe8735410da7a7aa5213279fa773ab274b7d84dd87200e"
+    },
+    {
+      "path": "docs/evals/evidence/story-226-terra6120261026/validation.md",
+      "bytes": 1129,
+      "sha256": "11de852336867d3745a70a9a2e09c7897b59d19e7e7de352a1156b4bf3bf6554"
+    },
+    {
+      "path": "docs/evals/snapshots/story-226-terra6120261026/run_terra61_video_comparison.py.txt",
+      "bytes": 19840,
+      "sha256": "b0053dbeccad38989aa731d2d1bb789944801380886485d3d19d6c5bac1f985b"
+    },
+    {
+      "path": "docs/evals/snapshots/story-226-terra6120261026/video_understanding_provider_support.py.txt",
+      "bytes": 15009,
+      "sha256": "c4c9c5d3635e329cbd6df77bab83853628a4ec453fa442005de5b3b689d658f0"
+    },
+    {
+      "path": "docs/evals/snapshots/story-226-terra6120261026/video_understanding_provider_vision.py.txt",
+      "bytes": 15065,
+      "sha256": "b23ab176b23b372db79bb114d4c84f1dc7f5807f8bb6085ff52bb11cd048f056"
+    },
+    {
+      "path": "docs/evals/story-226-terra6120261026-terra61-freeze.json",
+      "bytes": 22192,
+      "sha256": "e6b853729343b81532b835650622509224e7ebfb342dd061cbd98cc96282071b"
+    }
+  ]
+}

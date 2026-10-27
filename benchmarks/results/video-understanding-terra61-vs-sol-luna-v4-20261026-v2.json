@@ -1,0 +1,372 @@
+{
+  "base_git_sha": "6e6783e47eec4d053452c83606e18dc6e96df312",
+  "candidate": "gpt-6.1-terra",
+  "candidate_effort": "high",
+  "candidate_max_output_tokens": 32768,
+  "cap_usd": "5",
+  "conservative_usage_estimated_spend_usd": "0.22926459499999999953",
+  "date": "2026-10-26",
+  "ledger": [
+    {
+      "accounted_usd": "0.00663925",
+      "arm": "terra61",
+      "estimated": true,
+      "name": "native-terra61-vfp_active_001",
+      "reservation_usd": "2.79688",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0030674499999999998",
+      "arm": "terra61",
+      "estimated": true,
+      "name": "subject-terra61-vfp_active_001",
+      "reservation_usd": "2.79688",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0099435",
+      "arm": "sol",
+      "estimated": true,
+      "name": "native-sol-vfp_active_001",
+      "reservation_usd": "0.10596",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0029546999999999998",
+      "arm": "sol",
+      "estimated": true,
+      "name": "subject-sol-vfp_active_001",
+      "reservation_usd": "0.10596",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0005521749999999999",
+      "arm": "luna",
+      "estimated": true,
+      "name": "native-luna-vfp_active_001",
+      "reservation_usd": "0.00395",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.00023467000000000003",
+      "arm": "luna",
+      "estimated": true,
+      "name": "subject-luna-vfp_active_001",
+      "reservation_usd": "0.00395",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.02115",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-terra61-vfp_active_001",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.019235",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_001",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0211",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_001",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.00838925",
+      "arm": "terra61",
+      "estimated": true,
+      "name": "subject-terra61-vfp_active_004",
+      "reservation_usd": "2.79688",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0100135",
+      "arm": "sol",
+      "estimated": true,
+      "name": "subject-sol-vfp_active_004",
+      "reservation_usd": "0.10596",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.000520675",
+      "arm": "luna",
+      "estimated": true,
+      "name": "subject-luna-vfp_active_004",
+      "reservation_usd": "0.00395",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.00589925",
+      "arm": "terra61",
+      "estimated": true,
+      "name": "subject-terra61-vfp_active_006",
+      "reservation_usd": "2.79688",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0096535",
+      "arm": "sol",
+      "estimated": true,
+      "name": "subject-sol-vfp_active_006",
+      "reservation_usd": "0.10596",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.000526675",
+      "arm": "luna",
+      "estimated": true,
+      "name": "subject-luna-vfp_active_006",
+      "reservation_usd": "0.00395",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0187",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-terra61-vfp_active_004",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01837",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_004",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.018605",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_004",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01786",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-terra61-vfp_active_006",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01863",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_006",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01722",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_006",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    }
+  ],
+  "limits": "Two exposed decision-bearing cases; no independent or six-case promotion. Tone/color/motion/lexical rubric limits remain. Correct color-change recognition does not waive broken-label contract. Costs are token-price usage estimates with all cache-read/write counts known, not provider invoices. Metadata-only v2 corrects the earlier generic missing-write description; original v1 and all outputs/scores remain retained. Other efforts unmeasured; no within-task effort comparison.",
+  "protocol_deviation": "Producing runner automatically advanced subjects/judges to tunnel before prop source adjudication. Preserve tunnel as supplementary post-stop evidence, not qualification or rescue. Final runner requires explicit per-case admission and selection.",
+  "route": "direct OpenAI Responses Standard",
+  "rows": [
+    {
+      "arm": "terra61",
+      "case": "vfp_active_001",
+      "combined": 0.73785,
+      "continuity_status": "intact",
+      "cost_usd": 0.0030674499999999998,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.6957 | overall=0.696 | uncertainty=0.060 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.50 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached | color: teal | continuity: The pale rectangle stays beside the right figure across all five frames., unexpected=The beige figure stays on the left and the blue figure stays on the right throughout., unexpected=The pale rectangle remains on the blue figure\u2019s lower body as both figures change size.",
+        "score": 0.6957
+      },
+      "latency_ms": 7846,
+      "quality_pass": false,
+      "reasoning_tokens": 327,
+      "rubric": 0.78,
+      "supplementary_post_stop": false
+    },
+    {
+      "arm": "sol",
+      "case": "vfp_active_001",
+      "combined": 0.7311,
+      "continuity_status": "intact",
+      "cost_usd": 0.0029546999999999998,
+      "deterministic": {
+        "pass": true,
+        "reason": "overall=0.742 | uncertainty=0.060 | summary=0.67 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached | continuity: The pale rectangle stays beside the right figure across all five frames., unexpected=The figures retain their left-right positions throughout the samples, with gradual increases in their dimensions and no visible scene change.",
+        "score": 0.7422
+      },
+      "latency_ms": 7325,
+      "quality_pass": false,
+      "reasoning_tokens": 0,
+      "rubric": 0.72,
+      "supplementary_post_stop": false
+    },
+    {
+      "arm": "luna",
+      "case": "vfp_active_001",
+      "combined": 0.75595,
+      "continuity_status": "intact",
+      "cost_usd": 0.00023467000000000003,
+      "deterministic": {
+        "pass": true,
+        "reason": "overall=0.792 | uncertainty=0.100 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.80 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached, unexpected=surreal | color: unexpected=gold | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "score": 0.7919
+      },
+      "latency_ms": 9499,
+      "quality_pass": false,
+      "reasoning_tokens": 171,
+      "rubric": 0.72,
+      "supplementary_post_stop": false
+    },
+    {
+      "arm": "terra61",
+      "case": "vfp_active_004",
+      "combined": 0.63835,
+      "continuity_status": "ambiguous",
+      "cost_usd": 0.00838925,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.5567 | overall=0.557 | uncertainty=0.060 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.67 | motion=0.00 | continuity=0.17 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken, unexpected=The shapes and framing remain in the same positions across the samples.",
+        "score": 0.5567
+      },
+      "latency_ms": 11924,
+      "quality_pass": false,
+      "reasoning_tokens": 664,
+      "rubric": 0.72,
+      "supplementary_post_stop": false
+    },
+    {
+      "arm": "sol",
+      "case": "vfp_active_004",
+      "combined": 0.67415,
+      "continuity_status": "intact",
+      "cost_usd": 0.0100135,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.5683 | overall=0.568 | uncertainty=0.010 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.67 | motion=0.00 | continuity=0.25 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken",
+        "score": 0.5683
+      },
+      "latency_ms": 6986,
+      "quality_pass": false,
+      "reasoning_tokens": 0,
+      "rubric": 0.78,
+      "supplementary_post_stop": false
+    },
+    {
+      "arm": "luna",
+      "case": "vfp_active_004",
+      "combined": 0.64665,
+      "continuity_status": "intact",
+      "cost_usd": 0.000520675,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.5133 | overall=0.513 | uncertainty=0.020 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.50 | camera=0.67 | motion=0.00 | continuity=0.00 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: unexpected=detached | color: unexpected=desaturated, unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken, The tabletop rectangle changes from red to blue between the second and third samples., unexpected=The centered rectangle changes color between frames 1 and 2; the surrounding platform and background remain in the same positions.",
+        "score": 0.5133
+      },
+      "latency_ms": 6869,
+      "quality_pass": false,
+      "reasoning_tokens": 91,
+      "rubric": 0.78,
+      "supplementary_post_stop": false
+    },
+    {
+      "arm": "terra61",
+      "case": "vfp_active_006",
+      "combined": 0.59915,
+      "continuity_status": "intact",
+      "cost_usd": 0.00589925,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.4783 | overall=0.478 | uncertainty=0.040 | summary=0.00 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small cyan rectangle stays beside the runner across all five samples., unexpected=The arch and background remain consistently framed across the samples., unexpected=The figure and its outlined rectangular extension retain their appearance as they move right.",
+        "score": 0.4783
+      },
+      "latency_ms": 6548,
+      "quality_pass": false,
+      "reasoning_tokens": 234,
+      "rubric": 0.72,
+      "supplementary_post_stop": true
+    },
+    {
+      "arm": "sol",
+      "case": "vfp_active_006",
+      "combined": 0.56665,
+      "continuity_status": "intact",
+      "cost_usd": 0.0096535,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.5133 | overall=0.513 | uncertainty=0.040 | summary=0.00 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=0.00 | continuity=1.00 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, unexpected=measured",
+        "score": 0.5133
+      },
+      "latency_ms": 6355,
+      "quality_pass": false,
+      "reasoning_tokens": 0,
+      "rubric": 0.62,
+      "supplementary_post_stop": true
+    },
+    {
+      "arm": "luna",
+      "case": "vfp_active_006",
+      "combined": 0.54915,
+      "continuity_status": "intact",
+      "cost_usd": 0.000526675,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.4783 | overall=0.478 | uncertainty=0.060 | summary=0.00 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small cyan rectangle stays beside the runner across all five samples.",
+        "score": 0.4783
+      },
+      "latency_ms": 7282,
+      "quality_pass": false,
+      "reasoning_tokens": 123,
+      "rubric": 0.62,
+      "supplementary_post_stop": true
+    }
+  ],
+  "summary": {
+    "luna": {
+      "combined_mean": 0.7013,
+      "decision_bearing_cases": 2,
+      "deterministic_mean": 0.6526000000000001,
+      "mean_cost_usd": 0.00037767249999999997,
+      "mean_latency_ms": 8184,
+      "quality_passes": 0,
+      "rubric_mean": 0.75,
+      "subject_total_usd": 0.0007553449999999999
+    },
+    "sol": {
+      "combined_mean": 0.702625,
+      "decision_bearing_cases": 2,
+      "deterministic_mean": 0.65525,
+      "mean_cost_usd": 0.0064841,
+      "mean_latency_ms": 7155.5,
+      "quality_passes": 0,
+      "rubric_mean": 0.75,
+      "subject_total_usd": 0.0129682
+    },
+    "terra61": {
+      "combined_mean": 0.6880999999999999,
+      "decision_bearing_cases": 2,
+      "deterministic_mean": 0.6262,
+      "mean_cost_usd": 0.005728349999999999,
+      "mean_latency_ms": 9885,
+      "quality_passes": 0,
+      "rubric_mean": 0.75,
+      "subject_total_usd": 0.011456699999999998
+    }
+  },
+  "supplementary_post_stop_spend_usd": "0.069789425",
+  "unknown_exposure_usd": "0",
+  "verdict": "Retain references; reject tested Terra high32768 direct replacement. All arms miss declared prop continuity label; no quality winner."
+}

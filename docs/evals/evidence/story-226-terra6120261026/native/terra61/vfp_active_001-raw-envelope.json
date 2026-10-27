@@ -1,0 +1,299 @@
+{
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1793039243,
+  "created_at": 1793039235,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "id": "resp_0a9ff31de37fdf21016adf9b83304c87d091f552d6f0deaa57",
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 32768,
+  "max_tool_calls": null,
+  "metadata": {},
+  "model": "gpt-6.1-terra",
+  "moderation": null,
+  "object": "response",
+  "output": [
+    {
+      "content": [],
+      "encrypted_content": "gAAAAABq35uLgDOZttV-9hQNPNzJi3DFzUtsctwcnCm7kct0bVjbN74JqQUuOq-xVmxiGbikMOJGtEuTs_ru6kCFzon8qmmgsXoELTfGaI1djDC1YuWc-0mKRgJxwHZz0na9r3_BtPhCTzkWxmexzj2jw6AuKnIns1wAjoDw3H6fIqY7YNZ_b6014EXGb7ntp55ZBY7Zr1dGI3kKsKUlMboY28EFhZQ3Wkubyr_l520JIHvwRwVfMDKIybfL8bCy8I12_lKBKfUgRgEfhinblw8pmJ8GfcMDKwG9vQSCxwhEzqSkOsucVIC1JCVpRtXvgA723-woK3t1122iuOgI3eAYbjOIedMBwIVc5vng7UspamTcBIhOllTYD2UMBICQU4j-5AcZhtUqimMq6o9Ax6GdD1HpWrDPz0Yxmc2LLdldLYhWKdPk51ab8ZNEDdtFL9m2ilxaxN575l5NMzYKWndk8Ct5UzheTqt202AXX1EBKNBQ_gW_Q9mbfPshaMqh1XF1Gyp0pTCJn87bJDcW676pliw1tAWp8XU8pQ9Z0Jg12h1rfdm8zs9HCnuoSFUBs5yv-ZMQgsBnUS4QUGcXt8qY1WSOvl-5u_CgxoeoO5YPXhSTCkyK67hsLaBg8nORoTalI2UhLfg4-j--n6rz6vTmkU2eWejFAAIDvP8xbddAOKPdnMxXWoUsgyOvNHOHvBeaVqwJMqXbgug4UuomZEhFHv_-abXTQ8jh1m0MUpmBC30kCUUEnaAmJzK9XvR82-2o0iD7sEz3zrGluooCREolXUc3D1AEsUNqNwxg4nUeNRWD6BzAu7JcTCd2U7PynnX31OUQwbNyQsLkIU32jpfuuEFr_QoRQKtofWXlN6rVo_fJBWgVPitSeDKvDcgXLMrtnghu_b4IFkDuObZJttdaCqRhRODT7Gd1tICYOoDNbsgVE1_3bCl7czCx9FmdCo7UAiEIdQMq7jlDdwPPr4XkjLI7G__cylEem3VgKc03Nhm72hsKowvk8oYWLYzh8r-Kiov1I4yU1dkJOb2zB0Fk1E2EL9wH2q8QzbnpJabF8keRmulaOxsJw8FHv72ZAqpZv7ubMEzM4wEo8EAiEx0JVlPg0LaAEzZpc_Vf1ryeTTavIsQftoLQhfagocCOP2OxPfs3buT4E-rZAG7ipQq1G1nVsGdUYIaR_ynaZ2q6nO2WtuZJ-h909owFJnlNTcsC3OI3MweGZJZ64U-QnAhg0xVhKoD90yZPOsG6TWYgAkXS2-HZ3bhcSF3-Bx9rIyk3QdmEiaW0eCRlYS4PvgDLMv6rGX8FWuBSVRgeLZ70d-yBbvuAbNN-HdzMVtLI_krQrYUrO4UKbnafDYlBpfruUdIqnDy0HPiEbOiqugUHa57ezXLOEBX4oOzsp_87kSDtVFUGZb0kUU-1d6eekrqNmz85iiUoFFKFv6yAOUVzg5WYfFL_gnhvmjfRwFhvRrIoKSeILDrxKLXdnqHoHdAtk2kS91-UWoe_TEzuJwFv9cp3j-TxWEGEsFrhwarTywenG0oK6D65rPqw5zZ-62yHYsZW8uxKxBJKgXl2RaBQ1VgRTXwdG2nFDj_DZczpn1qkFJAYXct-ZDQeJ8yb-KOTS1wTmk0oYDQFrHuOFYRsIUDy47UeWcfHbsk8VfsitddSTYBplQpnnaHWxtxOqNyosIMLgSC-1jEUuLCrfSeyRwTT7IJVqlW8lZuHUn-x_34YZY9WtywxssGyqqxYYBcdR7N0Tq__x0CdiJata0aSfjHoOYDSumtHKlCPngMs0qM7_D9cPHVBC4gyAyQhT7qcQLoOzmDYkfCMuUE3nBgJ4NRz2EgEmgO7dssOshfI728DimAVtD3TytzlQeFB0ivVK48M-QJ-uo4iwyWM2WhbO6QP8QwY84ovSwsRYjCOuX7GCumeL4crMcxuHOYJ0nycyfh4pQZjZQiNowPJZFxGoQcj2_-ajZS_GeoWm45pRwQDAzWp6RpSstKCKwgG1V0iAyOSKdvAhYrAShOKNsZTkiLDH2xDNXYof3iW5AHujS0b6ZcqGb-CjeTrTXtV57hUB0r-xn2z4LKD8nGtJuXkz3dS8yh7s6FFxbOCtPzRlfhT97_3WQj06R85RxWjvbc-yw3ALXlOyw4TE7zBLcjDeDlxgoBQBPJc_G1Ca4hQ1cqGcoDtMKlsFrScy8aLEeEoV7xNnbavk8hiEM4KzSxglGMot1iEQIeufMQZxjgYumd5EydvAm45ay4JODUarA00wFK94syOIiQDhfcL9dXMKTgkLfb8rvpm8fJhMS3gGvhxYnOSCXw9P-5Vl4ZJYGBu5gSxG2EaKX53EBqSJRU8YUx1_RXWNL30badALhniXGjx6Zq9liyQNqpmzVOr0KKR7wEX2yC8Vmhgz-gZQJRK5IxJcuAelnBOmYfco5K4kRl1Dyrjww69REZxS6Czbom_nU-E4kgfZIFRS8t_zLgmgOyIU7QKXQEN3ru8QhE_wOnDnARc4CLMWgeF_WEtNvM3MW7IvSusXMyVa2ZJ6ayUVUcq-tG72tzJ-zJJOqSdjzTk4FScCFY4pSVkvJ0_HnntBOryIdLOupA4HSp7zjDH3OKVa8Nz9KXHKd8FWX3Pyu0ce1OHezxuUOxwaq6DAvxiJDJ_qSPGXJSE14bCuxf4ts5LD306ef6lq-EOl6D0wd2Wy9R5-z2yjOueDtVXl1vW8u99PesX-yLdizMQVxyiDjVbvcQ0oE1fHqfyvGRDZLJzH-0rzS-5I7IVHWNedTwKN5n9df5BNf5Ml1RQSk0eMkwPF0IzpcZ8K6C60aCMlTKr1FKd6qb6zQBYY9TiBhOKAvm0sHZ1Bbu303x0W4PUaIyJfLtidCopofFRf9_ObO8NhKm50kGftrXGksVASj5EU9y75Y5jJAsqMvFZ_GKPa76B1ujzMWhPc8TdfGtkTRuCeqW5ecH-XIWtkfWb-E_rcDRI1oNvcRmMncoFI3VucT-so9GD7s4HVmShkAEamtifG7w9jfKd7oqsn1bF9XMsWJAcAivOk2rPaaO58YUPvetsndqdtOoTmWoVzs9rHHzbRDuVx4hAsnz8ietUgItPZhZMD1hbSnFeqduXfI0Sc2qI7YhZsZXgccUWXSuu0OHojgyecFbVD9c8z5lfqLXQmKPkB7eoxKlXrlZ_xStrqS0TENJreAB_gbRT2YY_rIrBpaFPiZ2s8n0lSW2eO_4Ikw2YHoi-HTmeS30_Yrb7AdoA5aWoq8nYog3JFDQiRJL_1-CmJ5IYcJoNz1l3mFM_fFsBylJDoh3xktogY1sSp1iHsvDpnoQeTxDkU-1aaLmovay-a0o-QoMoNdDgL0ZEsafytRo0C1yarpj5pg9jEJ1u3QYs9wOeF7xw92kVaFCHkFx-9HZF0PYM6fNa-cvD7CExBpyv_jubzvi95svuTozGfStIWf6WaNsLldL3ZiFlGoRgve8EzSCv2mJ2ae2PR85uumNAM2IjxZK1yLjMHkoC0qxYtsaOHgCHoBoqyDNxzUJ11PmskWQncHJG5dWVC0dea0KKgMGPG9Q3U2t6M5t5i0-l4J-t8-Hv7n99VEMJb3ptYFncOpyQ8HZLGkylP7xbt-_41uh9prEtC8v7iKPD_IQ2tzDNN-PvyZwtnBsDljfYvW8rng-r30O2NbHsPvTIeG_6mAYmTlQ_jSa2cNbWcc2Zqu0334eTPW37im5Z6Ffw2cuSCGqtUPTinX-Fj61VL-5tELJ9b6HBrmOHirKL6YbChaiNptoLoArzLOHqb85vhv4rc9cuJSmPjeBMZrAco91AnKF6L3dPTNt3jyAgAwwdj1sca99M6DJWnaOEhTuTl2LAojDyI9VbSvHRTeEwUWcBups7Mv09_KsNTj47zQ2xgzqRVpRY-nlhKTeTQdVqgHhuXJ20Od8Nst_9iCy7ppAMmXqg6YELmnMclyws8xLlAOVz_ysk3EwfwOWaxSk0bvO9MhAkxuLgL3F3VgweqDBDdl0qp6-tPGMkt9H8ObyEqLsf1zdGyphRnhn-6DtSmnRh6lAr53rrSxAzcgnFkLHB1cMNgXM1ZHNCNYOrvqo0NodWpze7KzqFvrB91ujEOtR49ZYptkTtHOS1pUuBEQIIVo6lXpYVX5TwHBTRUjh2Hb5hnnaxWyG3V_KVdZgWe2yhuY0LxnsXiX9uWo_hq_bxtlamNQAHS9oRz8V1MATSd087HFLO3z8uLxzbqGrBQETgdt_6vrb6Waj3Owg-Kh-1dG_Qrxa-0jXGq7OqbsFFOJsjgpmf4ieYixbSQL6bhnbx0hbninA-O2sTBXA_NLtEklgph2KKMAHAg1wo3kC1_xlj7_wL27npCFh2Aj5nx99jfr57wzkxj_J3XjOWgQOKy_Poi3LrTR17msVBappAkStAD3pM4Ssjbrq4aHkbDvy-cB-kFW8OQC7b18qwHhuMZ84K-X4lF0bJWgFzUQ7qeVzHtpAvHadRAu-lJjzwhZBlA5_wE42rh1ggAjsgTlGssN6J7kHe-cJo3O0yI-nl089ke-ruDV-R9d4kRRglhE6ftuB9HxwxQVFzhQCNDWUuZ_jTtJjwD49oVAPNdnB71AMVnm8rPuU_sd6xmrL5yHCoJukVKHQ0jMK-56NVJtWt-M-k5SoSyKfS29fegzrp2wyDCUBkxLOYUnQidiv1OBmYb5AuIIzIky-iQbcMxb8LVPPdvSfF63ZXWjuTcHPV0luEksydgjG6UhfCdAcXK7B2UHepx3b-IuwczqMuTa9tMy2TwxENIYkOLpbk-KDvgRHtuEMLLzNa4NOLiOsxpQh_WhvLYPLblLW_SVDiZG5PYjAbIHA_2W0PQfWwigZ8uocL5yJTkQdFEWKO55v-CG8kVAVExKEm44HSo0AETe5TJNPDNQ2LQ7JUPplSj51FjLM4e0rfEk5onSXQQWbIuPcb_LM8V7Va5sQGYAsF-inKwLzbxs8-skHspeZ7hjmO3f4DEVwge6rEeIT7kF_9MyeCLaB2n9Ql6U5IyIkrdyzbSB_f_XWOqDOQKL9dYhSuRVhb9oBegWHcWkiDEjnIqcilLVy3fB0W3tkAJ7m4UYOftdd1Pjny5FhXiPBIo2awFw_LMD0UMjewTN6-H2Jp3Uof8cF2bEgy-tKgRUsRRFkiorkSAHH16Nz-T4oobM2fVehkHBgX5cu0Dj87gc34wb8CkKi6k2e9waXtwJF2jh-kRPg3Ztnh0jLTok6E9kwO_WdFoKTYvjb2teKqkPnB1EwdlM2eiKiQrAo6L6_bJdYo25AhJyxolZzr-HzksCXlrwTECzKtbu8VSDN5TYOzCr7bBnpspUF2wBUcCDZ_8aJcbD0OxJmytFvfoFrMhPaO4-8=",
+      "id": "rs_0a9ff31de37fdf21016adf9b84ae7487d0b8f755d0b166d384",
+      "summary": [],
+      "type": "reasoning"
+    },
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\n  \"clip_id\": \"vfp_active_001\",\n  \"summary\": \"Two simplified figures stand apart against a navy background above a dark horizontal band. Both figures gradually grow taller while remaining in place; a pale rectangle stays on the blue figure.\",\n  \"tone_tags\": [\"detached\"],\n  \"emotion_tags\": [],\n  \"color_tags\": [\"navy\"],\n  \"camera_tags\": [\"static\", \"locked_two_shot\"],\n  \"motion_tags\": [\"measured\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [\n    \"The beige figure remains on the left and the blue figure on the right throughout.\",\n    \"Both figures gradually increase in size while their bases and the background boundary stay fixed.\"\n  ],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A beige figure and a blue figure stand widely separated above a dark lower band.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The figures retain their left-right positions, with a pale rounded rectangle on the blue figure's lower torso.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"Both figures are taller than in the first frame, while their bases remain at the same height.\"\n    }\n  ],\n  \"overall_confidence\": 0.94\n}",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_0a9ff31de37fdf21016adf9b88146887d0b483f2a39c3d5542",
+      "phase": "final_answer",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "high",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "status": "completed",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "description": null,
+      "name": "video_analysis_prediction",
+      "schema": {
+        "additionalProperties": false,
+        "description": "Model output normalized before deterministic scoring.",
+        "properties": {
+          "audio_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "audio_tags": {
+            "items": {
+              "enum": [
+                "alarm",
+                "drone",
+                "heartbeat",
+                "muzak",
+                "percussion",
+                "radio",
+                "silent",
+                "soft_music",
+                "speech",
+                "voiceover"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "camera_tags": {
+            "items": {
+              "enum": [
+                "cross_cut",
+                "crash_zoom",
+                "handheld_jitter",
+                "locked_two_shot",
+                "lateral_track",
+                "overhead_reveal",
+                "profile_closeup",
+                "slow_pull_back",
+                "slow_push_in",
+                "static",
+                "whip_pan",
+                "wide_master"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "clip_id": {
+            "description": "Local validation: minLength=1",
+            "type": "string"
+          },
+          "color_tags": {
+            "items": {
+              "enum": [
+                "amber",
+                "desaturated",
+                "gold",
+                "green",
+                "magenta",
+                "monochrome",
+                "navy",
+                "neon",
+                "red",
+                "sepia",
+                "teal",
+                "violet"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "continuity_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "continuity_status": {
+            "enum": [
+              "intact",
+              "broken",
+              "ambiguous"
+            ],
+            "type": "string"
+          },
+          "emotion_tags": {
+            "items": {
+              "enum": [
+                "anger",
+                "grief",
+                "hesitation",
+                "isolation",
+                "nostalgia",
+                "panic",
+                "relief",
+                "resolve",
+                "suspicion",
+                "tenderness",
+                "vulnerability",
+                "wonder"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "additionalProperties": false,
+              "description": "Evidence tied to one submitted image in the ordered frame packet.",
+              "properties": {
+                "cue": {
+                  "description": "Local validation: minLength=1",
+                  "type": "string"
+                },
+                "frame_index": {
+                  "description": "Local validation: minimum=0, maximum=4",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "frame_index",
+                "cue"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "motion_tags": {
+            "items": {
+              "enum": [
+                "abrupt_cut",
+                "escalating",
+                "fast_lateral",
+                "jitter",
+                "match_cut",
+                "measured",
+                "pulsing_light",
+                "slow_drift",
+                "spiral_orbit",
+                "stillness"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "overall_confidence": {
+            "description": "Local validation: minimum=0.0, maximum=1.0",
+            "type": "number"
+          },
+          "summary": {
+            "description": "Local validation: minLength=1",
+            "type": "string"
+          },
+          "tone_tags": {
+            "items": {
+              "enum": [
+                "detached",
+                "hopeful",
+                "intimate",
+                "mournful",
+                "nostalgic",
+                "ominous",
+                "playful",
+                "regretful",
+                "surreal",
+                "tense",
+                "triumphant",
+                "urgent"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "clip_id",
+          "summary",
+          "tone_tags",
+          "emotion_tags",
+          "color_tags",
+          "camera_tags",
+          "motion_tags",
+          "continuity_status",
+          "continuity_notes",
+          "audio_tags",
+          "audio_notes",
+          "evidence",
+          "overall_confidence"
+        ],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "json_schema"
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2892,
+    "input_tokens_details": {
+      "cache_write_tokens": 2889,
+      "cached_tokens": 0
+    },
+    "output_tokens": 605,
+    "output_tokens_details": {
+      "reasoning_tokens": 301
+    },
+    "total_tokens": 3497
+  },
+  "user": null
+}

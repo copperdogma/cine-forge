@@ -2101,6 +2101,48 @@ evals:
       note: "Fresh six-case frame-only results, source-backed truth review, and the 0.80 quality gate are required before any autonomous QA/default decision. A below-gate paired result may still identify a preferred headless reference model; use each row's evidence status."
 
     scores:
+      - model: "GPT-6.1 Terra / direct Responses high"
+        evidence_status: bounded-two-case-source-reviewed-with-post-stop-supplement
+        metrics:
+          overall: 0.68810
+          deterministic: 0.62620
+          rubric: 0.75000
+        latency_ms: 9885
+        cost_usd: 0.00572835
+        cost_estimated: true
+        measured: 2026-10-26
+        git_sha: "6e6783e47eec4d053452c83606e18dc6e96df312+scout103-hash-freeze"
+        result_file: benchmarks/results/video-understanding-terra61-vs-sol-luna-v4-20261026-v2.json
+        contract_manifest: docs/evals/story-226-terra6120261026-evidence.json
+        note: "Attempt055 exact direct Standard high32768 native/maintained strict13-key parity, five original JPEGs, two decision-bearing exposed v4 cases. Both source changes recognized, but prop continuity ambiguous fails declared broken label.0/2 quality passes. Tone/color/keyword grades conditional. No winner/retain references. Automatic runner advanced third tunnel case before prop adjudication: retained supplementary post-stop, excluded from main mean; extra .069789425USD includes subjects/judges. All21calls .229264595/5,unknown0. Final runner requires per-case admission. All cache-read/write telemetry known; token-price usage estimates, not invoices. No effort sweep, defaults or landing."
+      - model: "GPT-6.1 Sol / direct Responses low — Scout103 control"
+        evidence_status: bounded-two-case-source-reviewed-control
+        metrics:
+          overall: 0.702625
+          deterministic: 0.65525
+          rubric: 0.75000
+        latency_ms: 7155.5
+        cost_usd: 0.00648410
+        cost_estimated: true
+        measured: 2026-10-26
+        git_sha: "6e6783e47eec4d053452c83606e18dc6e96df312+scout103-hash-freeze"
+        result_file: benchmarks/results/video-understanding-terra61-vs-sol-luna-v4-20261026-v2.json
+        contract_manifest: docs/evals/story-226-terra6120261026-evidence.json
+        note: "Fresh matched low4096 control;0/2 quality passes, prop continuity intact fails declared broken label despite correct color-change description. Supplementary tunnel excluded from mean. No broad quality ranking or promotion."
+      - model: "GPT-6 Luna / direct Responses low — Scout103 control"
+        evidence_status: bounded-two-case-source-reviewed-control
+        metrics:
+          overall: 0.70130
+          deterministic: 0.65260
+          rubric: 0.75000
+        latency_ms: 8184
+        cost_usd: 0.0003776725
+        cost_estimated: true
+        measured: 2026-10-26
+        git_sha: "6e6783e47eec4d053452c83606e18dc6e96df312+scout103-hash-freeze"
+        result_file: benchmarks/results/video-understanding-terra61-vs-sol-luna-v4-20261026-v2.json
+        contract_manifest: docs/evals/story-226-terra6120261026-evidence.json
+        note: "Fresh matched low1400 economy control;0/2 quality passes, prop intact fails declared broken label despite correct color observation. Supplementary tunnel excluded. No promotion."
       - model: "GPT-6.1 Sol / direct Responses low"
         evidence_status: bounded-six-case-uncommitted-source-reviewed
         metrics:

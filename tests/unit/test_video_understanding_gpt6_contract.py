@@ -30,9 +30,13 @@ def _output() -> dict:
     }
 
 
-@pytest.mark.parametrize("model,max_tokens", [("gpt-6-sol", 1400), ("gpt-6.1-sol", 4096)])
+@pytest.mark.parametrize("model,max_tokens,effort,expected_cost", [
+    ("gpt-6-sol", 1400, "low", .0125),
+    ("gpt-6.1-sol", 4096, "low", .0125),
+    ("gpt-6.1-terra", 32768, "high", .00625),
+])
 def test_direct_responses_sends_five_images_strict_schema_and_store_false(
-    tmp_path, monkeypatch, model, max_tokens
+    tmp_path, monkeypatch, model, max_tokens, effort, expected_cost
 ):
     captured = {}
 
@@ -58,18 +62,18 @@ def test_direct_responses_sends_five_images_strict_schema_and_store_false(
     result = provider._vision.call_openai_responses_strict(
         vars(provider), model=model, user_text="synthetic prompt",
         frames=[{"mime_type": "image/jpeg", "base64": "synthetic"}] * 5,
-        max_tokens=max_tokens, reasoning_effort="low", raw_output_path=raw_path,
+        max_tokens=max_tokens, reasoning_effort=effort, raw_output_path=raw_path,
     )
     assert captured["url"] == provider.OPENAI_RESPONSES_URL
     body = captured["body"]
     assert body["store"] is False
     assert body["service_tier"] == "default"
-    assert body["reasoning"] == {"effort": "low"}
+    assert body["reasoning"] == {"effort": effort}
     assert body["max_output_tokens"] == max_tokens
     assert body["text"]["format"]["strict"] is True
     assert len([x for x in body["input"][0]["content"] if x["type"] == "input_image"]) == 5
     assert raw_path.exists() and json.loads(raw_path.read_text())["id"] == "resp_test"
-    assert result["reported_cost_usd"] == pytest.approx(0.0125)
+    assert result["reported_cost_usd"] == pytest.approx(expected_cost)
 
 
 def test_gpt61_sol_cached_input_uses_its_own_current_rate():

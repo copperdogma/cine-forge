@@ -1,0 +1,78 @@
+{
+  "arm": "terra61",
+  "name": "subject-terra61-vfp_active_006",
+  "response": {
+    "cached": false,
+    "cost": 0.00589925,
+    "latencyMs": 6548,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "storm_tunnel_lateral_run",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_006",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+        "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+        "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+        "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+        "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+      ],
+      "meta_sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6.1-terra",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_08475419efbbc02b016adf9c0d90d887d0834cf7706183fe73",
+      "requested_model": "gpt-6.1-terra",
+      "returned_model": "gpt-6.1-terra",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"A cyan, person-like figure moves steadily from left to right beneath a large arch. Diagonal lines shift against a dark blue background.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The arch and background remain consistently framed across the samples.\",\"The figure and its outlined rectangular extension retain their appearance as they move right.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A cyan figure with a white-outlined rectangular extension appears on the left beneath a broad cyan arch.\"},{\"frame_index\":2,\"cue\":\"The same figure appears near the center, with diagonal lines crossing the dark blue background.\"},{\"frame_index\":4,\"cue\":\"The figure appears on the right beneath the unchanged arch, with its rectangular extension still pointing right.\"}],\"overall_confidence\":0.96}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_08475419efbbc02b016adf9c0d90d887d0834cf7706183fe73",
+      "model": "gpt-6.1-terra",
+      "raw_envelope_bytes": 13090,
+      "raw_envelope_path": "output/evals/terra61-20261026/subject/terra61/vfp_active_006-raw-envelope.json",
+      "raw_envelope_sha256": "c26b7e10fe1b8ccb7051b9914049ab3c5137c3019c4200287a1d387c3f590085",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2892,
+        "input_tokens_details": {
+          "cache_write_tokens": 2889,
+          "cached_tokens": 0
+        },
+        "output_tokens": 457,
+        "output_tokens_details": {
+          "reasoning_tokens": 234
+        },
+        "total_tokens": 3349
+      }
+    },
+    "tokenUsage": {
+      "completion": 223,
+      "completionDetails": {
+        "reasoning": 234
+      },
+      "prompt": 2892,
+      "total": 3349
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+    "clip_id": "storm_tunnel_lateral_run",
+    "evaluation_id": "vfp_active_006",
+    "target_markdown": "file://../video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+    "target_path": "video_understanding_truth_v4/storm_tunnel_lateral_run/target.json"
+  }
+}

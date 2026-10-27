@@ -128,3 +128,56 @@ R12/R18, spec7climb/spec8hold/spec9climb and ADR003 visual-evidence direction ap
 Validation — 2026-10-20: v4 source overlay13files match;42 focused schema/dataset/scorer/OpenAI contract tests pass. Offline retained-receipt replay/manifest verification, registry links and methodology compile/check complete in final evidence log. No runtime/UI changes or unrelated suite required; no paid repeat.
 
 Scout099 landing preparation — 2026-10-20: Cam authorized campaign commit/push. Fetched origin/main remains01527226f8047f2af4db231091f690e314e11950, matching measured base; no branch-only commits or integration conflict. Primary inbox has no delta; unrelated primary dirt preserved. Reuse42 focused tests and13-file source check because source/adapter/scorer bytes are unchanged. Retained81-file offline receipt/score/ledger/hash replay, credential-field scan, registry/truth/contract/methodology checks and whitespace pass. Changelog2026-10-20-01 records the bounded outcome. Historical Story226 closure unchanged; no checked-in CI/review workflow. No paid calls. Coordinator clearance required before commit/push.
+
+
+## Scout 103 Terra continuation — 2026-10-26
+
+Cam selected item4, inclusive hard US$5. New direct Responses Standard
+`gpt-6.1-terra` high32768 versus fresh `gpt-6.1-sol` low4096 and
+`gpt-6-luna` low1400, three synthetic five-JPEG v4 cases dialogue/prop/tunnel.
+First discriminator before expansion, fixed strict13-key schema/prompt/scorer/
+source targets, source-first Attempt047 clarifications prospectively symmetric,
+nine blind native Opus4.6 reviews maximum. Native and maintained adapter parity
+before scoring. Require deterministic>=.70, rubric/overall>=.80, maintained
+mean<=15s and<=US$.02/subject. No semantic retries/effort sweep, private inputs,
+MP4/audio, product runtime/default/deployment or commit/push. No autonomous-QA
+claim from this headless screen. R12/R18, spec7/8/9 and ADR003 own this surface;
+no new architecture decision. Existing current v4 truth supersedes old
+quarantined v3 notes, while subjective/lexical scoring limits remain explicit.
+
+Isolated codex/scout103-terra-cineforge-20261026 at
+`/Users/cam/.codex/worktrees/scout103-terra-20261026/cine-forge`, current fetched
+origin/main6e6783e47eec4d053452c83606e18dc6e96df312. Primary unrelated dirt stays
+untouched. Existing owner OpenAI/Anthropic credentials through normal wrapper,
+no injection or credential copy. Current authenticated zero-cost discovery lists
+exact Terra, Sol, Luna and Opus4.6. Public docs checked2026-10-26: Terra model
+page, pricing, images guide; text/image input, strict schema, high effort,
+Responses tool family, Standard input1/output5/cachewrite1.25 USD/M. storefalse
+does not establish ZDR; only authored synthetic JPEGs eligible.
+
+Reuse proven prior Kimi runner pattern as new Terra runner, removing router
+handling and adding only exact Terra/high allowlist and rates to existing
+eval adapter. Preserve selected original five JPEGs and all source bytes.
+Conservative serial full922K-input long-rate reservation2.79688 per candidate
+call exceeds the expected106K input estimate; no unsupported dimension-token
+bound is assumed. Settled actuals release reservation; entire all-worst-case
+matrix is not promised. Sol.10596/Luna.00395/Opus.3048 percall, finite bounded
+operational recovery within hardcap. All failed/unknown calls retain exposure.
+Adequate-output repair can proceed if documented truncation occurs; no valid
+semantic failure tuning. Judges reuse saved subjects for repair. No inference
+before zero-cost resolved9-packet topology and full output/source judge count
+admission. Full raw envelopes retained before parse, immutable receipts deny
+duplicate charges.
+
+2026-10-26 result — Attempt055 completes native direct Terra high32768 strict
+image/schema parity and two decision-bearing same-input cases. All arms0/2
+quality passes; correct color-change observation but Terra ambiguous and both
+controls intact fail declared broken prop label. Retain references, no winner.
+Terra mean9.885s/.00572835USD vsSol7.1555s/.0064841 and Luna8.184s/.0003776725.
+Automatic runner improperly expanded tunnel before prop adjudication: all saved
+tunnel subjects/judges retained as supplementary post-stop, excluded from main
+aggregate, extra.069789425USD included. Hardened per-case admission now fails
+closed; exact producing runner separately archived. All21calls settled
+conservative usage-estimated.229264595/5,unknown0. No paid rerun, rejudge or effort
+sweep; no runtime/default/commit/push. Exact frame sources, all raw responses,
+calltime/hardened code lineage and costs retained under story226-terra6120261026.

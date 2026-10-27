@@ -17730,13 +17730,13 @@
         }
       ],
       "latestScore": {
-        "model": "GPT-6.1 Sol / direct Responses low",
-        "measured": "2026-09-29",
+        "model": "GPT-6.1 Sol / direct Responses low — Scout103 control",
+        "measured": "2026-10-26",
         "metrics": {
-          "overall": 0.65712
+          "overall": 0.702625
         },
-        "evidenceStatus": "bounded-six-case-uncommitted-source-reviewed",
-        "note": "Attempt046 fresh direct exact Responses low/4096 strict five-JPEG comparison on six v4 synthetic cases. Cross-provider Opus on all12 saved answers; case004 Opus original and repair invalid under source/index/tag rules, replaced only there by symmetric source-first Sonnet5.5 image adjudication. Combined0.65712,0/6 case quality passes,6/6 hard constraints,6/6 per-call latency and cost gates. Source…"
+        "evidenceStatus": "bounded-two-case-source-reviewed-control",
+        "note": "Fresh matched low4096 control;0/2 quality passes, prop continuity intact fails declared broken label despite correct color-change description. Supplementary tunnel excluded from mean. No broad quality ranking or promotion."
       },
       "historicalEvidenceStatus": "",
       "excludedScoreCount": 14,
@@ -17775,7 +17775,7 @@
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
         "posture": "trigger-exhausted",
-        "whyNow": "Attempt046 fresh direct exact Responses low/4096 strict five-JPEG comparison on six v4 synthetic cases. Cross-provider Opus on all12 saved answers; case004 Opus original and repair invalid under source/index/tag rules, replaced only there by symmetric source-first Sonnet5.5 image adjudication. Combined0.65712,0/6 case quality passes,6/6 hard constraints,6/6 per-call latency and cost gates. Source…",
+        "whyNow": "Fresh matched low4096 control;0/2 quality passes, prop continuity intact fails declared broken label despite correct color-change description. Supplementary tunnel excluded from mean. No broad quality ranking or promotion.",
         "retryTriggerStatus": "exhausted",
         "retryWhen": [
           "qualified-strict-contract-or-new-checkpoint"

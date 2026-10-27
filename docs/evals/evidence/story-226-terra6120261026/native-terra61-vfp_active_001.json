@@ -1,0 +1,78 @@
+{
+  "arm": "terra61",
+  "name": "native-terra61-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.00663925,
+    "latencyMs": 9726,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6.1-terra",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0a9ff31de37fdf21016adf9b83304c87d091f552d6f0deaa57",
+      "requested_model": "gpt-6.1-terra",
+      "returned_model": "gpt-6.1-terra",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\n  \"clip_id\": \"vfp_active_001\",\n  \"summary\": \"Two simplified figures stand apart against a navy background above a dark horizontal band. Both figures gradually grow taller while remaining in place; a pale rectangle stays on the blue figure.\",\n  \"tone_tags\": [\"detached\"],\n  \"emotion_tags\": [],\n  \"color_tags\": [\"navy\"],\n  \"camera_tags\": [\"static\", \"locked_two_shot\"],\n  \"motion_tags\": [\"measured\"],\n  \"continuity_status\": \"intact\",\n  \"continuity_notes\": [\n    \"The beige figure remains on the left and the blue figure on the right throughout.\",\n    \"Both figures gradually increase in size while their bases and the background boundary stay fixed.\"\n  ],\n  \"audio_tags\": [],\n  \"audio_notes\": [],\n  \"evidence\": [\n    {\n      \"frame_index\": 0,\n      \"cue\": \"A beige figure and a blue figure stand widely separated above a dark lower band.\"\n    },\n    {\n      \"frame_index\": 2,\n      \"cue\": \"The figures retain their left-right positions, with a pale rounded rectangle on the blue figure's lower torso.\"\n    },\n    {\n      \"frame_index\": 4,\n      \"cue\": \"Both figures are taller than in the first frame, while their bases remain at the same height.\"\n    }\n  ],\n  \"overall_confidence\": 0.94\n}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0a9ff31de37fdf21016adf9b83304c87d091f552d6f0deaa57",
+      "model": "gpt-6.1-terra",
+      "raw_envelope_bytes": 14157,
+      "raw_envelope_path": "output/evals/terra61-20261026/native/terra61/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "6806447df076a5795f1ab7379a7a64ec54f1fa805d657ef1a514a6823615f236",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2892,
+        "input_tokens_details": {
+          "cache_write_tokens": 2889,
+          "cached_tokens": 0
+        },
+        "output_tokens": 605,
+        "output_tokens_details": {
+          "reasoning_tokens": 301
+        },
+        "total_tokens": 3497
+      }
+    },
+    "tokenUsage": {
+      "completion": 304,
+      "completionDetails": {
+        "reasoning": 301
+      },
+      "prompt": 2892,
+      "total": 3497
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

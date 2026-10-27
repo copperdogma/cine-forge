@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.019235",
+  "latency_ms": 9678,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1557,
+    "path": "output/evals/terra61-20261026/judge-opus-sol-vfp_active_001-raw.json",
+    "sha256": "f9ddf83911ea385fb171625f8cb24a0308ad399cf04c5379d1b8aa4ed561f5c3"
+  },
+  "reason": "The summary correctly identifies two simplified figures (cream/left, light blue/right) with gradual size increase and a pale rectangle on the right figure, matching the reference well. Color tags (navy, teal) match. Motion tag 'measured' matches. Continuity 'intact' matches. Audio tags are correctly empty. However, tone is 'detached' instead of 'intimate' (a mismatch). The description says 'pale outlined rectangle' but it appears more as a filled pale rectangle. The claim that figures 'grow taller and slightly wider' is correct and matches the reference observation of enlargement. Evidence is grounded at frames 0, 2, and 4 with reasonable observations. No invented camera mechanisms or false claims. The main deductions are: tone mismatch ('detached' vs 'intimate'), and minor descriptive inaccuracies. The emotion_tags being empty is correct. Camera_tags 'static' is stated but the reference says camera language is ambiguous and excluded from scoring, so no penalty there. Overall a solid but not perfect analysis.",
+  "request_id": "msg_011CgRKdBZ3CueaVv1WmCsav",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2592,
+    "output_tokens": 251,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

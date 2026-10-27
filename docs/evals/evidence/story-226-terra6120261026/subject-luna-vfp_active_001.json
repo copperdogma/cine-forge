@@ -1,0 +1,78 @@
+{
+  "arm": "luna",
+  "name": "subject-luna-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.00023467000000000003,
+    "latencyMs": 9499,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_007bbbed5c7265fb016adf9baaa46087d0b84629fbb607970a",
+      "requested_model": "gpt-6-luna",
+      "returned_model": "gpt-6-luna",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"A minimalist graphic shows two simplified figures standing apart on a dark horizontal ground, one pale gold and one light blue with a small light rectangle on its torso. Across the samples, both figures gradually become slightly larger while the background and spacing remain largely stable.\",\"tone_tags\":[\"detached\",\"surreal\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"teal\",\"gold\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Two simplified figures stand apart on a dark ground; the light-blue figure has a small pale rectangle on its torso.\"},{\"frame_index\":2,\"cue\":\"Both figures are slightly larger than in frame 0, while the horizontal boundary and their positions remain similar.\"},{\"frame_index\":4,\"cue\":\"The pale-gold and light-blue figures remain separated against the same dark blue background, with the light rectangle still on the blue figure.\"}],\"overall_confidence\":0.9}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_007bbbed5c7265fb016adf9baaa46087d0b84629fbb607970a",
+      "model": "gpt-6-luna",
+      "raw_envelope_bytes": 12294,
+      "raw_envelope_path": "output/evals/terra61-20261026/subject/luna/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "cff4bb35ad0293105d2004bc8a4a59764d13c9adc3783557c79844f98df4dacd",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 0,
+          "cached_tokens": 2887
+        },
+        "output_tokens": 411,
+        "output_tokens_details": {
+          "reasoning_tokens": 171
+        },
+        "total_tokens": 3301
+      }
+    },
+    "tokenUsage": {
+      "completion": 240,
+      "completionDetails": {
+        "reasoning": 171
+      },
+      "prompt": 2890,
+      "total": 3301
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

@@ -1,5 +1,17 @@
 # Changelog
 
+## [2026-10-26-01] — Qualify GPT-6.1 Terra ordered-frame evidence (Story 226)
+
+### Added
+- Preserve matched Terra/Sol/Luna native strict-schema and source-reviewed frame
+  evidence, complete usage accounting and offline hash verification.
+- Record the failed continuity-label gate and retain current model references.
+
+### Fixed
+- Require explicit per-case admission in the evaluation runner after recording
+  automatic post-stop expansion as supplementary evidence and overhead.
+
+
 ## [2026-10-25-01] — Inspect and confirm scene media (Story 234)
 
 ### Added

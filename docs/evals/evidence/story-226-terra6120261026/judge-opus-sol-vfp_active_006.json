@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.01863",
+  "latency_ms": 7417,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1488,
+    "path": "output/evals/terra61-20261026/judge-opus-sol-vfp_active_006-raw.json",
+    "sha256": "303cf07c560194fcef4042631ebf1570134e46c0b4f0df343f7b71cd0fab7849"
+  },
+  "reason": "The model correctly identifies the cyan icon moving left-to-right, the arch, the slanted lines, the dark blue gradient background, static camera, intact continuity, and teal/navy color tags. However, several mismatches lower the score: (1) Tone is 'detached' instead of 'urgent, tense' \u2014 the reference indicates urgency; (2) Motion is described as 'measured' rather than 'fast_lateral' \u2014 the icon traverses a significant portion of the frame across 5 samples, suggesting faster motion; (3) The model describes the figure as a 'person-like icon' rather than an 'abstract runner,' which is acceptable but slightly less precise; (4) Camera tags include only 'static' but miss 'wide_master' from the reference. The evidence is well-grounded across frames 0, 2, and 4, and continuity notes are accurate. Audio fields are empty as required. The core visual description is largely correct but tone and motion characterization diverge notably from the reference.",
+  "request_id": "msg_011CgRKom1iDNXKaQZAmmgpW",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2516,
+    "output_tokens": 242,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}
