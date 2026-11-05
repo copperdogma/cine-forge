@@ -1,0 +1,141 @@
+{
+  "base_git_sha": "a66e6834ecb98f2a656e34aa37fde0015d11c3af",
+  "candidate": "tencent/hy4",
+  "canonical_slug": "tencent/hy4-20261104",
+  "cap_usd": "5",
+  "date": "2026-11-05",
+  "effort": "high",
+  "ledger": [
+    {
+      "accounted_usd": "0.0165453045",
+      "arm": "hy4",
+      "estimated": true,
+      "name": "native-hy4-vfp_active_001",
+      "reservation_usd": "0.478225024",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0133283345",
+      "arm": "hy4",
+      "estimated": true,
+      "name": "subject-hy4-vfp_active_001",
+      "reservation_usd": "0.478225024",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0098735",
+      "arm": "sol",
+      "estimated": true,
+      "name": "native-sol-vfp_active_001",
+      "reservation_usd": "0.10596",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0029446999999999997",
+      "arm": "sol",
+      "estimated": true,
+      "name": "subject-sol-vfp_active_001",
+      "reservation_usd": "0.10596",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.000591175",
+      "arm": "luna",
+      "estimated": true,
+      "name": "native-luna-vfp_active_001",
+      "reservation_usd": "0.00395",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.00022267",
+      "arm": "luna",
+      "estimated": true,
+      "name": "subject-luna-vfp_active_001",
+      "reservation_usd": "0.00395",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.02064",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-hy4-vfp_active_001",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01968",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_001",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.018625",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_001",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    }
+  ],
+  "limits": "One exposed synthetic case per arm; no model qualifies. Tone/color/lexical penalties ambiguous. No product analyzer/promotion. Native Hy4 242893ms includes operator storage pause and is excluded from latency comparison. Other efforts and remaining cases unmeasured.",
+  "output_allowance": 32768,
+  "route": "OpenRouter Tencent FP4",
+  "rows": [
+    {
+      "arm": "hy4",
+      "case": "vfp_active_001",
+      "combined": 0.45940000000000003,
+      "cost_usd": 0.0133283345,
+      "deterministic": {
+        "pass": false,
+        "reason": "raw_score=0.3688 | overall=0.369 | uncertainty=0.240 | summary=0.33 | tone=0.00 | emotion=0.00 | color=0.40 | camera=0.40 | motion=0.00 | continuity=0.88 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: figures, closer | tone: intimate, unexpected=detached, unexpected=surreal | emotion: unexpected=isolation | color: teal, unexpected=desaturated, unexpected=gold | motion: measured, unexpected=slow_drift, unexpected=stillness | continuity: unexpected=The right figure's cream horizontal bar and both figures' cream/light-blue color assignments remain present in every sample., unexpected=Adjacent samples show only small upward shifts of the heads and upper torso edges, with no directly shown cut or replacement of the figures.",
+        "score": 0.3688
+      },
+      "latency_ms": 128072,
+      "quality_pass": false,
+      "rubric": 0.55,
+      "subject_model": "tencent/hy4"
+    },
+    {
+      "arm": "sol",
+      "case": "vfp_active_001",
+      "combined": 0.74665,
+      "cost_usd": 0.0029446999999999997,
+      "deterministic": {
+        "pass": true,
+        "reason": "overall=0.773 | uncertainty=0.040 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.67 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached | color: teal | continuity: The pale rectangle stays beside the right figure across all five frames., unexpected=The figures retain their left-right arrangement and aligned lower edges throughout the samples; the background boundary and the right figure's inset rectangle remain fixed.",
+        "score": 0.7733
+      },
+      "latency_ms": 8717,
+      "quality_pass": false,
+      "rubric": 0.72,
+      "subject_model": "gpt-6.1-sol"
+    },
+    {
+      "arm": "luna",
+      "case": "vfp_active_001",
+      "combined": 0.75595,
+      "cost_usd": 0.00022267,
+      "deterministic": {
+        "pass": true,
+        "reason": "overall=0.792 | uncertainty=0.140 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.80 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached | color: unexpected=gold | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "score": 0.7919
+      },
+      "latency_ms": 5043,
+      "quality_pass": false,
+      "rubric": 0.72,
+      "subject_model": "gpt-6-luna"
+    }
+  ],
+  "source_failure": "Frame3 evidence invents wider gaps between heads and torsos; original heads touch/overlap torsos. Enlargement only partially described.",
+  "spend_categories_usd": {
+    "judge": "0.058945",
+    "native": "0.0270099795",
+    "subject": "0.0164957044999999997"
+  },
+  "total_spend_usd": "0.1024506839999999997",
+  "unknown_exposure_usd": "0",
+  "verdict": "Retain Sol/Luna research references; reject tested Hy4 high32768 arm."
+}

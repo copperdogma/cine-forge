@@ -1,5 +1,11 @@
 # Changelog
 
+## [2026-11-05-01] — Hy4 ordered-frame screen (Story 235)
+
+### Added
+- Exact Tencent Hy4 high strict transport, fresh Sol/Luna comparison and source-grounded rejection evidence; no reference/default change. Nine calls US$.102450684 with all usage reconciled.
+- Optional OpenRouter benchmark reasoning passthrough and offline evidence replay; explicit per-case expansion remains guarded.
+
 ## [2026-10-26-01] — Qualify GPT-6.1 Terra ordered-frame evidence (Story 226)
 
 ### Added

@@ -231,6 +231,7 @@ def call_openrouter_strict(
     raw_output_path: Path,
     timeout_seconds: float,
     max_price: dict[str, float] | None = None,
+    reasoning_effort: str | None = None,
 ) -> dict[str, Any]:
     """Call an exact OpenRouter provider with strict JSON and no fallback."""
     OPENROUTER_CHAT_URL = scope["OPENROUTER_CHAT_URL"]
@@ -249,6 +250,10 @@ def call_openrouter_strict(
         frames=frames,
         max_tokens=max_tokens,
     )
+    if reasoning_effort is not None:
+        if reasoning_effort not in {"high", "low", "none"}:
+            raise RuntimeError("Unsupported OpenRouter benchmark reasoning effort")
+        payload["reasoning"] = {"effort": reasoning_effort}
     payload["provider"] = {
         "order": [upstream_provider],
         "allow_fallbacks": False,

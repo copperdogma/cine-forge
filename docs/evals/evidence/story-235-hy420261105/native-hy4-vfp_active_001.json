@@ -1,0 +1,84 @@
+{
+  "arm": "hy4",
+  "name": "native-hy4-vfp_active_001",
+  "response": {
+    "cached": false,
+    "cost": 0.0165453045,
+    "latencyMs": 242893,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": false,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "tencent/hy4",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openrouter",
+      "request_id": "gen-1793889842-lLAiplTXo132C8T4cHzg",
+      "requested_model": "tencent/hy4",
+      "returned_model": "tencent/hy4",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"audio_notes\":[],\"audio_tags\":[],\"camera_tags\":[\"static\",\"locked_two_shot\",\"wide_master\"],\"clip_id\":\"vfp_active_001\",\"color_tags\":[\"navy\",\"desaturated\",\"amber\",\"teal\"],\"continuity_notes\":[\"The navy gradient, straight horizon, and near-black floor stay in the same positions across the adjacent samples.\",\"The cream left figure, pale-blue right figure, and small cream horizontal bar remain present in every ordered frame.\",\"Across consecutive samples, the circular heads and upper body edges shift slightly upward while the bodies' lower edges and the cream bar remain fixed.\"],\"continuity_status\":\"intact\",\"emotion_tags\":[\"isolation\",\"vulnerability\",\"hesitation\"],\"evidence\":[{\"cue\":\"A cream circular head and rounded body stand left of a pale-blue circular head and rounded body with a small cream horizontal bar, both above a straight dark floor line.\",\"frame_index\":0},{\"cue\":\"The pale-blue circular head sits separated above the rounded body while the cream horizontal bar remains near the body's lower third and the dark horizon crosses behind both figures.\",\"frame_index\":1},{\"cue\":\"Both circular heads are positioned above tall rounded bodies whose lower edges align with the dark floor band, with the cream bar still in the right body's lower third.\",\"frame_index\":3},{\"cue\":\"The cream left figure and pale-blue right figure remain widely separated against the navy gradient, with the right figure's cream bar and the near-black lower band visible.\",\"frame_index\":4}],\"motion_tags\":[\"slow_drift\",\"stillness\"],\"overall_confidence\":0.81,\"summary\":\"Five ordered samples show a fixed wide composition of a cream circular-headed rounded figure on the left and a pale-blue circular-headed rounded figure with a cream bar on the right against a navy gradient and dark floor. Across consecutive samples, the figures' heads and upper body edges shift slightly upward while the horizon, floor, and bar remain visually stable.\",\"tone_tags\":[\"detached\",\"surreal\",\"ominous\"]}",
+    "raw": {
+      "id": "gen-1793889842-lLAiplTXo132C8T4cHzg",
+      "model": "tencent/hy4",
+      "provider": "Tencent",
+      "raw_envelope_bytes": 109099,
+      "raw_envelope_path": "output/evals/hy4-20261105/native/hy4/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "5d32adda4a3cc9279c081770c8193193b42f12d6df8f5f4b904cab486b642318",
+      "usage": {
+        "completion_tokens": 12519,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 12088
+        },
+        "cost": 0.0165453045,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.0156550095,
+          "upstream_inference_cost": 0.0165453045,
+          "upstream_inference_prompt_cost": 0.000890295
+        },
+        "is_byok": false,
+        "prompt_tokens": 2135,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 14654
+      }
+    },
+    "tokenUsage": {
+      "completion": 12519,
+      "prompt": 2135,
+      "total": 14654
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

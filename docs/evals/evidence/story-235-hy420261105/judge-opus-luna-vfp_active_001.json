@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.018625",
+  "latency_ms": 7846,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1407,
+    "path": "output/evals/hy4-20261105/judge-opus-luna-vfp_active_001-raw.json",
+    "sha256": "0c0282783a25fdde965fbb1721c196ca77893f30625ac5d5973a1d747f5dcdbd"
+  },
+  "reason": "The summary correctly identifies two figures that grow slightly larger across frames while remaining in place, and notes the pale rectangle on the right figure. Continuity is correctly marked as intact. Motion tag 'measured' matches. However, there are issues: (1) Tone is 'detached' instead of 'intimate' \u2014 a mismatch. (2) Color tags include 'gold' which is not in the reference (navy, teal); the reference lists navy and teal, and while the model gets navy and teal correct, it adds an unsupported 'gold'. (3) The model includes audio_tags as empty and audio_notes as empty, which is correct. (4) Evidence is reasonably grounded at frames 0, 2, and 4, which is acceptable (2-4 entries). (5) The emotion_tags being empty matches. The tone mismatch ('detached' vs 'intimate') and the extra color tag ('gold') are notable penalties, bringing the score below the 0.8 threshold.",
+  "request_id": "msg_011CgjyAW9DuvJDVnddio8Ru",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2530,
+    "output_tokens": 239,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

@@ -157,6 +157,7 @@ def _dispatch_subject_request(request: dict[str, Any]) -> dict[str, Any]:
             raw_output_path=_openrouter_raw_output_path(request),
             timeout_seconds=float(request["config"].get("request_timeout_seconds") or 15),
             max_price=request["config"].get("max_price"),
+            reasoning_effort=request["config"].get("reasoning_effort"),
         )
     raise RuntimeError(f"Unsupported provider: {provider}")
 

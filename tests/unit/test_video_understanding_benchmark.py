@@ -406,8 +406,9 @@ def test_provider_xai_responses_strict_keeps_all_images_schema_and_usage(
 
 
 @pytest.mark.unit
+@pytest.mark.parametrize("effort", [None, "high"])
 def test_openrouter_video_transport_pins_deepinfra_strict_schema_and_raw_envelope(
-    monkeypatch: pytest.MonkeyPatch,
+    monkeypatch: pytest.MonkeyPatch, effort,
 ) -> None:
     seen: dict[str, object] = {}
     output = json.dumps(
@@ -455,6 +456,7 @@ def test_openrouter_video_transport_pins_deepinfra_strict_schema_and_raw_envelop
         upstream_provider="DeepInfra",
         raw_output_path=raw_path,
         timeout_seconds=15,
+        reasoning_effort=effort,
     )
 
     body = seen["body"]
@@ -464,6 +466,7 @@ def test_openrouter_video_transport_pins_deepinfra_strict_schema_and_raw_envelop
         "allow_fallbacks": False,
         "require_parameters": True,
     }
+    assert body.get("reasoning") == ({"effort": effort} if effort else None)
     assert "fp8" not in str(body["provider"])
     assert body["response_format"]["json_schema"]["strict"] is True
     assert raw_path.exists()

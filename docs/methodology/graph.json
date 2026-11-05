@@ -989,7 +989,8 @@
           "231",
           "232",
           "233",
-          "234"
+          "234",
+          "235"
         ],
         "adrIds": [
           "ADR-002",
@@ -1139,7 +1140,8 @@
           "229",
           "230",
           "231",
-          "234"
+          "234",
+          "235"
         ],
         "adrIds": [
           "ADR-001",
@@ -1234,7 +1236,8 @@
           "226",
           "227",
           "229",
-          "231"
+          "231",
+          "235"
         ],
         "adrIds": [
           "ADR-002",
@@ -15502,6 +15505,61 @@
           "summary": "Second findings-first review accepted three same-scope defects: approval narrowed the recipe past its existing validation stage; approved-run recovery queued a worker guaranteed to conflict with one-use scope; paused pr…"
         }
       }
+    },
+    {
+      "id": "235",
+      "title": "Hy4 ordered-frame evaluation",
+      "path": "docs/stories/story-235-hy4-ordered-frame-evaluation.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12",
+        "R18"
+      ],
+      "specRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "235",
+        "sourcePath": "docs/stories/story-235-hy4-ordered-frame-evaluation.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-235-hy4-ordered-frame-evaluation.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -17530,7 +17588,8 @@
         "224",
         "225",
         "226",
-        "229"
+        "229",
+        "235"
       ],
       "categoryRefs": [
         "spec:7",
@@ -17540,6 +17599,14 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "056",
+          "date": "2026-11-05",
+          "approach": "Hy4 official Nov4/Tencent FP4 high32768 strict native+adapter qualified. One fresh matched synthetic dialogue: structural .3688/Opus .55/combined .4594 vs Sol .74665/Luna .75595, all0/1passes. Hy4 invents head/body gaps and takes128.072s/$0.0133283345 vs8.717s/$0.0029447 and5.043s/$0.00022267. Stop source failure; remainingcases/lower efforts unmeasured.9settledcalls USD.102450684/5,unknown0. Nat…",
+          "note": "",
+          "retryStatus": "",
+          "retryWhen": []
+        },
         {
           "id": "053",
           "date": "2026-10-20",
@@ -17755,7 +17822,8 @@
         "224",
         "225",
         "226",
-        "229"
+        "229",
+        "235"
       ],
       "declaredCategoryRefs": [
         "spec:7",
@@ -17774,18 +17842,16 @@
         "sourceId": "video-understanding",
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
-        "posture": "trigger-exhausted",
+        "posture": "no-trigger-recorded",
         "whyNow": "Fresh matched low4096 control;0/2 quality passes, prop continuity intact fails declared broken label despite correct color-change description. Supplementary tunnel excluded from mean. No broad quality ranking or promotion.",
-        "retryTriggerStatus": "exhausted",
-        "retryWhen": [
-          "qualified-strict-contract-or-new-checkpoint"
-        ],
+        "retryTriggerStatus": "none",
+        "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-10-20",
+          "date": "2026-11-05",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "053",
-          "summary": "Scout099 item4 exactGA free/Minimax high32768: strict13-key request404 Filter by Parameters; one require_parameters=false locally valid capability-only diagnostic. First dialogue .6368/15.507s/$0 vs fresh Sol.74665/Luna.62285; all0/1passes. Remaining cases not measured; no production parity, semantic ranking promotion or default change."
+          "sourceId": "056",
+          "summary": "Hy4 official Nov4/Tencent FP4 high32768 strict native+adapter qualified. One fresh matched synthetic dialogue: structural .3688/Opus .55/combined .4594 vs Sol .74665/Luna .75595, all0/1passes. Hy4 invents head/body gaps and takes128.072s/$0.0133283345 vs8.717s/$0.0029447 and5.043s/$0.00022267. Stop source failure; remainingcases/lower efforts unmeasured.9settledcalls USD.102450684/5,unknown0. Nat…"
         }
       }
     }

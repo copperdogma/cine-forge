@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.02064",
+  "latency_ms": 10694,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1701,
+    "path": "output/evals/hy4-20261105/judge-opus-hy4-vfp_active_001-raw.json",
+    "sha256": "8f1e313450ba5d99d26959b2f6614693668d82cab635b13529095912f6ddb04f"
+  },
+  "reason": "The analysis correctly identifies two abstract figures in left-right positions against a navy backdrop with a pale rectangle on the right figure, and correctly notes continuity as intact. However, there are several mismatches: (1) The reference says both figures appear larger across the ordered frames, which the model only vaguely captures as 'slow_drift' and 'subtle upward shifts' without clearly identifying the enlargement. (2) Color tags include 'gold' and 'desaturated' but miss 'teal' which is in the reference. (3) Emotion tag 'isolation' is invented; the reference says emotion is [none]. (4) Tone tags 'detached' and 'surreal' don't match the reference 'intimate'. (5) Motion tag 'stillness' contradicts the observable measured enlargement; 'slow_drift' is only partially correct. (6) The summary mentions heads shifting upward rather than the key observation that figures enlarge at fixed centers. (7) Audio fields are correctly empty (audio_notes and audio_tags are empty arrays). The core visual description is reasonable but the analysis misses the primary visual event (figure enlargement) and invents emotional/tonal content not supported by the frames.",
+  "request_id": "msg_011Cgjy8wXtkqXfGihGoKL7J",
+  "score": 0.55,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2713,
+    "output_tokens": 283,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

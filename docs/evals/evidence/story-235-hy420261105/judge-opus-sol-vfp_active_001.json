@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.01968",
+  "latency_ms": 10030,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1546,
+    "path": "output/evals/hy4-20261105/judge-opus-sol-vfp_active_001-raw.json",
+    "sha256": "224f21d4f5ce3b42e7fde67b04c6f1b76a7297f74636c05d6372c3bf268c064f"
+  },
+  "reason": "The summary correctly identifies two simplified figures (cream/left, light blue/right) with a pale rectangle on the right figure, and notes they grow across frames. However, there are notable issues: (1) Tone is 'detached' vs reference 'intimate' \u2014 a mismatch, though tone is somewhat ambiguous. (2) Color tags include only 'navy' but miss 'teal' which is visible in the gradient background. (3) The description says figures grow 'taller and slightly wider' which aligns with the reference observation of enlargement. (4) Continuity is correctly 'intact' with appropriate notes about the rectangle staying in place. (5) Motion tag 'measured' matches reference. (6) Evidence entries are grounded in frames 0, 2, and 4, which meets the 2-4 requirement. (7) Audio tags are empty, which is correct. (8) Camera tag 'locked_two_shot' \u2014 the reference says camera language is ambiguous and excluded from scoring, so this is neutral. The tone mismatch and missing 'teal' color tag bring the score below the 0.8 threshold.",
+  "request_id": "msg_011Cgjy9k66SC2thynz9uPfX",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2586,
+    "output_tokens": 270,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

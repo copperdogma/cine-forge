@@ -350,6 +350,7 @@ Grouped by primary `spec:N` category. Stories keep all category refs visible in 
 | 226 | GPT-6.1 Sol Ordered-Frame Comparison | High | Done | — | spec:7, spec:8, spec:9 | 225 | [story-226](stories/story-226-gpt61-sol-ordered-frame-evaluation.md) |
 | 227 | Grok 4.7 Reasoning Frame Calibration | High | Done | — | spec:7, spec:8, spec:9 | 226 | [story-227](stories/story-227-grok47-reasoning-frame-calibration.md) |
 | 229 | Mistral Large 4 Ordered Frame Evaluation | High | Done | — | spec:7, spec:8, spec:9 | 226, 227 | [story-229](stories/story-229-mistral-large4-ordered-frame-evaluation.md) |
+| 235 | Hy4 ordered-frame evaluation | High | Done | — | spec:7, spec:8, spec:9 | — | [story-235](stories/story-235-hy4-ordered-frame-evaluation.md) |
 | 028 | Render Adapter Module | Unknown | Done | — | spec:7, spec:10 | 013, 022, 025, 027, 029 | [story-028](stories/story-028-render-adapter.md) |
 | 030 | Generated Output QA (Video Understanding Benchmark) | Unknown | Done | — | spec:7, spec:8, spec:9 | 005, 012, 021, 022, 028, 032 | [story-030](stories/story-030-generated-output-qa.md) |
 | 098 | Real-World Asset Upload Pipeline | Unknown | Cancelled | — | spec:7 | 029 | [story-098](stories/story-098-real-asset-upload.md) |

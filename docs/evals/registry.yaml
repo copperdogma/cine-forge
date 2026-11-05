@@ -2057,6 +2057,7 @@ evals:
       - "225"
       - "226"
       - "229"
+      - "235"
     category_refs:
       - spec:7
       - spec:8
@@ -2457,6 +2458,11 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "056"
+        story: attempts/056-hy4-ordered-frame-screen.md
+        date: 2026-11-05
+        status: failed
+        approach: "Hy4 official Nov4/Tencent FP4 high32768 strict native+adapter qualified. One fresh matched synthetic dialogue: structural .3688/Opus .55/combined .4594 vs Sol .74665/Luna .75595, all0/1passes. Hy4 invents head/body gaps and takes128.072s/$0.0133283345 vs8.717s/$0.0029447 and5.043s/$0.00022267. Stop source failure; remainingcases/lower efforts unmeasured.9settledcalls USD.102450684/5,unknown0. Native242.893s storagepause excluded. Dirty hash-frozen exposed evidence; no current score promotion/default change."
       - id: "053"
         story: attempts/053-minimax31-ordered-frame-contract-stop.md
         date: 2026-10-20
