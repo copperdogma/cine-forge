@@ -57,6 +57,14 @@ def call_anthropic(
             "effort": effort,
             "format": {"type": "json_schema", "schema": _anthropic_video_schema()},
         }
+    if model == "claude-fable-5-2":
+        if effort != "xhigh" or max_tokens != 32768 or raw_output_path is None or len(frames) != 5:
+            raise RuntimeError("Fable lane requires frozen xhigh32768 and five source frames")
+        payload.pop("temperature", None)
+        payload["output_config"] = {
+            "effort": effort,
+            "format": {"type": "json_schema", "schema": _anthropic_video_schema()},
+        }
     try:
         response = _request_json(
             ANTHROPIC_MESSAGES_URL,
@@ -66,6 +74,7 @@ def call_anthropic(
                 "content-type": "application/json",
             },
             body=payload,
+            **({"timeout_seconds": 360} if model == "claude-fable-5-2" else {}),
         )
     except ProviderHTTPError as exc:
         if raw_output_path is not None:
@@ -92,6 +101,39 @@ def _normalize_anthropic_response(
     VideoAnalysisPrediction = scope["VideoAnalysisPrediction"]
     _token_count = scope["_token_count"]
     REPO_ROOT = scope["REPO_ROOT"]
+    if model == "claude-fable-5-2":
+        if response.get("stop_reason") != "end_turn" or response.get("type") != "message":
+            raise RuntimeError("Fable response did not finish normally")
+        identity = validate_provider_response_identity(
+            provider="anthropic", requested_model=model, returned_model=response.get("model"),
+            request_id=response.get("id"), require_returned=True,
+        )
+        texts = [b["text"] for b in response.get("content", []) if b.get("type") == "text"]
+        if len(texts) != 1 or not texts[0].strip():
+            raise RuntimeError("Fable requires one complete final text block")
+        output = texts[0]
+        VideoAnalysisPrediction.model_validate_json(output)
+        usage = response["usage"]
+        i = _token_count(usage.get("input_tokens"), "input_tokens")
+        o = _token_count(usage.get("output_tokens"), "output_tokens")
+        read = _token_count(usage.get("cache_read_input_tokens", 0), "cache_read_input_tokens")
+        write = _token_count(
+            usage.get("cache_creation_input_tokens", 0), "cache_creation_input_tokens"
+        )
+        if write:
+            raise RuntimeError("Unexpected cache creation requires explicit TTL billing review")
+        raw_bytes = raw_output_path.read_bytes()
+        return {
+            "output": output,
+            "token_usage": {"prompt": i + read, "completion": o, "total": i + read + o},
+            "reported_cost_usd": (i * 8 + read * .2 + o * 40) / 1000000,
+            "cost_estimated": True,
+            "raw": {"id": identity.request_id, "model": identity.returned_model,
+                    "usage": usage, "stop_reason": response["stop_reason"],
+                    "raw_envelope_path": raw_output_path.relative_to(REPO_ROOT).as_posix(),
+                    "raw_envelope_sha256": hashlib.sha256(raw_bytes).hexdigest(),
+                    "raw_envelope_bytes": len(raw_bytes)},
+        }
     if (
         model in {"claude-opus-5-5", "claude-sonnet-5-5", "claude-haiku-5-5"}
         and response.get("stop_reason") != "end_turn"

@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.019555",
+  "latency_ms": 7828,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1527,
+    "path": "output/evals/fable52-20261109/judge-opus-fable52-vfp_active_005-raw.json",
+    "sha256": "09656723ee01b5df32aac10a4e60a772f6257cd2553a3474873ca7457a47bb97"
+  },
+  "reason": "The summary correctly identifies a gold/yellow figure moving left-to-right across a gap between dark rooftops, which matches the reference. However, there are several issues: (1) The motion is described as 'measured' rather than 'fast_lateral' as in the reference - the figure covers significant ground across frames suggesting fast lateral movement. (2) The emotion tag 'resolve' is not supported by the reference which lists no emotion tags. (3) The description says the figure 'leaps in an arc' which is reasonable from the frames, and 'carrying a rectangular object' which aligns with the small yellow rectangle staying beside the runner. (4) Color tags 'navy' and 'gold' are close but reference uses 'amber' and 'navy' - gold vs amber is semantically close. (5) Camera tags 'static' and 'wide_master' match perfectly. (6) Continuity status 'intact' matches. (7) The evidence entries are well-grounded in the frames. The main penalties are for incorrect motion tag and unsupported emotion tag.",
+  "request_id": "msg_011CgtH1hso9vdufKD4BA8xc",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2656,
+    "output_tokens": 251,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

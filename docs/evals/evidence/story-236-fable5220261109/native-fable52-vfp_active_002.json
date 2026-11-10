@@ -1,0 +1,77 @@
+{
+  "arm": "fable52",
+  "name": "native-fable52-vfp_active_002",
+  "response": {
+    "cached": false,
+    "cost": 0.112536,
+    "latencyMs": 28400,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "alarm_chase_whip_pan",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_002",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a",
+        "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039",
+        "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655",
+        "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b",
+        "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+      ],
+      "meta_sha256": "d028854d7c23197397b7003bfcfe3fd651d418a232950e8e28851ea210e7e99a",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "claude-fable-5-2",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "request_id": "msg_011CgtGmWS4kfCiFvaoEqnJV",
+      "requested_model": "claude-fable-5-2",
+      "returned_model": "claude-fable-5-2",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_002\",\"summary\":\"A stylized orange-red figure holding a small red rectangular object moves steadily from left to right across a dark red frame streaked with diagonal lines, passing in front of a fixed doorway-like rectangle and converging lines. The background geometry stays fixed while the figure moves at an even pace.\",\"tone_tags\":[\"urgent\",\"tense\"],\"emotion_tags\":[\"resolve\"],\"color_tags\":[\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"fast_lateral\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The figure's shape, colour and the white-outlined red object it holds stay consistent in all five samples.\",\"The doorway rectangle and converging diagonal lines hold the same position in every sample, with no visible jump in framing.\",\"The figure's horizontal position advances by a roughly even amount between consecutive samples, with no reversal or skip.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Orange-red figure at far left holding a white-outlined red rectangle, against a dark red gradient with diagonal white streaks.\"},{\"frame_index\":2,\"cue\":\"Figure now overlaps the central doorway-like rectangle, whose position is unchanged from the earlier samples.\"},{\"frame_index\":4,\"cue\":\"Figure has moved to the right of the doorway rectangle, still holding the red object, while the rectangle and converging lines remain fixed.\"}],\"overall_confidence\":0.6}",
+    "raw": {
+      "id": "msg_011CgtGmWS4kfCiFvaoEqnJV",
+      "model": "claude-fable-5-2",
+      "raw_envelope_bytes": 8082,
+      "raw_envelope_path": "output/evals/fable52-20261109/native/fable52/vfp_active_002-raw-envelope.json",
+      "raw_envelope_sha256": "12726b217cede15fd2a34436496d944a284a6993d09da5b0adbbf20b551dcc6f",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 1911,
+        "output_tokens_details": {
+          "thinking_tokens": 1399
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    },
+    "tokenUsage": {
+      "completion": 1911,
+      "prompt": 4512,
+      "total": 6423
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+    "clip_id": "alarm_chase_whip_pan",
+    "evaluation_id": "vfp_active_002",
+    "target_markdown": "file://../video_understanding_truth_v4/alarm_chase_whip_pan/target.md",
+    "target_path": "video_understanding_truth_v4/alarm_chase_whip_pan/target.json"
+  }
+}

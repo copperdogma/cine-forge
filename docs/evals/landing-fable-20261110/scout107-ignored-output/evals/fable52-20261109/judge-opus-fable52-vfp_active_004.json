@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.01949",
+  "latency_ms": 7891,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1526,
+    "path": "output/evals/fable52-20261109/judge-opus-fable52-vfp_active_004-raw.json",
+    "sha256": "7b7afec1c24373f7be35d55d19ec19762a231779a816cecba468eddff2f8d21d"
+  },
+  "reason": "The model correctly identifies the key visual facts: the scene is static with a small rounded/rectangular object on a brown block/table against a navy backdrop; the object is red in frames 0-1 and blue in frames 2-4; continuity is broken due to the color change between frames 1 and 2. Color tags include navy and red (blue is not in allowed color_tags, so omitting it is fine). Camera tags include 'static' which matches. The model includes 'wide_master' is missing but this is a minor omission. Motion tags include 'stillness' which is acceptable since reference has none - slight penalty for inventing a tag. Tone is 'detached' while reference has none - minor penalty for inventing tone. Emotion tags are empty, matching reference. Audio tags are empty as required. Evidence is well-grounded across frames 0, 1, 2, and 4. The model adds 'detached' tone and 'stillness' motion tag which are minor inventions, and misses 'wide_master' camera tag. Overall a solid analysis with minor deviations.",
+  "request_id": "msg_011CgtGwb5eFP26K4HJeHKxQ",
+  "score": 0.82,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2598,
+    "output_tokens": 260,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

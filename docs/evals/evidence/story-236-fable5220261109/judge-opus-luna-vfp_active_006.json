@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.017905",
+  "latency_ms": 6730,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1398,
+    "path": "output/evals/fable52-20261109/judge-opus-luna-vfp_active_006-raw.json",
+    "sha256": "5596940d748741852b5602a62f7a8a556089da666163e9bdd0ef45e5bbf28474"
+  },
+  "reason": "The summary correctly identifies the figure moving left-to-right under an arch with line patterns, and correctly notes the small rectangle staying with the figure. Color tags (navy, teal) match the reference. Motion tag 'fast_lateral' matches. Camera tag 'static' matches but misses 'wide_master'. Continuity is correctly 'intact'. Evidence is well-grounded with 3 entries referencing frames 0, 2, and 4. However, tone is tagged as 'detached' instead of 'urgent' and 'tense' from the reference \u2014 this is a meaningful mismatch. The motion_tags include 'measured' which contradicts the fast/urgent nature of the animation. The description says 'moves steadily' which understates the lateral speed. Audio fields are empty as required. The overall analysis captures the core visual content but misses the tonal urgency and includes a contradictory 'measured' motion tag.",
+  "request_id": "msg_011CgtH8excL7UTEzCa1PNoH",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2471,
+    "output_tokens": 222,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

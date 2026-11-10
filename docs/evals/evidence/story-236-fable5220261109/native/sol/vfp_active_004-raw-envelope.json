@@ -1,0 +1,302 @@
+{
+  "access_programs": {
+    "cyber": "standard"
+  },
+  "background": false,
+  "billing": {
+    "payer": "developer"
+  },
+  "completed_at": 1794269366,
+  "created_at": 1794269361,
+  "error": null,
+  "frequency_penalty": 0.0,
+  "id": "resp_0f8478bc5b419e2f016af260b1e50487d0ada4658a215205bf",
+  "image": {
+    "context_compression": "disabled"
+  },
+  "incomplete_details": null,
+  "instructions": null,
+  "max_output_tokens": 4096,
+  "max_tool_calls": null,
+  "metadata": {},
+  "model": "gpt-6.1-sol",
+  "moderation": null,
+  "object": "response",
+  "output": [
+    {
+      "content": [],
+      "encrypted_content": "gAAAAABq8mC2ynndnhx_8Lp-vNhKWq2SAEbH5zYaYeeZVrk1V9rcZ8iQsIEqA1gB1Nui3snol372emj8Q9g0vtM_iqz-SE3RjnbopNrYLInd2Et2yW-qmgKm-Pd0q8TZAXFJtN20cgdhQ0K3ZayaiRhhqgxhvbeQoBp8Z6OraeHxQOx8xRzXSi77m5H0SVeRFt5iDUZF8fnqdKntPBeuZ_RB14ijtizGZNxR6Q1jPwD7Hzas9NduqNjv6JBF9kFMkrpwqanLZPpRdQNSNxJTeW9VihIh6jUu6-1nypWhquqK_RpufNYNtENx3-AsB7hgRBpwQ_bJW7oPsHxcoU4iuCiYsNRXvawDnweXquC3AQu_w2rAm70DKGmI8waDamDjKL7W2YdLTk6Zo_Tet3I6c9zjdvloTxQ-o1OHudc0-_IvxfczCpZKAibjaP1w6a8_1xRh6osSpdbXxAgJPJjw9b5HsMAPQqIdRGe7PXvpZs3Pn_kPbl_jYWrbAvbn0UkmyaArPbviri2Xui6t3rwMdsWbU-ScdrqDxdJc3ZD5kE48Zj4tij0cIu6Nx94Dg-zbbDTYg4HKU0pjURTU8F55zxahw6W9G40EL-mfyYuoD6vvQcTX1pAQzbU9Hbp0NS0tFt-7fHpsYgAY7YAVgD8x-R6-z2epGLam97_0VIe6pHGsWFQG9Gfm6e_gwlrnmTIDT7ZNAbHvqzVZlbIOWJCGaU9-ybcWUTiVGv3wpezCSAOayIxmgdt4IPq7mOCytcYvcXS1g0t-TJKZnPDffvGerl8nF70wQN02rttb1dfI-s3k6kIxX3boBN8IUg6bBcq-12nOpoVp7DlW4cVukj1zRErt63Wz31BA-1ZzluvIzm8rE8vHLq63_eoB71CUxRTqiftS_0XBixZh4a31KUIkwcxA_wlAcSBTYBE9BUF1Q4YwKSolaKiYecp8KxGDVlh_NKJG3tS-kPzZ_oPV5M-hhnZ9a6L-mrKyZnCVu7K_5jTAT-W4l13odric5w5aIrkqWUvu2Y6LF_ju-GKqgaLvooWwWXiO2lmb4RtUEuXEHC4JhZJSTXGDhW5ff6Wt93Sst3ToLPFddESDG7b73QJjrOx_s2xCyMZAlXcA3zgdq3Gc8iRKzEseBtaodieErHLsmMS5q99EGdLRcQtlKiCzRmFSRLWf2cuo5htk3RFdxZfNOq25oF1wFc3QVdiUrcOcid-GgqpWUUY6qJmOMFPuFyoFd5OE-RR4RzLKt_Gt-3vM_bz1q9tSrNcj2FJnr4zHP-Em1Up6L3D9VIIUwuQbUhfZBqVLDpKTTHxrtS2NeZ2ePQzHc2RUOMO0Oi5nNzCFzvXMWUVCkWGoMdc3P4Jya43e8DXXBq__Ig9qhKToNJW3mcDSBe3rjYTkAEy07K_4dWNa0aPGGZS6DLvFB-RNxbkKpFm7YQeqiGIaIh80J7P476hbaIh6Qfll0qjBC-y8UrxdO3P2OsCT8KHff10VzfRGQwcTEeuOJPNqx22Xd2hFiRsyoyC25fuh8dp2CGGA24BhUqeaE-4C5iq7J8cFv6SAoEvykWIGIKOWR6y669RAqhCwjM94wcYvMmaLxvvHIaYDkmoHY3OVCg_Og5cxAAMHAmRePsedoic-J7L-OlqvR-BhoHQFcONWnfSnagqtXS11bj17jGhM8cwepd_DcDKPfhB8V0tV29jMUT_8LjMKdOnvQQZ5a-imiqxZ9Xrp-CkcTF6lcjnzYDbIi31eO4Fe0kOvD5hUu9iPwRHu6sWRcWgCmF8278jbepMWhtRJ0Ylm4BKXV1ynPyxCYVl5ZWHcBzlMDbkrn2b-t7KY0Elljn8diEN3AHtQ5e5iXB0fPkjiHGNnji2BD02M7jGXFZBOdJzmEZ2zQkcA3vaP3CEJ72eLi0Rk38HwXq3PCA1AEPmPIWs-5ZxSU8vzV2Ki6kQR5xvyRPzXhzzKkyUmDgyco23neuq7SkPWrKWalLYymdVQNM453JVgNxxhWitm5bKFMJY0bKlhzhMsgia3bmJUKMo6M2izmZdpbbw_vsFvj9dZu3vBeQn6Of56pqTKL8Iugjh9UJtiDjZwcNZ488FPA_J1n6OFdts_5wFVijL5y5nJ9sMeVOc4oFEgygLwSUgQd9bMm22slrPEWzdZT7X38E1nZ05FX2RMtv3GRNHZX5-IHJqRIWll8vEDeebDNc1oAYKEMF3M1iMWNSWUd8qTsNIT-s93_vb_uLcZP9KWsOGKHHjRHOxzv2ISz_SWTb9iKVze5UieVDmdGWto4m7K_eXz5zbVaq8xXvx2j2ysa2P-YAYXph007QNkpXyK_Mpm2qSXmx54_evqpVleIeN78YJ9K8zmU2ga5IxLZMLNS-rvvJZNEN_YT_DAGf_AkN-mNJKFWF0zafKvL7pqAfNNMvT2To8lNdf03WZeVIZPRQaBQVNOshqlEQwo_PmoDO_Ml_XH7tBuWoV_J72rXhJOMKYDK1_YSYi940EapEAh0wOhZ1uSYd0e0h_O7Q422QSKSz0HTUgscMlwx6QpaoAPUgHc39R3TucP5h7JXdROMQBiDuy93GT9N0c0Rx-LkfNEBBzKoK_K_57W9x8gV-tpesHem6AVFFmzL-Td-94QmcwHfu59N5Xr5R4lTSujxkA8B74zLi8aRzO_XYx5lOuvZ8td7t0QAJlSDK2vNrucVPud6-zrK1_44lEchJOYrSYEbfjDYD3QBQ==",
+      "id": "rs_0f8478bc5b419e2f016af260b2d43087d0b415170f06d9e532",
+      "summary": [],
+      "type": "reasoning"
+    },
+    {
+      "content": [
+        {
+          "annotations": [],
+          "logprobs": [],
+          "text": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A fixed minimalist graphic shows two stacked brown rectangular forms against a dark navy background. A small white-outlined inset changes from red to blue between samples 1 and 2, then remains blue.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The inset changes from red in frame 1 to blue in frame 2; its outline, position, and the surrounding geometry remain unchanged.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A small red inset with a white clipped-corner outline sits on the upper brown rectangle.\"},{\"frame_index\":1,\"cue\":\"The inset is still red, and both brown rectangular forms retain the same placement.\"},{\"frame_index\":2,\"cue\":\"The inset is blue within the same white outline; the background and rectangular forms remain aligned.\"},{\"frame_index\":4,\"cue\":\"The blue inset and surrounding composition retain their positions and shapes.\"}],\"overall_confidence\":0.99}",
+          "type": "output_text"
+        }
+      ],
+      "id": "msg_0f8478bc5b419e2f016af260b3a1d087d085c888ce5510abdd",
+      "phase": "final_answer",
+      "role": "assistant",
+      "status": "completed",
+      "type": "message"
+    }
+  ],
+  "parallel_tool_calls": true,
+  "presence_penalty": 0.0,
+  "previous_response_id": null,
+  "prompt_cache_key": null,
+  "prompt_cache_retention": "24h",
+  "reasoning": {
+    "context": "all_turns",
+    "effort": "low",
+    "mode": "standard",
+    "summary": null
+  },
+  "safety_identifier": null,
+  "service_tier": "default",
+  "status": "completed",
+  "store": false,
+  "temperature": 1.0,
+  "text": {
+    "format": {
+      "description": null,
+      "name": "video_analysis_prediction",
+      "schema": {
+        "additionalProperties": false,
+        "description": "Model output normalized before deterministic scoring.",
+        "properties": {
+          "audio_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "audio_tags": {
+            "items": {
+              "enum": [
+                "alarm",
+                "drone",
+                "heartbeat",
+                "muzak",
+                "percussion",
+                "radio",
+                "silent",
+                "soft_music",
+                "speech",
+                "voiceover"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "camera_tags": {
+            "items": {
+              "enum": [
+                "cross_cut",
+                "crash_zoom",
+                "handheld_jitter",
+                "locked_two_shot",
+                "lateral_track",
+                "overhead_reveal",
+                "profile_closeup",
+                "slow_pull_back",
+                "slow_push_in",
+                "static",
+                "whip_pan",
+                "wide_master"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "clip_id": {
+            "description": "Local validation: minLength=1",
+            "type": "string"
+          },
+          "color_tags": {
+            "items": {
+              "enum": [
+                "amber",
+                "desaturated",
+                "gold",
+                "green",
+                "magenta",
+                "monochrome",
+                "navy",
+                "neon",
+                "red",
+                "sepia",
+                "teal",
+                "violet"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "continuity_notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "continuity_status": {
+            "enum": [
+              "intact",
+              "broken",
+              "ambiguous"
+            ],
+            "type": "string"
+          },
+          "emotion_tags": {
+            "items": {
+              "enum": [
+                "anger",
+                "grief",
+                "hesitation",
+                "isolation",
+                "nostalgia",
+                "panic",
+                "relief",
+                "resolve",
+                "suspicion",
+                "tenderness",
+                "vulnerability",
+                "wonder"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "additionalProperties": false,
+              "description": "Evidence tied to one submitted image in the ordered frame packet.",
+              "properties": {
+                "cue": {
+                  "description": "Local validation: minLength=1",
+                  "type": "string"
+                },
+                "frame_index": {
+                  "description": "Local validation: minimum=0, maximum=4",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "frame_index",
+                "cue"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "motion_tags": {
+            "items": {
+              "enum": [
+                "abrupt_cut",
+                "escalating",
+                "fast_lateral",
+                "jitter",
+                "match_cut",
+                "measured",
+                "pulsing_light",
+                "slow_drift",
+                "spiral_orbit",
+                "stillness"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "overall_confidence": {
+            "description": "Local validation: minimum=0.0, maximum=1.0",
+            "type": "number"
+          },
+          "summary": {
+            "description": "Local validation: minLength=1",
+            "type": "string"
+          },
+          "tone_tags": {
+            "items": {
+              "enum": [
+                "detached",
+                "hopeful",
+                "intimate",
+                "mournful",
+                "nostalgic",
+                "ominous",
+                "playful",
+                "regretful",
+                "surreal",
+                "tense",
+                "triumphant",
+                "urgent"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "clip_id",
+          "summary",
+          "tone_tags",
+          "emotion_tags",
+          "color_tags",
+          "camera_tags",
+          "motion_tags",
+          "continuity_status",
+          "continuity_notes",
+          "audio_tags",
+          "audio_notes",
+          "evidence",
+          "overall_confidence"
+        ],
+        "type": "object"
+      },
+      "strict": true,
+      "type": "json_schema"
+    },
+    "verbosity": "medium"
+  },
+  "tool_choice": "auto",
+  "tool_usage": {
+    "image_gen": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "image_tokens": 0,
+        "text_tokens": 0
+      },
+      "total_tokens": 0
+    },
+    "web_search": {
+      "num_requests": 0
+    }
+  },
+  "tools": [],
+  "top_logprobs": 0,
+  "top_p": 0.98,
+  "truncation": "disabled",
+  "usage": {
+    "input_tokens": 2890,
+    "input_tokens_details": {
+      "cache_write_tokens": 2887,
+      "cached_tokens": 0
+    },
+    "output_tokens": 277,
+    "output_tokens_details": {
+      "reasoning_tokens": 25
+    },
+    "total_tokens": 3167
+  },
+  "user": null
+}

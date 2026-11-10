@@ -2058,6 +2058,7 @@ evals:
       - "226"
       - "229"
       - "235"
+      - "236"
     category_refs:
       - spec:7
       - spec:8
@@ -2102,6 +2103,48 @@ evals:
       note: "Fresh six-case frame-only results, source-backed truth review, and the 0.80 quality gate are required before any autonomous QA/default decision. A below-gate paired result may still identify a preferred headless reference model; use each row's evidence status."
 
     scores:
+      - model: Fable 5.2 / direct Anthropic xhigh32768
+        evidence_status: fresh-six-case-source-reviewed-capability-panel
+        metrics:
+          overall: 0.67375
+          deterministic: 0.66083333
+          rubric: 0.68666667
+        latency_ms: 21924
+        cost_usd: 0.09918266666666667
+        cost_estimated: true
+        measured: '2026-11-09'
+        git_sha: 0693227394bd9a63b1df1300070421000e0dd7b6+story236-native-hash-freeze
+        result_file: benchmarks/results/video-understanding-fable52-vs-sol-luna-v4-20261109-v2.json
+        contract_manifest: docs/evals/story-236-fable5220261109-evidence-v2.json
+        note: Attempt057 full6 fresh strict13key originalJPEG native/parity and full-source blind Opus4.6; all arms0/6completequality passes. Fable uniquely labels exact propcolor transition broken; unsupported camera/emotion inferences and rubric/taxonomy ambiguity retained. Sourcefirst review rejects specific judge rationale errors without rescoring. Native route authorized recovery after OpenRouter pre-inference402. Known usageestimate1.00078155USD plus2.15872 unknown rejected-reservation exposure,conservative3.15950155/20; no defaults/promotion/landing.
+      - model: "GPT-6.1 Sol / direct Responses low \u2014 Scout107 control"
+        evidence_status: fresh-six-case-source-reviewed-capability-panel
+        metrics:
+          overall: 0.660825
+          deterministic: 0.59831667
+          rubric: 0.72333333
+        latency_ms: 6195
+        cost_usd: 0.0098035
+        cost_estimated: true
+        measured: '2026-11-09'
+        git_sha: 0693227394bd9a63b1df1300070421000e0dd7b6+story236-native-hash-freeze
+        result_file: benchmarks/results/video-understanding-fable52-vs-sol-luna-v4-20261109-v2.json
+        contract_manifest: docs/evals/story-236-fable5220261109-evidence-v2.json
+        note: Attempt057 full6 fresh strict13key originalJPEG native/parity and full-source blind Opus4.6; all arms0/6completequality passes. Fable uniquely labels exact propcolor transition broken; unsupported camera/emotion inferences and rubric/taxonomy ambiguity retained. Sourcefirst review rejects specific judge rationale errors without rescoring. Native route authorized recovery after OpenRouter pre-inference402. Known usageestimate1.00078155USD plus2.15872 unknown rejected-reservation exposure,conservative3.15950155/20; no defaults/promotion/landing.
+      - model: "GPT-6 Luna / direct Responses low \u2014 Scout107 control"
+        evidence_status: fresh-six-case-source-reviewed-capability-panel
+        metrics:
+          overall: 0.63090833
+          deterministic: 0.59348333
+          rubric: 0.66833333
+        latency_ms: 4448
+        cost_usd: 0.0005307583333333333
+        cost_estimated: true
+        measured: '2026-11-09'
+        git_sha: 0693227394bd9a63b1df1300070421000e0dd7b6+story236-native-hash-freeze
+        result_file: benchmarks/results/video-understanding-fable52-vs-sol-luna-v4-20261109-v2.json
+        contract_manifest: docs/evals/story-236-fable5220261109-evidence-v2.json
+        note: Attempt057 full6 fresh strict13key originalJPEG native/parity and full-source blind Opus4.6; all arms0/6completequality passes. Fable uniquely labels exact propcolor transition broken; unsupported camera/emotion inferences and rubric/taxonomy ambiguity retained. Sourcefirst review rejects specific judge rationale errors without rescoring. Native route authorized recovery after OpenRouter pre-inference402. Known usageestimate1.00078155USD plus2.15872 unknown rejected-reservation exposure,conservative3.15950155/20; no defaults/promotion/landing.
       - model: "GPT-6.1 Terra / direct Responses high"
         evidence_status: bounded-two-case-source-reviewed-with-post-stop-supplement
         metrics:
@@ -2458,6 +2501,22 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: '057'
+        story: attempts/057-fable52-full-six-ordered-frame-capability.md
+        date: '2026-11-09'
+        status: succeeded
+        approach: Full6 xhigh32768 native Fable capability panel with fresh Sol/Luna controls and18 blind full-source native Opus4.6 reviews; original OpenRouter402 preserved, explicitly authorized same-checkpoint direct recovery. No fulltask winner; source-grounded continuitylabel advantage on004 only. All maintained thresholds unchanged.
+        worker_model: Codex owner agent
+        subject_model: claude-fable-5-2 xhigh32768; gpt-6.1-sol low4096; gpt-6-luna low1400
+        score_before: 0.660825
+        score_after: 0.67375
+        latency_after: 21924
+        cost_after: 1.00078155
+        git_sha: 0693227394bd9a63b1df1300070421000e0dd7b6+story236-native-hash-freeze
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+        - condition: new-source-backed-corpus-or-material-model-contract-change
+          note: No unchanged same-panel paid repeat or effort sweep. Prepare harder held-out source-grounded qualification if requested; no automatic call.
       - id: "056"
         story: attempts/056-hy4-ordered-frame-screen.md
         date: 2026-11-05

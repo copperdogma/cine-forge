@@ -251,7 +251,9 @@ def call_openrouter_strict(
         max_tokens=max_tokens,
     )
     if reasoning_effort is not None:
-        if reasoning_effort not in {"high", "low", "none"}:
+        if reasoning_effort not in {"high", "low", "none"} and not (
+            model == "anthropic/claude-fable-5.2" and reasoning_effort == "xhigh"
+        ):
             raise RuntimeError("Unsupported OpenRouter benchmark reasoning effort")
         payload["reasoning"] = {"effort": reasoning_effort}
     payload["provider"] = {

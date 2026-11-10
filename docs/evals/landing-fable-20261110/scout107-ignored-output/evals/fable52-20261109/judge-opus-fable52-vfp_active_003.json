@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.020925",
+  "latency_ms": 11414,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1794,
+    "path": "output/evals/fable52-20261109/judge-opus-fable52-vfp_active_003-raw.json",
+    "sha256": "345d7e42bcd718758c229b3356a93fbc2b97557d78236a735079d4edfaa5c41e"
+  },
+  "reason": "The summary accurately describes the scene layout: an amber figure at the right end of a gray slab/bed with a round-topped post at the left. The description of stillness and static composition across all five frames is correct. Continuity is correctly marked as intact. Color tags (amber, navy) partially match\u2014amber is correct but navy is not well-supported; the reference says 'desaturated' rather than navy, though the dark background could be interpreted as navy-ish. Camera tags correctly include 'static' but miss 'wide_master'. Motion tag 'stillness' is correct. Tone 'intimate' matches the reference, but 'mournful' is invented/unsupported. Emotion tags 'grief' and 'tenderness' are invented\u2014the reference specifies no emotion tags. Audio tags should be empty (they are), but audio_notes should also be empty (they are). The interpretation of the figure as sitting 'beside' the bed and describing it with words like 'grief' and 'tenderness' goes beyond what's observable. The tone tag 'mournful' is an addition not supported by the frames. Overall, the geometric and visual description is largely accurate, but the emotional/tonal embellishments and the missing 'wide_master' camera tag, plus the questionable 'navy' color tag, prevent a passing score.",
+  "request_id": "msg_011CgtGscUsMoNGtmV2jJBEk",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2625,
+    "output_tokens": 312,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

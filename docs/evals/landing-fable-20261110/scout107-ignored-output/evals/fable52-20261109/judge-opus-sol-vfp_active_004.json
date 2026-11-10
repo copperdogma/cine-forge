@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.01813",
+  "latency_ms": 8427,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1357,
+    "path": "output/evals/fable52-20261109/judge-opus-sol-vfp_active_004-raw.json",
+    "sha256": "f8bd9b8160cf5df16e21ed18567e2fdf2d2e192c4d046edf0cb86f31a2af2cfd"
+  },
+  "reason": "The summary correctly describes the red-to-blue change between frames 1 and 2 and the static composition, matching the reference well. However, continuity_status is 'intact' when the reference says 'broken' (the color change from red to blue is a continuity break). The tone tag 'detached' is not supported by the reference (which lists none). The color_tags include 'red' but omit 'blue' \u2014 though the reference notes generic 'blue' is absent from allowed color_tags, so this is acceptable. The camera_tags include only 'static' and miss 'wide_master'. The motion_tags list 'stillness' when the reference lists none. The audio_tags are correctly empty. The evidence is well-grounded with 4 entries across the frames. The main penalty is for the incorrect continuity_status ('intact' vs 'broken') and the unsupported tone tag.",
+  "request_id": "msg_011CgtGxZRCtRaNs9ujedyso",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2531,
+    "output_tokens": 219,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

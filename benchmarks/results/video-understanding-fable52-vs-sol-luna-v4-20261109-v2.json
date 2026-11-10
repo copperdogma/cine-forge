@@ -1,0 +1,1076 @@
+{
+  "aggregate": {
+    "fable52": {
+      "cases": 6,
+      "combined_mean": 0.6737500000000001,
+      "dual_passes": 0,
+      "full_quality_passes": 0,
+      "mean_latency_ms": 21923.666666666668,
+      "mean_subject_cost_usd": "0.09918266666666666666666666667",
+      "rubric_mean": 0.6866666666666666,
+      "structural_mean": 0.6608333333333333,
+      "subject_cost_usd": "0.595096"
+    },
+    "luna": {
+      "cases": 6,
+      "combined_mean": 0.6309083333333333,
+      "dual_passes": 0,
+      "full_quality_passes": 0,
+      "mean_latency_ms": 4447.833333333333,
+      "mean_subject_cost_usd": "0.0005307583333333333",
+      "rubric_mean": 0.6683333333333333,
+      "structural_mean": 0.5934833333333334,
+      "subject_cost_usd": "0.0031845499999999998"
+    },
+    "sol": {
+      "cases": 6,
+      "combined_mean": 0.660825,
+      "dual_passes": 0,
+      "full_quality_passes": 0,
+      "mean_latency_ms": 6194.833333333333,
+      "mean_subject_cost_usd": "0.0098035",
+      "rubric_mean": 0.7233333333333333,
+      "structural_mean": 0.5983166666666667,
+      "subject_cost_usd": "0.0588210"
+    }
+  },
+  "base_git_sha": "0693227394bd9a63b1df1300070421000e0dd7b6",
+  "candidate": "claude-fable-5-2",
+  "cap_usd": "20",
+  "conservative_accounted_usd": "3.1595015499999999998",
+  "date": "2026-11-09",
+  "freshness": "18 uncached subjects,18 blind source-complete native Opus4.6 reviews; offline native-envelope replay parity; no duplicate inference",
+  "ledger": [
+    {
+      "accounted_usd": "2.15872",
+      "arm": "fable52",
+      "known_usage_cost_usd": null,
+      "name": "openrouter-preinference402-fable52-vfp_active_001",
+      "prior_assumption_accounted_usd": "0",
+      "reason": "HTTP402 before provider assignment/inference usage, but no explicit provider billing reconciliation; retain original full reservation as unknown exposure",
+      "reservation_usd": "2.15872",
+      "state": "rejected-reservation-retained"
+    },
+    {
+      "accounted_usd": "0.090176",
+      "arm": "fable52",
+      "estimated": true,
+      "name": "native-fable52-vfp_active_001",
+      "reservation_usd": "2.15872",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.020435",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-fable52-vfp_active_001",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0100935",
+      "arm": "sol",
+      "estimated": true,
+      "name": "native-sol-vfp_active_001",
+      "reservation_usd": "0.04624",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.019525",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_001",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.000585175",
+      "arm": "luna",
+      "estimated": true,
+      "name": "native-luna-vfp_active_001",
+      "reservation_usd": "0.002",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.021015",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_001",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.112536",
+      "arm": "fable52",
+      "estimated": true,
+      "name": "native-fable52-vfp_active_002",
+      "reservation_usd": "2.15872",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.018895",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-fable52-vfp_active_002",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0097435",
+      "arm": "sol",
+      "estimated": true,
+      "name": "native-sol-vfp_active_002",
+      "reservation_usd": "0.04624",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.018655",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_002",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.000471175",
+      "arm": "luna",
+      "estimated": true,
+      "name": "native-luna-vfp_active_002",
+      "reservation_usd": "0.002",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01814",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_002",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.099296",
+      "arm": "fable52",
+      "estimated": true,
+      "name": "native-fable52-vfp_active_003",
+      "reservation_usd": "2.15872",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.020925",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-fable52-vfp_active_003",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0097235",
+      "arm": "sol",
+      "estimated": true,
+      "name": "native-sol-vfp_active_003",
+      "reservation_usd": "0.04624",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01988",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_003",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0005586749999999999",
+      "arm": "luna",
+      "estimated": true,
+      "name": "native-luna-vfp_active_003",
+      "reservation_usd": "0.002",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01841",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_003",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.081256",
+      "arm": "fable52",
+      "estimated": true,
+      "name": "native-fable52-vfp_active_004",
+      "reservation_usd": "2.15872",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01949",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-fable52-vfp_active_004",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0099935",
+      "arm": "sol",
+      "estimated": true,
+      "name": "native-sol-vfp_active_004",
+      "reservation_usd": "0.04624",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.01813",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_004",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.000515175",
+      "arm": "luna",
+      "estimated": true,
+      "name": "native-luna-vfp_active_004",
+      "reservation_usd": "0.002",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.018585",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_004",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.087856",
+      "arm": "fable52",
+      "estimated": true,
+      "name": "native-fable52-vfp_active_005",
+      "reservation_usd": "2.15872",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.019555",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-fable52-vfp_active_005",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0096635",
+      "arm": "sol",
+      "estimated": true,
+      "name": "native-sol-vfp_active_005",
+      "reservation_usd": "0.04624",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0179",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_005",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.000535675",
+      "arm": "luna",
+      "estimated": true,
+      "name": "native-luna-vfp_active_005",
+      "reservation_usd": "0.002",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.019505",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_005",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.123976",
+      "arm": "fable52",
+      "estimated": true,
+      "name": "native-fable52-vfp_active_006",
+      "reservation_usd": "2.15872",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.018795",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-fable52-vfp_active_006",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0096035",
+      "arm": "sol",
+      "estimated": true,
+      "name": "native-sol-vfp_active_006",
+      "reservation_usd": "0.04624",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.017935",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-sol-vfp_active_006",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.0005186749999999999",
+      "arm": "luna",
+      "estimated": true,
+      "name": "native-luna-vfp_active_006",
+      "reservation_usd": "0.002",
+      "state": "settled"
+    },
+    {
+      "accounted_usd": "0.017905",
+      "arm": "opus",
+      "estimated": true,
+      "name": "judge-opus-luna-vfp_active_006",
+      "reservation_usd": "0.3048",
+      "state": "settled"
+    }
+  ],
+  "limits": "Six exposed authored synthetic cases, no population/p95 claim, no held-out promotion. Anthropic same-provider judge bias disclosed; source-first independent agent corroboration for concrete facts. Other efforts, audio/video, screenplay/runtime integration unmeasured.",
+  "openrouter": "access rejected before provider assignment/inference usage; no explicit billing reconciliation, retain full USD2.15872 unknown reservation; not qualified",
+  "output_allowance": 32768,
+  "requested_effort": "xhigh",
+  "route": "Direct Anthropic Messages standard; authorized recovery after OpenRouter402",
+  "rows": [
+    {
+      "arm": "fable52",
+      "case": "vfp_active_001",
+      "clip": "dialogue_confession_push_in",
+      "combined": 0.7566999999999999,
+      "cost_usd": 0.090176,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 21216,
+      "model": "claude-fable-5-2",
+      "production_cost_pass": false,
+      "production_latency_pass": false,
+      "rubric": 0.62,
+      "source_adjudication": {
+        "adjudication": "Unqualified slow_push_in camera tag unsupported by source geometry; tenderness/hesitation are interpretation, not demonstrated emotion.",
+        "credited_source_observations": "Correct figures, growth, unchanged prop/background and continuity. Prose hedges push-in as consistent with rather than falsely reporting a camera event.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": [
+          "Unqualified slow_push_in camera tag unsupported by source geometry; tenderness/hesitation are interpretation, not demonstrated emotion."
+        ]
+      },
+      "structural": {
+        "pass": true,
+        "reason": "overall=0.893 | uncertainty=0.380 | summary=1.00 | tone=1.00 | emotion=0.00 | color=1.00 | camera=1.00 | motion=1.00 | continuity=0.92 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | emotion: unexpected=hesitation, unexpected=tenderness | continuity: unexpected=Figure placement, colors, background gradient and floor line stay consistent across the samples, with only gradual scale growth of the figures.",
+        "score": 0.8934
+      },
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 1352,
+        "output_tokens_details": {
+          "thinking_tokens": 825
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "sol",
+      "case": "vfp_active_001",
+      "clip": "dialogue_confession_push_in",
+      "combined": 0.7766500000000001,
+      "cost_usd": 0.0100935,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 7770,
+      "model": "gpt-6.1-sol",
+      "production_cost_pass": true,
+      "production_latency_pass": true,
+      "rubric": 0.78,
+      "source_adjudication": {
+        "adjudication": "Tone detached versus intimate and navy-only palette are interpretation/coverage differences, not factual fabrication.",
+        "credited_source_observations": "Strong source-grounded growth and fixed-prop account.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": []
+      },
+      "structural": {
+        "pass": true,
+        "reason": "overall=0.773 | uncertainty=0.030 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.50 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached | color: teal | continuity: The pale rectangle stays beside the right figure across all five frames., unexpected=The beige and blue figures retain their left-right positions throughout the ordered samples., unexpected=Both silhouettes progressively increase in height and width while the background boundary and cream rectangle remain fixed.",
+        "score": 0.7733
+      },
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 287,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3177
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "luna",
+      "case": "vfp_active_001",
+      "clip": "dialogue_confession_push_in",
+      "combined": 0.66715,
+      "cost_usd": 0.000585175,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 5455,
+      "model": "gpt-6-luna",
+      "production_cost_pass": true,
+      "production_latency_pass": true,
+      "rubric": 0.62,
+      "source_adjudication": {
+        "adjudication": "No prop mentioned in output/evidence. Judge claim it mentions prop inframe0 is false; upward extent is visible and is not itself an invented mechanism.",
+        "credited_source_observations": "Correct upward growth and fixed bases; width change and prop continuity under-described.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": []
+      },
+      "structural": {
+        "pass": true,
+        "reason": "overall=0.714 | uncertainty=0.110 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.80 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached | color: unexpected=gold | continuity: The pale rectangle stays beside the right figure across all five frames.",
+        "score": 0.7143
+      },
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 448,
+        "output_tokens_details": {
+          "reasoning_tokens": 182
+        },
+        "total_tokens": 3338
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "fable52",
+      "case": "vfp_active_002",
+      "clip": "alarm_chase_whip_pan",
+      "combined": 0.6425000000000001,
+      "cost_usd": 0.112536,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 28400,
+      "model": "claude-fable-5-2",
+      "production_cost_pass": false,
+      "production_latency_pass": false,
+      "rubric": 0.62,
+      "source_adjudication": {
+        "adjudication": "Resolve is unsupported emotional inference; shifting streaks/pulsing omitted. Wide_master/fast label penalties concern reference coverage.",
+        "credited_source_observations": "Correct left-to-right motion, red palette, fixed central geometry, carried rectangle and continuity.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": [
+          "Resolve is unsupported emotional inference; shifting streaks/pulsing omitted. Wide_master/fast label penalties concern reference coverage."
+        ]
+      },
+      "structural": {
+        "pass": false,
+        "reason": "raw_score=0.6650 | overall=0.665 | uncertainty=0.400 | summary=0.33 | tone=1.00 | emotion=0.00 | color=1.00 | camera=0.67 | motion=0.67 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, pulses | emotion: unexpected=resolve | camera: wide_master | motion: pulsing_light | continuity: The small red rectangle stays beside the runner throughout the packet., unexpected=The figure's shape, colour and the white-outlined red object it holds stay consistent in all five samples., unexpected=The doorway rectangle and converging diagonal lines hold the same position in every sample, with no visible jump in framing., unexpected=The figure's horizontal position advances by a roughly even amount between consecutive samples, with no reversal or skip.",
+        "score": 0.665
+      },
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 1911,
+        "output_tokens_details": {
+          "thinking_tokens": 1399
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "sol",
+      "case": "vfp_active_002",
+      "clip": "alarm_chase_whip_pan",
+      "combined": 0.5825,
+      "cost_usd": 0.0097435,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 6699,
+      "model": "gpt-6.1-sol",
+      "production_cost_pass": true,
+      "production_latency_pass": true,
+      "rubric": 0.62,
+      "source_adjudication": {
+        "adjudication": "Detached/measured versus urgent/fast and omitted pulsing/wide_master are interpretation or taxonomy coverage differences.",
+        "credited_source_observations": "Correct lateral motion, fixed central shapes and shifting thin lines.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": []
+      },
+      "structural": {
+        "pass": false,
+        "reason": "raw_score=0.5450 | overall=0.545 | uncertainty=0.040 | summary=0.33 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, pulses | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, pulsing_light, unexpected=measured | continuity: The small red rectangle stays beside the runner throughout the packet., unexpected=The person icon and its accompanying outlined rectangle retain their appearance as they progress rightward across the ordered samples., unexpected=The central rectangular outline and peaked red lines remain in the same positions throughout.",
+        "score": 0.545
+      },
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 252,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3142
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "luna",
+      "case": "vfp_active_002",
+      "clip": "alarm_chase_whip_pan",
+      "combined": 0.5925,
+      "cost_usd": 0.000471175,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 3126,
+      "model": "gpt-6-luna",
+      "production_cost_pass": true,
+      "production_latency_pass": true,
+      "rubric": 0.62,
+      "source_adjudication": {
+        "adjudication": "Shifting streaks/pulsing omitted; detached/desaturated and measured versus reference tags are interpretive.",
+        "credited_source_observations": "Correct lateral translation, fixed shapes and intact continuity.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": []
+      },
+      "structural": {
+        "pass": false,
+        "reason": "raw_score=0.5650 | overall=0.565 | uncertainty=0.060 | summary=0.33 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.67 | motion=0.50 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, pulses | tone: tense, urgent, unexpected=detached | color: unexpected=desaturated | camera: wide_master | motion: pulsing_light, unexpected=measured | continuity: The small red rectangle stays beside the runner throughout the packet.",
+        "score": 0.565
+      },
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 220,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3110
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "fable52",
+      "case": "vfp_active_003",
+      "clip": "quiet_bedside_vigil",
+      "combined": 0.72915,
+      "cost_usd": 0.099296,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 18104,
+      "model": "claude-fable-5-2",
+      "production_cost_pass": false,
+      "production_latency_pass": false,
+      "rubric": 0.72,
+      "source_adjudication": {
+        "adjudication": "Grief/tenderness/mournful are unsupported emotional readings. Navy/gold/amber and wide_master differences do not prove false pixels.",
+        "credited_source_observations": "Accurate identicalframes and geometry; explicitly preserves lamp or second thinfigure ambiguity.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": [
+          "Grief/tenderness/mournful are unsupported emotional readings. Navy/gold/amber and wide_master differences do not prove false pixels."
+        ]
+      },
+      "structural": {
+        "pass": true,
+        "reason": "overall=0.738 | uncertainty=0.400 | summary=1.00 | tone=0.67 | emotion=0.00 | color=0.50 | camera=0.67 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: unexpected=mournful | emotion: unexpected=grief, unexpected=tenderness | color: desaturated, unexpected=navy | camera: wide_master | continuity: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame., unexpected=All five ordered samples show the same composition, object positions, and lighting with no visible change or break.",
+        "score": 0.7383
+      },
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 1580,
+        "output_tokens_details": {
+          "thinking_tokens": 1117
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "sol",
+      "case": "vfp_active_003",
+      "clip": "quiet_bedside_vigil",
+      "combined": 0.75915,
+      "cost_usd": 0.0097235,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 7406,
+      "model": "gpt-6.1-sol",
+      "production_cost_pass": true,
+      "production_latency_pass": true,
+      "rubric": 0.78,
+      "source_adjudication": {
+        "adjudication": "Detached versus intimate and gold versus amber are interpretation; missing wide_master coverage.",
+        "credited_source_observations": "Accurate geometry/stillness; post is a visible shape description, not necessarily an asserted realworld identity.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": []
+      },
+      "structural": {
+        "pass": true,
+        "reason": "overall=0.738 | uncertainty=0.020 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.50 | camera=0.67 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached | color: amber, unexpected=gold | camera: wide_master | continuity: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame., unexpected=The figure, outlined rectangle, left post, and background boundary retain the same positions throughout the ordered samples.",
+        "score": 0.7383
+      },
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 250,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3140
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "luna",
+      "case": "vfp_active_003",
+      "clip": "quiet_bedside_vigil",
+      "combined": 0.75915,
+      "cost_usd": 0.0005586749999999999,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 4706,
+      "model": "gpt-6-luna",
+      "production_cost_pass": true,
+      "production_latency_pass": true,
+      "rubric": 0.78,
+      "source_adjudication": {
+        "adjudication": "No definite factual error; omissions and color/tone taxonomy explain reference differences.",
+        "credited_source_observations": "Accurate geometry/stillness; abstract figure reading explicitly allowed by v4.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": []
+      },
+      "structural": {
+        "pass": true,
+        "reason": "overall=0.738 | uncertainty=0.020 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.50 | camera=0.67 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate | color: amber, unexpected=gold | camera: wide_master | continuity: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame.",
+        "score": 0.7383
+      },
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 395,
+        "output_tokens_details": {
+          "reasoning_tokens": 137
+        },
+        "total_tokens": 3285
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "fable52",
+      "case": "vfp_active_004",
+      "clip": "prop_swap_continuity_break",
+      "combined": 0.69585,
+      "cost_usd": 0.081256,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 12394,
+      "model": "claude-fable-5-2",
+      "production_cost_pass": false,
+      "production_latency_pass": true,
+      "rubric": 0.82,
+      "source_adjudication": {
+        "adjudication": "No factual invention found. Structural low score driven largely by lexical expectedkeywords, unsupported-by-reference detached/stillness and missing wide_master, not failure to detect the color swap.",
+        "credited_source_observations": "Exact color-transition indices and correct owner broken continuity label; unchanged source geometry.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": []
+      },
+      "structural": {
+        "pass": false,
+        "reason": "raw_score=0.5717 | overall=0.572 | uncertainty=0.140 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: rectangle | tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: The tabletop rectangle changes from red to blue between the second and third samples., unexpected=The small rounded object on the block is red in frames 0-1 and blue in frames 2-4, with its position, size and outline unchanged., unexpected=Background, block and framing are identical across all five samples, so the colour change is not explained by any visible lighting or camera change.",
+        "score": 0.5717
+      },
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 1129,
+        "output_tokens_details": {
+          "thinking_tokens": 650
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "sol",
+      "case": "vfp_active_004",
+      "clip": "prop_swap_continuity_break",
+      "combined": 0.61085,
+      "cost_usd": 0.0099935,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 5051,
+      "model": "gpt-6.1-sol",
+      "production_cost_pass": true,
+      "production_latency_pass": true,
+      "rubric": 0.72,
+      "source_adjudication": {
+        "adjudication": "Continuity_status intact contradicts the maintained broken-label contract despite observing the change; label/contract miss rather than invented pixels.",
+        "credited_source_observations": "Exact red1\u2192blue2 transition and unchanged geometry described.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": [
+          "continuity_status intact instead of maintained broken contract"
+        ]
+      },
+      "structural": {
+        "pass": false,
+        "reason": "raw_score=0.5017 | overall=0.502 | uncertainty=0.010 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.67 | motion=0.00 | continuity=0.25 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: rectangle | tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken",
+        "score": 0.5017
+      },
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 277,
+        "output_tokens_details": {
+          "reasoning_tokens": 25
+        },
+        "total_tokens": 3167
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "luna",
+      "case": "vfp_active_004",
+      "clip": "prop_swap_continuity_break",
+      "combined": 0.59335,
+      "cost_usd": 0.000515175,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 4683,
+      "model": "gpt-6-luna",
+      "production_cost_pass": true,
+      "production_latency_pass": true,
+      "rubric": 0.72,
+      "source_adjudication": {
+        "adjudication": "Continuity_status intact conflicts with owner label. Judge demand for blue color_tag is invalid: blue absent from allowed enum and blue text is sufficient; keep original score without adopting that rationale.",
+        "credited_source_observations": "Exact red0\u20131\u2192blue2\u20134 transition described.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": [
+          "continuity_status intact instead of maintained broken contract"
+        ]
+      },
+      "structural": {
+        "pass": false,
+        "reason": "raw_score=0.4667 | overall=0.467 | uncertainty=0.030 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.67 | motion=0.00 | continuity=0.00 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: rectangle | tone: unexpected=detached | color: unexpected=red | camera: wide_master | motion: unexpected=stillness | continuity: status=broken, The tabletop rectangle changes from red to blue between the second and third samples., unexpected=The centered button is red in frames 0\u20131 and blue in frames 2\u20134; the block and background retain their positions and appearance.",
+        "score": 0.4667
+      },
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 308,
+        "output_tokens_details": {
+          "reasoning_tokens": 88
+        },
+        "total_tokens": 3198
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "fable52",
+      "case": "vfp_active_005",
+      "clip": "rooftop_escape_crash_zoom",
+      "combined": 0.67415,
+      "cost_usd": 0.087856,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 19325,
+      "model": "claude-fable-5-2",
+      "production_cost_pass": false,
+      "production_latency_pass": false,
+      "rubric": 0.72,
+      "source_adjudication": {
+        "adjudication": "Resolve unsupported; measured versus fast_lateral, amber versus gold and urgent tone are taxonomy/interpretation issues. No growth or zoom invention.",
+        "credited_source_observations": "Correct arc/gap, fixedwide framing, unchanged prop and landing geometry.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": [
+          "Resolve unsupported; measured versus fast_lateral, amber versus gold and urgent tone are taxonomy/interpretation issues. No growth or zoom invention."
+        ]
+      },
+      "structural": {
+        "pass": false,
+        "reason": "raw_score=0.6283 | overall=0.628 | uncertainty=0.200 | summary=0.50 | tone=1.00 | emotion=0.00 | color=0.50 | camera=1.00 | motion=0.00 | continuity=0.92 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner | emotion: unexpected=resolve | color: amber, unexpected=gold | motion: fast_lateral, unexpected=measured | continuity: unexpected=The figure's shape, gold color and the white-outlined object it carries stay consistent across all five samples.",
+        "score": 0.6283
+      },
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 1294,
+        "output_tokens_details": {
+          "thinking_tokens": 746
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "sol",
+      "case": "vfp_active_005",
+      "clip": "rooftop_escape_crash_zoom",
+      "combined": 0.6366499999999999,
+      "cost_usd": 0.0096635,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 4508,
+      "model": "gpt-6.1-sol",
+      "production_cost_pass": true,
+      "production_latency_pass": true,
+      "rubric": 0.72,
+      "source_adjudication": {
+        "adjudication": "Playful tone versus reference urgent/tense and measured versus fast are interpretation; missing wide_master coverage.",
+        "credited_source_observations": "Correct arc and fixed gap/platforms.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": []
+      },
+      "structural": {
+        "pass": false,
+        "reason": "raw_score=0.5533 | overall=0.553 | uncertainty=0.050 | summary=0.50 | tone=0.00 | emotion=1.00 | color=0.50 | camera=0.67 | motion=0.00 | continuity=1.00 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner | tone: tense, urgent, unexpected=playful | color: amber, unexpected=gold | camera: wide_master | motion: fast_lateral, unexpected=measured",
+        "score": 0.5533
+      },
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 244,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3134
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "luna",
+      "case": "vfp_active_005",
+      "clip": "rooftop_escape_crash_zoom",
+      "combined": 0.53415,
+      "cost_usd": 0.000535675,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 4572,
+      "model": "gpt-6-luna",
+      "production_cost_pass": true,
+      "production_latency_pass": true,
+      "rubric": 0.55,
+      "source_adjudication": {
+        "adjudication": "Detached/measured and color taxonomy differ; no fabricated observable event found.",
+        "credited_source_observations": "Correct left-right crossing and unchanged scene, but arc and distinct vertical trajectory under-described.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": []
+      },
+      "structural": {
+        "pass": false,
+        "reason": "raw_score=0.5183 | overall=0.518 | uncertainty=0.090 | summary=0.50 | tone=0.00 | emotion=1.00 | color=0.50 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner | tone: tense, urgent, unexpected=detached | color: amber, unexpected=gold | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small yellow rectangle stays beside the runner while crossing the rooftop gap.",
+        "score": 0.5183
+      },
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 349,
+        "output_tokens_details": {
+          "reasoning_tokens": 148
+        },
+        "total_tokens": 3239
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "fable52",
+      "case": "vfp_active_006",
+      "clip": "storm_tunnel_lateral_run",
+      "combined": 0.54415,
+      "cost_usd": 0.123976,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 32103,
+      "model": "claude-fable-5-2",
+      "production_cost_pass": false,
+      "production_latency_pass": false,
+      "rubric": 0.62,
+      "source_adjudication": {
+        "adjudication": "Mournful/detached/isolation/resolve not source-proven; measured versus fast reference is subjective pace taxonomy.",
+        "credited_source_observations": "Correct lateral motion, fixedarc/framing, same rectangle and colorpalette.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": [
+          "Mournful/detached/isolation/resolve not source-proven; measured versus fast reference is subjective pace taxonomy."
+        ]
+      },
+      "structural": {
+        "pass": false,
+        "reason": "raw_score=0.4683 | overall=0.468 | uncertainty=0.400 | summary=0.00 | tone=0.00 | emotion=0.00 | color=1.00 | camera=1.00 | motion=0.00 | continuity=0.92 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached, unexpected=mournful | emotion: unexpected=isolation, unexpected=resolve | motion: fast_lateral, unexpected=measured | continuity: unexpected=The figure advances rightward in roughly equal steps between consecutive samples, with no visible jump or change of framing.",
+        "score": 0.4683
+      },
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 2197,
+        "output_tokens_details": {
+          "thinking_tokens": 1688
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "sol",
+      "case": "vfp_active_006",
+      "clip": "storm_tunnel_lateral_run",
+      "combined": 0.59915,
+      "cost_usd": 0.0096035,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 5735,
+      "model": "gpt-6.1-sol",
+      "production_cost_pass": true,
+      "production_latency_pass": true,
+      "rubric": 0.72,
+      "source_adjudication": {
+        "adjudication": "Measured/detached tags and missing wide_master differ from reference; no fabricated observable event found.",
+        "credited_source_observations": "Correct lateral motion, shape/scale and fixedarch.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": []
+      },
+      "structural": {
+        "pass": false,
+        "reason": "raw_score=0.4783 | overall=0.478 | uncertainty=0.030 | summary=0.00 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: fast_lateral, unexpected=measured | continuity: The small cyan rectangle stays beside the runner across all five samples., unexpected=The icon retains its shape and scale as it progresses rightward across successive samples; the arch remains fixed.",
+        "score": 0.4783
+      },
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 238,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3128
+      },
+      "zero_definite_source_inventions": true
+    },
+    {
+      "arm": "luna",
+      "case": "vfp_active_006",
+      "clip": "storm_tunnel_lateral_run",
+      "combined": 0.63915,
+      "cost_usd": 0.0005186749999999999,
+      "dual_quality_pass": false,
+      "full_quality_pass": false,
+      "latency_ms": 4145,
+      "model": "gpt-6-luna",
+      "production_cost_pass": true,
+      "production_latency_pass": true,
+      "rubric": 0.72,
+      "source_adjudication": {
+        "adjudication": "Detached versus urgent tone; no fabricated observable event found.",
+        "credited_source_observations": "Correct lateral movement, fixedarch and consistent rectangle; includes fast_lateral.",
+        "definite_source_errors": [],
+        "source_contract_grounding_misses": []
+      },
+      "structural": {
+        "pass": false,
+        "reason": "raw_score=0.5583 | overall=0.558 | uncertainty=0.040 | summary=0.00 | tone=0.00 | emotion=1.00 | color=1.00 | camera=0.67 | motion=0.67 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel, streaks | tone: tense, urgent, unexpected=detached | camera: wide_master | motion: unexpected=measured | continuity: The small cyan rectangle stays beside the runner across all five samples.",
+        "score": 0.5583
+      },
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 315,
+        "output_tokens_details": {
+          "reasoning_tokens": 111
+        },
+        "total_tokens": 3205
+      },
+      "zero_definite_source_inventions": true
+    }
+  ],
+  "schema": "API-enforced exact13-key projected structural subset; full original Pydantic constraints validated locally",
+  "thinking_usage": "Adaptive always-on; requested xhigh on wire. Actual total billed output and output_tokens_details.thinking_tokens retained per native response; no effort sweep.",
+  "total_spend_usd": "1.0007815499999999998",
+  "unknown_exposure_usd": "2.1587200000000000000"
+}

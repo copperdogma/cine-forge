@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.020435",
+  "latency_ms": 10794,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1769,
+    "path": "output/evals/fable52-20261109/judge-opus-fable52-vfp_active_001-raw.json",
+    "sha256": "45383c86ebc369e295ca0fdaef9cbb30475b340785f9664b1d9bfa776869294a"
+  },
+  "reason": "The summary correctly captures two abstract figures (beige and light blue), the white rectangular prop on the right figure, the navy-to-teal gradient background, and that figures grow larger across frames. Tone 'intimate' matches. Motion 'measured' matches. Continuity 'intact' matches and is well-supported. Color tags navy/teal match. However, there are notable issues: (1) The model claims 'slow_push_in' camera tag, which is an invented camera mechanism \u2014 the reference explicitly states that figure-size change is observable but no specific camera mechanism is established, so asserting a push-in is unsupported speculation. (2) The model includes emotion_tags ['tenderness','hesitation'] while the reference indicates no emotions are observable. (3) The summary states 'consistent with a slow, steady push-in' which reinforces the unsupported camera mechanism claim. (4) Audio_tags and audio_notes are correctly empty. (5) Evidence entries are grounded in actual frames but repeat the push-in claim ('scale growth'/'largest scale' is fine, but framing it as camera movement is problematic). The camera mechanism invention is a meaningful penalty per the evaluation criteria, and the invented emotions also count against the output.",
+  "request_id": "msg_011CgtGhjznhv2sjVFQLq9vq",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2662,
+    "output_tokens": 285,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

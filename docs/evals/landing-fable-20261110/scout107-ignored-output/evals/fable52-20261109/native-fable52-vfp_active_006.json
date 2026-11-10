@@ -1,0 +1,77 @@
+{
+  "arm": "fable52",
+  "name": "native-fable52-vfp_active_006",
+  "response": {
+    "cached": false,
+    "cost": 0.123976,
+    "latencyMs": 32103,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "storm_tunnel_lateral_run",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_006",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+        "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+        "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+        "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+        "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+      ],
+      "meta_sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "claude-fable-5-2",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "request_id": "msg_011CgtH4KSk8Hj7MtGYHtVQE",
+      "requested_model": "claude-fable-5-2",
+      "returned_model": "claude-fable-5-2",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"A lone stylized pale-blue figure holding a small rectangular object moves steadily left to right through slanted rain beneath a large arc that stays fixed in frame. The navy-to-teal palette and the unchanged framing give the samples a cold, solitary feel.\",\"tone_tags\":[\"mournful\",\"detached\"],\"emotion_tags\":[\"isolation\",\"resolve\"],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The figure's shape, the rectangle it holds, the overhead arc and the background gradient are consistent across all five samples.\",\"The figure advances rightward in roughly equal steps between consecutive samples, with no visible jump or change of framing.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Pale-blue blocky figure with a round head and a white-outlined rectangle at its side stands at far left under a wide arc, with diagonal rain lines over a navy-to-teal gradient.\"},{\"frame_index\":2,\"cue\":\"The figure is now near the horizontal center while the arc's endpoints sit at the same positions as in frame 0, indicating a fixed frame with a moving subject.\"},{\"frame_index\":4,\"cue\":\"The figure has reached right of center, still holding the same rectangle, under the unchanged arc and slanted rain.\"}],\"overall_confidence\":0.6}",
+    "raw": {
+      "id": "msg_011CgtH4KSk8Hj7MtGYHtVQE",
+      "model": "claude-fable-5-2",
+      "raw_envelope_bytes": 9145,
+      "raw_envelope_path": "output/evals/fable52-20261109/native/fable52/vfp_active_006-raw-envelope.json",
+      "raw_envelope_sha256": "45a22b379955bb192b1d81006b614315b7370fd46dfae493125bf8800c2d6ec9",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 2197,
+        "output_tokens_details": {
+          "thinking_tokens": 1688
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    },
+    "tokenUsage": {
+      "completion": 2197,
+      "prompt": 4512,
+      "total": 6709
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+    "clip_id": "storm_tunnel_lateral_run",
+    "evaluation_id": "vfp_active_006",
+    "target_markdown": "file://../video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+    "target_path": "video_understanding_truth_v4/storm_tunnel_lateral_run/target.json"
+  }
+}

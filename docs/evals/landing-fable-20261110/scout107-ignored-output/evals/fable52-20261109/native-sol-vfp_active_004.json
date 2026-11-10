@@ -1,0 +1,78 @@
+{
+  "arm": "sol",
+  "name": "native-sol-vfp_active_004",
+  "response": {
+    "cached": false,
+    "cost": 0.0099935,
+    "latencyMs": 5051,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "prop_swap_continuity_break",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_004",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+      ],
+      "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6.1-sol",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0f8478bc5b419e2f016af260b1e50487d0ada4658a215205bf",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A fixed minimalist graphic shows two stacked brown rectangular forms against a dark navy background. A small white-outlined inset changes from red to blue between samples 1 and 2, then remains blue.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The inset changes from red in frame 1 to blue in frame 2; its outline, position, and the surrounding geometry remain unchanged.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A small red inset with a white clipped-corner outline sits on the upper brown rectangle.\"},{\"frame_index\":1,\"cue\":\"The inset is still red, and both brown rectangular forms retain the same placement.\"},{\"frame_index\":2,\"cue\":\"The inset is blue within the same white outline; the background and rectangular forms remain aligned.\"},{\"frame_index\":4,\"cue\":\"The blue inset and surrounding composition retain their positions and shapes.\"}],\"overall_confidence\":0.99}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0f8478bc5b419e2f016af260b1e50487d0ada4658a215205bf",
+      "model": "gpt-6.1-sol",
+      "raw_envelope_bytes": 11422,
+      "raw_envelope_path": "output/evals/fable52-20261109/native/sol/vfp_active_004-raw-envelope.json",
+      "raw_envelope_sha256": "32503834388f46d6c179204d2f833865941bdc3195aefa3e61a1bcbc7f38c200",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 277,
+        "output_tokens_details": {
+          "reasoning_tokens": 25
+        },
+        "total_tokens": 3167
+      }
+    },
+    "tokenUsage": {
+      "completion": 252,
+      "completionDetails": {
+        "reasoning": 25
+      },
+      "prompt": 2890,
+      "total": 3167
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/prop_swap_continuity_break",
+    "clip_id": "prop_swap_continuity_break",
+    "evaluation_id": "vfp_active_004",
+    "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+    "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.017935",
+  "latency_ms": 7675,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1412,
+    "path": "output/evals/fable52-20261109/judge-opus-sol-vfp_active_006-raw.json",
+    "sha256": "444bfa10fb5877696352a11b308ca4e60752625522c7315b45a1effed8df78a8"
+  },
+  "reason": "The summary correctly identifies the cyan figure moving left-to-right beneath an arch with slanted lines on a dark blue background, and continuity is correctly marked as intact. Color tags (navy, teal) match the reference. Camera tag 'static' matches. However, motion is tagged as 'measured' when the reference indicates 'fast_lateral' \u2014 the lateral movement across frames is quite substantial and should be characterized as fast. Tone is tagged as 'detached' versus the reference 'urgent, tense' \u2014 while tone can be ambiguous, 'detached' is a significant departure. The description calls it a 'person-like icon' rather than a runner, which is acceptable. The model also misses 'wide_master' camera tag. Audio fields are empty as required. Evidence is well-grounded with 3 frame references. The motion and tone mismatches are the primary shortcomings preventing a passing score.",
+  "request_id": "msg_011CgtH7kun1GazHrWd9Gmb2",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2512,
+    "output_tokens": 215,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

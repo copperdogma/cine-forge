@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.0179",
+  "latency_ms": 7525,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1424,
+    "path": "output/evals/fable52-20261109/judge-opus-sol-vfp_active_005-raw.json",
+    "sha256": "cfad82fb6a8b70419a1079be2529662b3677818c9449c2d846b477fbf2489b5b"
+  },
+  "reason": "The summary correctly identifies a yellow figure moving rightward across a gap between dark platforms, matching the reference. The continuity is correctly marked as intact. Color tags (gold/navy vs amber/navy) are close but not exact. However, the motion tag 'measured' contradicts the reference 'fast_lateral' \u2014 the figure clearly traverses a significant distance across 5 frames suggesting fast movement. The tone tag 'playful' does not match the reference 'urgent, tense'. Camera tags include 'static' which matches, but miss 'wide_master'. The description of an arc trajectory is correct. The summary mentions 'thin yellow line' connecting platform edges which is observable. Evidence is well-grounded with 3 frame references. The main penalties are: wrong tone (playful vs urgent/tense), wrong motion speed characterization (measured vs fast_lateral), and slightly off color terminology.",
+  "request_id": "msg_011CgtH2dHjkrj6KmXstedfX",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2545,
+    "output_tokens": 207,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

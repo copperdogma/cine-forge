@@ -1,0 +1,77 @@
+{
+  "arm": "fable52",
+  "name": "native-fable52-vfp_active_004",
+  "response": {
+    "cached": false,
+    "cost": 0.081256,
+    "latencyMs": 12394,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "prop_swap_continuity_break",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_004",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+      ],
+      "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "claude-fable-5-2",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "request_id": "msg_011CgtGvfCAwLpfcZpyBqScP",
+      "requested_model": "claude-fable-5-2",
+      "returned_model": "claude-fable-5-2",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A fixed view of a small rounded object resting on a brown two-tier block against a dark navy backdrop, with no visible change in framing across the samples. The object is red in the first two samples and blue in the last three, while everything else stays identical.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"broken\",\"continuity_notes\":[\"The small rounded object on the block is red in frames 0-1 and blue in frames 2-4, with its position, size and outline unchanged.\",\"Background, block and framing are identical across all five samples, so the colour change is not explained by any visible lighting or camera change.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Red rounded object with a white outline sits centred on the upper taupe tier of a brown block against a navy gradient background.\"},{\"frame_index\":1,\"cue\":\"The object is still red, in the same position, with framing identical to frame 0.\"},{\"frame_index\":2,\"cue\":\"The same object in the same position and outline is now blue, while the block and background are unchanged.\"},{\"frame_index\":4,\"cue\":\"The object remains blue and the composition of block, dark floor and navy backdrop is unchanged, indicating a fixed camera.\"}],\"overall_confidence\":0.86}",
+    "raw": {
+      "id": "msg_011CgtGvfCAwLpfcZpyBqScP",
+      "model": "claude-fable-5-2",
+      "raw_envelope_bytes": 5498,
+      "raw_envelope_path": "output/evals/fable52-20261109/native/fable52/vfp_active_004-raw-envelope.json",
+      "raw_envelope_sha256": "40738f53681f636e8441121991ce755ddf88c0c5ecee207eda73944abd1fd622",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 1129,
+        "output_tokens_details": {
+          "thinking_tokens": 650
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    },
+    "tokenUsage": {
+      "completion": 1129,
+      "prompt": 4512,
+      "total": 5641
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/prop_swap_continuity_break",
+    "clip_id": "prop_swap_continuity_break",
+    "evaluation_id": "vfp_active_004",
+    "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+    "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+  }
+}

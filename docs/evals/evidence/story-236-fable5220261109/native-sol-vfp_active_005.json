@@ -1,0 +1,78 @@
+{
+  "arm": "sol",
+  "name": "native-sol-vfp_active_005",
+  "response": {
+    "cached": false,
+    "cost": 0.0096635,
+    "latencyMs": 4508,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "rooftop_escape_crash_zoom",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_005",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d",
+        "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8",
+        "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd",
+        "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236",
+        "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+      ],
+      "meta_sha256": "82b8bbbdf804d1a9d8975e8952659d5455986fc2e4c3482d33f274227a715410",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6.1-sol",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0bf4533821868088016af260e9a26887d0a209ebdcb693110b",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_005\",\"summary\":\"A flat yellow humanoid icon moves rightward in an arc above a narrow gap between two dark platforms. Diagonal pale lines cross a navy background, and a thin yellow line connects the platform edges.\",\"tone_tags\":[\"playful\"],\"emotion_tags\":[],\"color_tags\":[\"gold\",\"navy\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The platform edges and central gap stay fixed while the yellow figure progresses rightward, rising through frame 2 and descending through frame 4.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"The yellow figure is above the left platform, with a white-outlined yellow rectangular extension pointing right.\"},{\"frame_index\":2,\"cue\":\"The figure is higher and nearer the center, just left of the gap between the dark platforms.\"},{\"frame_index\":4,\"cue\":\"The figure is above the right platform at a lower height than in frame 2; the central gap remains in the same position.\"}],\"overall_confidence\":0.95}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0bf4533821868088016af260e9a26887d0a209ebdcb693110b",
+      "model": "gpt-6.1-sol",
+      "raw_envelope_bytes": 8474,
+      "raw_envelope_path": "output/evals/fable52-20261109/native/sol/vfp_active_005-raw-envelope.json",
+      "raw_envelope_sha256": "0509bdcfdbde4faf374914291ac34d8c58a0b9390a15b048212825ed5b66823a",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 244,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3134
+      }
+    },
+    "tokenUsage": {
+      "completion": 244,
+      "completionDetails": {
+        "reasoning": 0
+      },
+      "prompt": 2890,
+      "total": 3134
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/rooftop_escape_crash_zoom",
+    "clip_id": "rooftop_escape_crash_zoom",
+    "evaluation_id": "vfp_active_005",
+    "target_markdown": "file://../video_understanding_truth_v4/rooftop_escape_crash_zoom/target.md",
+    "target_path": "video_understanding_truth_v4/rooftop_escape_crash_zoom/target.json"
+  }
+}
