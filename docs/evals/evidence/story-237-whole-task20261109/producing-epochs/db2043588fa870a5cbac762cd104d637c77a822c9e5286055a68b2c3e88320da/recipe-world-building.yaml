@@ -1,0 +1,82 @@
+recipe_id: world_building
+description: "Tier 2 world building: scene analysis, entity bibles, and entity relationship graph."
+project: {}
+stages:
+  - id: analyze_scenes
+    module: scene_analysis_v1
+    params:
+      skip_qa: true
+      batch_size: 5
+      max_batch_size: 10
+      max_batch_words: 2500
+    needs: []
+    store_inputs:
+      normalize: canonical_script
+      breakdown_scenes: scene_index
+
+  - id: refresh_project_config
+    module: project_config_v1
+    params:
+      accept_config: true
+      refresh_existing_only: true
+      skip_if_latest_user_owned: true
+    after: [analyze_scenes]
+    store_inputs:
+      normalize: canonical_script
+      enriched_scene_index: scene_index
+
+  - id: entity_discovery
+    module: entity_discovery_v1
+    params:
+      discovery_model: "gemini-2.5-flash-lite"
+    after: [analyze_scenes]  # wait for enriched scene_index in store; no data dependency
+    store_inputs:
+      normalize: canonical_script
+      breakdown_scenes: scene_index
+    store_inputs_all:
+      character_bible: character_bible
+      location_bible: location_bible
+      prop_bible: prop_bible
+
+  - id: character_bible
+    module: character_bible_v1
+    params:
+      skip_qa: true
+      concurrency: 5
+    needs: [entity_discovery, analyze_scenes]
+    store_inputs:
+      normalize: canonical_script
+      enriched_scene_index: scene_index
+
+  - id: location_bible
+    module: location_bible_v1
+    params:
+      skip_qa: true
+      concurrency: 5
+    needs: [entity_discovery, analyze_scenes]
+    store_inputs:
+      normalize: canonical_script
+      enriched_scene_index: scene_index
+
+  - id: prop_bible
+    module: prop_bible_v1
+    params:
+      skip_qa: true
+      concurrency: 5
+    needs: [entity_discovery, analyze_scenes]
+    store_inputs:
+      normalize: canonical_script
+      enriched_scene_index: scene_index
+
+  - id: entity_graph
+    module: entity_graph_v1
+    needs_all: [character_bible, location_bible, prop_bible]
+    store_inputs:
+      breakdown_scenes: scene_index
+
+  - id: continuity_tracking
+    module: continuity_tracking_v1
+    needs_all: [character_bible, location_bible, prop_bible]
+    store_inputs:
+      normalize: canonical_script
+      breakdown_scenes: scene_index

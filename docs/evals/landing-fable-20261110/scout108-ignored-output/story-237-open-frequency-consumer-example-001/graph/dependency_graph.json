@@ -1,0 +1,2726 @@
+{
+  "nodes": {
+    "bible_manifest:character_aria:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_aria",
+        "path": "artifacts/bibles/character_aria/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "character_bible:aria:v1"
+      ]
+    },
+    "bible_manifest:character_comet:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_comet",
+        "path": "artifacts/bibles/character_comet/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "character_bible:comet:v1"
+      ]
+    },
+    "bible_manifest:character_june:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_june",
+        "path": "artifacts/bibles/character_june/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "character_bible:june:v1"
+      ]
+    },
+    "bible_manifest:character_kell:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_kell",
+        "path": "artifacts/bibles/character_kell/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "character_bible:kell:v1"
+      ]
+    },
+    "bible_manifest:character_maya:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_maya",
+        "path": "artifacts/bibles/character_maya/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "character_bible:maya:v1"
+      ]
+    },
+    "bible_manifest:character_noah:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_noah",
+        "path": "artifacts/bibles/character_noah/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "character_bible:noah:v1"
+      ]
+    },
+    "bible_manifest:character_unknown_voice:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_unknown_voice",
+        "path": "artifacts/bibles/character_unknown_voice/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "character_bible:unknown_voice:v1"
+      ]
+    },
+    "bible_manifest:location_band_room:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_band_room",
+        "path": "artifacts/bibles/location_band_room/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "location_bible:band_room:v1"
+      ]
+    },
+    "bible_manifest:location_bridge:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_bridge",
+        "path": "artifacts/bibles/location_bridge/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "location_bible:bridge:v1"
+      ]
+    },
+    "bible_manifest:location_catwalk:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_catwalk",
+        "path": "artifacts/bibles/location_catwalk/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "location_bible:catwalk:v1"
+      ]
+    },
+    "bible_manifest:location_east_road:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_east_road",
+        "path": "artifacts/bibles/location_east_road/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "location_bible:east_road:v1"
+      ]
+    },
+    "bible_manifest:location_gym:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_gym",
+        "path": "artifacts/bibles/location_gym/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "location_bible:gym:v1"
+      ]
+    },
+    "bible_manifest:location_hill_relay:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_hill_relay",
+        "path": "artifacts/bibles/location_hill_relay/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "location_bible:hill_relay:v1"
+      ]
+    },
+    "bible_manifest:location_north_shelter:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_north_shelter",
+        "path": "artifacts/bibles/location_north_shelter/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "location_bible:north_shelter:v1"
+      ]
+    },
+    "bible_manifest:location_red_creek:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_red_creek",
+        "path": "artifacts/bibles/location_red_creek/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "location_bible:red_creek:v1"
+      ]
+    },
+    "bible_manifest:location_studio:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_studio",
+        "path": "artifacts/bibles/location_studio/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "location_bible:studio:v1"
+      ]
+    },
+    "bible_manifest:prop_antenna:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_antenna",
+        "path": "artifacts/bibles/prop_antenna/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:antenna:v1"
+      ]
+    },
+    "bible_manifest:prop_batteries:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_batteries",
+        "path": "artifacts/bibles/prop_batteries/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:batteries:v1"
+      ]
+    },
+    "bible_manifest:prop_blankets:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_blankets",
+        "path": "artifacts/bibles/prop_blankets/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:blankets:v1"
+      ]
+    },
+    "bible_manifest:prop_bread:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_bread",
+        "path": "artifacts/bibles/prop_bread/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:bread:v1"
+      ]
+    },
+    "bible_manifest:prop_cable:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_cable",
+        "path": "artifacts/bibles/prop_cable/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:cable:v1"
+      ]
+    },
+    "bible_manifest:prop_cassette:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_cassette",
+        "path": "artifacts/bibles/prop_cassette/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:cassette:v1"
+      ]
+    },
+    "bible_manifest:prop_flyer:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_flyer",
+        "path": "artifacts/bibles/prop_flyer/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:flyer:v1"
+      ]
+    },
+    "bible_manifest:prop_insulin:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_insulin",
+        "path": "artifacts/bibles/prop_insulin/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:insulin:v1"
+      ]
+    },
+    "bible_manifest:prop_lantern:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_lantern",
+        "path": "artifacts/bibles/prop_lantern/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:lantern:v1"
+      ]
+    },
+    "bible_manifest:prop_last_bolt:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_last_bolt",
+        "path": "artifacts/bibles/prop_last_bolt/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:last_bolt:v1"
+      ]
+    },
+    "bible_manifest:prop_map:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_map",
+        "path": "artifacts/bibles/prop_map/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:map:v1"
+      ]
+    },
+    "bible_manifest:prop_microphone:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_microphone",
+        "path": "artifacts/bibles/prop_microphone/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:microphone:v1"
+      ]
+    },
+    "bible_manifest:prop_mixer:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_mixer",
+        "path": "artifacts/bibles/prop_mixer/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:mixer:v1"
+      ]
+    },
+    "bible_manifest:prop_new_sign:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_new_sign",
+        "path": "artifacts/bibles/prop_new_sign/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:new_sign:v1"
+      ]
+    },
+    "bible_manifest:prop_notebook:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_notebook",
+        "path": "artifacts/bibles/prop_notebook/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:notebook:v1"
+      ]
+    },
+    "bible_manifest:prop_on_air:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_on_air",
+        "path": "artifacts/bibles/prop_on_air/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:on_air:v1"
+      ]
+    },
+    "bible_manifest:prop_receiver:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_receiver",
+        "path": "artifacts/bibles/prop_receiver/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:receiver:v1"
+      ]
+    },
+    "bible_manifest:prop_tabletop_radio:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_tabletop_radio",
+        "path": "artifacts/bibles/prop_tabletop_radio/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:tabletop_radio:v1"
+      ]
+    },
+    "bible_manifest:prop_tackle_box:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_tackle_box",
+        "path": "artifacts/bibles/prop_tackle_box/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:tackle_box:v1"
+      ]
+    },
+    "bible_manifest:prop_tape_reel:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_tape_reel",
+        "path": "artifacts/bibles/prop_tape_reel/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:tape_reel:v1"
+      ]
+    },
+    "bible_manifest:prop_tool_bag:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_tool_bag",
+        "path": "artifacts/bibles/prop_tool_bag/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:tool_bag:v1"
+      ]
+    },
+    "bible_manifest:prop_whiteboard:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_whiteboard",
+        "path": "artifacts/bibles/prop_whiteboard/manifest_v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "prop_bible:whiteboard:v1"
+      ]
+    },
+    "canonical_script:project:v1": {
+      "downstream": [
+        "script_bible:project:v1",
+        "scene:s1:v1",
+        "scene:s2:v1",
+        "scene:s3:v1",
+        "scene:s4:v1",
+        "scene_index:project:v1",
+        "project_config:project:v1",
+        "character_bible:aria:v1",
+        "character_bible:noah:v1",
+        "character_bible:june:v1",
+        "character_bible:kell:v1",
+        "character_bible:maya:v1",
+        "character_bible:unknown_voice:v1",
+        "character_bible:comet:v1",
+        "location_bible:studio:v1",
+        "location_bible:catwalk:v1",
+        "location_bible:gym:v1",
+        "location_bible:north_shelter:v1",
+        "location_bible:east_road:v1",
+        "location_bible:bridge:v1",
+        "location_bible:hill_relay:v1",
+        "location_bible:band_room:v1",
+        "location_bible:red_creek:v1",
+        "prop_bible:tape_reel:v1",
+        "prop_bible:mixer:v1",
+        "prop_bible:whiteboard:v1",
+        "prop_bible:antenna:v1",
+        "prop_bible:lantern:v1",
+        "prop_bible:tool_bag:v1",
+        "prop_bible:on_air:v1",
+        "prop_bible:cable:v1",
+        "prop_bible:receiver:v1",
+        "prop_bible:last_bolt:v1",
+        "prop_bible:insulin:v1",
+        "prop_bible:blankets:v1",
+        "prop_bible:batteries:v1",
+        "prop_bible:tackle_box:v1",
+        "prop_bible:flyer:v1",
+        "prop_bible:tabletop_radio:v1",
+        "prop_bible:map:v1",
+        "prop_bible:notebook:v1",
+        "prop_bible:new_sign:v1",
+        "prop_bible:bread:v1",
+        "prop_bible:microphone:v1",
+        "prop_bible:cassette:v1",
+        "continuity_state:character_aria_s1:v1",
+        "continuity_state:character_aria_s2:v1",
+        "continuity_state:character_aria_s4:v1",
+        "continuity_state:character_noah_s1:v1",
+        "continuity_state:character_noah_s2:v1",
+        "continuity_state:character_noah_s3:v1",
+        "continuity_state:character_noah_s4:v1",
+        "continuity_state:character_june_s1:v1",
+        "continuity_state:character_june_s2:v1",
+        "continuity_state:character_june_s3:v1",
+        "continuity_state:character_june_s4:v1",
+        "continuity_state:character_kell_s1:v1",
+        "continuity_state:character_kell_s3:v1",
+        "continuity_state:character_kell_s4:v1",
+        "continuity_state:character_maya_s3:v1",
+        "continuity_state:character_maya_s4:v1",
+        "continuity_state:character_unknown_voice_s2:v1",
+        "continuity_state:character_comet_s3:v1",
+        "continuity_state:character_comet_s4:v1",
+        "continuity_state:location_studio_s1:v1",
+        "continuity_state:location_studio_s4:v1",
+        "continuity_state:location_catwalk_s2:v1",
+        "continuity_state:location_gym_s3:v1",
+        "continuity_state:location_north_shelter_s2:v1",
+        "continuity_state:location_north_shelter_s3:v1",
+        "continuity_state:location_north_shelter_s4:v1",
+        "continuity_state:location_east_road_s3:v1",
+        "continuity_state:location_east_road_s4:v1",
+        "continuity_state:location_bridge_s1:v1",
+        "continuity_state:location_bridge_s3:v1",
+        "continuity_state:location_hill_relay_s1:v1",
+        "continuity_state:location_band_room_s4:v1",
+        "continuity_state:location_red_creek_s2:v1",
+        "continuity_state:location_red_creek_s4:v1",
+        "continuity_state:prop_tape_reel_s1:v1",
+        "continuity_state:prop_mixer_s1:v1",
+        "continuity_state:prop_whiteboard_s1:v1",
+        "continuity_state:prop_whiteboard_s3:v1",
+        "continuity_state:prop_antenna_s1:v1",
+        "continuity_state:prop_antenna_s2:v1",
+        "continuity_state:prop_lantern_s1:v1",
+        "continuity_state:prop_lantern_s2:v1",
+        "continuity_state:prop_tool_bag_s1:v1",
+        "continuity_state:prop_tool_bag_s2:v1",
+        "continuity_state:prop_on_air_s1:v1",
+        "continuity_state:prop_on_air_s4:v1",
+        "continuity_state:prop_cable_s2:v1",
+        "continuity_state:prop_receiver_s2:v1",
+        "continuity_state:prop_last_bolt_s2:v1",
+        "continuity_state:prop_insulin_s2:v1",
+        "continuity_state:prop_insulin_s3:v1",
+        "continuity_state:prop_blankets_s2:v1",
+        "continuity_state:prop_batteries_s3:v1",
+        "continuity_state:prop_tackle_box_s3:v1",
+        "continuity_state:prop_flyer_s3:v1",
+        "continuity_state:prop_tabletop_radio_s3:v1",
+        "continuity_state:prop_map_s4:v1",
+        "continuity_state:prop_notebook_s4:v1",
+        "continuity_state:prop_new_sign_s4:v1",
+        "continuity_state:prop_bread_s4:v1",
+        "continuity_state:prop_microphone_s4:v1",
+        "continuity_state:prop_cassette_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "raw_input:project:v1"
+      ]
+    },
+    "character_bible:aria:v1": {
+      "downstream": [
+        "bible_manifest:character_aria:v1",
+        "entity_graph:project:v1",
+        "continuity_state:character_aria_s1:v1",
+        "continuity_state:character_aria_s2:v1",
+        "continuity_state:character_aria_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "character_bible",
+        "entity_id": "aria",
+        "path": "artifacts/character_bible/aria/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "character_bible:comet:v1": {
+      "downstream": [
+        "bible_manifest:character_comet:v1",
+        "entity_graph:project:v1",
+        "continuity_state:character_comet_s3:v1",
+        "continuity_state:character_comet_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "character_bible",
+        "entity_id": "comet",
+        "path": "artifacts/character_bible/comet/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "character_bible:june:v1": {
+      "downstream": [
+        "bible_manifest:character_june:v1",
+        "entity_graph:project:v1",
+        "continuity_state:character_june_s1:v1",
+        "continuity_state:character_june_s2:v1",
+        "continuity_state:character_june_s3:v1",
+        "continuity_state:character_june_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "character_bible",
+        "entity_id": "june",
+        "path": "artifacts/character_bible/june/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "character_bible:kell:v1": {
+      "downstream": [
+        "bible_manifest:character_kell:v1",
+        "entity_graph:project:v1",
+        "continuity_state:character_kell_s1:v1",
+        "continuity_state:character_kell_s3:v1",
+        "continuity_state:character_kell_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "character_bible",
+        "entity_id": "kell",
+        "path": "artifacts/character_bible/kell/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "character_bible:maya:v1": {
+      "downstream": [
+        "bible_manifest:character_maya:v1",
+        "entity_graph:project:v1",
+        "continuity_state:character_maya_s3:v1",
+        "continuity_state:character_maya_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "character_bible",
+        "entity_id": "maya",
+        "path": "artifacts/character_bible/maya/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "character_bible:noah:v1": {
+      "downstream": [
+        "bible_manifest:character_noah:v1",
+        "entity_graph:project:v1",
+        "continuity_state:character_noah_s1:v1",
+        "continuity_state:character_noah_s2:v1",
+        "continuity_state:character_noah_s3:v1",
+        "continuity_state:character_noah_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "character_bible",
+        "entity_id": "noah",
+        "path": "artifacts/character_bible/noah/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "character_bible:unknown_voice:v1": {
+      "downstream": [
+        "bible_manifest:character_unknown_voice:v1",
+        "entity_graph:project:v1",
+        "continuity_state:character_unknown_voice_s2:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "character_bible",
+        "entity_id": "unknown_voice",
+        "path": "artifacts/character_bible/unknown_voice/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "continuity_index:project:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_index",
+        "entity_id": "project",
+        "path": "artifacts/continuity_index/project/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "continuity_state:character_aria_s1:v1",
+        "continuity_state:character_aria_s2:v1",
+        "continuity_state:character_aria_s4:v1",
+        "continuity_state:character_noah_s1:v1",
+        "continuity_state:character_noah_s2:v1",
+        "continuity_state:character_noah_s3:v1",
+        "continuity_state:character_noah_s4:v1",
+        "continuity_state:character_june_s1:v1",
+        "continuity_state:character_june_s2:v1",
+        "continuity_state:character_june_s3:v1",
+        "continuity_state:character_june_s4:v1",
+        "continuity_state:character_kell_s1:v1",
+        "continuity_state:character_kell_s3:v1",
+        "continuity_state:character_kell_s4:v1",
+        "continuity_state:character_maya_s3:v1",
+        "continuity_state:character_maya_s4:v1",
+        "continuity_state:character_unknown_voice_s2:v1",
+        "continuity_state:character_comet_s3:v1",
+        "continuity_state:character_comet_s4:v1",
+        "continuity_state:location_studio_s1:v1",
+        "continuity_state:location_studio_s4:v1",
+        "continuity_state:location_catwalk_s2:v1",
+        "continuity_state:location_gym_s3:v1",
+        "continuity_state:location_north_shelter_s2:v1",
+        "continuity_state:location_north_shelter_s3:v1",
+        "continuity_state:location_north_shelter_s4:v1",
+        "continuity_state:location_east_road_s3:v1",
+        "continuity_state:location_east_road_s4:v1",
+        "continuity_state:location_bridge_s1:v1",
+        "continuity_state:location_bridge_s3:v1",
+        "continuity_state:location_hill_relay_s1:v1",
+        "continuity_state:location_band_room_s4:v1",
+        "continuity_state:location_red_creek_s2:v1",
+        "continuity_state:location_red_creek_s4:v1",
+        "continuity_state:prop_tape_reel_s1:v1",
+        "continuity_state:prop_mixer_s1:v1",
+        "continuity_state:prop_whiteboard_s1:v1",
+        "continuity_state:prop_whiteboard_s3:v1",
+        "continuity_state:prop_antenna_s1:v1",
+        "continuity_state:prop_antenna_s2:v1",
+        "continuity_state:prop_lantern_s1:v1",
+        "continuity_state:prop_lantern_s2:v1",
+        "continuity_state:prop_tool_bag_s1:v1",
+        "continuity_state:prop_tool_bag_s2:v1",
+        "continuity_state:prop_on_air_s1:v1",
+        "continuity_state:prop_on_air_s4:v1",
+        "continuity_state:prop_cable_s2:v1",
+        "continuity_state:prop_receiver_s2:v1",
+        "continuity_state:prop_last_bolt_s2:v1",
+        "continuity_state:prop_insulin_s2:v1",
+        "continuity_state:prop_insulin_s3:v1",
+        "continuity_state:prop_blankets_s2:v1",
+        "continuity_state:prop_batteries_s3:v1",
+        "continuity_state:prop_tackle_box_s3:v1",
+        "continuity_state:prop_flyer_s3:v1",
+        "continuity_state:prop_tabletop_radio_s3:v1",
+        "continuity_state:prop_map_s4:v1",
+        "continuity_state:prop_notebook_s4:v1",
+        "continuity_state:prop_new_sign_s4:v1",
+        "continuity_state:prop_bread_s4:v1",
+        "continuity_state:prop_microphone_s4:v1",
+        "continuity_state:prop_cassette_s4:v1"
+      ]
+    },
+    "continuity_state:character_aria_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_aria_s1",
+        "path": "artifacts/continuity_state/character_aria_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "character_bible:aria:v1"
+      ]
+    },
+    "continuity_state:character_aria_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_aria_s2",
+        "path": "artifacts/continuity_state/character_aria_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "character_bible:aria:v1"
+      ]
+    },
+    "continuity_state:character_aria_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_aria_s4",
+        "path": "artifacts/continuity_state/character_aria_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "character_bible:aria:v1"
+      ]
+    },
+    "continuity_state:character_comet_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_comet_s3",
+        "path": "artifacts/continuity_state/character_comet_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "character_bible:comet:v1"
+      ]
+    },
+    "continuity_state:character_comet_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_comet_s4",
+        "path": "artifacts/continuity_state/character_comet_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "character_bible:comet:v1"
+      ]
+    },
+    "continuity_state:character_june_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_june_s1",
+        "path": "artifacts/continuity_state/character_june_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "character_bible:june:v1"
+      ]
+    },
+    "continuity_state:character_june_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_june_s2",
+        "path": "artifacts/continuity_state/character_june_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "character_bible:june:v1"
+      ]
+    },
+    "continuity_state:character_june_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_june_s3",
+        "path": "artifacts/continuity_state/character_june_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "character_bible:june:v1"
+      ]
+    },
+    "continuity_state:character_june_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_june_s4",
+        "path": "artifacts/continuity_state/character_june_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "character_bible:june:v1"
+      ]
+    },
+    "continuity_state:character_kell_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_kell_s1",
+        "path": "artifacts/continuity_state/character_kell_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "character_bible:kell:v1"
+      ]
+    },
+    "continuity_state:character_kell_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_kell_s3",
+        "path": "artifacts/continuity_state/character_kell_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "character_bible:kell:v1"
+      ]
+    },
+    "continuity_state:character_kell_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_kell_s4",
+        "path": "artifacts/continuity_state/character_kell_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "character_bible:kell:v1"
+      ]
+    },
+    "continuity_state:character_maya_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_maya_s3",
+        "path": "artifacts/continuity_state/character_maya_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "character_bible:maya:v1"
+      ]
+    },
+    "continuity_state:character_maya_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_maya_s4",
+        "path": "artifacts/continuity_state/character_maya_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "character_bible:maya:v1"
+      ]
+    },
+    "continuity_state:character_noah_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_noah_s1",
+        "path": "artifacts/continuity_state/character_noah_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "character_bible:noah:v1"
+      ]
+    },
+    "continuity_state:character_noah_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_noah_s2",
+        "path": "artifacts/continuity_state/character_noah_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "character_bible:noah:v1"
+      ]
+    },
+    "continuity_state:character_noah_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_noah_s3",
+        "path": "artifacts/continuity_state/character_noah_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "character_bible:noah:v1"
+      ]
+    },
+    "continuity_state:character_noah_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_noah_s4",
+        "path": "artifacts/continuity_state/character_noah_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "character_bible:noah:v1"
+      ]
+    },
+    "continuity_state:character_unknown_voice_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_unknown_voice_s2",
+        "path": "artifacts/continuity_state/character_unknown_voice_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "character_bible:unknown_voice:v1"
+      ]
+    },
+    "continuity_state:location_band_room_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_band_room_s4",
+        "path": "artifacts/continuity_state/location_band_room_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "location_bible:band_room:v1"
+      ]
+    },
+    "continuity_state:location_bridge_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_bridge_s1",
+        "path": "artifacts/continuity_state/location_bridge_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "location_bible:bridge:v1"
+      ]
+    },
+    "continuity_state:location_bridge_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_bridge_s3",
+        "path": "artifacts/continuity_state/location_bridge_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "location_bible:bridge:v1"
+      ]
+    },
+    "continuity_state:location_catwalk_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_catwalk_s2",
+        "path": "artifacts/continuity_state/location_catwalk_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "location_bible:catwalk:v1"
+      ]
+    },
+    "continuity_state:location_east_road_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_east_road_s3",
+        "path": "artifacts/continuity_state/location_east_road_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "location_bible:east_road:v1"
+      ]
+    },
+    "continuity_state:location_east_road_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_east_road_s4",
+        "path": "artifacts/continuity_state/location_east_road_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "location_bible:east_road:v1"
+      ]
+    },
+    "continuity_state:location_gym_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_gym_s3",
+        "path": "artifacts/continuity_state/location_gym_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "location_bible:gym:v1"
+      ]
+    },
+    "continuity_state:location_hill_relay_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_hill_relay_s1",
+        "path": "artifacts/continuity_state/location_hill_relay_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "location_bible:hill_relay:v1"
+      ]
+    },
+    "continuity_state:location_north_shelter_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_north_shelter_s2",
+        "path": "artifacts/continuity_state/location_north_shelter_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "location_bible:north_shelter:v1"
+      ]
+    },
+    "continuity_state:location_north_shelter_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_north_shelter_s3",
+        "path": "artifacts/continuity_state/location_north_shelter_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "location_bible:north_shelter:v1"
+      ]
+    },
+    "continuity_state:location_north_shelter_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_north_shelter_s4",
+        "path": "artifacts/continuity_state/location_north_shelter_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "location_bible:north_shelter:v1"
+      ]
+    },
+    "continuity_state:location_red_creek_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_red_creek_s2",
+        "path": "artifacts/continuity_state/location_red_creek_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "location_bible:red_creek:v1"
+      ]
+    },
+    "continuity_state:location_red_creek_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_red_creek_s4",
+        "path": "artifacts/continuity_state/location_red_creek_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "location_bible:red_creek:v1"
+      ]
+    },
+    "continuity_state:location_studio_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_studio_s1",
+        "path": "artifacts/continuity_state/location_studio_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "location_bible:studio:v1"
+      ]
+    },
+    "continuity_state:location_studio_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_studio_s4",
+        "path": "artifacts/continuity_state/location_studio_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "location_bible:studio:v1"
+      ]
+    },
+    "continuity_state:prop_antenna_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_antenna_s1",
+        "path": "artifacts/continuity_state/prop_antenna_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "prop_bible:antenna:v1"
+      ]
+    },
+    "continuity_state:prop_antenna_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_antenna_s2",
+        "path": "artifacts/continuity_state/prop_antenna_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "prop_bible:antenna:v1"
+      ]
+    },
+    "continuity_state:prop_batteries_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_batteries_s3",
+        "path": "artifacts/continuity_state/prop_batteries_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "prop_bible:batteries:v1"
+      ]
+    },
+    "continuity_state:prop_blankets_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_blankets_s2",
+        "path": "artifacts/continuity_state/prop_blankets_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "prop_bible:blankets:v1"
+      ]
+    },
+    "continuity_state:prop_bread_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_bread_s4",
+        "path": "artifacts/continuity_state/prop_bread_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "prop_bible:bread:v1"
+      ]
+    },
+    "continuity_state:prop_cable_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_cable_s2",
+        "path": "artifacts/continuity_state/prop_cable_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "prop_bible:cable:v1"
+      ]
+    },
+    "continuity_state:prop_cassette_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_cassette_s4",
+        "path": "artifacts/continuity_state/prop_cassette_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "prop_bible:cassette:v1"
+      ]
+    },
+    "continuity_state:prop_flyer_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_flyer_s3",
+        "path": "artifacts/continuity_state/prop_flyer_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "prop_bible:flyer:v1"
+      ]
+    },
+    "continuity_state:prop_insulin_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_insulin_s2",
+        "path": "artifacts/continuity_state/prop_insulin_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "prop_bible:insulin:v1"
+      ]
+    },
+    "continuity_state:prop_insulin_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_insulin_s3",
+        "path": "artifacts/continuity_state/prop_insulin_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "prop_bible:insulin:v1"
+      ]
+    },
+    "continuity_state:prop_lantern_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_lantern_s1",
+        "path": "artifacts/continuity_state/prop_lantern_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "prop_bible:lantern:v1"
+      ]
+    },
+    "continuity_state:prop_lantern_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_lantern_s2",
+        "path": "artifacts/continuity_state/prop_lantern_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "prop_bible:lantern:v1"
+      ]
+    },
+    "continuity_state:prop_last_bolt_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_last_bolt_s2",
+        "path": "artifacts/continuity_state/prop_last_bolt_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "prop_bible:last_bolt:v1"
+      ]
+    },
+    "continuity_state:prop_map_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_map_s4",
+        "path": "artifacts/continuity_state/prop_map_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "prop_bible:map:v1"
+      ]
+    },
+    "continuity_state:prop_microphone_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_microphone_s4",
+        "path": "artifacts/continuity_state/prop_microphone_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "prop_bible:microphone:v1"
+      ]
+    },
+    "continuity_state:prop_mixer_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_mixer_s1",
+        "path": "artifacts/continuity_state/prop_mixer_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "prop_bible:mixer:v1"
+      ]
+    },
+    "continuity_state:prop_new_sign_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_new_sign_s4",
+        "path": "artifacts/continuity_state/prop_new_sign_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "prop_bible:new_sign:v1"
+      ]
+    },
+    "continuity_state:prop_notebook_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_notebook_s4",
+        "path": "artifacts/continuity_state/prop_notebook_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "prop_bible:notebook:v1"
+      ]
+    },
+    "continuity_state:prop_on_air_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_on_air_s1",
+        "path": "artifacts/continuity_state/prop_on_air_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "prop_bible:on_air:v1"
+      ]
+    },
+    "continuity_state:prop_on_air_s4:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_on_air_s4",
+        "path": "artifacts/continuity_state/prop_on_air_s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s4:v1",
+        "prop_bible:on_air:v1"
+      ]
+    },
+    "continuity_state:prop_receiver_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_receiver_s2",
+        "path": "artifacts/continuity_state/prop_receiver_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "prop_bible:receiver:v1"
+      ]
+    },
+    "continuity_state:prop_tabletop_radio_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_tabletop_radio_s3",
+        "path": "artifacts/continuity_state/prop_tabletop_radio_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "prop_bible:tabletop_radio:v1"
+      ]
+    },
+    "continuity_state:prop_tackle_box_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_tackle_box_s3",
+        "path": "artifacts/continuity_state/prop_tackle_box_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "prop_bible:tackle_box:v1"
+      ]
+    },
+    "continuity_state:prop_tape_reel_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_tape_reel_s1",
+        "path": "artifacts/continuity_state/prop_tape_reel_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "prop_bible:tape_reel:v1"
+      ]
+    },
+    "continuity_state:prop_tool_bag_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_tool_bag_s1",
+        "path": "artifacts/continuity_state/prop_tool_bag_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "prop_bible:tool_bag:v1"
+      ]
+    },
+    "continuity_state:prop_tool_bag_s2:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_tool_bag_s2",
+        "path": "artifacts/continuity_state/prop_tool_bag_s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s2:v1",
+        "prop_bible:tool_bag:v1"
+      ]
+    },
+    "continuity_state:prop_whiteboard_s1:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_whiteboard_s1",
+        "path": "artifacts/continuity_state/prop_whiteboard_s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "prop_bible:whiteboard:v1"
+      ]
+    },
+    "continuity_state:prop_whiteboard_s3:v1": {
+      "downstream": [
+        "continuity_index:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_whiteboard_s3",
+        "path": "artifacts/continuity_state/prop_whiteboard_s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s3:v1",
+        "prop_bible:whiteboard:v1"
+      ]
+    },
+    "entity_graph:project:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "entity_graph",
+        "entity_id": "project",
+        "path": "artifacts/entity_graph/project/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "scene_index:project:v1",
+        "character_bible:aria:v1",
+        "character_bible:noah:v1",
+        "character_bible:june:v1",
+        "character_bible:kell:v1",
+        "character_bible:maya:v1",
+        "character_bible:unknown_voice:v1",
+        "character_bible:comet:v1",
+        "location_bible:studio:v1",
+        "location_bible:catwalk:v1",
+        "location_bible:gym:v1",
+        "location_bible:north_shelter:v1",
+        "location_bible:east_road:v1",
+        "location_bible:bridge:v1",
+        "location_bible:hill_relay:v1",
+        "location_bible:band_room:v1",
+        "location_bible:red_creek:v1",
+        "prop_bible:tape_reel:v1",
+        "prop_bible:mixer:v1",
+        "prop_bible:whiteboard:v1",
+        "prop_bible:antenna:v1",
+        "prop_bible:lantern:v1",
+        "prop_bible:tool_bag:v1",
+        "prop_bible:on_air:v1",
+        "prop_bible:cable:v1",
+        "prop_bible:receiver:v1",
+        "prop_bible:last_bolt:v1",
+        "prop_bible:insulin:v1",
+        "prop_bible:blankets:v1",
+        "prop_bible:batteries:v1",
+        "prop_bible:tackle_box:v1",
+        "prop_bible:flyer:v1",
+        "prop_bible:tabletop_radio:v1",
+        "prop_bible:map:v1",
+        "prop_bible:notebook:v1",
+        "prop_bible:new_sign:v1",
+        "prop_bible:bread:v1",
+        "prop_bible:microphone:v1",
+        "prop_bible:cassette:v1"
+      ]
+    },
+    "location_bible:band_room:v1": {
+      "downstream": [
+        "bible_manifest:location_band_room:v1",
+        "entity_graph:project:v1",
+        "continuity_state:location_band_room_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "location_bible",
+        "entity_id": "band_room",
+        "path": "artifacts/location_bible/band_room/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "location_bible:bridge:v1": {
+      "downstream": [
+        "bible_manifest:location_bridge:v1",
+        "entity_graph:project:v1",
+        "continuity_state:location_bridge_s1:v1",
+        "continuity_state:location_bridge_s3:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "location_bible",
+        "entity_id": "bridge",
+        "path": "artifacts/location_bible/bridge/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "location_bible:catwalk:v1": {
+      "downstream": [
+        "bible_manifest:location_catwalk:v1",
+        "entity_graph:project:v1",
+        "continuity_state:location_catwalk_s2:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "location_bible",
+        "entity_id": "catwalk",
+        "path": "artifacts/location_bible/catwalk/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "location_bible:east_road:v1": {
+      "downstream": [
+        "bible_manifest:location_east_road:v1",
+        "entity_graph:project:v1",
+        "continuity_state:location_east_road_s3:v1",
+        "continuity_state:location_east_road_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "location_bible",
+        "entity_id": "east_road",
+        "path": "artifacts/location_bible/east_road/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "location_bible:gym:v1": {
+      "downstream": [
+        "bible_manifest:location_gym:v1",
+        "entity_graph:project:v1",
+        "continuity_state:location_gym_s3:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "location_bible",
+        "entity_id": "gym",
+        "path": "artifacts/location_bible/gym/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "location_bible:hill_relay:v1": {
+      "downstream": [
+        "bible_manifest:location_hill_relay:v1",
+        "entity_graph:project:v1",
+        "continuity_state:location_hill_relay_s1:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "location_bible",
+        "entity_id": "hill_relay",
+        "path": "artifacts/location_bible/hill_relay/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "location_bible:north_shelter:v1": {
+      "downstream": [
+        "bible_manifest:location_north_shelter:v1",
+        "entity_graph:project:v1",
+        "continuity_state:location_north_shelter_s2:v1",
+        "continuity_state:location_north_shelter_s3:v1",
+        "continuity_state:location_north_shelter_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "location_bible",
+        "entity_id": "north_shelter",
+        "path": "artifacts/location_bible/north_shelter/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "location_bible:red_creek:v1": {
+      "downstream": [
+        "bible_manifest:location_red_creek:v1",
+        "entity_graph:project:v1",
+        "continuity_state:location_red_creek_s2:v1",
+        "continuity_state:location_red_creek_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "location_bible",
+        "entity_id": "red_creek",
+        "path": "artifacts/location_bible/red_creek/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "location_bible:studio:v1": {
+      "downstream": [
+        "bible_manifest:location_studio:v1",
+        "entity_graph:project:v1",
+        "continuity_state:location_studio_s1:v1",
+        "continuity_state:location_studio_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "location_bible",
+        "entity_id": "studio",
+        "path": "artifacts/location_bible/studio/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "project_config:project:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "project_config",
+        "entity_id": "project",
+        "path": "artifacts/project_config/project/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:antenna:v1": {
+      "downstream": [
+        "bible_manifest:prop_antenna:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_antenna_s1:v1",
+        "continuity_state:prop_antenna_s2:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "antenna",
+        "path": "artifacts/prop_bible/antenna/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:batteries:v1": {
+      "downstream": [
+        "bible_manifest:prop_batteries:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_batteries_s3:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "batteries",
+        "path": "artifacts/prop_bible/batteries/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:blankets:v1": {
+      "downstream": [
+        "bible_manifest:prop_blankets:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_blankets_s2:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "blankets",
+        "path": "artifacts/prop_bible/blankets/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:bread:v1": {
+      "downstream": [
+        "bible_manifest:prop_bread:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_bread_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "bread",
+        "path": "artifacts/prop_bible/bread/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:cable:v1": {
+      "downstream": [
+        "bible_manifest:prop_cable:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_cable_s2:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "cable",
+        "path": "artifacts/prop_bible/cable/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:cassette:v1": {
+      "downstream": [
+        "bible_manifest:prop_cassette:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_cassette_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "cassette",
+        "path": "artifacts/prop_bible/cassette/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:flyer:v1": {
+      "downstream": [
+        "bible_manifest:prop_flyer:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_flyer_s3:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "flyer",
+        "path": "artifacts/prop_bible/flyer/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:insulin:v1": {
+      "downstream": [
+        "bible_manifest:prop_insulin:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_insulin_s2:v1",
+        "continuity_state:prop_insulin_s3:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "insulin",
+        "path": "artifacts/prop_bible/insulin/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:lantern:v1": {
+      "downstream": [
+        "bible_manifest:prop_lantern:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_lantern_s1:v1",
+        "continuity_state:prop_lantern_s2:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "lantern",
+        "path": "artifacts/prop_bible/lantern/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:last_bolt:v1": {
+      "downstream": [
+        "bible_manifest:prop_last_bolt:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_last_bolt_s2:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "last_bolt",
+        "path": "artifacts/prop_bible/last_bolt/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:map:v1": {
+      "downstream": [
+        "bible_manifest:prop_map:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_map_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "map",
+        "path": "artifacts/prop_bible/map/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:microphone:v1": {
+      "downstream": [
+        "bible_manifest:prop_microphone:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_microphone_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "microphone",
+        "path": "artifacts/prop_bible/microphone/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:mixer:v1": {
+      "downstream": [
+        "bible_manifest:prop_mixer:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_mixer_s1:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "mixer",
+        "path": "artifacts/prop_bible/mixer/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:new_sign:v1": {
+      "downstream": [
+        "bible_manifest:prop_new_sign:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_new_sign_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "new_sign",
+        "path": "artifacts/prop_bible/new_sign/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:notebook:v1": {
+      "downstream": [
+        "bible_manifest:prop_notebook:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_notebook_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "notebook",
+        "path": "artifacts/prop_bible/notebook/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:on_air:v1": {
+      "downstream": [
+        "bible_manifest:prop_on_air:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_on_air_s1:v1",
+        "continuity_state:prop_on_air_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "on_air",
+        "path": "artifacts/prop_bible/on_air/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:receiver:v1": {
+      "downstream": [
+        "bible_manifest:prop_receiver:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_receiver_s2:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "receiver",
+        "path": "artifacts/prop_bible/receiver/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:tabletop_radio:v1": {
+      "downstream": [
+        "bible_manifest:prop_tabletop_radio:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_tabletop_radio_s3:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "tabletop_radio",
+        "path": "artifacts/prop_bible/tabletop_radio/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:tackle_box:v1": {
+      "downstream": [
+        "bible_manifest:prop_tackle_box:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_tackle_box_s3:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "tackle_box",
+        "path": "artifacts/prop_bible/tackle_box/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:tape_reel:v1": {
+      "downstream": [
+        "bible_manifest:prop_tape_reel:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_tape_reel_s1:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "tape_reel",
+        "path": "artifacts/prop_bible/tape_reel/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:tool_bag:v1": {
+      "downstream": [
+        "bible_manifest:prop_tool_bag:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_tool_bag_s1:v1",
+        "continuity_state:prop_tool_bag_s2:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "tool_bag",
+        "path": "artifacts/prop_bible/tool_bag/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "prop_bible:whiteboard:v1": {
+      "downstream": [
+        "bible_manifest:prop_whiteboard:v1",
+        "entity_graph:project:v1",
+        "continuity_state:prop_whiteboard_s1:v1",
+        "continuity_state:prop_whiteboard_s3:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "prop_bible",
+        "entity_id": "whiteboard",
+        "path": "artifacts/prop_bible/whiteboard/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene_index:project:v1"
+      ]
+    },
+    "raw_input:project:v1": {
+      "downstream": [
+        "canonical_script:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "raw_input",
+        "entity_id": "project",
+        "path": "artifacts/raw_input/project/v1.json",
+        "version": 1
+      },
+      "upstream": []
+    },
+    "scene:s1:v1": {
+      "downstream": [
+        "scene_index:project:v1",
+        "continuity_state:character_aria_s1:v1",
+        "continuity_state:character_noah_s1:v1",
+        "continuity_state:character_june_s1:v1",
+        "continuity_state:character_kell_s1:v1",
+        "continuity_state:location_studio_s1:v1",
+        "continuity_state:location_bridge_s1:v1",
+        "continuity_state:location_hill_relay_s1:v1",
+        "continuity_state:prop_tape_reel_s1:v1",
+        "continuity_state:prop_mixer_s1:v1",
+        "continuity_state:prop_whiteboard_s1:v1",
+        "continuity_state:prop_antenna_s1:v1",
+        "continuity_state:prop_lantern_s1:v1",
+        "continuity_state:prop_tool_bag_s1:v1",
+        "continuity_state:prop_on_air_s1:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "scene",
+        "entity_id": "s1",
+        "path": "artifacts/scene/s1/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1"
+      ]
+    },
+    "scene:s2:v1": {
+      "downstream": [
+        "scene_index:project:v1",
+        "continuity_state:character_aria_s2:v1",
+        "continuity_state:character_noah_s2:v1",
+        "continuity_state:character_june_s2:v1",
+        "continuity_state:character_unknown_voice_s2:v1",
+        "continuity_state:location_catwalk_s2:v1",
+        "continuity_state:location_north_shelter_s2:v1",
+        "continuity_state:location_red_creek_s2:v1",
+        "continuity_state:prop_antenna_s2:v1",
+        "continuity_state:prop_lantern_s2:v1",
+        "continuity_state:prop_tool_bag_s2:v1",
+        "continuity_state:prop_cable_s2:v1",
+        "continuity_state:prop_receiver_s2:v1",
+        "continuity_state:prop_last_bolt_s2:v1",
+        "continuity_state:prop_insulin_s2:v1",
+        "continuity_state:prop_blankets_s2:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "scene",
+        "entity_id": "s2",
+        "path": "artifacts/scene/s2/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1"
+      ]
+    },
+    "scene:s3:v1": {
+      "downstream": [
+        "scene_index:project:v1",
+        "continuity_state:character_noah_s3:v1",
+        "continuity_state:character_june_s3:v1",
+        "continuity_state:character_kell_s3:v1",
+        "continuity_state:character_maya_s3:v1",
+        "continuity_state:character_comet_s3:v1",
+        "continuity_state:location_gym_s3:v1",
+        "continuity_state:location_north_shelter_s3:v1",
+        "continuity_state:location_east_road_s3:v1",
+        "continuity_state:location_bridge_s3:v1",
+        "continuity_state:prop_whiteboard_s3:v1",
+        "continuity_state:prop_insulin_s3:v1",
+        "continuity_state:prop_batteries_s3:v1",
+        "continuity_state:prop_tackle_box_s3:v1",
+        "continuity_state:prop_flyer_s3:v1",
+        "continuity_state:prop_tabletop_radio_s3:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "scene",
+        "entity_id": "s3",
+        "path": "artifacts/scene/s3/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1"
+      ]
+    },
+    "scene:s4:v1": {
+      "downstream": [
+        "scene_index:project:v1",
+        "continuity_state:character_aria_s4:v1",
+        "continuity_state:character_noah_s4:v1",
+        "continuity_state:character_june_s4:v1",
+        "continuity_state:character_kell_s4:v1",
+        "continuity_state:character_maya_s4:v1",
+        "continuity_state:character_comet_s4:v1",
+        "continuity_state:location_studio_s4:v1",
+        "continuity_state:location_north_shelter_s4:v1",
+        "continuity_state:location_east_road_s4:v1",
+        "continuity_state:location_band_room_s4:v1",
+        "continuity_state:location_red_creek_s4:v1",
+        "continuity_state:prop_on_air_s4:v1",
+        "continuity_state:prop_map_s4:v1",
+        "continuity_state:prop_notebook_s4:v1",
+        "continuity_state:prop_new_sign_s4:v1",
+        "continuity_state:prop_bread_s4:v1",
+        "continuity_state:prop_microphone_s4:v1",
+        "continuity_state:prop_cassette_s4:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "scene",
+        "entity_id": "s4",
+        "path": "artifacts/scene/s4/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1"
+      ]
+    },
+    "scene_index:project:v1": {
+      "downstream": [
+        "project_config:project:v1",
+        "character_bible:aria:v1",
+        "character_bible:noah:v1",
+        "character_bible:june:v1",
+        "character_bible:kell:v1",
+        "character_bible:maya:v1",
+        "character_bible:unknown_voice:v1",
+        "character_bible:comet:v1",
+        "location_bible:studio:v1",
+        "location_bible:catwalk:v1",
+        "location_bible:gym:v1",
+        "location_bible:north_shelter:v1",
+        "location_bible:east_road:v1",
+        "location_bible:bridge:v1",
+        "location_bible:hill_relay:v1",
+        "location_bible:band_room:v1",
+        "location_bible:red_creek:v1",
+        "prop_bible:tape_reel:v1",
+        "prop_bible:mixer:v1",
+        "prop_bible:whiteboard:v1",
+        "prop_bible:antenna:v1",
+        "prop_bible:lantern:v1",
+        "prop_bible:tool_bag:v1",
+        "prop_bible:on_air:v1",
+        "prop_bible:cable:v1",
+        "prop_bible:receiver:v1",
+        "prop_bible:last_bolt:v1",
+        "prop_bible:insulin:v1",
+        "prop_bible:blankets:v1",
+        "prop_bible:batteries:v1",
+        "prop_bible:tackle_box:v1",
+        "prop_bible:flyer:v1",
+        "prop_bible:tabletop_radio:v1",
+        "prop_bible:map:v1",
+        "prop_bible:notebook:v1",
+        "prop_bible:new_sign:v1",
+        "prop_bible:bread:v1",
+        "prop_bible:microphone:v1",
+        "prop_bible:cassette:v1",
+        "entity_graph:project:v1"
+      ],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1",
+        "scene:s1:v1",
+        "scene:s2:v1",
+        "scene:s3:v1",
+        "scene:s4:v1"
+      ]
+    },
+    "script_bible:project:v1": {
+      "downstream": [],
+      "health": "valid",
+      "ref": {
+        "artifact_type": "script_bible",
+        "entity_id": "project",
+        "path": "artifacts/script_bible/project/v1.json",
+        "version": 1
+      },
+      "upstream": [
+        "canonical_script:project:v1"
+      ]
+    }
+  }
+}

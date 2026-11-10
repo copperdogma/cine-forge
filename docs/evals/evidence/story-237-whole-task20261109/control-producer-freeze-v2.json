@@ -1,0 +1,81 @@
+{
+  "base": "0693227394bd9a63b1df1300070421000e0dd7b6",
+  "case": "open_frequency",
+  "unchanged_recipe_chain": [
+    "mvp_ingest",
+    "world_building"
+  ],
+  "runtime_params": {
+    "default_model": "claude-sonnet-4-6",
+    "work_model": "claude-haiku-4-5-20251001",
+    "verify_model": "gpt-4.1-mini",
+    "qa_model": "gpt-4.1-mini",
+    "escalate_model": "claude-opus-4-6",
+    "accept_config": true,
+    "input_file": "mechanicallyseededexactauthoredsource"
+  },
+  "model_resolution": "entity_discovery main252-257 runtimeworkHaiku overridesrecipeGemini; exercisedbyfocusedofflinetest, noGooglematrixroute",
+  "provider_prices": "currentmeterAnthropicHaiku1/5,Sonnet3/15,Opus5/25;OpenAI4.1mini.4/1.6 USD/M, notstalellmpricecache",
+  "prior_known_usd": "2.722216",
+  "prior_unknown_usd": "8.206368",
+  "prior_conservative_usd": "10.928584",
+  "remaining_hard_budget_usd": "9.071416",
+  "constraint": "notguaranteedallmaximumbranchesfit; completeunchangedpipelineusingknownsettlementreleasedheadroom, denialhaltsfallbacks andispartialinconclusive",
+  "files": [
+    {
+      "path": "benchmarks/scripts/run_whole_story_workspace_control.py",
+      "bytes": 3392,
+      "sha256": "54fbda35d7cdc305316d1a41ea2f12d387a48ff53c924c055ef7985683f3a33d"
+    },
+    {
+      "path": "benchmarks/scripts/whole_story_workspace_control_meter.py",
+      "bytes": 1245,
+      "sha256": "6b1fb7fa01e090c5b087455969a2a684aebbd54a1c5925be7e6bcd1fb47785fc"
+    },
+    {
+      "path": "benchmarks/scripts/whole_story_workspace_meter.py",
+      "bytes": 9394,
+      "sha256": "969936be802641a95b171375aaca22652b4630521e469c7f7824184b0985e570"
+    },
+    {
+      "path": "benchmarks/scripts/full_script_throughput_eval.py",
+      "bytes": 10320,
+      "sha256": "3426c39315b6e0a5c711016d8bd83c1ce89f63b8e822865e810d9f6fa8510d8c"
+    },
+    {
+      "path": "benchmarks/scripts/full_script_throughput_support.py",
+      "bytes": 31792,
+      "sha256": "bac69c883acfb021059d47031c6d78aefa93505faa68c40b5355b1f9fada3c61"
+    },
+    {
+      "path": "configs/recipes/recipe-mvp-ingest.yaml",
+      "bytes": 846,
+      "sha256": "bb573a991ece2fd61c22bf50749e2fa863068b9be54f495b96389ebaf4696bb5"
+    },
+    {
+      "path": "configs/recipes/recipe-world-building.yaml",
+      "bytes": 2227,
+      "sha256": "db2043588fa870a5cbac762cd104d637c77a822c9e5286055a68b2c3e88320da"
+    },
+    {
+      "path": "src/cine_forge/modules/world_building/entity_discovery_v1/main.py",
+      "bytes": 18363,
+      "sha256": "117e3e81631341aac2ceb500514bb0aab9db760dfa72c0cb394b9a478eab0705"
+    },
+    {
+      "path": "src/cine_forge/driver/module_execution.py",
+      "bytes": 5865,
+      "sha256": "7840082015d2d0952d74aa098334363106b6495b38205b071d47cc2c007895b4"
+    },
+    {
+      "path": "src/cine_forge/ai/llm.py",
+      "bytes": 33299,
+      "sha256": "aa32cb0a294de271f2fade3e17b528055c737a84f7baef314f9de6c4ae5e4f47"
+    },
+    {
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/open_frequency.fountain",
+      "bytes": 3447,
+      "sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    }
+  ]
+}

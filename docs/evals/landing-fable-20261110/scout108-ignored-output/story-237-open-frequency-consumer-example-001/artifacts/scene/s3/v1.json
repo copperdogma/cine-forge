@@ -1,0 +1,192 @@
+{
+  "data": {
+    "characters_present": [
+      "JUNE",
+      "KELL",
+      "MAYA",
+      "NOAH",
+      "COMET"
+    ],
+    "characters_present_ids": [
+      "june",
+      "kell",
+      "maya",
+      "noah",
+      "comet"
+    ],
+    "confidence": 0.98,
+    "elements": [
+      {
+        "content": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Cots line the basketball court. Handwritten signs point toward MEDICINE, MEALS, and MESSAGES.",
+        "element_type": "action"
+      },
+      {
+        "content": "June records updates at a folding table while Kell sorts flashlight batteries into a tackle box.",
+        "element_type": "action"
+      },
+      {
+        "content": "MAYA, a teenager in a soaked marching-band jacket, approaches with a flyer for a missing dog named COMET.",
+        "element_type": "action"
+      },
+      {
+        "content": "MAYA",
+        "element_type": "character"
+      },
+      {
+        "content": "Can the station announce this too?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "If we're naming roads and insulin drops, we can name dogs.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "KELL",
+        "element_type": "character"
+      },
+      {
+        "content": "Comet better be worth interrupting the weather report.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "MAYA",
+        "element_type": "character"
+      },
+      {
+        "content": "He stole my grilled cheese and slept through the evacuation. He's family.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Noah's voice crackles over a tabletop radio.",
+        "element_type": "action"
+      },
+      {
+        "content": "NOAH (RADIO)",
+        "element_type": "character"
+      },
+      {
+        "content": "East road is open one lane. Bridge crew wants no heavy trucks till daylight.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "June writes the update beneath NORTH SHELTER on the whiteboard, then takes Maya's flyer.",
+        "element_type": "action"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "Spell his name for the broadcast.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "MAYA",
+        "element_type": "character"
+      },
+      {
+        "content": "C-O-M-E-T. Like the fast kind of star.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "CUT TO:",
+        "element_type": "transition"
+      }
+    ],
+    "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+    "inferences": [
+      {
+        "confidence": 1.0,
+        "field_name": "presence_mode",
+        "rationale": "Remote dialogue and mentions do not establish physical presence.",
+        "value": "{\"physical\": [\"june\", \"kell\", \"maya\"], \"heard\": [\"noah\"], \"mentioned\": [\"comet\", \"bridge_crew\"]}"
+      }
+    ],
+    "int_ext": "INT",
+    "location": "High school gym shelter",
+    "narrative_beats": [
+      {
+        "approximate_location": "Whole scene, with turn near its final dialogue/action.",
+        "beat_type": "scene_turn",
+        "confidence": 0.95,
+        "description": "June accepts Maya\u2019s missing-dog flyer while radio reports reopen limited road access."
+      }
+    ],
+    "props_mentioned": [
+      "Whiteboard",
+      "Insulin",
+      "Flashlight batteries",
+      "Tackle box",
+      "Comet missing-dog flyer",
+      "Tabletop radio"
+    ],
+    "provenance": [
+      {
+        "confidence": 1.0,
+        "evidence": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+        "field_name": "source_span",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.95,
+        "evidence": "June accepts Maya\u2019s missing-dog flyer while radio reports reopen limited road access.",
+        "field_name": "narrative_beats",
+        "method": "ai"
+      }
+    ],
+    "scene_id": "s3",
+    "scene_number": 3,
+    "source_span": {
+      "end_line": 95,
+      "start_line": 63
+    },
+    "time_of_day": "PRE-DAWN",
+    "tone_mood": "Practical, compassionate, gently humorous",
+    "tone_shifts": [
+      "Public logistics widen to personal belonging."
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "run_context": {
+        "acceptance": "mechanical-only",
+        "kind": "authored-zero-provider-representability-example",
+        "subject_calls": 0
+      },
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    "confidence": 0.98,
+    "cost_data": null,
+    "created_at": "2026-11-10T04:30:13.025576Z",
+    "health": "valid",
+    "intent": "Materialize supplied whole-workspace scene payload",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "whole_story_workspace_eval",
+    "producing_role": null,
+    "rationale": "Lossless fanout of validated subject output; no semantic field completion",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "s3",
+      "path": "artifacts/scene/s3/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

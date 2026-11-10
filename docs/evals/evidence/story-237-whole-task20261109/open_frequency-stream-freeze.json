@@ -1,0 +1,30 @@
+{
+  "recovery_of": "600s nonstream timeout, original fullUSD2.853904 exposure held",
+  "body_delta": {
+    "stream": true
+  },
+  "timeout_seconds": 1800,
+  "semantic_settings_unchanged": true,
+  "files": [
+    {
+      "path": "benchmarks/scripts/recover_whole_story_workspace_stream.py",
+      "bytes": 10330,
+      "sha256": "b720fdc54c694fd4538b89a3cca74d25331216666f94eb9a0386d7722f43fc74"
+    },
+    {
+      "path": "benchmarks/scripts/whole_story_workspace_meter.py",
+      "bytes": 9394,
+      "sha256": "969936be802641a95b171375aaca22652b4630521e469c7f7824184b0985e570"
+    },
+    {
+      "path": "benchmarks/scripts/whole_story_workspace_contract.py",
+      "bytes": 24222,
+      "sha256": "43f7599c8fdba0ebc838922b807e45868287a67301c8ac0fad39d93ae9bc3165"
+    },
+    {
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-stream-request.json",
+      "bytes": 34639,
+      "sha256": "6a24e3a1d05fd464eac970c4261252629578f079b32745b632670dffdd084d51"
+    }
+  ]
+}

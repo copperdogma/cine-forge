@@ -301,7 +301,8 @@
           "218",
           "219",
           "220",
-          "231"
+          "231",
+          "237"
         ],
         "adrIds": [
           "ADR-003"
@@ -315,7 +316,8 @@
           "scene-enrichment",
           "scene-extraction",
           "script-bible",
-          "storyboard-generation-quality"
+          "storyboard-generation-quality",
+          "whole-story-workspace-capability"
         ]
       },
       {
@@ -393,7 +395,8 @@
           "204",
           "205",
           "206",
-          "208"
+          "208",
+          "237"
         ],
         "adrIds": [
           "ADR-001",
@@ -409,7 +412,8 @@
           "previz-usefulness",
           "prop-extraction",
           "relationship-discovery",
-          "storyboard-generation-quality"
+          "storyboard-generation-quality",
+          "whole-story-workspace-capability"
         ]
       },
       {
@@ -1141,7 +1145,8 @@
           "230",
           "231",
           "234",
-          "235"
+          "235",
+          "237"
         ],
         "adrIds": [
           "ADR-001",
@@ -1170,7 +1175,8 @@
           "scene-extraction",
           "script-bible",
           "storyboard-generation-quality",
-          "video-understanding"
+          "video-understanding",
+          "whole-story-workspace-capability"
         ]
       },
       {
@@ -15560,6 +15566,65 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "237",
+      "title": "Whole screenplay to usable story workspace in one inference",
+      "path": "docs/stories/story-237-whole-story-workspace-capability.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1",
+        "R12",
+        "R14",
+        "R8"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "237",
+        "sourcePath": "docs/stories/story-237-whole-story-workspace-capability.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-237-whole-story-workspace-capability.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -17854,6 +17919,69 @@
           "summary": "Hy4 official Nov4/Tencent FP4 high32768 strict native+adapter qualified. One fresh matched synthetic dialogue: structural .3688/Opus .55/combined .4594 vs Sol .74665/Luna .75595, all0/1passes. Hy4 invents head/body gaps and takes128.072s/$0.0133283345 vs8.717s/$0.0029447 and5.043s/$0.00022267. Stop source failure; remainingcases/lower efforts unmeasured.9settledcalls USD.102450684/5,unknown0. Nat…"
         }
       }
+    },
+    {
+      "id": "whole-story-workspace-capability",
+      "name": "Whole Story Workspace Capability",
+      "type": "quality",
+      "command": "PYTHONPATH=src <cineforge-python> benchmarks/scripts/report_whole_story_workspace.py --verify",
+      "description": "Raw eligible authored screenplay to complete consumer story workspace in one inference versus unchanged mvp_ingest+world_building. Consumer loadability, exact source grounding, material entities, references and continuity are separate gates.",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "storyIds": [
+        "237"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "compromiseIds": [],
+      "retryWhen": [],
+      "attempts": [],
+      "latestScore": null,
+      "historicalEvidenceStatus": "",
+      "excludedScoreCount": 0,
+      "declaredSpecRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredStoryIds": [
+        "237"
+      ],
+      "declaredCategoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "actionability": {
+        "sourceKind": "eval",
+        "sourceId": "whole-story-workspace-capability",
+        "sourcePath": "docs/evals/registry.yaml",
+        "recommendedNow": false,
+        "posture": "no-trigger-recorded",
+        "whyNow": "",
+        "retryTriggerStatus": "none",
+        "retryWhen": [],
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "eval-score",
+          "source": "docs/evals/registry.yaml",
+          "summary": ""
+        }
+      }
     }
   ],
   "state": {
@@ -18492,7 +18620,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: methodology_tooling, ingest_and_world_building, api_service_and_operator_console +1 more",
-      "UI scout freshness due: attention needed — FP1 (Full Pipeline Canonical Fixture) still has unresolved issues (follow-up stories: 232)"
+      "UI scout freshness due: attention needed — last run 2026-10-24 is 17 days old against a 14-day cadence; +1 more"
     ]
   }
 }

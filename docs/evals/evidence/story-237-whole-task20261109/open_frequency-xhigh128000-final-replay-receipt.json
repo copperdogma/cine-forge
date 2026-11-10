@@ -1,0 +1,58 @@
+{
+  "origin": "DERIVED from complete raw SSE",
+  "configuration": "FINAL exact same xhigh /128000 streamed request, provider EOF recovery",
+  "elapsed_ms": 1003414,
+  "model": "claude-fable-5-2",
+  "stop_reason": "max_tokens",
+  "usage": {
+    "input_tokens": 12597,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 128000,
+    "service_tier": "standard",
+    "inference_geo": "global",
+    "speed": "standard",
+    "output_tokens_details": {
+      "thinking_tokens": 68908
+    }
+  },
+  "meter_entry": {
+    "name": "0048-subject-open_frequency-xhigh128000-FINAL-verbatim-replay-claude-fable-5-2",
+    "group": "subject-open_frequency-xhigh128000-FINAL-verbatim-replay",
+    "model": "claude-fable-5-2",
+    "url": "https://api.anthropic.com/v1/messages",
+    "state": "settled-usage-estimate",
+    "input_bound": 14529,
+    "output_allowance": 128000,
+    "reservation_usd": "5.352464",
+    "accounted_usd": "5.220776",
+    "request_sha256": "01bd5373650beb7d205d9d8bcb71ba001594a617e99c755cd08c1177bda4f916",
+    "response_origin": "DERIVED native Message from complete raw SSE",
+    "raw_sse_sha256": "aa174ff446a971a585756b7b506d19758c0b44cdc02ee42ba7126459b4026749",
+    "raw_sse_bytes": 1316222,
+    "usage": {
+      "input_tokens": 12597,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 128000,
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard",
+      "output_tokens_details": {
+        "thinking_tokens": 68908
+      }
+    },
+    "request_id": "msg_011CgtiVCb6dCU1iM8GQK4fb",
+    "served_model": "claude-fable-5-2",
+    "latency_ms": 1003407,
+    "response_sha256": "28504dfbc920686f0457eeb4b1f6a2500cb3f3a0bbf1a2f5eb39a811c6ab6370"
+  }
+}

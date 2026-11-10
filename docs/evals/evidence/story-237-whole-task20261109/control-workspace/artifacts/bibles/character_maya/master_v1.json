@@ -1,0 +1,87 @@
+{
+  "character_id": "maya",
+  "name": "MAYA",
+  "aliases": [],
+  "description": "A teenager wearing a soaked marching-band jacket who seeks help broadcasting a missing dog announcement during a post-disaster shelter operation. She is resourceful, emotionally connected to her pet, and present during the community radio station's early operations.",
+  "prominence": "secondary",
+  "explicit_evidence": [
+    {
+      "trait": "Emotionally attached to her dog",
+      "quote": "He stole my grilled cheese and slept through the evacuation. He's family.",
+      "source_scene": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+      "source_span": {
+        "start_line": 16,
+        "end_line": 16
+      }
+    },
+    {
+      "trait": "Resourceful and persistent",
+      "quote": "Can the station announce this too?",
+      "source_scene": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+      "source_span": {
+        "start_line": 8,
+        "end_line": 8
+      }
+    },
+    {
+      "trait": "Literate and articulate",
+      "quote": "C-O-M-E-T. Like the fast kind of star.",
+      "source_scene": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+      "source_span": {
+        "start_line": 24,
+        "end_line": 24
+      }
+    },
+    {
+      "trait": "Successful in her mission",
+      "quote": "He was under the vending machine in the band room.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+      "source_span": {
+        "start_line": 35,
+        "end_line": 35
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "Age/Status",
+      "value": "High school student (marching band member)",
+      "confidence": 0.95,
+      "rationale": "Explicitly described as 'a teenager in a soaked marching-band jacket' and found her dog in 'the band room,' indicating active participation in school music program."
+    },
+    {
+      "trait": "Personality",
+      "value": "Caring, determined, practical",
+      "confidence": 0.85,
+      "rationale": "Prioritizes finding her dog despite disaster conditions, takes initiative to use community resources, and maintains composure in crisis environment."
+    },
+    {
+      "trait": "Relationship to community",
+      "value": "Active participant in shelter operations",
+      "confidence": 0.8,
+      "rationale": "Appears in both shelter and radio station scenes, interacts naturally with staff, and her request is treated as legitimate community business."
+    }
+  ],
+  "scene_presence": [
+    "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+    "INT. COMMUNITY RADIO STUDIO - MORNING"
+  ],
+  "dialogue_summary": "Maya requests that the community radio station broadcast an announcement for her missing dog, Comet. She explains that Comet slept through the evacuation and stole her grilled cheese. She spells out the dog's name phonetically for the broadcast. Later, she reports finding Comet under the vending machine in the band room.",
+  "narrative_role": "supporting",
+  "narrative_role_confidence": 0.85,
+  "relationships": [
+    {
+      "target_character": "JUNE",
+      "relationship_type": "Community member seeking assistance",
+      "evidence": "Maya approaches June's table to request the dog announcement; June accepts the flyer and helps broadcast it.",
+      "confidence": 0.9
+    },
+    {
+      "target_character": "COMET",
+      "relationship_type": "Owner/caretaker",
+      "evidence": "Maya describes Comet as family, searches for him, and carries him in her arms after recovery.",
+      "confidence": 0.95
+    }
+  ],
+  "overall_confidence": 0.85
+}

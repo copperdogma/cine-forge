@@ -1,0 +1,183 @@
+{
+  "data": {
+    "characters_present": [
+      "ARIA",
+      "NOAH",
+      "JUNE",
+      "KELL",
+      "MAYA",
+      "COMET"
+    ],
+    "characters_present_ids": [
+      "aria",
+      "noah",
+      "june",
+      "kell",
+      "maya",
+      "comet"
+    ],
+    "confidence": 0.98,
+    "elements": [
+      {
+        "content": "INT. COMMUNITY RADIO STUDIO - MORNING",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Wet coats hang from every chair. Pale sunlight cuts through the storm residue on the windows.",
+        "element_type": "action"
+      },
+      {
+        "content": "Aria pins a hand-drawn map beside the console. Noah labels a notebook DAY TWO.",
+        "element_type": "action"
+      },
+      {
+        "content": "June tapes a new sign over the door: OPEN FREQUENCY.",
+        "element_type": "action"
+      },
+      {
+        "content": "Kell enters with a loaf of warm bread wrapped in foil. Maya follows close behind with a muddy, sleepy COMET in her arms.",
+        "element_type": "action"
+      },
+      {
+        "content": "MAYA",
+        "element_type": "character"
+      },
+      {
+        "content": "He was under the vending machine in the band room.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "KELL",
+        "element_type": "character"
+      },
+      {
+        "content": "Smart dog. Dry floor, free snacks.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "June laughs, reaches for the microphone, and nods at Aria.",
+        "element_type": "action"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "Red Creek, morning bulletin. East road is open, north shelter is stocked, and one missing dog has been recovered with zero remorse.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Noah pushes up a brass-heavy cassette cue. The room brightens with music.",
+        "element_type": "action"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "Put that on repeat between updates.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "No. Once is joy. Twice is branding.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "The ON AIR sign steadies into a solid red glow as the four of them settle back to work.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "INT. COMMUNITY RADIO STUDIO - MORNING",
+    "inferences": [
+      {
+        "confidence": 1.0,
+        "field_name": "presence_mode",
+        "rationale": "Remote dialogue and mentions do not establish physical presence.",
+        "value": "{\"physical\": [\"aria\", \"noah\", \"june\", \"kell\", \"maya\", \"comet\"], \"heard\": [], \"mentioned\": []}"
+      }
+    ],
+    "int_ext": "INT",
+    "location": "Community radio studio",
+    "narrative_beats": [
+      {
+        "approximate_location": "Whole scene, with turn near its final dialogue/action.",
+        "beat_type": "scene_turn",
+        "confidence": 0.95,
+        "description": "The crew reunites, Maya brings recovered Comet, and a steady broadcast mixes updates and music."
+      }
+    ],
+    "props_mentioned": [
+      "ON AIR sign",
+      "Hand-drawn map",
+      "DAY TWO notebook",
+      "OPEN FREQUENCY sign",
+      "Warm bread wrapped in foil",
+      "Microphone",
+      "Brass-heavy cassette cue"
+    ],
+    "provenance": [
+      {
+        "confidence": 1.0,
+        "evidence": "INT. COMMUNITY RADIO STUDIO - MORNING",
+        "field_name": "source_span",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.95,
+        "evidence": "The crew reunites, Maya brings recovered Comet, and a steady broadcast mixes updates and music.",
+        "field_name": "narrative_beats",
+        "method": "ai"
+      }
+    ],
+    "scene_id": "s4",
+    "scene_number": 4,
+    "source_span": {
+      "end_line": 122,
+      "start_line": 96
+    },
+    "time_of_day": "MORNING",
+    "tone_mood": "Relieved, warm, continuing purpose",
+    "tone_shifts": [
+      "Relief becomes sustained community work."
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "run_context": {
+        "acceptance": "mechanical-only",
+        "kind": "authored-zero-provider-representability-example",
+        "subject_calls": 0
+      },
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    "confidence": 0.98,
+    "cost_data": null,
+    "created_at": "2026-11-10T04:30:13.026259Z",
+    "health": "valid",
+    "intent": "Materialize supplied whole-workspace scene payload",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "whole_story_workspace_eval",
+    "producing_role": null,
+    "rationale": "Lossless fanout of validated subject output; no semantic field completion",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "s4",
+      "path": "artifacts/scene/s4/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

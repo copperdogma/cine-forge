@@ -1,0 +1,82 @@
+{
+  "data": {
+    "aliases": [],
+    "description": "A functional radio broadcast facility equipped with old consoles, a battered mixer, emergency power systems, and a skylight. The studio contains broadcasting equipment including an ON AIR sign, microphone, cassette cue system, and tape reels. Windows are present and subject to weather exposure.",
+    "location_id": "community_radio_studio",
+    "name": "Community Radio Studio",
+    "narrative_significance": "The Community Radio Studio serves as the operational hub for emergency broadcast communications during a crisis event. It functions as a lifeline for the community, coordinating information about road closures, shelter locations, and missing persons. The studio represents resilience and community coordination, operating under emergency power conditions and serving as a gathering place for coordinated relief efforts.",
+    "overall_confidence": 0.95,
+    "physical_traits": [
+      "Skylight with weather exposure",
+      "Old consoles",
+      "Battered mixer",
+      "Emergency power systems",
+      "ON AIR sign (flickering/unreliable initially, then steady)",
+      "Microphone",
+      "Brass-heavy cassette cue system",
+      "Tape reel threading capability",
+      "Whiteboard for notes",
+      "Chairs suitable for hanging wet coats",
+      "Door with space for signage",
+      "Windows with storm residue accumulation",
+      "Vending machine in adjacent band room"
+    ],
+    "scene_presence": [
+      "Aria (threading tape, operating switches, pinning maps, managing broadcast)",
+      "Noah (operating mixer, labeling notebook, cueing cassettes)",
+      "June (covering whiteboard with road closures and shelter names, operating microphone, creating signage)",
+      "Kell (carrying portable antenna, lantern, and tool bag; delivering bread)",
+      "Maya (entering with dog Comet)",
+      "Comet (dog, recovered from band room)"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 3,
+        "decision_trace": [],
+        "decision_trace_count": 0,
+        "input_candidate_count": 3,
+        "rejected_candidate_count": 0,
+        "rejected_candidates": []
+      }
+    },
+    "confidence": 0.95,
+    "cost_data": null,
+    "created_at": "2026-11-10T05:29:22.619075Z",
+    "health": "valid",
+    "intent": "Establish master definition for location 'Community Radio Studio'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "location_bible_v1",
+    "producing_role": null,
+    "rationale": "Extracted from canonical script and scene headings.",
+    "ref": {
+      "artifact_type": "location_bible",
+      "entity_id": "community_radio_studio",
+      "path": "artifacts/location_bible/community_radio_studio/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

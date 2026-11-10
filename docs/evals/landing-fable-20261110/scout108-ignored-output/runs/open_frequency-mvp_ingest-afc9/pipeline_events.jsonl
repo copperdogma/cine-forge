@@ -1,0 +1,21 @@
+{"event": "pipeline_started", "run_id": "open_frequency-mvp_ingest-afc9", "stage_ids": ["ingest", "normalize", "breakdown_scenes", "script_bible", "project_config"], "ts": 1794288449.511382}
+{"event": "stage_started", "stage_id": "ingest", "ts": 1794288449.51345}
+{"artifact_type": "raw_input", "entity_id": "project", "event": "artifact_saved", "stage_id": "ingest", "ts": 1794288449.5175}
+{"artifacts": [{"artifact_type": "raw_input", "entity_id": "project", "path": "artifacts/raw_input/project/v1.json", "version": 1}], "cost_usd": 0.0, "event": "stage_finished", "input_tokens": 0, "output_tokens": 0, "stage_id": "ingest", "ts": 1794288449.517694}
+{"event": "stage_started", "stage_id": "normalize", "ts": 1794288449.519486}
+{"artifact_type": "canonical_script", "entity_id": "project", "event": "artifact_saved", "stage_id": "normalize", "ts": 1794288449.539233}
+{"artifacts": [{"artifact_type": "canonical_script", "entity_id": "project", "path": "artifacts/canonical_script/project/v1.json", "version": 1}], "cost_usd": 0.0, "event": "stage_finished", "input_tokens": 0, "output_tokens": 0, "stage_id": "normalize", "ts": 1794288449.539584}
+{"event": "stage_started", "stage_id": "script_bible", "ts": 1794288449.5412219}
+{"event": "stage_started", "stage_id": "breakdown_scenes", "ts": 1794288449.542901}
+{"artifact_type": "scene", "entity_id": "scene_002", "event": "artifact_saved", "stage_id": "breakdown_scenes", "ts": 1794288450.894251}
+{"artifact_type": "scene", "entity_id": "scene_003", "event": "artifact_saved", "stage_id": "breakdown_scenes", "ts": 1794288450.9271061}
+{"artifact_type": "scene", "entity_id": "scene_001", "event": "artifact_saved", "stage_id": "breakdown_scenes", "ts": 1794288450.9618409}
+{"artifact_type": "scene", "entity_id": "scene_004", "event": "artifact_saved", "stage_id": "breakdown_scenes", "ts": 1794288451.1335208}
+{"artifact_type": "scene_index", "entity_id": "project", "event": "artifact_saved", "stage_id": "breakdown_scenes", "ts": 1794288451.136275}
+{"artifacts": [{"artifact_type": "scene", "entity_id": "scene_002", "path": "artifacts/scene/scene_002/v1.json", "version": 1}, {"artifact_type": "scene", "entity_id": "scene_003", "path": "artifacts/scene/scene_003/v1.json", "version": 1}, {"artifact_type": "scene", "entity_id": "scene_001", "path": "artifacts/scene/scene_001/v1.json", "version": 1}, {"artifact_type": "scene", "entity_id": "scene_004", "path": "artifacts/scene/scene_004/v1.json", "version": 1}, {"artifact_type": "scene_index", "entity_id": "project", "path": "artifacts/scene_index/project/v1.json", "version": 1}], "cost_usd": 0.0043752, "event": "stage_finished", "input_tokens": 3579, "output_tokens": 378, "stage_id": "breakdown_scenes", "ts": 1794288451.1365702}
+{"artifact_type": "script_bible", "entity_id": "project", "event": "artifact_saved", "stage_id": "script_bible", "ts": 1794288473.114292}
+{"artifacts": [{"artifact_type": "script_bible", "entity_id": "project", "path": "artifacts/script_bible/project/v1.json", "version": 1}], "cost_usd": 0.0104328, "event": "stage_finished", "input_tokens": 2816, "output_tokens": 2045, "stage_id": "script_bible", "ts": 1794288473.114651}
+{"event": "stage_started", "stage_id": "project_config", "ts": 1794288473.116082}
+{"artifact_type": "project_config", "entity_id": "project", "event": "artifact_saved", "stage_id": "project_config", "ts": 1794288492.2801752}
+{"artifacts": [{"artifact_type": "project_config", "entity_id": "project", "path": "artifacts/project_config/project/v1.json", "version": 1}], "cost_usd": 0.020908, "event": "stage_finished", "input_tokens": 5219, "output_tokens": 1376, "stage_id": "project_config", "ts": 1794288492.2805781}
+{"event": "pipeline_finished", "run_id": "open_frequency-mvp_ingest-afc9", "success": true, "total_cost_usd": 0.035716, "ts": 1794288492.281568}

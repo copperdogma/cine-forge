@@ -1,0 +1,56 @@
+{
+  "data": {
+    "aliases": [],
+    "description": "Offscreen bridge reported closed; no physical description or confirmed reopening.",
+    "location_id": "bridge",
+    "name": "Bridge",
+    "narrative_significance": "Constrains movement; a later report relays the bridge crew\u2019s heavy-truck restriction.",
+    "overall_confidence": 0.96,
+    "physical_traits": [],
+    "scene_presence": [
+      "s1",
+      "s3"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "run_context": {
+        "acceptance": "mechanical-only",
+        "kind": "authored-zero-provider-representability-example",
+        "subject_calls": 0
+      },
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    "confidence": 0.96,
+    "cost_data": null,
+    "created_at": "2026-11-10T04:30:13.051511Z",
+    "health": "valid",
+    "intent": "Materialize supplied whole-workspace location_bible payload",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "whole_story_workspace_eval",
+    "producing_role": null,
+    "rationale": "Lossless fanout of validated subject output; no semantic field completion",
+    "ref": {
+      "artifact_type": "location_bible",
+      "entity_id": "bridge",
+      "path": "artifacts/location_bible/bridge/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

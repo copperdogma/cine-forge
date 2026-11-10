@@ -1,0 +1,13 @@
+{
+  "prop_id": "tabletop_radio",
+  "name": "Tabletop Radio",
+  "description": "A radio receiver positioned on a table at the high school gym shelter. Used to receive and relay emergency broadcasts and updates from field personnel, including road conditions and infrastructure status.",
+  "scene_presence": [
+    "scene_003"
+  ],
+  "associated_characters": [
+    "noah"
+  ],
+  "narrative_significance": "Serves as the communication hub for the shelter's emergency operations, enabling real-time dissemination of critical information (road access, weather, resource availability) to the community. Noah's voice transmits updates through this radio, establishing it as the primary conduit for coordinating shelter logistics and public announcements.",
+  "overall_confidence": 0.85
+}

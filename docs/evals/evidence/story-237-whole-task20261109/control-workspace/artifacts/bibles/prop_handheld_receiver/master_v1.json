@@ -1,0 +1,14 @@
+{
+  "prop_id": "handheld_receiver",
+  "name": "Handheld Receiver",
+  "description": "A portable radio receiver device capable of receiving transmissions from other radio stations. It is connected via cable to a portable antenna clamped to a rusted rail on a water tower catwalk. The device receives radio communications from emergency shelters and other stations.",
+  "scene_presence": [
+    "scene_002"
+  ],
+  "associated_characters": [
+    "noah",
+    "aria"
+  ],
+  "narrative_significance": "Critical communication device used by Aria and Noah to establish contact with emergency stations and coordinate relief efforts during a crisis. The successful reception of a distress call from Red Creek station and confirmation from June demonstrates the handheld receiver's essential role in the emergency response network.",
+  "overall_confidence": 0.85
+}

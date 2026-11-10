@@ -1,0 +1,26 @@
+{
+  "boundary_id": "story_lane_workspace_ready",
+  "boundary_label": "Break Down Script -> Deep Breakdown",
+  "honest_scope": "Current surfaced story-lane path only: run `mvp_ingest` (Break Down Script) followed by `world_building` (Deep Breakdown) on a fresh screenplay project. Excludes unfinished film-lane generation, export, and any pretend full-pipeline runtime claim.",
+  "recipes": [
+    {
+      "recipe_id": "mvp_ingest",
+      "recipe_path": "configs/recipes/recipe-mvp-ingest.yaml",
+      "ui_label": "Break Down Script",
+      "notes": "Tier 1 story-lane ingest: canonical script, scene breakdown, script bible, project config."
+    },
+    {
+      "recipe_id": "world_building",
+      "recipe_path": "configs/recipes/recipe-world-building.yaml",
+      "ui_label": "Deep Breakdown",
+      "notes": "Tier 2 story-lane enrichment: scene analysis, entity bibles, continuity, and graph."
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "open_frequency",
+      "label": "Whole workspace open_frequency",
+      "input_fixture": "benchmarks/fixtures/whole_story_workspace_v1/open_frequency.fountain"
+    }
+  ]
+}

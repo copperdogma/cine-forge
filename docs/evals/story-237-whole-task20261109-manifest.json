@@ -1,0 +1,1864 @@
+{
+  "draft_prefix_accounting": "Two story-236-whole-task evidence directories are pre-ID-allocation worker analysis for THIS Story237; unrelated to prior Scout107 Story236. All hashed and retained.",
+  "files": [
+    {
+      "bytes": 254647,
+      "path": "CHANGELOG.md",
+      "sha256": "2b5def5f1ae696c5724a83a223223a3aea6bd415ac84be5fc2921687b82a230e"
+    },
+    {
+      "bytes": 1288,
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/freeze.json",
+      "sha256": "f669f6f5a18ab9917f18f93528595d27308b7aa55b4d9bda194e675bdddf5a8b"
+    },
+    {
+      "bytes": 3142,
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/last_ferry.fountain",
+      "sha256": "e28a204cd4d756c91bfbd28a521473a895fd8d14984efd400658e6a65b9a7618"
+    },
+    {
+      "bytes": 23939,
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/last_ferry.oracle.json",
+      "sha256": "d87c58bf40c20d4f318b1d762a792ea9fd702a996d300f7ed7970ca5e9377423"
+    },
+    {
+      "bytes": 3121,
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/matinee_echo.fountain",
+      "sha256": "bed5976da30e2584371deabdd121966efc4276e5663a4789cf22267d655c05d2"
+    },
+    {
+      "bytes": 23430,
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/matinee_echo.oracle.json",
+      "sha256": "ae71e60008142c4d2f07d62b032d11c0ce0a065763018b5d8a73aa936d035d5f"
+    },
+    {
+      "bytes": 105012,
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/open_frequency-consumer-example.json",
+      "sha256": "4c60bcd0d56545152397127b8b69ac7d3ecdaca25187357cec7f20d2265a831e"
+    },
+    {
+      "bytes": 3447,
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/open_frequency.fountain",
+      "sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    {
+      "bytes": 31116,
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/open_frequency.oracle.json",
+      "sha256": "73061149007e05d140084cccf2e8397e1a7f780c5d31f5fa61203c78cc8624fc"
+    },
+    {
+      "bytes": 4137,
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/review.md",
+      "sha256": "70e960a3104e3db6702fb9eb2ca90da642bf99549535dad223c5e9cd8abd85ad"
+    },
+    {
+      "bytes": 6066,
+      "path": "benchmarks/results/whole-story-workspace-fable52-20261109.json",
+      "sha256": "1f8e02c738ad031469e8586287be6ff95fa4d31be561676aa294988558ab4b54"
+    },
+    {
+      "bytes": 10330,
+      "path": "benchmarks/scripts/recover_whole_story_workspace_stream.py",
+      "sha256": "b720fdc54c694fd4538b89a3cca74d25331216666f94eb9a0386d7722f43fc74"
+    },
+    {
+      "bytes": 10018,
+      "path": "benchmarks/scripts/report_whole_story_workspace.py",
+      "sha256": "0173f1ff0151ff0c55142a5f53cd03495f5fe7300f07bfe9ba78e90420b1ec7c"
+    },
+    {
+      "bytes": 11772,
+      "path": "benchmarks/scripts/run_whole_story_workspace.py",
+      "sha256": "b9c2ee31e6a63cc9b929d7726019845f9c870613123070d7f0b28fb2b970bd0b"
+    },
+    {
+      "bytes": 6958,
+      "path": "benchmarks/scripts/run_whole_story_workspace_adequate_output.py",
+      "sha256": "643f464c2470f68233ef134f0a7c5f1ce8fc37547623ba0debe47b48f2cf63a6"
+    },
+    {
+      "bytes": 3392,
+      "path": "benchmarks/scripts/run_whole_story_workspace_control.py",
+      "sha256": "54fbda35d7cdc305316d1a41ea2f12d387a48ff53c924c055ef7985683f3a33d"
+    },
+    {
+      "bytes": 7875,
+      "path": "benchmarks/scripts/run_whole_story_workspace_final_replay.py",
+      "sha256": "f5fa8028f20811c2c5c6665f3dff9961ae050888c078891d900e89a5a37b9f5a"
+    },
+    {
+      "bytes": 24222,
+      "path": "benchmarks/scripts/whole_story_workspace_contract.py",
+      "sha256": "43f7599c8fdba0ebc838922b807e45868287a67301c8ac0fad39d93ae9bc3165"
+    },
+    {
+      "bytes": 1245,
+      "path": "benchmarks/scripts/whole_story_workspace_control_meter.py",
+      "sha256": "6b1fb7fa01e090c5b087455969a2a684aebbd54a1c5925be7e6bcd1fb47785fc"
+    },
+    {
+      "bytes": 10050,
+      "path": "benchmarks/scripts/whole_story_workspace_meter.py",
+      "sha256": "a7f8d87f260d11e09d82f9119f32abc46956d768c3bbe9bd409e5a661546fc68"
+    },
+    {
+      "bytes": 821,
+      "path": "benchmarks/tasks/whole-story-workspace.yaml",
+      "sha256": "148b61fd44ca3451227df4ca9ed11811e715b98f76cbee39d246e8dc27f27b60"
+    },
+    {
+      "bytes": 18750,
+      "path": "docs/build-map.md",
+      "sha256": "ad0bd79d1e5622ccf7ae84e945a1b061d8dc2ff5fbeffa7b38d64205040c0c53"
+    },
+    {
+      "bytes": 12401,
+      "path": "docs/evals/attempts/058-fable52-whole-story-workspace.md",
+      "sha256": "a6408f210c007f6aae08d851fbe1c37ac99c3c87936258d03a32f1e5ca5daac1"
+    },
+    {
+      "bytes": 11780,
+      "path": "docs/evals/evidence/story-236-whole-task-20261109/control-preflight.md",
+      "sha256": "7aa16c5ffcda635784724f3668278171b629c2eeddd2bc6199175df442a61db3"
+    },
+    {
+      "bytes": 19217,
+      "path": "docs/evals/evidence/story-236-whole-task20261109/consumer-analysis.md",
+      "sha256": "073061a0d22d189e185658117fee7505db85886a56ce17cd6ac7f266c1d2f051"
+    },
+    {
+      "bytes": 7289,
+      "path": "docs/evals/evidence/story-236-whole-task20261109/provider-catalog.txt",
+      "sha256": "b04cce3f94a824bc5541bd0376b1a027c74a56fd3b101945e2796c5f88d86ff2"
+    },
+    {
+      "bytes": 2469,
+      "path": "docs/evals/evidence/story-236-whole-task20261109/research-notes.md",
+      "sha256": "b234f40b9176c9a46fe3c7414615698d200bfee4dcd353c87738f5b6d94ee9c9"
+    },
+    {
+      "bytes": 608,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/CLOSED.json",
+      "sha256": "27d79bb644561aa34abf9d94078a99678b5dd9e3ed79c8cebb312c3000069e7a"
+    },
+    {
+      "bytes": 502,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/FINAL_REPLAY_AUTHORIZED.json",
+      "sha256": "578c57133d70b927908a30af8b8fc65d9825a1b2d34049af663874dc85caa4ec"
+    },
+    {
+      "bytes": 454,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/admit-open_frequency.json",
+      "sha256": "fd448e92a6afce34ceaf7ca0b71988a8c978c0436cc1661785b0f5385e5f90cf"
+    },
+    {
+      "bytes": 475,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/closure-history/CLOSED-epoch1.json",
+      "sha256": "b0c857682c251b70d58354c14e25700ee8ff855beb20893de02f043cadcfaa75"
+    },
+    {
+      "bytes": 1488,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-precall-freeze.json",
+      "sha256": "715997f857ce7a80c1056f42d1b06d5ab57302cb3ab95489b0238e0cdcab823c"
+    },
+    {
+      "bytes": 3098,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-producer-freeze-v2.json",
+      "sha256": "a88b50619c5aeb1af6beee58b249babdf05f9dba464e7f10e687e41a767a110e"
+    },
+    {
+      "bytes": 5706,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-runs/open_frequency-mvp_ingest-afc9/run_state.json",
+      "sha256": "aae319099a10fcfc8caf74ac3a2bcc68ad207c2ce3c633e022e1ab3f805758b3"
+    },
+    {
+      "bytes": 22422,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-runs/open_frequency-world_building-bc41/run_state.json",
+      "sha256": "fb6408492674bfa8b46a0a7ed0bd9424fd8ef3959b82c1bd333f2e5cf70a3454"
+    },
+    {
+      "bytes": 6018,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/character_aria/manifest_v1.json",
+      "sha256": "0312a40cc4ba75b363379311b180d277a316901c5249e54773d565a1de8db0dd"
+    },
+    {
+      "bytes": 4866,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/character_aria/master_v1.json",
+      "sha256": "375166388b62f92affbf82becd09409969d89efbad5c06f2b666f5734b8747ae"
+    },
+    {
+      "bytes": 6018,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/character_june/manifest_v1.json",
+      "sha256": "fc19c5ea54b0af45e2552df25865e87aa0940995034d5df20ab02a7981e9038d"
+    },
+    {
+      "bytes": 4751,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/character_june/master_v1.json",
+      "sha256": "81e1f3fe0f91e446f5b5ffc8a16d92f4fc9bdae0f152d1032bb58a02d11fa04b"
+    },
+    {
+      "bytes": 6018,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/character_kell/manifest_v1.json",
+      "sha256": "cf2525e4e50cb3dd0da61181f186a4db3994ea71202947ef06b13688b74ca795"
+    },
+    {
+      "bytes": 4847,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/character_kell/master_v1.json",
+      "sha256": "6de893207ea39f8b48c2fe4d70d5afac062390db3dab9706293e58a3423b95bf"
+    },
+    {
+      "bytes": 6018,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/character_maya/manifest_v1.json",
+      "sha256": "59640c1d2bd958acc6aa4db8f7e0ccfd97be4779380223842f0b63f845adbee2"
+    },
+    {
+      "bytes": 3515,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/character_maya/master_v1.json",
+      "sha256": "bd9b65c69f186231eaef7c3c4fc64894b5bd594d0058eb6e56b7d3a518af056d"
+    },
+    {
+      "bytes": 6018,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/character_noah/manifest_v1.json",
+      "sha256": "d17ed4ff4e2a7e77120bc6a74b197f4199941710a9eea39070293b6e2597b9dd"
+    },
+    {
+      "bytes": 4364,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/character_noah/master_v1.json",
+      "sha256": "55bcc0973ab6ee00e5eb79a4873e437da3b1588a33c5779fe4a89ca875b171e6"
+    },
+    {
+      "bytes": 2299,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/location_community_radio_studio/manifest_v1.json",
+      "sha256": "1da1f7d33158205c4a92fd3a4bbf958c965630f590fc342189dd003a09b91682"
+    },
+    {
+      "bytes": 1845,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/location_community_radio_studio/master_v1.json",
+      "sha256": "1598555b40d54384ae8a18bb9a0a694456900b2e9557230d6452eca760629af1"
+    },
+    {
+      "bytes": 2304,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/location_high_school_gym_shelter/manifest_v1.json",
+      "sha256": "3f37b0834b0ce907b1b7a2d7ce84f379e6496519103f79ec994dffeed9f16e02"
+    },
+    {
+      "bytes": 1382,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/location_high_school_gym_shelter/master_v1.json",
+      "sha256": "f312c02440ec9bd3eac69a80fa910ea4e11b67e8e2809348c976c2b2c70b64c2"
+    },
+    {
+      "bytes": 2284,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/location_water_tower_catwalk/manifest_v1.json",
+      "sha256": "4e73caf0d30bc59c00baed6b3eb1ab471daa953892270b5496373efe200823eb"
+    },
+    {
+      "bytes": 1194,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/location_water_tower_catwalk/master_v1.json",
+      "sha256": "2f6b3ee35d3e7a6dc9314df9dc73997fda351e2064aadf52777a43491abab6eb"
+    },
+    {
+      "bytes": 9885,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_brass_cassette_cue/manifest_v1.json",
+      "sha256": "e78ebb036abaa10ebf426924b190d8fcae87750600c3802d5d7d8ad7ee093a20"
+    },
+    {
+      "bytes": 750,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_brass_cassette_cue/master_v1.json",
+      "sha256": "a670dada15c4ea06129218b72d1426f11cc095caafc9359958ff4470ad9f82f0"
+    },
+    {
+      "bytes": 9870,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_canvas_tool_bag/manifest_v1.json",
+      "sha256": "161e0c278be1b972dacf82395505ca56233a4c3d7d8419214ebe388c298061a3"
+    },
+    {
+      "bytes": 744,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_canvas_tool_bag/master_v1.json",
+      "sha256": "0ac166d15c6f0a752e2cea3cf0ac717e12d40010a4dbea0458e3492924365037"
+    },
+    {
+      "bytes": 9884,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_flyer_missing_dog/manifest_v1.json",
+      "sha256": "4a84e2e1b7e6f26d6832ea1a44ce1eac4f231be510dfb735c38d04aefbad823d"
+    },
+    {
+      "bytes": 895,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_flyer_missing_dog/master_v1.json",
+      "sha256": "7f1f3214b3218a91377f36aa28c387657ecd8fb7f809bbc4ab316dcab12c11a5"
+    },
+    {
+      "bytes": 9885,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_foil_wrapped_bread/manifest_v1.json",
+      "sha256": "ad087f78018ff454ed2cb6be6fc00298f0090176805601e7a7e3710b3e89fdea"
+    },
+    {
+      "bytes": 682,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_foil_wrapped_bread/master_v1.json",
+      "sha256": "baa94f7bb8d5ab616cdc6742d9098528a8041d55fda3ee480a294aaaaf89e1f2"
+    },
+    {
+      "bytes": 9864,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_hand_drawn_map/manifest_v1.json",
+      "sha256": "719a6bdcc7cb7529531c725ecb7ce15e307deecf6fe5446b3ca96256fdb62e92"
+    },
+    {
+      "bytes": 666,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_hand_drawn_map/master_v1.json",
+      "sha256": "02ba824ba114cfe741edbba51188c892390e2c89b460441d29603c0776e0d80e"
+    },
+    {
+      "bytes": 9880,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_handheld_receiver/manifest_v1.json",
+      "sha256": "cb0a0ee21bb8676cac146bc0c1372378b359e3a765034967074ec5d2cc665699"
+    },
+    {
+      "bytes": 852,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_handheld_receiver/master_v1.json",
+      "sha256": "f2b43dd5c229c6f34c01eb8c9131da96de919ba37e08921a0008c8c4deaffee8"
+    },
+    {
+      "bytes": 9830,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_lantern/manifest_v1.json",
+      "sha256": "1d512d8b04176d479a03224272929db367013985b1c03e0ed106880ae7873d38"
+    },
+    {
+      "bytes": 770,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_lantern/master_v1.json",
+      "sha256": "ba99d5a1d5834361db8996f9a94942e3629f09b67ea0a02f1ded2d49364639fe"
+    },
+    {
+      "bytes": 9845,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_microphone/manifest_v1.json",
+      "sha256": "4ad51a5ca958776c3b61ac08460daaaf6e8a548a7e49b0ed881637671e4d83f6"
+    },
+    {
+      "bytes": 604,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_microphone/master_v1.json",
+      "sha256": "228254542d83febd8a95c7ad99814e0d2c0f245a086e959a536699cde01a00f9"
+    },
+    {
+      "bytes": 9820,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_mixer/manifest_v1.json",
+      "sha256": "6fb308129e0d84b4c6bcc82494ad25fa830e826380c2ebb3877ec152ab5efc00"
+    },
+    {
+      "bytes": 818,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_mixer/master_v1.json",
+      "sha256": "0fb6abca4645c9c45958787cdf5726ed05e13f1b5ebf319d6cd9b9f9b8dfb913"
+    },
+    {
+      "bytes": 9834,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_notebook/manifest_v1.json",
+      "sha256": "d761e40da1a2c67b9e1dab358f31cc6db2423d3c25d9c96ee5373fb7868ca0c7"
+    },
+    {
+      "bytes": 494,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_notebook/master_v1.json",
+      "sha256": "edd77203a5f008344061786875ccfb6a0fba1e310c356cfdc3febb8828c2ed8c"
+    },
+    {
+      "bytes": 9850,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_on_air_sign/manifest_v1.json",
+      "sha256": "839d87d747ce50a6411aa11745a51551f93f2c6539b45a2d99dcabbe76c85d22"
+    },
+    {
+      "bytes": 836,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_on_air_sign/master_v1.json",
+      "sha256": "61d863d8b03292bbfaf235d324e60e517e3941fba87be6f3c4b19db565200a33"
+    },
+    {
+      "bytes": 9875,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_portable_antenna/manifest_v1.json",
+      "sha256": "9fc4ff3206a08b0e1896654330c1806329886fba82fca997485eb4f1972620e2"
+    },
+    {
+      "bytes": 1030,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_portable_antenna/master_v1.json",
+      "sha256": "5872c65bb8aae2bb767875615fdf5ceb28c83f90227e460c512af1a5d97b4b05"
+    },
+    {
+      "bytes": 9815,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_sign/manifest_v1.json",
+      "sha256": "c5914d220952889250e0e236f518dc63edc7e904251b642f352b9522897af2e0"
+    },
+    {
+      "bytes": 1147,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_sign/master_v1.json",
+      "sha256": "43919cecc6c82c64cc4cb503f127429a29658ff534516316e948fc16df4d8744"
+    },
+    {
+      "bytes": 9865,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_tabletop_radio/manifest_v1.json",
+      "sha256": "52c6e6acbd8999741f01f9570b71dd7b46f8c8bf84a58557e92fbd61e9ce7f46"
+    },
+    {
+      "bytes": 779,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_tabletop_radio/master_v1.json",
+      "sha256": "a480fcdaf57f657f56173675eb00c5204639898d871b67321c005a81ae3d32cd"
+    },
+    {
+      "bytes": 9845,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_tackle_box/manifest_v1.json",
+      "sha256": "6f7b904ea34c7121bb82e32c2130e01abf60b0558d8969130880d7be8c9939e7"
+    },
+    {
+      "bytes": 522,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_tackle_box/master_v1.json",
+      "sha256": "e86f9e4ea4cce1a56f6e0a0901f173a2e6e708ad415781ef9aa932206b7a0827"
+    },
+    {
+      "bytes": 9839,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_tape_reel/manifest_v1.json",
+      "sha256": "e607111e434eed28a68b4fb35a3f1917e068fc1edd98b4445670d98775c51837"
+    },
+    {
+      "bytes": 545,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_tape_reel/master_v1.json",
+      "sha256": "43d447fd28365090bcd4f2263d7682d8ec80b84f691a6a02b20e71f08e7fca2a"
+    },
+    {
+      "bytes": 9845,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_whiteboard/manifest_v1.json",
+      "sha256": "0946affde47a2a79570b188005d023d91d79bf98ce4955690239618a79e5c3ef"
+    },
+    {
+      "bytes": 865,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/bibles/prop_whiteboard/master_v1.json",
+      "sha256": "9b6dfba08656469f96d6678185537e5efd308d7974c48bbf00deb713f6680065"
+    },
+    {
+      "bytes": 5796,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/canonical_script/project/v1.json",
+      "sha256": "a92245130ae9064c5c5f5a024af2bda628a17038d7bc406245208d32ebf2bae7"
+    },
+    {
+      "bytes": 10367,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/character_bible/aria/v1.json",
+      "sha256": "50203c752b50175164f41703aa5011b61115f216ec59bdf9ab667088aa0abd2c"
+    },
+    {
+      "bytes": 10248,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/character_bible/june/v1.json",
+      "sha256": "be79217aa53f43f9f79a52fb99de461566fdf813bfa17e555162e88e6436d266"
+    },
+    {
+      "bytes": 10360,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/character_bible/kell/v1.json",
+      "sha256": "cc64c4487afb11d1a3380d395b3c60d3ae2386c8a212c8dfbfc89947923a8bb7"
+    },
+    {
+      "bytes": 8954,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/character_bible/maya/v1.json",
+      "sha256": "0d64ef36c98e3f8cf6727aba88ae2be3c738b5d911929f5d891acf36db3f7cae"
+    },
+    {
+      "bytes": 9855,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/character_bible/noah/v1.json",
+      "sha256": "6b23db27ff9e4a3968d094939030bf725343ba0ce0cec04b0c117c8f6b66f60f"
+    },
+    {
+      "bytes": 13180,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_index/project/v1.json",
+      "sha256": "332d77dfb0432cad1fe8221aa747081184d6a144eecc59c525132d340b738bb2"
+    },
+    {
+      "bytes": 11117,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_aria_scene_001/v1.json",
+      "sha256": "f066439dbb0fd4bbd7f0ca1e9a0c7c2767b835e346404788005365a8484ff112"
+    },
+    {
+      "bytes": 11944,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_aria_scene_002/v1.json",
+      "sha256": "8fb1cfb6113b26433d64791a1943524184642e907f505e185cd8fe8a0d33d663"
+    },
+    {
+      "bytes": 11492,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_aria_scene_004/v1.json",
+      "sha256": "390df917eef4ca9157c0f3636df831ee23469a79cfee139bab5e9989b22a9079"
+    },
+    {
+      "bytes": 11138,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_june_scene_001/v1.json",
+      "sha256": "16c69830a2fab2375edaa530d1fdf4755e70e0deddb8d273cb8361dbce40db82"
+    },
+    {
+      "bytes": 11134,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_june_scene_002/v1.json",
+      "sha256": "31c791a387ee122e09c88f8fbbc2afacb5a41fe1e1218631b8795e7bb8ad5882"
+    },
+    {
+      "bytes": 11629,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_june_scene_003/v1.json",
+      "sha256": "ac220af58a65ddb9a417c017a511b9974960331fb0eae50b05a1026fd3560f29"
+    },
+    {
+      "bytes": 11498,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_june_scene_004/v1.json",
+      "sha256": "7541f9a304b7dd650f0a4825e0fc4de7d11fcc56b7e7ae866c098ed4a141d44e"
+    },
+    {
+      "bytes": 11161,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_kell_scene_001/v1.json",
+      "sha256": "75142edcf4664569fc598b8c62bad47c13f52e7aaea5e86e5acfc59a609e59cf"
+    },
+    {
+      "bytes": 11586,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_kell_scene_003/v1.json",
+      "sha256": "2a9b5edcb9714d9d120a9515606c7f1dde7099e51304f5af17cbba1b47551e72"
+    },
+    {
+      "bytes": 11497,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_kell_scene_004/v1.json",
+      "sha256": "df8bd0ba329eee865bf82114797d60be882346bf235aadde19a95cc15e3b4499"
+    },
+    {
+      "bytes": 11266,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_maya_scene_003/v1.json",
+      "sha256": "aa5977489714cda0229f736c5dbf5c1c6a4abb50e334005b26b9399b69b8150e"
+    },
+    {
+      "bytes": 11595,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_maya_scene_004/v1.json",
+      "sha256": "540d6ccb86a82e1dd47e850c6513c309ce014c1f324788ee6354d3e04dc13714"
+    },
+    {
+      "bytes": 11111,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_noah_scene_001/v1.json",
+      "sha256": "d80bafeba3c3554f57ef07647dcf61ddcde6e258a266bd0422463df04a70272f"
+    },
+    {
+      "bytes": 11658,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_noah_scene_002/v1.json",
+      "sha256": "713aa604e316cd341e47160fd8b372c3d20ffcca7472578ad4a091fabdb44552"
+    },
+    {
+      "bytes": 11633,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_noah_scene_003/v1.json",
+      "sha256": "79addcbde9236af9c23bbe6b93828ff27b0386a506e6891731dd6d5601754a77"
+    },
+    {
+      "bytes": 11497,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/character_noah_scene_004/v1.json",
+      "sha256": "af2fca050aaeb291d510cab8400e0def9802388a647262e574c35d4a2b685700"
+    },
+    {
+      "bytes": 11308,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/location_community_radio_studio_scene_001/v1.json",
+      "sha256": "7ec005f2dadabfd6d74eddd7efd63b9ba869840ac890a6eeeb2765354a756035"
+    },
+    {
+      "bytes": 11639,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/location_community_radio_studio_scene_004/v1.json",
+      "sha256": "48902a1b1c21d3febba1cd9e906ece3c4d563ffea8543eae5dd6aa4a42172e3f"
+    },
+    {
+      "bytes": 11384,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/location_high_school_gym_shelter_scene_003/v1.json",
+      "sha256": "e6d6ec685eb9b3d3d7ef4b214fc8dea8d19d81d825a83880635d48b1e7067ecf"
+    },
+    {
+      "bytes": 11321,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/continuity_state/location_water_tower_catwalk_scene_002/v1.json",
+      "sha256": "45bfff6a436b36d216fb744297e5e0f8a9f814c4df4fedc5d30104199c9fb392"
+    },
+    {
+      "bytes": 2429,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/entity_discovery_results/project/v1.json",
+      "sha256": "590180101f16b214003b1de0c11a415ee31e5498d3654ff69ba05738a12a4e63"
+    },
+    {
+      "bytes": 76770,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/entity_graph/project/v1.json",
+      "sha256": "8ee5412dca7d6a4378b2896295239cbe91a4c9ef87af748694da105d698866d1"
+    },
+    {
+      "bytes": 3412,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/location_bible/community_radio_studio/v1.json",
+      "sha256": "caa47716e06cfda372d59146bb2facbdf35608db9ed13e88304cc218d6b4a28e"
+    },
+    {
+      "bytes": 2936,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/location_bible/high_school_gym_shelter/v1.json",
+      "sha256": "3ebde83e58908d7ff6ecf30ef4704eeb309ce26cc9ede79e5462e33e0ddaaedf"
+    },
+    {
+      "bytes": 2734,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/location_bible/water_tower_catwalk/v1.json",
+      "sha256": "a47d7a3891ecf450305bb094970495c11d763bf7b81ef2e1f7ed26a72fa41414"
+    },
+    {
+      "bytes": 11081,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/project_config/project/v1.json",
+      "sha256": "c15b29959a7a6cfab9d58d26f2c4bf20197e1373ce5b77c7c82ca64b8f587b17"
+    },
+    {
+      "bytes": 8101,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/project_config/project/v2.json",
+      "sha256": "f8ce9fa6e807f709936bb33951935460e675ebce48d44dbfbb866b07cf399288"
+    },
+    {
+      "bytes": 9894,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/brass_cassette_cue/v1.json",
+      "sha256": "9de7a76b5962c6b877a75dee73c9d4c189b5ce2f83c6621b87211d84dd8dce5a"
+    },
+    {
+      "bytes": 9885,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/canvas_tool_bag/v1.json",
+      "sha256": "01be37d1f944b50cdf180ecd07ae80cf8092b1f85886a2d1cf1bf9ef4988f2fd"
+    },
+    {
+      "bytes": 10038,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/flyer_missing_dog/v1.json",
+      "sha256": "971b48a334f70bb91c2aa8892d5a87149ce20250701f9a4848147f588b4a5b47"
+    },
+    {
+      "bytes": 9826,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/foil_wrapped_bread/v1.json",
+      "sha256": "b496c900266feffb26de464b011609aaddfb66e813fd25fd69c2420731a2f7a5"
+    },
+    {
+      "bytes": 9801,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/hand_drawn_map/v1.json",
+      "sha256": "137948bd049f9e28240a2c5cbcdbc71e9beacf3e002c7de63aa90d713dd69132"
+    },
+    {
+      "bytes": 9999,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/handheld_receiver/v1.json",
+      "sha256": "1dbdc86cab520a835758d2fe7ff0391c73141ec6daf52fea46ac1b2a3e186f93"
+    },
+    {
+      "bytes": 9889,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/lantern/v1.json",
+      "sha256": "be46724c66d3571cba5a43d6077a30a69870f66af6ea1aaf29400c6a558b97d7"
+    },
+    {
+      "bytes": 9728,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/microphone/v1.json",
+      "sha256": "461b6817d50058c53d2e7f1e3d67975f75eda567ece04fdfcb3a8881f26d7499"
+    },
+    {
+      "bytes": 9927,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/mixer/v1.json",
+      "sha256": "9bc73b4b126e82f5aa4e7f1b7573cca9a8c5f63d3fe8c9c64fc702abc08fe51f"
+    },
+    {
+      "bytes": 9611,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/notebook/v1.json",
+      "sha256": "75de73f6f47c949561b58dc2a86e437583b92ad4b9e757f03aa1260d7026622f"
+    },
+    {
+      "bytes": 9961,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/on_air_sign/v1.json",
+      "sha256": "50e6e120ae2e4529e1627cd3f2f677e3c6fbed327648fee6f81b7019058f89d4"
+    },
+    {
+      "bytes": 10178,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/portable_antenna/v1.json",
+      "sha256": "93a4c27584f4de53130f79df2e354b8e648fa603c36c72c44fb93e9c93036670"
+    },
+    {
+      "bytes": 10262,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/sign/v1.json",
+      "sha256": "f40329f28ef0db04190ba32c47c2dcd622e9bcb4cd2f06fce89993e64183e59c"
+    },
+    {
+      "bytes": 9915,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/tabletop_radio/v1.json",
+      "sha256": "b4bc8c3fb310ed24c9d4c4d7fc353c928c04b1803c6c6746f4f17d16df89e299"
+    },
+    {
+      "bytes": 9646,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/tackle_box/v1.json",
+      "sha256": "ae1415ad16e6885fac10550c19d19d427be68772956e446738fd7024d8c6c483"
+    },
+    {
+      "bytes": 9665,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/tape_reel/v1.json",
+      "sha256": "c9e8dbb7a83883827670c1ce691e91e854a371852012fcdfb9be78a4c2979006"
+    },
+    {
+      "bytes": 9991,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/prop_bible/whiteboard/v1.json",
+      "sha256": "b1b457565454910dd3599a1a27587d0a5ecfdc84ed2cf363262525c48370451e"
+    },
+    {
+      "bytes": 5843,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/raw_input/project/v1.json",
+      "sha256": "9cc8ab2592dce9c6dc66e486d37ada34192280f7985149a1a99ec698f116b9d5"
+    },
+    {
+      "bytes": 4951,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/scene/scene_001/v1.json",
+      "sha256": "6f69a4784ed58194600e670cb07fe9e4db2d3c42e52f7e5b95db79ba22adad0f"
+    },
+    {
+      "bytes": 6322,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/scene/scene_001/v2.json",
+      "sha256": "2ed50c93c4535436224b5c8ec0b2835767df1ca8ae68fe235352914c1c7c14ab"
+    },
+    {
+      "bytes": 4882,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/scene/scene_002/v1.json",
+      "sha256": "f4e83da1f0326856ec7f6f4a4fbb765b826d89b98a437f40a414cdbace5c4941"
+    },
+    {
+      "bytes": 6128,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/scene/scene_002/v2.json",
+      "sha256": "cce3946a846cbc77a5c46584291cdaaefc0409cbc7a2193a9e08004640f079ad"
+    },
+    {
+      "bytes": 5264,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/scene/scene_003/v1.json",
+      "sha256": "039d7e1f4b1a783405ff09aa8c48bc981a4d192f0fe4663850c7591e775ce377"
+    },
+    {
+      "bytes": 7154,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/scene/scene_003/v2.json",
+      "sha256": "2a7ca9bf1fccafdf2e8ace76e082ea1865a8fda8ce2eceb43e480ee66a7922ca"
+    },
+    {
+      "bytes": 5175,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/scene/scene_004/v1.json",
+      "sha256": "820abd28bcba430a724c11383c3933ba9d9d5dd568c7dbaee1c3c4b2a60c0d92"
+    },
+    {
+      "bytes": 7219,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/scene/scene_004/v2.json",
+      "sha256": "792e9fcef81845e003b80d12fa8a5c28b6330a3ecaaaa50eb91f68518ccc7390"
+    },
+    {
+      "bytes": 5463,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/scene_index/project/v1.json",
+      "sha256": "81092a2eeec7a911e0033ae692a1993f853491f9c671d3ada4ef07cfe50354a1"
+    },
+    {
+      "bytes": 4852,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/scene_index/project/v2.json",
+      "sha256": "091c24acfb60cbc07ed3e4c8a085425241cc3f853a4ce80b2d35dab14899aab8"
+    },
+    {
+      "bytes": 10833,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/artifacts/script_bible/project/v1.json",
+      "sha256": "03f6bec0d7bec18f7033f109fefd8a9ae274d8a7c2f06538dbc43ee58e52f33b"
+    },
+    {
+      "bytes": 159361,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/graph/dependency_graph.json",
+      "sha256": "c9c73d7e9deff878025f01c65d413088ef154a23ee9ceeb67995731f70451bf8"
+    },
+    {
+      "bytes": 3447,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/inputs/2c6a1639_open_frequency.fountain",
+      "sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    {
+      "bytes": 297,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/project.json",
+      "sha256": "99ae07956c08b97668b670e61ab472fc9f9cd8f43370c1ab2b176dba66cdf38c"
+    },
+    {
+      "bytes": 20337,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/control-workspace/stage_cache.json",
+      "sha256": "0c739529c8afdda93b5ba5564372ab0542c1ddae5cf88b8061139d815d41f7c9"
+    },
+    {
+      "bytes": 1440,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/final-replay-outcome.json",
+      "sha256": "3b0118168880e4fa722df811edc0bb0736f4047603d4aa25bc011d8d75ce35c1"
+    },
+    {
+      "bytes": 4753,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/freeze.json",
+      "sha256": "c0cc1a9af7fab0c81a0d8c9e6f37b1e45389eb834f46beb0065542b0c8996d04"
+    },
+    {
+      "bytes": 1136,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/independent-final-replay-review.md",
+      "sha256": "deac3253ce6be77d677fcf7e9b48cbbcadbbb5cff564d615f19a63cd4c1a294e"
+    },
+    {
+      "bytes": 3801,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/independent-preflight-review.md",
+      "sha256": "6344e1479671022f259cdab4efe7e0fa16e73801f23c87e619d15abc0de02abc"
+    },
+    {
+      "bytes": 34266,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/last_ferry-subject-request.json",
+      "sha256": "6ca655a0a514633422dc1879c8b10b0351d24a9ce44a6cb0e5f85aa091f5ddd4"
+    },
+    {
+      "bytes": 34249,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/matinee_echo-subject-request.json",
+      "sha256": "1dd7c39375530c8566e994276fa28f6aeeca630c38b26decf515e391be32517f"
+    },
+    {
+      "bytes": 1672,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/native-fable-model-capabilities.json",
+      "sha256": "4ca54b1d1845b6396dd2ec6174ce992d1d777f829c2a5dc3d2ab87dfed883251"
+    },
+    {
+      "bytes": 1465,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/native-preflight.json",
+      "sha256": "aaae29dd27ef0ee19d97cfcec4ed034c041c220c213e6779d118cddae0d6dbe5"
+    },
+    {
+      "bytes": 283538,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-control-consumer.json",
+      "sha256": "526546a707be6af9bb27ae22ff05b31bd58b017a89163ea6ac2e9b249f9c30c4"
+    },
+    {
+      "bytes": 1115,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-control-manifest.json",
+      "sha256": "1f69cc21f0f6349ecc9fe7c0f4edf46184911a7e7a7b71b46b9f3cbb9319f6e6"
+    },
+    {
+      "bytes": 60228,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-control-result.json",
+      "sha256": "015164300c29e31435aeec69d1286db41e79610d9e5ea98c1b0c639b4d226f07"
+    },
+    {
+      "bytes": 223507,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-stream-derived-message.json",
+      "sha256": "017c99e9a2db46ec44ea4f442b4ec7416597ed71b69d99c4d96ef33584c14683"
+    },
+    {
+      "bytes": 996,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-stream-freeze.json",
+      "sha256": "26972c2ff3a86e52c79a285e5539329d7b1aec17bb00aa73205d30efbbe20025"
+    },
+    {
+      "bytes": 1920,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-stream-recovery-receipt.json",
+      "sha256": "828428cae855af64d681e19ef3c1d59f2f7d247566b6e7464f5cde23223eb22a"
+    },
+    {
+      "bytes": 34639,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-stream-request.json",
+      "sha256": "6a24e3a1d05fd464eac970c4261252629578f079b32745b632670dffdd084d51"
+    },
+    {
+      "bytes": 34621,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-subject-request.json",
+      "sha256": "39c0571ba14c135397ab116d32d721478ad7538bd8351522499195289161e251"
+    },
+    {
+      "bytes": 378110,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-xhigh128000-final-replay-derived-message.json",
+      "sha256": "22f75844715877acedd3a49ff697bff2f49a5eb7e83c67aaf72361d5d1fbaec9"
+    },
+    {
+      "bytes": 1756,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-xhigh128000-final-replay-freeze.json",
+      "sha256": "ccee9918e97a155a211982e038dbe44089d0addc83d832b94c7ee7e406b5e69a"
+    },
+    {
+      "bytes": 2005,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-xhigh128000-final-replay-receipt.json",
+      "sha256": "b623e050058f0281ccfe5e04b8491ead9ac33db341fc6ddacdbb7b43f8cf4f4f"
+    },
+    {
+      "bytes": 34640,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-xhigh128000-final-replay-request.json",
+      "sha256": "d62e0e3af60a1f5a2108358ae0c59009147bbad09c847e037fbc71f73cd738fc"
+    },
+    {
+      "bytes": 1691,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-xhigh128000-freeze.json",
+      "sha256": "0f9682b760fb26a7cc7f4e7ab80f1fc32cbe28cdccab30fd7793e673e83ff72f"
+    },
+    {
+      "bytes": 395120,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-xhigh128000-partial-derived.json",
+      "sha256": "c74a8ff56e9ad1dc9c21d10c197a63efcdf7818374366e904c1d22ce1b22f75e"
+    },
+    {
+      "bytes": 34640,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-xhigh128000-request.json",
+      "sha256": "d62e0e3af60a1f5a2108358ae0c59009147bbad09c847e037fbc71f73cd738fc"
+    },
+    {
+      "bytes": 34387,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0000-subject-open_frequency-claude-fable-5-2/request-canonical.json",
+      "sha256": "d3c8fac8494044b0d3b155333a963590dbd1263aa84da40a0bb67b4b6433b74e"
+    },
+    {
+      "bytes": 34420,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0000-subject-open_frequency-claude-fable-5-2/request.json",
+      "sha256": "cb8d0f6b1067110fda5c8141a4c476e767bf6fccca29e875ad63a52529b28db8"
+    },
+    {
+      "bytes": 122,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0001-subject-open_frequency-stream-operational-recovery-claude-fable-5-2/http-receipt.json",
+      "sha256": "baea49e09bc042616caae10bc789957e4fce86895425a513df393c59e1398626"
+    },
+    {
+      "bytes": 34401,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0001-subject-open_frequency-stream-operational-recovery-claude-fable-5-2/request-canonical.json",
+      "sha256": "a52533e2c35d9e308d511f57473c7b7566b333c3f2a1e03979bd7e1d294df483"
+    },
+    {
+      "bytes": 34436,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0001-subject-open_frequency-stream-operational-recovery-claude-fable-5-2/request.json",
+      "sha256": "0f7e8c885e98f7d581a15c4c1bf142beea01df35b6c7ffb494d94f0247ea1ff5"
+    },
+    {
+      "bytes": 223380,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0001-subject-open_frequency-stream-operational-recovery-claude-fable-5-2/response.json",
+      "sha256": "764ffd626d739fa688d1b687648585e0582ca1aa721fa356979e6bb8a2f5199e"
+    },
+    {
+      "bytes": 224880,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0001-subject-open_frequency-stream-operational-recovery-claude-fable-5-2/response.sse",
+      "sha256": "04c0bf367169861edb4085e8023db76a5170bc69a5c4fbf6cdd4be75ebcc94fd"
+    },
+    {
+      "bytes": 122,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0002-subject-open_frequency-xhigh128000-adequate-output-claude-fable-5-2/http-receipt.json",
+      "sha256": "bfe57cbb69a1c1ca7bc1a9c7d4378a97b07eef7bb1530b605405d57c9a296d9c"
+    },
+    {
+      "bytes": 34402,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0002-subject-open_frequency-xhigh128000-adequate-output-claude-fable-5-2/request-canonical.json",
+      "sha256": "0c1bc05e778427812b6e01e5e5d112e003b26257b41748d6ddd534099629d595"
+    },
+    {
+      "bytes": 34437,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0002-subject-open_frequency-xhigh128000-adequate-output-claude-fable-5-2/request.json",
+      "sha256": "01bd5373650beb7d205d9d8bcb71ba001594a617e99c755cd08c1177bda4f916"
+    },
+    {
+      "bytes": 504744,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0002-subject-open_frequency-xhigh128000-adequate-output-claude-fable-5-2/response.sse",
+      "sha256": "20668ccc4fe5e0073608a17c499945eb4b95c54de805069b6ccbad5676484932"
+    },
+    {
+      "bytes": 3560,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0003-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "2e315d7193108f269eb55b4c643b12f76310a8b6aa4df9f4885bae8935bc8735"
+    },
+    {
+      "bytes": 3572,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0003-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "ad281d9ad6838b9a337e1ade332cc6b639380aa74339f7d8fb8200b0f42fa272"
+    },
+    {
+      "bytes": 816,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0003-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "dc8e45b4de841ebee8251fe5bcfc2f90afe0f46ee7e3ee1de4e1380f22443e06"
+    },
+    {
+      "bytes": 3508,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0004-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "755884145813d63940f2a006be1f81eb227c633c4e80f7b2954b0d0106eec76f"
+    },
+    {
+      "bytes": 3520,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0004-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "f9336d74cce5b6c9d764accadcff97f60ba0eb6dd5abae5e1f7ee0fc5703640a"
+    },
+    {
+      "bytes": 751,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0004-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "0449f93e8e0822bafb8ddb3b1dc0a49eda4004bac8084c4061b7029a2a6293b9"
+    },
+    {
+      "bytes": 3354,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0005-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "2f7150fbd467524293f00b6c04d5a06e927d78788e6c067f289640453b3ec30f"
+    },
+    {
+      "bytes": 3366,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0005-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "5ffc8afae8920227537909254c3243ceaac319d24e508aed60fdd7f33470956d"
+    },
+    {
+      "bytes": 766,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0005-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "7fbe57580360cd665c3a1f86a0e8bca54a3cac8f68bb57a471cf6b11366d09c0"
+    },
+    {
+      "bytes": 3373,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0006-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "fab59a150baa8733428014ceb5f1a80a83cedae705827b5e6658266f6bc70948"
+    },
+    {
+      "bytes": 3385,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0006-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "9344b2e0e3450675adca56e2da1aff9b95ffe12c47ba866b8943cdb86cb95505"
+    },
+    {
+      "bytes": 752,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0006-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "4f8f78b4aa2acf1dcb09d4e6c177e252d699759d9a7ca9f457cc2ed4f4d85684"
+    },
+    {
+      "bytes": 10793,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0007-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "d1468b3ec0700cda52d62d010cdb510c73630585a173b531ae30ed5ff1a86c5d"
+    },
+    {
+      "bytes": 10805,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0007-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "684637cfe6aae0424fc0d57824fe0a9bde1827a67252fd128fa0b4e273125075"
+    },
+    {
+      "bytes": 10607,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0007-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "6968c6d92692eaa078cba2d3d1468be5cb58f7eb275e8b1d8f1b0cfe0cdd700d"
+    },
+    {
+      "bytes": 8846,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0008-control-open_frequency-claude-sonnet-4-6/request-canonical.json",
+      "sha256": "96329e7f24923aed71a4108d0ddb0fa56b53f62505b291c02e0684964f3be33e"
+    },
+    {
+      "bytes": 8858,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0008-control-open_frequency-claude-sonnet-4-6/request.json",
+      "sha256": "09dd96c4df514149ea1b19c05e2b31fc6f421eddebd1b91f5531b7d8e8342de8"
+    },
+    {
+      "bytes": 3300,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0008-control-open_frequency-claude-sonnet-4-6/response.json",
+      "sha256": "acf7ffdb690dd98d2c6ebf90d7943fbb0cc01b8e5f915b7d1d5c29af5f4b61af"
+    },
+    {
+      "bytes": 11705,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0009-control-open_frequency-gpt-4.1-mini/request-canonical.json",
+      "sha256": "40749c693d4f22095bae8d2fc0009c937dfaba376729e36c8fbf43e0e43c4160"
+    },
+    {
+      "bytes": 11799,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0009-control-open_frequency-gpt-4.1-mini/request.json",
+      "sha256": "fd9f338d3413435f777966c2c182df9836f7f6a330b27a3c4248ddb24f25bf1b"
+    },
+    {
+      "bytes": 3896,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0009-control-open_frequency-gpt-4.1-mini/response.json",
+      "sha256": "008cd493d48b82bbaa15c7bebc6ca84bce1746b48cb78dd399812c7b6f944fc7"
+    },
+    {
+      "bytes": 8957,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0010-control-open_frequency-claude-sonnet-4-6/request-canonical.json",
+      "sha256": "0ab888aea96d63015c4e94c31664d21158e883c487e4c71d0acf60310fbb24dd"
+    },
+    {
+      "bytes": 8975,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0010-control-open_frequency-claude-sonnet-4-6/request.json",
+      "sha256": "9244bc008aea723fe3ac367ab1787ad620640c4ca2368d448c6f9273053a9db0"
+    },
+    {
+      "bytes": 11514,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0010-control-open_frequency-claude-sonnet-4-6/response.json",
+      "sha256": "d53a8637ee8655566e3786fb5c1142b1a7caef99dca20cb49a3732af365b39eb"
+    },
+    {
+      "bytes": 5522,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0011-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "b07f752832d56fb1552095717613a716e7b7ed05226794975b9fe7ee7dc449cd"
+    },
+    {
+      "bytes": 5534,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0011-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "3e0291612aab5e0cfdb2ba78f2333931eba162385a0ab473eeeaa3e6d25ca750"
+    },
+    {
+      "bytes": 669,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0011-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "7afbdd3b810dba6f0be76dea734c8c8b730c7d4f1035cd9ff7b4027922848e97"
+    },
+    {
+      "bytes": 8437,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0012-control-open_frequency-claude-sonnet-4-6/request-canonical.json",
+      "sha256": "b30dfa7ca5919c5810769a957e6142035e5c99a7c8f32f05fb0ed9630a3bdc5c"
+    },
+    {
+      "bytes": 8449,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0012-control-open_frequency-claude-sonnet-4-6/request.json",
+      "sha256": "66a92ad66a99c5444f549466833bd77d2db0db390f64709debac12264cbb546d"
+    },
+    {
+      "bytes": 3445,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0012-control-open_frequency-claude-sonnet-4-6/response.json",
+      "sha256": "37b35597275b53edc57e0707fe0f7ec4f4b1af8afd880c227f2d50d3c9999611"
+    },
+    {
+      "bytes": 6247,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0013-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "0b91bb3fd92b408938010f531bf454001f6c72458fda0c095b916ee176b15936"
+    },
+    {
+      "bytes": 6259,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0013-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "7d923edd7fe2d175677d994e62cee10aa7ffb3bfb6bdb9dab1235d489ddf15e9"
+    },
+    {
+      "bytes": 972,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0013-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "8c70671324a03af89dde38b415290db6ec3cb9f1fe3526b15d6749b78c041f9d"
+    },
+    {
+      "bytes": 11441,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0014-control-open_frequency-gpt-4.1-mini/request-canonical.json",
+      "sha256": "b20c284b02e543e74841c7ba6a230b7be42a577b47c1cb452cab0cbf3105cba6"
+    },
+    {
+      "bytes": 11535,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0014-control-open_frequency-gpt-4.1-mini/request.json",
+      "sha256": "c49b5ccbbe56279df43fcf6fd5c70748ba39bb02933f87eaeac915cf9dddee69"
+    },
+    {
+      "bytes": 1245,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0014-control-open_frequency-gpt-4.1-mini/response.json",
+      "sha256": "69df00f0846d30f91e79e5b18daf47c3b5856f0728b1e271908e963a070ece9f"
+    },
+    {
+      "bytes": 10498,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0015-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "b0caf5eedaa0913fc2df3e001e285748de7cbedd4e92d2d552bba674a3fa6be0"
+    },
+    {
+      "bytes": 10510,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0015-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "108e5b4b80014f5a2486e1945ae715d3aa782b48347fbad4e45b75c6b6303854"
+    },
+    {
+      "bytes": 6009,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0015-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "9e388285f6328d06d9f3a5603dada6d587dd1f93c4483ed97819204f1a50c1d3"
+    },
+    {
+      "bytes": 4111,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0016-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "4871e5247ee94f8bf19490c4e4a4199ea7ad6d707e7971eb2d1ce9031a77ccfd"
+    },
+    {
+      "bytes": 4129,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0016-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "dd0be40c645ba6026272f3b40fd3f9fdd0d1d6a5daec4d2aecc2e07b15176b8e"
+    },
+    {
+      "bytes": 2469,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0016-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "8f027f02326da7189ce6694747c2fd0e9d8cc05081de1cfc8780a86102368d1f"
+    },
+    {
+      "bytes": 3175,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0017-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "1c98727fd7b298be570204d8f0c730d31f32883ca810aca61b2788e8157a63ec"
+    },
+    {
+      "bytes": 3193,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0017-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "4c9e734704c6b8e5109c01cac52f5e31c5bed5f9f308ee97befc94dd18943189"
+    },
+    {
+      "bytes": 1787,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0017-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "395dc9795d5e1af53175f2c1c4f4370a1996ca838e11ed6f2424cc2751098d29"
+    },
+    {
+      "bytes": 3319,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0018-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "6652b3d260ccaea6c4f01adc6c8fa2d92abf21a1f45c03c6d743ba3fe22d295b"
+    },
+    {
+      "bytes": 3337,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0018-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "d813e1d91ebc80d22163e84a4550baa3192b241b5becefe504dca3ad7824b21f"
+    },
+    {
+      "bytes": 1981,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0018-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "8c39a2ecb48e76c1d59aca1612b27c404f64442dcf4d7950aaffcd4f8faef421"
+    },
+    {
+      "bytes": 9050,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0019-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "bb1462b1d40eb2ff84f2c67a578857448bb08ae27a277ff777e0d5a931f56cd4"
+    },
+    {
+      "bytes": 9062,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0019-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "a83c5981233c25ef3079aba7a5e224fa01ad6dd97a4ba2e3683f4501083cc97d"
+    },
+    {
+      "bytes": 2871,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0019-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "66e4e24c4100485387f058dc63d0773d122b6c37a599d66543530be41ef9240a"
+    },
+    {
+      "bytes": 10574,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0020-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "bfeb24d3b930824d931b3cda3babdbb26004b9587032196590322f7f784e1867"
+    },
+    {
+      "bytes": 10592,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0020-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "ba3bfcdf0650115f10a129f17ed2674b8b2f42e504afe2ba99312bd0b9b88796"
+    },
+    {
+      "bytes": 5644,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0020-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "8e3d54c54b9541193bf4e2f85dbed81c16ced925cfb7fab71040f796a173ebfb"
+    },
+    {
+      "bytes": 8984,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0021-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "66cbf54340262ea9c732e4a173e18ca64a85be721f2dd701354721f405857af1"
+    },
+    {
+      "bytes": 9002,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0021-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "4b2f024843cd157f6f8d4c4640946a0dfffdf50a7cc65703b404af7c1d539db8"
+    },
+    {
+      "bytes": 4317,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0021-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "8f7aa5b5cf3220a9814c059cd2abdb526de4af38cb2659f1ac12481a03bdd3b5"
+    },
+    {
+      "bytes": 9760,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0022-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "060ac3ae5f1db2bac82403aa9db2f5dcf72ba795338e9ea607d5b8ddf9277754"
+    },
+    {
+      "bytes": 9778,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0022-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "45571f2b6b98392911937466ace508aa27be03d55d944aa0bf1948bee4906d2b"
+    },
+    {
+      "bytes": 5764,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0022-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "07035e202839bbc6e0616f0eb9e23125bbc86d5db54cbb597104c33b1a4453ea"
+    },
+    {
+      "bytes": 10574,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0023-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "779a5577ae50829e1d64ad6c508c5fbbb9dd6ca37965e7d3f7399b858dca721b"
+    },
+    {
+      "bytes": 10592,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0023-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "2a4c97d1b60f1173525e1ff93d06dbfe1a538a5d512c959044d87641d0952415"
+    },
+    {
+      "bytes": 5244,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0023-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "9b65d19851ae99be342785c223c8777a4f132bc8f8140f6c1c5de176e5a83a03"
+    },
+    {
+      "bytes": 9628,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0024-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "aa07f411455df33c6c6165c913eb8c4f6a5af424437e929bb4b67d934eeb4bfc"
+    },
+    {
+      "bytes": 9646,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0024-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "67a2268938f6156ae82b3406a12aa85f588bf99098f90ecb3a692cac9b1a4d3f"
+    },
+    {
+      "bytes": 5763,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0024-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "cbcaceab2cc5dfbd916b7c1c99acf76f81696a911b0e817018b23f1116a342d1"
+    },
+    {
+      "bytes": 4238,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0025-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "e16001575d08bd5800df198b1189d0f68f5e8f7710d5074fc7867dd4dec3eb11"
+    },
+    {
+      "bytes": 4256,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0025-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "aa92ae49066bde612cafd347cf0215b93a75c9f7486099258dd6bc0ae94f8623"
+    },
+    {
+      "bytes": 1392,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0025-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "9403c217fe494b34abac16193fb64688c5c0195751e03252ae3c351155b7fa5a"
+    },
+    {
+      "bytes": 3420,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0026-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "c57db5d906fdbba346db7a48bf55053bdd4930be00387d7dbdebe92c7a732084"
+    },
+    {
+      "bytes": 3438,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0026-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "5a3f31bae5f5ede6bbefced20682c4947922e5f36c7721bf3d201d3933295c46"
+    },
+    {
+      "bytes": 1410,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0026-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "f6d2f5152a179ee8273b12d8292050bc9fea2b0bfd2b9ad98426d0283829aa4f"
+    },
+    {
+      "bytes": 4256,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0027-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "9dcf8425bfc0d348713aec48b4d2586e8bd66192bb9252c7ea3f18b7eadeee1d"
+    },
+    {
+      "bytes": 4274,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0027-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "48534989f8b8d3794b27696101d05798df2394d051191dedad95f32f71fce630"
+    },
+    {
+      "bytes": 1655,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0027-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "62789787f20157e36d52ae80bfb298ff25ee96ecfc999d8ff87ea10a822398cf"
+    },
+    {
+      "bytes": 4254,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0028-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "b9daf0b5c4ef9181f2a9f05d74e7733cad8ea0a39e0cac790dc6c88f1cd78b82"
+    },
+    {
+      "bytes": 4272,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0028-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "f47c04af7dffd570ea6d63f81eede8067af7c36f26375de992d12123439c6f30"
+    },
+    {
+      "bytes": 1363,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0028-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "b18514c0c7386b3929f8f772e008a61e7de27116c9c4ba2ad53befc20a4d02e9"
+    },
+    {
+      "bytes": 3428,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0029-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "b986d59a201da6ab7f4156b8fd01cb5d71ad5ba5425030ecbf208f0ee29a48bf"
+    },
+    {
+      "bytes": 3446,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0029-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "2e5560c30b33f5406531fd2dbf5256486b29e13d86031dd97ed27507f9a25491"
+    },
+    {
+      "bytes": 1137,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0029-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "b739d242cd54302fad108d2e91f090771b8281f301d33d0c4053ff1a5a275d7e"
+    },
+    {
+      "bytes": 4397,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0030-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "1003c0bc368cb801b834d599a30f41231589b3f55cf9aed10ab17a55193cd7a4"
+    },
+    {
+      "bytes": 4415,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0030-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "1f6c6bf3e6b524e45b2c5aff3e7f0cd623a4bc7886aac9af75fbff92af8bdfb3"
+    },
+    {
+      "bytes": 1456,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0030-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "47de46596e3844dba8d20dd5595db10ce5d1d25b45588a4227d42d4521540c60"
+    },
+    {
+      "bytes": 3482,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0031-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "b2ff92aeecf0e49a20d8184e7eff3c14b0bb88462bcdd40b5640f880cc0985fb"
+    },
+    {
+      "bytes": 3500,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0031-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "b842fb5b5c84179670e5733cf9f85c8df20986cb496f03228e0896c11cf6e611"
+    },
+    {
+      "bytes": 1441,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0031-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "104f51fe72a81022be11fbfeea8032324d52f78948c6b141f062f306aedae778"
+    },
+    {
+      "bytes": 3600,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0032-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "5f5cf3daf3591bdc3d2080f010e1e3d3d7e3d64c26f605b6a87cd9e6fccf0978"
+    },
+    {
+      "bytes": 3618,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0032-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "84a591abcde9a9d7f0107458f81d55129db0198587d6b5ba2080b88f8c5a155d"
+    },
+    {
+      "bytes": 1115,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0032-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "c01682e6a4f7363de4524544b17147404c4008c6b8fe86be8cea24c2a1c0ef1c"
+    },
+    {
+      "bytes": 6265,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0033-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "0c02ad01c2f8de1121a930dd97cba30a4f9c6e0fc192a81eb8cf362f369545a4"
+    },
+    {
+      "bytes": 6283,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0033-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "ff2c2f9752c07afa187c4cddd3ff5db9885d4a16e98235f9e38df28ffc383958"
+    },
+    {
+      "bytes": 1545,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0033-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "5263f64a8e8cb3e8a354d02f73b4352d8bb001d1dd17363c07d5081c6ed0d5dd"
+    },
+    {
+      "bytes": 3608,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0034-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "8c611537f70fdb8a93f43c8cd77840e41e66fc48968fed09ff9237a5664fa032"
+    },
+    {
+      "bytes": 3626,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0034-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "0ce3735aaca2f32208e8224892f37d8eb87b6bb4f1276297b2d7aef11575d729"
+    },
+    {
+      "bytes": 1375,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0034-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "e14d7937b13f46bd862063882a275a60e67df879eebe7f6edaae48b2be614568"
+    },
+    {
+      "bytes": 4376,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0035-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "454eaea35fe69dd5d731c798218304c0bb9a2801aa82bfc7fffe34014945d342"
+    },
+    {
+      "bytes": 4394,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0035-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "1ab029e54a9015848abbb810ca9e19c5b940a8da70cfb5734c96e8bfdc55085a"
+    },
+    {
+      "bytes": 1491,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0035-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "d87af50903e216ee4c8aa90b27abb28ee0fc4e0c10fb444a14cfd7cf42062ac7"
+    },
+    {
+      "bytes": 3627,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0036-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "f6895a99f39c836842bd1687ca3ee04c3efc8dd7e0dafaef5b1a9fd03b1619f8"
+    },
+    {
+      "bytes": 3645,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0036-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "a204e74e8944e1f2718fc11bfb1cda4cb42d9ad3a17c9833d9decd2d8c3f3379"
+    },
+    {
+      "bytes": 1260,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0036-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "1d16eec94db1977a333d3c5437f06442ae2a25ea29b311d2014983ecac661f31"
+    },
+    {
+      "bytes": 3615,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0037-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "8da9c56c398568d7e9e31aaf43608921e6dc3ad4cc07156e7aefaf0a4c219e5a"
+    },
+    {
+      "bytes": 3633,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0037-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "fd73a6afdf685e0f82fef1f10b88c6b17e4134d3d644d5da9a4a53ccd5ad8e5e"
+    },
+    {
+      "bytes": 1088,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0037-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "bc207f16053d5d8ac9266fff1c65fe8fd4ad98e265e67276ba7eb08e34bf3d98"
+    },
+    {
+      "bytes": 5329,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0038-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "26465a85eecfe6e6dd96730ca7e7b2206fa19358621153d18d8f01aa152522ab"
+    },
+    {
+      "bytes": 5347,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0038-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "45f1142ac41d230c7600bb6bffe861410c5f9f93d75fd26c2bfee7d2b146104d"
+    },
+    {
+      "bytes": 1807,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0038-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "5c890e2121914715efa98a410e2213001679d8d282984a61d7031fdeb8d683b7"
+    },
+    {
+      "bytes": 6263,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0039-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "ac0ba2fa94bac3581f21e885e77b1efcacb1ee6df482c0c2ca6e88beb6c60db0"
+    },
+    {
+      "bytes": 6281,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0039-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "558f941808e0e49e84495bba099e10e9a3bb4869e2d6ef5a1a96dc5508b2fd59"
+    },
+    {
+      "bytes": 1289,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0039-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "a0b664ad686352863d8d80a88961536d8ca429bc92e2007b39920670a554a365"
+    },
+    {
+      "bytes": 3619,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0040-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "8f3f0b06cbc2ec0fbe062f6ed8254e516d8e0dcaa93bf7592c45edc1b3787040"
+    },
+    {
+      "bytes": 3637,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0040-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "aea1c50d56b6f23e9d6c9479ffcd2a9c92fdd72c805078bddfa51d0cf769bf97"
+    },
+    {
+      "bytes": 1198,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0040-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "4f225b869030ccb109b124a3ede4925b5718abf7beabd2625e0e7a4c47a79ff6"
+    },
+    {
+      "bytes": 6263,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0041-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "5962ef6c3fd1b46762cff4964b8b7e60bd0258587aa072812fe68c7f4ec44a58"
+    },
+    {
+      "bytes": 6281,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0041-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "7cb987c3960a53fc83efe5b13fe3ebaa3a7cddb55915dca1bdd00eb2061fce7d"
+    },
+    {
+      "bytes": 1364,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0041-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "70423d1d9a98a6bf1ac540bc494aa422cda7e28b9b2cfad78b55efad039f37be"
+    },
+    {
+      "bytes": 7774,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0042-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "3db0c523eca8cf4f82a3f74a661b7f81c07ee97f7802193766bf6c407fbc7b8c"
+    },
+    {
+      "bytes": 7792,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0042-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "331069a2b6c5634e8513adb378a918f4fd6ef27053d96b62cd9c4b0eb54edeab"
+    },
+    {
+      "bytes": 4720,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0042-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "99a3ba1a5afbb030e63ab2231dce2174a1e89e80f6dcc053eb6998e557d7a34a"
+    },
+    {
+      "bytes": 3559,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0043-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "94490980e9f592cc738f8420bfaa70d9023fea593905c8f91d4feef346c5cdc0"
+    },
+    {
+      "bytes": 3571,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0043-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "73b33fedf2ce32e9606655f616c81fe73035144ed92fc7a96715cf76d74fa1e9"
+    },
+    {
+      "bytes": 3238,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0043-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "e44d2d18a990be1b551411dc7c69b26453a3f638af652230c49aa39b1a2fd2d6"
+    },
+    {
+      "bytes": 8173,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0044-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "906091132ac9aead49e60997efc18a41f10606dbda103e91cfc24cc445037e34"
+    },
+    {
+      "bytes": 8191,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0044-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "d51e5a679e7615610343401de9ce8a443284339bf1618bc764f7e5f1fafc7264"
+    },
+    {
+      "bytes": 5150,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0044-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "b0a6ae0a9066903dcc859db7ddd86f8c9e6079410bbe13569d962c6d55fb1606"
+    },
+    {
+      "bytes": 8626,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0045-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "e3e443490d6c96632e917cd871ccfbb64a7fed2f0f0636fde93e84305a0474ef"
+    },
+    {
+      "bytes": 8644,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0045-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "30b310c0befbf11c8f2b032578ba7b4c943584acd83116a4a234875f1101e613"
+    },
+    {
+      "bytes": 5722,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0045-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "85aec3aa7a0192ce9da28776d6ccf0901d6c71e0f0237eb95256f2574c621161"
+    },
+    {
+      "bytes": 9567,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0046-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "9eec9b8d945801177715f08009e1eae625192bbba49e3b22a0c44c78dcacb983"
+    },
+    {
+      "bytes": 9585,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0046-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "ba7f430d0fc117b27a1b372a412e39b134af545faabb17cd093a7e6b84aa16a9"
+    },
+    {
+      "bytes": 10017,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0046-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "f35392b2014aff0f80512cc601e10b2747288b35f25b1bc251d2add42d29f177"
+    },
+    {
+      "bytes": 9567,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0047-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json",
+      "sha256": "9eec9b8d945801177715f08009e1eae625192bbba49e3b22a0c44c78dcacb983"
+    },
+    {
+      "bytes": 9585,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0047-control-open_frequency-claude-haiku-4-5-20251001/request.json",
+      "sha256": "ba7f430d0fc117b27a1b372a412e39b134af545faabb17cd093a7e6b84aa16a9"
+    },
+    {
+      "bytes": 10017,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0047-control-open_frequency-claude-haiku-4-5-20251001/response.json",
+      "sha256": "95d919cc19c6a86b83968301fccbea16e24c6e9ea798c65bd4bc9f7914c89d87"
+    },
+    {
+      "bytes": 122,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0048-subject-open_frequency-xhigh128000-FINAL-verbatim-replay-claude-fable-5-2/http-receipt.json",
+      "sha256": "96955e5e0f46603a3ef9578d23da3fce17b8933f7d11941e73277180150a2e02"
+    },
+    {
+      "bytes": 34402,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0048-subject-open_frequency-xhigh128000-FINAL-verbatim-replay-claude-fable-5-2/request-canonical.json",
+      "sha256": "0c1bc05e778427812b6e01e5e5d112e003b26257b41748d6ddd534099629d595"
+    },
+    {
+      "bytes": 34437,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0048-subject-open_frequency-xhigh128000-FINAL-verbatim-replay-claude-fable-5-2/request.json",
+      "sha256": "01bd5373650beb7d205d9d8bcb71ba001594a617e99c755cd08c1177bda4f916"
+    },
+    {
+      "bytes": 377961,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0048-subject-open_frequency-xhigh128000-FINAL-verbatim-replay-claude-fable-5-2/response.json",
+      "sha256": "28504dfbc920686f0457eeb4b1f6a2500cb3f3a0bbf1a2f5eb39a811c6ab6370"
+    },
+    {
+      "bytes": 1316222,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/0048-subject-open_frequency-xhigh128000-FINAL-verbatim-replay-claude-fable-5-2/response.sse",
+      "sha256": "aa174ff446a971a585756b7b506d19758c0b44cdc02ee42ba7126459b4026749"
+    },
+    {
+      "bytes": 50690,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/physical-calls/ledger.json",
+      "sha256": "7727cb15de09f1f002286f11c70f44b2ed3dfa31a23df4485f3d9f872020207b"
+    },
+    {
+      "bytes": 19427,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producer-archive-index.json",
+      "sha256": "fa7703e0a5fa679b39f366b3600a8bd04485492fd4bf74f3cdf6f830e22ebcf2"
+    },
+    {
+      "bytes": 18363,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/117e3e81631341aac2ceb500514bb0aab9db760dfa72c0cb394b9a478eab0705/main.py",
+      "sha256": "117e3e81631341aac2ceb500514bb0aab9db760dfa72c0cb394b9a478eab0705"
+    },
+    {
+      "bytes": 34249,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/1dd7c39375530c8566e994276fa28f6aeeca630c38b26decf515e391be32517f/matinee_echo-subject-request.json",
+      "sha256": "1dd7c39375530c8566e994276fa28f6aeeca630c38b26decf515e391be32517f"
+    },
+    {
+      "bytes": 10320,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/3426c39315b6e0a5c711016d8bd83c1ce89f63b8e822865e810d9f6fa8510d8c/full_script_throughput_eval.py",
+      "sha256": "3426c39315b6e0a5c711016d8bd83c1ce89f63b8e822865e810d9f6fa8510d8c"
+    },
+    {
+      "bytes": 34621,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/39c0571ba14c135397ab116d32d721478ad7538bd8351522499195289161e251/open_frequency-subject-request.json",
+      "sha256": "39c0571ba14c135397ab116d32d721478ad7538bd8351522499195289161e251"
+    },
+    {
+      "bytes": 24222,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/43f7599c8fdba0ebc838922b807e45868287a67301c8ac0fad39d93ae9bc3165/whole_story_workspace_contract.py",
+      "sha256": "43f7599c8fdba0ebc838922b807e45868287a67301c8ac0fad39d93ae9bc3165"
+    },
+    {
+      "bytes": 105012,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/4c60bcd0d56545152397127b8b69ac7d3ecdaca25187357cec7f20d2265a831e/open_frequency-consumer-example.json",
+      "sha256": "4c60bcd0d56545152397127b8b69ac7d3ecdaca25187357cec7f20d2265a831e"
+    },
+    {
+      "bytes": 1672,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/4ca54b1d1845b6396dd2ec6174ce992d1d777f829c2a5dc3d2ab87dfed883251/native-fable-model-capabilities.json",
+      "sha256": "4ca54b1d1845b6396dd2ec6174ce992d1d777f829c2a5dc3d2ab87dfed883251"
+    },
+    {
+      "bytes": 3392,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/54fbda35d7cdc305316d1a41ea2f12d387a48ff53c924c055ef7985683f3a33d/run_whole_story_workspace_control.py",
+      "sha256": "54fbda35d7cdc305316d1a41ea2f12d387a48ff53c924c055ef7985683f3a33d"
+    },
+    {
+      "bytes": 6958,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/643f464c2470f68233ef134f0a7c5f1ce8fc37547623ba0debe47b48f2cf63a6/run_whole_story_workspace_adequate_output.py",
+      "sha256": "643f464c2470f68233ef134f0a7c5f1ce8fc37547623ba0debe47b48f2cf63a6"
+    },
+    {
+      "bytes": 34639,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/6a24e3a1d05fd464eac970c4261252629578f079b32745b632670dffdd084d51/open_frequency-stream-request.json",
+      "sha256": "6a24e3a1d05fd464eac970c4261252629578f079b32745b632670dffdd084d51"
+    },
+    {
+      "bytes": 1245,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/6b1fb7fa01e090c5b087455969a2a684aebbd54a1c5925be7e6bcd1fb47785fc/whole_story_workspace_control_meter.py",
+      "sha256": "6b1fb7fa01e090c5b087455969a2a684aebbd54a1c5925be7e6bcd1fb47785fc"
+    },
+    {
+      "bytes": 34266,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/6ca655a0a514633422dc1879c8b10b0351d24a9ce44a6cb0e5f85aa091f5ddd4/last_ferry-subject-request.json",
+      "sha256": "6ca655a0a514633422dc1879c8b10b0351d24a9ce44a6cb0e5f85aa091f5ddd4"
+    },
+    {
+      "bytes": 4137,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/70e960a3104e3db6702fb9eb2ca90da642bf99549535dad223c5e9cd8abd85ad/review.md",
+      "sha256": "70e960a3104e3db6702fb9eb2ca90da642bf99549535dad223c5e9cd8abd85ad"
+    },
+    {
+      "bytes": 31116,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/73061149007e05d140084cccf2e8397e1a7f780c5d31f5fa61203c78cc8624fc/open_frequency.oracle.json",
+      "sha256": "73061149007e05d140084cccf2e8397e1a7f780c5d31f5fa61203c78cc8624fc"
+    },
+    {
+      "bytes": 5865,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/7840082015d2d0952d74aa098334363106b6495b38205b071d47cc2c007895b4/module_execution.py",
+      "sha256": "7840082015d2d0952d74aa098334363106b6495b38205b071d47cc2c007895b4"
+    },
+    {
+      "bytes": 3447,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95/open_frequency.fountain",
+      "sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    {
+      "bytes": 9394,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/969936be802641a95b171375aaca22652b4630521e469c7f7824184b0985e570/whole_story_workspace_meter.py",
+      "sha256": "969936be802641a95b171375aaca22652b4630521e469c7f7824184b0985e570"
+    },
+    {
+      "bytes": 10050,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/a7f8d87f260d11e09d82f9119f32abc46956d768c3bbe9bd409e5a661546fc68/whole_story_workspace_meter.py",
+      "sha256": "a7f8d87f260d11e09d82f9119f32abc46956d768c3bbe9bd409e5a661546fc68"
+    },
+    {
+      "bytes": 33299,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/aa32cb0a294de271f2fade3e17b528055c737a84f7baef314f9de6c4ae5e4f47/llm.py",
+      "sha256": "aa32cb0a294de271f2fade3e17b528055c737a84f7baef314f9de6c4ae5e4f47"
+    },
+    {
+      "bytes": 1465,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/aaae29dd27ef0ee19d97cfcec4ed034c041c220c213e6779d118cddae0d6dbe5/native-preflight.json",
+      "sha256": "aaae29dd27ef0ee19d97cfcec4ed034c041c220c213e6779d118cddae0d6dbe5"
+    },
+    {
+      "bytes": 23430,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/ae71e60008142c4d2f07d62b032d11c0ce0a065763018b5d8a73aa936d035d5f/matinee_echo.oracle.json",
+      "sha256": "ae71e60008142c4d2f07d62b032d11c0ce0a065763018b5d8a73aa936d035d5f"
+    },
+    {
+      "bytes": 10330,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/b720fdc54c694fd4538b89a3cca74d25331216666f94eb9a0386d7722f43fc74/recover_whole_story_workspace_stream.py",
+      "sha256": "b720fdc54c694fd4538b89a3cca74d25331216666f94eb9a0386d7722f43fc74"
+    },
+    {
+      "bytes": 11772,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/b9c2ee31e6a63cc9b929d7726019845f9c870613123070d7f0b28fb2b970bd0b/run_whole_story_workspace.py",
+      "sha256": "b9c2ee31e6a63cc9b929d7726019845f9c870613123070d7f0b28fb2b970bd0b"
+    },
+    {
+      "bytes": 31792,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/bac69c883acfb021059d47031c6d78aefa93505faa68c40b5355b1f9fada3c61/full_script_throughput_support.py",
+      "sha256": "bac69c883acfb021059d47031c6d78aefa93505faa68c40b5355b1f9fada3c61"
+    },
+    {
+      "bytes": 846,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/bb573a991ece2fd61c22bf50749e2fa863068b9be54f495b96389ebaf4696bb5/recipe-mvp-ingest.yaml",
+      "sha256": "bb573a991ece2fd61c22bf50749e2fa863068b9be54f495b96389ebaf4696bb5"
+    },
+    {
+      "bytes": 3121,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/bed5976da30e2584371deabdd121966efc4276e5663a4789cf22267d655c05d2/matinee_echo.fountain",
+      "sha256": "bed5976da30e2584371deabdd121966efc4276e5663a4789cf22267d655c05d2"
+    },
+    {
+      "bytes": 9590,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/c3725adf262f0d70dbf68271f87c8d9dc923851a2a2de418f7a97f2504406fc4/whole_story_workspace_meter.py",
+      "sha256": "c3725adf262f0d70dbf68271f87c8d9dc923851a2a2de418f7a97f2504406fc4"
+    },
+    {
+      "bytes": 34640,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/d62e0e3af60a1f5a2108358ae0c59009147bbad09c847e037fbc71f73cd738fc/open_frequency-xhigh128000-final-replay-request.json",
+      "sha256": "d62e0e3af60a1f5a2108358ae0c59009147bbad09c847e037fbc71f73cd738fc"
+    },
+    {
+      "bytes": 34640,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/d62e0e3af60a1f5a2108358ae0c59009147bbad09c847e037fbc71f73cd738fc/open_frequency-xhigh128000-request.json",
+      "sha256": "d62e0e3af60a1f5a2108358ae0c59009147bbad09c847e037fbc71f73cd738fc"
+    },
+    {
+      "bytes": 23939,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/d87c58bf40c20d4f318b1d762a792ea9fd702a996d300f7ed7970ca5e9377423/last_ferry.oracle.json",
+      "sha256": "d87c58bf40c20d4f318b1d762a792ea9fd702a996d300f7ed7970ca5e9377423"
+    },
+    {
+      "bytes": 2227,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/db2043588fa870a5cbac762cd104d637c77a822c9e5286055a68b2c3e88320da/recipe-world-building.yaml",
+      "sha256": "db2043588fa870a5cbac762cd104d637c77a822c9e5286055a68b2c3e88320da"
+    },
+    {
+      "bytes": 3142,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/e28a204cd4d756c91bfbd28a521473a895fd8d14984efd400658e6a65b9a7618/last_ferry.fountain",
+      "sha256": "e28a204cd4d756c91bfbd28a521473a895fd8d14984efd400658e6a65b9a7618"
+    },
+    {
+      "bytes": 7875,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/f5fa8028f20811c2c5c6665f3dff9961ae050888c078891d900e89a5a37b9f5a/run_whole_story_workspace_final_replay.py",
+      "sha256": "f5fa8028f20811c2c5c6665f3dff9961ae050888c078891d900e89a5a37b9f5a"
+    },
+    {
+      "bytes": 1288,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/producing-epochs/f669f6f5a18ab9917f18f93528595d27308b7aa55b4d9bda194e675bdddf5a8b/freeze.json",
+      "sha256": "f669f6f5a18ab9917f18f93528595d27308b7aa55b4d9bda194e675bdddf5a8b"
+    },
+    {
+      "bytes": 4095,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/source-review-control.md",
+      "sha256": "73b890fad0370b6e50c005cf86b4b6d6655cda6a8d3bda031be2d61961ed56ef"
+    },
+    {
+      "bytes": 1601,
+      "path": "docs/evals/evidence/story-237-whole-task20261109/validation.md",
+      "sha256": "a8158133673926159521ebb1a873943f70455f8b905d75b18ab7b29aa70b879a"
+    },
+    {
+      "bytes": 326707,
+      "path": "docs/evals/registry.yaml",
+      "sha256": "82765b11294f1ca0c119f902941f2d584de09c2e51014394f9536c2825f6a0ed"
+    },
+    {
+      "bytes": 215844,
+      "path": "docs/evals/story-208-contract-manifest-v37.json",
+      "sha256": "5410a365ad006906126ddfcb939b3aa7811896d58669dfa0f2d245b6b298fd89"
+    },
+    {
+      "bytes": 250674,
+      "path": "docs/evals/truth-audit-ledger.yaml",
+      "sha256": "985435a24c052443383074fe9aac9a829642d682b275dceaa8dc96986aba3aba"
+    },
+    {
+      "bytes": 627437,
+      "path": "docs/methodology/graph.json",
+      "sha256": "4246e0165b98869e56b9da1ed4b334091dbacdc303537df0dd8f6d3c94afc3af"
+    },
+    {
+      "bytes": 54069,
+      "path": "docs/stories.md",
+      "sha256": "e19a43dd16c13a27fb00dd47a29594ec5fa4f6ad41454cd559257ea2b98d6cdd"
+    },
+    {
+      "bytes": 12122,
+      "path": "docs/stories/story-237-whole-story-workspace-capability.md",
+      "sha256": "f75e75ffda78399830852882e10b13a476c961cdf7c78fd2a11af9397d22abf6"
+    },
+    {
+      "bytes": 9417,
+      "path": "tests/unit/test_whole_story_workspace_experiment.py",
+      "sha256": "ca7ec9b81b2a524d5c51413062b4d4c146a74e3e29520d27db5f376e71b1b6c5"
+    }
+  ],
+  "offline_verify": "PYTHONPATH=src <cineforge-python> benchmarks/scripts/report_whole_story_workspace.py --verify",
+  "producing_identity": "Current remote base plus per-call frozen dirty code/source/request hashes. Runtime/recipes unchanged; no primary checkout edits.",
+  "reproduction": "Closed selected run: no automatic paid replay. A new authorized identity is required; all original calls, failed/partial streams and unresolved charge exposure remain immutable.",
+  "sealed": "2026-11-10"
+}

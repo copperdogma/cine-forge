@@ -1,0 +1,12 @@
+{
+  "prop_id": "on_air_sign",
+  "name": "ON AIR SIGN",
+  "description": "A red neon or electric sign located in the community radio studio. It flickers and dies during the initial emergency broadcast setup, then stabilizes into a solid red glow by the following morning as the station resumes regular operations.",
+  "scene_presence": [
+    "scene_001",
+    "scene_004"
+  ],
+  "associated_characters": [],
+  "narrative_significance": "The ON AIR sign functions as a visual indicator of the radio station's operational status during the crisis. Its initial failure reflects the emergency conditions and power constraints, while its stabilization by morning symbolizes the restoration of communication infrastructure and the community's ability to broadcast vital information during the disaster recovery.",
+  "overall_confidence": 0.85
+}

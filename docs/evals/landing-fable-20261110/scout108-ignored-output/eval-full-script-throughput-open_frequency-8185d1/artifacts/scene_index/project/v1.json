@@ -1,0 +1,221 @@
+{
+  "data": {
+    "entries": [
+      {
+        "characters_present": [
+          "ARIA",
+          "JUNE",
+          "KELL",
+          "NOAH"
+        ],
+        "characters_present_ids": [
+          "aria",
+          "june",
+          "kell",
+          "noah"
+        ],
+        "heading": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        "location": "Community Radio Studio",
+        "props_mentioned": [
+          "CANVAS TOOL BAG",
+          "LANTERN",
+          "MIXER",
+          "ON AIR SIGN",
+          "PORTABLE ANTENNA",
+          "TAPE REEL"
+        ],
+        "scene_id": "scene_001",
+        "scene_number": 1,
+        "source_span": {
+          "end_line": 36,
+          "start_line": 5
+        },
+        "time_of_day": "NIGHT",
+        "tone_mood": "neutral"
+      },
+      {
+        "characters_present": [
+          "ARIA",
+          "JUNE",
+          "NOAH"
+        ],
+        "characters_present_ids": [
+          "aria",
+          "june",
+          "noah"
+        ],
+        "heading": "EXT. WATER TOWER CATWALK - NIGHT",
+        "location": "Water Tower Catwalk",
+        "props_mentioned": [
+          "BOLT",
+          "CABLE",
+          "CANVAS TOOL BAG",
+          "HANDHELD RECEIVER",
+          "LANTERN",
+          "PORTABLE ANTENNA"
+        ],
+        "scene_id": "scene_002",
+        "scene_number": 2,
+        "source_span": {
+          "end_line": 67,
+          "start_line": 37
+        },
+        "time_of_day": "NIGHT",
+        "tone_mood": "neutral"
+      },
+      {
+        "characters_present": [
+          "JUNE",
+          "KELL",
+          "MAYA",
+          "NOAH"
+        ],
+        "characters_present_ids": [
+          "june",
+          "kell",
+          "maya",
+          "noah"
+        ],
+        "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+        "location": "High School Gym Shelter",
+        "props_mentioned": [
+          "FLASHLIGHT BATTERIES",
+          "FLYER",
+          "TABLETOP RADIO",
+          "TACKLE BOX",
+          "WHITEBOARD"
+        ],
+        "scene_id": "scene_003",
+        "scene_number": 3,
+        "source_span": {
+          "end_line": 102,
+          "start_line": 68
+        },
+        "time_of_day": "PRE-DAWN",
+        "tone_mood": "neutral"
+      },
+      {
+        "characters_present": [
+          "ARIA",
+          "COMET",
+          "JUNE",
+          "KELL",
+          "MAYA",
+          "NOAH"
+        ],
+        "characters_present_ids": [
+          "aria",
+          "comet",
+          "june",
+          "kell",
+          "maya",
+          "noah"
+        ],
+        "heading": "INT. COMMUNITY RADIO STUDIO - MORNING",
+        "location": "Community Radio Studio",
+        "props_mentioned": [
+          "CASSETTE CUE",
+          "FOIL",
+          "HAND-DRAWN MAP",
+          "LOAF OF WARM BREAD",
+          "MICROPHONE",
+          "NOTEBOOK",
+          "SIGN"
+        ],
+        "scene_id": "scene_004",
+        "scene_number": 4,
+        "source_span": {
+          "end_line": 132,
+          "start_line": 103
+        },
+        "time_of_day": "MORNING",
+        "tone_mood": "neutral"
+      }
+    ],
+    "estimated_runtime_minutes": 4.0,
+    "scenes_need_review": 0,
+    "scenes_passed_qa": 4,
+    "total_scenes": 4,
+    "unique_characters": [
+      "ARIA",
+      "COMET",
+      "JUNE",
+      "KELL",
+      "MAYA",
+      "NOAH"
+    ],
+    "unique_locations": [
+      "Community Radio Studio",
+      "High School Gym Shelter",
+      "Water Tower Catwalk"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "derive index at read-time only"
+    ],
+    "annotations": {
+      "discovery_tier": "structural",
+      "final_stage_model_used": "claude-haiku-4-5-20251001",
+      "final_stage_provider_used": "anthropic",
+      "parser_backend": "fountain-tools",
+      "screenplay_parse_coverage_input": 0.5,
+      "screenplay_parseable_input": true
+    },
+    "confidence": 0.95,
+    "cost_data": {
+      "estimated_cost_usd": 0.0043752,
+      "input_tokens": 3579,
+      "latency_seconds": null,
+      "model": "claude-haiku-4-5-20251001",
+      "output_tokens": 378,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T05:27:31.135187Z",
+    "health": "valid",
+    "intent": "Provide aggregated table-of-contents for extracted scene artifacts",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_001",
+        "path": "artifacts/scene/scene_001/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_002",
+        "path": "artifacts/scene/scene_002/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_003",
+        "path": "artifacts/scene/scene_003/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_004",
+        "path": "artifacts/scene/scene_004/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_breakdown_v1",
+    "producing_role": null,
+    "rationale": "Expose quick scene-level lookup from structural breakdown",
+    "ref": {
+      "artifact_type": "scene_index",
+      "entity_id": "project",
+      "path": "artifacts/scene_index/project/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "code"
+  }
+}

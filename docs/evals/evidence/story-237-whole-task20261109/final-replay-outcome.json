@@ -1,0 +1,33 @@
+{
+  "body_delta_from_prior_max_request": {},
+  "case_disposition": "Four physical candidate calls retained; final exact MAX replay terminal max_tokens and incomplete JSON. No complete bundle, host validation or source score.",
+  "complete_whole_output": false,
+  "completed": "2026-11-10",
+  "cost_usd": "5.220776",
+  "decision": "No qualified winner: Fable whole-output delivery unqualified; full semantics unmeasured. Fresh unchanged pipeline loadable but whole-source acceptance FAIL. Defer replacement; keep existing operational path with manual source checks.",
+  "effort": "xhigh",
+  "latency_ms": 1003407,
+  "max_tokens": 128000,
+  "outer_json_error": "Unterminated string starting at: line 1 column 16 (char 15)",
+  "partial_output_policy": "Diagnostic only; no partial materialization, semantic completion or source-quality score.",
+  "source_quality": "not measured",
+  "stop_reason": "max_tokens",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 12597,
+    "output_tokens": 128000,
+    "output_tokens_details": {
+      "thinking_tokens": 68908
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+  },
+  "visible_text_characters": 127005,
+  "wire_sha256": "01bd5373650beb7d205d9d8bcb71ba001594a617e99c755cd08c1177bda4f916"
+}

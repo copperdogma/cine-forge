@@ -1,0 +1,41 @@
+{
+  "scope": "fresh unchanged first OpenFrequency whole-control only if admitted; this is not provider-call authority by itself",
+  "base": "0693227394bd9a63b1df1300070421000e0dd7b6",
+  "cap_usd": "20",
+  "known_usage_estimate_usd": "2.722216",
+  "unknown_reservation_usd": "2.853904",
+  "conservative_accounted_usd": "5.576120",
+  "remaining_hard_budget_usd": "14.423880",
+  "files": [
+    {
+      "path": "benchmarks/scripts/run_whole_story_workspace_control.py",
+      "bytes": 3384,
+      "sha256": "f682e7522fd193a8a9d5db44ae1bfa63fd2219571f1954751b407ebc123a1b60"
+    },
+    {
+      "path": "benchmarks/scripts/whole_story_workspace_meter.py",
+      "bytes": 9394,
+      "sha256": "969936be802641a95b171375aaca22652b4630521e469c7f7824184b0985e570"
+    },
+    {
+      "path": "benchmarks/scripts/full_script_throughput_eval.py",
+      "bytes": 10320,
+      "sha256": "3426c39315b6e0a5c711016d8bd83c1ce89f63b8e822865e810d9f6fa8510d8c"
+    },
+    {
+      "path": "benchmarks/scripts/full_script_throughput_support.py",
+      "bytes": 31792,
+      "sha256": "bac69c883acfb021059d47031c6d78aefa93505faa68c40b5355b1f9fada3c61"
+    },
+    {
+      "path": "configs/recipes/recipe-mvp-ingest.yaml",
+      "bytes": 846,
+      "sha256": "bb573a991ece2fd61c22bf50749e2fa863068b9be54f495b96389ebaf4696bb5"
+    },
+    {
+      "path": "configs/recipes/recipe-world-building.yaml",
+      "bytes": 2227,
+      "sha256": "db2043588fa870a5cbac762cd104d637c77a822c9e5286055a68b2c3e88320da"
+    }
+  ]
+}

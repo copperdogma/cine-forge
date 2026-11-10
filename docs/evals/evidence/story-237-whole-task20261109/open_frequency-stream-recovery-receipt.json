@@ -1,0 +1,57 @@
+{
+  "origin": "DERIVED from raw SSE, not a raw nonstream JSON envelope",
+  "elapsed_ms": 588575,
+  "stop_reason": "max_tokens",
+  "usage": {
+    "input_tokens": 12597,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 65536,
+    "service_tier": "standard",
+    "inference_geo": "global",
+    "speed": "standard",
+    "output_tokens_details": {
+      "thinking_tokens": 65536
+    }
+  },
+  "model": "claude-fable-5-2",
+  "meter_entry": {
+    "name": "0001-subject-open_frequency-stream-operational-recovery-claude-fable-5-2",
+    "group": "subject-open_frequency-stream-operational-recovery",
+    "model": "claude-fable-5-2",
+    "url": "https://api.anthropic.com/v1/messages",
+    "state": "settled-usage-estimate",
+    "input_bound": 14529,
+    "output_allowance": 65536,
+    "reservation_usd": "2.853904",
+    "accounted_usd": "2.722216",
+    "request_sha256": "0f7e8c885e98f7d581a15c4c1bf142beea01df35b6c7ffb494d94f0247ea1ff5",
+    "response_origin": "derived native Message from complete raw SSE",
+    "raw_sse_sha256": "04c0bf367169861edb4085e8023db76a5170bc69a5c4fbf6cdd4be75ebcc94fd",
+    "raw_sse_bytes": 224880,
+    "usage": {
+      "input_tokens": 12597,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 65536,
+      "service_tier": "standard",
+      "inference_geo": "global",
+      "speed": "standard",
+      "output_tokens_details": {
+        "thinking_tokens": 65536
+      }
+    },
+    "request_id": "msg_011CgteRpdxG76Vqx9qYVTyb",
+    "served_model": "claude-fable-5-2",
+    "latency_ms": 588353,
+    "response_sha256": "764ffd626d739fa688d1b687648585e0582ca1aa721fa356979e6bb8a2f5199e"
+  }
+}

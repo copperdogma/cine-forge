@@ -1,0 +1,56 @@
+{
+  "data": {
+    "aliases": [],
+    "description": "Offscreen road discussed in radio reports; physical appearance is unstated.",
+    "location_id": "east_road",
+    "name": "East road",
+    "narrative_significance": "Reported open one lane before dawn and open in the morning bulletin.",
+    "overall_confidence": 0.96,
+    "physical_traits": [],
+    "scene_presence": [
+      "s3",
+      "s4"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "run_context": {
+        "acceptance": "mechanical-only",
+        "kind": "authored-zero-provider-representability-example",
+        "subject_calls": 0
+      },
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    "confidence": 0.96,
+    "cost_data": null,
+    "created_at": "2026-11-10T04:30:13.049296Z",
+    "health": "valid",
+    "intent": "Materialize supplied whole-workspace location_bible payload",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "whole_story_workspace_eval",
+    "producing_role": null,
+    "rationale": "Lossless fanout of validated subject output; no semantic field completion",
+    "ref": {
+      "artifact_type": "location_bible",
+      "entity_id": "east_road",
+      "path": "artifacts/location_bible/east_road/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

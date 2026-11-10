@@ -1,0 +1,203 @@
+{
+  "data": {
+    "characters_present": [
+      "ARIA",
+      "COMET",
+      "JUNE",
+      "KELL",
+      "MAYA",
+      "NOAH"
+    ],
+    "characters_present_ids": [
+      "aria",
+      "comet",
+      "june",
+      "kell",
+      "maya",
+      "noah"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "INT. COMMUNITY RADIO STUDIO - MORNING",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Wet coats hang from every chair. Pale sunlight cuts through the storm residue on the windows.",
+        "element_type": "action"
+      },
+      {
+        "content": "Aria pins a hand-drawn map beside the console. Noah labels a notebook DAY TWO.",
+        "element_type": "action"
+      },
+      {
+        "content": "June tapes a new sign over the door: OPEN FREQUENCY.",
+        "element_type": "action"
+      },
+      {
+        "content": "Kell enters with a loaf of warm bread wrapped in foil. Maya follows close behind with a muddy, sleepy COMET in her arms.",
+        "element_type": "action"
+      },
+      {
+        "content": "MAYA",
+        "element_type": "character"
+      },
+      {
+        "content": "He was under the vending machine in the band room.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "KELL",
+        "element_type": "character"
+      },
+      {
+        "content": "Smart dog. Dry floor, free snacks.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "June laughs, reaches for the microphone, and nods at Aria.",
+        "element_type": "action"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "Red Creek, morning bulletin. East road is open, north shelter is stocked, and one missing dog has been recovered with zero remorse.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Noah pushes up a brass-heavy cassette cue. The room brightens with music.",
+        "element_type": "action"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "Put that on repeat between updates.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "No. Once is joy. Twice is branding.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "The ON AIR sign steadies into a solid red glow as the four of them settle back to work.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "INT. COMMUNITY RADIO STUDIO - MORNING",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "Community Radio Studio",
+    "narrative_beats": [
+      {
+        "approximate_location": "Opening",
+        "beat_type": "Resolution / New Normal",
+        "confidence": 0.95,
+        "description": "Wet coats, pale sunlight, and a notebook labeled DAY TWO signal that the acute crisis has passed and the team is settling into sustained operation. The studio is now a functioning hub rather than an emergency scramble."
+      },
+      {
+        "approximate_location": "Early",
+        "beat_type": "Symbolic Act",
+        "confidence": 0.9,
+        "description": "June tapes 'OPEN FREQUENCY' over the door \u2014 a deliberate rebranding that marks the station's shift from emergency response to ongoing community resource."
+      },
+      {
+        "approximate_location": "Early-middle",
+        "beat_type": "Payoff / Comic Relief",
+        "confidence": 0.95,
+        "description": "Kell arrives with warm bread; Maya arrives with a muddy, sleepy Comet recovered from under a vending machine. The dog subplot planted in scene 003 resolves with specific, absurd detail ('dry floor, free snacks') that delivers earned lightness."
+      },
+      {
+        "approximate_location": "Middle",
+        "beat_type": "Triumphant Broadcast",
+        "confidence": 0.97,
+        "description": "June's morning bulletin \u2014 east road open, north shelter stocked, missing dog recovered 'with zero remorse' \u2014 weaves the practical and the personal into a single transmission, demonstrating the station's expanded sense of community mission."
+      },
+      {
+        "approximate_location": "Late",
+        "beat_type": "Tonal Beat / Character Voice",
+        "confidence": 0.88,
+        "description": "The exchange about the cassette cue ('Once is joy. Twice is branding.') uses wit to define June's character and the station's ethos simultaneously, maintaining the series' pattern of humor as a marker of resilience rather than avoidance."
+      },
+      {
+        "approximate_location": "End",
+        "beat_type": "Closing Image / Thematic Resolution",
+        "confidence": 0.97,
+        "description": "The ON AIR sign steadies into a solid red glow as the team settles back to work \u2014 a direct visual callback to the flickering, dying sign in scene 001, now resolved into stability. The story closes on continuity and purpose rather than triumph."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      }
+    ],
+    "scene_id": "scene_004",
+    "scene_number": 4,
+    "source_span": {
+      "end_line": 132,
+      "start_line": 103
+    },
+    "time_of_day": "MORNING",
+    "tone_mood": "warm, quietly triumphant, and grounded",
+    "tone_shifts": [
+      "Opens in the muted, exhausted light of morning-after recovery, then brightens steadily through the bread, the dog's return, and the broadcast \u2014 a gradual tonal lift that feels earned rather than sudden.",
+      "June's 'Once is joy. Twice is branding.' briefly introduces dry wit into the warmth, a tonal flicker consistent with the series' pattern of pairing humor with sincerity."
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 4,
+      "source_span": {
+        "end_line": 132,
+        "start_line": 103
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.038541,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2569,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T05:28:59.994199Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_004",
+      "path": "artifacts/scene/scene_004/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

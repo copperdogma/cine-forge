@@ -14,7 +14,7 @@ audit_policy:
 inventory_expectations:
   test_suite: 7
   audit_harness: 4
-  promptfoo_task: 16
+  promptfoo_task: 17
   prompt: 15
   llm_rubric: 16
   python_scorer: 13
@@ -22,11 +22,41 @@ inventory_expectations:
   custom_scorer_runner: 13
   semantic_golden: 19
   fixture_class: 19
-  registry_eval: 25
+  registry_eval: 26
   score_history_provenance: 7
   visual_lane: 4
   runtime_root_lane: 3
 surfaces:
+  - id: "whole-story-workspace-task"
+    kind: "promptfoo_task"
+    owner: "Story237 whole-workspace eval owner"
+    paths:
+      - "benchmarks/tasks/whole-story-workspace.yaml"
+    decision_impact:
+      default_driving: false
+      scope: "Whole consumer workspace capability; no production default change."
+    audit_status: "documented limitation"
+    evidence:
+      - "docs/evals/attempts/058-fable52-whole-story-workspace.md"
+      - "docs/evals/story-237-whole-task20261109-manifest.json"
+      - "benchmarks/results/whole-story-workspace-fable52-20261109.json"
+    notes: "All49 physical requests retained. Fable final nativeMAX truncation yielded no complete bundle; complete control failed independent source acceptance."
+    limitations: "No Fable semantic score or qualified winner; two fixed variants unmeasured after extended operational recovery. Unknown reservations remain held."
+  - id: "registry-eval-whole-story-workspace-capability"
+    kind: "registry_eval"
+    owner: "Story237 whole-workspace eval owner"
+    paths:
+      - "docs/evals/registry.yaml"
+    decision_impact:
+      default_driving: false
+      scope: "Whole consumer workspace capability; no production default change."
+    audit_status: "documented limitation"
+    evidence:
+      - "docs/evals/attempts/058-fable52-whole-story-workspace.md"
+      - "docs/evals/story-237-whole-task20261109-manifest.json"
+      - "benchmarks/results/whole-story-workspace-fable52-20261109.json"
+    notes: "All49 physical requests retained. Fable final nativeMAX truncation yielded no complete bundle; complete control failed independent source acceptance."
+    limitations: "No Fable semantic score or qualified winner; two fixed variants unmeasured after extended operational recovery. Unknown reservations remain held."
   - id: "test-suite-pytest-unit"
     kind: "test_suite"
     owner: "pytest harness plus subsystem test owners"

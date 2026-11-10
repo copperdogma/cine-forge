@@ -1,0 +1,16 @@
+description: Whole authored screenplay to complete source-faithful consumer workspace
+protocol: One Fable inference; unchanged whole-pipeline control; independent complete-source review
+case_order: [open_frequency, last_ferry, matinee_echo]
+tests:
+  - vars:
+      case_id: open_frequency
+      source_path: fixtures/whole_story_workspace_v1/open_frequency.fountain
+      oracle_path: fixtures/whole_story_workspace_v1/open_frequency.oracle.json
+  - vars:
+      case_id: last_ferry
+      source_path: fixtures/whole_story_workspace_v1/last_ferry.fountain
+      oracle_path: fixtures/whole_story_workspace_v1/last_ferry.oracle.json
+  - vars:
+      case_id: matinee_echo
+      source_path: fixtures/whole_story_workspace_v1/matinee_echo.fountain
+      oracle_path: fixtures/whole_story_workspace_v1/matinee_echo.oracle.json

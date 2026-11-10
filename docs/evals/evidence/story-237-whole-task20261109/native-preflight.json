@@ -1,0 +1,37 @@
+{
+  "cases": [
+    {
+      "case": "open_frequency",
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+      "native_input_tokens_count": 12481,
+      "admitted_input_bound": 14529,
+      "subject_standard_reservation_usd": 2.853904,
+      "body_sha256": "25409086c96647e61606cc180d25a75069acd06c888d896b058d833ec5c39d73"
+    },
+    {
+      "case": "last_ferry",
+      "source_sha256": "e28a204cd4d756c91bfbd28a521473a895fd8d14984efd400658e6a65b9a7618",
+      "native_input_tokens_count": 12254,
+      "admitted_input_bound": 14302,
+      "subject_standard_reservation_usd": 2.8502720000000004,
+      "body_sha256": "c12e623b945bd1850190d50a18d877b60236a16ea5e988b2aae91224a82546dd"
+    },
+    {
+      "case": "matinee_echo",
+      "source_sha256": "bed5976da30e2584371deabdd121966efc4276e5663a4789cf22267d655c05d2",
+      "native_input_tokens_count": 12299,
+      "admitted_input_bound": 14347,
+      "subject_standard_reservation_usd": 2.850992,
+      "body_sha256": "0be348bbbd4a9605fecb45ba3b74a77161043386d7e4f61f33a5d819f63b2d5d"
+    }
+  ],
+  "representability": {
+    "consumer_compact_bytes": 74022,
+    "subject_compact_bytes": 70250,
+    "wire_envelope_bytes": 77611,
+    "free_text_token_estimate": 37220,
+    "total_output_allowance": 65536,
+    "remaining_nominal_thinking_headroom": 28316,
+    "limit": "Authored complete exemplar establishes representability, not guaranteed subject length or quality."
+  }
+}

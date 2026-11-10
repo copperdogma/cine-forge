@@ -1,0 +1,737 @@
+{
+  "data": {
+    "overall_continuity_score": 0.97,
+    "timelines": {
+      "character:aria": {
+        "entity_id": "aria",
+        "entity_type": "character",
+        "gaps": [],
+        "states": [
+          "character_aria_s1",
+          "character_aria_s2",
+          "character_aria_s4"
+        ]
+      },
+      "character:comet": {
+        "entity_id": "comet",
+        "entity_type": "character",
+        "gaps": [],
+        "states": [
+          "character_comet_s3",
+          "character_comet_s4"
+        ]
+      },
+      "character:june": {
+        "entity_id": "june",
+        "entity_type": "character",
+        "gaps": [],
+        "states": [
+          "character_june_s1",
+          "character_june_s2",
+          "character_june_s3",
+          "character_june_s4"
+        ]
+      },
+      "character:kell": {
+        "entity_id": "kell",
+        "entity_type": "character",
+        "gaps": [],
+        "states": [
+          "character_kell_s1",
+          "character_kell_s3",
+          "character_kell_s4"
+        ]
+      },
+      "character:maya": {
+        "entity_id": "maya",
+        "entity_type": "character",
+        "gaps": [],
+        "states": [
+          "character_maya_s3",
+          "character_maya_s4"
+        ]
+      },
+      "character:noah": {
+        "entity_id": "noah",
+        "entity_type": "character",
+        "gaps": [],
+        "states": [
+          "character_noah_s1",
+          "character_noah_s2",
+          "character_noah_s3",
+          "character_noah_s4"
+        ]
+      },
+      "character:unknown_voice": {
+        "entity_id": "unknown_voice",
+        "entity_type": "character",
+        "gaps": [],
+        "states": [
+          "character_unknown_voice_s2"
+        ]
+      },
+      "location:band_room": {
+        "entity_id": "band_room",
+        "entity_type": "location",
+        "gaps": [],
+        "states": [
+          "location_band_room_s4"
+        ]
+      },
+      "location:bridge": {
+        "entity_id": "bridge",
+        "entity_type": "location",
+        "gaps": [],
+        "states": [
+          "location_bridge_s1",
+          "location_bridge_s3"
+        ]
+      },
+      "location:catwalk": {
+        "entity_id": "catwalk",
+        "entity_type": "location",
+        "gaps": [],
+        "states": [
+          "location_catwalk_s2"
+        ]
+      },
+      "location:east_road": {
+        "entity_id": "east_road",
+        "entity_type": "location",
+        "gaps": [],
+        "states": [
+          "location_east_road_s3",
+          "location_east_road_s4"
+        ]
+      },
+      "location:gym": {
+        "entity_id": "gym",
+        "entity_type": "location",
+        "gaps": [],
+        "states": [
+          "location_gym_s3"
+        ]
+      },
+      "location:hill_relay": {
+        "entity_id": "hill_relay",
+        "entity_type": "location",
+        "gaps": [],
+        "states": [
+          "location_hill_relay_s1"
+        ]
+      },
+      "location:north_shelter": {
+        "entity_id": "north_shelter",
+        "entity_type": "location",
+        "gaps": [],
+        "states": [
+          "location_north_shelter_s2",
+          "location_north_shelter_s3",
+          "location_north_shelter_s4"
+        ]
+      },
+      "location:red_creek": {
+        "entity_id": "red_creek",
+        "entity_type": "location",
+        "gaps": [],
+        "states": [
+          "location_red_creek_s2",
+          "location_red_creek_s4"
+        ]
+      },
+      "location:studio": {
+        "entity_id": "studio",
+        "entity_type": "location",
+        "gaps": [],
+        "states": [
+          "location_studio_s1",
+          "location_studio_s4"
+        ]
+      },
+      "prop:antenna": {
+        "entity_id": "antenna",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_antenna_s1",
+          "prop_antenna_s2"
+        ]
+      },
+      "prop:batteries": {
+        "entity_id": "batteries",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_batteries_s3"
+        ]
+      },
+      "prop:blankets": {
+        "entity_id": "blankets",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_blankets_s2"
+        ]
+      },
+      "prop:bread": {
+        "entity_id": "bread",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_bread_s4"
+        ]
+      },
+      "prop:cable": {
+        "entity_id": "cable",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_cable_s2"
+        ]
+      },
+      "prop:cassette": {
+        "entity_id": "cassette",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_cassette_s4"
+        ]
+      },
+      "prop:flyer": {
+        "entity_id": "flyer",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_flyer_s3"
+        ]
+      },
+      "prop:insulin": {
+        "entity_id": "insulin",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_insulin_s2",
+          "prop_insulin_s3"
+        ]
+      },
+      "prop:lantern": {
+        "entity_id": "lantern",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_lantern_s1",
+          "prop_lantern_s2"
+        ]
+      },
+      "prop:last_bolt": {
+        "entity_id": "last_bolt",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_last_bolt_s2"
+        ]
+      },
+      "prop:map": {
+        "entity_id": "map",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_map_s4"
+        ]
+      },
+      "prop:microphone": {
+        "entity_id": "microphone",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_microphone_s4"
+        ]
+      },
+      "prop:mixer": {
+        "entity_id": "mixer",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_mixer_s1"
+        ]
+      },
+      "prop:new_sign": {
+        "entity_id": "new_sign",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_new_sign_s4"
+        ]
+      },
+      "prop:notebook": {
+        "entity_id": "notebook",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_notebook_s4"
+        ]
+      },
+      "prop:on_air": {
+        "entity_id": "on_air",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_on_air_s1",
+          "prop_on_air_s4"
+        ]
+      },
+      "prop:receiver": {
+        "entity_id": "receiver",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_receiver_s2"
+        ]
+      },
+      "prop:tabletop_radio": {
+        "entity_id": "tabletop_radio",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_tabletop_radio_s3"
+        ]
+      },
+      "prop:tackle_box": {
+        "entity_id": "tackle_box",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_tackle_box_s3"
+        ]
+      },
+      "prop:tape_reel": {
+        "entity_id": "tape_reel",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_tape_reel_s1"
+        ]
+      },
+      "prop:tool_bag": {
+        "entity_id": "tool_bag",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_tool_bag_s1",
+          "prop_tool_bag_s2"
+        ]
+      },
+      "prop:whiteboard": {
+        "entity_id": "whiteboard",
+        "entity_type": "prop",
+        "gaps": [],
+        "states": [
+          "prop_whiteboard_s1",
+          "prop_whiteboard_s3"
+        ]
+      }
+    },
+    "total_gaps": 0
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "run_context": {
+        "acceptance": "mechanical-only",
+        "kind": "authored-zero-provider-representability-example",
+        "subject_calls": 0
+      },
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    "confidence": 0.97,
+    "cost_data": null,
+    "created_at": "2026-11-10T04:30:13.278315Z",
+    "health": "valid",
+    "intent": "Materialize supplied whole-workspace continuity_index payload",
+    "lineage": [
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_aria_s1",
+        "path": "artifacts/continuity_state/character_aria_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_aria_s2",
+        "path": "artifacts/continuity_state/character_aria_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_aria_s4",
+        "path": "artifacts/continuity_state/character_aria_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_noah_s1",
+        "path": "artifacts/continuity_state/character_noah_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_noah_s2",
+        "path": "artifacts/continuity_state/character_noah_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_noah_s3",
+        "path": "artifacts/continuity_state/character_noah_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_noah_s4",
+        "path": "artifacts/continuity_state/character_noah_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_june_s1",
+        "path": "artifacts/continuity_state/character_june_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_june_s2",
+        "path": "artifacts/continuity_state/character_june_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_june_s3",
+        "path": "artifacts/continuity_state/character_june_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_june_s4",
+        "path": "artifacts/continuity_state/character_june_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_kell_s1",
+        "path": "artifacts/continuity_state/character_kell_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_kell_s3",
+        "path": "artifacts/continuity_state/character_kell_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_kell_s4",
+        "path": "artifacts/continuity_state/character_kell_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_maya_s3",
+        "path": "artifacts/continuity_state/character_maya_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_maya_s4",
+        "path": "artifacts/continuity_state/character_maya_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_unknown_voice_s2",
+        "path": "artifacts/continuity_state/character_unknown_voice_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_comet_s3",
+        "path": "artifacts/continuity_state/character_comet_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "character_comet_s4",
+        "path": "artifacts/continuity_state/character_comet_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_studio_s1",
+        "path": "artifacts/continuity_state/location_studio_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_studio_s4",
+        "path": "artifacts/continuity_state/location_studio_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_catwalk_s2",
+        "path": "artifacts/continuity_state/location_catwalk_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_gym_s3",
+        "path": "artifacts/continuity_state/location_gym_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_north_shelter_s2",
+        "path": "artifacts/continuity_state/location_north_shelter_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_north_shelter_s3",
+        "path": "artifacts/continuity_state/location_north_shelter_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_north_shelter_s4",
+        "path": "artifacts/continuity_state/location_north_shelter_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_east_road_s3",
+        "path": "artifacts/continuity_state/location_east_road_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_east_road_s4",
+        "path": "artifacts/continuity_state/location_east_road_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_bridge_s1",
+        "path": "artifacts/continuity_state/location_bridge_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_bridge_s3",
+        "path": "artifacts/continuity_state/location_bridge_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_hill_relay_s1",
+        "path": "artifacts/continuity_state/location_hill_relay_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_band_room_s4",
+        "path": "artifacts/continuity_state/location_band_room_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_red_creek_s2",
+        "path": "artifacts/continuity_state/location_red_creek_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "location_red_creek_s4",
+        "path": "artifacts/continuity_state/location_red_creek_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_tape_reel_s1",
+        "path": "artifacts/continuity_state/prop_tape_reel_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_mixer_s1",
+        "path": "artifacts/continuity_state/prop_mixer_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_whiteboard_s1",
+        "path": "artifacts/continuity_state/prop_whiteboard_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_whiteboard_s3",
+        "path": "artifacts/continuity_state/prop_whiteboard_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_antenna_s1",
+        "path": "artifacts/continuity_state/prop_antenna_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_antenna_s2",
+        "path": "artifacts/continuity_state/prop_antenna_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_lantern_s1",
+        "path": "artifacts/continuity_state/prop_lantern_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_lantern_s2",
+        "path": "artifacts/continuity_state/prop_lantern_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_tool_bag_s1",
+        "path": "artifacts/continuity_state/prop_tool_bag_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_tool_bag_s2",
+        "path": "artifacts/continuity_state/prop_tool_bag_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_on_air_s1",
+        "path": "artifacts/continuity_state/prop_on_air_s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_on_air_s4",
+        "path": "artifacts/continuity_state/prop_on_air_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_cable_s2",
+        "path": "artifacts/continuity_state/prop_cable_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_receiver_s2",
+        "path": "artifacts/continuity_state/prop_receiver_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_last_bolt_s2",
+        "path": "artifacts/continuity_state/prop_last_bolt_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_insulin_s2",
+        "path": "artifacts/continuity_state/prop_insulin_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_insulin_s3",
+        "path": "artifacts/continuity_state/prop_insulin_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_blankets_s2",
+        "path": "artifacts/continuity_state/prop_blankets_s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_batteries_s3",
+        "path": "artifacts/continuity_state/prop_batteries_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_tackle_box_s3",
+        "path": "artifacts/continuity_state/prop_tackle_box_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_flyer_s3",
+        "path": "artifacts/continuity_state/prop_flyer_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_tabletop_radio_s3",
+        "path": "artifacts/continuity_state/prop_tabletop_radio_s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_map_s4",
+        "path": "artifacts/continuity_state/prop_map_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_notebook_s4",
+        "path": "artifacts/continuity_state/prop_notebook_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_new_sign_s4",
+        "path": "artifacts/continuity_state/prop_new_sign_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_bread_s4",
+        "path": "artifacts/continuity_state/prop_bread_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_microphone_s4",
+        "path": "artifacts/continuity_state/prop_microphone_s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "continuity_state",
+        "entity_id": "prop_cassette_s4",
+        "path": "artifacts/continuity_state/prop_cassette_s4/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "whole_story_workspace_eval",
+    "producing_role": null,
+    "rationale": "Lossless fanout of validated subject output; no semantic field completion",
+    "ref": {
+      "artifact_type": "continuity_index",
+      "entity_id": "project",
+      "path": "artifacts/continuity_index/project/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

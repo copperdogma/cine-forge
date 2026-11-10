@@ -1,0 +1,113 @@
+{
+  "character_id": "noah",
+  "name": "NOAH",
+  "aliases": [],
+  "description": "A technical operator at the community radio station who works on signal equipment and antenna installation during an emergency broadcast operation. Noah is practical, capable with mechanical systems, and maintains a dry sense of humor under pressure.",
+  "prominence": "secondary",
+  "explicit_evidence": [
+    {
+      "trait": "Technical competence",
+      "quote": "NOAH coaxes a signal out of a battered mixer.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "source_span": {
+        "start_line": 3,
+        "end_line": 5
+      }
+    },
+    {
+      "trait": "Dry humor",
+      "quote": "Please tell me that antenna is less cursed than it looks.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "source_span": {
+        "start_line": 16,
+        "end_line": 16
+      }
+    },
+    {
+      "trait": "Preference for normalcy",
+      "quote": "I miss boring weather.",
+      "source_scene": "EXT. WATER TOWER CATWALK - NIGHT",
+      "source_span": {
+        "start_line": 38,
+        "end_line": 38
+      }
+    },
+    {
+      "trait": "Field operations capability",
+      "quote": "Noah plugs the cable into a handheld receiver.",
+      "source_scene": "EXT. WATER TOWER CATWALK - NIGHT",
+      "source_span": {
+        "start_line": 42,
+        "end_line": 42
+      }
+    },
+    {
+      "trait": "Radio communication operator",
+      "quote": "Noah's voice crackles over a tabletop radio. NOAH (RADIO): East road is open one lane. Bridge crew wants no heavy trucks till daylight.",
+      "source_scene": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+      "source_span": {
+        "start_line": 62,
+        "end_line": 64
+      }
+    },
+    {
+      "trait": "Administrative attention to detail",
+      "quote": "Noah labels a notebook DAY TWO.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+      "source_span": {
+        "start_line": 77,
+        "end_line": 77
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "Resilience under pressure",
+      "value": "High",
+      "confidence": 0.85,
+      "rationale": "Noah operates technical equipment during an emergency broadcast, maintains composure on a dangerous catwalk in high winds, and continues work through the night without complaint."
+    },
+    {
+      "trait": "Collaborative work style",
+      "value": "Cooperative",
+      "confidence": 0.8,
+      "rationale": "Noah works seamlessly with Aria, June, and Kell across multiple scenes, responding to requests and coordinating on technical tasks without friction."
+    },
+    {
+      "trait": "Pragmatic attitude",
+      "value": "Practical",
+      "confidence": 0.75,
+      "rationale": "Noah's dialogue and actions focus on what needs to be done rather than emotional responses; he accepts cursed equipment and dangerous conditions as part of the job."
+    }
+  ],
+  "scene_presence": [
+    "INT. COMMUNITY RADIO STUDIO - NIGHT",
+    "EXT. WATER TOWER CATWALK - NIGHT",
+    "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+    "INT. COMMUNITY RADIO STUDIO - MORNING"
+  ],
+  "dialogue_summary": "Noah speaks sparingly but meaningfully. He makes a self-deprecating joke about the antenna's condition, expresses weariness about the emergency situation, provides field updates via radio about road conditions and bridge crew restrictions, and participates in the morning routine of the radio station.",
+  "narrative_role": "supporting",
+  "narrative_role_confidence": 0.9,
+  "relationships": [
+    {
+      "target_character": "ARIA",
+      "relationship_type": "Colleague/Team member",
+      "evidence": "Noah and Aria work together on antenna installation at the water tower and collaborate on technical setup at the radio station.",
+      "confidence": 0.95
+    },
+    {
+      "target_character": "JUNE",
+      "relationship_type": "Colleague/Team member",
+      "evidence": "Noah communicates with June via radio during the emergency broadcast and works in the same radio station team.",
+      "confidence": 0.95
+    },
+    {
+      "target_character": "KELL",
+      "relationship_type": "Colleague/Team member",
+      "evidence": "Noah and Kell work together as part of the emergency broadcast team, with Kell providing equipment that Noah uses.",
+      "confidence": 0.9
+    }
+  ],
+  "overall_confidence": 0.85
+}
