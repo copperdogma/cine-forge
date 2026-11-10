@@ -1,5 +1,11 @@
 # Changelog
 
+## [2026-11-09-01] — Fable 5.2 full ordered-frame capability panel (Story 236)
+
+### Added
+- Full six-case fresh Fable/Sol/Luna comparison with blind source-complete Opus reviews, native strict-schema parity and exact producing evidence. No full-task promotion; useful continuity-label advantage retained separately.
+- Preserve original OpenRouter credit-admission failure and explicitly authorized native Anthropic recovery. Known usage estimate USD1.00078155 plus USD2.15872 unreconciled reservation; no runtime/default change.
+
 ## [2026-11-05-01] — Hy4 ordered-frame screen (Story 235)
 
 ### Added

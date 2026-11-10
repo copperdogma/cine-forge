@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.021015",
+  "latency_ms": 12055,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1815,
+    "path": "output/evals/fable52-20261109/judge-opus-luna-vfp_active_001-raw.json",
+    "sha256": "e5cf6b3ea238b8028fff6bb972c8c3a0de23a758ad43ba92b3d924a73f0b3b21"
+  },
+  "reason": "The summary captures two figures and gradual enlargement, which aligns with the reference. However, there are several issues: (1) Tone is 'detached' instead of 'intimate' \u2014 a mismatch. (2) Color tags include 'gold' which is not in the reference (navy, teal); the reference excludes 'gold'. (3) The summary says 'extend upward while bases remain fixed' which is partially correct but the reference says they enlarge at nearly fixed centers, not just extend upward. (4) The summary fails to mention the pale rectangle (prop) on the right figure, which the reference identifies as a key continuity element. The evidence mentions it only in frame 0 but not as a continuity feature across frames. (5) Audio tags are empty, which is correct. (6) Motion tag 'measured' matches. (7) Camera tag 'static' \u2014 the reference says camera is ambiguous and excluded from scoring, so this is acceptable. (8) Continuity status 'intact' matches. (9) The evidence at frame 2 claims heads sit higher than first sample, and frame 4 says figures extend farther upward \u2014 this is a specific mechanism claim (upward extension) that doesn't match the reference's observation of overall enlargement at fixed centers. The missing prop mention and wrong tone/color tags bring the score below the 0.8 threshold.",
+  "request_id": "msg_011CgtGkDGvbsjp3vM19BqyH",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2593,
+    "output_tokens": 322,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

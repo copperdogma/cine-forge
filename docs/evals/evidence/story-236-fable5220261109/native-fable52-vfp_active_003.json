@@ -1,0 +1,77 @@
+{
+  "arm": "fable52",
+  "name": "native-fable52-vfp_active_003",
+  "response": {
+    "cached": false,
+    "cost": 0.099296,
+    "latencyMs": 18104,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "quiet_bedside_vigil",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_003",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+      ],
+      "meta_sha256": "ba3438e4973166276591efea693838df99841ac34eac732f433c0c5cfcefe8fa",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "claude-fable-5-2",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "anthropic",
+      "request_id": "msg_011CgtGrGJezmd7rdjaUxJBQ",
+      "requested_model": "claude-fable-5-2",
+      "returned_model": "claude-fable-5-2",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_003\",\"summary\":\"A stylized, dimly lit tableau shows an amber rounded figure positioned at the right end of a slate-gray bed-like slab, with an amber round-topped post (lamp or second thin figure) at the left end. All five samples are visually identical, indicating a fixed frame with no visible movement.\",\"tone_tags\":[\"intimate\",\"mournful\"],\"emotion_tags\":[\"grief\",\"tenderness\"],\"color_tags\":[\"amber\",\"navy\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"All five ordered samples show the same composition, object positions, and lighting with no visible change or break.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Amber rounded figure with a small round head sits at the right end of a slate-gray rectangle with a thin white outline, resembling a bed or slab.\"},{\"frame_index\":2,\"cue\":\"Amber circle atop a narrow brown post at the left end of the slab is in exactly the same position as in earlier samples; framing is unchanged.\"},{\"frame_index\":4,\"cue\":\"Dark navy-to-brown gradient background and near-black floor band remain identical in the final sample, with the amber figure still unmoved beside the slab.\"}],\"overall_confidence\":0.6}",
+    "raw": {
+      "id": "msg_011CgtGrGJezmd7rdjaUxJBQ",
+      "model": "claude-fable-5-2",
+      "raw_envelope_bytes": 6881,
+      "raw_envelope_path": "output/evals/fable52-20261109/native/fable52/vfp_active_003-raw-envelope.json",
+      "raw_envelope_sha256": "3dbc23391362907045fdc3f111add41d1b032c48eb7760a705b6607825bba221",
+      "stop_reason": "end_turn",
+      "usage": {
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": "global",
+        "input_tokens": 4512,
+        "output_tokens": 1580,
+        "output_tokens_details": {
+          "thinking_tokens": 1117
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    },
+    "tokenUsage": {
+      "completion": 1580,
+      "prompt": 4512,
+      "total": 6092
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/quiet_bedside_vigil",
+    "clip_id": "quiet_bedside_vigil",
+    "evaluation_id": "vfp_active_003",
+    "target_markdown": "file://../video_understanding_truth_v4/quiet_bedside_vigil/target.md",
+    "target_path": "video_understanding_truth_v4/quiet_bedside_vigil/target.json"
+  }
+}

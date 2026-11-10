@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.018795",
+  "latency_ms": 8262,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1538,
+    "path": "output/evals/fable52-20261109/judge-opus-fable52-vfp_active_006-raw.json",
+    "sha256": "d9dce210c36ff997bec95009ddaab7cd8a70815cea8f1c2df03ddb4a1e80b3a3"
+  },
+  "reason": "The model correctly identifies the movement of the cyan/pale-blue figure from left to right across the frames, the static wide framing, the consistent arc and rain-like diagonal streaks, and the navy/teal color palette. Continuity is correctly marked as intact with the small rectangle noted. However, the motion is described as 'measured' rather than 'fast_lateral' which is a meaningful mismatch\u2014the figure traverses most of the frame width across 5 samples suggesting fast lateral motion. The tone tags ('mournful','detached') diverge significantly from the reference ('urgent','tense'). Emotion tags ('isolation','resolve') are invented rather than left empty as the reference specifies none. Audio tags are correctly empty. Evidence is grounded in specific frames (0,2,4) which is acceptable. The summary captures the core visual content reasonably well but mischaracterizes the feel/pace. Overall, core visual facts are mostly correct but tone/emotion/motion speed mismatches prevent a passing score.",
+  "request_id": "msg_011CgtH6i8Z3btukw72q5upx",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2594,
+    "output_tokens": 233,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

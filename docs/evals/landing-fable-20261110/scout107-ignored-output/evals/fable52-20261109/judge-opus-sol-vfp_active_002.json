@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.018655",
+  "latency_ms": 8245,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1492,
+    "path": "output/evals/fable52-20261109/judge-opus-sol-vfp_active_002-raw.json",
+    "sha256": "6e9bc7fb41bfe0e0bc8a2ecb3b8aa4b7fb9c33e96b2341c84ccc948244cb7e0a"
+  },
+  "reason": "The output correctly identifies the leftward-to-rightward movement of the figure, the static camera, the red color palette, intact continuity with the small rectangle staying beside the figure, and provides grounded evidence across frames 0, 2, and 4. However, it misses key observable details: (1) Tone is described as 'detached' rather than 'urgent' or 'tense' \u2014 the diagonal lines and red pulsing suggest urgency/tension. (2) Motion tags use 'measured' instead of 'fast_lateral' and miss 'pulsing_light' which is observable from the shifting red illumination across frames. (3) Camera tags miss 'wide_master' which is inferable from the consistently wide framing. (4) The description calls it a 'flat orange-red person icon' rather than recognizing it as a runner/abstract runner figure, though this is a minor semantic difference. The core visual facts are mostly correct but the tone and motion characterizations are notably off from what the frames show.",
+  "request_id": "msg_011CgtGpo8je64WjcLsjVDs6",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2526,
+    "output_tokens": 241,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

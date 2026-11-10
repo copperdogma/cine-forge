@@ -1,0 +1,78 @@
+{
+  "arm": "luna",
+  "name": "native-luna-vfp_active_002",
+  "response": {
+    "cached": false,
+    "cost": 0.000471175,
+    "latencyMs": 3126,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "alarm_chase_whip_pan",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_002",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a",
+        "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039",
+        "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655",
+        "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b",
+        "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+      ],
+      "meta_sha256": "d028854d7c23197397b7003bfcfe3fd651d418a232950e8e28851ea210e7e99a",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0b9b3467c869ee87016af2605629dc87d09bd2ff390c4fd08d",
+      "requested_model": "gpt-6-luna",
+      "returned_model": "gpt-6-luna",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_002\",\"summary\":\"A simple red-orange figure carrying a small outlined rectangle moves steadily from the left side of a geometric, line-patterned scene to the right. The central outlined frame and peaked line remain fixed as the figure crosses them.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"red\",\"desaturated\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"measured\",\"fast_lateral\"],\"continuity_status\":\"intact\",\"continuity_notes\":[],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A bright red-orange simplified figure and small outlined rectangle are positioned on the left side of the scene.\"},{\"frame_index\":2,\"cue\":\"The figure is centered over the fixed rectangular outline, with the same peaked line and slanted background lines visible.\"},{\"frame_index\":4,\"cue\":\"The figure and its small rectangle are on the right side while the central outlined frame remains in place.\"}],\"overall_confidence\":0.94}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0b9b3467c869ee87016af2605629dc87d09bd2ff390c4fd08d",
+      "model": "gpt-6-luna",
+      "raw_envelope_bytes": 8374,
+      "raw_envelope_path": "output/evals/fable52-20261109/native/luna/vfp_active_002-raw-envelope.json",
+      "raw_envelope_sha256": "8065f87dcf08455a524418b0f07a4a10861cad19c9599d4469c8f020a7596eb5",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 220,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3110
+      }
+    },
+    "tokenUsage": {
+      "completion": 220,
+      "completionDetails": {
+        "reasoning": 0
+      },
+      "prompt": 2890,
+      "total": 3110
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+    "clip_id": "alarm_chase_whip_pan",
+    "evaluation_id": "vfp_active_002",
+    "target_markdown": "file://../video_understanding_truth_v4/alarm_chase_whip_pan/target.md",
+    "target_path": "video_understanding_truth_v4/alarm_chase_whip_pan/target.json"
+  }
+}

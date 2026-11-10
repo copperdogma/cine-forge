@@ -1,0 +1,165 @@
+{
+  "cases": {
+    "vfp_active_001": {
+      "arms": {
+        "fable52": {
+          "adjudication": "Unqualified slow_push_in camera tag unsupported by source geometry; tenderness/hesitation are interpretation, not demonstrated emotion.",
+          "credited_source_observations": "Correct figures, growth, unchanged prop/background and continuity. Prose hedges push-in as consistent with rather than falsely reporting a camera event.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": [
+            "Unqualified slow_push_in camera tag unsupported by source geometry; tenderness/hesitation are interpretation, not demonstrated emotion."
+          ]
+        },
+        "luna": {
+          "adjudication": "No prop mentioned in output/evidence. Judge claim it mentions prop inframe0 is false; upward extent is visible and is not itself an invented mechanism.",
+          "credited_source_observations": "Correct upward growth and fixed bases; width change and prop continuity under-described.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": []
+        },
+        "sol": {
+          "adjudication": "Tone detached versus intimate and navy-only palette are interpretation/coverage differences, not factual fabrication.",
+          "credited_source_observations": "Strong source-grounded growth and fixed-prop account.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": []
+        }
+      },
+      "source_facts": "Two heads/bodies enlarge upward and sideways, bases and centers nearly fixed; white rectangle, floor boundary and background do not scale. No camera mechanism is established."
+    },
+    "vfp_active_002": {
+      "arms": {
+        "fable52": {
+          "adjudication": "Resolve is unsupported emotional inference; shifting streaks/pulsing omitted. Wide_master/fast label penalties concern reference coverage.",
+          "credited_source_observations": "Correct left-to-right motion, red palette, fixed central geometry, carried rectangle and continuity.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": [
+            "Resolve is unsupported emotional inference; shifting streaks/pulsing omitted. Wide_master/fast label penalties concern reference coverage."
+          ]
+        },
+        "luna": {
+          "adjudication": "Shifting streaks/pulsing omitted; detached/desaturated and measured versus reference tags are interpretive.",
+          "credited_source_observations": "Correct lateral translation, fixed shapes and intact continuity.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": []
+        },
+        "sol": {
+          "adjudication": "Detached/measured versus urgent/fast and omitted pulsing/wide_master are interpretation or taxonomy coverage differences.",
+          "credited_source_observations": "Correct lateral motion, fixed central shapes and shifting thin lines.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": []
+        }
+      },
+      "source_facts": "Red-orange figure and red rectangle move left-to-right at nearly even steps; central outlined doorway and peaked lines fixed, diagonal pale streaks shift; red illumination varies."
+    },
+    "vfp_active_003": {
+      "arms": {
+        "fable52": {
+          "adjudication": "Grief/tenderness/mournful are unsupported emotional readings. Navy/gold/amber and wide_master differences do not prove false pixels.",
+          "credited_source_observations": "Accurate identicalframes and geometry; explicitly preserves lamp or second thinfigure ambiguity.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": [
+            "Grief/tenderness/mournful are unsupported emotional readings. Navy/gold/amber and wide_master differences do not prove false pixels."
+          ]
+        },
+        "luna": {
+          "adjudication": "No definite factual error; omissions and color/tone taxonomy explain reference differences.",
+          "credited_source_observations": "Accurate geometry/stillness; abstract figure reading explicitly allowed by v4.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": []
+        },
+        "sol": {
+          "adjudication": "Detached versus intimate and gold versus amber are interpretation; missing wide_master coverage.",
+          "credited_source_observations": "Accurate geometry/stillness; post is a visible shape description, not necessarily an asserted realworld identity.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": []
+        }
+      },
+      "source_facts": "All five JPEGs byte-identical. Right rounded amber form, central gray bordered rectangle, left round-topped narrow form. Lamp/bed and abstract-figure/barrier readings both permitted."
+    },
+    "vfp_active_004": {
+      "arms": {
+        "fable52": {
+          "adjudication": "No factual invention found. Structural low score driven largely by lexical expectedkeywords, unsupported-by-reference detached/stillness and missing wide_master, not failure to detect the color swap.",
+          "credited_source_observations": "Exact color-transition indices and correct owner broken continuity label; unchanged source geometry.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": []
+        },
+        "luna": {
+          "adjudication": "Continuity_status intact conflicts with owner label. Judge demand for blue color_tag is invalid: blue absent from allowed enum and blue text is sufficient; keep original score without adopting that rationale.",
+          "credited_source_observations": "Exact red0\u20131\u2192blue2\u20134 transition described.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": [
+            "continuity_status intact instead of maintained broken contract"
+          ]
+        },
+        "sol": {
+          "adjudication": "Continuity_status intact contradicts the maintained broken-label contract despite observing the change; label/contract miss rather than invented pixels.",
+          "credited_source_observations": "Exact red1\u2192blue2 transition and unchanged geometry described.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": [
+            "continuity_status intact instead of maintained broken contract"
+          ]
+        }
+      },
+      "source_facts": "The same outlined object is red in frames0\u20131 and blue in2\u20134, all surrounding pixels/geometry otherwise unchanged. Owner continuity contract calls this broken, not intact."
+    },
+    "vfp_active_005": {
+      "arms": {
+        "fable52": {
+          "adjudication": "Resolve unsupported; measured versus fast_lateral, amber versus gold and urgent tone are taxonomy/interpretation issues. No growth or zoom invention.",
+          "credited_source_observations": "Correct arc/gap, fixedwide framing, unchanged prop and landing geometry.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": [
+            "Resolve unsupported; measured versus fast_lateral, amber versus gold and urgent tone are taxonomy/interpretation issues. No growth or zoom invention."
+          ]
+        },
+        "luna": {
+          "adjudication": "Detached/measured and color taxonomy differ; no fabricated observable event found.",
+          "credited_source_observations": "Correct left-right crossing and unchanged scene, but arc and distinct vertical trajectory under-described.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": []
+        },
+        "sol": {
+          "adjudication": "Playful tone versus reference urgent/tense and measured versus fast are interpretation; missing wide_master coverage.",
+          "credited_source_observations": "Correct arc and fixed gap/platforms.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": []
+        }
+      },
+      "source_facts": "Gold/yellow figure with small same-color rectangle moves right along an arc across a gap between two fixed dark platforms; figure size is constant, lateral increments nearly constant."
+    },
+    "vfp_active_006": {
+      "arms": {
+        "fable52": {
+          "adjudication": "Mournful/detached/isolation/resolve not source-proven; measured versus fast reference is subjective pace taxonomy.",
+          "credited_source_observations": "Correct lateral motion, fixedarc/framing, same rectangle and colorpalette.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": [
+            "Mournful/detached/isolation/resolve not source-proven; measured versus fast reference is subjective pace taxonomy."
+          ]
+        },
+        "luna": {
+          "adjudication": "Detached versus urgent tone; no fabricated observable event found.",
+          "credited_source_observations": "Correct lateral movement, fixedarch and consistent rectangle; includes fast_lateral.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": []
+        },
+        "sol": {
+          "adjudication": "Measured/detached tags and missing wide_master differ from reference; no fabricated observable event found.",
+          "credited_source_observations": "Correct lateral motion, shape/scale and fixedarch.",
+          "definite_source_errors": [],
+          "source_contract_grounding_misses": []
+        }
+      },
+      "source_facts": "Cyan figure/rectangle move right in nearly equal steps; arch fixed, cyan/gray streaks change. Navy/teal ground. No facial/emotional information is present."
+    }
+  },
+  "date": "2026-11-09",
+  "judge_limits": [
+    "Native Opus4.6 blind source-complete but same-provider as Fable; sourcefirst corroboration applied.",
+    "Luna001 judge falsely claims prop inframe0 evidence; none exists.",
+    "Luna004 judge demands unavailable blue color_tag contrary to explicit frozen instruction. Original scores retained and these rationales rejected.",
+    "Scores are maintained rubric measurements, not independent proof every deduction is factual. No score/rubric/golden tuning."
+  ],
+  "method": "Viewed all30 original JPEGs as labeled lossless contact sheets plus direct original dialogueframes0/4; read all18 raw subject outputs and18 complete-source Opus reviews. Root independently corroborated dialogue geometry. Source/golden/scorer unchanged. No paid rejudge or favorable-score replacement.",
+  "taxonomy": "Unsupported camera/emotion inference and continuity-label failure are contract/grounding misses, not automatically fabricated observable events. Tone, color naming, motion taxonomy and omitted keywords are separated from source errors. Empty definite_source_errors means no concrete fabricated source event identified in this bounded review, not a universal invention-free guarantee."
+}

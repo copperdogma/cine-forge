@@ -990,7 +990,8 @@
           "232",
           "233",
           "234",
-          "235"
+          "235",
+          "236"
         ],
         "adrIds": [
           "ADR-002",
@@ -1141,7 +1142,8 @@
           "230",
           "231",
           "234",
-          "235"
+          "235",
+          "236"
         ],
         "adrIds": [
           "ADR-001",
@@ -1237,7 +1239,8 @@
           "227",
           "229",
           "231",
-          "235"
+          "235",
+          "236"
         ],
         "adrIds": [
           "ADR-002",
@@ -15560,6 +15563,61 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "236",
+      "title": "Fable 5.2 six-case ordered-frame capability evaluation",
+      "path": "docs/stories/story-236-fable52-ordered-frame-evaluation.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R12",
+        "R18"
+      ],
+      "specRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "adrIds": [
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:7",
+        "spec:8",
+        "spec:9"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "236",
+        "sourcePath": "docs/stories/story-236-fable52-ordered-frame-evaluation.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-236-fable52-ordered-frame-evaluation.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -17589,7 +17647,8 @@
         "225",
         "226",
         "229",
-        "235"
+        "235",
+        "236"
       ],
       "categoryRefs": [
         "spec:7",
@@ -17599,6 +17658,14 @@
       "compromiseIds": [],
       "retryWhen": [],
       "attempts": [
+        {
+          "id": "057",
+          "date": "2026-11-09",
+          "approach": "Full6 xhigh32768 native Fable capability panel with fresh Sol/Luna controls and18 blind full-source native Opus4.6 reviews; original OpenRouter402 preserved, explicitly authorized same-checkpoint direct recovery. No fulltask winner; source-grounded continuitylabel advantage on004 only. All maintained thresholds unchanged.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": []
+        },
         {
           "id": "056",
           "date": "2026-11-05",
@@ -17797,13 +17864,13 @@
         }
       ],
       "latestScore": {
-        "model": "GPT-6.1 Sol / direct Responses low — Scout103 control",
-        "measured": "2026-10-26",
+        "model": "Fable 5.2 / direct Anthropic xhigh32768",
+        "measured": "2026-11-09",
         "metrics": {
-          "overall": 0.702625
+          "overall": 0.67375
         },
-        "evidenceStatus": "bounded-two-case-source-reviewed-control",
-        "note": "Fresh matched low4096 control;0/2 quality passes, prop continuity intact fails declared broken label despite correct color-change description. Supplementary tunnel excluded from mean. No broad quality ranking or promotion."
+        "evidenceStatus": "fresh-six-case-source-reviewed-capability-panel",
+        "note": "Attempt057 full6 fresh strict13key originalJPEG native/parity and full-source blind Opus4.6; all arms0/6completequality passes. Fable uniquely labels exact propcolor transition broken; unsupported camera/emotion inferences and rubric/taxonomy ambiguity retained. Sourcefirst review rejects specific judge rationale errors without rescoring. Native route authorized recovery after OpenRouter pre-infe…"
       },
       "historicalEvidenceStatus": "",
       "excludedScoreCount": 14,
@@ -17823,7 +17890,8 @@
         "225",
         "226",
         "229",
-        "235"
+        "235",
+        "236"
       ],
       "declaredCategoryRefs": [
         "spec:7",
@@ -17842,16 +17910,16 @@
         "sourceId": "video-understanding",
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
-        "posture": "no-trigger-recorded",
-        "whyNow": "Fresh matched low4096 control;0/2 quality passes, prop continuity intact fails declared broken label despite correct color-change description. Supplementary tunnel excluded from mean. No broad quality ranking or promotion.",
-        "retryTriggerStatus": "none",
+        "posture": "trigger-exhausted",
+        "whyNow": "Attempt057 full6 fresh strict13key originalJPEG native/parity and full-source blind Opus4.6; all arms0/6completequality passes. Fable uniquely labels exact propcolor transition broken; unsupported camera/emotion inferences and rubric/taxonomy ambiguity retained. Sourcefirst review rejects specific judge rationale errors without rescoring. Native route authorized recovery after OpenRouter pre-infe…",
+        "retryTriggerStatus": "exhausted",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-11-05",
+          "date": "2026-11-09",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "056",
-          "summary": "Hy4 official Nov4/Tencent FP4 high32768 strict native+adapter qualified. One fresh matched synthetic dialogue: structural .3688/Opus .55/combined .4594 vs Sol .74665/Luna .75595, all0/1passes. Hy4 invents head/body gaps and takes128.072s/$0.0133283345 vs8.717s/$0.0029447 and5.043s/$0.00022267. Stop source failure; remainingcases/lower efforts unmeasured.9settledcalls USD.102450684/5,unknown0. Nat…"
+          "sourceId": "057",
+          "summary": "Full6 xhigh32768 native Fable capability panel with fresh Sol/Luna controls and18 blind full-source native Opus4.6 reviews; original OpenRouter402 preserved, explicitly authorized same-checkpoint direct recovery. No fulltask winner; source-grounded continuitylabel advantage on004 only. All maintained thresholds unchanged."
         }
       }
     }
@@ -18492,7 +18560,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: methodology_tooling, ingest_and_world_building, api_service_and_operator_console +1 more",
-      "UI scout freshness due: attention needed — FP1 (Full Pipeline Canonical Fixture) still has unresolved issues (follow-up stories: 232)"
+      "UI scout freshness due: attention needed — last run 2026-10-24 is 17 days old against a 14-day cadence; +1 more"
     ]
   }
 }

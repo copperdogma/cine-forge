@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.018585",
+  "latency_ms": 9094,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1436,
+    "path": "output/evals/fable52-20261109/judge-opus-luna-vfp_active_004-raw.json",
+    "sha256": "06705b0d87db533bcb835a559051bee7bf55613f7c54668a1d0d705ba5c30865"
+  },
+  "reason": "The summary correctly identifies the red-to-blue color change of the button between frames 0-1 and 2-4, and the static scene is accurately described. However, there are several issues: (1) continuity_status is 'intact' when the reference says 'broken' due to the red-to-blue change \u2014 this is a significant factual error; (2) color_tags include 'red' but miss that 'blue' should also be listed (only 'navy' and 'red' are given); (3) motion_tags include 'stillness' when reference has none; (4) tone_tags include 'detached' when reference has none; (5) audio_tags and audio_notes are empty, which is correct. The continuity status mismatch is the most impactful error since it contradicts the observable frame evidence that the rectangle changes color, which constitutes a continuity break. The evidence entries are well-grounded in specific frames. Camera tag 'static' is correct but misses 'wide_master'.",
+  "request_id": "msg_011CgtGyYpX6YpkhAahxEqag",
+  "score": 0.72,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2487,
+    "output_tokens": 246,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

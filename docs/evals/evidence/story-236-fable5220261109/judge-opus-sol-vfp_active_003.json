@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.01988",
+  "latency_ms": 9566,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1678,
+    "path": "output/evals/fable52-20261109/judge-opus-sol-vfp_active_003-raw.json",
+    "sha256": "4ca8f8cb4ee0b963022650b6466d23bcee0c35cdc5dd9cc3c73655dd0d3bf18a"
+  },
+  "reason": "The summary correctly describes the static geometric illustration with a figure, rectangle, and post, though it identifies the left form specifically as a 'post' rather than keeping it more neutral (the reference notes it could be a lamp or abstract figure). Tone is 'detached' vs reference 'intimate' - a mismatch. Emotion tags are correctly empty. Color tags include 'gold' and 'desaturated' which partially match the reference 'amber, desaturated' - gold and amber are close but not identical. Camera tags include 'static' which matches, but miss 'wide_master'. Motion tags correctly identify 'stillness'. Continuity is correctly 'intact' with appropriate notes. Audio tags and notes are correctly empty. Evidence entries are grounded in actual frames (0, 2, 4) with accurate descriptions. The model does not invent actions, edits, or story meaning. The main deductions are: tone mismatch (detached vs intimate), missing wide_master camera tag, and the somewhat specific identification of the left element as a 'post' rather than keeping ambiguity. The color tag 'gold' vs 'amber' is a minor difference. Overall a solid but not perfect analysis.",
+  "request_id": "msg_011CgtGu29wmCv3LczgMbzAA",
+  "score": 0.78,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2576,
+    "output_tokens": 280,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

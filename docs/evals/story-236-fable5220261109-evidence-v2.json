@@ -1,0 +1,1352 @@
+{
+  "files": [
+    {
+      "bytes": 43885,
+      "path": "benchmarks/results/video-understanding-fable52-vs-sol-luna-v4-20261109-v2.json",
+      "sha256": "8d5ed27726a595b728f7ea118fc020e00491bd23c1596bf826117c934491a70d"
+    },
+    {
+      "bytes": 43579,
+      "path": "benchmarks/results/video-understanding-fable52-vs-sol-luna-v4-20261109.json",
+      "sha256": "67ae20b2e4f00944cb18a6736ba85f1d87a0534f6256ddf12b6bfdd3cefe5e94"
+    },
+    {
+      "bytes": 7138,
+      "path": "benchmarks/scripts/report_fable52_video_comparison.py",
+      "sha256": "98f6815f93e206ac9f2c263629d3ea6ad4191e7bcd46d940ffc97363a27f9a4f"
+    },
+    {
+      "bytes": 7666,
+      "path": "benchmarks/scripts/report_fable52_video_comparison_v2.py",
+      "sha256": "f1c43f72dd508ac235253ea313a3f40682a128008c7989b9f88939b5787c5c62"
+    },
+    {
+      "bytes": 1769,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_001-raw.json",
+      "sha256": "45383c86ebc369e295ca0fdaef9cbb30475b340785f9664b1d9bfa776869294a"
+    },
+    {
+      "bytes": 94332,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_001-request.json",
+      "sha256": "45907025099173cf873c60c0d4d0ba7c3e21600ffa6edc5b92bedfe966b94247"
+    },
+    {
+      "bytes": 1944,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_001.json",
+      "sha256": "00f5d06b39d0363ed47a0043ffe63a2f3de6dad08818011879f6e07fdd75e9b8"
+    },
+    {
+      "bytes": 1516,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_002-raw.json",
+      "sha256": "77b150b462bad2d9df8518ea205d093e33daca69b5feafe1f1bb78e7360dd7de"
+    },
+    {
+      "bytes": 252904,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_002-request.json",
+      "sha256": "28145a2cff37fb7200a5b484f6ed5c071dd953a261d3d17dec58a84e6aee9a99"
+    },
+    {
+      "bytes": 1687,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_002.json",
+      "sha256": "2c2d71afbce87ac29c3b634e27e07841ed1bd187c42a38529321740035e609f2"
+    },
+    {
+      "bytes": 1794,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_003-raw.json",
+      "sha256": "345d7e42bcd718758c229b3356a93fbc2b97557d78236a735079d4edfaa5c41e"
+    },
+    {
+      "bytes": 93431,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_003-request.json",
+      "sha256": "130ac1f220a3a6a7ffb43e5f20c7b4df74b0591d83637ad566889d04a9847bdb"
+    },
+    {
+      "bytes": 1972,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_003.json",
+      "sha256": "18b926d345728efb4583f65d494197ebf511f840172431ff4ac5e980d37384f6"
+    },
+    {
+      "bytes": 1526,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_004-raw.json",
+      "sha256": "7b7afec1c24373f7be35d55d19ec19762a231779a816cecba468eddff2f8d21d"
+    },
+    {
+      "bytes": 80065,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_004-request.json",
+      "sha256": "aac130211a7a5ecd8dbf244e5e196c6ea543459450e00395ed156b5cad98f345"
+    },
+    {
+      "bytes": 1696,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_004.json",
+      "sha256": "a6ce6ee8df24caea0b8acb95ba5aee50571d678bf7f3ffc66e450d280966d860"
+    },
+    {
+      "bytes": 1527,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_005-raw.json",
+      "sha256": "09656723ee01b5df32aac10a4e60a772f6257cd2553a3474873ca7457a47bb97"
+    },
+    {
+      "bytes": 187964,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_005-request.json",
+      "sha256": "9aa424dea5b94b608518030b71355f8cc46a3758ea088562dfee7080054d2697"
+    },
+    {
+      "bytes": 1698,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_005.json",
+      "sha256": "37c22d6cd156f2179c8cff11e5c5c5472ede63fd5c2e7b365d716b4bdfef2fab"
+    },
+    {
+      "bytes": 1538,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_006-raw.json",
+      "sha256": "d9dce210c36ff997bec95009ddaab7cd8a70815cea8f1c2df03ddb4a1e80b3a3"
+    },
+    {
+      "bytes": 308562,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_006-request.json",
+      "sha256": "17d538a1ce38847ed51f6c48b9623680fca8a814f3f78fb3474c4774937eb0be"
+    },
+    {
+      "bytes": 1712,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-fable52-vfp_active_006.json",
+      "sha256": "7655a09a7c1675875578d81ab65308e6b756105de7c72684e74d4a59c7f02828"
+    },
+    {
+      "bytes": 1815,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_001-raw.json",
+      "sha256": "e5cf6b3ea238b8028fff6bb972c8c3a0de23a758ad43ba92b3d924a73f0b3b21"
+    },
+    {
+      "bytes": 93928,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_001-request.json",
+      "sha256": "2bda369f98ac026ad875998b9875e1035899e3d90311387a14fd92087de96245"
+    },
+    {
+      "bytes": 1993,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_001.json",
+      "sha256": "d6f2de44e0ed356c8db6a41f5c2062990345c6e4bf479293b49749c3a83ccba4"
+    },
+    {
+      "bytes": 1441,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_002-raw.json",
+      "sha256": "10e5aa0d36b714f822cf2fc2e1d04e744f7fbd3733fccbe71d7b6b00f9f985b0"
+    },
+    {
+      "bytes": 252443,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_002-request.json",
+      "sha256": "97d9a1a78c99320b866a6afe4f902e60fc19a3fdd10c27a8eeae1c4de1eab2dd"
+    },
+    {
+      "bytes": 1617,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_002.json",
+      "sha256": "d6fb964bd6f8aac3e117c6207aa762ea140d6c1da8b45daaaa8346843e919eef"
+    },
+    {
+      "bytes": 1403,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_003-raw.json",
+      "sha256": "90f94c1c8c166b8e78833e02ef26828e3faf192f9d5ae29a4ecfa551dd032930"
+    },
+    {
+      "bytes": 93177,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_003-request.json",
+      "sha256": "6b208e930cd4c91e3129da82e64b1e7133f10178d42d2650aaf050208fb907f1"
+    },
+    {
+      "bytes": 1570,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_003.json",
+      "sha256": "ffd27bc847ce39f9c302dc11cccc0456a5009b67041c5ff0f2009c71e5c5fc8b"
+    },
+    {
+      "bytes": 1436,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_004-raw.json",
+      "sha256": "06705b0d87db533bcb835a559051bee7bf55613f7c54668a1d0d705ba5c30865"
+    },
+    {
+      "bytes": 79588,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_004-request.json",
+      "sha256": "f7c0125637de07f2d88d5b8834f61bb539bc55254f25371539bc050e74558ebb"
+    },
+    {
+      "bytes": 1607,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_004.json",
+      "sha256": "7f4067d405c42e768d45438f2d4d4ef2a7cec8f232489b8c0ea6048703db1264"
+    },
+    {
+      "bytes": 1632,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_005-raw.json",
+      "sha256": "9744dbe0d47eb987cfe28bd803d20744f8937c7e2c822643ad9c3b85eb7248af"
+    },
+    {
+      "bytes": 187311,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_005-request.json",
+      "sha256": "76ab49fda2df62bc746cf44a06378d5b1fe0249652e69ee781c68c7e6cb4b6f2"
+    },
+    {
+      "bytes": 1809,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_005.json",
+      "sha256": "5e0643e286c7d4c6773838191ec0f36642f4616fb5c7ad25ced44341f1627463"
+    },
+    {
+      "bytes": 1398,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_006-raw.json",
+      "sha256": "5596940d748741852b5602a62f7a8a556089da666163e9bdd0ef45e5bbf28474"
+    },
+    {
+      "bytes": 308029,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_006-request.json",
+      "sha256": "ae36e2f94083d2249daebfb94145abb70fb4c27cbc08f1a73f897d35697ce0ed"
+    },
+    {
+      "bytes": 1569,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-luna-vfp_active_006.json",
+      "sha256": "feefa2130455ba9670019126f115c900e71ccf1c65223e4396f6a763e453e8db"
+    },
+    {
+      "bytes": 1558,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_001-raw.json",
+      "sha256": "5ec141d3d37a1722714fe970c12f4cd39d8cc57beb5484a9978861a3b4209be5"
+    },
+    {
+      "bytes": 94246,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_001-request.json",
+      "sha256": "6364e7594920fb3961d5405b2852dd90ff7a8d3216df02646eff8895e5369c2d"
+    },
+    {
+      "bytes": 1725,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_001.json",
+      "sha256": "5d2fd5288822a1aaf38e92b18dc492a251832fe13b5e7d8adca7342ed051b7d6"
+    },
+    {
+      "bytes": 1492,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_002-raw.json",
+      "sha256": "6e9bc7fb41bfe0e0bc8a2ecb3b8aa4b7fb9c33e96b2341c84ccc948244cb7e0a"
+    },
+    {
+      "bytes": 252672,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_002-request.json",
+      "sha256": "d9d908f459b6357ea82a30b7358470ce25d609433b34427d1aef21e141397f62"
+    },
+    {
+      "bytes": 1662,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_002.json",
+      "sha256": "5cd6b35ba50c8b551d45dbb1d8ddd0e157b4a6c15ef9e3f676f89ddc7b959f00"
+    },
+    {
+      "bytes": 1678,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_003-raw.json",
+      "sha256": "4ca8f8cb4ee0b963022650b6466d23bcee0c35cdc5dd9cc3c73655dd0d3bf18a"
+    },
+    {
+      "bytes": 93314,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_003-request.json",
+      "sha256": "07ad8c6bcb34f3b7f799834077926af79463564918ff53d31acd2661a979feb4"
+    },
+    {
+      "bytes": 1844,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_003.json",
+      "sha256": "35b92ad0e55af049250692f7fcbcb9e8cd40d5280e683720a53c3eefe9a9f2a3"
+    },
+    {
+      "bytes": 1357,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_004-raw.json",
+      "sha256": "f8bd9b8160cf5df16e21ed18567e2fdf2d2e192c4d046edf0cb86f31a2af2cfd"
+    },
+    {
+      "bytes": 79751,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_004-request.json",
+      "sha256": "0d73c0428450e5cb4737c77da61529b28960df3fa5f1871bb0e5184e59c72538"
+    },
+    {
+      "bytes": 1526,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_004.json",
+      "sha256": "b316cdb0e547d94beccb0a7af5eef8e212bc15a7fad1e079d910672bd0a9bf29"
+    },
+    {
+      "bytes": 1424,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_005-raw.json",
+      "sha256": "cfad82fb6a8b70419a1079be2529662b3677818c9449c2d846b477fbf2489b5b"
+    },
+    {
+      "bytes": 187509,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_005-request.json",
+      "sha256": "5487d52a72679fad6f9ec7478acbba185c671354b605a6c9d4bdfa5fd6c26c35"
+    },
+    {
+      "bytes": 1592,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_005.json",
+      "sha256": "9d6b4460c18d8fcad78b629268211afdc456056dcf1daf4ed97b357fcf7a5b40"
+    },
+    {
+      "bytes": 1412,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_006-raw.json",
+      "sha256": "444bfa10fb5877696352a11b308ca4e60752625522c7315b45a1effed8df78a8"
+    },
+    {
+      "bytes": 308202,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_006-request.json",
+      "sha256": "b9af977419767e94b39365b621515a76b34c3f1e10fbdebc48f02d3a2460e0fe"
+    },
+    {
+      "bytes": 1585,
+      "path": "docs/evals/evidence/story-236-fable5220261109/judge-opus-sol-vfp_active_006.json",
+      "sha256": "b5173817ddbfc248eebaa2f41d8cab8fdf2d781f3915bca823e52f64074e13dc"
+    },
+    {
+      "bytes": 7161,
+      "path": "docs/evals/evidence/story-236-fable5220261109/ledger-v2.json",
+      "sha256": "9a96bfed495d2f37464df7d22f3ca45baf3ad0b7a32c6292b191ec9ba9f31fa5"
+    },
+    {
+      "bytes": 7012,
+      "path": "docs/evals/evidence/story-236-fable5220261109/ledger.json",
+      "sha256": "75656c9e29cc38c1ea149d557cf7f00bd169a56e1af7dbe2a6607534ae889f97"
+    },
+    {
+      "bytes": 6031,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/fable52/vfp_active_001-raw-envelope.json",
+      "sha256": "ce0aa52c8793c26ea3de20e80cd4f904c71ab4e16a52a095cd136b6221934e9f"
+    },
+    {
+      "bytes": 8082,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/fable52/vfp_active_002-raw-envelope.json",
+      "sha256": "12726b217cede15fd2a34436496d944a284a6993d09da5b0adbbf20b551dcc6f"
+    },
+    {
+      "bytes": 6881,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/fable52/vfp_active_003-raw-envelope.json",
+      "sha256": "3dbc23391362907045fdc3f111add41d1b032c48eb7760a705b6607825bba221"
+    },
+    {
+      "bytes": 5498,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/fable52/vfp_active_004-raw-envelope.json",
+      "sha256": "40738f53681f636e8441121991ce755ddf88c0c5ecee207eda73944abd1fd622"
+    },
+    {
+      "bytes": 5773,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/fable52/vfp_active_005-raw-envelope.json",
+      "sha256": "abcec3c1b50c33aab26bc437674238239a4f3a6f882daac77f57fc17bb1c1f4b"
+    },
+    {
+      "bytes": 9145,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/fable52/vfp_active_006-raw-envelope.json",
+      "sha256": "45a22b379955bb192b1d81006b614315b7370fd46dfae493125bf8800c2d6ec9"
+    },
+    {
+      "bytes": 12544,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/luna/vfp_active_001-raw-envelope.json",
+      "sha256": "8d009580adaa31fcd1360f0d23b6c8f3e8b29e42cd52bf0db2aca8a58993df77"
+    },
+    {
+      "bytes": 8374,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/luna/vfp_active_002-raw-envelope.json",
+      "sha256": "8065f87dcf08455a524418b0f07a4a10861cad19c9599d4469c8f020a7596eb5"
+    },
+    {
+      "bytes": 12043,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/luna/vfp_active_003-raw-envelope.json",
+      "sha256": "5ad8e81b11b94eee629d0be5d1d436b15f4f6d485154018aed8c4ba0428f6434"
+    },
+    {
+      "bytes": 11233,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/luna/vfp_active_004-raw-envelope.json",
+      "sha256": "f69ffab5f704fa295c550f5b55d0e6956134039db1326d8252a8c5a5a1177eac"
+    },
+    {
+      "bytes": 12009,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/luna/vfp_active_005-raw-envelope.json",
+      "sha256": "529f8a6c4da6ac6526f9ab290aa1cb67ffd1c2ffa44e1ac18ed257c560b94e5a"
+    },
+    {
+      "bytes": 11532,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/luna/vfp_active_006-raw-envelope.json",
+      "sha256": "c57c18fe6acd1f0d1b2178bf117696f21892cdad9c5e2d9f39d138005be7ebd0"
+    },
+    {
+      "bytes": 8789,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/sol/vfp_active_001-raw-envelope.json",
+      "sha256": "d7c1ba82f84192e5442bde2fcb21884d965c1897fe5e3fc5a4028ec0ff314f8c"
+    },
+    {
+      "bytes": 8629,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/sol/vfp_active_002-raw-envelope.json",
+      "sha256": "86ac83eda6b1bbd025f5fa29077fd9aa62f060a42a8f3d33f723a8bb8633b93c"
+    },
+    {
+      "bytes": 8575,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/sol/vfp_active_003-raw-envelope.json",
+      "sha256": "bb7e766f52caad8e9eefb0e6c6becfaa9c10bc496b6b5cb16d2e4b38f092a1e3"
+    },
+    {
+      "bytes": 11422,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/sol/vfp_active_004-raw-envelope.json",
+      "sha256": "32503834388f46d6c179204d2f833865941bdc3195aefa3e61a1bcbc7f38c200"
+    },
+    {
+      "bytes": 8474,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/sol/vfp_active_005-raw-envelope.json",
+      "sha256": "0509bdcfdbde4faf374914291ac34d8c58a0b9390a15b048212825ed5b66823a"
+    },
+    {
+      "bytes": 8464,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native/sol/vfp_active_006-raw-envelope.json",
+      "sha256": "87f2109a2b3861e3346ae8d725533fc28efe52a3f1bbcced39ff7600e5c7b6be"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_001-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 99096,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_001-request.json",
+      "sha256": "6f36ec93f86f1713131d3e1874c8171fc3a1fd78a26dcba790cfb61035541ab1"
+    },
+    {
+      "bytes": 4177,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_001.json",
+      "sha256": "1afc80e374b18709459b298842863596dc41c9269e6e3107a04483e9edffc5bf"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_002-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 257956,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_002-request.json",
+      "sha256": "2b26b0c69aef7a1a025dcc8c6fee55c924ab9d943a6c8ea257ff5a0aa4730519"
+    },
+    {
+      "bytes": 4129,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_002.json",
+      "sha256": "2bf4a63ee5fe57ad128a13747f06d60e4190b79c656019b6b73c4f9feebb51dd"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_003-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 98376,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_003-request.json",
+      "sha256": "5c091a8e84b53c3e70db68eee3c567c87d96322ccae459e9347873b6dc965bdf"
+    },
+    {
+      "bytes": 3955,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_003.json",
+      "sha256": "8b38ed8d13bd722e3d21b17d015a88934007825857bc7d92c9bfeb7654bb2914"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_004-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 85156,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_004-request.json",
+      "sha256": "ffcd9f1945f2b88fd4015d6629949be334cd61fe10c59b17cc93afa7400f061a"
+    },
+    {
+      "bytes": 4127,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_004.json",
+      "sha256": "b96c904d415986674f6a44fb5bb699bec8cbebd93cb5264b0822f58f9b5f19d7"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_005-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 192792,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_005-request.json",
+      "sha256": "4655dbb5d1b485cb4ab64ae2f809c4dfca42ac286f1f0afa08c3f0b8e68731ff"
+    },
+    {
+      "bytes": 4221,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_005.json",
+      "sha256": "3f1aa82a4496c73e317a62afa19f6f2051b472329dc04a8a15c468421569e174"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_006-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 313648,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_006-request.json",
+      "sha256": "bf28cdcec0bae9853e9bf922764f48da9662f854ace96349d134ebdce9608ce5"
+    },
+    {
+      "bytes": 4112,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-fable52-vfp_active_006.json",
+      "sha256": "050264bf9a2b87f49edffb10232ef2f8675da5649f99b983fe7a6676d5416ca8"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_001-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 99011,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_001-request.json",
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517"
+    },
+    {
+      "bytes": 3764,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_001.json",
+      "sha256": "6a920de9d82f34e0192d68fe11dc3da1986545b7b867b23bb3f2ee4ba72178c0"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_002-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 257871,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_002-request.json",
+      "sha256": "38af3d9b985fd321794d21f878e487f7f1cba39423a7dc6e67475c41a95fff10"
+    },
+    {
+      "bytes": 3653,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_002.json",
+      "sha256": "653f95154e9a4810d1e3ea1422fe1b1b899ed323d72f966d1564459181a26f59"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_003-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 98291,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_003-request.json",
+      "sha256": "309fbf758455cdbab27e9a643dfbd1a6d4effd743bc041db1676322ee3fd5dfb"
+    },
+    {
+      "bytes": 3701,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_003.json",
+      "sha256": "8e7a9b2c7eaa4b6f8436547e034b72ff288a8220ad0dc841d6304d6da7cb2d29"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_004-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 85071,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_004-request.json",
+      "sha256": "999a219b80982ce3d3c0bc1b618c340ebb7f5ad0c9522adb662029667cad4356"
+    },
+    {
+      "bytes": 3639,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_004.json",
+      "sha256": "4ccfbe8f51b7fd7436ca8aae2c6124ded29fd983396dc84725fafb3c71bfa955"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_005-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 192707,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_005-request.json",
+      "sha256": "99da93d687a682c00cf92c2db6684e5fc62529825bdc36bc45f71ca2110d5c74"
+    },
+    {
+      "bytes": 3559,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_005.json",
+      "sha256": "9d96ac5ce439668776205e090779f7388831ec5455cf4796bdab899b7addc7ee"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_006-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 313563,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_006-request.json",
+      "sha256": "01d478770d07fa488eacdc272b2a30e2eb2d80aed5c7834942257df1b20a813e"
+    },
+    {
+      "bytes": 3579,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-luna-vfp_active_006.json",
+      "sha256": "1fc390117485d88f53379f4d320fe8b47050f59e01e5d93c2b1ddd4a187fd30e"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_001-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 99012,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_001-request.json",
+      "sha256": "35fa150d6cd6d32f95bbd36a143251e5976194aab56531fb570f60c2c0df7460"
+    },
+    {
+      "bytes": 4076,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_001.json",
+      "sha256": "686de7eb9c5d36ab1a5a53c32eed10239ba3332bcabfabebb225f38b5b9dd8fa"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_002-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 257872,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_002-request.json",
+      "sha256": "02b2178b70142464d7b23b475b576038203f240e975ca30f0c1983714125aaa9"
+    },
+    {
+      "bytes": 3881,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_002.json",
+      "sha256": "ae256439c187de10fe1cd4962e1218f90e07359cc9966cb470ac327e5195d941"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_003-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 98292,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_003-request.json",
+      "sha256": "cc5ef9126556b8d0a4af2f76d44b9069e22ca75bb44a0a1e476a099d7b3f46e4"
+    },
+    {
+      "bytes": 3822,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_003.json",
+      "sha256": "44ca2e6921a3d8823747fc6c5e8bde2dc7e8263b0d19ee39b893faaa8649a283"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_004-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 85072,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_004-request.json",
+      "sha256": "0151fac5412db8b9f1aebb78001d98f38a3e7dc58b12cb0c452714a753f1fa05"
+    },
+    {
+      "bytes": 3801,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_004.json",
+      "sha256": "7e6d0e3ef9854cedf3ed5e938ab9e26e0dceab14ae95d4051087a74cac69200c"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_005-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 192708,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_005-request.json",
+      "sha256": "1963f083dd7f6e1bceddc396976862dd58c87b9f1163a82fd1f6a4298e78bbbf"
+    },
+    {
+      "bytes": 3751,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_005.json",
+      "sha256": "6780a1be957f9d7f5196043e663b11d3ba48e659fd058a9ae15caa04cb5ab1db"
+    },
+    {
+      "bytes": 153,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_006-parity.json",
+      "sha256": "5ec463d15969bbc7c11125f6946616997cb7b004f06d4347cc106582814077b3"
+    },
+    {
+      "bytes": 313564,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_006-request.json",
+      "sha256": "6a83d0876b23e774bd23b066aa47eca234c2356c2060766d32340544a18bd7a4"
+    },
+    {
+      "bytes": 3736,
+      "path": "docs/evals/evidence/story-236-fable5220261109/native-sol-vfp_active_006.json",
+      "sha256": "e2f45ab3a7326c2533fd47f903be06fe1c822a2d1edad2ee34757750a2f7927d"
+    },
+    {
+      "bytes": 1507,
+      "path": "docs/evals/evidence/story-236-fable5220261109/official-sources.json",
+      "sha256": "bd5b9e20c4d4394da71d4b9d324e8f37d8d497aa93194c0c88c46dd3bd9043ca"
+    },
+    {
+      "bytes": 100040,
+      "path": "docs/evals/evidence/story-236-fable5220261109/openrouter-preinference402-request.json",
+      "sha256": "564ba5804f5398538f4c6dd94c3b7c5c3d5e5e351dbe3f7eb5f1d3a58a9da3ee"
+    },
+    {
+      "bytes": 100510,
+      "path": "docs/evals/evidence/story-236-fable5220261109/openrouter-preinference402-sanitized.json",
+      "sha256": "36e6551ae5a08ba6ee7ffbaa7e3cf226feeb15a507c034b64d5dec4e28c9267c"
+    },
+    {
+      "bytes": 9634,
+      "path": "docs/evals/evidence/story-236-fable5220261109/public-endpoints.json",
+      "sha256": "972d3daf666120a75acd58b193a105b463bcb38cff6dc6a245822087337582ec"
+    },
+    {
+      "bytes": 11000,
+      "path": "docs/evals/evidence/story-236-fable5220261109/source-review.json",
+      "sha256": "50198147e29d6955a1151c7353cb503cd7fc3b9bf6d6c5eaa7f2e790851b1446"
+    },
+    {
+      "bytes": 3101,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/prompts/video-understanding.txt",
+      "sha256": "53ea0b8ef7487d8dcaea352c0eb133100e18eb45d78b953f2007f14148beb6e2"
+    },
+    {
+      "bytes": 14988,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/providers/video_understanding_provider.py",
+      "sha256": "f33809c311649716dc1ecf9e42c95f9f672b72264494f1c8909b089843874a10"
+    },
+    {
+      "bytes": 10424,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/providers/video_understanding_provider_anthropic.py",
+      "sha256": "b0e5414652a0e7bbf49552c4ce2527b8d78a7ff3ca463fd422889eeed6e62566"
+    },
+    {
+      "bytes": 4335,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/providers/video_understanding_provider_argon.py",
+      "sha256": "8028bf87ea1e63a8121c0166960a59c4ac020d1e9197c644639d69ea660a749c"
+    },
+    {
+      "bytes": 15009,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/providers/video_understanding_provider_support.py",
+      "sha256": "c4c9c5d3635e329cbd6df77bab83853628a4ec453fa442005de5b3b689d658f0"
+    },
+    {
+      "bytes": 15449,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/providers/video_understanding_provider_vision.py",
+      "sha256": "437e25d4f3f8a0556c4d83764b9c5efb3561414de6d07e8c46b8ce895fef2616"
+    },
+    {
+      "bytes": 8149,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/providers/video_understanding_transport.py",
+      "sha256": "7236575192c38cc4b5cda3df2b543f84dcb88d3c2bb4ceff86cacc97a441ba1d"
+    },
+    {
+      "bytes": 1236,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/scorers/score_semantics.py",
+      "sha256": "3ec7f3083afbbaa5649f958718788f7ff1b3af300ff007b8673cb3a15b805b1c"
+    },
+    {
+      "bytes": 5898,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/scorers/video_understanding_contract.py",
+      "sha256": "a27a5bcf9243f0679e770655bc0e91d379543fa8aadd7debf72eda8d4d30f3e3"
+    },
+    {
+      "bytes": 12564,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/scorers/video_understanding_dimensions.py",
+      "sha256": "2f2a82e2f512bd523d3cb1ae8e42eac50bf2bc2f519220cb010510cb5bc51861"
+    },
+    {
+      "bytes": 9076,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/scorers/video_understanding_scorer.py",
+      "sha256": "ee89f6458ed313d0b187f529f218eaeaced7af2a13f0b89ce44cf2c49f228738"
+    },
+    {
+      "bytes": 20081,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/scripts/run_fable52_video_comparison.py",
+      "sha256": "01ab483e5f054c506b476c3e19c53b83c8c9b896af9bf4751c222524cfab1315"
+    },
+    {
+      "bytes": 12064,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/tasks/video-understanding.yaml",
+      "sha256": "7099a13de9353f374fd9f3f2fe3177208378e4ef697cbbedba74baec283b1733"
+    },
+    {
+      "bytes": 38344,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_00.jpg",
+      "sha256": "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a"
+    },
+    {
+      "bytes": 37597,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_01.jpg",
+      "sha256": "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039"
+    },
+    {
+      "bytes": 35584,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_02.jpg",
+      "sha256": "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655"
+    },
+    {
+      "bytes": 36187,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_03.jpg",
+      "sha256": "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b"
+    },
+    {
+      "bytes": 37453,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_04.jpg",
+      "sha256": "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+    },
+    {
+      "bytes": 1338,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/alarm_chase_whip_pan/meta.json",
+      "sha256": "d028854d7c23197397b7003bfcfe3fd651d418a232950e8e28851ea210e7e99a"
+    },
+    {
+      "bytes": 12984,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_00.jpg",
+      "sha256": "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84"
+    },
+    {
+      "bytes": 12943,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_01.jpg",
+      "sha256": "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5"
+    },
+    {
+      "bytes": 13273,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_02.jpg",
+      "sha256": "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24"
+    },
+    {
+      "bytes": 13223,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_03.jpg",
+      "sha256": "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576"
+    },
+    {
+      "bytes": 13602,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_04.jpg",
+      "sha256": "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+    },
+    {
+      "bytes": 1428,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/dialogue_confession_push_in/meta.json",
+      "sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347"
+    },
+    {
+      "bytes": 11104,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_00.jpg",
+      "sha256": "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e"
+    },
+    {
+      "bytes": 11104,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_01.jpg",
+      "sha256": "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e"
+    },
+    {
+      "bytes": 11120,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_02.jpg",
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "bytes": 11120,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_03.jpg",
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "bytes": 11120,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_04.jpg",
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "bytes": 1311,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/prop_swap_continuity_break/meta.json",
+      "sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48"
+    },
+    {
+      "bytes": 13097,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_00.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_01.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_02.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_03.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_04.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 1346,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/quiet_bedside_vigil/meta.json",
+      "sha256": "ba3438e4973166276591efea693838df99841ac34eac732f433c0c5cfcefe8fa"
+    },
+    {
+      "bytes": 27600,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_00.jpg",
+      "sha256": "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d"
+    },
+    {
+      "bytes": 27995,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_01.jpg",
+      "sha256": "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8"
+    },
+    {
+      "bytes": 26221,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_02.jpg",
+      "sha256": "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd"
+    },
+    {
+      "bytes": 27384,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_03.jpg",
+      "sha256": "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236"
+    },
+    {
+      "bytes": 27098,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_04.jpg",
+      "sha256": "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+    },
+    {
+      "bytes": 1387,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/rooftop_escape_crash_zoom/meta.json",
+      "sha256": "82b8bbbdf804d1a9d8975e8952659d5455986fc2e4c3482d33f274227a715410"
+    },
+    {
+      "bytes": 45585,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_00.jpg",
+      "sha256": "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81"
+    },
+    {
+      "bytes": 45840,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_01.jpg",
+      "sha256": "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7"
+    },
+    {
+      "bytes": 44751,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_02.jpg",
+      "sha256": "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d"
+    },
+    {
+      "bytes": 45573,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_03.jpg",
+      "sha256": "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef"
+    },
+    {
+      "bytes": 45193,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_04.jpg",
+      "sha256": "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+    },
+    {
+      "bytes": 1385,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding/storm_tunnel_lateral_run/meta.json",
+      "sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13"
+    },
+    {
+      "bytes": 1528,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/README.md",
+      "sha256": "46eb3c10df8c912ce62c9bc0aa831dfe5a0a8c36d9a41fb50ce8c9756022ca47"
+    },
+    {
+      "bytes": 1251,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/alarm_chase_whip_pan/target.json",
+      "sha256": "bdeebb0075f458a1c87033300b1be9fce6bb66b3104362b35612e0a899d4f621"
+    },
+    {
+      "bytes": 530,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/alarm_chase_whip_pan/target.md",
+      "sha256": "47f79d984b17bb23b3b8e494b0ea83a4bfabb09140c56f81607225e6f2f0dc1d"
+    },
+    {
+      "bytes": 1353,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/dialogue_confession_push_in/target.json",
+      "sha256": "04d1a434d029604a61933ccc69ca85b821acbf0e74ede054389243476fd5fc36"
+    },
+    {
+      "bytes": 803,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+      "sha256": "b8a723c5e68b6ac65f65f76b9aaba4e15257bbc3d497e457ec8cd75480b3a160"
+    },
+    {
+      "bytes": 5893,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/manifest.json",
+      "sha256": "61008dfc76f9cd75ee8fdebdbce1b0968c81fc88995912135d7014c7f1d030e8"
+    },
+    {
+      "bytes": 1221,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/prop_swap_continuity_break/target.json",
+      "sha256": "9f14e1f173f5d818b8f915016c498be241206814cfd6cf36d4b68cacdb875be8"
+    },
+    {
+      "bytes": 522,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+      "sha256": "8a68446af7b9d7d8ef09e31d8ad8bb87ce064dd810da4fd6e251edd8ac4f4eba"
+    },
+    {
+      "bytes": 1279,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/quiet_bedside_vigil/target.json",
+      "sha256": "fb1d0e1cc26ff665b85d8086d68ac9a057a6f5408f586e78dc219c1ff2fadfcf"
+    },
+    {
+      "bytes": 805,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/quiet_bedside_vigil/target.md",
+      "sha256": "d7df7986a4611e5c1b40a96d9a99414b976f03fc4ea590aa517793005aa0b310"
+    },
+    {
+      "bytes": 1268,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/rooftop_escape_crash_zoom/target.json",
+      "sha256": "a580fe31488479466d695125959701d6e3b7a6f481274bfad99e2bd1f95dde88"
+    },
+    {
+      "bytes": 685,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/rooftop_escape_crash_zoom/target.md",
+      "sha256": "80b64c09ebf888dd089dbf3b15980ceffdc8187aa628d11de8c3640580b84599"
+    },
+    {
+      "bytes": 1270,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.json",
+      "sha256": "7d0a40d274599f17dd2242134c26d0f13c70430bca3ba49428c041d8bbf7d82e"
+    },
+    {
+      "bytes": 533,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+      "sha256": "66eca2cb744f84f549136615e834ee8e6843bf61d1dfdf1f13b28a7f0101bc3f"
+    },
+    {
+      "bytes": 7132,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-native/src/cine_forge/schemas/video_analysis.py",
+      "sha256": "dc92b71ebc183ee15e1a92aaac814317bca1f1a9c76ae075164071edfbee5a36"
+    },
+    {
+      "bytes": 3101,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/prompts/video-understanding.txt",
+      "sha256": "53ea0b8ef7487d8dcaea352c0eb133100e18eb45d78b953f2007f14148beb6e2"
+    },
+    {
+      "bytes": 14988,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/providers/video_understanding_provider.py",
+      "sha256": "f33809c311649716dc1ecf9e42c95f9f672b72264494f1c8909b089843874a10"
+    },
+    {
+      "bytes": 7970,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/providers/video_understanding_provider_anthropic.py",
+      "sha256": "c8227e48520bd5ddc47b6a490b3025b66698fbf5542939bb5c77f08e1e8c979a"
+    },
+    {
+      "bytes": 4335,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/providers/video_understanding_provider_argon.py",
+      "sha256": "8028bf87ea1e63a8121c0166960a59c4ac020d1e9197c644639d69ea660a749c"
+    },
+    {
+      "bytes": 15009,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/providers/video_understanding_provider_support.py",
+      "sha256": "c4c9c5d3635e329cbd6df77bab83853628a4ec453fa442005de5b3b689d658f0"
+    },
+    {
+      "bytes": 15449,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/providers/video_understanding_provider_vision.py",
+      "sha256": "437e25d4f3f8a0556c4d83764b9c5efb3561414de6d07e8c46b8ce895fef2616"
+    },
+    {
+      "bytes": 8149,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/providers/video_understanding_transport.py",
+      "sha256": "7236575192c38cc4b5cda3df2b543f84dcb88d3c2bb4ceff86cacc97a441ba1d"
+    },
+    {
+      "bytes": 1236,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/scorers/score_semantics.py",
+      "sha256": "3ec7f3083afbbaa5649f958718788f7ff1b3af300ff007b8673cb3a15b805b1c"
+    },
+    {
+      "bytes": 5898,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/scorers/video_understanding_contract.py",
+      "sha256": "a27a5bcf9243f0679e770655bc0e91d379543fa8aadd7debf72eda8d4d30f3e3"
+    },
+    {
+      "bytes": 12564,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/scorers/video_understanding_dimensions.py",
+      "sha256": "2f2a82e2f512bd523d3cb1ae8e42eac50bf2bc2f519220cb010510cb5bc51861"
+    },
+    {
+      "bytes": 9076,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/scorers/video_understanding_scorer.py",
+      "sha256": "ee89f6458ed313d0b187f529f218eaeaced7af2a13f0b89ce44cf2c49f228738"
+    },
+    {
+      "bytes": 19089,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/scripts/run_fable52_video_comparison.py",
+      "sha256": "cfcd3ea0b71aa4cf1539f47a963e4a9c6c45c23aecdca9481a11064068cfdf7e"
+    },
+    {
+      "bytes": 12064,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/tasks/video-understanding.yaml",
+      "sha256": "7099a13de9353f374fd9f3f2fe3177208378e4ef697cbbedba74baec283b1733"
+    },
+    {
+      "bytes": 38344,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_00.jpg",
+      "sha256": "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a"
+    },
+    {
+      "bytes": 37597,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_01.jpg",
+      "sha256": "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039"
+    },
+    {
+      "bytes": 35584,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_02.jpg",
+      "sha256": "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655"
+    },
+    {
+      "bytes": 36187,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_03.jpg",
+      "sha256": "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b"
+    },
+    {
+      "bytes": 37453,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/alarm_chase_whip_pan/frames/frame_04.jpg",
+      "sha256": "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+    },
+    {
+      "bytes": 1338,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/alarm_chase_whip_pan/meta.json",
+      "sha256": "d028854d7c23197397b7003bfcfe3fd651d418a232950e8e28851ea210e7e99a"
+    },
+    {
+      "bytes": 12984,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_00.jpg",
+      "sha256": "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84"
+    },
+    {
+      "bytes": 12943,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_01.jpg",
+      "sha256": "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5"
+    },
+    {
+      "bytes": 13273,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_02.jpg",
+      "sha256": "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24"
+    },
+    {
+      "bytes": 13223,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_03.jpg",
+      "sha256": "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576"
+    },
+    {
+      "bytes": 13602,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/dialogue_confession_push_in/frames/frame_04.jpg",
+      "sha256": "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+    },
+    {
+      "bytes": 1428,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/dialogue_confession_push_in/meta.json",
+      "sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347"
+    },
+    {
+      "bytes": 11104,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_00.jpg",
+      "sha256": "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e"
+    },
+    {
+      "bytes": 11104,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_01.jpg",
+      "sha256": "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e"
+    },
+    {
+      "bytes": 11120,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_02.jpg",
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "bytes": 11120,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_03.jpg",
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "bytes": 11120,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/prop_swap_continuity_break/frames/frame_04.jpg",
+      "sha256": "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+    },
+    {
+      "bytes": 1311,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/prop_swap_continuity_break/meta.json",
+      "sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48"
+    },
+    {
+      "bytes": 13097,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_00.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_01.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_02.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_03.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 13097,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/quiet_bedside_vigil/frames/frame_04.jpg",
+      "sha256": "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+    },
+    {
+      "bytes": 1346,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/quiet_bedside_vigil/meta.json",
+      "sha256": "ba3438e4973166276591efea693838df99841ac34eac732f433c0c5cfcefe8fa"
+    },
+    {
+      "bytes": 27600,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_00.jpg",
+      "sha256": "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d"
+    },
+    {
+      "bytes": 27995,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_01.jpg",
+      "sha256": "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8"
+    },
+    {
+      "bytes": 26221,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_02.jpg",
+      "sha256": "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd"
+    },
+    {
+      "bytes": 27384,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_03.jpg",
+      "sha256": "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236"
+    },
+    {
+      "bytes": 27098,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/rooftop_escape_crash_zoom/frames/frame_04.jpg",
+      "sha256": "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+    },
+    {
+      "bytes": 1387,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/rooftop_escape_crash_zoom/meta.json",
+      "sha256": "82b8bbbdf804d1a9d8975e8952659d5455986fc2e4c3482d33f274227a715410"
+    },
+    {
+      "bytes": 45585,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_00.jpg",
+      "sha256": "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81"
+    },
+    {
+      "bytes": 45840,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_01.jpg",
+      "sha256": "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7"
+    },
+    {
+      "bytes": 44751,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_02.jpg",
+      "sha256": "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d"
+    },
+    {
+      "bytes": 45573,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_03.jpg",
+      "sha256": "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef"
+    },
+    {
+      "bytes": 45193,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/storm_tunnel_lateral_run/frames/frame_04.jpg",
+      "sha256": "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+    },
+    {
+      "bytes": 1385,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding/storm_tunnel_lateral_run/meta.json",
+      "sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13"
+    },
+    {
+      "bytes": 1528,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/README.md",
+      "sha256": "46eb3c10df8c912ce62c9bc0aa831dfe5a0a8c36d9a41fb50ce8c9756022ca47"
+    },
+    {
+      "bytes": 1251,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/alarm_chase_whip_pan/target.json",
+      "sha256": "bdeebb0075f458a1c87033300b1be9fce6bb66b3104362b35612e0a899d4f621"
+    },
+    {
+      "bytes": 530,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/alarm_chase_whip_pan/target.md",
+      "sha256": "47f79d984b17bb23b3b8e494b0ea83a4bfabb09140c56f81607225e6f2f0dc1d"
+    },
+    {
+      "bytes": 1353,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/dialogue_confession_push_in/target.json",
+      "sha256": "04d1a434d029604a61933ccc69ca85b821acbf0e74ede054389243476fd5fc36"
+    },
+    {
+      "bytes": 803,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+      "sha256": "b8a723c5e68b6ac65f65f76b9aaba4e15257bbc3d497e457ec8cd75480b3a160"
+    },
+    {
+      "bytes": 5893,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/manifest.json",
+      "sha256": "61008dfc76f9cd75ee8fdebdbce1b0968c81fc88995912135d7014c7f1d030e8"
+    },
+    {
+      "bytes": 1221,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/prop_swap_continuity_break/target.json",
+      "sha256": "9f14e1f173f5d818b8f915016c498be241206814cfd6cf36d4b68cacdb875be8"
+    },
+    {
+      "bytes": 522,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+      "sha256": "8a68446af7b9d7d8ef09e31d8ad8bb87ce064dd810da4fd6e251edd8ac4f4eba"
+    },
+    {
+      "bytes": 1279,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/quiet_bedside_vigil/target.json",
+      "sha256": "fb1d0e1cc26ff665b85d8086d68ac9a057a6f5408f586e78dc219c1ff2fadfcf"
+    },
+    {
+      "bytes": 805,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/quiet_bedside_vigil/target.md",
+      "sha256": "d7df7986a4611e5c1b40a96d9a99414b976f03fc4ea590aa517793005aa0b310"
+    },
+    {
+      "bytes": 1268,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/rooftop_escape_crash_zoom/target.json",
+      "sha256": "a580fe31488479466d695125959701d6e3b7a6f481274bfad99e2bd1f95dde88"
+    },
+    {
+      "bytes": 685,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/rooftop_escape_crash_zoom/target.md",
+      "sha256": "80b64c09ebf888dd089dbf3b15980ceffdc8187aa628d11de8c3640580b84599"
+    },
+    {
+      "bytes": 1270,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.json",
+      "sha256": "7d0a40d274599f17dd2242134c26d0f13c70430bca3ba49428c041d8bbf7d82e"
+    },
+    {
+      "bytes": 533,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/benchmarks/video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+      "sha256": "66eca2cb744f84f549136615e834ee8e6843bf61d1dfdf1f13b28a7f0101bc3f"
+    },
+    {
+      "bytes": 7132,
+      "path": "docs/evals/snapshots/story-236-fable5220261109-openrouter/src/cine_forge/schemas/video_analysis.py",
+      "sha256": "dc92b71ebc183ee15e1a92aaac814317bca1f1a9c76ae075164071edfbee5a36"
+    },
+    {
+      "bytes": 63327,
+      "path": "docs/evals/story-236-fable5220261109-evidence.json",
+      "sha256": "39e074088e4a5177d3353a16f5036fc51d6886f94d32e4e9a7f8e671d6419917"
+    },
+    {
+      "bytes": 38032,
+      "path": "docs/evals/story-236-fable5220261109-fable52-freeze-openrouter.json",
+      "sha256": "59ee9f6d2f6c29588da733341d43a2d3d88772ab0c8ca778f93fba276dd81cef"
+    },
+    {
+      "bytes": 38364,
+      "path": "docs/evals/story-236-fable5220261109-fable52-freeze.json",
+      "sha256": "fca46f750dea01c95f930220329fdcd278614fedaaf17ddbe7b825bd459e8d05"
+    }
+  ],
+  "offline_verify": "PYTHONPATH=src <cineforge-python> benchmarks/scripts/report_fable52_video_comparison_v2.py --verify",
+  "protected_original_router_failure": {
+    "bytes": 100547,
+    "path": "output/evals/fable52-20261109/openrouter-failure/original-raw-envelope.json",
+    "policy": "Original error with provider account identifier retained ignored in retained owner worktree. Full safe request/error preserved sanitized in tracked evidence; no key or authorization header.",
+    "sha256": "f0155d87a8ba63b926920905b3880d0e647ec9de461910e8b98a6acc8dc75d18"
+  },
+  "regenerate": "Original selected campaign: owner wrapper around run_fable52_video_comparison.py preflight, then case --case vfp_active_001..006. Closed result forbids further inference; new authorized identity required."
+}

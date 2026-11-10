@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.019525",
+  "latency_ms": 8806,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1558,
+    "path": "output/evals/fable52-20261109/judge-opus-sol-vfp_active_001-raw.json",
+    "sha256": "5ec141d3d37a1722714fe970c12f4cd39d8cc57beb5484a9978861a3b4209be5"
+  },
+  "reason": "The summary accurately captures two figures (beige left, blue right) growing larger across frames with a cream rectangle on the right figure, matching the reference well. Motion tag 'measured' matches. Continuity 'intact' with correct notes matches. Evidence is grounded in specific frames (0, 2, 4) with accurate observations. However: (1) Tone is 'detached' vs reference 'intimate' - a mismatch though tone is somewhat ambiguous. (2) Color tags include only 'navy' but miss 'teal' which is visible in the gradient background. (3) Camera tags include 'static' and 'locked_two_shot' - while camera is excluded from scoring per instructions, the 'static' tag could imply no camera movement which is reasonable but the reference notes camera mechanism is ambiguous. (4) The description says 'lower edges remain aligned' which is accurate. (5) audio_tags and audio_notes are empty as required. The tone mismatch and missing teal color tag are notable deductions but the overall visual analysis is largely correct and well-grounded.",
+  "request_id": "msg_011CgtGj8briGuEGC4rqJTkV",
+  "score": 0.78,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2620,
+    "output_tokens": 257,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

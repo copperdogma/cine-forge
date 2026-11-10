@@ -1,0 +1,11 @@
+{
+  "checked": "2026-11-09",
+  "sources": [
+    {"url":"https://platform.claude.com/docs/en/models/overview","finding":"Native claude-fable-5-2, standard USD8/M input40/M output, adaptive always-on thinking,128K output limit."},
+    {"url":"https://platform.claude.com/docs/en/build-with-claude/effort","finding":"Native Messages uses output_config.effort; xhigh selected explicitly."},
+    {"url":"https://platform.claude.com/docs/en/build-with-claude/structured-outputs","finding":"output_config.format JSON Schema constrains supported structural subset. Maintained schema projection moves unsupported numeric/string constraints into descriptions; full original local Pydantic validation remains required."},
+    {"url":"https://openrouter.ai/api/v1/models/anthropic/claude-fable-5.2/endpoints","finding":"Exact Anthropic standard8/40 route listed separately from16/80 fast. Authenticated owner request rejected before inference by OpenRouter credit reservation."}
+  ],
+  "decision":"Explicit coordinator-authorized operational direct-route recovery, preserving exact provider checkpoint/effort/output/source semantics. No implicit OpenRouter qualification, account change or lower-effort arm.",
+  "remaining_uncertainty":"Small exposed synthetic panel; provider retention policy disclosed. Same-provider subject/judge bias requires direct source corroboration and prevents subjective marginal promotion. Native reports total output usage including billed thinking but may not isolate thinking tokens."
+}

@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.01814",
+  "latency_ms": 7783,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1441,
+    "path": "output/evals/fable52-20261109/judge-opus-luna-vfp_active_002-raw.json",
+    "sha256": "10e5aa0d36b714f822cf2fc2e1d04e744f7fbd3733fccbe71d7b6b00f9f985b0"
+  },
+  "reason": "The output correctly identifies the figure moving left-to-right (fast_lateral), static camera, red color, intact continuity, empty audio fields, and provides adequate frame-grounded evidence. However, it misses key observable details: (1) tone is described as 'detached' rather than 'urgent/tense' \u2014 the pulsing red illumination and diagonal lines suggest urgency; (2) 'desaturated' color tag is incorrect \u2014 the scene is strongly saturated red; (3) 'pulsing_light' motion tag is missing, which is observable from the shifting red illumination across frames; (4) 'wide_master' camera tag is missing; (5) 'measured' motion tag is not well-supported and contradicts the fast lateral movement. The description of the figure 'carrying' the rectangle is reasonable but slightly imprecise \u2014 it stays beside the figure rather than being carried. Several mismatches on tone and motion tags prevent a passing score.",
+  "request_id": "msg_011CgtGqf7p1B4fniBBaRGqz",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2493,
+    "output_tokens": 227,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

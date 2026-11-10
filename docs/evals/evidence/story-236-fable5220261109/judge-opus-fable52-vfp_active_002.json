@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.018895",
+  "latency_ms": 9011,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1516,
+    "path": "output/evals/fable52-20261109/judge-opus-fable52-vfp_active_002-raw.json",
+    "sha256": "77b150b462bad2d9df8518ea205d093e33daca69b5feafe1f1bb78e7360dd7de"
+  },
+  "reason": "The output correctly identifies the dark red color palette, static camera, fast lateral motion of the figure from left to right, intact continuity, and the small red rectangle staying with the figure throughout. Tone tags (urgent, tense) match the reference. However: (1) The output includes an emotion tag 'resolve' which is not supported by the reference (which has none). (2) The output misses 'wide_master' camera tag and 'pulsing_light' motion tag from the reference. (3) The output describes the figure as 'holding' the red object rather than it being beside the figure, which is a minor mischaracterization. (4) Audio fields contain empty arrays, which is correct. (5) The description of the doorway-like rectangle and converging lines is reasonable for the geometric shapes visible. (6) Evidence is grounded in specific frames and mostly accurate. The missing pulsing_light tag, added emotion tag, and missing wide_master camera tag prevent this from reaching the 0.8 threshold.",
+  "request_id": "msg_011CgtGocn7fgfUGn11g16rP",
+  "score": 0.62,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2589,
+    "output_tokens": 238,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

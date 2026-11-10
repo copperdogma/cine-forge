@@ -1,0 +1,78 @@
+{
+  "arm": "luna",
+  "name": "native-luna-vfp_active_004",
+  "response": {
+    "cached": false,
+    "cost": 0.000515175,
+    "latencyMs": 4683,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "prop_swap_continuity_break",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_004",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+      ],
+      "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6-luna",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0636f7e13dcf7396016af260bfdcd087d085744eb832570801",
+      "requested_model": "gpt-6-luna",
+      "returned_model": "gpt-6-luna",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A simple, centered rectangular button sits on a block against a dark blue background. The button changes from red to blue while the surrounding scene remains visually unchanged.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\",\"red\"],\"camera_tags\":[\"static\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The centered button is red in frames 0\u20131 and blue in frames 2\u20134; the block and background retain their positions and appearance.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A red, white-outlined rectangular button is centered on the upper brown block.\"},{\"frame_index\":2,\"cue\":\"The same centered, white-outlined button is blue; the blocks and background appear unchanged.\"},{\"frame_index\":4,\"cue\":\"The button remains blue in the same position on the block.\"}],\"overall_confidence\":0.97}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0636f7e13dcf7396016af260bfdcd087d085744eb832570801",
+      "model": "gpt-6-luna",
+      "raw_envelope_bytes": 11233,
+      "raw_envelope_path": "output/evals/fable52-20261109/native/luna/vfp_active_004-raw-envelope.json",
+      "raw_envelope_sha256": "f69ffab5f704fa295c550f5b55d0e6956134039db1326d8252a8c5a5a1177eac",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 308,
+        "output_tokens_details": {
+          "reasoning_tokens": 88
+        },
+        "total_tokens": 3198
+      }
+    },
+    "tokenUsage": {
+      "completion": 220,
+      "completionDetails": {
+        "reasoning": 88
+      },
+      "prompt": 2890,
+      "total": 3198
+    }
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/prop_swap_continuity_break",
+    "clip_id": "prop_swap_continuity_break",
+    "evaluation_id": "vfp_active_004",
+    "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+    "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+  }
+}

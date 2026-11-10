@@ -1,0 +1,300 @@
+[
+  {
+    "accounted_usd": "2.15872",
+    "arm": "fable52",
+    "name": "openrouter-preinference402-fable52-vfp_active_001",
+    "reason": "HTTP402 before provider assignment/inference usage, but no explicit provider billing reconciliation; retain original full reservation as unknown exposure",
+    "reservation_usd": "2.15872",
+    "state": "rejected-reservation-retained",
+    "known_usage_cost_usd": null,
+    "prior_assumption_accounted_usd": "0"
+  },
+  {
+    "accounted_usd": "0.090176",
+    "arm": "fable52",
+    "estimated": true,
+    "name": "native-fable52-vfp_active_001",
+    "reservation_usd": "2.15872",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.020435",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-fable52-vfp_active_001",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0100935",
+    "arm": "sol",
+    "estimated": true,
+    "name": "native-sol-vfp_active_001",
+    "reservation_usd": "0.04624",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.019525",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-sol-vfp_active_001",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.000585175",
+    "arm": "luna",
+    "estimated": true,
+    "name": "native-luna-vfp_active_001",
+    "reservation_usd": "0.002",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.021015",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-luna-vfp_active_001",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.112536",
+    "arm": "fable52",
+    "estimated": true,
+    "name": "native-fable52-vfp_active_002",
+    "reservation_usd": "2.15872",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.018895",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-fable52-vfp_active_002",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0097435",
+    "arm": "sol",
+    "estimated": true,
+    "name": "native-sol-vfp_active_002",
+    "reservation_usd": "0.04624",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.018655",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-sol-vfp_active_002",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.000471175",
+    "arm": "luna",
+    "estimated": true,
+    "name": "native-luna-vfp_active_002",
+    "reservation_usd": "0.002",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.01814",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-luna-vfp_active_002",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.099296",
+    "arm": "fable52",
+    "estimated": true,
+    "name": "native-fable52-vfp_active_003",
+    "reservation_usd": "2.15872",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.020925",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-fable52-vfp_active_003",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0097235",
+    "arm": "sol",
+    "estimated": true,
+    "name": "native-sol-vfp_active_003",
+    "reservation_usd": "0.04624",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.01988",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-sol-vfp_active_003",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0005586749999999999",
+    "arm": "luna",
+    "estimated": true,
+    "name": "native-luna-vfp_active_003",
+    "reservation_usd": "0.002",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.01841",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-luna-vfp_active_003",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.081256",
+    "arm": "fable52",
+    "estimated": true,
+    "name": "native-fable52-vfp_active_004",
+    "reservation_usd": "2.15872",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.01949",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-fable52-vfp_active_004",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0099935",
+    "arm": "sol",
+    "estimated": true,
+    "name": "native-sol-vfp_active_004",
+    "reservation_usd": "0.04624",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.01813",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-sol-vfp_active_004",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.000515175",
+    "arm": "luna",
+    "estimated": true,
+    "name": "native-luna-vfp_active_004",
+    "reservation_usd": "0.002",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.018585",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-luna-vfp_active_004",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.087856",
+    "arm": "fable52",
+    "estimated": true,
+    "name": "native-fable52-vfp_active_005",
+    "reservation_usd": "2.15872",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.019555",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-fable52-vfp_active_005",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0096635",
+    "arm": "sol",
+    "estimated": true,
+    "name": "native-sol-vfp_active_005",
+    "reservation_usd": "0.04624",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0179",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-sol-vfp_active_005",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.000535675",
+    "arm": "luna",
+    "estimated": true,
+    "name": "native-luna-vfp_active_005",
+    "reservation_usd": "0.002",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.019505",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-luna-vfp_active_005",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.123976",
+    "arm": "fable52",
+    "estimated": true,
+    "name": "native-fable52-vfp_active_006",
+    "reservation_usd": "2.15872",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.018795",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-fable52-vfp_active_006",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0096035",
+    "arm": "sol",
+    "estimated": true,
+    "name": "native-sol-vfp_active_006",
+    "reservation_usd": "0.04624",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.017935",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-sol-vfp_active_006",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.0005186749999999999",
+    "arm": "luna",
+    "estimated": true,
+    "name": "native-luna-vfp_active_006",
+    "reservation_usd": "0.002",
+    "state": "settled"
+  },
+  {
+    "accounted_usd": "0.017905",
+    "arm": "opus",
+    "estimated": true,
+    "name": "judge-opus-luna-vfp_active_006",
+    "reservation_usd": "0.3048",
+    "state": "settled"
+  }
+]

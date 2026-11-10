@@ -1,0 +1,26 @@
+{
+  "cost_usd": "0.019505",
+  "latency_ms": 9984,
+  "model": "claude-opus-4-6",
+  "raw": {
+    "bytes": 1632,
+    "path": "output/evals/fable52-20261109/judge-opus-luna-vfp_active_005-raw.json",
+    "sha256": "9744dbe0d47eb987cfe28bd803d20744f8937c7e2c822643ad9c3b85eb7248af"
+  },
+  "reason": "The model correctly identifies the yellow figure moving left to right across a dark platform with a central gap, the static camera, intact continuity, and the navy/gold color palette. However, there are notable mismatches: (1) Tone is described as 'detached' rather than the reference 'urgent, tense' \u2014 the arc-like jump over a gap suggests tension/urgency, not detachment. (2) Motion is tagged as 'measured' when the reference indicates 'fast_lateral' \u2014 the figure traverses a significant distance across 5 frames. (3) The model describes the figure as 'carrying' the rectangular object rather than it being beside/attached to the runner, which is a minor but inaccurate characterization. (4) The model misses 'wide_master' as a camera tag. (5) The description says the figure moves 'steadily' rather than in an arc over the gap, missing the jumping/arc motion visible in frames 2-3 where the figure is elevated. (6) Color tags use 'gold' instead of 'amber' \u2014 minor but not exact. The core visual narrative is mostly captured but tone, motion characterization, and the arc/jump detail are wrong.",
+  "request_id": "msg_011CgtH3YY1qtwD5BGjotsEd",
+  "score": 0.55,
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2496,
+    "output_tokens": 281,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}
