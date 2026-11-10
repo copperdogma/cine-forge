@@ -1,0 +1,185 @@
+{
+  "data": {
+    "characters_present": [
+      "ARIA",
+      "JUNE",
+      "NOAH"
+    ],
+    "characters_present_ids": [
+      "aria",
+      "june",
+      "noah"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "EXT. WATER TOWER CATWALK - NIGHT",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Wind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy.",
+        "element_type": "action"
+      },
+      {
+        "content": "Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.",
+        "element_type": "action"
+      },
+      {
+        "content": "The canvas tool bag swings in the gusts. Somewhere in the valley, a siren rises and cuts out.",
+        "element_type": "action"
+      },
+      {
+        "content": "NOAH",
+        "element_type": "character"
+      },
+      {
+        "content": "I miss boring weather.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "You miss boring jobs.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Noah plugs the cable into a handheld receiver. Static spits, then settles into a thin human voice.",
+        "element_type": "action"
+      },
+      {
+        "content": "UNKNOWN VOICE (RADIO)",
+        "element_type": "character"
+      },
+      {
+        "content": "Red Creek station... if anyone hears this... north shelter needs insulin and dry blankets.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Aria and Noah freeze.",
+        "element_type": "action"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "June, do you copy?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE (RADIO)",
+        "element_type": "character"
+      },
+      {
+        "content": "Loud enough to make me useful.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Aria smiles for the first time all night and tightens the last bolt.",
+        "element_type": "action"
+      },
+      {
+        "content": "CUT TO:",
+        "element_type": "transition"
+      }
+    ],
+    "heading": "EXT. WATER TOWER CATWALK - NIGHT",
+    "inferences": [],
+    "int_ext": "EXT",
+    "location": "Water Tower Catwalk",
+    "narrative_beats": [
+      {
+        "approximate_location": "Opening",
+        "beat_type": "Escalation / Physical Danger",
+        "confidence": 0.93,
+        "description": "Aria and Noah work on an exposed catwalk in high wind, with a swinging tool bag and a distant siren underscoring the precariousness of their situation."
+      },
+      {
+        "approximate_location": "Middle",
+        "beat_type": "Tonal Relief / Character Voice",
+        "confidence": 0.9,
+        "description": "Noah's 'I miss boring weather' and Aria's 'You miss boring jobs' reprise the dark-comic banter from the studio, again pairing casual complaint with genuine physical risk on a storm-lashed catwalk."
+      },
+      {
+        "approximate_location": "Middle-late",
+        "beat_type": "Turning Point / First Contact",
+        "confidence": 0.97,
+        "description": "The receiver picks up an unknown voice from Red Creek station reporting that the north shelter needs insulin and dry blankets. This is the first proof the relay works and the first direct human need the team receives \u2014 a pivot from technical problem to humanitarian mission."
+      },
+      {
+        "approximate_location": "End",
+        "beat_type": "Emotional Release / Small Victory",
+        "confidence": 0.95,
+        "description": "Aria smiles for the first time all night and tightens the last bolt. June confirms she copies. The relay is live \u2014 a moment of quiet triumph that reframes the physical danger as worthwhile."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      }
+    ],
+    "scene_id": "scene_002",
+    "scene_number": 2,
+    "source_span": {
+      "end_line": 67,
+      "start_line": 37
+    },
+    "time_of_day": "NIGHT",
+    "tone_mood": "tense and exposed, resolving into quiet relief",
+    "tone_shifts": [
+      "Sustained physical danger and dark humor give way to an emotionally warm beat when the unknown voice breaks through \u2014 the tone shifts from survival-mode tension to purposeful hope.",
+      "The siren rising and cutting out mid-scene introduces an unresolved threat that briefly darkens the atmosphere before the successful signal contact redirects the mood."
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 2,
+      "source_span": {
+        "end_line": 67,
+        "start_line": 37
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.038541,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2569,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T05:28:59.989939Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_002",
+      "path": "artifacts/scene/scene_002/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

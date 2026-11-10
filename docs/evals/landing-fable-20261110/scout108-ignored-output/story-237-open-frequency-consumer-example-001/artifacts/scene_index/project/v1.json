@@ -1,0 +1,221 @@
+{
+  "data": {
+    "entries": [
+      {
+        "characters_present": [
+          "ARIA",
+          "NOAH",
+          "JUNE",
+          "KELL"
+        ],
+        "characters_present_ids": [
+          "aria",
+          "noah",
+          "june",
+          "kell"
+        ],
+        "heading": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        "location": "Community radio studio",
+        "props_mentioned": [
+          "Tape reel",
+          "Battered mixer",
+          "Whiteboard",
+          "Portable antenna",
+          "Dented lantern",
+          "Canvas tool bag",
+          "ON AIR sign"
+        ],
+        "scene_id": "s1",
+        "scene_number": 1,
+        "source_span": {
+          "end_line": 33,
+          "start_line": 5
+        },
+        "time_of_day": "NIGHT",
+        "tone_mood": "Urgent, resilient, dryly comic"
+      },
+      {
+        "characters_present": [
+          "ARIA",
+          "NOAH",
+          "UNKNOWN VOICE",
+          "JUNE"
+        ],
+        "characters_present_ids": [
+          "aria",
+          "noah",
+          "unknown_voice",
+          "june"
+        ],
+        "heading": "EXT. WATER TOWER CATWALK - NIGHT",
+        "location": "Water tower catwalk",
+        "props_mentioned": [
+          "Portable antenna",
+          "Dented lantern",
+          "Canvas tool bag",
+          "Cable",
+          "Handheld receiver",
+          "Last bolt",
+          "Insulin",
+          "Dry blankets"
+        ],
+        "scene_id": "s2",
+        "scene_number": 2,
+        "source_span": {
+          "end_line": 62,
+          "start_line": 34
+        },
+        "time_of_day": "NIGHT",
+        "tone_mood": "Exposed, tense, then cautiously hopeful"
+      },
+      {
+        "characters_present": [
+          "JUNE",
+          "KELL",
+          "MAYA",
+          "NOAH",
+          "COMET"
+        ],
+        "characters_present_ids": [
+          "june",
+          "kell",
+          "maya",
+          "noah",
+          "comet"
+        ],
+        "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+        "location": "High school gym shelter",
+        "props_mentioned": [
+          "Whiteboard",
+          "Insulin",
+          "Flashlight batteries",
+          "Tackle box",
+          "Comet missing-dog flyer",
+          "Tabletop radio"
+        ],
+        "scene_id": "s3",
+        "scene_number": 3,
+        "source_span": {
+          "end_line": 95,
+          "start_line": 63
+        },
+        "time_of_day": "PRE-DAWN",
+        "tone_mood": "Practical, compassionate, gently humorous"
+      },
+      {
+        "characters_present": [
+          "ARIA",
+          "NOAH",
+          "JUNE",
+          "KELL",
+          "MAYA",
+          "COMET"
+        ],
+        "characters_present_ids": [
+          "aria",
+          "noah",
+          "june",
+          "kell",
+          "maya",
+          "comet"
+        ],
+        "heading": "INT. COMMUNITY RADIO STUDIO - MORNING",
+        "location": "Community radio studio",
+        "props_mentioned": [
+          "ON AIR sign",
+          "Hand-drawn map",
+          "DAY TWO notebook",
+          "OPEN FREQUENCY sign",
+          "Warm bread wrapped in foil",
+          "Microphone",
+          "Brass-heavy cassette cue"
+        ],
+        "scene_id": "s4",
+        "scene_number": 4,
+        "source_span": {
+          "end_line": 122,
+          "start_line": 96
+        },
+        "time_of_day": "MORNING",
+        "tone_mood": "Relieved, warm, continuing purpose"
+      }
+    ],
+    "estimated_runtime_minutes": 4.5,
+    "scenes_need_review": 0,
+    "scenes_passed_qa": 4,
+    "total_scenes": 4,
+    "unique_characters": [
+      "ARIA",
+      "COMET",
+      "JUNE",
+      "KELL",
+      "MAYA",
+      "NOAH",
+      "UNKNOWN VOICE"
+    ],
+    "unique_locations": [
+      "Community radio studio",
+      "Water tower catwalk",
+      "High school gym shelter"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "run_context": {
+        "acceptance": "mechanical-only",
+        "kind": "authored-zero-provider-representability-example",
+        "subject_calls": 0
+      },
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    "confidence": 1.0,
+    "cost_data": null,
+    "created_at": "2026-11-10T04:30:13.026956Z",
+    "health": "valid",
+    "intent": "Materialize supplied whole-workspace scene_index payload",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "s1",
+        "path": "artifacts/scene/s1/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "s2",
+        "path": "artifacts/scene/s2/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "s3",
+        "path": "artifacts/scene/s3/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "s4",
+        "path": "artifacts/scene/s4/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "whole_story_workspace_eval",
+    "producing_role": null,
+    "rationale": "Lossless fanout of validated subject output; no semantic field completion",
+    "ref": {
+      "artifact_type": "scene_index",
+      "entity_id": "project",
+      "path": "artifacts/scene_index/project/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

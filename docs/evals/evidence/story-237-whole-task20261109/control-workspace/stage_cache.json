@@ -1,0 +1,612 @@
+{
+  "mvp_ingest": {
+    "breakdown_scenes": {
+      "artifact_refs": [
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_001",
+          "path": "artifacts/scene/scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_002",
+          "path": "artifacts/scene/scene_002/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_003",
+          "path": "artifacts/scene/scene_003/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_004",
+          "path": "artifacts/scene/scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "scene_index",
+          "entity_id": "project",
+          "path": "artifacts/scene_index/project/v1.json",
+          "version": 1
+        }
+      ],
+      "stage_fingerprint": "73d360d1720f334fffdeb8c2181901c7f59b651de2aa90226f2acd3dd4b57351",
+      "updated_at": 1794288451.13639
+    },
+    "ingest": {
+      "artifact_refs": [
+        {
+          "artifact_type": "raw_input",
+          "entity_id": "project",
+          "path": "artifacts/raw_input/project/v1.json",
+          "version": 1
+        }
+      ],
+      "stage_fingerprint": "bd26732dd749e283cf8e7f68c7fb5ab3fef0221fe6b59a700e954e7d79475d2c",
+      "updated_at": 1794288449.5175831
+    },
+    "normalize": {
+      "artifact_refs": [
+        {
+          "artifact_type": "canonical_script",
+          "entity_id": "project",
+          "path": "artifacts/canonical_script/project/v1.json",
+          "version": 1
+        }
+      ],
+      "stage_fingerprint": "1010c5add9f3762b9c2fcbf4b34ab6e031e922199005a85cb6d1cfe942f432a8",
+      "updated_at": 1794288449.53931
+    },
+    "project_config": {
+      "artifact_refs": [
+        {
+          "artifact_type": "project_config",
+          "entity_id": "project",
+          "path": "artifacts/project_config/project/v1.json",
+          "version": 1
+        }
+      ],
+      "stage_fingerprint": "9eff39a5003af4843c836d2c26b934304dd8d3ecbc0f967a502daa1192b8d86e",
+      "updated_at": 1794288492.2803981
+    },
+    "script_bible": {
+      "artifact_refs": [
+        {
+          "artifact_type": "script_bible",
+          "entity_id": "project",
+          "path": "artifacts/script_bible/project/v1.json",
+          "version": 1
+        }
+      ],
+      "stage_fingerprint": "1dd7e033015332c101194e69d1ff00012f2976efcbf19de1a592aae78a7603f3",
+      "updated_at": 1794288473.114512
+    }
+  },
+  "world_building": {
+    "analyze_scenes": {
+      "artifact_refs": [
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_001",
+          "path": "artifacts/scene/scene_001/v2.json",
+          "version": 2
+        },
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_002",
+          "path": "artifacts/scene/scene_002/v2.json",
+          "version": 2
+        },
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_003",
+          "path": "artifacts/scene/scene_003/v2.json",
+          "version": 2
+        },
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_004",
+          "path": "artifacts/scene/scene_004/v2.json",
+          "version": 2
+        },
+        {
+          "artifact_type": "scene_index",
+          "entity_id": "project",
+          "path": "artifacts/scene_index/project/v2.json",
+          "version": 2
+        }
+      ],
+      "stage_fingerprint": "ab87de41a2d9f0313228be26e0a47acae3138a646f471459bec0d67ca112f2ac",
+      "updated_at": 1794288539.998073
+    },
+    "character_bible": {
+      "artifact_refs": [
+        {
+          "artifact_type": "character_bible",
+          "entity_id": "aria",
+          "path": "artifacts/character_bible/aria/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "character_aria",
+          "path": "artifacts/bibles/character_aria/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "character_june",
+          "path": "artifacts/bibles/character_june/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "character_kell",
+          "path": "artifacts/bibles/character_kell/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "character_maya",
+          "path": "artifacts/bibles/character_maya/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "character_noah",
+          "path": "artifacts/bibles/character_noah/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "character_bible",
+          "entity_id": "june",
+          "path": "artifacts/character_bible/june/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "character_bible",
+          "entity_id": "kell",
+          "path": "artifacts/character_bible/kell/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "character_bible",
+          "entity_id": "maya",
+          "path": "artifacts/character_bible/maya/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "character_bible",
+          "entity_id": "noah",
+          "path": "artifacts/character_bible/noah/v1.json",
+          "version": 1
+        }
+      ],
+      "stage_fingerprint": "d13e05e98b5da5390913ea39e7b0d127af1ca81ae6202239e874bf29031eef9f",
+      "updated_at": 1794288575.73007
+    },
+    "continuity_tracking": {
+      "artifact_refs": [
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_aria_scene_001",
+          "path": "artifacts/continuity_state/character_aria_scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_june_scene_001",
+          "path": "artifacts/continuity_state/character_june_scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_kell_scene_001",
+          "path": "artifacts/continuity_state/character_kell_scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_noah_scene_001",
+          "path": "artifacts/continuity_state/character_noah_scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "location_community_radio_studio_scene_001",
+          "path": "artifacts/continuity_state/location_community_radio_studio_scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_aria_scene_002",
+          "path": "artifacts/continuity_state/character_aria_scene_002/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_june_scene_002",
+          "path": "artifacts/continuity_state/character_june_scene_002/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_noah_scene_002",
+          "path": "artifacts/continuity_state/character_noah_scene_002/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "location_water_tower_catwalk_scene_002",
+          "path": "artifacts/continuity_state/location_water_tower_catwalk_scene_002/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_june_scene_003",
+          "path": "artifacts/continuity_state/character_june_scene_003/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_kell_scene_003",
+          "path": "artifacts/continuity_state/character_kell_scene_003/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_maya_scene_003",
+          "path": "artifacts/continuity_state/character_maya_scene_003/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_noah_scene_003",
+          "path": "artifacts/continuity_state/character_noah_scene_003/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "location_high_school_gym_shelter_scene_003",
+          "path": "artifacts/continuity_state/location_high_school_gym_shelter_scene_003/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_aria_scene_004",
+          "path": "artifacts/continuity_state/character_aria_scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_june_scene_004",
+          "path": "artifacts/continuity_state/character_june_scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_kell_scene_004",
+          "path": "artifacts/continuity_state/character_kell_scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_maya_scene_004",
+          "path": "artifacts/continuity_state/character_maya_scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_noah_scene_004",
+          "path": "artifacts/continuity_state/character_noah_scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "location_community_radio_studio_scene_004",
+          "path": "artifacts/continuity_state/location_community_radio_studio_scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_index",
+          "entity_id": "project",
+          "path": "artifacts/continuity_index/project/v1.json",
+          "version": 1
+        }
+      ],
+      "stage_fingerprint": "8fa65bdbf2789d0994b26234a7f63518d63a379244fac900f431e02d23ae6321",
+      "updated_at": 1794288650.104927
+    },
+    "entity_discovery": {
+      "artifact_refs": [
+        {
+          "artifact_type": "entity_discovery_results",
+          "entity_id": "project",
+          "path": "artifacts/entity_discovery_results/project/v1.json",
+          "version": 1
+        }
+      ],
+      "stage_fingerprint": "791e103be86953bed2da18f9e9d31caf484b9508edaf5300d9fb4ace97d517fa",
+      "updated_at": 1794288543.0745149
+    },
+    "entity_graph": {
+      "artifact_refs": [
+        {
+          "artifact_type": "entity_graph",
+          "entity_id": "project",
+          "path": "artifacts/entity_graph/project/v1.json",
+          "version": 1
+        }
+      ],
+      "stage_fingerprint": "29814b90e0c619ef05bd049e7411179178e11112383c9ae4b00fafcd839e2f37",
+      "updated_at": 1794288586.706593
+    },
+    "location_bible": {
+      "artifact_refs": [
+        {
+          "artifact_type": "location_bible",
+          "entity_id": "community_radio_studio",
+          "path": "artifacts/location_bible/community_radio_studio/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "location_bible",
+          "entity_id": "high_school_gym_shelter",
+          "path": "artifacts/location_bible/high_school_gym_shelter/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "location_community_radio_studio",
+          "path": "artifacts/bibles/location_community_radio_studio/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "location_high_school_gym_shelter",
+          "path": "artifacts/bibles/location_high_school_gym_shelter/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "location_water_tower_catwalk",
+          "path": "artifacts/bibles/location_water_tower_catwalk/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "location_bible",
+          "entity_id": "water_tower_catwalk",
+          "path": "artifacts/location_bible/water_tower_catwalk/v1.json",
+          "version": 1
+        }
+      ],
+      "stage_fingerprint": "16513e5a6f93408d5f003b78de99408038be8910af1b0c292465b7994f59a513",
+      "updated_at": 1794288562.628031
+    },
+    "prop_bible": {
+      "artifact_refs": [
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "brass_cassette_cue",
+          "path": "artifacts/prop_bible/brass_cassette_cue/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "canvas_tool_bag",
+          "path": "artifacts/prop_bible/canvas_tool_bag/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "flyer_missing_dog",
+          "path": "artifacts/prop_bible/flyer_missing_dog/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "foil_wrapped_bread",
+          "path": "artifacts/prop_bible/foil_wrapped_bread/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "hand_drawn_map",
+          "path": "artifacts/prop_bible/hand_drawn_map/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "handheld_receiver",
+          "path": "artifacts/prop_bible/handheld_receiver/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "lantern",
+          "path": "artifacts/prop_bible/lantern/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "microphone",
+          "path": "artifacts/prop_bible/microphone/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "mixer",
+          "path": "artifacts/prop_bible/mixer/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "notebook",
+          "path": "artifacts/prop_bible/notebook/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "on_air_sign",
+          "path": "artifacts/prop_bible/on_air_sign/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "portable_antenna",
+          "path": "artifacts/prop_bible/portable_antenna/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_brass_cassette_cue",
+          "path": "artifacts/bibles/prop_brass_cassette_cue/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_canvas_tool_bag",
+          "path": "artifacts/bibles/prop_canvas_tool_bag/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_flyer_missing_dog",
+          "path": "artifacts/bibles/prop_flyer_missing_dog/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_foil_wrapped_bread",
+          "path": "artifacts/bibles/prop_foil_wrapped_bread/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_hand_drawn_map",
+          "path": "artifacts/bibles/prop_hand_drawn_map/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_handheld_receiver",
+          "path": "artifacts/bibles/prop_handheld_receiver/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_lantern",
+          "path": "artifacts/bibles/prop_lantern/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_microphone",
+          "path": "artifacts/bibles/prop_microphone/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_mixer",
+          "path": "artifacts/bibles/prop_mixer/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_notebook",
+          "path": "artifacts/bibles/prop_notebook/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_on_air_sign",
+          "path": "artifacts/bibles/prop_on_air_sign/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_portable_antenna",
+          "path": "artifacts/bibles/prop_portable_antenna/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_sign",
+          "path": "artifacts/bibles/prop_sign/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_tabletop_radio",
+          "path": "artifacts/bibles/prop_tabletop_radio/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_tackle_box",
+          "path": "artifacts/bibles/prop_tackle_box/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_tape_reel",
+          "path": "artifacts/bibles/prop_tape_reel/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_whiteboard",
+          "path": "artifacts/bibles/prop_whiteboard/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "sign",
+          "path": "artifacts/prop_bible/sign/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "tabletop_radio",
+          "path": "artifacts/prop_bible/tabletop_radio/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "tackle_box",
+          "path": "artifacts/prop_bible/tackle_box/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "tape_reel",
+          "path": "artifacts/prop_bible/tape_reel/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "whiteboard",
+          "path": "artifacts/prop_bible/whiteboard/v1.json",
+          "version": 1
+        }
+      ],
+      "stage_fingerprint": "33bd0553234e07af65352927363253b97308b53b4501942a72be2e379f98f6f7",
+      "updated_at": 1794288580.085056
+    },
+    "refresh_project_config": {
+      "artifact_refs": [
+        {
+          "artifact_type": "project_config",
+          "entity_id": "project",
+          "path": "artifacts/project_config/project/v2.json",
+          "version": 2
+        }
+      ],
+      "stage_fingerprint": "01fb7e4a04c1776eb80554f332e7057fec43f97a1e5d1b300f76bc8c56338dbb",
+      "updated_at": 1794288557.228259
+    }
+  }
+}

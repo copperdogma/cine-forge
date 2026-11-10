@@ -1,0 +1,943 @@
+{
+  "oracle_schema": "whole_story_source_oracle_v1",
+  "case_id": "matinee_echo",
+  "source": {
+    "path": "matinee_echo.fountain",
+    "sha256": "bed5976da30e2584371deabdd121966efc4276e5663a4789cf22267d655c05d2",
+    "word_count": 555,
+    "provenance": "new authored synthetic screenplay",
+    "retention_eligibility": "public/authored synthetic; 30-day retention eligible"
+  },
+  "freeze": {
+    "prepared_at_utc": "2026-11-10T04:25:54.050285+00:00",
+    "subject_outputs_reviewed": false,
+    "status": "pending_independent_source_review",
+    "scope": "source truth; not a runtime output schema or a scored result"
+  },
+  "inventory_policy": {
+    "required": "Every scene and individuated material participant, including animal, remote voice, and plot-relevant mentioned person; every staged or causally important referenced location; all objects used, transferred, read, or continuity-relevant. Contextual entries remain inventoried but need no standalone bible.",
+    "presence": "physical, heard, and mentioned are distinct; remote dialogue never implies physical presence.",
+    "identity": "Unresolved identities may be separate or tentatively linked; unsupported definite merges or separations fail.",
+    "props": "Contextual architectural fixtures, costume, scenery, and reported objects need not be standalone props. Parts may be embedded within their parent object.",
+    "source_claims": "Dialogue proves a report/belief was expressed, not external confirmation. Preserve deliberate uncertainty in summaries, bibles, and graphs."
+  },
+  "scenes": [
+    {
+      "id": "s1",
+      "heading": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+      "physical": [
+        "sol",
+        "iva"
+      ],
+      "heard": [],
+      "mentioned": [
+        "mara",
+        "iva_mother"
+      ],
+      "required_beat": "Mara is aunt; Sol keeps body while Iva takes wing/tin and red-thread reel upstairs.",
+      "evidence": [
+        {
+          "quote": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+          "line_start": 5,
+          "line_end": 5
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "heading": "INT. MUSEUM THEATRE - AFTERNOON",
+      "physical": [
+        "iva",
+        "visitor"
+      ],
+      "heard": [
+        "mara"
+      ],
+      "mentioned": [],
+      "required_beat": "Mara recording plays; visitor comments without identifying herself; Iva leaves carrying reel and wing.",
+      "evidence": [
+        {
+          "quote": "INT. MUSEUM THEATRE - AFTERNOON",
+          "line_start": 25,
+          "line_end": 25
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "heading": "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+      "physical": [
+        "sol",
+        "iva",
+        "child"
+      ],
+      "heard": [],
+      "mentioned": [
+        "mara",
+        "visitor"
+      ],
+      "required_beat": "Sol repairs wing with paper tape; reel stays on shelf; Iva takes key; Sol carries bird.",
+      "evidence": [
+        {
+          "quote": "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+          "line_start": 42,
+          "line_end": 42
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "heading": "INT. MUSEUM THEATRE - EVENING",
+      "physical": [
+        "sol",
+        "iva"
+      ],
+      "heard": [
+        "unseen"
+      ],
+      "mentioned": [
+        "mara"
+      ],
+      "required_beat": "Child stays corridor; theatre unlocked/locked; scarf/brooch on seat; unseen voice repeats line with bare inactive deck.",
+      "evidence": [
+        {
+          "quote": "INT. MUSEUM THEATRE - EVENING",
+          "line_start": 61,
+          "line_end": 61
+        }
+      ],
+      "offscreen_physical": [
+        "child"
+      ]
+    }
+  ],
+  "entities": {
+    "characters": [
+      {
+        "id": "sol",
+        "name": "SOL",
+        "scenes": [
+          "s1",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "SOL, a conservator",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ],
+        "presence": "see scene presence"
+      },
+      {
+        "id": "iva",
+        "name": "IVA",
+        "scenes": [
+          "s1",
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "IVA, the museum's recorded-guide technician",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ],
+        "presence": "see scene presence"
+      },
+      {
+        "id": "mara",
+        "name": "MARA",
+        "scenes": [
+          "s1",
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "MARA (RECORDING)",
+            "line_start": 29,
+            "line_end": 29
+          }
+        ],
+        "presence": "recorded voice/mentioned only; on-screen identity unresolved"
+      },
+      {
+        "id": "visitor",
+        "name": "ELDERLY VISITOR",
+        "scenes": [
+          "s2",
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "An ELDERLY VISITOR stands in the aisle",
+            "line_start": 32,
+            "line_end": 32
+          }
+        ],
+        "presence": "see scene presence"
+      },
+      {
+        "id": "child",
+        "name": "CHILD",
+        "scenes": [
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "A CHILD in a school jumper",
+            "line_start": 54,
+            "line_end": 54
+          }
+        ],
+        "presence": "see scene presence"
+      },
+      {
+        "id": "unseen",
+        "name": "UNSEEN SPEAKER",
+        "scenes": [
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "UNSEEN SPEAKER (O.S.)",
+            "line_start": 75,
+            "line_end": 75
+          }
+        ],
+        "presence": "see scene presence"
+      },
+      {
+        "id": "iva_mother",
+        "name": "Iva's mother",
+        "scenes": [
+          "s1"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "Mum never liked microphones.",
+            "line_start": 16,
+            "line_end": 16
+          }
+        ],
+        "presence": "mentioned only"
+      }
+    ],
+    "locations": [
+      {
+        "id": "conservation",
+        "name": "Museum conservation room",
+        "scenes": [
+          "s1",
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+            "line_start": 5,
+            "line_end": 5
+          }
+        ],
+        "staged": true
+      },
+      {
+        "id": "theatre",
+        "name": "Museum theatre",
+        "scenes": [
+          "s2",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "INT. MUSEUM THEATRE - AFTERNOON",
+            "line_start": 25,
+            "line_end": 25
+          }
+        ],
+        "staged": true
+      },
+      {
+        "id": "corridor",
+        "name": "Museum corridor",
+        "scenes": [
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "the child waits in the corridor",
+            "line_start": 63,
+            "line_end": 63
+          }
+        ],
+        "staged": false
+      }
+    ],
+    "props": [
+      {
+        "id": "bird",
+        "name": "Cracked porcelain bird/body",
+        "scenes": [
+          "s1",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a cracked porcelain bird",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ],
+        "part_of": null
+      },
+      {
+        "id": "wing",
+        "name": "Detached right wing; later reattached",
+        "scenes": [
+          "s1",
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Its right wing is missing.",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ],
+        "part_of": "bird"
+      },
+      {
+        "id": "pad",
+        "name": "Felt pad",
+        "scenes": [
+          "s1",
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "on a felt pad",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ],
+        "part_of": null
+      },
+      {
+        "id": "reel",
+        "name": "MARA / TAKE 4 reel with red thread",
+        "scenes": [
+          "s1",
+          "s2",
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a reel labelled MARA / TAKE 4",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ],
+        "part_of": null
+      },
+      {
+        "id": "thread",
+        "name": "Red hub thread",
+        "scenes": [
+          "s1",
+          "s2",
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "A red thread is tied around the reel's hub.",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ],
+        "part_of": "reel"
+      },
+      {
+        "id": "tin",
+        "name": "Shallow wing tin",
+        "scenes": [
+          "s1",
+          "s2",
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "in a shallow tin",
+            "line_start": 18,
+            "line_end": 18
+          }
+        ],
+        "part_of": null
+      },
+      {
+        "id": "satchel",
+        "name": "Canvas satchel",
+        "scenes": [
+          "s1",
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "in a canvas satchel",
+            "line_start": 23,
+            "line_end": 23
+          }
+        ],
+        "part_of": null
+      },
+      {
+        "id": "spectacles",
+        "name": "Sol spectacles on cord",
+        "scenes": [
+          "s1",
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Sol's spectacles hang from a cord.",
+            "line_start": 23,
+            "line_end": 23
+          }
+        ],
+        "part_of": null
+      },
+      {
+        "id": "deck",
+        "name": "Tape deck",
+        "scenes": [
+          "s2",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "onto a tape deck",
+            "line_start": 27,
+            "line_end": 27
+          }
+        ],
+        "part_of": null
+      },
+      {
+        "id": "scarf",
+        "name": "Dark scarf",
+        "scenes": [
+          "s2",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "pinned to a dark scarf",
+            "line_start": 32,
+            "line_end": 32
+          }
+        ],
+        "part_of": null
+      },
+      {
+        "id": "brooch",
+        "name": "Silver bird brooch",
+        "scenes": [
+          "s2",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a silver bird brooch",
+            "line_start": 32,
+            "line_end": 32
+          }
+        ],
+        "part_of": null
+      },
+      {
+        "id": "paper_tape",
+        "name": "Repair paper tape",
+        "scenes": [
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a narrow strip of paper tape",
+            "line_start": 44,
+            "line_end": 44
+          }
+        ],
+        "part_of": null
+      },
+      {
+        "id": "key",
+        "name": "Theatre key",
+        "scenes": [
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "the theatre key from a hook",
+            "line_start": 59,
+            "line_end": 59
+          }
+        ],
+        "part_of": null
+      },
+      {
+        "id": "projector",
+        "name": "Unlit projector housing",
+        "scenes": [
+          "s2"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "an unlit projector beam housing",
+            "line_start": 27,
+            "line_end": 27
+          }
+        ],
+        "role": "contextual setting/costume"
+      },
+      {
+        "id": "seat",
+        "name": "Front-row seat",
+        "scenes": [
+          "s2",
+          "s4"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "the front-row seat",
+            "line_start": 27,
+            "line_end": 27
+          }
+        ],
+        "role": "contextual setting/costume"
+      },
+      {
+        "id": "curtain",
+        "name": "Theatre curtain",
+        "scenes": [
+          "s2",
+          "s4"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "beyond the curtain",
+            "line_start": 40,
+            "line_end": 40
+          }
+        ],
+        "role": "contextual setting/costume"
+      },
+      {
+        "id": "jumper",
+        "name": "Child school jumper",
+        "scenes": [
+          "s3"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "a school jumper",
+            "line_start": 54,
+            "line_end": 54
+          }
+        ],
+        "role": "contextual setting/costume"
+      },
+      {
+        "id": "bench",
+        "name": "Conservation bench",
+        "scenes": [
+          "s1",
+          "s3"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "at the bench",
+            "line_start": 23,
+            "line_end": 23
+          }
+        ],
+        "role": "contextual setting/costume"
+      },
+      {
+        "id": "shelf",
+        "name": "Reel shelf",
+        "scenes": [
+          "s3"
+        ],
+        "required": false,
+        "role": "contextual fixed fixture/costume/content or reported object; no independent bible required",
+        "evidence": [
+          {
+            "quote": "Iva places the red-thread reel on a shelf.",
+            "line_start": 52,
+            "line_end": 52
+          }
+        ]
+      },
+      {
+        "id": "hook",
+        "name": "Theatre key hook",
+        "scenes": [
+          "s3"
+        ],
+        "required": false,
+        "role": "contextual fixed fixture/costume/content or reported object; no independent bible required",
+        "evidence": [
+          {
+            "quote": "the theatre key from a hook",
+            "line_start": 59,
+            "line_end": 59
+          }
+        ]
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "id": "aunt",
+      "claim": "Mara is Iva's aunt, explicitly not mother; mother is separate mentioned person.",
+      "evidence": [
+        {
+          "quote": "Your mother?",
+          "line_start": 13,
+          "line_end": 13
+        },
+        {
+          "quote": "My aunt. Mum never liked microphones.",
+          "line_start": 16,
+          "line_end": 16
+        }
+      ]
+    },
+    {
+      "id": "colleagues",
+      "claim": "Sol conservator and Iva recorded-guide technician cooperate on repair/sound check; no family tie stated.",
+      "evidence": [
+        {
+          "quote": "SOL, a conservator",
+          "line_start": 7,
+          "line_end": 7
+        },
+        {
+          "quote": "IVA, the museum's recorded-guide technician",
+          "line_start": 7,
+          "line_end": 7
+        },
+        {
+          "quote": "We can test the join after your sound check.",
+          "line_start": 21,
+          "line_end": 21
+        }
+      ]
+    }
+  ],
+  "continuity": [
+    {
+      "id": "bird_route",
+      "claim": "Sol retains body while Iva carries detached right wing in tin upstairs and back; Sol repairs with paper tape; final bird silent, crack still visible and taped.",
+      "evidence": [
+        {
+          "quote": "He keeps the body on the pad.",
+          "line_start": 18,
+          "line_end": 18
+        },
+        {
+          "quote": "Iva returns, opens the tin, and gives him the wing.",
+          "line_start": 44,
+          "line_end": 44
+        },
+        {
+          "quote": "The crack remains visible.",
+          "line_start": 44,
+          "line_end": 44
+        },
+        {
+          "quote": "the repaired bird stays silent, its visible crack crossed by paper tape.",
+          "line_start": 78,
+          "line_end": 78
+        }
+      ]
+    },
+    {
+      "id": "reel_route",
+      "claim": "Red-thread reel follows Iva to theatre and back to conservation shelf; evening theatre deck bare/inactive.",
+      "evidence": [
+        {
+          "quote": "loads the red-thread reel onto a tape deck.",
+          "line_start": 27,
+          "line_end": 27
+        },
+        {
+          "quote": "retrieves the reel",
+          "line_start": 40,
+          "line_end": 40
+        },
+        {
+          "quote": "Iva places the red-thread reel on a shelf.",
+          "line_start": 52,
+          "line_end": 52
+        },
+        {
+          "quote": "There is no tape deck running; the deck's reels are bare.",
+          "line_start": 73,
+          "line_end": 73
+        }
+      ]
+    },
+    {
+      "id": "spectacles",
+      "claim": "Sol removes spectacles to inspect fracture, puts them back before final theatre scene.",
+      "evidence": [
+        {
+          "quote": "He takes them off to inspect the exposed joint.",
+          "line_start": 23,
+          "line_end": 23
+        },
+        {
+          "quote": "Sol puts his spectacles back on",
+          "line_start": 59,
+          "line_end": 59
+        }
+      ]
+    },
+    {
+      "id": "key",
+      "claim": "Iva takes key from hook, unlocks theatre, then locks behind them and retains key.",
+      "evidence": [
+        {
+          "quote": "Iva picks up the theatre key from a hook.",
+          "line_start": 59,
+          "line_end": 59
+        },
+        {
+          "quote": "Iva unlocks the theatre door with the key.",
+          "line_start": 63,
+          "line_end": 63
+        },
+        {
+          "quote": "Iva locks the door behind them, keeping the key.",
+          "line_start": 73,
+          "line_end": 73
+        }
+      ]
+    },
+    {
+      "id": "scarf",
+      "claim": "Visitor wears scarf/brooch in afternoon; distinctive combination later on front-row seat, visitor unseen; Iva does not take it.",
+      "evidence": [
+        {
+          "quote": "a silver bird brooch pinned to a dark scarf",
+          "line_start": 32,
+          "line_end": 32
+        },
+        {
+          "quote": "A dark scarf with a silver bird brooch lies across the front-row seat.",
+          "line_start": 65,
+          "line_end": 65
+        },
+        {
+          "quote": "Iva does not touch it.",
+          "line_start": 65,
+          "line_end": 65
+        }
+      ]
+    }
+  ],
+  "uncertainty": [
+    {
+      "id": "visitor_identity",
+      "claim": "Mara/visitor identity unresolved: age and familiarity with line do not prove identity or death/ghost status. No definite merge or separation.",
+      "evidence": [
+        {
+          "quote": "She always rushed that line.",
+          "line_start": 35,
+          "line_end": 35
+        },
+        {
+          "quote": "Did you know Mara?",
+          "line_start": 38,
+          "line_end": 38
+        },
+        {
+          "quote": "The visitor looks toward the stage instead of answering.",
+          "line_start": 40,
+          "line_end": 40
+        },
+        {
+          "quote": "Mara would be eighty now.",
+          "line_start": 68,
+          "line_end": 68
+        },
+        {
+          "quote": "That isn't an answer.",
+          "line_start": 71,
+          "line_end": 71
+        }
+      ]
+    },
+    {
+      "id": "speaker_identity",
+      "claim": "Evening unseen speaker repeats line; identity unconfirmed, not definitively Mara/visitor/child or supernatural.",
+      "evidence": [
+        {
+          "quote": "UNSEEN SPEAKER (O.S.)",
+          "line_start": 75,
+          "line_end": 75
+        },
+        {
+          "quote": "Neither sees who spoke.",
+          "line_start": 78,
+          "line_end": 78
+        }
+      ]
+    },
+    {
+      "id": "child_lady",
+      "claim": "Child reports lady with bird; linking her to visitor/brooch is plausible interpretation, not explicit identity.",
+      "evidence": [
+        {
+          "quote": "The lady with the bird says the theatre's locked.",
+          "line_start": 57,
+          "line_end": 57
+        }
+      ]
+    },
+    {
+      "id": "door",
+      "claim": "Door slams beyond curtain; cause/person unestablished; do not invent visitor locking door.",
+      "evidence": [
+        {
+          "quote": "A door slams somewhere beyond the curtain.",
+          "line_start": 40,
+          "line_end": 40
+        }
+      ]
+    }
+  ],
+  "consumer_checks": [
+    {
+      "id": "coverage",
+      "claim": "Retain four scenes and six required story roles; Mara recording and unseen role distinct unless explicitly tentative; Iva mother separate if inventoried.",
+      "evidence": [
+        {
+          "quote": "MARA (RECORDING)",
+          "line_start": 29,
+          "line_end": 29
+        },
+        {
+          "quote": "UNSEEN SPEAKER (O.S.)",
+          "line_start": 75,
+          "line_end": 75
+        },
+        {
+          "quote": "My aunt. Mum never liked microphones.",
+          "line_start": 16,
+          "line_end": 16
+        }
+      ],
+      "severity": "hard"
+    },
+    {
+      "id": "two_birds",
+      "claim": "Porcelain bird and silver bird brooch different objects; wing is repaired part of porcelain bird.",
+      "evidence": [
+        {
+          "quote": "a cracked porcelain bird",
+          "line_start": 7,
+          "line_end": 7
+        },
+        {
+          "quote": "a silver bird brooch",
+          "line_start": 32,
+          "line_end": 32
+        },
+        {
+          "quote": "a narrow strip of paper tape",
+          "line_start": 44,
+          "line_end": 44
+        }
+      ],
+      "severity": "hard"
+    },
+    {
+      "id": "sound_source",
+      "claim": "Afternoon voice explicitly playback; evening offscreen with no running deck. Repeated words do not prove same speaker.",
+      "evidence": [
+        {
+          "quote": "MARA (RECORDING)",
+          "line_start": 29,
+          "line_end": 29
+        },
+        {
+          "quote": "There is no tape deck running; the deck's reels are bare.",
+          "line_start": 73,
+          "line_end": 73
+        },
+        {
+          "quote": "UNSEEN SPEAKER (O.S.)",
+          "line_start": 75,
+          "line_end": 75
+        }
+      ],
+      "severity": "hard"
+    },
+    {
+      "id": "no_miracle",
+      "claim": "Do not invent actual bird singing, invisible crack, replacement wing, visitor confession, or supernatural reveal.",
+      "evidence": [
+        {
+          "quote": "the repaired bird stays silent, its visible crack crossed by paper tape.",
+          "line_start": 78,
+          "line_end": 78
+        },
+        {
+          "quote": "Neither sees who spoke.",
+          "line_start": 78,
+          "line_end": 78
+        }
+      ],
+      "severity": "hard"
+    }
+  ]
+}

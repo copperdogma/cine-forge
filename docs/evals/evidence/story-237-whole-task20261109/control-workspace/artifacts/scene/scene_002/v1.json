@@ -1,0 +1,184 @@
+{
+  "data": {
+    "characters_present": [
+      "ARIA",
+      "JUNE",
+      "NOAH"
+    ],
+    "characters_present_ids": [
+      "aria",
+      "june",
+      "noah"
+    ],
+    "confidence": 0.898,
+    "elements": [
+      {
+        "content": "EXT. WATER TOWER CATWALK - NIGHT",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Wind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy.",
+        "element_type": "action"
+      },
+      {
+        "content": "Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.",
+        "element_type": "action"
+      },
+      {
+        "content": "The canvas tool bag swings in the gusts. Somewhere in the valley, a siren rises and cuts out.",
+        "element_type": "action"
+      },
+      {
+        "content": "NOAH",
+        "element_type": "character"
+      },
+      {
+        "content": "I miss boring weather.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "You miss boring jobs.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Noah plugs the cable into a handheld receiver. Static spits, then settles into a thin human voice.",
+        "element_type": "action"
+      },
+      {
+        "content": "UNKNOWN VOICE (RADIO)",
+        "element_type": "character"
+      },
+      {
+        "content": "Red Creek station... if anyone hears this... north shelter needs insulin and dry blankets.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Aria and Noah freeze.",
+        "element_type": "action"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "June, do you copy?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE (RADIO)",
+        "element_type": "character"
+      },
+      {
+        "content": "Loud enough to make me useful.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Aria smiles for the first time all night and tightens the last bolt.",
+        "element_type": "action"
+      },
+      {
+        "content": "CUT TO:",
+        "element_type": "transition"
+      }
+    ],
+    "heading": "EXT. WATER TOWER CATWALK - NIGHT",
+    "inferences": [],
+    "int_ext": "EXT",
+    "location": "Water Tower Catwalk",
+    "narrative_beats": [],
+    "props_mentioned": [
+      "BOLT",
+      "CABLE",
+      "CANVAS TOOL BAG",
+      "HANDHELD RECEIVER",
+      "LANTERN",
+      "PORTABLE ANTENNA"
+    ],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Extracted from first non-empty scene line",
+        "field_name": "heading",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.92,
+        "evidence": "Parsed heading prefix token",
+        "field_name": "int_ext",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.9,
+        "evidence": "Parsed heading suffix segment",
+        "field_name": "time_of_day",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.88,
+        "evidence": "Parsed heading core location segment",
+        "field_name": "location",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.84,
+        "evidence": "Collected from dialogue character cues",
+        "field_name": "characters_present",
+        "method": "rule"
+      }
+    ],
+    "scene_id": "scene_002",
+    "scene_number": 2,
+    "source_span": {
+      "end_line": 67,
+      "start_line": 37
+    },
+    "time_of_day": "NIGHT",
+    "tone_mood": "neutral",
+    "tone_shifts": []
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "single monolithic scene list artifact"
+    ],
+    "annotations": {
+      "ai_enrichment_used": false,
+      "boundary_reason": "",
+      "boundary_uncertain": false,
+      "discovery_tier": "structural",
+      "parser_backend": "fountain-tools",
+      "scene_number": 2,
+      "source_span": {
+        "end_line": 67,
+        "start_line": 37
+      }
+    },
+    "confidence": 0.898,
+    "cost_data": null,
+    "created_at": "2026-11-10T05:27:30.892857Z",
+    "health": "valid",
+    "intent": "Represent one screenplay scene as structured data for downstream modules",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_breakdown_v1",
+    "producing_role": null,
+    "rationale": "Structural extraction with LLM action-line entity extraction",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_002",
+      "path": "artifacts/scene/scene_002/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "code"
+  }
+}

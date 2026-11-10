@@ -1,0 +1,1273 @@
+{
+  "oracle_schema": "whole_story_source_oracle_v1",
+  "case_id": "open_frequency",
+  "source": {
+    "path": "open_frequency.fountain",
+    "sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "word_count": 597,
+    "provenance": "unchanged repository synthetic fixture",
+    "retention_eligibility": "public/authored synthetic; 30-day retention eligible"
+  },
+  "freeze": {
+    "prepared_at_utc": "2026-11-10T04:25:54.050285+00:00",
+    "subject_outputs_reviewed": false,
+    "status": "pending_independent_source_review",
+    "scope": "source truth; not a runtime output schema or a scored result"
+  },
+  "inventory_policy": {
+    "required": "Every scene and individuated material participant, including animal, remote voice, and plot-relevant mentioned person; every staged or causally important referenced location; all objects used, transferred, read, or continuity-relevant. Contextual entries remain inventoried but need no standalone bible.",
+    "presence": "physical, heard, and mentioned are distinct; remote dialogue never implies physical presence.",
+    "identity": "Unresolved identities may be separate or tentatively linked; unsupported definite merges or separations fail.",
+    "props": "Contextual architectural fixtures, costume, scenery, and reported objects need not be standalone props. Parts may be embedded within their parent object.",
+    "source_claims": "Dialogue proves a report/belief was expressed, not external confirmation. Preserve deliberate uncertainty in summaries, bibles, and graphs."
+  },
+  "scenes": [
+    {
+      "id": "s1",
+      "heading": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "physical": [
+        "aria",
+        "noah",
+        "june",
+        "kell"
+      ],
+      "heard": [],
+      "mentioned": [],
+      "required_beat": "Team attempts emergency radio after storm disables ordinary communications.",
+      "evidence": [
+        {
+          "quote": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+          "line_start": 5,
+          "line_end": 5
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "heading": "EXT. WATER TOWER CATWALK - NIGHT",
+      "physical": [
+        "aria",
+        "noah"
+      ],
+      "heard": [
+        "unknown_voice",
+        "june"
+      ],
+      "mentioned": [],
+      "required_beat": "Antenna rig receives plea for insulin/blankets; June confirms contact.",
+      "evidence": [
+        {
+          "quote": "EXT. WATER TOWER CATWALK - NIGHT",
+          "line_start": 34,
+          "line_end": 34
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+      "physical": [
+        "june",
+        "kell",
+        "maya"
+      ],
+      "heard": [
+        "noah"
+      ],
+      "mentioned": [
+        "comet",
+        "bridge_crew"
+      ],
+      "required_beat": "Missing-dog request; reported limited east-road access.",
+      "evidence": [
+        {
+          "quote": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+          "line_start": 63,
+          "line_end": 63
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "heading": "INT. COMMUNITY RADIO STUDIO - MORNING",
+      "physical": [
+        "aria",
+        "noah",
+        "june",
+        "kell",
+        "maya",
+        "comet"
+      ],
+      "heard": [],
+      "mentioned": [],
+      "required_beat": "Recovered dog, morning update, music, steady ON AIR ending.",
+      "evidence": [
+        {
+          "quote": "INT. COMMUNITY RADIO STUDIO - MORNING",
+          "line_start": 96,
+          "line_end": 96
+        }
+      ]
+    }
+  ],
+  "entities": {
+    "characters": [
+      {
+        "id": "aria",
+        "name": "ARIA",
+        "scenes": [
+          "s1",
+          "s2",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "ARIA threads a tape reel",
+            "line_start": 8,
+            "line_end": 8
+          }
+        ],
+        "kind": "human",
+        "identity": "explicit source label"
+      },
+      {
+        "id": "noah",
+        "name": "NOAH",
+        "scenes": [
+          "s1",
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "NOAH coaxes a signal",
+            "line_start": 8,
+            "line_end": 8
+          }
+        ],
+        "kind": "human",
+        "identity": "explicit source label"
+      },
+      {
+        "id": "june",
+        "name": "JUNE",
+        "scenes": [
+          "s1",
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "JUNE covers a whiteboard",
+            "line_start": 9,
+            "line_end": 9
+          }
+        ],
+        "kind": "human",
+        "identity": "explicit source label"
+      },
+      {
+        "id": "kell",
+        "name": "KELL",
+        "scenes": [
+          "s1",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "KELL rushes in",
+            "line_start": 10,
+            "line_end": 10
+          }
+        ],
+        "kind": "human",
+        "identity": "explicit source label"
+      },
+      {
+        "id": "maya",
+        "name": "MAYA",
+        "scenes": [
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "MAYA, a teenager in a soaked marching-band jacket",
+            "line_start": 67,
+            "line_end": 67
+          }
+        ],
+        "kind": "human",
+        "identity": "explicit source label"
+      },
+      {
+        "id": "unknown_voice",
+        "name": "UNKNOWN VOICE",
+        "scenes": [
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "UNKNOWN VOICE (RADIO)",
+            "line_start": 48,
+            "line_end": 48
+          }
+        ],
+        "kind": "human",
+        "identity": "unidentified radio caller"
+      },
+      {
+        "id": "comet",
+        "name": "COMET",
+        "scenes": [
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a flyer for a missing dog named COMET",
+            "line_start": 67,
+            "line_end": 67
+          }
+        ],
+        "kind": "animal",
+        "identity": "explicit source label"
+      },
+      {
+        "id": "bridge_crew",
+        "name": "Bridge crew",
+        "scenes": [
+          "s3"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "Bridge crew wants no heavy trucks till daylight.",
+            "line_start": 84,
+            "line_end": 84
+          }
+        ],
+        "kind": "mentioned collective"
+      }
+    ],
+    "locations": [
+      {
+        "id": "studio",
+        "name": "Community radio studio",
+        "scenes": [
+          "s1",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+            "line_start": 5,
+            "line_end": 5
+          }
+        ],
+        "staged": true
+      },
+      {
+        "id": "catwalk",
+        "name": "Water tower catwalk",
+        "scenes": [
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "EXT. WATER TOWER CATWALK - NIGHT",
+            "line_start": 34,
+            "line_end": 34
+          }
+        ],
+        "staged": true
+      },
+      {
+        "id": "gym",
+        "name": "High school gym shelter",
+        "scenes": [
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+            "line_start": 63,
+            "line_end": 63
+          }
+        ],
+        "staged": true
+      },
+      {
+        "id": "north_shelter",
+        "name": "North shelter",
+        "scenes": [
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "north shelter needs insulin and dry blankets",
+            "line_start": 49,
+            "line_end": 49
+          }
+        ],
+        "staged": false
+      },
+      {
+        "id": "east_road",
+        "name": "East road",
+        "scenes": [
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "East road is open one lane.",
+            "line_start": 84,
+            "line_end": 84
+          }
+        ],
+        "staged": false
+      },
+      {
+        "id": "bridge",
+        "name": "Bridge",
+        "scenes": [
+          "s1",
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Bridge is closed.",
+            "line_start": 13,
+            "line_end": 13
+          }
+        ],
+        "staged": false
+      },
+      {
+        "id": "hill_relay",
+        "name": "Hill relay",
+        "scenes": [
+          "s1"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "The hill relay is our only shot.",
+            "line_start": 13,
+            "line_end": 13
+          }
+        ],
+        "staged": false
+      },
+      {
+        "id": "band_room",
+        "name": "Band room",
+        "scenes": [
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "He was under the vending machine in the band room.",
+            "line_start": 104,
+            "line_end": 104
+          }
+        ],
+        "staged": false
+      },
+      {
+        "id": "red_creek",
+        "name": "Red Creek",
+        "scenes": [
+          "s2",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Red Creek station...",
+            "line_start": 49,
+            "line_end": 49
+          }
+        ],
+        "staged": false
+      },
+      {
+        "id": "town",
+        "name": "Town",
+        "scenes": [
+          "s2"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "The town below is mostly dark",
+            "line_start": 36,
+            "line_end": 36
+          }
+        ],
+        "staged": false
+      },
+      {
+        "id": "valley",
+        "name": "Valley",
+        "scenes": [
+          "s2"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "Somewhere in the valley",
+            "line_start": 38,
+            "line_end": 38
+          }
+        ],
+        "staged": false
+      },
+      {
+        "id": "gas_canopy",
+        "name": "Gas station canopy",
+        "scenes": [
+          "s2"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "a gas station canopy",
+            "line_start": 36,
+            "line_end": 36
+          }
+        ],
+        "staged": false
+      },
+      {
+        "id": "cell_towers",
+        "name": "Cell towers",
+        "scenes": [
+          "s1"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "Cell towers are dead.",
+            "line_start": 13,
+            "line_end": 13
+          }
+        ],
+        "staged": false
+      }
+    ],
+    "props": [
+      {
+        "id": "tape_reel",
+        "name": "Tape reel",
+        "scenes": [
+          "s1"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "ARIA threads a tape reel",
+            "line_start": 8,
+            "line_end": 8
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "mixer",
+        "name": "Battered mixer",
+        "scenes": [
+          "s1"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a battered mixer",
+            "line_start": 8,
+            "line_end": 8
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "whiteboard",
+        "name": "Whiteboard",
+        "scenes": [
+          "s1",
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "JUNE covers a whiteboard",
+            "line_start": 9,
+            "line_end": 9
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "antenna",
+        "name": "Portable antenna",
+        "scenes": [
+          "s1",
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a portable antenna",
+            "line_start": 10,
+            "line_end": 10
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "lantern",
+        "name": "Dented lantern",
+        "scenes": [
+          "s1",
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a dented lantern",
+            "line_start": 10,
+            "line_end": 10
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "tool_bag",
+        "name": "Canvas tool bag",
+        "scenes": [
+          "s1",
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a canvas tool bag",
+            "line_start": 10,
+            "line_end": 10
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "on_air",
+        "name": "ON AIR sign",
+        "scenes": [
+          "s1",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "The ON AIR sign flickers, then dies again.",
+            "line_start": 24,
+            "line_end": 24
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "cable",
+        "name": "Cable",
+        "scenes": [
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Noah plugs the cable into a handheld receiver.",
+            "line_start": 46,
+            "line_end": 46
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "receiver",
+        "name": "Handheld receiver",
+        "scenes": [
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a handheld receiver",
+            "line_start": 46,
+            "line_end": 46
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "last_bolt",
+        "name": "Last bolt",
+        "scenes": [
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "tightens the last bolt",
+            "line_start": 59,
+            "line_end": 59
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "insulin",
+        "name": "Insulin",
+        "scenes": [
+          "s2",
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "north shelter needs insulin",
+            "line_start": 49,
+            "line_end": 49
+          }
+        ],
+        "source_status": "requested supplies, not visually confirmed"
+      },
+      {
+        "id": "blankets",
+        "name": "Dry blankets",
+        "scenes": [
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "dry blankets",
+            "line_start": 49,
+            "line_end": 49
+          }
+        ],
+        "source_status": "requested supplies, not visually confirmed"
+      },
+      {
+        "id": "batteries",
+        "name": "Flashlight batteries",
+        "scenes": [
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Kell sorts flashlight batteries",
+            "line_start": 66,
+            "line_end": 66
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "tackle_box",
+        "name": "Tackle box",
+        "scenes": [
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "into a tackle box",
+            "line_start": 66,
+            "line_end": 66
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "flyer",
+        "name": "Comet missing-dog flyer",
+        "scenes": [
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "with a flyer for a missing dog named COMET",
+            "line_start": 67,
+            "line_end": 67
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "tabletop_radio",
+        "name": "Tabletop radio",
+        "scenes": [
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Noah's voice crackles over a tabletop radio.",
+            "line_start": 81,
+            "line_end": 81
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "map",
+        "name": "Hand-drawn map",
+        "scenes": [
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Aria pins a hand-drawn map beside the console.",
+            "line_start": 99,
+            "line_end": 99
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "notebook",
+        "name": "DAY TWO notebook",
+        "scenes": [
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Noah labels a notebook DAY TWO.",
+            "line_start": 99,
+            "line_end": 99
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "new_sign",
+        "name": "OPEN FREQUENCY sign",
+        "scenes": [
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "June tapes a new sign over the door: OPEN FREQUENCY.",
+            "line_start": 100,
+            "line_end": 100
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "bread",
+        "name": "Warm bread wrapped in foil",
+        "scenes": [
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a loaf of warm bread wrapped in foil",
+            "line_start": 101,
+            "line_end": 101
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "microphone",
+        "name": "Microphone",
+        "scenes": [
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "reaches for the microphone",
+            "line_start": 109,
+            "line_end": 109
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "cassette",
+        "name": "Brass-heavy cassette cue",
+        "scenes": [
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Noah pushes up a brass-heavy cassette cue.",
+            "line_start": 114,
+            "line_end": 114
+          }
+        ],
+        "source_status": "explicit source object"
+      },
+      {
+        "id": "consoles",
+        "name": "Consoles/emergency power",
+        "scenes": [
+          "s1",
+          "s4"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "Old consoles hum under emergency power.",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ],
+        "role": "contextual setting, costume, or reported object"
+      },
+      {
+        "id": "cots",
+        "name": "Cots",
+        "scenes": [
+          "s3"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "Cots line the basketball court.",
+            "line_start": 65,
+            "line_end": 65
+          }
+        ],
+        "role": "contextual setting, costume, or reported object"
+      },
+      {
+        "id": "shelter_signs",
+        "name": "MEDICINE / MEALS / MESSAGES signs",
+        "scenes": [
+          "s3"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "Handwritten signs point toward MEDICINE, MEALS, and MESSAGES.",
+            "line_start": 65,
+            "line_end": 65
+          }
+        ],
+        "role": "contextual setting, costume, or reported object"
+      },
+      {
+        "id": "folding_table",
+        "name": "Folding table",
+        "scenes": [
+          "s3"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "at a folding table",
+            "line_start": 66,
+            "line_end": 66
+          }
+        ],
+        "role": "contextual setting, costume, or reported object"
+      },
+      {
+        "id": "maya_jacket",
+        "name": "Soaked marching-band jacket",
+        "scenes": [
+          "s3"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "a soaked marching-band jacket",
+            "line_start": 67,
+            "line_end": 67
+          }
+        ],
+        "role": "contextual setting, costume, or reported object"
+      },
+      {
+        "id": "wet_coats",
+        "name": "Wet coats and chairs",
+        "scenes": [
+          "s4"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "Wet coats hang from every chair.",
+            "line_start": 98,
+            "line_end": 98
+          }
+        ],
+        "role": "contextual setting, costume, or reported object"
+      },
+      {
+        "id": "vending_machine",
+        "name": "Vending machine",
+        "scenes": [
+          "s4"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "under the vending machine",
+            "line_start": 104,
+            "line_end": 104
+          }
+        ],
+        "role": "contextual setting, costume, or reported object"
+      },
+      {
+        "id": "grilled_cheese",
+        "name": "Grilled cheese",
+        "scenes": [
+          "s3"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "He stole my grilled cheese",
+            "line_start": 79,
+            "line_end": 79
+          }
+        ],
+        "role": "contextual setting, costume, or reported object"
+      },
+      {
+        "id": "switch",
+        "name": "Studio switch",
+        "scenes": [
+          "s1"
+        ],
+        "required": false,
+        "role": "contextual fixed fixture/costume/content or reported object; no independent bible required",
+        "evidence": [
+          {
+            "quote": "Aria flips a switch.",
+            "line_start": 24,
+            "line_end": 24
+          }
+        ]
+      },
+      {
+        "id": "siren",
+        "name": "Distant siren",
+        "scenes": [
+          "s2"
+        ],
+        "required": false,
+        "role": "contextual fixed fixture/costume/content or reported object; no independent bible required",
+        "evidence": [
+          {
+            "quote": "a siren rises and cuts out.",
+            "line_start": 38,
+            "line_end": 38
+          }
+        ]
+      },
+      {
+        "id": "rail",
+        "name": "Rusted catwalk rail",
+        "scenes": [
+          "s2"
+        ],
+        "required": false,
+        "role": "contextual fixed fixture/costume/content or reported object; no independent bible required",
+        "evidence": [
+          {
+            "quote": "to a rusted rail",
+            "line_start": 37,
+            "line_end": 37
+          }
+        ]
+      },
+      {
+        "id": "aria_boot",
+        "name": "Aria boot",
+        "scenes": [
+          "s2"
+        ],
+        "required": false,
+        "role": "contextual fixed fixture/costume/content or reported object; no independent bible required",
+        "evidence": [
+          {
+            "quote": "with her boot",
+            "line_start": 37,
+            "line_end": 37
+          }
+        ]
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "id": "team",
+      "claim": "Aria, Noah, June, and Kell cooperate in emergency communication. No family/romantic relations among them are established.",
+      "evidence": [
+        {
+          "quote": "The hill relay is our only shot.",
+          "line_start": 13,
+          "line_end": 13
+        },
+        {
+          "quote": "Loud enough to make me useful.",
+          "line_start": 57,
+          "line_end": 57
+        }
+      ]
+    },
+    {
+      "id": "maya_comet",
+      "claim": "Maya identifies Comet as family and carries him; Comet is a dog, not a speaking human.",
+      "evidence": [
+        {
+          "quote": "a missing dog named COMET",
+          "line_start": 67,
+          "line_end": 67
+        },
+        {
+          "quote": "He's family.",
+          "line_start": 79,
+          "line_end": 79
+        },
+        {
+          "quote": "COMET in her arms.",
+          "line_start": 101,
+          "line_end": 101
+        }
+      ]
+    }
+  ],
+  "continuity": [
+    {
+      "id": "gear",
+      "claim": "Kell brings antenna, lantern and tool bag to studio; these types recur with Aria/Noah on catwalk, not with Kell physically present there.",
+      "evidence": [
+        {
+          "quote": "a portable antenna, a dented lantern, and a canvas tool bag.",
+          "line_start": 10,
+          "line_end": 10
+        },
+        {
+          "quote": "Aria braces the lantern with her boot while Noah clamps the portable antenna",
+          "line_start": 37,
+          "line_end": 37
+        },
+        {
+          "quote": "The canvas tool bag swings in the gusts.",
+          "line_start": 38,
+          "line_end": 38
+        }
+      ]
+    },
+    {
+      "id": "broadcast",
+      "claim": "ON AIR sign changes from flickering/failing at night to steady red at morning.",
+      "evidence": [
+        {
+          "quote": "The ON AIR sign flickers, then dies again.",
+          "line_start": 24,
+          "line_end": 24
+        },
+        {
+          "quote": "The ON AIR sign steadies into a solid red glow",
+          "line_start": 122,
+          "line_end": 122
+        }
+      ]
+    },
+    {
+      "id": "comet",
+      "claim": "Missing-dog request/flyer precedes muddy sleepy recovered Comet carried into studio.",
+      "evidence": [
+        {
+          "quote": "with a flyer for a missing dog named COMET",
+          "line_start": 67,
+          "line_end": 67
+        },
+        {
+          "quote": "with a muddy, sleepy COMET in her arms.",
+          "line_start": 101,
+          "line_end": 101
+        }
+      ]
+    },
+    {
+      "id": "roads",
+      "claim": "Bridge is reported closed; east road later opens one lane, with no heavy trucks until daylight. No confirmed bridge reopening.",
+      "evidence": [
+        {
+          "quote": "Bridge is closed.",
+          "line_start": 13,
+          "line_end": 13
+        },
+        {
+          "quote": "East road is open one lane. Bridge crew wants no heavy trucks till daylight.",
+          "line_start": 84,
+          "line_end": 84
+        }
+      ]
+    },
+    {
+      "id": "supply",
+      "claim": "Caller requests insulin/dry blankets; June later reports shelter stocked, but actual delivery and deliverer are not shown.",
+      "evidence": [
+        {
+          "quote": "north shelter needs insulin and dry blankets.",
+          "line_start": 49,
+          "line_end": 49
+        },
+        {
+          "quote": "north shelter is stocked",
+          "line_start": 112,
+          "line_end": 112
+        }
+      ]
+    }
+  ],
+  "uncertainty": [
+    {
+      "id": "caller_identity",
+      "claim": "Must retain unidentified radio caller; do not merge definitely with June, Maya, or any named team member.",
+      "evidence": [
+        {
+          "quote": "UNKNOWN VOICE (RADIO)",
+          "line_start": 48,
+          "line_end": 48
+        }
+      ]
+    },
+    {
+      "id": "shelter_identity",
+      "claim": "Must preserve unresolved equivalence: north shelter is not explicitly equated with high school gym shelter.",
+      "evidence": [
+        {
+          "quote": "north shelter needs insulin and dry blankets.",
+          "line_start": 49,
+          "line_end": 49
+        },
+        {
+          "quote": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+          "line_start": 63,
+          "line_end": 63
+        }
+      ]
+    },
+    {
+      "id": "whiteboard_identity",
+      "claim": "Whiteboards occur at studio and gym; same physical instance/transport is unproven. Do not invent a transport event.",
+      "evidence": [
+        {
+          "quote": "JUNE covers a whiteboard",
+          "line_start": 9,
+          "line_end": 9
+        },
+        {
+          "quote": "June writes the update beneath NORTH SHELTER on the whiteboard",
+          "line_start": 86,
+          "line_end": 86
+        }
+      ]
+    },
+    {
+      "id": "station_name",
+      "claim": "Retain Red Creek address/place and OPEN FREQUENCY new sign without inventing formal station rename history.",
+      "evidence": [
+        {
+          "quote": "Red Creek station...",
+          "line_start": 49,
+          "line_end": 49
+        },
+        {
+          "quote": "June tapes a new sign over the door: OPEN FREQUENCY.",
+          "line_start": 100,
+          "line_end": 100
+        }
+      ]
+    }
+  ],
+  "consumer_checks": [
+    {
+      "id": "coverage",
+      "claim": "All four scenes and seven required participants must survive workspace; caller remote, Comet animal.",
+      "evidence": [
+        {
+          "quote": "UNKNOWN VOICE (RADIO)",
+          "line_start": 48,
+          "line_end": 48
+        },
+        {
+          "quote": "a missing dog named COMET",
+          "line_start": 67,
+          "line_end": 67
+        }
+      ],
+      "severity": "hard"
+    },
+    {
+      "id": "sequence",
+      "claim": "Preserve night/night/pre-dawn/morning order and recovery ending.",
+      "evidence": [
+        {
+          "quote": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+          "line_start": 5,
+          "line_end": 5
+        },
+        {
+          "quote": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+          "line_start": 63,
+          "line_end": 63
+        },
+        {
+          "quote": "INT. COMMUNITY RADIO STUDIO - MORNING",
+          "line_start": 96,
+          "line_end": 96
+        }
+      ],
+      "severity": "hard"
+    },
+    {
+      "id": "no_diagnosis",
+      "claim": "Do not invent a named character having diabetes or being the insulin recipient.",
+      "evidence": [
+        {
+          "quote": "north shelter needs insulin and dry blankets.",
+          "line_start": 49,
+          "line_end": 49
+        }
+      ],
+      "severity": "hard"
+    }
+  ]
+}

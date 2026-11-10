@@ -1,0 +1,73 @@
+{
+  "data": {
+    "aliases": [],
+    "description": "An elevated catwalk structure atop a water tower, exposed to the elements. Features rusted rails suitable for clamping equipment. The catwalk is windswept and provides a vantage point overlooking a town valley below.",
+    "location_id": "water_tower_catwalk",
+    "name": "Water Tower Catwalk",
+    "narrative_significance": "A remote communication outpost where Aria and Noah establish radio contact during an emergency situation. The location serves as a critical hub for coordinating disaster relief efforts, receiving distress calls from Red Creek station and communicating with June. The harsh weather conditions and isolation emphasize the urgency and danger of the crisis unfolding below.",
+    "overall_confidence": 0.95,
+    "physical_traits": [
+      "Elevated catwalk structure",
+      "Rusted rails",
+      "Exposed to wind",
+      "Overlooks town valley",
+      "Accessible by lantern light"
+    ],
+    "scene_presence": [
+      "Wind lashing the catwalk",
+      "Town below mostly dark except for high school gym and gas station canopy",
+      "Canvas tool bag swinging in gusts",
+      "Portable antenna clamped to rail",
+      "Handheld receiver with radio capability"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 3,
+        "decision_trace": [],
+        "decision_trace_count": 0,
+        "input_candidate_count": 3,
+        "rejected_candidate_count": 0,
+        "rejected_candidates": []
+      }
+    },
+    "confidence": 0.95,
+    "cost_data": null,
+    "created_at": "2026-11-10T05:29:20.735081Z",
+    "health": "valid",
+    "intent": "Establish master definition for location 'Water Tower Catwalk'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "location_bible_v1",
+    "producing_role": null,
+    "rationale": "Extracted from canonical script and scene headings.",
+    "ref": {
+      "artifact_type": "location_bible",
+      "entity_id": "water_tower_catwalk",
+      "path": "artifacts/location_bible/water_tower_catwalk/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

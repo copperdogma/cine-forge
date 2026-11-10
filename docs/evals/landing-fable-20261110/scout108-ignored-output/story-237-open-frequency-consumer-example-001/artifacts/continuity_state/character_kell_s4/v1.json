@@ -1,0 +1,64 @@
+{
+  "data": {
+    "change_events": [],
+    "entity_id": "kell",
+    "entity_type": "character",
+    "overall_confidence": 0.97,
+    "properties": [
+      {
+        "confidence": 0.98,
+        "key": "source_observation",
+        "value": "physical: bringing bread"
+      }
+    ],
+    "scene_id": "s4",
+    "story_time_position": 3
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "run_context": {
+        "acceptance": "mechanical-only",
+        "kind": "authored-zero-provider-representability-example",
+        "subject_calls": 0
+      },
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    "confidence": 0.97,
+    "cost_data": null,
+    "created_at": "2026-11-10T04:30:13.156610Z",
+    "health": "valid",
+    "intent": "Materialize supplied whole-workspace continuity_state payload",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "s4",
+        "path": "artifacts/scene/s4/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "kell",
+        "path": "artifacts/character_bible/kell/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "whole_story_workspace_eval",
+    "producing_role": null,
+    "rationale": "Lossless fanout of validated subject output; no semantic field completion",
+    "ref": {
+      "artifact_type": "continuity_state",
+      "entity_id": "character_kell_s4",
+      "path": "artifacts/continuity_state/character_kell_s4/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

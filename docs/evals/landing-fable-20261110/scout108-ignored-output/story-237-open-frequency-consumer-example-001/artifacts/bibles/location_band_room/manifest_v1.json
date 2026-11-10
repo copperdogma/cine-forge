@@ -1,0 +1,54 @@
+{
+  "data": {
+    "created_at": "2026-11-09T22:30:13.057566",
+    "display_name": "Band room",
+    "entity_id": "band_room",
+    "entity_type": "location",
+    "files": [
+      {
+        "created_at": "2026-11-10T04:30:13.020820Z",
+        "filename": "master_v1.json",
+        "provenance": "ai_extracted",
+        "purpose": "master_definition",
+        "version": 1
+      }
+    ],
+    "version": 1,
+    "visual_reference_image": null
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "run_context": {
+        "acceptance": "mechanical-only",
+        "kind": "authored-zero-provider-representability-example",
+        "subject_calls": 0
+      },
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    "confidence": 0.96,
+    "cost_data": null,
+    "created_at": "2026-11-10T04:30:13.057379Z",
+    "health": "valid",
+    "intent": "Materialize supplied whole-workspace bible_manifest payload",
+    "lineage": [
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "band_room",
+        "path": "artifacts/location_bible/band_room/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "whole_story_workspace_eval",
+    "producing_role": null,
+    "rationale": "Lossless fanout of validated subject output; no semantic field completion",
+    "ref": {
+      "artifact_type": "bible_manifest",
+      "entity_id": "location_band_room",
+      "path": "artifacts/bibles/location_band_room/manifest_v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

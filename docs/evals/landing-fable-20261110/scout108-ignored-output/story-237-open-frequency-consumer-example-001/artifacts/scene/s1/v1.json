@@ -1,0 +1,183 @@
+{
+  "data": {
+    "characters_present": [
+      "ARIA",
+      "NOAH",
+      "JUNE",
+      "KELL"
+    ],
+    "characters_present_ids": [
+      "aria",
+      "noah",
+      "june",
+      "kell"
+    ],
+    "confidence": 0.98,
+    "elements": [
+      {
+        "content": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Rain rattles the skylight. Old consoles hum under emergency power.",
+        "element_type": "action"
+      },
+      {
+        "content": "ARIA threads a tape reel while NOAH coaxes a signal out of a battered mixer.",
+        "element_type": "action"
+      },
+      {
+        "content": "JUNE covers a whiteboard with road closures, shelter names, and call signs.",
+        "element_type": "action"
+      },
+      {
+        "content": "KELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag.",
+        "element_type": "action"
+      },
+      {
+        "content": "KELL",
+        "element_type": "character"
+      },
+      {
+        "content": "Bridge is closed. Cell towers are dead. The hill relay is our only shot.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "NOAH",
+        "element_type": "character"
+      },
+      {
+        "content": "Please tell me that antenna is less cursed than it looks.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "KELL",
+        "element_type": "character"
+      },
+      {
+        "content": "It only tried to kill me once.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "Good. Tonight we don't have time for a second opinion.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Aria flips a switch. The ON AIR sign flickers, then dies again.",
+        "element_type": "action"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "Give me ten minutes and one miracle.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "Take fifteen. Keep the miracle.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "CUT TO:",
+        "element_type": "transition"
+      }
+    ],
+    "heading": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+    "inferences": [
+      {
+        "confidence": 1.0,
+        "field_name": "presence_mode",
+        "rationale": "Remote dialogue and mentions do not establish physical presence.",
+        "value": "{\"physical\": [\"aria\", \"noah\", \"june\", \"kell\"], \"heard\": [], \"mentioned\": []}"
+      }
+    ],
+    "int_ext": "INT",
+    "location": "Community radio studio",
+    "narrative_beats": [
+      {
+        "approximate_location": "Whole scene, with turn near its final dialogue/action.",
+        "beat_type": "scene_turn",
+        "confidence": 0.95,
+        "description": "A storm-disabled radio crew prepares an improvised hill-relay attempt."
+      }
+    ],
+    "props_mentioned": [
+      "Tape reel",
+      "Battered mixer",
+      "Whiteboard",
+      "Portable antenna",
+      "Dented lantern",
+      "Canvas tool bag",
+      "ON AIR sign"
+    ],
+    "provenance": [
+      {
+        "confidence": 1.0,
+        "evidence": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        "field_name": "source_span",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.95,
+        "evidence": "A storm-disabled radio crew prepares an improvised hill-relay attempt.",
+        "field_name": "narrative_beats",
+        "method": "ai"
+      }
+    ],
+    "scene_id": "s1",
+    "scene_number": 1,
+    "source_span": {
+      "end_line": 33,
+      "start_line": 5
+    },
+    "time_of_day": "NIGHT",
+    "tone_mood": "Urgent, resilient, dryly comic",
+    "tone_shifts": [
+      "Urgency softens through joking."
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "run_context": {
+        "acceptance": "mechanical-only",
+        "kind": "authored-zero-provider-representability-example",
+        "subject_calls": 0
+      },
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    "confidence": 0.98,
+    "cost_data": null,
+    "created_at": "2026-11-10T04:30:13.024160Z",
+    "health": "valid",
+    "intent": "Materialize supplied whole-workspace scene payload",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "whole_story_workspace_eval",
+    "producing_role": null,
+    "rationale": "Lossless fanout of validated subject output; no semantic field completion",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "s1",
+      "path": "artifacts/scene/s1/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "location_id": "community_radio_studio",
+  "name": "Community Radio Studio",
+  "aliases": [],
+  "description": "A functional radio broadcast facility equipped with old consoles, a battered mixer, emergency power systems, and a skylight. The studio contains broadcasting equipment including an ON AIR sign, microphone, cassette cue system, and tape reels. Windows are present and subject to weather exposure.",
+  "physical_traits": [
+    "Skylight with weather exposure",
+    "Old consoles",
+    "Battered mixer",
+    "Emergency power systems",
+    "ON AIR sign (flickering/unreliable initially, then steady)",
+    "Microphone",
+    "Brass-heavy cassette cue system",
+    "Tape reel threading capability",
+    "Whiteboard for notes",
+    "Chairs suitable for hanging wet coats",
+    "Door with space for signage",
+    "Windows with storm residue accumulation",
+    "Vending machine in adjacent band room"
+  ],
+  "scene_presence": [
+    "Aria (threading tape, operating switches, pinning maps, managing broadcast)",
+    "Noah (operating mixer, labeling notebook, cueing cassettes)",
+    "June (covering whiteboard with road closures and shelter names, operating microphone, creating signage)",
+    "Kell (carrying portable antenna, lantern, and tool bag; delivering bread)",
+    "Maya (entering with dog Comet)",
+    "Comet (dog, recovered from band room)"
+  ],
+  "narrative_significance": "The Community Radio Studio serves as the operational hub for emergency broadcast communications during a crisis event. It functions as a lifeline for the community, coordinating information about road closures, shelter locations, and missing persons. The studio represents resilience and community coordination, operating under emergency power conditions and serving as a gathering place for coordinated relief efforts.",
+  "overall_confidence": 0.95
+}

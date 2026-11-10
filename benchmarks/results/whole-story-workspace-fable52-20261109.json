@@ -1,0 +1,123 @@
+{
+  "attempt": "058",
+  "base_git_sha": "0693227394bd9a63b1df1300070421000e0dd7b6",
+  "candidate": "claude-fable-5-2 / native standard_only",
+  "candidate_arms": [
+    {
+      "effort": "xhigh",
+      "outcome": "600040ms timeout before HTTP response; no output or usage",
+      "total_output": 65536,
+      "transport": "nonstream",
+      "unknown_usd": "2.853904"
+    },
+    {
+      "effort": "xhigh",
+      "latency_ms": 588353,
+      "outcome": "Complete SSE message_stop but max_tokens; all65536tokens thinking, zero text/bundle",
+      "total_output": 65536,
+      "transport": "streamed operational recovery",
+      "usage_estimate_usd": "2.722216"
+    },
+    {
+      "effort": "xhigh",
+      "latency_ms": 1053981,
+      "outcome": "Premature EOF:15735visible characters, incomplete outer JSON; no final usage/terminal. Cause unknown, not a known max_tokens stop.",
+      "total_output": 128000,
+      "transport": "streamed adequate-output arm",
+      "unknown_usd": "5.352464"
+    }
+  ],
+  "candidate_native_schema": "API-enforced strict outer bundle_json string; complete original required host schema after decoding. No complete bundle reached host validation.",
+  "candidate_semantic_quality": "not measured",
+  "candidate_whole_output_delivered": false,
+  "case_disposition": {
+    "last_ferry": "NOT MEASURED: shared qualification had not passed before extended provider recovery; final nativeMAX replay exhausted the prospective confirmation scope/budget. No invented failure; frozen source/oracle retained.",
+    "matinee_echo": "NOT MEASURED: shared qualification had not passed before extended provider recovery; final nativeMAX replay exhausted the prospective confirmation scope/budget. No invented failure; frozen source/oracle retained.",
+    "open_frequency": "Four physical candidate calls retained; final exact MAX replay terminal max_tokens and incomplete JSON. No complete bundle, host validation or source score."
+  },
+  "completed": "2026-11-10",
+  "conservative_accounted_usd": "16.424418",
+  "date": "2026-11-09",
+  "decision": "No qualified winner: Fable whole-output delivery unqualified; full semantics unmeasured. Fresh unchanged pipeline loadable but whole-source acceptance FAIL. Defer replacement; keep existing operational path with manual source checks.",
+  "final_verbatim_replay": {
+    "body_delta_from_prior_max_request": {},
+    "case_disposition": "Four physical candidate calls retained; final exact MAX replay terminal max_tokens and incomplete JSON. No complete bundle, host validation or source score.",
+    "complete_whole_output": false,
+    "completed": "2026-11-10",
+    "cost_usd": "5.220776",
+    "decision": "No qualified winner: Fable whole-output delivery unqualified; full semantics unmeasured. Fresh unchanged pipeline loadable but whole-source acceptance FAIL. Defer replacement; keep existing operational path with manual source checks.",
+    "effort": "xhigh",
+    "latency_ms": 1003407,
+    "max_tokens": 128000,
+    "outer_json_error": "Unterminated string starting at: line 1 column 16 (char 15)",
+    "partial_output_policy": "Diagnostic only; no partial materialization, semantic completion or source-quality score.",
+    "source_quality": "not measured",
+    "stop_reason": "max_tokens",
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "inference_geo": "global",
+      "input_tokens": 12597,
+      "output_tokens": 128000,
+      "output_tokens_details": {
+        "thinking_tokens": 68908
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    },
+    "visible_text_characters": 127005,
+    "wire_sha256": "01bd5373650beb7d205d9d8bcb71ba001594a617e99c755cd08c1177bda4f916"
+  },
+  "hard_cap_usd": "20",
+  "incumbent": {
+    "all_consumer_health_labels_valid": true,
+    "consumer_artifact_types": {
+      "bible_manifest": 25,
+      "canonical_script": 1,
+      "character_bible": 5,
+      "continuity_index": 1,
+      "continuity_state": 20,
+      "entity_discovery_results": 1,
+      "entity_graph": 1,
+      "location_bible": 3,
+      "project_config": 1,
+      "prop_bible": 17,
+      "raw_input": 1,
+      "scene": 4,
+      "scene_index": 1,
+      "script_bible": 1
+    },
+    "consumer_groups": 82,
+    "durable_workspace": "docs/evals/evidence/story-237-whole-task20261109/control-workspace",
+    "elapsed_ms": 200684,
+    "legacy_helper_cost_usd": 0.2057368,
+    "models": {
+      "claude-haiku-4-5-20251001": 40,
+      "claude-sonnet-4-6": 3,
+      "gpt-4.1-mini": 2
+    },
+    "physical_calls": 45,
+    "project": "output/eval-full-script-throughput-open_frequency-8185d1",
+    "recipe_completion": true,
+    "review": "docs/evals/evidence/story-237-whole-task20261109/source-review-control.md",
+    "settings": "Unchanged maintained throughput runner and two recipes; runtime Haiku work, Sonnet default/scene-analysis, GPT4.1Mini verify, Opus escalation retained.",
+    "source_quality": "FAIL independent whole-source review: invented facts, stale final-scene continuity, incomplete material entities/prop indexing, dangling graph endpoints and scene refs.",
+    "usage_estimate_usd": "0.275058"
+  },
+  "invoice_reconciliation": "Not available; no unknown reservation released.",
+  "known_usage_estimate_usd": "8.218050",
+  "limits": "One authored source attempted; two fixed variants unmeasured after extended recovery. Other efforts unmeasured. No best-of-valid-answer selection, partial answer scoring, private source, runtime/default change, commit/push or deployment.",
+  "owner_boundary": "story_lane_workspace_ready: mvp_ingest then world_building",
+  "story": "237",
+  "unknown_reservations_usd": "8.206368",
+  "worktree": {
+    "branch": "codex/fable-whole-task-20261109-cine-forge",
+    "disposition": "retained uncommitted for root review; no cleanup authorized",
+    "owner": "Scout108 CineForge campaign",
+    "path": "/Users/cam/.codex/worktrees/fable-whole-task-20261109/cine-forge"
+  }
+}

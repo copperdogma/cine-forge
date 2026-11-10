@@ -1,0 +1,43 @@
+{
+  "reason": "One FINAL root-authorized exact archived MAX request replay after premature provider EOF, not known max_tokens or semantic failure. No valid answer selection.",
+  "body_delta_from_actual_prior_stream": {},
+  "wire_sha256": "01bd5373650beb7d205d9d8bcb71ba001594a617e99c755cd08c1177bda4f916",
+  "supported_native_max_tokens": 128000,
+  "timeout_seconds": 1800,
+  "reservation_usd": "5.352464",
+  "prior_conservative_accounted_usd": "11.203642",
+  "hard_cap_usd": "20",
+  "no_further_max_cap_rescue": true,
+  "files": [
+    {
+      "path": "benchmarks/scripts/run_whole_story_workspace_final_replay.py",
+      "bytes": 7875,
+      "sha256": "f5fa8028f20811c2c5c6665f3dff9961ae050888c078891d900e89a5a37b9f5a"
+    },
+    {
+      "path": "benchmarks/scripts/recover_whole_story_workspace_stream.py",
+      "bytes": 10330,
+      "sha256": "b720fdc54c694fd4538b89a3cca74d25331216666f94eb9a0386d7722f43fc74"
+    },
+    {
+      "path": "benchmarks/scripts/whole_story_workspace_meter.py",
+      "bytes": 10050,
+      "sha256": "a7f8d87f260d11e09d82f9119f32abc46956d768c3bbe9bd409e5a661546fc68"
+    },
+    {
+      "path": "benchmarks/scripts/whole_story_workspace_contract.py",
+      "bytes": 24222,
+      "sha256": "43f7599c8fdba0ebc838922b807e45868287a67301c8ac0fad39d93ae9bc3165"
+    },
+    {
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-xhigh128000-final-replay-request.json",
+      "bytes": 34640,
+      "sha256": "d62e0e3af60a1f5a2108358ae0c59009147bbad09c847e037fbc71f73cd738fc"
+    },
+    {
+      "path": "docs/evals/evidence/story-237-whole-task20261109/native-fable-model-capabilities.json",
+      "bytes": 1672,
+      "sha256": "4ca54b1d1845b6396dd2ec6174ce992d1d777f829c2a5dc3d2ab87dfed883251"
+    }
+  ]
+}

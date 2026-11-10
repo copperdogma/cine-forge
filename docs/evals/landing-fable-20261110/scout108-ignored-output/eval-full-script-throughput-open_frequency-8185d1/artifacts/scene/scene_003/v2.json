@@ -1,0 +1,210 @@
+{
+  "data": {
+    "characters_present": [
+      "JUNE",
+      "KELL",
+      "MAYA",
+      "NOAH"
+    ],
+    "characters_present_ids": [
+      "june",
+      "kell",
+      "maya",
+      "noah"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Cots line the basketball court. Handwritten signs point toward MEDICINE, MEALS, and MESSAGES.",
+        "element_type": "action"
+      },
+      {
+        "content": "June records updates at a folding table while Kell sorts flashlight batteries into a tackle box.",
+        "element_type": "action"
+      },
+      {
+        "content": "MAYA, a teenager in a soaked marching-band jacket, approaches with a flyer for a missing dog named COMET.",
+        "element_type": "action"
+      },
+      {
+        "content": "MAYA",
+        "element_type": "character"
+      },
+      {
+        "content": "Can the station announce this too?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "If we're naming roads and insulin drops, we can name dogs.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "KELL",
+        "element_type": "character"
+      },
+      {
+        "content": "Comet better be worth interrupting the weather report.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "MAYA",
+        "element_type": "character"
+      },
+      {
+        "content": "He stole my grilled cheese and slept through the evacuation. He's family.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Noah's voice crackles over a tabletop radio.",
+        "element_type": "action"
+      },
+      {
+        "content": "NOAH (RADIO)",
+        "element_type": "character"
+      },
+      {
+        "content": "East road is open one lane. Bridge crew wants no heavy trucks till daylight.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "June writes the update beneath NORTH SHELTER on the whiteboard, then takes Maya's flyer.",
+        "element_type": "action"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "Spell his name for the broadcast.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "MAYA",
+        "element_type": "character"
+      },
+      {
+        "content": "C-O-M-E-T. Like the fast kind of star.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "CUT TO:",
+        "element_type": "transition"
+      }
+    ],
+    "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "High School Gym Shelter",
+    "narrative_beats": [
+      {
+        "approximate_location": "Opening",
+        "beat_type": "Establishing / World-Building",
+        "confidence": 0.93,
+        "description": "The gym shelter \u2014 cots, handwritten signs, sorted batteries \u2014 grounds the crisis in human-scale logistics and community response, shifting focus from the technical team to the people they serve."
+      },
+      {
+        "approximate_location": "Early-middle",
+        "beat_type": "New Character Introduction",
+        "confidence": 0.95,
+        "description": "Maya, a teenager in a soaked marching-band jacket, arrives with a missing-dog flyer, introducing a personal, small-scale need into a scene otherwise dominated by medical and infrastructure concerns."
+      },
+      {
+        "approximate_location": "Middle",
+        "beat_type": "Tonal Contradiction / Humanizing Beat",
+        "confidence": 0.92,
+        "description": "June's immediate acceptance ('If we're naming roads and insulin drops, we can name dogs') and Kell's mock-gruff skepticism place a lost pet on equal footing with emergency broadcasts \u2014 a deliberate tonal contradiction that humanizes the crisis without trivializing it."
+      },
+      {
+        "approximate_location": "Middle",
+        "beat_type": "Character Revelation",
+        "confidence": 0.88,
+        "description": "Maya's explanation \u2014 'He stole my grilled cheese and slept through the evacuation. He's family.' \u2014 uses specific, comic detail to convey genuine emotional stakes, deepening audience investment in the dog subplot."
+      },
+      {
+        "approximate_location": "Late",
+        "beat_type": "Operational Update / Continuity",
+        "confidence": 0.9,
+        "description": "Noah's radio report on the east road and bridge crew keeps the emergency logistics thread active, anchoring the warmer character beats in ongoing crisis reality."
+      },
+      {
+        "approximate_location": "End",
+        "beat_type": "Commitment / Setup",
+        "confidence": 0.93,
+        "description": "June takes Maya's flyer and asks her to spell Comet's name for broadcast, formally integrating the personal request into the station's mission and setting up the dog's recovery in the next scene."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      }
+    ],
+    "scene_id": "scene_003",
+    "scene_number": 3,
+    "source_span": {
+      "end_line": 102,
+      "start_line": 68
+    },
+    "time_of_day": "PRE-DAWN",
+    "tone_mood": "warm and quietly purposeful, with gentle humor",
+    "tone_shifts": [
+      "Opens in the functional, subdued atmosphere of a disaster shelter, then softens further when Maya arrives \u2014 the tone shifts from logistical efficiency to human warmth without losing the underlying urgency signaled by Noah's radio update."
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 3,
+      "source_span": {
+        "end_line": 102,
+        "start_line": 68
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.038541,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2569,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T05:28:59.992060Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_003",
+      "path": "artifacts/scene/scene_003/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

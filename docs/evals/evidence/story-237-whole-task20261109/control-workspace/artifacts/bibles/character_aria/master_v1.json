@@ -1,0 +1,118 @@
+{
+  "character_id": "aria",
+  "name": "ARIA",
+  "aliases": [],
+  "description": "A skilled technician working at a community radio station during an emergency. Aria is resourceful, calm under pressure, and focused on restoring communications infrastructure to help coordinate disaster relief efforts.",
+  "prominence": "secondary",
+  "explicit_evidence": [
+    {
+      "trait": "Technical competence",
+      "quote": "Aria threads a tape reel while NOAH coaxes a signal out of a battered mixer.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "source_span": {
+        "start_line": 5,
+        "end_line": 5
+      }
+    },
+    {
+      "trait": "Problem-solving under pressure",
+      "quote": "Aria flips a switch. The ON AIR sign flickers, then dies again. ARIA: Give me ten minutes and one miracle.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "source_span": {
+        "start_line": 20,
+        "end_line": 22
+      }
+    },
+    {
+      "trait": "Practical and composed",
+      "quote": "Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.",
+      "source_scene": "EXT. WATER TOWER CATWALK - NIGHT",
+      "source_span": {
+        "start_line": 35,
+        "end_line": 35
+      }
+    },
+    {
+      "trait": "Responsive to mission success",
+      "quote": "Aria smiles for the first time all night and tightens the last bolt.",
+      "source_scene": "EXT. WATER TOWER CATWALK - NIGHT",
+      "source_span": {
+        "start_line": 48,
+        "end_line": 48
+      }
+    },
+    {
+      "trait": "Collaborative and detail-oriented",
+      "quote": "Aria pins a hand-drawn map beside the console.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+      "source_span": {
+        "start_line": 56,
+        "end_line": 56
+      }
+    },
+    {
+      "trait": "Pragmatic decision-maker",
+      "quote": "ARIA: Put that on repeat between updates.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+      "source_span": {
+        "start_line": 67,
+        "end_line": 67
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "Dedication to mission",
+      "value": "High",
+      "confidence": 0.9,
+      "rationale": "Aria works through the night in harsh conditions on a water tower catwalk to restore emergency communications, showing commitment to helping the community."
+    },
+    {
+      "trait": "Emotional restraint",
+      "value": "High",
+      "confidence": 0.85,
+      "rationale": "Aria maintains focus and composure throughout the emergency setup, only smiling when the antenna successfully receives a distress call, suggesting she channels emotions into action."
+    },
+    {
+      "trait": "Experience with technical systems",
+      "value": "Experienced",
+      "confidence": 0.9,
+      "rationale": "Aria confidently handles tape reels, switches, bolts, and radio equipment without hesitation or explanation, indicating prior technical training or experience."
+    },
+    {
+      "trait": "Collaborative work style",
+      "value": "Team-oriented",
+      "confidence": 0.85,
+      "rationale": "Aria works seamlessly with Noah, June, and Kell, communicating via radio and coordinating tasks without conflict or ego."
+    }
+  ],
+  "scene_presence": [
+    "INT. COMMUNITY RADIO STUDIO - NIGHT",
+    "EXT. WATER TOWER CATWALK - NIGHT",
+    "INT. COMMUNITY RADIO STUDIO - MORNING"
+  ],
+  "dialogue_summary": "Aria speaks sparingly but purposefully. She requests time to fix the broadcast system ('Give me ten minutes and one miracle'), responds to Noah's complaint about weather with a quip about boring jobs, confirms radio contact with June during the antenna installation, and makes a practical decision about music programming ('Put that on repeat between updates'). Her dialogue reflects competence and focus on the emergency mission.",
+  "narrative_role": "supporting",
+  "narrative_role_confidence": 0.9,
+  "relationships": [
+    {
+      "target_character": "NOAH",
+      "relationship_type": "Colleague/Team member",
+      "evidence": "Aria and Noah work together threading equipment and installing the antenna on the water tower catwalk. They exchange casual banter about weather and jobs.",
+      "confidence": 0.95
+    },
+    {
+      "target_character": "JUNE",
+      "relationship_type": "Colleague/Team member",
+      "evidence": "Aria communicates with June via radio during the antenna installation and receives direction from her. They coordinate on broadcast operations.",
+      "confidence": 0.95
+    },
+    {
+      "target_character": "KELL",
+      "relationship_type": "Colleague/Team member",
+      "evidence": "Aria works with Kell as part of the emergency radio station team, though they have minimal direct interaction in the provided scenes.",
+      "confidence": 0.85
+    }
+  ],
+  "overall_confidence": 0.88
+}

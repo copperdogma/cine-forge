@@ -301,7 +301,8 @@
           "218",
           "219",
           "220",
-          "231"
+          "231",
+          "237"
         ],
         "adrIds": [
           "ADR-003"
@@ -315,7 +316,8 @@
           "scene-enrichment",
           "scene-extraction",
           "script-bible",
-          "storyboard-generation-quality"
+          "storyboard-generation-quality",
+          "whole-story-workspace-capability"
         ]
       },
       {
@@ -393,7 +395,8 @@
           "204",
           "205",
           "206",
-          "208"
+          "208",
+          "237"
         ],
         "adrIds": [
           "ADR-001",
@@ -409,7 +412,8 @@
           "previz-usefulness",
           "prop-extraction",
           "relationship-discovery",
-          "storyboard-generation-quality"
+          "storyboard-generation-quality",
+          "whole-story-workspace-capability"
         ]
       },
       {
@@ -1143,7 +1147,8 @@
           "231",
           "234",
           "235",
-          "236"
+          "236",
+          "237"
         ],
         "adrIds": [
           "ADR-001",
@@ -1172,7 +1177,8 @@
           "scene-extraction",
           "script-bible",
           "storyboard-generation-quality",
-          "video-understanding"
+          "video-understanding",
+          "whole-story-workspace-capability"
         ]
       },
       {
@@ -15618,6 +15624,65 @@
           "summary": ""
         }
       }
+    },
+    {
+      "id": "237",
+      "title": "Whole screenplay to usable story workspace in one inference",
+      "path": "docs/stories/story-237-whole-story-workspace-capability.md",
+      "status": "Done",
+      "priority": "High",
+      "idealRefs": [
+        "R1",
+        "R12",
+        "R14",
+        "R8"
+      ],
+      "specRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "adrIds": [
+        "ADR-001",
+        "ADR-003"
+      ],
+      "compromiseIds": [],
+      "dependsOn": [],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "inputCoverageRefs": [],
+      "architectureDomains": [
+        "ingest_and_world_building",
+        "methodology_tooling"
+      ],
+      "roadmapTags": [
+        "evals",
+        "model-refresh"
+      ],
+      "legacySystem": "Cross-Cutting",
+      "blockerSummary": null,
+      "blockerEvidence": null,
+      "unblockCondition": null,
+      "lastWorkLogEntry": null,
+      "metadataSource": "frontmatter",
+      "missingFrontmatterKeys": [],
+      "actionability": {
+        "sourceKind": "story",
+        "sourceId": "237",
+        "sourcePath": "docs/stories/story-237-whole-story-workspace-capability.md",
+        "recommendedNow": false,
+        "posture": "completed",
+        "whyNow": "",
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "story-status",
+          "source": "docs/stories/story-237-whole-story-workspace-capability.md",
+          "summary": ""
+        }
+      }
     }
   ],
   "adrs": [
@@ -17920,6 +17985,69 @@
           "source": "docs/evals/registry.yaml",
           "sourceId": "057",
           "summary": "Full6 xhigh32768 native Fable capability panel with fresh Sol/Luna controls and18 blind full-source native Opus4.6 reviews; original OpenRouter402 preserved, explicitly authorized same-checkpoint direct recovery. No fulltask winner; source-grounded continuitylabel advantage on004 only. All maintained thresholds unchanged."
+        }
+      }
+    },
+    {
+      "id": "whole-story-workspace-capability",
+      "name": "Whole Story Workspace Capability",
+      "type": "quality",
+      "command": "PYTHONPATH=src <cineforge-python> benchmarks/scripts/report_whole_story_workspace.py --verify",
+      "description": "Raw eligible authored screenplay to complete consumer story workspace in one inference versus unchanged mvp_ingest+world_building. Consumer loadability, exact source grounding, material entities, references and continuity are separate gates.",
+      "path": "docs/evals/registry.yaml",
+      "specRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "storyIds": [
+        "237"
+      ],
+      "categoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "compromiseIds": [],
+      "retryWhen": [],
+      "attempts": [],
+      "latestScore": null,
+      "historicalEvidenceStatus": "",
+      "excludedScoreCount": 0,
+      "declaredSpecRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredStoryIds": [
+        "237"
+      ],
+      "declaredCategoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "declaredCompromiseIds": [],
+      "missingLineageKeys": [],
+      "derivedCategoryRefs": [
+        "spec:2",
+        "spec:3",
+        "spec:8"
+      ],
+      "actionability": {
+        "sourceKind": "eval",
+        "sourceId": "whole-story-workspace-capability",
+        "sourcePath": "docs/evals/registry.yaml",
+        "recommendedNow": false,
+        "posture": "no-trigger-recorded",
+        "whyNow": "",
+        "retryTriggerStatus": "none",
+        "retryWhen": [],
+        "lastRelevantAction": {
+          "date": null,
+          "sourceType": "eval-score",
+          "source": "docs/evals/registry.yaml",
+          "summary": ""
         }
       }
     }

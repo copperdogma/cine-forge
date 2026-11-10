@@ -1,0 +1,190 @@
+{
+  "data": {
+    "characters_present": [
+      "ARIA",
+      "JUNE",
+      "KELL",
+      "NOAH"
+    ],
+    "characters_present_ids": [
+      "aria",
+      "june",
+      "kell",
+      "noah"
+    ],
+    "confidence": 0.898,
+    "elements": [
+      {
+        "content": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Rain rattles the skylight. Old consoles hum under emergency power.",
+        "element_type": "action"
+      },
+      {
+        "content": "ARIA threads a tape reel while NOAH coaxes a signal out of a battered mixer.",
+        "element_type": "action"
+      },
+      {
+        "content": "JUNE covers a whiteboard with road closures, shelter names, and call signs.",
+        "element_type": "action"
+      },
+      {
+        "content": "KELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag.",
+        "element_type": "action"
+      },
+      {
+        "content": "KELL",
+        "element_type": "character"
+      },
+      {
+        "content": "Bridge is closed. Cell towers are dead. The hill relay is our only shot.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "NOAH",
+        "element_type": "character"
+      },
+      {
+        "content": "Please tell me that antenna is less cursed than it looks.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "KELL",
+        "element_type": "character"
+      },
+      {
+        "content": "It only tried to kill me once.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "Good. Tonight we don't have time for a second opinion.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Aria flips a switch. The ON AIR sign flickers, then dies again.",
+        "element_type": "action"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "Give me ten minutes and one miracle.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "Take fifteen. Keep the miracle.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "CUT TO:",
+        "element_type": "transition"
+      }
+    ],
+    "heading": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "Community Radio Studio",
+    "narrative_beats": [],
+    "props_mentioned": [
+      "CANVAS TOOL BAG",
+      "LANTERN",
+      "MIXER",
+      "ON AIR SIGN",
+      "PORTABLE ANTENNA",
+      "TAPE REEL"
+    ],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Extracted from first non-empty scene line",
+        "field_name": "heading",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.92,
+        "evidence": "Parsed heading prefix token",
+        "field_name": "int_ext",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.9,
+        "evidence": "Parsed heading suffix segment",
+        "field_name": "time_of_day",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.88,
+        "evidence": "Parsed heading core location segment",
+        "field_name": "location",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.84,
+        "evidence": "Collected from dialogue character cues",
+        "field_name": "characters_present",
+        "method": "rule"
+      }
+    ],
+    "scene_id": "scene_001",
+    "scene_number": 1,
+    "source_span": {
+      "end_line": 36,
+      "start_line": 5
+    },
+    "time_of_day": "NIGHT",
+    "tone_mood": "neutral",
+    "tone_shifts": []
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "single monolithic scene list artifact"
+    ],
+    "annotations": {
+      "ai_enrichment_used": false,
+      "boundary_reason": "",
+      "boundary_uncertain": false,
+      "discovery_tier": "structural",
+      "parser_backend": "fountain-tools",
+      "scene_number": 1,
+      "source_span": {
+        "end_line": 36,
+        "start_line": 5
+      }
+    },
+    "confidence": 0.898,
+    "cost_data": null,
+    "created_at": "2026-11-10T05:27:30.960310Z",
+    "health": "valid",
+    "intent": "Represent one screenplay scene as structured data for downstream modules",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_breakdown_v1",
+    "producing_role": null,
+    "rationale": "Structural extraction with LLM action-line entity extraction",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "path": "artifacts/scene/scene_001/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "code"
+  }
+}

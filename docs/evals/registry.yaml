@@ -35,6 +35,65 @@
 #   retired                      — do not retry without rewriting the plan itself
 
 evals:
+  - id: whole-story-workspace-capability
+    name: Whole Story Workspace Capability
+    type: quality
+    spec_refs:
+      - spec:2
+      - spec:3
+      - spec:8
+    story_refs:
+      - '237'
+    category_refs:
+      - spec:2
+      - spec:3
+      - spec:8
+    compromise_refs: []
+    description: Raw eligible authored screenplay to complete consumer story workspace in one inference versus unchanged mvp_ingest+world_building. Consumer loadability, exact source grounding, material entities, references and continuity are separate gates.
+    pipeline_stage: story_lane_workspace_ready
+    runner: python
+    command: PYTHONPATH=src <cineforge-python> benchmarks/scripts/report_whole_story_workspace.py --verify
+    script: benchmarks/scripts/report_whole_story_workspace.py
+    config: benchmarks/tasks/whole-story-workspace.yaml
+    scorer: benchmarks/scripts/whole_story_workspace_contract.py
+    golden: benchmarks/fixtures/whole_story_workspace_v1/freeze.json
+    test_cases: 3
+    target:
+      metric: whole_source_acceptance
+      value: 1.0
+      note: All consumer schemas/references, complete scenes/material entities, source-grounded relationships/continuity and no critical invention. Qualification stop leaves variants unmeasured, never failed.
+    scores:
+    - model: Maintained story workspace pipeline — fresh OpenFrequency control
+      evidence_status: one-source-loadable-but-full-source-gate-failed
+      metrics:
+        whole_source_acceptance: 0.0
+        delivery_pass: 1.0
+      latency_ms: 200684
+      cost_usd: 0.275058
+      cost_estimated: true
+      measured: '2026-11-09'
+      git_sha: 0693227394bd9a63b1df1300070421000e0dd7b6+story237-producing-epoch-freezes
+      result_file: benchmarks/results/whole-story-workspace-fable52-20261109.json
+      contract_manifest: docs/evals/story-237-whole-task20261109-manifest.json
+      note: '45 physical calls,82 healthy consumer groups, but independent source review finds false final-scene states/invented graph actions/unresolved refs. No paired semantic ranking: Fable delivered no complete workspace.'
+    attempts:
+    - id: 058
+      story: attempts/058-fable52-whole-story-workspace.md
+      date: '2026-11-09'
+      status: inconclusive
+      approach: Same xhigh whole-source65536, streamed transport recovery, and one declared adequate-output128000 arm.65K all-thinking exhaustion; first nativeMAX premature EOF with incomplete JSON, then one exact final replay terminal max_tokens with incomplete JSON. Fable semantic quality unmeasured; fresh unchanged complete control source gate fails. Fixed variants not measured after qualifier stop.
+      worker_model: Codex owner agent; independent Astra source reviewer
+      subject_model: claude-fable-5-2 xhigh65536 and xhigh128000 native standard_only
+      score_before: null
+      score_after: null
+      cost_after: 8.218050
+      unknown_reservations_usd: 8.206368
+      conservative_accounted_usd: 16.424418
+      git_sha: 0693227394bd9a63b1df1300070421000e0dd7b6+story237-producing-epoch-freezes
+      retry_status: closed-until-new-selection-or-verified-transport-change
+      retry_when:
+      - condition: new-declared-configuration-or-verified-long-response-transport-change
+        note: No unchanged closed-run retry or effort sweep. Other efforts remain unmeasured; a new prospective calibration needs explicit selection. Preserve all unknown charges and original failed streams.
 
   # ── Quality Evals (promptfoo) ─────────────────────────────────────────────
 

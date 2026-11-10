@@ -1,0 +1,116 @@
+{
+  "character_id": "june",
+  "name": "JUNE",
+  "aliases": [],
+  "description": "A radio operator and coordinator at the community radio station during an emergency response. June manages information flow, records updates, and broadcasts critical shelter and road information to the affected town. Works as part of a four-person emergency broadcast team.",
+  "prominence": "secondary",
+  "explicit_evidence": [
+    {
+      "trait": "Organized and detail-oriented",
+      "quote": "JUNE covers a whiteboard with road closures, shelter names, and call signs.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 50
+      }
+    },
+    {
+      "trait": "Pragmatic and efficient",
+      "quote": "Good. Tonight we don't have time for a second opinion.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 50
+      }
+    },
+    {
+      "trait": "Compassionate and inclusive",
+      "quote": "If we're naming roads and insulin drops, we can name dogs.",
+      "source_scene": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+      "source_span": {
+        "start_line": 51,
+        "end_line": 100
+      }
+    },
+    {
+      "trait": "Humorous and warm",
+      "quote": "June laughs, reaches for the microphone, and nods at Aria.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+      "source_span": {
+        "start_line": 101,
+        "end_line": 150
+      }
+    },
+    {
+      "trait": "Discerning about messaging and tone",
+      "quote": "No. Once is joy. Twice is branding.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+      "source_span": {
+        "start_line": 101,
+        "end_line": 150
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "Leadership capability",
+      "value": "High",
+      "confidence": 0.85,
+      "rationale": "June coordinates information flow, makes editorial decisions about broadcasts, and manages the whiteboard updates. Other team members defer to her judgment on what gets announced and how."
+    },
+    {
+      "trait": "Emotional intelligence",
+      "value": "High",
+      "confidence": 0.8,
+      "rationale": "June recognizes the human value in announcing a missing dog alongside critical infrastructure updates, understanding that both matter to community morale. She balances practical needs with emotional ones."
+    },
+    {
+      "trait": "Calm under pressure",
+      "value": "High",
+      "confidence": 0.75,
+      "rationale": "During an emergency response with infrastructure failures and time constraints, June maintains composure and makes clear decisions without hesitation."
+    },
+    {
+      "trait": "Collaborative",
+      "value": "High",
+      "confidence": 0.8,
+      "rationale": "June works seamlessly with Aria, Noah, and Kell as part of an integrated team, responding to their input and coordinating efforts without conflict."
+    }
+  ],
+  "scene_presence": [
+    "INT. COMMUNITY RADIO STUDIO - NIGHT",
+    "EXT. WATER TOWER CATWALK - NIGHT",
+    "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+    "INT. COMMUNITY RADIO STUDIO - MORNING"
+  ],
+  "dialogue_summary": "June speaks with authority and warmth. She makes quick decisions about broadcast priorities, balances practical emergency information with human-centered concerns, and uses humor to maintain team morale. Her dialogue is direct, purposeful, and occasionally witty.",
+  "narrative_role": "supporting",
+  "narrative_role_confidence": 0.9,
+  "relationships": [
+    {
+      "target_character": "ARIA",
+      "relationship_type": "Colleague/Team member",
+      "evidence": "June and Aria work together at the radio station. Aria responds to June's radio check-in and they coordinate broadcast operations.",
+      "confidence": 0.95
+    },
+    {
+      "target_character": "NOAH",
+      "relationship_type": "Colleague/Team member",
+      "evidence": "Noah provides field updates via radio that June records and incorporates into broadcasts. They work as part of the same emergency response team.",
+      "confidence": 0.95
+    },
+    {
+      "target_character": "KELL",
+      "relationship_type": "Colleague/Team member",
+      "evidence": "Kell and June work together at the shelter and radio station during the emergency response. They interact casually and professionally.",
+      "confidence": 0.9
+    },
+    {
+      "target_character": "MAYA",
+      "relationship_type": "Service provider/Community member",
+      "evidence": "June helps Maya by agreeing to broadcast information about her missing dog Comet. June treats Maya's concern with respect and inclusion.",
+      "confidence": 0.85
+    }
+  ],
+  "overall_confidence": 0.88
+}

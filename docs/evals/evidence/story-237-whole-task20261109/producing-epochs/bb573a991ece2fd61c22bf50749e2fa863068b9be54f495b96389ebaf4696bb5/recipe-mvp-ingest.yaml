@@ -1,0 +1,34 @@
+recipe_id: mvp_ingest
+description: "Tier 1 ingestion: raw input -> canonical script -> scene breakdown -> project config. Fast, mostly deterministic. Deep analysis lives in the world_building recipe (Tier 2)."
+project: {}
+stages:
+  - id: ingest
+    module: story_ingest_v1
+    params:
+      input_file: ${input_file}
+    needs: []
+  - id: normalize
+    module: script_normalize_v1
+    params:
+      max_retries: 2
+      skip_qa: false
+    needs:
+      - ingest
+  - id: breakdown_scenes
+    module: scene_breakdown_v1
+    params:
+      parser_coverage_threshold: 0.25
+    needs:
+      - normalize
+  - id: script_bible
+    module: script_bible_v1
+    params: {}
+    needs:
+      - normalize
+  - id: project_config
+    module: project_config_v1
+    params:
+      accept_config: ${accept_config}
+    needs:
+      - normalize
+      - breakdown_scenes

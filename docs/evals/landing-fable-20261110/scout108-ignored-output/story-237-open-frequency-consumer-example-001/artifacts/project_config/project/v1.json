@@ -1,0 +1,111 @@
+{
+  "data": {
+    "aspect_ratio": "16:9",
+    "budget_cap_usd": null,
+    "confirmed": true,
+    "confirmed_at": "2026-11-10T00:00:00Z",
+    "default_model": "example-author-no-provider",
+    "detection_details": {
+      "estimated_duration_minutes": {
+        "confidence": 0.65,
+        "rationale": "Author estimate for 597 words of dialogue/action across four brief scenes.",
+        "source": "auto_detected",
+        "value": 4.5
+      },
+      "genre": {
+        "confidence": 0.95,
+        "rationale": "Community aid and interpersonal stakes drive four scenes.",
+        "source": "auto_detected",
+        "value": [
+          "Drama"
+        ]
+      },
+      "production_format": {
+        "confidence": 1.0,
+        "rationale": "Explicit illustrative project setting for this non-provider exemplar.",
+        "source": "user_specified",
+        "value": "live_action"
+      }
+    },
+    "estimated_duration_minutes": 4.5,
+    "format": "short film",
+    "genre": [
+      "Drama"
+    ],
+    "human_control_mode": "autonomous",
+    "location_count": 3,
+    "locations_summary": [
+      "Community radio studio",
+      "Water tower catwalk",
+      "High school gym shelter"
+    ],
+    "model_strategy": {
+      "escalate": "example-author-no-provider",
+      "verify": "example-author-no-provider",
+      "work": "example-author-no-provider"
+    },
+    "primary_characters": [
+      "ARIA",
+      "NOAH",
+      "JUNE",
+      "KELL"
+    ],
+    "production_format": "live_action",
+    "production_mode": "hybrid",
+    "storyboard_style": "sketch",
+    "style_packs": {},
+    "supporting_characters": [
+      "MAYA",
+      "UNKNOWN VOICE",
+      "COMET"
+    ],
+    "target_audience": "General audience interested in humane community stories",
+    "title": "Open Frequency",
+    "tone": [
+      "Warm",
+      "Resilient",
+      "Dryly comic"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "run_context": {
+        "acceptance": "mechanical-only",
+        "kind": "authored-zero-provider-representability-example",
+        "subject_calls": 0
+      },
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    "confidence": 1.0,
+    "cost_data": null,
+    "created_at": "2026-11-10T04:30:13.027761Z",
+    "health": "valid",
+    "intent": "Materialize supplied whole-workspace project_config payload",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "whole_story_workspace_eval",
+    "producing_role": null,
+    "rationale": "Lossless fanout of validated subject output; no semantic field completion",
+    "ref": {
+      "artifact_type": "project_config",
+      "entity_id": "project",
+      "path": "artifacts/project_config/project/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

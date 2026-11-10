@@ -1,0 +1,737 @@
+{
+  "data": {
+    "edge_count": 30,
+    "edges": [
+      {
+        "confidence": 0.97,
+        "direction": "symmetric",
+        "evidence": [
+          "The four cooperate in studio restoration and morning work."
+        ],
+        "relationship_type": "emergency_radio_colleague",
+        "scene_refs": [
+          "s1",
+          "s4"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "symmetric",
+        "evidence": [
+          "The four cooperate in studio restoration and morning work."
+        ],
+        "relationship_type": "emergency_radio_colleague",
+        "scene_refs": [
+          "s1",
+          "s4"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "symmetric",
+        "evidence": [
+          "The four cooperate in studio restoration and morning work."
+        ],
+        "relationship_type": "emergency_radio_colleague",
+        "scene_refs": [
+          "s1",
+          "s4"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "symmetric",
+        "evidence": [
+          "The four cooperate in studio restoration and morning work."
+        ],
+        "relationship_type": "emergency_radio_colleague",
+        "scene_refs": [
+          "s1",
+          "s4"
+        ],
+        "source_id": "noah",
+        "source_type": "character",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "symmetric",
+        "evidence": [
+          "The four cooperate in studio restoration and morning work."
+        ],
+        "relationship_type": "emergency_radio_colleague",
+        "scene_refs": [
+          "s1",
+          "s4"
+        ],
+        "source_id": "noah",
+        "source_type": "character",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "symmetric",
+        "evidence": [
+          "The four cooperate in studio restoration and morning work."
+        ],
+        "relationship_type": "emergency_radio_colleague",
+        "scene_refs": [
+          "s1",
+          "s4"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Maya calls Comet family and carries him into the studio."
+        ],
+        "relationship_type": "guardian_of",
+        "scene_refs": [
+          "s3",
+          "s4"
+        ],
+        "source_id": "maya",
+        "source_type": "character",
+        "target_id": "comet",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "The unidentified radio caller requests insulin and dry blankets."
+        ],
+        "relationship_type": "reports_supply_need",
+        "scene_refs": [
+          "s2"
+        ],
+        "source_id": "unknown_voice",
+        "source_type": "character",
+        "target_id": "north_shelter",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Studio action places this crew member there."
+        ],
+        "relationship_type": "physically_present",
+        "scene_refs": [
+          "s1",
+          "s4"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Studio action places this crew member there."
+        ],
+        "relationship_type": "physically_present",
+        "scene_refs": [
+          "s1",
+          "s4"
+        ],
+        "source_id": "noah",
+        "source_type": "character",
+        "target_id": "studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Studio action places this crew member there."
+        ],
+        "relationship_type": "physically_present",
+        "scene_refs": [
+          "s1",
+          "s4"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Studio action places this crew member there."
+        ],
+        "relationship_type": "physically_present",
+        "scene_refs": [
+          "s1",
+          "s4"
+        ],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Aria braces the lantern while Noah clamps the antenna."
+        ],
+        "relationship_type": "physically_present",
+        "scene_refs": [
+          "s2"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "catwalk",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Aria braces the lantern while Noah clamps the antenna."
+        ],
+        "relationship_type": "physically_present",
+        "scene_refs": [
+          "s2"
+        ],
+        "source_id": "noah",
+        "source_type": "character",
+        "target_id": "catwalk",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Gym action places June, Kell, and Maya at the shelter."
+        ],
+        "relationship_type": "physically_present",
+        "scene_refs": [
+          "s3"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "gym",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Gym action places June, Kell, and Maya at the shelter."
+        ],
+        "relationship_type": "physically_present",
+        "scene_refs": [
+          "s3"
+        ],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "gym",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Gym action places June, Kell, and Maya at the shelter."
+        ],
+        "relationship_type": "physically_present",
+        "scene_refs": [
+          "s3"
+        ],
+        "source_id": "maya",
+        "source_type": "character",
+        "target_id": "gym",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Maya enters carrying Comet."
+        ],
+        "relationship_type": "physically_present",
+        "scene_refs": [
+          "s4"
+        ],
+        "source_id": "maya",
+        "source_type": "character",
+        "target_id": "studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Maya enters carrying muddy sleepy Comet."
+        ],
+        "relationship_type": "physically_present",
+        "scene_refs": [
+          "s4"
+        ],
+        "source_id": "comet",
+        "source_type": "character",
+        "target_id": "studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Kell carries the antenna, lantern, and tool bag into the studio."
+        ],
+        "relationship_type": "brings_equipment",
+        "scene_refs": [
+          "s1"
+        ],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "antenna",
+        "target_type": "prop"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Kell carries the antenna, lantern, and tool bag into the studio."
+        ],
+        "relationship_type": "brings_equipment",
+        "scene_refs": [
+          "s1"
+        ],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "lantern",
+        "target_type": "prop"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Kell carries the antenna, lantern, and tool bag into the studio."
+        ],
+        "relationship_type": "brings_equipment",
+        "scene_refs": [
+          "s1"
+        ],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "tool_bag",
+        "target_type": "prop"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Noah clamps the portable antenna to the rail."
+        ],
+        "relationship_type": "installs",
+        "scene_refs": [
+          "s2"
+        ],
+        "source_id": "noah",
+        "source_type": "character",
+        "target_id": "antenna",
+        "target_type": "prop"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Aria braces the lantern with her boot."
+        ],
+        "relationship_type": "braces",
+        "scene_refs": [
+          "s2"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "lantern",
+        "target_type": "prop"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Maya approaches with the missing-dog flyer."
+        ],
+        "relationship_type": "brings",
+        "scene_refs": [
+          "s3"
+        ],
+        "source_id": "maya",
+        "source_type": "character",
+        "target_id": "flyer",
+        "target_type": "prop"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "June takes Maya\u2019s flyer."
+        ],
+        "relationship_type": "takes",
+        "scene_refs": [
+          "s3"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "flyer",
+        "target_type": "prop"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "The flyer names missing dog Comet."
+        ],
+        "relationship_type": "announces_missing",
+        "scene_refs": [
+          "s3"
+        ],
+        "source_id": "flyer",
+        "source_type": "prop",
+        "target_id": "comet",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "June reaches for microphone before the morning bulletin."
+        ],
+        "relationship_type": "uses",
+        "scene_refs": [
+          "s4"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "microphone",
+        "target_type": "prop"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "Noah starts the brass-heavy cue."
+        ],
+        "relationship_type": "plays",
+        "scene_refs": [
+          "s4"
+        ],
+        "source_id": "noah",
+        "source_type": "character",
+        "target_id": "cassette",
+        "target_type": "prop"
+      },
+      {
+        "confidence": 0.97,
+        "direction": "source_to_target",
+        "evidence": [
+          "June\u2019s bulletin reports the north shelter stocked; delivery is not shown."
+        ],
+        "relationship_type": "reports_stocked",
+        "scene_refs": [
+          "s4"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "north_shelter",
+        "target_type": "location"
+      }
+    ],
+    "entity_count": {
+      "character": 7,
+      "location": 9,
+      "prop": 22
+    },
+    "extraction_confidence": 0.96
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "run_context": {
+        "acceptance": "mechanical-only",
+        "kind": "authored-zero-provider-representability-example",
+        "subject_calls": 0
+      },
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    "confidence": 0.96,
+    "cost_data": null,
+    "created_at": "2026-11-10T04:30:13.128744Z",
+    "health": "valid",
+    "intent": "Materialize supplied whole-workspace entity_graph payload",
+    "lineage": [
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "aria",
+        "path": "artifacts/character_bible/aria/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "noah",
+        "path": "artifacts/character_bible/noah/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "june",
+        "path": "artifacts/character_bible/june/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "kell",
+        "path": "artifacts/character_bible/kell/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "maya",
+        "path": "artifacts/character_bible/maya/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "unknown_voice",
+        "path": "artifacts/character_bible/unknown_voice/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "comet",
+        "path": "artifacts/character_bible/comet/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "studio",
+        "path": "artifacts/location_bible/studio/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "catwalk",
+        "path": "artifacts/location_bible/catwalk/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "gym",
+        "path": "artifacts/location_bible/gym/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "north_shelter",
+        "path": "artifacts/location_bible/north_shelter/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "east_road",
+        "path": "artifacts/location_bible/east_road/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "bridge",
+        "path": "artifacts/location_bible/bridge/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "hill_relay",
+        "path": "artifacts/location_bible/hill_relay/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "band_room",
+        "path": "artifacts/location_bible/band_room/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "red_creek",
+        "path": "artifacts/location_bible/red_creek/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "tape_reel",
+        "path": "artifacts/prop_bible/tape_reel/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "mixer",
+        "path": "artifacts/prop_bible/mixer/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "whiteboard",
+        "path": "artifacts/prop_bible/whiteboard/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "antenna",
+        "path": "artifacts/prop_bible/antenna/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "lantern",
+        "path": "artifacts/prop_bible/lantern/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "tool_bag",
+        "path": "artifacts/prop_bible/tool_bag/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "on_air",
+        "path": "artifacts/prop_bible/on_air/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "cable",
+        "path": "artifacts/prop_bible/cable/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "receiver",
+        "path": "artifacts/prop_bible/receiver/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "last_bolt",
+        "path": "artifacts/prop_bible/last_bolt/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "insulin",
+        "path": "artifacts/prop_bible/insulin/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "blankets",
+        "path": "artifacts/prop_bible/blankets/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "batteries",
+        "path": "artifacts/prop_bible/batteries/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "tackle_box",
+        "path": "artifacts/prop_bible/tackle_box/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "flyer",
+        "path": "artifacts/prop_bible/flyer/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "tabletop_radio",
+        "path": "artifacts/prop_bible/tabletop_radio/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "map",
+        "path": "artifacts/prop_bible/map/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "notebook",
+        "path": "artifacts/prop_bible/notebook/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "new_sign",
+        "path": "artifacts/prop_bible/new_sign/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "bread",
+        "path": "artifacts/prop_bible/bread/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "microphone",
+        "path": "artifacts/prop_bible/microphone/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "cassette",
+        "path": "artifacts/prop_bible/cassette/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "whole_story_workspace_eval",
+    "producing_role": null,
+    "rationale": "Lossless fanout of validated subject output; no semantic field completion",
+    "ref": {
+      "artifact_type": "entity_graph",
+      "entity_id": "project",
+      "path": "artifacts/entity_graph/project/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

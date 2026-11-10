@@ -1,0 +1,16 @@
+{
+  "prop_id": "portable_antenna",
+  "name": "Portable Antenna",
+  "description": "A dented, battered portable antenna used for emergency radio transmission. It is clamped to a rusted rail on a water tower catwalk and connected via cable to a handheld receiver. The antenna is part of the emergency communication setup during a crisis when cell towers are down and the hill relay is the only viable signal option.",
+  "scene_presence": [
+    "scene_001",
+    "scene_002"
+  ],
+  "associated_characters": [
+    "kell",
+    "noah",
+    "aria"
+  ],
+  "narrative_significance": "Critical infrastructure prop enabling emergency communication during a crisis. Kell transports it to the radio studio as part of the emergency response when bridge is closed and cell towers are dead. Noah and Aria deploy it on the water tower catwalk to establish the hill relay as the only viable signal source, allowing them to receive and relay emergency distress calls from shelters requesting medical supplies and aid.",
+  "overall_confidence": 0.85
+}

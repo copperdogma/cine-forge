@@ -1,0 +1,112 @@
+{
+  "base": "0693227394bd9a63b1df1300070421000e0dd7b6",
+  "files": [
+    {
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/freeze.json",
+      "bytes": 1288,
+      "sha256": "f669f6f5a18ab9917f18f93528595d27308b7aa55b4d9bda194e675bdddf5a8b"
+    },
+    {
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/last_ferry.fountain",
+      "bytes": 3142,
+      "sha256": "e28a204cd4d756c91bfbd28a521473a895fd8d14984efd400658e6a65b9a7618"
+    },
+    {
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/last_ferry.oracle.json",
+      "bytes": 23939,
+      "sha256": "d87c58bf40c20d4f318b1d762a792ea9fd702a996d300f7ed7970ca5e9377423"
+    },
+    {
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/matinee_echo.fountain",
+      "bytes": 3121,
+      "sha256": "bed5976da30e2584371deabdd121966efc4276e5663a4789cf22267d655c05d2"
+    },
+    {
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/matinee_echo.oracle.json",
+      "bytes": 23430,
+      "sha256": "ae71e60008142c4d2f07d62b032d11c0ce0a065763018b5d8a73aa936d035d5f"
+    },
+    {
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/open_frequency-consumer-example.json",
+      "bytes": 105012,
+      "sha256": "4c60bcd0d56545152397127b8b69ac7d3ecdaca25187357cec7f20d2265a831e"
+    },
+    {
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/open_frequency.fountain",
+      "bytes": 3447,
+      "sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    {
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/open_frequency.oracle.json",
+      "bytes": 31116,
+      "sha256": "73061149007e05d140084cccf2e8397e1a7f780c5d31f5fa61203c78cc8624fc"
+    },
+    {
+      "path": "benchmarks/fixtures/whole_story_workspace_v1/review.md",
+      "bytes": 4137,
+      "sha256": "70e960a3104e3db6702fb9eb2ca90da642bf99549535dad223c5e9cd8abd85ad"
+    },
+    {
+      "path": "benchmarks/scripts/full_script_throughput_eval.py",
+      "bytes": 10320,
+      "sha256": "3426c39315b6e0a5c711016d8bd83c1ce89f63b8e822865e810d9f6fa8510d8c"
+    },
+    {
+      "path": "benchmarks/scripts/run_whole_story_workspace.py",
+      "bytes": 11772,
+      "sha256": "b9c2ee31e6a63cc9b929d7726019845f9c870613123070d7f0b28fb2b970bd0b"
+    },
+    {
+      "path": "benchmarks/scripts/whole_story_workspace_contract.py",
+      "bytes": 24222,
+      "sha256": "43f7599c8fdba0ebc838922b807e45868287a67301c8ac0fad39d93ae9bc3165"
+    },
+    {
+      "path": "benchmarks/scripts/whole_story_workspace_meter.py",
+      "bytes": 9394,
+      "sha256": "969936be802641a95b171375aaca22652b4630521e469c7f7824184b0985e570"
+    },
+    {
+      "path": "configs/recipes/recipe-mvp-ingest.yaml",
+      "bytes": 846,
+      "sha256": "bb573a991ece2fd61c22bf50749e2fa863068b9be54f495b96389ebaf4696bb5"
+    },
+    {
+      "path": "configs/recipes/recipe-world-building.yaml",
+      "bytes": 2227,
+      "sha256": "db2043588fa870a5cbac762cd104d637c77a822c9e5286055a68b2c3e88320da"
+    },
+    {
+      "path": "docs/evals/evidence/story-237-whole-task20261109/last_ferry-subject-request.json",
+      "bytes": 34266,
+      "sha256": "6ca655a0a514633422dc1879c8b10b0351d24a9ce44a6cb0e5f85aa091f5ddd4"
+    },
+    {
+      "path": "docs/evals/evidence/story-237-whole-task20261109/matinee_echo-subject-request.json",
+      "bytes": 34249,
+      "sha256": "1dd7c39375530c8566e994276fa28f6aeeca630c38b26decf515e391be32517f"
+    },
+    {
+      "path": "docs/evals/evidence/story-237-whole-task20261109/native-preflight.json",
+      "bytes": 1465,
+      "sha256": "aaae29dd27ef0ee19d97cfcec4ed034c041c220c213e6779d118cddae0d6dbe5"
+    },
+    {
+      "path": "docs/evals/evidence/story-237-whole-task20261109/open_frequency-subject-request.json",
+      "bytes": 34621,
+      "sha256": "39c0571ba14c135397ab116d32d721478ad7538bd8351522499195289161e251"
+    }
+  ],
+  "case_order": [
+    "open_frequency",
+    "last_ferry",
+    "matinee_echo"
+  ],
+  "cap_usd": "20",
+  "candidate": "claude-fable-5-2 standard_only xhigh65536",
+  "subject_calls": "one per case, one operational recovery maximum campaign-wide; no semantic repair",
+  "controls": "fresh unchanged mvp_ingest+world_building current runner settings; every nested physical retry metered",
+  "judges": "independent Astra offline full-source+frozen oracle, neutral arm labels; zero external paid calls",
+  "admission": "First candidate +conditional recovery5.707808; valid response settles and releases unused reservation. Full paired control admitted from actual remaining funds; fixed variants continue only in frozen order with known headroom. No guarantee all3 fit.",
+  "schema": "Native strict outer string only; complete original required host schemas and exact source/consumer validation after lossless decoding."
+}

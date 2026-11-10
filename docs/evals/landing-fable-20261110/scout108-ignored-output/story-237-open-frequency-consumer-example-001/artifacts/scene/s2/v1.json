@@ -1,0 +1,180 @@
+{
+  "data": {
+    "characters_present": [
+      "ARIA",
+      "NOAH",
+      "UNKNOWN VOICE",
+      "JUNE"
+    ],
+    "characters_present_ids": [
+      "aria",
+      "noah",
+      "unknown_voice",
+      "june"
+    ],
+    "confidence": 0.98,
+    "elements": [
+      {
+        "content": "EXT. WATER TOWER CATWALK - NIGHT",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Wind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy.",
+        "element_type": "action"
+      },
+      {
+        "content": "Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.",
+        "element_type": "action"
+      },
+      {
+        "content": "The canvas tool bag swings in the gusts. Somewhere in the valley, a siren rises and cuts out.",
+        "element_type": "action"
+      },
+      {
+        "content": "NOAH",
+        "element_type": "character"
+      },
+      {
+        "content": "I miss boring weather.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "You miss boring jobs.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Noah plugs the cable into a handheld receiver. Static spits, then settles into a thin human voice.",
+        "element_type": "action"
+      },
+      {
+        "content": "UNKNOWN VOICE (RADIO)",
+        "element_type": "character"
+      },
+      {
+        "content": "Red Creek station... if anyone hears this... north shelter needs insulin and dry blankets.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Aria and Noah freeze.",
+        "element_type": "action"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "June, do you copy?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE (RADIO)",
+        "element_type": "character"
+      },
+      {
+        "content": "Loud enough to make me useful.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Aria smiles for the first time all night and tightens the last bolt.",
+        "element_type": "action"
+      },
+      {
+        "content": "CUT TO:",
+        "element_type": "transition"
+      }
+    ],
+    "heading": "EXT. WATER TOWER CATWALK - NIGHT",
+    "inferences": [
+      {
+        "confidence": 1.0,
+        "field_name": "presence_mode",
+        "rationale": "Remote dialogue and mentions do not establish physical presence.",
+        "value": "{\"physical\": [\"aria\", \"noah\"], \"heard\": [\"unknown_voice\", \"june\"], \"mentioned\": []}"
+      }
+    ],
+    "int_ext": "EXT",
+    "location": "Water tower catwalk",
+    "narrative_beats": [
+      {
+        "approximate_location": "Whole scene, with turn near its final dialogue/action.",
+        "beat_type": "scene_turn",
+        "confidence": 0.95,
+        "description": "Aria and Noah rig the antenna, hear an unidentified plea for supplies, and reach June."
+      }
+    ],
+    "props_mentioned": [
+      "Portable antenna",
+      "Dented lantern",
+      "Canvas tool bag",
+      "Cable",
+      "Handheld receiver",
+      "Last bolt",
+      "Insulin",
+      "Dry blankets"
+    ],
+    "provenance": [
+      {
+        "confidence": 1.0,
+        "evidence": "EXT. WATER TOWER CATWALK - NIGHT",
+        "field_name": "source_span",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.95,
+        "evidence": "Aria and Noah rig the antenna, hear an unidentified plea for supplies, and reach June.",
+        "field_name": "narrative_beats",
+        "method": "ai"
+      }
+    ],
+    "scene_id": "s2",
+    "scene_number": 2,
+    "source_span": {
+      "end_line": 62,
+      "start_line": 34
+    },
+    "time_of_day": "NIGHT",
+    "tone_mood": "Exposed, tense, then cautiously hopeful",
+    "tone_shifts": [
+      "Static and danger yield to successful contact."
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "run_context": {
+        "acceptance": "mechanical-only",
+        "kind": "authored-zero-provider-representability-example",
+        "subject_calls": 0
+      },
+      "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95"
+    },
+    "confidence": 0.98,
+    "cost_data": null,
+    "created_at": "2026-11-10T04:30:13.024883Z",
+    "health": "valid",
+    "intent": "Materialize supplied whole-workspace scene payload",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "whole_story_workspace_eval",
+    "producing_role": null,
+    "rationale": "Lossless fanout of validated subject output; no semantic field completion",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "s2",
+      "path": "artifacts/scene/s2/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

@@ -1,0 +1,980 @@
+{
+  "oracle_schema": "whole_story_source_oracle_v1",
+  "case_id": "last_ferry",
+  "source": {
+    "path": "last_ferry.fountain",
+    "sha256": "e28a204cd4d756c91bfbd28a521473a895fd8d14984efd400658e6a65b9a7618",
+    "word_count": 553,
+    "provenance": "new authored synthetic screenplay",
+    "retention_eligibility": "public/authored synthetic; 30-day retention eligible"
+  },
+  "freeze": {
+    "prepared_at_utc": "2026-11-10T04:25:54.050285+00:00",
+    "subject_outputs_reviewed": false,
+    "status": "pending_independent_source_review",
+    "scope": "source truth; not a runtime output schema or a scored result"
+  },
+  "inventory_policy": {
+    "required": "Every scene and individuated material participant, including animal, remote voice, and plot-relevant mentioned person; every staged or causally important referenced location; all objects used, transferred, read, or continuity-relevant. Contextual entries remain inventoried but need no standalone bible.",
+    "presence": "physical, heard, and mentioned are distinct; remote dialogue never implies physical presence.",
+    "identity": "Unresolved identities may be separate or tentatively linked; unsupported definite merges or separations fail.",
+    "props": "Contextual architectural fixtures, costume, scenery, and reported objects need not be standalone props. Parts may be embedded within their parent object.",
+    "source_claims": "Dialogue proves a report/belief was expressed, not external confirmation. Preserve deliberate uncertainty in summaries, bibles, and graphs."
+  },
+  "scenes": [
+    {
+      "id": "s1",
+      "heading": "INT. FERRY TICKET OFFICE - NIGHT",
+      "physical": [
+        "lena",
+        "tom"
+      ],
+      "heard": [
+        "courier"
+      ],
+      "mentioned": [
+        "father"
+      ],
+      "required_beat": "Lena takes medicine case; key inside envelope 17; courier gives locker instruction; Tom stays to lock up.",
+      "evidence": [
+        {
+          "quote": "INT. FERRY TICKET OFFICE - NIGHT",
+          "line_start": 5,
+          "line_end": 5
+        }
+      ],
+      "offscreen_physical": [
+        "courier"
+      ]
+    },
+    {
+      "id": "s2",
+      "heading": "EXT. FERRY PIER - LATER",
+      "physical": [
+        "lena",
+        "old_man"
+      ],
+      "heard": [],
+      "mentioned": [],
+      "required_beat": "Lena unlocks north locker, leaves envelope, removes cash box/photo/receipt; old man does not identify himself.",
+      "evidence": [
+        {
+          "quote": "EXT. FERRY PIER - LATER",
+          "line_start": 27,
+          "line_end": 27
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "heading": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+      "physical": [
+        "lena",
+        "ruth"
+      ],
+      "heard": [
+        "tom"
+      ],
+      "mentioned": [
+        "father"
+      ],
+      "required_beat": "Ruth refrigerates medicine; Lena retains cash box; Tom reports abandoned cape.",
+      "evidence": [
+        {
+          "quote": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+          "line_start": 44,
+          "line_end": 44
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "heading": "EXT. FERRY PIER - DAWN",
+      "physical": [
+        "lena",
+        "tom",
+        "ruth"
+      ],
+      "heard": [],
+      "mentioned": [
+        "father"
+      ],
+      "required_beat": "Lena returns cash box, gives key to Tom; Ruth departs clinic launch; no other person visible aboard.",
+      "evidence": [
+        {
+          "quote": "EXT. FERRY PIER - DAWN",
+          "line_start": 64,
+          "line_end": 64
+        }
+      ]
+    }
+  ],
+  "entities": {
+    "characters": [
+      {
+        "id": "lena",
+        "name": "LENA",
+        "scenes": [
+          "s1",
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "LENA, the clerk",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ],
+        "presence": "see scene presence"
+      },
+      {
+        "id": "tom",
+        "name": "TOM",
+        "scenes": [
+          "s1",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "TOM, her younger brother",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ],
+        "presence": "see scene presence"
+      },
+      {
+        "id": "courier",
+        "name": "COURIER",
+        "scenes": [
+          "s1"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a COURIER in an orange rain cape",
+            "line_start": 12,
+            "line_end": 12
+          }
+        ],
+        "presence": "see scene presence"
+      },
+      {
+        "id": "old_man",
+        "name": "OLD MAN",
+        "scenes": [
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "An OLD MAN in an orange rain cape",
+            "line_start": 31,
+            "line_end": 31
+          }
+        ],
+        "presence": "see scene presence"
+      },
+      {
+        "id": "ruth",
+        "name": "RUTH",
+        "scenes": [
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "RUTH, the launch pilot",
+            "line_start": 46,
+            "line_end": 46
+          }
+        ],
+        "presence": "see scene presence"
+      },
+      {
+        "id": "father",
+        "name": "Lena and Tom's father",
+        "scenes": [
+          "s1",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Dad's doses.",
+            "line_start": 10,
+            "line_end": 10
+          }
+        ],
+        "presence": "mentioned only"
+      }
+    ],
+    "locations": [
+      {
+        "id": "office",
+        "name": "Ferry ticket office",
+        "scenes": [
+          "s1"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "INT. FERRY TICKET OFFICE - NIGHT",
+            "line_start": 5,
+            "line_end": 5
+          }
+        ],
+        "staged": true
+      },
+      {
+        "id": "pier",
+        "name": "Ferry pier",
+        "scenes": [
+          "s2",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "EXT. FERRY PIER - LATER",
+            "line_start": 27,
+            "line_end": 27
+          }
+        ],
+        "staged": true
+      },
+      {
+        "id": "boathouse",
+        "name": "Rescue boathouse",
+        "scenes": [
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+            "line_start": 44,
+            "line_end": 44
+          }
+        ],
+        "staged": true
+      },
+      {
+        "id": "clinic",
+        "name": "Clinic",
+        "scenes": [
+          "s1",
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Your father still at the clinic?",
+            "line_start": 49,
+            "line_end": 49
+          }
+        ],
+        "staged": false
+      },
+      {
+        "id": "river",
+        "name": "River",
+        "scenes": [
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "from the river",
+            "line_start": 42,
+            "line_end": 42
+          }
+        ],
+        "staged": false
+      },
+      {
+        "id": "far_bank",
+        "name": "Far bank",
+        "scenes": [
+          "s2"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "Fog erases the far bank.",
+            "line_start": 29,
+            "line_end": 29
+          }
+        ],
+        "staged": false
+      }
+    ],
+    "props": [
+      {
+        "id": "envelope",
+        "name": "Paper envelope 17",
+        "scenes": [
+          "s1",
+          "s2",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "numbers a paper envelope 17",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ]
+      },
+      {
+        "id": "key",
+        "name": "Brass locker key",
+        "scenes": [
+          "s1",
+          "s2",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "slides a brass locker key inside",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ]
+      },
+      {
+        "id": "bandage",
+        "name": "Left-thumb bandage",
+        "scenes": [
+          "s1",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Her left thumb wears a fresh white bandage.",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ]
+      },
+      {
+        "id": "medicine_case",
+        "name": "Blue insulated medicine case",
+        "scenes": [
+          "s1",
+          "s2",
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a blue insulated medicine case",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ]
+      },
+      {
+        "id": "courier_cape",
+        "name": "Courier orange cape",
+        "scenes": [
+          "s1"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a COURIER in an orange rain cape",
+            "line_start": 12,
+            "line_end": 12
+          }
+        ]
+      },
+      {
+        "id": "north_locker",
+        "name": "Green NORTH locker",
+        "scenes": [
+          "s2",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a green locker marked NORTH",
+            "line_start": 29,
+            "line_end": 29
+          }
+        ]
+      },
+      {
+        "id": "cash_box",
+        "name": "Metal cash box",
+        "scenes": [
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a small metal cash box",
+            "line_start": 29,
+            "line_end": 29
+          }
+        ]
+      },
+      {
+        "id": "old_man_cape",
+        "name": "Old man orange cape",
+        "scenes": [
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "An OLD MAN in an orange rain cape",
+            "line_start": 31,
+            "line_end": 31
+          }
+        ]
+      },
+      {
+        "id": "photo",
+        "name": "Photo of two children beside ferry",
+        "scenes": [
+          "s2",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "a photograph of two children beside a ferry",
+            "line_start": 42,
+            "line_end": 42
+          }
+        ]
+      },
+      {
+        "id": "receipt",
+        "name": "Storage receipt",
+        "scenes": [
+          "s2"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "STORAGE PAID THROUGH FRIDAY",
+            "line_start": 42,
+            "line_end": 42
+          }
+        ]
+      },
+      {
+        "id": "refrigerator",
+        "name": "Boathouse refrigerator",
+        "scenes": [
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Ruth places the blue case in a refrigerator.",
+            "line_start": 54,
+            "line_end": 54
+          }
+        ]
+      },
+      {
+        "id": "clock",
+        "name": "Wall clock",
+        "scenes": [
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "checks a wall clock: 5:50",
+            "line_start": 46,
+            "line_end": 46
+          }
+        ]
+      },
+      {
+        "id": "telephone",
+        "name": "Wall telephone speaker",
+        "scenes": [
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Tom calls from a wall telephone",
+            "line_start": 54,
+            "line_end": 54
+          }
+        ]
+      },
+      {
+        "id": "left_cape",
+        "name": "Reported abandoned orange cape",
+        "scenes": [
+          "s3"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Someone left an orange cape on the bench outside.",
+            "line_start": 57,
+            "line_end": 57
+          }
+        ]
+      },
+      {
+        "id": "launch",
+        "name": "Clinic launch",
+        "scenes": [
+          "s1",
+          "s3",
+          "s4"
+        ],
+        "required": true,
+        "evidence": [
+          {
+            "quote": "Ruth steer the clinic launch away",
+            "line_start": 76,
+            "line_end": 76
+          }
+        ]
+      },
+      {
+        "id": "shutter_crank",
+        "name": "Shutter crank",
+        "scenes": [
+          "s1"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "Tom stays behind with the shutter crank.",
+            "line_start": 25,
+            "line_end": 25
+          }
+        ],
+        "role": "contextual setting/costume"
+      },
+      {
+        "id": "coat",
+        "name": "Lena coat",
+        "scenes": [
+          "s1"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "Lena puts the envelope in her coat",
+            "line_start": 12,
+            "line_end": 12
+          }
+        ],
+        "role": "contextual setting/costume"
+      },
+      {
+        "id": "bollard",
+        "name": "Mooring bollard",
+        "scenes": [
+          "s2"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "a mooring bollard",
+            "line_start": 29,
+            "line_end": 29
+          }
+        ],
+        "role": "contextual setting/costume"
+      },
+      {
+        "id": "gangway",
+        "name": "Gangway",
+        "scenes": [
+          "s2"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "by the gangway",
+            "line_start": 31,
+            "line_end": 31
+          }
+        ],
+        "role": "contextual setting/costume"
+      },
+      {
+        "id": "benches",
+        "name": "Office benches",
+        "scenes": [
+          "s1",
+          "s3"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "empty benches",
+            "line_start": 7,
+            "line_end": 7
+          }
+        ],
+        "role": "contextual setting/costume"
+      },
+      {
+        "id": "window",
+        "name": "Frosted ticket window",
+        "scenes": [
+          "s1"
+        ],
+        "required": false,
+        "evidence": [
+          {
+            "quote": "Through frosted glass",
+            "line_start": 12,
+            "line_end": 12
+          }
+        ],
+        "role": "contextual setting/costume"
+      },
+      {
+        "id": "medicine",
+        "name": "Father medicine doses (reported case contents)",
+        "scenes": [
+          "s1"
+        ],
+        "required": false,
+        "role": "contextual fixed fixture/costume/content or reported object; no independent bible required",
+        "evidence": [
+          {
+            "quote": "Dad's doses.",
+            "line_start": 10,
+            "line_end": 10
+          }
+        ]
+      }
+    ]
+  },
+  "relationships": [
+    {
+      "id": "siblings",
+      "claim": "Tom is Lena's younger brother; they share the father whose doses are in the case.",
+      "evidence": [
+        {
+          "quote": "TOM, her younger brother",
+          "line_start": 7,
+          "line_end": 7
+        },
+        {
+          "quote": "Dad's doses.",
+          "line_start": 10,
+          "line_end": 10
+        },
+        {
+          "quote": "Your father still at the clinic?",
+          "line_start": 49,
+          "line_end": 49
+        }
+      ]
+    },
+    {
+      "id": "ruth",
+      "claim": "Ruth is launch pilot and accepts medicine for cold storage; no kinship specified.",
+      "evidence": [
+        {
+          "quote": "RUTH, the launch pilot",
+          "line_start": 46,
+          "line_end": 46
+        },
+        {
+          "quote": "Ruth places the blue case in a refrigerator.",
+          "line_start": 54,
+          "line_end": 54
+        }
+      ]
+    }
+  ],
+  "continuity": [
+    {
+      "id": "case_route",
+      "claim": "Medicine: Tom puts case on office counter; Lena puts it below counter then takes it to pier and boathouse; Ruth refrigerates; Lena returns pier without case.",
+      "evidence": [
+        {
+          "quote": "TOM, her younger brother, sets a blue insulated medicine case on the counter.",
+          "line_start": 7,
+          "line_end": 7
+        },
+        {
+          "quote": "the case beneath the counter",
+          "line_start": 12,
+          "line_end": 12
+        },
+        {
+          "quote": "She lifts the blue case and goes.",
+          "line_start": 25,
+          "line_end": 25
+        },
+        {
+          "quote": "Lena sets the blue medicine case on a mooring bollard.",
+          "line_start": 29,
+          "line_end": 29
+        },
+        {
+          "quote": "Ruth places the blue case in a refrigerator.",
+          "line_start": 54,
+          "line_end": 54
+        },
+        {
+          "quote": "without the medicine case.",
+          "line_start": 66,
+          "line_end": 66
+        }
+      ]
+    },
+    {
+      "id": "key_envelope",
+      "claim": "Key begins in envelope; Lena removes key, leaves empty envelope in locker, pockets key; finally locks locker and gives key to Tom.",
+      "evidence": [
+        {
+          "quote": "slides a brass locker key inside",
+          "line_start": 7,
+          "line_end": 7
+        },
+        {
+          "quote": "She leaves the empty envelope inside the locker, pockets the key",
+          "line_start": 29,
+          "line_end": 29
+        },
+        {
+          "quote": "Lena gives him the key.",
+          "line_start": 68,
+          "line_end": 68
+        }
+      ]
+    },
+    {
+      "id": "box_route",
+      "claim": "Cash box with photo/receipt leaves locker, stays with Lena at boathouse, returns to locker; contents put back after inspection.",
+      "evidence": [
+        {
+          "quote": "She puts both back, shuts the box",
+          "line_start": 42,
+          "line_end": 42
+        },
+        {
+          "quote": "Lena keeps the cash box under her arm.",
+          "line_start": 54,
+          "line_end": 54
+        },
+        {
+          "quote": "She puts the cash box back in the locker",
+          "line_start": 68,
+          "line_end": 68
+        }
+      ]
+    },
+    {
+      "id": "bandage",
+      "claim": "Fresh white left-thumb bandage becomes grimy grey at boathouse and stays soiled at dawn; no healing/replacement.",
+      "evidence": [
+        {
+          "quote": "Her left thumb wears a fresh white bandage.",
+          "line_start": 7,
+          "line_end": 7
+        },
+        {
+          "quote": "the white bandage, now grey with grime",
+          "line_start": 46,
+          "line_end": 46
+        },
+        {
+          "quote": "Her soiled bandage has not changed.",
+          "line_start": 66,
+          "line_end": 66
+        }
+      ]
+    },
+    {
+      "id": "launch",
+      "claim": "Clock 5:50 precedes expected six oclock launch; Ruth departs at dawn; father not shown arriving or aboard.",
+      "evidence": [
+        {
+          "quote": "The clinic launch comes at six.",
+          "line_start": 10,
+          "line_end": 10
+        },
+        {
+          "quote": "checks a wall clock: 5:50",
+          "line_start": 46,
+          "line_end": 46
+        },
+        {
+          "quote": "No passenger arrives.",
+          "line_start": 62,
+          "line_end": 62
+        },
+        {
+          "quote": "No one else is visible aboard.",
+          "line_start": 76,
+          "line_end": 76
+        }
+      ]
+    }
+  ],
+  "uncertainty": [
+    {
+      "id": "courier_oldman",
+      "claim": "Courier/old man same-person identity unresolved despite cape colour; no definite merge or definite separation.",
+      "evidence": [
+        {
+          "quote": "Only a silhouette is visible.",
+          "line_start": 12,
+          "line_end": 12
+        },
+        {
+          "quote": "His face is visible; the earlier courier's was not.",
+          "line_start": 31,
+          "line_end": 31
+        },
+        {
+          "quote": "Were you at my window?",
+          "line_start": 37,
+          "line_end": 37
+        },
+        {
+          "quote": "Windows aren't much use in this fog.",
+          "line_start": 40,
+          "line_end": 40
+        }
+      ]
+    },
+    {
+      "id": "cape_owner",
+      "claim": "Reported abandoned cape owner unknown; equivalence to either observed cape unproven.",
+      "evidence": [
+        {
+          "quote": "Someone left an orange cape on the bench outside.",
+          "line_start": 57,
+          "line_end": 57
+        },
+        {
+          "quote": "We don't know whose it is.",
+          "line_start": 60,
+          "line_end": 60
+        }
+      ]
+    },
+    {
+      "id": "photo_identity",
+      "claim": "Photo children unnamed; father identification unconfirmed; do not assert children are father, Lena or Tom.",
+      "evidence": [
+        {
+          "quote": "Was that Dad in the photograph?",
+          "line_start": 71,
+          "line_end": 71
+        },
+        {
+          "quote": "Could be. It didn't have a date or names.",
+          "line_start": 74,
+          "line_end": 74
+        }
+      ]
+    },
+    {
+      "id": "father_arrival",
+      "claim": "Lena expects launch to bring father home; this expectation is not fulfilled on-screen.",
+      "evidence": [
+        {
+          "quote": "Until the launch brings him home.",
+          "line_start": 52,
+          "line_end": 52
+        },
+        {
+          "quote": "No passenger arrives.",
+          "line_start": 62,
+          "line_end": 62
+        },
+        {
+          "quote": "No one else is visible aboard.",
+          "line_start": 76,
+          "line_end": 76
+        }
+      ]
+    }
+  ],
+  "consumer_checks": [
+    {
+      "id": "coverage",
+      "claim": "Retain four scenes, six required participants (father mentioned-only), three staged locations, remote Tom/courier distinctions.",
+      "evidence": [
+        {
+          "quote": "INT. FERRY TICKET OFFICE - NIGHT",
+          "line_start": 5,
+          "line_end": 5
+        },
+        {
+          "quote": "RUTH, the launch pilot",
+          "line_start": 46,
+          "line_end": 46
+        }
+      ],
+      "severity": "hard"
+    },
+    {
+      "id": "medical_grounding",
+      "claim": "Medicine for father; no drug or diagnosis specified.",
+      "evidence": [
+        {
+          "quote": "Dad's doses.",
+          "line_start": 10,
+          "line_end": 10
+        }
+      ],
+      "severity": "hard"
+    },
+    {
+      "id": "handoff",
+      "claim": "At end: Tom has key; cash box/photo/receipt locked in locker; empty envelope inside; case last shown in boathouse refrigerator.",
+      "evidence": [
+        {
+          "quote": "Lena gives him the key.",
+          "line_start": 68,
+          "line_end": 68
+        },
+        {
+          "quote": "She puts the cash box back in the locker",
+          "line_start": 68,
+          "line_end": 68
+        },
+        {
+          "quote": "empty envelope 17 lies inside.",
+          "line_start": 66,
+          "line_end": 66
+        },
+        {
+          "quote": "Ruth places the blue case in a refrigerator.",
+          "line_start": 54,
+          "line_end": 54
+        }
+      ],
+      "severity": "hard"
+    }
+  ]
+}

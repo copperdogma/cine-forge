@@ -1,0 +1,230 @@
+{
+  "data": {
+    "aspect_ratio": "16:9",
+    "budget_cap_usd": null,
+    "confirmed": true,
+    "confirmed_at": "2026-11-10T05:29:17.222181+00:00",
+    "default_model": "claude-sonnet-4-6",
+    "detection_details": {
+      "aspect_ratio": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "16:9"
+      },
+      "budget_cap_usd": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": null
+      },
+      "default_model": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "claude-sonnet-4-6"
+      },
+      "estimated_duration_minutes": {
+        "confidence": 0.85,
+        "rationale": "Directly provided in the scene index as estimated_runtime_minutes: 4.0.",
+        "source": "auto_detected",
+        "value": 4.0
+      },
+      "format": {
+        "confidence": 0.9,
+        "rationale": "Estimated runtime of 4 minutes, only 4 scenes, and 133 lines strongly suggest a short film format.",
+        "source": "auto_detected",
+        "value": "Short Film"
+      },
+      "genre": {
+        "confidence": 0.8,
+        "rationale": "The story centers on community members working together during an emergency using a radio station. No action, horror, or comedy genre dominates, though there are light humorous moments. 'Community drama' best fits the material.",
+        "source": "auto_detected",
+        "value": [
+          "Drama",
+          "Community"
+        ]
+      },
+      "human_control_mode": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "checkpoint"
+      },
+      "location_count": {
+        "confidence": 0.99,
+        "rationale": "The scene index explicitly lists 3 unique locations: Community Radio Studio, High School Gym Shelter, and Water Tower Catwalk.",
+        "source": "auto_detected",
+        "value": 3
+      },
+      "locations_summary": {
+        "confidence": 0.99,
+        "rationale": "All three locations are clearly identified in the scene index with their time-of-day context and interior/exterior designations from scene headings.",
+        "source": "auto_detected",
+        "value": [
+          "Community Radio Studio (interior, night and morning), Water Tower Catwalk (exterior, night), High School Gym Shelter (interior, pre-dawn)"
+        ]
+      },
+      "model_strategy": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": {
+          "escalate": "claude-opus-4-6",
+          "verify": "claude-sonnet-4-6",
+          "work": "claude-sonnet-4-6"
+        }
+      },
+      "primary_characters": {
+        "confidence": 0.9,
+        "rationale": "Ranked by weighted scene frequency and dialogue cue count (scene*2 + dialogue); top 3 classified as primary.",
+        "source": "auto_detected",
+        "value": [
+          "JUNE",
+          "NOAH",
+          "ARIA"
+        ]
+      },
+      "production_mode": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "ai_generated"
+      },
+      "style_packs": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": {}
+      },
+      "supporting_characters": {
+        "confidence": 0.85,
+        "rationale": "Ranked by weighted scene frequency and dialogue cue count (scene*2 + dialogue); top 3 classified as primary.",
+        "source": "auto_detected",
+        "value": [
+          "KELL",
+          "MAYA",
+          "COMET"
+        ]
+      },
+      "target_audience": {
+        "confidence": 0.65,
+        "rationale": "The script contains no adult content, violence, or mature themes. The presence of a teenager protagonist (Maya) and a missing dog subplot suggest broad, family-friendly appeal, but no explicit audience designation is provided in the materials.",
+        "source": "auto_detected",
+        "value": "General audiences; family-friendly"
+      },
+      "title": {
+        "confidence": 0.99,
+        "rationale": "Explicitly stated as the canonical script title and confirmed in the script header.",
+        "source": "auto_detected",
+        "value": "Open Frequency"
+      },
+      "tone": {
+        "confidence": 0.92,
+        "rationale": "Scene tone descriptors across the index include 'tense urgency undercut by dry, gallows humor', 'quiet relief', 'warm and quietly purposeful', and 'warm, quietly triumphant'. These are well-documented in the scene index.",
+        "source": "auto_detected",
+        "value": [
+          "Tense",
+          "Warm",
+          "Hopeful",
+          "Dry Humor"
+        ]
+      }
+    },
+    "estimated_duration_minutes": 4.0,
+    "format": "Short Film",
+    "genre": [
+      "Drama",
+      "Community"
+    ],
+    "human_control_mode": "checkpoint",
+    "location_count": 3,
+    "locations_summary": [
+      "Community Radio Studio (interior, night and morning), Water Tower Catwalk (exterior, night), High School Gym Shelter (interior, pre-dawn)"
+    ],
+    "model_strategy": {
+      "escalate": "claude-opus-4-6",
+      "verify": "claude-sonnet-4-6",
+      "work": "claude-sonnet-4-6"
+    },
+    "primary_characters": [
+      "JUNE",
+      "NOAH",
+      "ARIA"
+    ],
+    "production_format": null,
+    "production_mode": "ai_generated",
+    "storyboard_style": null,
+    "style_packs": {},
+    "supporting_characters": [
+      "KELL",
+      "MAYA",
+      "COMET"
+    ],
+    "target_audience": "General audiences; family-friendly",
+    "title": "Open Frequency",
+    "tone": [
+      "Tense",
+      "Warm",
+      "Hopeful",
+      "Dry Humor"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "config as non-versioned side file",
+      "hard-coded defaults without confirmation gate"
+    ],
+    "annotations": {
+      "accept_config": true,
+      "autonomous": false,
+      "config_file": null,
+      "draft_path": "/Users/cam/.codex/worktrees/fable-whole-task-20261109/cine-forge/output/project/draft_config.yaml",
+      "final_stage_model_used": "claude-sonnet-4-6",
+      "final_stage_provider_used": "anthropic",
+      "qa_result": {
+        "confidence": 0.9,
+        "issues": [],
+        "passed": true,
+        "summary": "The output accurately reflects the script and scene index details, including the estimated duration, format, genre, location count and descriptions, primary and supporting characters, target audience, title, and tone. Confidence scores appropriately correspond to the certainty of each field, and rationales are concise and directly supported by the source material."
+      }
+    },
+    "confidence": 0.9318,
+    "cost_data": {
+      "estimated_cost_usd": 0.020211,
+      "input_tokens": 4948,
+      "latency_seconds": null,
+      "model": "claude-sonnet-4-6",
+      "output_tokens": 878,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T05:29:17.226225Z",
+    "health": "valid",
+    "intent": "Persist canonical project settings shared by downstream modules.",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      }
+    ],
+    "producing_module": "project_config_v1",
+    "producing_role": null,
+    "rationale": "Centralize genre/tone/format/control defaults and ensure they are explicitly confirmed before downstream creative work.",
+    "ref": {
+      "artifact_type": "project_config",
+      "entity_id": "project",
+      "path": "artifacts/project_config/project/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "hybrid"
+  }
+}

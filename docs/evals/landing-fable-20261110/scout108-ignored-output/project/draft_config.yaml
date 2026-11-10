@@ -1,0 +1,153 @@
+title: Open Frequency
+format: Short Film
+genre:
+- Drama
+- Community
+tone:
+- Tense
+- Warm
+- Hopeful
+- Dry Humor
+estimated_duration_minutes: 4.0
+primary_characters:
+- JUNE
+- NOAH
+- ARIA
+supporting_characters:
+- KELL
+- MAYA
+- COMET
+location_count: 3
+locations_summary:
+- Community Radio Studio (interior, night and morning), Water Tower Catwalk (exterior,
+  night), High School Gym Shelter (interior, pre-dawn)
+target_audience: General audiences; family-friendly
+aspect_ratio: '16:9'
+production_mode: ai_generated
+human_control_mode: checkpoint
+style_packs: {}
+budget_cap_usd: null
+model_strategy:
+  work: claude-sonnet-4-6
+  verify: claude-sonnet-4-6
+  escalate: claude-opus-4-6
+default_model: claude-sonnet-4-6
+detection_details:
+  title:
+    value: Open Frequency
+    confidence: 0.99
+    rationale: Explicitly stated as the canonical script title and confirmed in the
+      script header.
+    source: auto_detected
+  format:
+    value: Short Film
+    confidence: 0.9
+    rationale: Estimated runtime of 4 minutes, only 4 scenes, and 133 lines strongly
+      suggest a short film format.
+    source: auto_detected
+  genre:
+    value:
+    - Drama
+    - Community
+    confidence: 0.8
+    rationale: The story centers on community members working together during an emergency
+      using a radio station. No action, horror, or comedy genre dominates, though
+      there are light humorous moments. 'Community drama' best fits the material.
+    source: auto_detected
+  tone:
+    value:
+    - Tense
+    - Warm
+    - Hopeful
+    - Dry Humor
+    confidence: 0.92
+    rationale: Scene tone descriptors across the index include 'tense urgency undercut
+      by dry, gallows humor', 'quiet relief', 'warm and quietly purposeful', and 'warm,
+      quietly triumphant'. These are well-documented in the scene index.
+    source: auto_detected
+  estimated_duration_minutes:
+    value: 4.0
+    confidence: 0.85
+    rationale: 'Directly provided in the scene index as estimated_runtime_minutes:
+      4.0.'
+    source: auto_detected
+  primary_characters:
+    value:
+    - JUNE
+    - NOAH
+    - ARIA
+    confidence: 0.9
+    rationale: Ranked by weighted scene frequency and dialogue cue count (scene*2
+      + dialogue); top 3 classified as primary.
+    source: auto_detected
+  supporting_characters:
+    value:
+    - KELL
+    - MAYA
+    - COMET
+    confidence: 0.85
+    rationale: Ranked by weighted scene frequency and dialogue cue count (scene*2
+      + dialogue); top 3 classified as primary.
+    source: auto_detected
+  location_count:
+    value: 3
+    confidence: 0.99
+    rationale: 'The scene index explicitly lists 3 unique locations: Community Radio
+      Studio, High School Gym Shelter, and Water Tower Catwalk.'
+    source: auto_detected
+  locations_summary:
+    value:
+    - Community Radio Studio (interior, night and morning), Water Tower Catwalk (exterior,
+      night), High School Gym Shelter (interior, pre-dawn)
+    confidence: 0.99
+    rationale: All three locations are clearly identified in the scene index with
+      their time-of-day context and interior/exterior designations from scene headings.
+    source: auto_detected
+  target_audience:
+    value: General audiences; family-friendly
+    confidence: 0.65
+    rationale: The script contains no adult content, violence, or mature themes. The
+      presence of a teenager protagonist (Maya) and a missing dog subplot suggest
+      broad, family-friendly appeal, but no explicit audience designation is provided
+      in the materials.
+    source: auto_detected
+  aspect_ratio:
+    value: '16:9'
+    confidence: 1.0
+    rationale: MVP default applied until user override.
+    source: default
+  production_mode:
+    value: ai_generated
+    confidence: 1.0
+    rationale: MVP default applied until user override.
+    source: default
+  human_control_mode:
+    value: checkpoint
+    confidence: 1.0
+    rationale: MVP default applied until user override.
+    source: default
+  style_packs:
+    value: {}
+    confidence: 1.0
+    rationale: MVP default applied until user override.
+    source: default
+  budget_cap_usd:
+    value: null
+    confidence: 1.0
+    rationale: MVP default applied until user override.
+    source: default
+  model_strategy:
+    value:
+      work: claude-sonnet-4-6
+      verify: claude-sonnet-4-6
+      escalate: claude-opus-4-6
+    confidence: 1.0
+    rationale: MVP default applied until user override.
+    source: default
+  default_model:
+    value: claude-sonnet-4-6
+    confidence: 1.0
+    rationale: MVP default applied until user override.
+    source: default
+confirmed: true
+confirmed_at: '2026-11-10T05:29:17.222181+00:00'

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-11-10-01] — Whole story workspace capability (Story 237)
+
+### Added
+- One-inference whole-workspace contract, original-source gates, real consumer fanout and independently reviewed source oracles.
+- All49 physical calls and raw streams: Fable delivery unqualified at final nativeMAX truncation; complete pipeline control loadable but source acceptance failed. No defaults changed.
+- Known US$8.218050 plus unresolved US$8.206368 reservations, conservative US$16.424418/20; closed replay guards and immutable evidence.
+
 ## [2026-11-09-01] — Fable 5.2 full ordered-frame capability panel (Story 236)
 
 ### Added
