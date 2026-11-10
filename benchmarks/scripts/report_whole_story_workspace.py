@@ -103,7 +103,7 @@ def assemble():
         'invoice_reconciliation': 'Not available; no unknown reservation released.',
         'decision': final['decision'],
         'limits': 'One authored source attempted; two fixed variants unmeasured after extended recovery. Other efforts unmeasured. No best-of-valid-answer selection, partial answer scoring, private source, runtime/default change, commit/push or deployment.',
-        'worktree': {'path': str(ROOT), 'branch': 'codex/fable-whole-task-20261109-cine-forge',
+        'worktree': {'path': '/Users/cam/.codex/worktrees/fable-whole-task-20261109/cine-forge', 'branch': 'codex/fable-whole-task-20261109-cine-forge',
                      'owner': 'Scout108 CineForge campaign', 'disposition': 'retained uncommitted for root review; no cleanup authorized'},
     }
 
