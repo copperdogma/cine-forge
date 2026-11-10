@@ -1,0 +1,78 @@
+{
+  "data": {
+    "classification": {
+      "confidence": 0.897,
+      "detected_format": "screenplay",
+      "evidence": [
+        "Detected 4 scene headings (INT./EXT./EST.)",
+        "Detected 13 uppercase character cue candidates",
+        "Detected 13 long narrative-style paragraphs",
+        "File extension is .fountain, a screenplay-oriented format"
+      ]
+    },
+    "content": "Title: Matinee Echo\nCredit: Synthetic evaluation fixture\nAuthor: CineForge evaluation source author\n\nINT. MUSEUM CONSERVATION ROOM - AFTERNOON\n\nSOL, a conservator, lays a cracked porcelain bird on a felt pad. Its right wing is missing. IVA, the museum's recorded-guide technician, brings a reel labelled MARA / TAKE 4. A red thread is tied around the reel's hub.\n\nIVA\nMara recorded this twenty years ago. Before the theatre closed.\n\nSOL\nYour mother?\n\nIVA\nMy aunt. Mum never liked microphones.\n\nSol places the broken wing in a shallow tin and hands it to Iva. He keeps the body on the pad.\n\nSOL\nTake this upstairs. We can test the join after your sound check.\n\nIva puts the tin and reel in a canvas satchel. Sol's spectacles hang from a cord. He takes them off to inspect the exposed joint. Iva leaves; Sol remains at the bench.\n\nINT. MUSEUM THEATRE - AFTERNOON\n\nDust drifts through an unlit projector beam housing. Iva sets the shallow tin on the front-row seat and loads the red-thread reel onto a tape deck. The satchel lies at her feet. She presses PLAY.\n\nMARA (RECORDING)\nIf the bird sings twice, wait for the door.\n\nThe tape clicks off. An ELDERLY VISITOR stands in the aisle with a silver bird brooch pinned to a dark scarf.\n\nELDERLY VISITOR\nShe always rushed that line.\n\nIVA\nDid you know Mara?\n\nThe visitor looks toward the stage instead of answering. A door slams somewhere beyond the curtain. Iva lifts the tin from the seat, retrieves the reel, and puts both in her satchel. The visitor remains in the aisle as Iva leaves.\n\nINT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON\n\nSol is still at the bench. The bird's body rests on the felt pad. Iva returns, opens the tin, and gives him the wing. He aligns the fracture, then secures the repaired wing with a narrow strip of paper tape. The crack remains visible.\n\nIVA\nSomeone upstairs knew how Aunt Mara spoke.\n\nSOL\nA friend, perhaps. Or someone who heard the recording before.\n\nHe cannot identify the visitor. Iva places the red-thread reel on a shelf. The empty tin stays on the bench beside the pad.\n\nA CHILD in a school jumper appears at the doorway.\n\nCHILD\nThe lady with the bird says the theatre's locked.\n\nIva picks up the theatre key from a hook. Sol puts his spectacles back on and carries the porcelain bird in both hands. Its paper tape is still in place.\n\nINT. MUSEUM THEATRE - EVENING\n\nIva unlocks the theatre door with the key. Sol follows with the repaired bird; the child waits in the corridor. No visitor is visible inside.\n\nA dark scarf with a silver bird brooch lies across the front-row seat. Iva does not touch it. Sol sets the porcelain bird on the stage, keeping its taped wing away from the edge.\n\nIVA\nMara would be eighty now.\n\nSOL\nThat isn't an answer.\n\nIva locks the door behind them, keeping the key. A voice sounds from behind the curtain. There is no tape deck running; the deck's reels are bare.\n\nUNSEEN SPEAKER (O.S.)\nIf the bird sings twice, wait for the door.\n\nSol reaches for Iva's sleeve. Both remain facing the curtain. Neither sees who spoke. On the stage the repaired bird stays silent, its visible crack crossed by paper tape.\n",
+    "source_info": {
+      "character_count": 3121,
+      "file_format": "fountain",
+      "file_size_bytes": 3121,
+      "line_count": 79,
+      "original_filename": "61636809_matinee_echo.fountain"
+    }
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "defer format detection to normalization",
+      "store only normalized form"
+    ],
+    "annotations": {
+      "classification_diagnostics": {
+        "line_counts": {
+          "non_empty_lines": 47,
+          "paragraph_blocks": 32,
+          "single_word_lines": 10,
+          "total_lines": 78
+        },
+        "score_breakdown": {
+          "notes": 0.116,
+          "prose": 0.0,
+          "screenplay": 0.674
+        },
+        "signals": {
+          "character_cues": 13,
+          "parentheticals": 0,
+          "prose_paragraphs": 13,
+          "scene_headings": 4,
+          "tokenized_heading_sequences": 0,
+          "transitions": 0
+        }
+      },
+      "extraction_diagnostics": {},
+      "final_stage_model_used": "code",
+      "final_stage_provider_used": "code"
+    },
+    "confidence": 0.897,
+    "cost_data": {
+      "estimated_cost_usd": 0.0,
+      "input_tokens": 0,
+      "latency_seconds": null,
+      "model": "code",
+      "output_tokens": 0,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:03:24.044193Z",
+    "health": "valid",
+    "intent": "Capture original user story input as immutable project source",
+    "lineage": [],
+    "producing_module": "story_ingest_v1",
+    "producing_role": null,
+    "rationale": "Preserve unmodified text and classify it for downstream modules",
+    "ref": {
+      "artifact_type": "raw_input",
+      "entity_id": "project",
+      "path": "artifacts/raw_input/project/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "human"
+  }
+}

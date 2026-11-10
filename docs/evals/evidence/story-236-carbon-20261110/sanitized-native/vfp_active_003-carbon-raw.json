@@ -1,0 +1,40 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"clip_id\":\"vfp_active_003\",\"summary\":\"A static wide shot presents a minimalist dark scene featuring a brown vertical post topped by a pale gold-amber circle on the left, a white-bordered slate-blue horizontal rectangle in the center, and a solitary pale gold-amber figure on the right. Across all five ordered samples, the camera framing, muted lighting, and subject placement remain completely motionless and unchanged.\",\"tone_tags\":[\"detached\",\"mournful\"],\"emotion_tags\":[\"grief\",\"hesitation\",\"isolation\"],\"color_tags\":[\"amber\",\"desaturated\",\"gold\",\"navy\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Framing, background gradient, and positions of the left post, central white-bordered rectangle, and right figure remain unchanged across frames 0 through 4.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Wide straight-on framing shows a dark navy-to-taupe gradient wall above a dark floor, with a brown vertical post topped by a gold-amber circle at left, a white-outlined desaturated slate-blue horizontal block at center, and a lone gold-amber figure at right.\"},{\"frame_index\":2,\"cue\":\"At the midpoint sample, the solitary right-side figure maintains the exact narrow gap beside the right white edge of the central rectangle, with identical horizon height and outer frame margins.\"},{\"frame_index\":4,\"cue\":\"In the final sample, all geometric forms, muted navy and gold-amber colors, and spatial alignments match frame 0 without shift, confirming a fixed camera and complete visual stillness.\"}],\"overall_confidence\":0.86}"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "modelVersion": "gemini-4-carbon",
+  "responseId": "9WfzaqHzDNv0z7IP8-zbwAo",
+  "usageMetadata": {
+    "candidatesTokenCount": 377,
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 377
+      }
+    ],
+    "promptTokenCount": 7534,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2034
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      }
+    ],
+    "thoughtsTokenCount": 21126,
+    "totalTokenCount": 29037
+  }
+}

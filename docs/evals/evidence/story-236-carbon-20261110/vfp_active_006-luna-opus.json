@@ -1,0 +1,19 @@
+{
+  "cost": "0.01867",
+  "model": "claude-opus-4-6",
+  "observed": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2474,
+    "output_tokens": 252,
+    "service_tier": "standard",
+    "speed": "standard"
+  },
+  "reason": "The model correctly identifies the cyan figure moving left to right, the dark blue background, diagonal lines, the arch, and the small rectangle. Color tags (teal, navy) match. Continuity is correctly marked as intact. However, several mismatches reduce the score: (1) Tone is tagged as 'detached' when the reference specifies 'urgent, tense' \u2014 this is a clear mismatch. (2) Motion is tagged as 'measured' when the reference specifies 'fast_lateral' \u2014 the figure moves noticeably across frames suggesting fast lateral motion, not measured. (3) Camera tags include only 'static' but miss 'wide_master' from the reference. (4) The description says 'carrying or holding' which is a mild invention \u2014 the rectangle is beside the figure, not clearly being carried. (5) audio_tags and audio_notes are empty as required, which is correct. The evidence is reasonably grounded across frames 0, 2, and 4. The core visual description is largely accurate but the tone and motion mismatches are significant.",
+  "score": 0.62
+}

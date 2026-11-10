@@ -1,0 +1,14 @@
+{
+  "method": "Read-only all-errors traversal on original output. No workspace was written and no gate relaxed for scoring.",
+  "visible_sha256": "37599ddc604001c4669fcc75ca398083e0098f0c9295042b56e959099c270d98",
+  "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+  "schema_valid": true,
+  "host_failures": {
+    "selected authored Fountain canonical must preserve exact original source": 1
+  },
+  "interrupted": null,
+  "source_chars": 3447,
+  "canonical_chars": 3446,
+  "sole_canonical_difference_is_trailing_lf": true,
+  "lf_only_diagnostic": "all strict upstream host checks pass on separated copy"
+}

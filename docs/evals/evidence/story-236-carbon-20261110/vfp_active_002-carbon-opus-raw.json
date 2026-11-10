@@ -1,0 +1,30 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"score\":0.72,\"reason\":\"The model correctly identifies the static wide_master camera, red color palette, intact continuity, the figure moving left-to-right, and the small rectangle staying with the figure. However, there are notable mismatches: (1) Motion tags use 'measured' and 'slow_drift' instead of 'fast_lateral' and 'pulsing_light' \u2014 the figure covers significant ground across 5 frames suggesting faster motion, and the shifting diagonal lines/illumination changes suggest pulsing light which was missed. (2) Tone includes 'detached' which isn't strongly supported; 'urgent' from the reference is missing. (3) Emotion tags 'isolation' and 'resolve' are speculative inventions not clearly observable from abstract geometric frames. (4) The description of the rectangle as 'white-bordered dark red' is roughly accurate but described as something the figure 'carries' or 'holds' which is interpretive. (5) Audio fields are empty as required, which is correct. The frame evidence is well-grounded with 4 entries covering frames 0,1,2,4. Overall the analysis captures the core visual content but misses key motion characteristics and adds unsupported emotional interpretations.\"}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011Cgum1Cp5AqWr5Aoh5krXu",
+  "model": "claude-opus-4-6",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2673,
+    "output_tokens": 282,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

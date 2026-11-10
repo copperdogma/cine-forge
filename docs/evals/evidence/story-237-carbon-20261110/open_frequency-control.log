@@ -1,0 +1,53 @@
+[continuity] Scene scene_004 attempt 1/2 failed (truncated); retrying: LLM output truncated due to max token limit
+[continuity] Scene scene_004 failed after 2 attempt(s) (truncated): LLM output truncated due to max token limit
+[open_frequency-mvp_ingest-5434] Stage 'ingest' starting...
+[open_frequency-mvp_ingest-5434] Stage 'ingest' done in 0.0035s (cost $0.0000; total $0.0000).
+[open_frequency-mvp_ingest-5434] Stage 'normalize' starting...
+[open_frequency-mvp_ingest-5434] Stage 'normalize' done in 0.019s (cost $0.0000; total $0.0000).
+[open_frequency-mvp_ingest-5434] Running 2 stages in parallel: breakdown_scenes, script_bible
+[open_frequency-mvp_ingest-5434] Stage 'script_bible' starting...
+[open_frequency-mvp_ingest-5434] Stage 'breakdown_scenes' starting...
+[open_frequency-mvp_ingest-5434] Stage 'breakdown_scenes' done in 1.65s (cost $0.0044; total $0.0044).
+[open_frequency-mvp_ingest-5434] Stage 'script_bible' done in 23.5978s (cost $0.0104; total $0.0148).
+[open_frequency-mvp_ingest-5434] Stage 'project_config' starting...
+[open_frequency-mvp_ingest-5434] Stage 'project_config' done in 15.5358s (cost $0.0196; total $0.0344).
+[open_frequency-mvp_ingest-5434] Run complete. Total cost $0.0344.
+[open_frequency-world_building-023b] Stage 'analyze_scenes' starting...
+[open_frequency-world_building-023b] Stage 'analyze_scenes' done in 43.5614s (cost $0.0350; total $0.0350).
+[open_frequency-world_building-023b] Running 2 stages in parallel: refresh_project_config, entity_discovery
+[open_frequency-world_building-023b] Stage 'entity_discovery' starting...
+[entity_discovery] Characters from scene_index: 6 (from 6 raw names)
+[entity_discovery] Starting pass for locations...
+[open_frequency-world_building-023b] Stage 'refresh_project_config' starting...
+  Chunk 1/1: 4 items found so far
+[entity_discovery] Starting pass for props...
+  Chunk 1/1: 17 items found so far
+[open_frequency-world_building-023b] Stage 'entity_discovery' done in 3.0791s (cost $0.0034; total $0.0384).
+[open_frequency-world_building-023b] Stage 'refresh_project_config' done in 17.7424s (cost $0.0195; total $0.0579).
+[open_frequency-world_building-023b] Running 3 stages in parallel: character_bible, location_bible, prop_bible
+[open_frequency-world_building-023b] Stage 'prop_bible' starting...
+[prop_bible] Using 17 props from discovery results.
+[open_frequency-world_building-023b] Stage 'location_bible' starting...
+[location_bible] Using 4 locations from discovery results.
+[location_bible] Skipping second-pass adjudication for discovery-backed candidates.
+[location_bible] Extracting 3 locations (concurrency=5).
+[open_frequency-world_building-023b] Stage 'character_bible' starting...
+[character_bible] Using 6 characters from discovery results.
+[open_frequency-world_building-023b] Stage 'location_bible' done in 5.6028s (cost $0.0066; total $0.0646).
+[character_bible] Extracting 5 full + 0 minor characters (concurrency=5).
+[prop_bible] Extracting 17 props (concurrency=5).
+[open_frequency-world_building-023b] Stage 'character_bible' done in 18.3913s (cost $0.0403; total $0.1049).
+[open_frequency-world_building-023b] Stage 'prop_bible' done in 22.8058s (cost $0.0375; total $0.1424).
+[open_frequency-world_building-023b] Running 2 stages in parallel: entity_graph, continuity_tracking
+[open_frequency-world_building-023b] Stage 'entity_graph' starting...
+[open_frequency-world_building-023b] Stage 'continuity_tracking' starting...
+[open_frequency-world_building-023b] Stage 'entity_graph' done in 6.6131s (cost $0.0039; total $0.1463).
+[open_frequency-world_building-023b] Stage 'continuity_tracking' done in 70.4167s (cost $0.0195; total $0.1658).
+[open_frequency-world_building-023b] Run complete. Total cost $0.1658.
+{
+  "case": "open_frequency",
+  "complete": true,
+  "project": "output/eval-full-script-throughput-open_frequency-efd1ff",
+  "physical_calls": 45,
+  "accounted_usd": "0.2694682"
+}

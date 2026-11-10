@@ -1,0 +1,154 @@
+{
+  "data": {
+    "associated_characters": [],
+    "description": "A photograph of two children beside a ferry, contained within a small metal cash box discovered in a green locker at the ferry pier. The photograph lacks a date or names.",
+    "name": "Photograph",
+    "narrative_significance": "The photograph serves as a mysterious object of ambiguous identity and origin. Its presence in the locked cash box suggests it holds personal or historical significance to the story's events. Tom's question about whether the photograph depicts his father indicates it may be connected to family history or a missing person, though its true identity and meaning remain deliberately unclear.",
+    "overall_confidence": 0.85,
+    "prop_id": "photograph",
+    "scene_presence": [
+      "scene_002",
+      "scene_004"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 9,
+        "decision_trace": [
+          {
+            "candidate": "PAPER ENVELOPE 17",
+            "canonical_name": "Paper Envelope 17",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "A numbered envelope that serves as a container for the brass locker key. It is physically handled, numbered, and central to the plot mechanics.",
+            "outcome": "accepted",
+            "resolved_name": "Paper Envelope 17",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "BRASS LOCKER KEY",
+            "canonical_name": "Brass Locker Key",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "A physical key placed inside the envelope and used to unlock the green locker. It is handled multiple times and is essential to accessing the cash box.",
+            "outcome": "accepted",
+            "resolved_name": "Brass Locker Key",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "WHITE BANDAGE",
+            "canonical_name": "White Bandage",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.9,
+            "llm_rationale": "A bandage worn on Lena's thumb, mentioned twice in the script. It is a visible prop that becomes soiled over time and serves as a visual detail.",
+            "outcome": "accepted",
+            "resolved_name": "White Bandage",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "BLUE INSULATED MEDICINE CASE",
+            "canonical_name": "Blue Insulated Medicine Case",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "A container holding medical doses for Lena's father. It is physically moved, placed in a refrigerator, and is a key plot object.",
+            "outcome": "accepted",
+            "resolved_name": "Blue Insulated Medicine Case",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "ORANGE RAIN CAPE",
+            "canonical_name": "Orange Rain Cape",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.9,
+            "llm_rationale": "Worn by both the courier and the old man. Mentioned twice and left on a bench. It is a physical prop with narrative significance.",
+            "outcome": "accepted",
+            "resolved_name": "Orange Rain Cape",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "GREEN LOCKER (NORTH)",
+            "canonical_name": "Green Locker",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.92,
+            "llm_rationale": "A marked locker that is unlocked with the brass key and contains the metal cash box. It is a fixed prop location referenced multiple times.",
+            "outcome": "accepted",
+            "resolved_name": "Green Locker",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "METAL CASH BOX",
+            "canonical_name": "Metal Cash Box",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "A container found inside the green locker holding a photograph and receipt. It is physically handled and central to the plot's mystery.",
+            "outcome": "accepted",
+            "resolved_name": "Metal Cash Box",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "PHOTOGRAPH (two children beside ferry)",
+            "canonical_name": "Photograph",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.9,
+            "llm_rationale": "A photograph found inside the cash box depicting two children beside a ferry. It is a physical prop without date or names, relevant to the narrative.",
+            "outcome": "accepted",
+            "resolved_name": "Photograph",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "RECEIPT (storage paid through Friday)",
+            "canonical_name": "Receipt",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.9,
+            "llm_rationale": "A folded receipt found in the cash box indicating storage payment through Friday. It is a physical document prop with narrative meaning.",
+            "outcome": "accepted",
+            "resolved_name": "Receipt",
+            "target_entity_type": "prop"
+          }
+        ],
+        "decision_trace_count": 9,
+        "input_candidate_count": 9,
+        "rejected_candidate_count": 0,
+        "rejected_candidates": []
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:02:39.236863Z",
+    "health": "valid",
+    "intent": "Establish master definition for prop 'Photograph'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "prop_bible_v1",
+    "producing_role": null,
+    "rationale": "AI-identified significant object from canonical script.",
+    "ref": {
+      "artifact_type": "prop_bible",
+      "entity_id": "photograph",
+      "path": "artifacts/prop_bible/photograph/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

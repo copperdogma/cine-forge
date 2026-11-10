@@ -1,0 +1,33 @@
+{
+  "cost": "0.342748",
+  "elapsed_s": 397.95,
+  "finish_reason": "MAX_TOKENS",
+  "inference_repeat": false,
+  "model": "gemini-4-carbon",
+  "response_id": "F2bzaoeNNsalmtkP6bvnkQ4",
+  "semantics": "unmeasured; complete original schema absent; no judge on truncated answer",
+  "state": "terminal-output-allowance",
+  "text_bytes": 0,
+  "usage": {
+    "candidatesTokenCount": 3,
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 3
+      }
+    ],
+    "promptTokenCount": 7534,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2034
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      }
+    ],
+    "thoughtsTokenCount": 32765,
+    "totalTokenCount": 40302
+  }
+}

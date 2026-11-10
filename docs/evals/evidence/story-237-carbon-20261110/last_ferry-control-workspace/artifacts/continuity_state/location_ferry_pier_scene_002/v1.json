@@ -1,0 +1,270 @@
+{
+  "data": {
+    "change_events": [],
+    "entity_id": "ferry_pier",
+    "entity_type": "location",
+    "overall_confidence": 0.9,
+    "properties": [
+      {
+        "confidence": 1.0,
+        "key": "weather",
+        "value": "heavy fog obscuring far bank and vessels"
+      },
+      {
+        "confidence": 0.8,
+        "key": "time_of_day",
+        "value": "later, daytime but obscured by fog"
+      },
+      {
+        "confidence": 0.9,
+        "key": "atmosphere",
+        "value": "foggy, obscured, mysterious, isolated"
+      },
+      {
+        "confidence": 1.0,
+        "key": "features_present",
+        "value": "mooring bollard, green locker marked NORTH, gangway, boathouse, river with ferry"
+      }
+    ],
+    "scene_id": "scene_002",
+    "story_time_position": 1
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {},
+    "confidence": 0.9,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:03:02.291892Z",
+    "health": "valid",
+    "intent": "Continuity snapshot for location:ferry_pier in scene scene_002",
+    "lineage": [
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_courier",
+        "path": "artifacts/bibles/character_courier/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_lena",
+        "path": "artifacts/bibles/character_lena/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_old_man",
+        "path": "artifacts/bibles/character_old_man/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_ruth",
+        "path": "artifacts/bibles/character_ruth/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_tom",
+        "path": "artifacts/bibles/character_tom/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "courier",
+        "path": "artifacts/character_bible/courier/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "lena",
+        "path": "artifacts/character_bible/lena/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "old_man",
+        "path": "artifacts/character_bible/old_man/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "ruth",
+        "path": "artifacts/character_bible/ruth/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "tom",
+        "path": "artifacts/character_bible/tom/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "ferry_pier",
+        "path": "artifacts/location_bible/ferry_pier/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "ferry_ticket_office",
+        "path": "artifacts/location_bible/ferry_ticket_office/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_ferry_pier",
+        "path": "artifacts/bibles/location_ferry_pier/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_ferry_ticket_office",
+        "path": "artifacts/bibles/location_ferry_ticket_office/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_rescue_boathouse",
+        "path": "artifacts/bibles/location_rescue_boathouse/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "rescue_boathouse",
+        "path": "artifacts/location_bible/rescue_boathouse/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "blue_insulated_medicine_case",
+        "path": "artifacts/prop_bible/blue_insulated_medicine_case/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "brass_locker_key",
+        "path": "artifacts/prop_bible/brass_locker_key/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "green_locker",
+        "path": "artifacts/prop_bible/green_locker/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "metal_cash_box",
+        "path": "artifacts/prop_bible/metal_cash_box/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "orange_rain_cape",
+        "path": "artifacts/prop_bible/orange_rain_cape/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "paper_envelope_17",
+        "path": "artifacts/prop_bible/paper_envelope_17/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "photograph",
+        "path": "artifacts/prop_bible/photograph/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_blue_insulated_medicine_case",
+        "path": "artifacts/bibles/prop_blue_insulated_medicine_case/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_brass_locker_key",
+        "path": "artifacts/bibles/prop_brass_locker_key/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_green_locker",
+        "path": "artifacts/bibles/prop_green_locker/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_metal_cash_box",
+        "path": "artifacts/bibles/prop_metal_cash_box/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_orange_rain_cape",
+        "path": "artifacts/bibles/prop_orange_rain_cape/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_paper_envelope_17",
+        "path": "artifacts/bibles/prop_paper_envelope_17/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_photograph",
+        "path": "artifacts/bibles/prop_photograph/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_receipt",
+        "path": "artifacts/bibles/prop_receipt/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_white_bandage",
+        "path": "artifacts/bibles/prop_white_bandage/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "receipt",
+        "path": "artifacts/prop_bible/receipt/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "white_bandage",
+        "path": "artifacts/prop_bible/white_bandage/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      }
+    ],
+    "producing_module": "continuity_tracking_v1",
+    "producing_role": null,
+    "rationale": "Automated state tracking based on scene progression.",
+    "ref": {
+      "artifact_type": "continuity_state",
+      "entity_id": "location_ferry_pier_scene_002",
+      "path": "artifacts/continuity_state/location_ferry_pier_scene_002/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "character_id": "tom",
+  "name": "TOM",
+  "aliases": [],
+  "description": "Lena's younger brother who works at the ferry ticket office. He assists with managing his father's medical supplies and helps secure the office during night operations.",
+  "prominence": "secondary",
+  "explicit_evidence": [
+    {
+      "trait": "Lena's younger brother",
+      "quote": "TOM, her younger brother, sets a blue insulated medicine case on the counter.",
+      "source_scene": "INT. FERRY TICKET OFFICE - NIGHT",
+      "source_span": {
+        "start_line": 5,
+        "end_line": 5
+      }
+    },
+    {
+      "trait": "Responsible for father's medical care coordination",
+      "quote": "Dad's doses. The clinic launch comes at six. Don't leave this in the locker.",
+      "source_scene": "INT. FERRY TICKET OFFICE - NIGHT",
+      "source_span": {
+        "start_line": 9,
+        "end_line": 10
+      }
+    },
+    {
+      "trait": "Follows instructions and defers to sister's authority",
+      "quote": "Tom reaches for the case, but Lena stops him.",
+      "source_scene": "INT. FERRY TICKET OFFICE - NIGHT",
+      "source_span": {
+        "start_line": 16,
+        "end_line": 16
+      }
+    },
+    {
+      "trait": "Observant and reports unusual occurrences",
+      "quote": "The office is locked. Someone left an orange cape on the bench outside.",
+      "source_scene": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+      "source_span": {
+        "start_line": 31,
+        "end_line": 32
+      }
+    },
+    {
+      "trait": "Questions family circumstances",
+      "quote": "Was that Dad in the photograph?",
+      "source_scene": "EXT. FERRY PIER - DAWN",
+      "source_span": {
+        "start_line": 47,
+        "end_line": 47
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "Dutiful",
+      "value": "high",
+      "confidence": 0.85,
+      "rationale": "Tom brings his father's medical doses to the office and follows his sister's instructions without question, suggesting familial responsibility and obedience."
+    },
+    {
+      "trait": "Observant",
+      "value": "high",
+      "confidence": 0.8,
+      "rationale": "Tom notices and reports the abandoned orange cape left on the bench, demonstrating attention to detail and awareness of his surroundings."
+    },
+    {
+      "trait": "Subordinate to Lena",
+      "value": "high",
+      "confidence": 0.9,
+      "rationale": "Tom defers to Lena's decisions throughout the scenes, accepting her instructions without resistance or argument."
+    },
+    {
+      "trait": "Concerned about family",
+      "value": "moderate",
+      "confidence": 0.75,
+      "rationale": "Tom's question about whether their father appears in a photograph suggests emotional investment in family matters."
+    }
+  ],
+  "scene_presence": [
+    "INT. FERRY TICKET OFFICE - NIGHT",
+    "INT. RESCUE BOATHOUSE - PRE-DAWN",
+    "EXT. FERRY PIER - DAWN"
+  ],
+  "dialogue_summary": "Tom delivers his father's medical doses to the ticket office and instructs his sister not to leave them in the locker. Later, he calls from the office to report an abandoned orange cape. Finally, he asks Lena whether their father appeared in a photograph.",
+  "narrative_role": "supporting",
+  "narrative_role_confidence": 0.8,
+  "relationships": [
+    {
+      "target_character": "LENA",
+      "relationship_type": "sibling",
+      "evidence": "Tom is Lena's younger brother; he defers to her authority and follows her instructions throughout the scenes.",
+      "confidence": 0.95
+    },
+    {
+      "target_character": "Father (unnamed)",
+      "relationship_type": "family",
+      "evidence": "Tom brings his father's medical doses and is concerned about his father's whereabouts and appearance in a photograph.",
+      "confidence": 0.9
+    },
+    {
+      "target_character": "RUTH",
+      "relationship_type": "acquaintance",
+      "evidence": "Tom communicates with Ruth indirectly through Lena; they work in the same operational context (ferry/clinic launch system).",
+      "confidence": 0.6
+    }
+  ],
+  "overall_confidence": 0.82
+}

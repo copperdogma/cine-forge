@@ -1,0 +1,168 @@
+{
+  "data": {
+    "aliases": [],
+    "character_id": "old_man",
+    "description": "An elderly man wearing an orange rain cape encountered at a ferry pier in fog. He appears to be connected to a covert exchange involving a cash box and envelope.",
+    "dialogue_summary": "The Old Man greets Lena with a cryptic acknowledgment that she found something, then deflects her question about being at her window with an evasive comment about fog obscuring windows.",
+    "explicit_evidence": [
+      {
+        "quote": "You found it, then.",
+        "source_scene": "EXT. FERRY PIER - LATER",
+        "source_span": {
+          "end_line": 50,
+          "start_line": 1
+        },
+        "trait": "Cryptic communicator"
+      },
+      {
+        "quote": "Windows aren't much use in this fog.",
+        "source_scene": "EXT. FERRY PIER - LATER",
+        "source_span": {
+          "end_line": 50,
+          "start_line": 1
+        },
+        "trait": "Evasive"
+      }
+    ],
+    "inferred_traits": [
+      {
+        "confidence": 0.75,
+        "rationale": "His presence at the pier, cryptic greeting, and knowledge of Lena's actions suggest involvement in the transaction or surveillance of it.",
+        "trait": "Involvement in covert operation",
+        "value": "Likely participant in or observer of the envelope/cash box exchange"
+      },
+      {
+        "confidence": 0.7,
+        "rationale": "He stands by the gangway and makes reference to fog and windows, suggesting prior knowledge of the location.",
+        "trait": "Familiarity with the location",
+        "value": "Knows the ferry pier and its operations"
+      }
+    ],
+    "name": "OLD MAN",
+    "narrative_role": "minor",
+    "narrative_role_confidence": 0.95,
+    "overall_confidence": 0.75,
+    "prominence": "minor",
+    "relationships": [
+      {
+        "confidence": 0.7,
+        "evidence": "Encounters Lena at the pier and exchanges dialogue about the cash box discovery; appears to know her activities.",
+        "relationship_type": "Acquaintance/Contact",
+        "target_character": "LENA"
+      }
+    ],
+    "scene_presence": [
+      "EXT. FERRY PIER - LATER"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 5,
+        "decision_trace": [
+          {
+            "candidate": "LENA",
+            "canonical_name": "Lena",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Lena is a primary character who appears in 4 scenes with 6 dialogue lines. She is identified as the ferry ticket office clerk and is central to the plot. Clear, consistent character presence throughout the script.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "LENA",
+            "surviving_name": "LENA",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "TOM",
+            "canonical_name": "Tom",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Tom is a secondary character who appears in 3 scenes with 2 dialogue lines. He is identified as Lena's younger brother and participates in key plot moments. Consistent character with clear identity.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "TOM",
+            "surviving_name": "TOM",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "RUTH",
+            "canonical_name": "Ruth",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.98,
+            "llm_rationale": "Ruth is a named character who appears in 2 scenes with 1 dialogue line. She is identified as the launch pilot and has a defined role in the narrative. Named minor character with clear function.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "RUTH",
+            "surviving_name": "RUTH",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "OLD MAN",
+            "canonical_name": "Old Man",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Old Man is a named character role who appears in 1 scene with 2 dialogue lines. He is a distinct individual from the earlier Courier (his face is visible, whereas the Courier's was not). Named minor character with clear presence and dialogue.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "OLD MAN",
+            "surviving_name": "OLD MAN",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "COURIER",
+            "canonical_name": "Courier",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.94,
+            "llm_rationale": "Courier is a named character role who appears in 1 scene with 1 dialogue line. The script explicitly distinguishes this character from the Old Man by noting only a silhouette is visible for the Courier. Named minor character with distinct identity.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "COURIER",
+            "surviving_name": "COURIER",
+            "target_entity_type": null
+          }
+        ],
+        "decision_trace_count": 5,
+        "input_candidate_count": 5,
+        "rejected_candidate_count": 0,
+        "rejected_candidates": []
+      }
+    },
+    "confidence": 0.75,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:02:37.185466Z",
+    "health": "valid",
+    "intent": "Establish master definition for character 'OLD MAN'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "character_bible_v1",
+    "producing_role": null,
+    "rationale": "Extracted from canonical script and scene co-occurrence data.",
+    "ref": {
+      "artifact_type": "character_bible",
+      "entity_id": "old_man",
+      "path": "artifacts/character_bible/old_man/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

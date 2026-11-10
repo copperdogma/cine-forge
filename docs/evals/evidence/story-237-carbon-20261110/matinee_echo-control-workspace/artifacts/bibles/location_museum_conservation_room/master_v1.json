@@ -1,0 +1,21 @@
+{
+  "location_id": "museum_conservation_room",
+  "name": "Museum Conservation Room",
+  "aliases": [],
+  "description": "An interior museum workspace where conservation work is performed. The room contains a work bench with a felt pad, shallow tins for holding artifact fragments, shelves for storing materials, and a hook for hanging keys. The space is equipped for detailed restoration work on delicate objects such as porcelain artifacts.",
+  "physical_traits": [
+    "Work bench",
+    "Felt pad",
+    "Shallow tin",
+    "Shelves",
+    "Hook for keys",
+    "Cord for hanging spectacles"
+  ],
+  "scene_presence": [
+    "Sol (conservator)",
+    "Iva (recorded-guide technician)",
+    "Child in school jumper (appears at doorway)"
+  ],
+  "narrative_significance": "A functional workspace where conservation and restoration of museum artifacts occurs. The room serves as a setting for dialogue about Iva's aunt Mara and her recorded voice, connecting the present-day museum work to a closed theatre's past. The repair of the porcelain bird and the discovery of someone who knew Mara's voice drive the narrative forward.",
+  "overall_confidence": 0.95
+}

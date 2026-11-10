@@ -1,0 +1,41 @@
+scores:
+  - model: Gemini 4 Carbon native foreground medium131072 whole workspace
+    evidence_status: complete-semantic-objects-and-blind-source-review-frozen-strict-gates-failed
+    metrics:
+      whole_source_acceptance: 0.0
+      native_terminal_completion: 1.0
+      original_consumer_load: 0.0
+    latency_ms: 764245
+    cost_usd: 1.462812
+    cost_estimated: true
+    measured: '2026-11-10'
+    git_sha: 3b44e158a74010a68bf8d2bbe7e7a92991f96a69+story237-carbon-exact-producer-freezes
+    result_file: benchmarks/results/whole-story-workspace-carbon-20261110.json
+    contract_manifest: docs/evals/evidence/story-237-carbon-20261110/manifest.json
+    note: Three complete authored semantic objects; 5 physical sends, 2 foreground deadlines recovered from original checkpoints; known candidate cost for entire panel plus USD1.414720 held. Latency is mean summed physical wall time per logical generation. Zero original consumer loads; LF-only diagnostics loaded 117/90 groups on Open Frequency/Matinee. Last Ferry has two dangling gap references. Independent source reviews favor Carbon on difficult story distinctions but all three fail full source acceptance.
+  - model: Maintained whole story pipeline — fresh three authored sources
+    evidence_status: consumer-loadable-but-blind-full-source-gates-failed
+    metrics:
+      whole_source_acceptance: 0.0
+      original_consumer_load: 1.0
+    latency_ms: 163047
+    cost_usd: 0.68503545
+    cost_estimated: true
+    measured: '2026-11-10'
+    git_sha: 3b44e158a74010a68bf8d2bbe7e7a92991f96a69+story237-carbon-exact-producer-freezes
+    result_file: benchmarks/results/whole-story-workspace-carbon-20261110.json
+    contract_manifest: docs/evals/evidence/story-237-carbon-20261110/manifest.json
+    note: Fresh unchanged mvp_ingest and world_building. 118 physical inference requests and 82/61/61 consumer groups. Contradictory final states, invented roles and references or ungrounded identity on each source.
+attempts:
+  - id: '059'
+    story: attempts/059-carbon-whole-story-workspace.md
+    date: '2026-11-10'
+    status: measured
+    approach: Whole authored source to native strict outer envelope and full host schema with real consumer and independent complete-source gates. Fixed medium131072, up to three charged linked hops. Full fresh controls. Additional LF-only mechanical diagnosis and no semantic repairs.
+    worker_model: Codex owning-worktree runner and independent Astra source reviewers
+    subject_model: gemini-4-carbon medium131072 native foreground
+    score_before: 0.0
+    score_after: 0.0
+    cost_after: 2.14784745
+    unknown_reservations_usd: 1.41472
+    result_file: benchmarks/results/whole-story-workspace-carbon-20261110.json

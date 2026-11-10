@@ -1,0 +1,156 @@
+{
+  "data": {
+    "created_at": "2026-11-10T13:05:12.551051",
+    "display_name": "CHILD",
+    "entity_id": "child",
+    "entity_type": "character",
+    "files": [
+      {
+        "created_at": "2026-11-10T19:05:03.567732Z",
+        "filename": "master_v1.json",
+        "provenance": "ai_extracted",
+        "purpose": "master_definition",
+        "version": 1
+      }
+    ],
+    "version": 1,
+    "visual_reference_image": null
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 5,
+        "decision_trace": [
+          {
+            "candidate": "IVA",
+            "canonical_name": "Iva",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "IVA is a named protagonist who appears in 4 scenes with 5 dialogue instances. She is the museum's recorded-guide technician and a central character throughout the narrative.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "IVA",
+            "surviving_name": "IVA",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "SOL",
+            "canonical_name": "Sol",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "SOL is a named character who appears in 3 scenes with 4 dialogue instances. He is a conservator at the museum and a co-protagonist in the story.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "SOL",
+            "surviving_name": "SOL",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "CHILD",
+            "canonical_name": "Child",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.85,
+            "llm_rationale": "CHILD is a named minor character who appears in 1 scene with 1 dialogue instance. Although minimally developed, the character is explicitly identified in a school jumper and delivers dialogue, making it a valid character entity.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "CHILD",
+            "surviving_name": "CHILD",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "ELDERLY VISITOR",
+            "canonical_name": "Elderly Visitor",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.88,
+            "llm_rationale": "ELDERLY VISITOR is a named minor character who appears in 1 scene with 1 dialogue instance. The character has a distinctive visual marker (silver bird brooch, dark scarf) and speaks, qualifying as a valid character.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "ELDERLY VISITOR",
+            "surviving_name": "ELDERLY VISITOR",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "UNSEEN SPEAKER",
+            "canonical_name": null,
+            "decision_verdict": "invalid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "UNSEEN SPEAKER is a formatting/technical designation indicating off-screen dialogue rather than a named character. The speaker's identity is deliberately obscured and unidentified in the script. This is a technical cue, not a character entity.",
+            "outcome": "rejected_by_verdict",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "MARA",
+            "canonical_name": "Mara",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.92,
+            "llm_rationale": "MARA is a named character referenced throughout the script. Although she appears only as a recording and is deceased in the present timeline, she is explicitly identified as Iva's aunt and is a significant entity in the world-building. She has a distinct identity and presence via the recording.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "MARA",
+            "surviving_name": "MARA",
+            "target_entity_type": null
+          }
+        ],
+        "decision_trace_count": 6,
+        "input_candidate_count": 6,
+        "rejected_candidate_count": 1,
+        "rejected_candidates": [
+          {
+            "candidate": "UNSEEN SPEAKER",
+            "canonical_name": null,
+            "decision_verdict": "invalid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "UNSEEN SPEAKER is a formatting/technical designation indicating off-screen dialogue rather than a named character. The speaker's identity is deliberately obscured and unidentified in the script. This is a technical cue, not a character entity.",
+            "target_entity_type": null
+          }
+        ]
+      },
+      "final_stage_model_used": "claude-haiku-4-5-20251001",
+      "final_stage_provider_used": "anthropic"
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.0288896,
+      "input_tokens": 13357,
+      "latency_seconds": null,
+      "model": "claude-haiku-4-5-20251001",
+      "output_tokens": 4551,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:05:12.550760Z",
+    "health": "valid",
+    "intent": "Establish minor bible for character 'CHILD'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "character_bible_v1",
+    "producing_role": null,
+    "rationale": "Lightweight extraction for minor/walk-on character.",
+    "ref": {
+      "artifact_type": "bible_manifest",
+      "entity_id": "character_child",
+      "path": "artifacts/bibles/character_child/manifest_v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

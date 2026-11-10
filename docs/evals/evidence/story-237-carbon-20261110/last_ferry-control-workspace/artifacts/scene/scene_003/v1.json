@@ -1,0 +1,157 @@
+{
+  "data": {
+    "characters_present": [
+      "LENA",
+      "RUTH",
+      "TOM"
+    ],
+    "characters_present_ids": [
+      "lena",
+      "ruth",
+      "tom"
+    ],
+    "confidence": 0.898,
+    "elements": [
+      {
+        "content": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "RUTH, the launch pilot, checks a wall clock: 5:50. Lena arrives carrying both containers. Ruth notices the white bandage, now grey with grime, before taking the medicine case.",
+        "element_type": "action"
+      },
+      {
+        "content": "RUTH",
+        "element_type": "character"
+      },
+      {
+        "content": "Your father still at the clinic?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "LENA",
+        "element_type": "character"
+      },
+      {
+        "content": "Until the launch brings him home.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Ruth places the blue case in a refrigerator. Lena keeps the cash box under her arm. Tom calls from a wall telephone; his voice comes through its speaker.",
+        "element_type": "action"
+      },
+      {
+        "content": "TOM (PHONE)",
+        "element_type": "character"
+      },
+      {
+        "content": "The office is locked. Someone left an orange cape on the bench outside.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "LENA",
+        "element_type": "character"
+      },
+      {
+        "content": "Leave it there. We don't know whose it is.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Lena asks Ruth to keep the case cold until departure. Ruth agrees. The clock ticks toward six. No passenger arrives.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "Rescue Boathouse",
+    "narrative_beats": [],
+    "props_mentioned": [
+      "BLUE CASE",
+      "CASH BOX",
+      "MEDICINE CASE"
+    ],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Extracted from first non-empty scene line",
+        "field_name": "heading",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.92,
+        "evidence": "Parsed heading prefix token",
+        "field_name": "int_ext",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.9,
+        "evidence": "Parsed heading suffix segment",
+        "field_name": "time_of_day",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.88,
+        "evidence": "Parsed heading core location segment",
+        "field_name": "location",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.84,
+        "evidence": "Collected from dialogue character cues",
+        "field_name": "characters_present",
+        "method": "rule"
+      }
+    ],
+    "scene_id": "scene_003",
+    "scene_number": 3,
+    "source_span": {
+      "end_line": 63,
+      "start_line": 44
+    },
+    "time_of_day": "PRE-DAWN",
+    "tone_mood": "neutral",
+    "tone_shifts": []
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "single monolithic scene list artifact"
+    ],
+    "annotations": {
+      "ai_enrichment_used": false,
+      "boundary_reason": "",
+      "boundary_uncertain": false,
+      "discovery_tier": "structural",
+      "parser_backend": "fountain-tools",
+      "scene_number": 3,
+      "source_span": {
+        "end_line": 63,
+        "start_line": 44
+      }
+    },
+    "confidence": 0.898,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:00:49.715702Z",
+    "health": "valid",
+    "intent": "Represent one screenplay scene as structured data for downstream modules",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_breakdown_v1",
+    "producing_role": null,
+    "rationale": "Structural extraction with LLM action-line entity extraction",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_003",
+      "path": "artifacts/scene/scene_003/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "code"
+  }
+}

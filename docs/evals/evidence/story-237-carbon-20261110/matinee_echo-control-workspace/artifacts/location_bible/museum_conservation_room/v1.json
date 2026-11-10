@@ -1,0 +1,72 @@
+{
+  "data": {
+    "aliases": [],
+    "description": "An interior museum workspace where conservation work is performed. The room contains a work bench with a felt pad, shallow tins for holding artifact fragments, shelves for storing materials, and a hook for hanging keys. The space is equipped for detailed restoration work on delicate objects such as porcelain artifacts.",
+    "location_id": "museum_conservation_room",
+    "name": "Museum Conservation Room",
+    "narrative_significance": "A functional workspace where conservation and restoration of museum artifacts occurs. The room serves as a setting for dialogue about Iva's aunt Mara and her recorded voice, connecting the present-day museum work to a closed theatre's past. The repair of the porcelain bird and the discovery of someone who knew Mara's voice drive the narrative forward.",
+    "overall_confidence": 0.95,
+    "physical_traits": [
+      "Work bench",
+      "Felt pad",
+      "Shallow tin",
+      "Shelves",
+      "Hook for keys",
+      "Cord for hanging spectacles"
+    ],
+    "scene_presence": [
+      "Sol (conservator)",
+      "Iva (recorded-guide technician)",
+      "Child in school jumper (appears at doorway)"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 2,
+        "decision_trace": [],
+        "decision_trace_count": 0,
+        "input_candidate_count": 3,
+        "rejected_candidate_count": 0,
+        "rejected_candidates": []
+      }
+    },
+    "confidence": 0.95,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:04:57.028703Z",
+    "health": "valid",
+    "intent": "Establish master definition for location 'Museum Conservation Room'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "location_bible_v1",
+    "producing_role": null,
+    "rationale": "Extracted from canonical script and scene headings.",
+    "ref": {
+      "artifact_type": "location_bible",
+      "entity_id": "museum_conservation_room",
+      "path": "artifacts/location_bible/museum_conservation_room/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

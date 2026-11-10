@@ -1,0 +1,190 @@
+{
+  "data": {
+    "characters_present": [
+      "ARIA",
+      "JUNE",
+      "NOAH"
+    ],
+    "characters_present_ids": [
+      "aria",
+      "june",
+      "noah"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "EXT. WATER TOWER CATWALK - NIGHT",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Wind lashes the catwalk. The town below is mostly dark except for the high school gym and a gas station canopy.",
+        "element_type": "action"
+      },
+      {
+        "content": "Aria braces the lantern with her boot while Noah clamps the portable antenna to a rusted rail.",
+        "element_type": "action"
+      },
+      {
+        "content": "The canvas tool bag swings in the gusts. Somewhere in the valley, a siren rises and cuts out.",
+        "element_type": "action"
+      },
+      {
+        "content": "NOAH",
+        "element_type": "character"
+      },
+      {
+        "content": "I miss boring weather.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "You miss boring jobs.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Noah plugs the cable into a handheld receiver. Static spits, then settles into a thin human voice.",
+        "element_type": "action"
+      },
+      {
+        "content": "UNKNOWN VOICE (RADIO)",
+        "element_type": "character"
+      },
+      {
+        "content": "Red Creek station... if anyone hears this... north shelter needs insulin and dry blankets.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Aria and Noah freeze.",
+        "element_type": "action"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "June, do you copy?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE (RADIO)",
+        "element_type": "character"
+      },
+      {
+        "content": "Loud enough to make me useful.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Aria smiles for the first time all night and tightens the last bolt.",
+        "element_type": "action"
+      },
+      {
+        "content": "CUT TO:",
+        "element_type": "transition"
+      }
+    ],
+    "heading": "EXT. WATER TOWER CATWALK - NIGHT",
+    "inferences": [],
+    "int_ext": "EXT",
+    "location": "Water Tower Catwalk",
+    "narrative_beats": [
+      {
+        "approximate_location": "opening",
+        "beat_type": "establishing / escalation",
+        "confidence": 0.93,
+        "description": "The exposed catwalk in wind and darkness raises the physical stakes; the town below is mostly dark, visually confirming the scale of the crisis."
+      },
+      {
+        "approximate_location": "early-middle",
+        "beat_type": "tonal contradiction",
+        "confidence": 0.88,
+        "description": "Noah's nostalgic complaint ('I miss boring weather') and Aria's correction ('You miss boring jobs') use casual, almost wistful banter while the characters are physically endangered on a rusted catwalk in a storm \u2014 the mundane register of the dialogue sits in deliberate tension with the hazardous setting."
+      },
+      {
+        "approximate_location": "middle",
+        "beat_type": "discovery / turning point",
+        "confidence": 0.97,
+        "description": "The receiver picks up an unknown voice from Red Creek station reporting that the north shelter needs insulin and dry blankets \u2014 the first confirmation that the broadcast network is reaching people with urgent needs."
+      },
+      {
+        "approximate_location": "late",
+        "beat_type": "emotional peak",
+        "confidence": 0.92,
+        "description": "Aria and Noah freeze upon hearing the distress call, marking a shift from technical problem-solving to human stakes. Aria's smile \u2014 noted as the first of the night \u2014 signals emotional release."
+      },
+      {
+        "approximate_location": "end",
+        "beat_type": "resolution beat",
+        "confidence": 0.94,
+        "description": "June confirms radio contact ('Loud enough to make me useful'), and Aria tightens the last bolt \u2014 the antenna mission is complete and the network is live."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      }
+    ],
+    "scene_id": "scene_002",
+    "scene_number": 2,
+    "source_span": {
+      "end_line": 67,
+      "start_line": 37
+    },
+    "time_of_day": "NIGHT",
+    "tone_mood": "tense and exposed, resolving into quiet relief",
+    "tone_shifts": [
+      "Opens in physical danger and atmospheric menace, briefly lightened by nostalgic banter, then pivots sharply to gravity when the distress call is received, before closing on a moment of earned warmth."
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 2,
+      "source_span": {
+        "end_line": 67,
+        "start_line": 37
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.035016,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2334,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T18:42:14.876318Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_002",
+      "path": "artifacts/scene/scene_002/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

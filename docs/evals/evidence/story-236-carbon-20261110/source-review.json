@@ -1,0 +1,92 @@
+{
+  "vfp_active_001": {
+    "carbon": {
+      "critical_errors": [
+        "Infers a slow camera push-in from two enlarging figures even though the foreground prop and background remain fixed."
+      ],
+      "observed": "Correct horizontal positions, figure growth and unchanged prop. Hesitation/isolation/tense are interpretations without source support."
+    },
+    "sol": {
+      "critical_errors": [],
+      "observed": "Describes growing figures, fixed lower edges, fixed cream inset and unchanged horizon. Detached/navy-only coverage is interpretive or taxonomic."
+    },
+    "luna": {
+      "critical_errors": [],
+      "observed": "Describes figure growth, unchanged separation and composition; references right figure detail but omits a continuity note. Gold/navy and detached reflect tag coverage."
+    }
+  },
+  "vfp_active_002": {
+    "sol": {
+      "critical_errors": [],
+      "observed": "Accurate lateral travel, attached red bar, fixed doorway and shifting diagonal stripes. Urgency, speed and light pulsation are underrepresented or interpretive."
+    },
+    "luna": {
+      "critical_errors": [],
+      "observed": "Accurate lateral movement, prop and fixed central outline. Caption says the diagonal lines remain nearly fixed, missing their shift; motion/tone tag coverage differs."
+    },
+    "carbon": {
+      "critical_errors": [],
+      "observed": "Correct static wide geometry, red rectangular prop, consistent left-to-right translation and shifting diagonal lines. Omits light variation; resolve/isolation, slow pace and detached tone are interpretive."
+    }
+  },
+  "vfp_active_003": {
+    "carbon": {
+      "critical_errors": [],
+      "observed": "Accurate fixed post, gray middle rectangle, gold right-side form and static wide shot. Grief, hesitation and isolation are unsupported emotional readings of unchanged shapes."
+    },
+    "sol": {
+      "critical_errors": [],
+      "observed": "Correct fixed geometry and stillness; wide_master omission and desaturated/amber/tone coverage are nonfactual taxonomy differences."
+    },
+    "luna": {
+      "critical_errors": [],
+      "observed": "Both gold forms and identical gray rectangle and composition described; two abstract forms are a source-permitted interpretation."
+    }
+  },
+  "vfp_active_004": {
+    "sol": {
+      "critical_errors": [
+        "Labels continuity intact even though its own observation correctly places red at indexes 0\u20131 and blue at 2\u20134. The frozen source contract defines the color change as broken."
+      ],
+      "observed": "Accurate stationary geometric composition and exact red-to-blue change; categorical contract failure, no invented source event."
+    },
+    "luna": {
+      "critical_errors": [
+        "Labels continuity intact even though its own observation correctly places red at indexes 0\u20131 and blue at 2\u20134. The frozen source contract defines the color change as broken."
+      ],
+      "observed": "Accurate stationary geometric composition and exact red-to-blue change; categorical contract failure, no invented source event."
+    },
+    "carbon": {
+      "critical_errors": [],
+      "observed": "Correctly labels exact red frames 0\u20131 to blue frames 2\u20134 change broken. Fixed composition and unchanged surrounding geometry are accurate. Suspicion, ominous and isolation are unsupported in these static frames. Native score and judge retained."
+    }
+  },
+  "vfp_active_005": {
+    "sol": {
+      "critical_errors": [],
+      "observed": "Accurate fixed-size arc over real gap, rightward travel, navy platform geometry and stripe detail. Describing measured speed vs fast_lateral and palette/tone categories are interpretive differences."
+    },
+    "luna": {
+      "critical_errors": [],
+      "observed": "Correct left-right crossing of opening and consistent person/prop appearance. Under-describes vertical arc, prop and descriptive cue coverage; no fabricated action."
+    },
+    "carbon": {
+      "critical_errors": [],
+      "observed": "Correct arc and apex, constant-size gold figure and companion rectangle, roof gap and slightly different platform heights. Resolve/isolation/hopeful are unsupported interpretations. Judge assertion that displacement is minimal understates the clear vertical arc; original score retained."
+    }
+  },
+  "vfp_active_006": {
+    "sol": {
+      "critical_errors": [],
+      "observed": "Correct cyan icon, companion rectangle and left-to-right translation under arch. Fails to describe the shifting rain-like streaks; low scorer coverage does not imply an invented event."
+    },
+    "luna": {
+      "critical_errors": [],
+      "observed": "Correct teal icon, small rectangle, rightward travel and arch. Does not sufficiently separate moving streaks from fixed arch or detail source tone/pace."
+    },
+    "carbon": {
+      "critical_errors": [],
+      "observed": "Correct constant-size cyan figure, fixed arch, companion rectangle, and shifting streaks during lateral translation. Parcel is an interpretation, identity of the rectangle is unknown. Resolve/isolation are unsupported, and slow_drift misses the expected pace."
+    }
+  }
+}

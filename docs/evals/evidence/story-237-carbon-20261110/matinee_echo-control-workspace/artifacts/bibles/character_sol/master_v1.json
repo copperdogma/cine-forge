@@ -1,0 +1,88 @@
+{
+  "character_id": "sol",
+  "name": "SOL",
+  "aliases": [],
+  "description": "A conservator working at a museum, responsible for restoring damaged artifacts. Sol is methodical and precise in his work, handling delicate porcelain pieces with care. He wears spectacles on a cord and maintains a calm demeanor in ambiguous situations.",
+  "prominence": "secondary",
+  "explicit_evidence": [
+    {
+      "trait": "Conservator profession",
+      "quote": "SOL, a conservator, lays a cracked porcelain bird on a felt pad.",
+      "source_scene": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 2
+      }
+    },
+    {
+      "trait": "Methodical and careful with restoration work",
+      "quote": "He aligns the fracture, then secures the repaired wing with a narrow strip of paper tape.",
+      "source_scene": "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+      "source_span": {
+        "start_line": 28,
+        "end_line": 29
+      }
+    },
+    {
+      "trait": "Collaborative with Iva on museum tasks",
+      "quote": "Take this upstairs. We can test the join after your sound check.",
+      "source_scene": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+      "source_span": {
+        "start_line": 13,
+        "end_line": 14
+      }
+    },
+    {
+      "trait": "Cautious and observant in mysterious circumstances",
+      "quote": "Sol reaches for Iva's sleeve. Both remain facing the curtain. Neither sees who spoke.",
+      "source_scene": "INT. MUSEUM THEATRE - EVENING",
+      "source_span": {
+        "start_line": 54,
+        "end_line": 55
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "Attention to detail",
+      "value": "High",
+      "confidence": 0.9,
+      "rationale": "Sol's work as a conservator requires precision; he carefully inspects joints, aligns fractures, and handles fragile artifacts with both hands to prevent damage."
+    },
+    {
+      "trait": "Pragmatic and grounded",
+      "value": "Practical",
+      "confidence": 0.8,
+      "rationale": "When Iva suggests someone knew how Aunt Mara spoke, Sol offers rational explanations (a friend, someone who heard the recording) rather than entertaining supernatural possibilities."
+    },
+    {
+      "trait": "Protective instinct",
+      "value": "Present",
+      "confidence": 0.7,
+      "rationale": "Sol reaches for Iva's sleeve when an unseen voice speaks from behind the curtain, suggesting concern for her safety or a desire to maintain contact in an unsettling moment."
+    },
+    {
+      "trait": "Composed under uncertainty",
+      "value": "Calm",
+      "confidence": 0.75,
+      "rationale": "Despite the mysterious circumstances in the theatre (unknown visitor, disembodied voice), Sol remains focused on his task of placing the repaired bird on stage without visible alarm."
+    }
+  ],
+  "scene_presence": [
+    "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+    "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+    "INT. MUSEUM THEATRE - EVENING"
+  ],
+  "dialogue_summary": "Sol speaks sparingly but purposefully. He directs Iva to take the broken wing upstairs for testing, asks a clarifying question about Iva's family (confirming Mara is her aunt), offers rational explanations for the mysterious visitor, and makes a cryptic statement ('That isn't an answer') when Iva notes Mara's age. His dialogue reveals a practical, observant character who engages with the unfolding mystery without panic.",
+  "narrative_role": "supporting",
+  "narrative_role_confidence": 0.85,
+  "relationships": [
+    {
+      "target_character": "IVA",
+      "relationship_type": "Colleague/Collaborator",
+      "evidence": "Sol and Iva work together at the museum; Sol directs her to assist with the porcelain bird restoration and they navigate the mysterious theatre incident together.",
+      "confidence": 0.95
+    }
+  ],
+  "overall_confidence": 0.82
+}

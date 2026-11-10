@@ -1,4 +1,4 @@
-"""Native Argon transport for the bounded synthetic ordered-frame lane."""
+"""Native Gemini 4 transport for the bounded synthetic ordered-frame lane."""
 
 from __future__ import annotations
 
@@ -8,12 +8,14 @@ from typing import Any
 from cine_forge.ai.token_usage import validate_gemini_token_usage
 
 
-def call_argon(scope: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
+def call_gemini4(scope: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
     config = request["config"]
-    if request["model"] != "gemini-4-argon" or config.get("reasoning_effort") != "medium":
-        raise RuntimeError("Argon lane requires exact model and medium thinking")
+    model = request["model"]
+    effort = {"gemini-4-argon": "medium", "gemini-4-carbon": "high"}[model]
+    if config.get("reasoning_effort") != effort:
+        raise RuntimeError(f"{model} lane requires {effort} thinking")
     if request["max_tokens"] != 32768 or len(request["packet"]["frames"]) != 5:
-        raise RuntimeError("Argon lane requires five JPEGs and32768 total output")
+        raise RuntimeError("Gemini 4 lane requires five JPEGs and32768 total output")
     raw_path = scope["_openai_raw_output_path"](request)
     payload = scope["_build_gemini_payload"](
         user_text=request["user_text"],
@@ -21,8 +23,8 @@ def call_argon(scope: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]
         max_tokens=request["max_tokens"],
         response_schema=scope["_VIDEO_ANALYSIS_RESPONSE_SCHEMA"],
     )
-    payload["generationConfig"]["thinkingConfig"] = {"thinkingLevel": "medium"}
-    url = scope["GEMINI_MODELS_URL"] + "/gemini-4-argon:generateContent"
+    payload["generationConfig"]["thinkingConfig"] = {"thinkingLevel": effort}
+    url = scope["GEMINI_MODELS_URL"] + f"/{model}:generateContent"
     try:
         response = scope["_request_json"](
             url,
@@ -49,18 +51,23 @@ def call_argon(scope: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]
     )
     candidates = response.get("candidates")
     if not isinstance(candidates, list) or len(candidates) != 1:
-        raise RuntimeError("Argon requires exactly one complete candidate")
+        raise RuntimeError("Gemini 4 requires exactly one complete candidate")
     candidate = candidates[0]
     if candidate.get("finishReason") != "STOP" or response.get("continuationToken"):
-        raise RuntimeError("Argon did not reach terminal STOP")
+        raise RuntimeError("Gemini 4 did not reach terminal STOP")
     parts = candidate.get("content", {}).get("parts", [])
     texts = [
         p["text"] for p in parts if isinstance(p, dict) and "text" in p and not p.get("thought")
     ]
     if len(texts) != 1 or not texts[0].strip():
-        raise RuntimeError("Argon requires one complete final text")
+        raise RuntimeError("Gemini 4 requires one complete final text")
     output = texts[0]
     scope["VideoAnalysisPrediction"].model_validate_json(output)
+    if model == "gemini-4-carbon":
+        import json
+
+        if set(json.loads(output)) != set(scope["_VIDEO_ANALYSIS_RESPONSE_SCHEMA"]["required"]):
+            raise RuntimeError("Carbon output does not contain the exact thirteen keys")
     usage = response["usageMetadata"]
     tokens = validate_gemini_token_usage(
         prompt_tokens=usage.get("promptTokenCount"),
@@ -69,7 +76,7 @@ def call_argon(scope: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]
         reasoning_completion_tokens=usage.get("thoughtsTokenCount", 0),
     )
     if tokens.billed_completion > request["max_tokens"]:
-        raise RuntimeError("Argon billed output exceeds declared cap")
+        raise RuntimeError("Gemini 4 billed output exceeds declared cap")
     cached = scope["_token_count"](usage.get("cachedContentTokenCount", 0), "cached input")
     if cached > tokens.prompt:
         raise RuntimeError("Cached input exceeds prompt")
@@ -96,3 +103,7 @@ def call_argon(scope: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]
             "raw_envelope_bytes": len(raw_bytes),
         },
     }
+
+
+# Historical Argon evidence and its regression test import this entry point.
+call_argon = call_gemini4

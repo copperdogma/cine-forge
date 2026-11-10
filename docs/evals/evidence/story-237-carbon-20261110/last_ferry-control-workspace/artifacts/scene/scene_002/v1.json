@@ -1,0 +1,151 @@
+{
+  "data": {
+    "characters_present": [
+      "LENA",
+      "OLD MAN"
+    ],
+    "characters_present_ids": [
+      "lena",
+      "old_man"
+    ],
+    "confidence": 0.898,
+    "elements": [
+      {
+        "content": "EXT. FERRY PIER - LATER",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Fog erases the far bank. Lena sets the blue medicine case on a mooring bollard. She removes envelope 17, takes out the brass key, and unlocks a green locker marked NORTH. Inside lies a small metal cash box. She leaves the empty envelope inside the locker, pockets the key, and carries the cash box to the bollard.",
+        "element_type": "action"
+      },
+      {
+        "content": "An OLD MAN in an orange rain cape stands by the gangway. His face is visible; the earlier courier's was not.",
+        "element_type": "action"
+      },
+      {
+        "content": "OLD MAN",
+        "element_type": "character"
+      },
+      {
+        "content": "You found it, then.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "LENA",
+        "element_type": "character"
+      },
+      {
+        "content": "Were you at my window?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "OLD MAN",
+        "element_type": "character"
+      },
+      {
+        "content": "Windows aren't much use in this fog.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "He turns away. A ferry horn sounds from the river, although no vessel can be seen. Lena opens the cash box. It contains a photograph of two children beside a ferry and a folded receipt. On the receipt: STORAGE PAID THROUGH FRIDAY. She puts both back, shuts the box, and takes it and the blue case toward the boathouse.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "EXT. FERRY PIER - LATER",
+    "inferences": [],
+    "int_ext": "EXT",
+    "location": "Ferry Pier",
+    "narrative_beats": [],
+    "props_mentioned": [
+      "BLUE MEDICINE CASE",
+      "BRASS KEY",
+      "ENVELOPE 17",
+      "GREEN LOCKER",
+      "METAL CASH BOX",
+      "PHOTOGRAPH",
+      "RECEIPT"
+    ],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Extracted from first non-empty scene line",
+        "field_name": "heading",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.92,
+        "evidence": "Parsed heading prefix token",
+        "field_name": "int_ext",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.9,
+        "evidence": "Parsed heading suffix segment",
+        "field_name": "time_of_day",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.88,
+        "evidence": "Parsed heading core location segment",
+        "field_name": "location",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.84,
+        "evidence": "Union of dialogue cues (structural) and LLM action-line extraction",
+        "field_name": "characters_present",
+        "method": "ai"
+      }
+    ],
+    "scene_id": "scene_002",
+    "scene_number": 2,
+    "source_span": {
+      "end_line": 43,
+      "start_line": 27
+    },
+    "time_of_day": "LATER",
+    "tone_mood": "neutral",
+    "tone_shifts": []
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "single monolithic scene list artifact"
+    ],
+    "annotations": {
+      "ai_enrichment_used": true,
+      "boundary_reason": "",
+      "boundary_uncertain": false,
+      "discovery_tier": "structural+ai",
+      "parser_backend": "fountain-tools",
+      "scene_number": 2,
+      "source_span": {
+        "end_line": 43,
+        "start_line": 27
+      }
+    },
+    "confidence": 0.898,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:00:49.872746Z",
+    "health": "valid",
+    "intent": "Represent one screenplay scene as structured data for downstream modules",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_breakdown_v1",
+    "producing_role": null,
+    "rationale": "Structural extraction with LLM action-line entity extraction",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_002",
+      "path": "artifacts/scene/scene_002/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "code"
+  }
+}

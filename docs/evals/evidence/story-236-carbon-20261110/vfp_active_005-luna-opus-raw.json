@@ -1,0 +1,30 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"score\":0.62,\"reason\":\"The summary correctly identifies a yellow figure moving left to right across a gap between two dark platforms, and continuity is correctly marked as intact. However, there are several mismatches: (1) Tone is tagged as 'detached' rather than 'urgent' or 'tense' \u2014 the motion across frames suggests faster, more urgent movement. (2) Motion is tagged as 'measured' rather than 'fast_lateral' \u2014 the figure covers significant horizontal distance across 5 frames, suggesting fast lateral movement. (3) Color tags list 'navy' and 'gold' instead of 'amber' and 'navy' \u2014 gold vs amber is close but not exact. (4) Camera tags include only 'static' but miss 'wide_master' which is inferable from the framing. (5) The summary describes 'striped scene' which is acceptable for the rain-like diagonal lines. (6) Evidence is adequately grounded with 3 entries at frames 0, 2, and 4. (7) The description mentions 'passing over a narrow opening' which matches the gap. The key penalties are for incorrect tone (detached vs urgent/tense) and incorrect motion characterization (measured vs fast_lateral), plus missing wide_master camera tag.\"}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011Cgum7RqKxcmiyYzoh4p1f",
+  "model": "claude-opus-4-6",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2489,
+    "output_tokens": 292,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

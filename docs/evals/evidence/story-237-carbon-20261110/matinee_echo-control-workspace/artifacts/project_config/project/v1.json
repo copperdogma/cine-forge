@@ -1,0 +1,228 @@
+{
+  "data": {
+    "aspect_ratio": "16:9",
+    "budget_cap_usd": null,
+    "confirmed": true,
+    "confirmed_at": "2026-11-10T19:04:02.607920+00:00",
+    "default_model": "claude-sonnet-4-6",
+    "detection_details": {
+      "aspect_ratio": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "16:9"
+      },
+      "budget_cap_usd": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": null
+      },
+      "default_model": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "claude-sonnet-4-6"
+      },
+      "estimated_duration_minutes": {
+        "confidence": 0.9,
+        "rationale": "Directly provided by the scene index summary as estimated_runtime_minutes: 4.0.",
+        "source": "auto_detected",
+        "value": 4.0
+      },
+      "format": {
+        "confidence": 0.9,
+        "rationale": "Estimated runtime of 4 minutes, only 4 scenes, and 79 lines strongly indicate a short film format.",
+        "source": "auto_detected",
+        "value": "Short Film"
+      },
+      "genre": {
+        "confidence": 0.85,
+        "rationale": "The script features quiet interpersonal drama centered on memory and family, combined with a mysterious unseen speaker and unexplained presence, suggesting drama and mystery genres.",
+        "source": "auto_detected",
+        "value": [
+          "Drama",
+          "Mystery"
+        ]
+      },
+      "human_control_mode": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "checkpoint"
+      },
+      "location_count": {
+        "confidence": 0.95,
+        "rationale": "There are two distinct physical locations: the Museum Conservation Room and the Museum Theatre. The late afternoon variant of the conservation room is the same physical space at a different time.",
+        "source": "auto_detected",
+        "value": 2
+      },
+      "locations_summary": {
+        "confidence": 0.95,
+        "rationale": "All four scenes take place in one of these two interior museum locations across a single day, as confirmed by the scene headings.",
+        "source": "auto_detected",
+        "value": [
+          "Museum Conservation Room (interior, afternoon and late afternoon) and Museum Theatre (interior, afternoon and evening); both within the same museum setting."
+        ]
+      },
+      "model_strategy": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": {
+          "escalate": "claude-opus-4-6",
+          "verify": "claude-sonnet-4-6",
+          "work": "claude-sonnet-4-6"
+        }
+      },
+      "primary_characters": {
+        "confidence": 0.95,
+        "rationale": "Ranked by weighted scene frequency and dialogue cue count (scene*2 + dialogue); top 3 classified as primary.",
+        "source": "auto_detected",
+        "value": [
+          "IVA",
+          "SOL",
+          "CHILD"
+        ]
+      },
+      "production_mode": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "ai_generated"
+      },
+      "style_packs": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": {}
+      },
+      "supporting_characters": {
+        "confidence": 0.9,
+        "rationale": "Ranked by weighted scene frequency and dialogue cue count (scene*2 + dialogue); top 3 classified as primary.",
+        "source": "auto_detected",
+        "value": [
+          "ELDERLY VISITOR",
+          "UNSEEN SPEAKER",
+          "MARA"
+        ]
+      },
+      "target_audience": {
+        "confidence": 0.4,
+        "rationale": "The script is a synthetic evaluation fixture with no explicit audience designation. The quiet, literary tone may suggest adult or festival audiences, but this cannot be confirmed from the available material.",
+        "source": "auto_detected",
+        "value": null
+      },
+      "title": {
+        "confidence": 1.0,
+        "rationale": "Explicitly stated as the canonical script title and confirmed in the script header.",
+        "source": "auto_detected",
+        "value": "Matinee Echo"
+      },
+      "tone": {
+        "confidence": 0.8,
+        "rationale": "The script's focus on loss, memory, a closed theatre, and an unexplained voice creates a melancholic and atmospheric tone. Scene index labels all scenes as neutral, but the content suggests subdued, contemplative mood.",
+        "source": "auto_detected",
+        "value": [
+          "Melancholic",
+          "Atmospheric",
+          "Quiet"
+        ]
+      }
+    },
+    "estimated_duration_minutes": 4.0,
+    "format": "Short Film",
+    "genre": [
+      "Drama",
+      "Mystery"
+    ],
+    "human_control_mode": "checkpoint",
+    "location_count": 2,
+    "locations_summary": [
+      "Museum Conservation Room (interior, afternoon and late afternoon) and Museum Theatre (interior, afternoon and evening); both within the same museum setting."
+    ],
+    "model_strategy": {
+      "escalate": "claude-opus-4-6",
+      "verify": "claude-sonnet-4-6",
+      "work": "claude-sonnet-4-6"
+    },
+    "primary_characters": [
+      "IVA",
+      "SOL",
+      "CHILD"
+    ],
+    "production_format": null,
+    "production_mode": "ai_generated",
+    "storyboard_style": null,
+    "style_packs": {},
+    "supporting_characters": [
+      "ELDERLY VISITOR",
+      "UNSEEN SPEAKER",
+      "MARA"
+    ],
+    "target_audience": null,
+    "title": "Matinee Echo",
+    "tone": [
+      "Melancholic",
+      "Atmospheric",
+      "Quiet"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "config as non-versioned side file",
+      "hard-coded defaults without confirmation gate"
+    ],
+    "annotations": {
+      "accept_config": true,
+      "autonomous": false,
+      "config_file": null,
+      "draft_path": "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/output/project/draft_config.yaml",
+      "final_stage_model_used": "claude-sonnet-4-6",
+      "final_stage_provider_used": "anthropic",
+      "qa_result": {
+        "confidence": 0.92,
+        "issues": [],
+        "passed": true,
+        "summary": "The output accurately reflects the script's estimated duration, format, and genre based on scene and narrative evidence. It correctly identifies the two main physical locations and summarizes them appropriately. Character roles are well distinguished between primary and supporting based on scene presence and narrative importance. Confidence scores align with the certainty of the information, and rationales are concise and grounded in the script content without fabrication."
+      }
+    },
+    "confidence": 0.9176,
+    "cost_data": {
+      "estimated_cost_usd": 0.0192032,
+      "input_tokens": 4974,
+      "latency_seconds": null,
+      "model": "claude-sonnet-4-6",
+      "output_tokens": 820,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:04:02.611631Z",
+    "health": "valid",
+    "intent": "Persist canonical project settings shared by downstream modules.",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "project_config_v1",
+    "producing_role": null,
+    "rationale": "Centralize genre/tone/format/control defaults and ensure they are explicitly confirmed before downstream creative work.",
+    "ref": {
+      "artifact_type": "project_config",
+      "entity_id": "project",
+      "path": "artifacts/project_config/project/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "hybrid"
+  }
+}

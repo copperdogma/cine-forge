@@ -1,0 +1,19 @@
+{
+  "cost": "0.022205",
+  "model": "claude-opus-4-6",
+  "observed": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2716,
+    "output_tokens": 345,
+    "service_tier": "standard",
+    "speed": "standard"
+  },
+  "reason": "The model correctly identifies the yellow/gold figure moving left-to-right across platforms over a gap, the static wide camera, dark navy backdrop with slanted lines, and intact continuity. It correctly notes the consistent proportions (no size change) and the white-outlined rectangle staying with the figure. However, there are notable issues: (1) Motion is tagged as 'measured' rather than 'fast_lateral' \u2014 the figure crosses the entire frame in just 5 samples, indicating fast lateral movement. (2) The description says the figure 'leaps in a smooth arc' which is reasonable but calls it a 'parabolic arc' \u2014 the vertical displacement is minimal and this slightly overstates the trajectory. (3) Emotion tags include 'resolve' and 'isolation' which are not supported by the reference (which specifies none). (4) Tone includes 'hopeful' which is not supported \u2014 reference says 'urgent, tense'. The model gets 'tense' correct but misses 'urgent' and adds unsupported 'hopeful'. (5) The description calls it a 'runner' equivalent ('figure') which is acceptable. (6) Color tags include 'amber' and 'gold' and 'navy' \u2014 reference has 'amber' and 'navy', 'gold' is reasonable but slightly redundant. (7) Audio fields are empty as required. The motion tag mismatch and unsupported emotion/tone tags bring the score below the 0.8 threshold.",
+  "score": 0.72
+}

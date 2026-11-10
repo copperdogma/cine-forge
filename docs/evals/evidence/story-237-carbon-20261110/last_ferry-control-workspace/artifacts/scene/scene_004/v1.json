@@ -1,0 +1,140 @@
+{
+  "data": {
+    "characters_present": [
+      "LENA",
+      "RUTH",
+      "TOM"
+    ],
+    "characters_present_ids": [
+      "lena",
+      "ruth",
+      "tom"
+    ],
+    "confidence": 0.898,
+    "elements": [
+      {
+        "content": "EXT. FERRY PIER - DAWN",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Lena returns with the cash box, without the medicine case. The refrigerator remains behind in the boathouse. Her soiled bandage has not changed. The green locker stands open; empty envelope 17 lies inside.",
+        "element_type": "action"
+      },
+      {
+        "content": "She puts the cash box back in the locker and locks it with the brass key. Tom joins her empty-handed from the ticket office path. Lena gives him the key.",
+        "element_type": "action"
+      },
+      {
+        "content": "TOM",
+        "element_type": "character"
+      },
+      {
+        "content": "Was that Dad in the photograph?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "LENA",
+        "element_type": "character"
+      },
+      {
+        "content": "Could be. It didn't have a date or names.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "They watch Ruth steer the clinic launch away from the boathouse. Ruth waves. No one else is visible aboard.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "EXT. FERRY PIER - DAWN",
+    "inferences": [],
+    "int_ext": "EXT",
+    "location": "Ferry Pier",
+    "narrative_beats": [],
+    "props_mentioned": [
+      "BRASS KEY",
+      "CASH BOX"
+    ],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Extracted from first non-empty scene line",
+        "field_name": "heading",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.92,
+        "evidence": "Parsed heading prefix token",
+        "field_name": "int_ext",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.9,
+        "evidence": "Parsed heading suffix segment",
+        "field_name": "time_of_day",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.88,
+        "evidence": "Parsed heading core location segment",
+        "field_name": "location",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.84,
+        "evidence": "Union of dialogue cues (structural) and LLM action-line extraction",
+        "field_name": "characters_present",
+        "method": "ai"
+      }
+    ],
+    "scene_id": "scene_004",
+    "scene_number": 4,
+    "source_span": {
+      "end_line": 76,
+      "start_line": 64
+    },
+    "time_of_day": "DAWN",
+    "tone_mood": "neutral",
+    "tone_shifts": []
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "single monolithic scene list artifact"
+    ],
+    "annotations": {
+      "ai_enrichment_used": true,
+      "boundary_reason": "",
+      "boundary_uncertain": false,
+      "discovery_tier": "structural+ai",
+      "parser_backend": "fountain-tools",
+      "scene_number": 4,
+      "source_span": {
+        "end_line": 76,
+        "start_line": 64
+      }
+    },
+    "confidence": 0.898,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:00:49.681867Z",
+    "health": "valid",
+    "intent": "Represent one screenplay scene as structured data for downstream modules",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_breakdown_v1",
+    "producing_role": null,
+    "rationale": "Structural extraction with LLM action-line entity extraction",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_004",
+      "path": "artifacts/scene/scene_004/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "code"
+  }
+}

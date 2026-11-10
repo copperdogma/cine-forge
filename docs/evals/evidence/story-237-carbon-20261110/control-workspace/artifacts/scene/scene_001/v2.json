@@ -1,0 +1,196 @@
+{
+  "data": {
+    "characters_present": [
+      "ARIA",
+      "JUNE",
+      "KELL",
+      "NOAH"
+    ],
+    "characters_present_ids": [
+      "aria",
+      "june",
+      "kell",
+      "noah"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Rain rattles the skylight. Old consoles hum under emergency power.",
+        "element_type": "action"
+      },
+      {
+        "content": "ARIA threads a tape reel while NOAH coaxes a signal out of a battered mixer.",
+        "element_type": "action"
+      },
+      {
+        "content": "JUNE covers a whiteboard with road closures, shelter names, and call signs.",
+        "element_type": "action"
+      },
+      {
+        "content": "KELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag.",
+        "element_type": "action"
+      },
+      {
+        "content": "KELL",
+        "element_type": "character"
+      },
+      {
+        "content": "Bridge is closed. Cell towers are dead. The hill relay is our only shot.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "NOAH",
+        "element_type": "character"
+      },
+      {
+        "content": "Please tell me that antenna is less cursed than it looks.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "KELL",
+        "element_type": "character"
+      },
+      {
+        "content": "It only tried to kill me once.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "Good. Tonight we don't have time for a second opinion.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Aria flips a switch. The ON AIR sign flickers, then dies again.",
+        "element_type": "action"
+      },
+      {
+        "content": "ARIA",
+        "element_type": "character"
+      },
+      {
+        "content": "Give me ten minutes and one miracle.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "Take fifteen. Keep the miracle.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "CUT TO:",
+        "element_type": "transition"
+      }
+    ],
+    "heading": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "Community Radio Studio",
+    "narrative_beats": [
+      {
+        "approximate_location": "opening",
+        "beat_type": "establishing",
+        "confidence": 0.95,
+        "description": "The studio is introduced under emergency power during a storm, with the team each performing a distinct role \u2014 threading tape, coaxing signals, mapping closures \u2014 establishing the crisis context and ensemble dynamic."
+      },
+      {
+        "approximate_location": "early-middle",
+        "beat_type": "inciting information",
+        "confidence": 0.95,
+        "description": "Kell arrives with the portable antenna and delivers the key logistical problem: the bridge is closed, cell towers are dead, and the hill relay is the only option."
+      },
+      {
+        "approximate_location": "middle",
+        "beat_type": "tonal relief / dark humor",
+        "confidence": 0.9,
+        "description": "The exchange about the antenna ('It only tried to kill me once') and June's deadpan response ('Tonight we don't have time for a second opinion') pairs genuine danger with dry banter, undercutting urgency with gallows humor."
+      },
+      {
+        "approximate_location": "late",
+        "beat_type": "obstacle / complication",
+        "confidence": 0.92,
+        "description": "Aria flips the switch and the ON AIR sign flickers and dies, making the broadcast goal feel precarious and unresolved."
+      },
+      {
+        "approximate_location": "end",
+        "beat_type": "closing beat / rallying moment",
+        "confidence": 0.9,
+        "description": "Aria asks for ten minutes and a miracle; June's reply ('Take fifteen. Keep the miracle.') reframes the impossible as manageable, ending the scene on wry solidarity."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      }
+    ],
+    "scene_id": "scene_001",
+    "scene_number": 1,
+    "source_span": {
+      "end_line": 36,
+      "start_line": 5
+    },
+    "time_of_day": "NIGHT",
+    "tone_mood": "tense urgency undercut by dry, gallows humor",
+    "tone_shifts": [
+      "Opens in atmospheric dread (rain, emergency power, dead infrastructure) then shifts toward dark comedy as the team's banter deflates the danger without dismissing it."
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 1,
+      "source_span": {
+        "end_line": 36,
+        "start_line": 5
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.035016,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2334,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T18:42:14.874401Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "path": "artifacts/scene/scene_001/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

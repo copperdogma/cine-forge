@@ -1,0 +1,240 @@
+{
+  "data": {
+    "aliases": [],
+    "character_id": "iva",
+    "description": "A museum technician responsible for recorded-guide and sound equipment. She works in the conservation room and theatre, managing audio recordings and technical operations. She has a family connection to the museum through her aunt Mara, a recorded performer from twenty years prior.",
+    "dialogue_summary": "Iva discusses her aunt Mara's recorded performance with Sol, engages with an elderly visitor who knew Mara, and makes observations about the mysterious circumstances surrounding the visitor and the theatre. She speaks sparingly but meaningfully, primarily in response to others' questions or to report observations.",
+    "explicit_evidence": [
+      {
+        "quote": "IVA, the museum's recorded-guide technician, brings a reel labelled MARA / TAKE 4.",
+        "source_scene": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+        "source_span": {
+          "end_line": 3,
+          "start_line": 3
+        },
+        "trait": "Museum technician - recorded-guide technician"
+      },
+      {
+        "quote": "My aunt. Mum never liked microphones.",
+        "source_scene": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+        "source_span": {
+          "end_line": 11,
+          "start_line": 10
+        },
+        "trait": "Family connection to Mara"
+      },
+      {
+        "quote": "We can test the join after your sound check.",
+        "source_scene": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+        "source_span": {
+          "end_line": 14,
+          "start_line": 14
+        },
+        "trait": "Performs sound checks and operates tape equipment"
+      },
+      {
+        "quote": "Did you know Mara?",
+        "source_scene": "INT. MUSEUM THEATRE - AFTERNOON",
+        "source_span": {
+          "end_line": 28,
+          "start_line": 28
+        },
+        "trait": "Engages with visitors and museum patrons"
+      },
+      {
+        "quote": "Iva picks up the theatre key from a hook.",
+        "source_scene": "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+        "source_span": {
+          "end_line": 50,
+          "start_line": 50
+        },
+        "trait": "Has access to theatre keys and security"
+      }
+    ],
+    "inferred_traits": [
+      {
+        "confidence": 0.85,
+        "rationale": "Iva notices the elderly visitor's reaction to the recording, recognizes the visitor's familiarity with Mara's performance style, and carefully manages delicate equipment and artifacts.",
+        "trait": "Observant and detail-oriented",
+        "value": "high"
+      },
+      {
+        "confidence": 0.8,
+        "rationale": "She engages with the elderly visitor about Mara, reflects on Mara's age ('Mara would be eighty now'), and seems invested in understanding the connection between the visitor and her aunt.",
+        "trait": "Curious about her family history",
+        "value": "moderate"
+      },
+      {
+        "confidence": 0.9,
+        "rationale": "She follows Sol's instructions precisely, manages equipment carefully, maintains security protocols (locking/unlocking doors), and handles fragile artifacts with care.",
+        "trait": "Methodical and responsible",
+        "value": "high"
+      },
+      {
+        "confidence": 0.75,
+        "rationale": "She notices the mysterious visitor's knowledge of Mara, the abandoned scarf with brooch, and the unexplained voice from behind the curtain without visible source.",
+        "trait": "Perceptive to unusual circumstances",
+        "value": "moderate"
+      }
+    ],
+    "name": "Iva",
+    "narrative_role": "protagonist",
+    "narrative_role_confidence": 0.85,
+    "overall_confidence": 0.82,
+    "prominence": "primary",
+    "relationships": [
+      {
+        "confidence": 0.95,
+        "evidence": "They work together in the conservation room, with Sol directing Iva to transport the broken wing and later accompanying her to the theatre. Sol reaches for her sleeve at the end, suggesting protective concern.",
+        "relationship_type": "colleague/collaborator",
+        "target_character": "Sol"
+      },
+      {
+        "confidence": 1.0,
+        "evidence": "Iva explicitly states 'My aunt' when identifying Mara. She reflects on Mara's age and seems emotionally connected to her legacy.",
+        "relationship_type": "family (aunt)",
+        "target_character": "Mara"
+      },
+      {
+        "confidence": 0.6,
+        "evidence": "The visitor knew Mara and is familiar with her performance style. Iva questions the visitor but receives no direct answer. The visitor's presence and the abandoned scarf suggest a mysterious connection.",
+        "relationship_type": "unknown acquaintance",
+        "target_character": "Elderly Visitor"
+      }
+    ],
+    "scene_presence": [
+      "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+      "INT. MUSEUM THEATRE - AFTERNOON",
+      "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+      "INT. MUSEUM THEATRE - EVENING"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 5,
+        "decision_trace": [
+          {
+            "candidate": "IVA",
+            "canonical_name": "Iva",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "IVA is a named protagonist who appears in 4 scenes with 5 dialogue instances. She is the museum's recorded-guide technician and a central character throughout the narrative.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "IVA",
+            "surviving_name": "IVA",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "SOL",
+            "canonical_name": "Sol",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "SOL is a named character who appears in 3 scenes with 4 dialogue instances. He is a conservator at the museum and a co-protagonist in the story.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "SOL",
+            "surviving_name": "SOL",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "CHILD",
+            "canonical_name": "Child",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.85,
+            "llm_rationale": "CHILD is a named minor character who appears in 1 scene with 1 dialogue instance. Although minimally developed, the character is explicitly identified in a school jumper and delivers dialogue, making it a valid character entity.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "CHILD",
+            "surviving_name": "CHILD",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "ELDERLY VISITOR",
+            "canonical_name": "Elderly Visitor",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.88,
+            "llm_rationale": "ELDERLY VISITOR is a named minor character who appears in 1 scene with 1 dialogue instance. The character has a distinctive visual marker (silver bird brooch, dark scarf) and speaks, qualifying as a valid character.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "ELDERLY VISITOR",
+            "surviving_name": "ELDERLY VISITOR",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "UNSEEN SPEAKER",
+            "canonical_name": null,
+            "decision_verdict": "invalid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "UNSEEN SPEAKER is a formatting/technical designation indicating off-screen dialogue rather than a named character. The speaker's identity is deliberately obscured and unidentified in the script. This is a technical cue, not a character entity.",
+            "outcome": "rejected_by_verdict",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "MARA",
+            "canonical_name": "Mara",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.92,
+            "llm_rationale": "MARA is a named character referenced throughout the script. Although she appears only as a recording and is deceased in the present timeline, she is explicitly identified as Iva's aunt and is a significant entity in the world-building. She has a distinct identity and presence via the recording.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "MARA",
+            "surviving_name": "MARA",
+            "target_entity_type": null
+          }
+        ],
+        "decision_trace_count": 6,
+        "input_candidate_count": 6,
+        "rejected_candidate_count": 1,
+        "rejected_candidates": [
+          {
+            "candidate": "UNSEEN SPEAKER",
+            "canonical_name": null,
+            "decision_verdict": "invalid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "UNSEEN SPEAKER is a formatting/technical designation indicating off-screen dialogue rather than a named character. The speaker's identity is deliberately obscured and unidentified in the script. This is a technical cue, not a character entity.",
+            "target_entity_type": null
+          }
+        ]
+      }
+    },
+    "confidence": 0.82,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:05:12.533888Z",
+    "health": "valid",
+    "intent": "Establish master definition for character 'IVA'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "character_bible_v1",
+    "producing_role": null,
+    "rationale": "Extracted from canonical script and scene co-occurrence data.",
+    "ref": {
+      "artifact_type": "character_bible",
+      "entity_id": "iva",
+      "path": "artifacts/character_bible/iva/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

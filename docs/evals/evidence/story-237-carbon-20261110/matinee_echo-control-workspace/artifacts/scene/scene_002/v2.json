@@ -1,0 +1,159 @@
+{
+  "data": {
+    "characters_present": [
+      "ELDERLY VISITOR",
+      "IVA",
+      "MARA"
+    ],
+    "characters_present_ids": [
+      "elderly_visitor",
+      "iva",
+      "mara"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "INT. MUSEUM THEATRE - AFTERNOON",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Dust drifts through an unlit projector beam housing. Iva sets the shallow tin on the front-row seat and loads the red-thread reel onto a tape deck. The satchel lies at her feet. She presses PLAY.",
+        "element_type": "action"
+      },
+      {
+        "content": "MARA (RECORDING)",
+        "element_type": "character"
+      },
+      {
+        "content": "If the bird sings twice, wait for the door.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "The tape clicks off. An ELDERLY VISITOR stands in the aisle with a silver bird brooch pinned to a dark scarf.",
+        "element_type": "action"
+      },
+      {
+        "content": "ELDERLY VISITOR",
+        "element_type": "character"
+      },
+      {
+        "content": "She always rushed that line.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "IVA",
+        "element_type": "character"
+      },
+      {
+        "content": "Did you know Mara?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "The visitor looks toward the stage instead of answering. A door slams somewhere beyond the curtain. Iva lifts the tin from the seat, retrieves the reel, and puts both in her satchel. The visitor remains in the aisle as Iva leaves.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "INT. MUSEUM THEATRE - AFTERNOON",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "Museum Theatre",
+    "narrative_beats": [
+      {
+        "approximate_location": "opening",
+        "beat_type": "Atmosphere Establishment",
+        "confidence": 0.92,
+        "description": "Dust drifts through an unlit projector beam housing, establishing the theatre as a dormant, memory-laden space before any action occurs."
+      },
+      {
+        "approximate_location": "early",
+        "beat_type": "Inciting Revelation",
+        "confidence": 0.97,
+        "description": "The tape plays Mara's recorded voice delivering a cryptic line \u2014 'If the bird sings twice, wait for the door' \u2014 introducing an enigmatic instruction that will recur."
+      },
+      {
+        "approximate_location": "middle",
+        "beat_type": "Mysterious Encounter",
+        "confidence": 0.95,
+        "description": "An Elderly Visitor appears wearing a silver bird brooch and comments on Mara's delivery, implying personal knowledge of Mara without explaining it."
+      },
+      {
+        "approximate_location": "middle-late",
+        "beat_type": "Evasion",
+        "confidence": 0.93,
+        "description": "When asked if she knew Mara, the visitor looks toward the stage rather than answering, withholding information and deepening the mystery."
+      },
+      {
+        "approximate_location": "closing",
+        "beat_type": "Disruption and Withdrawal",
+        "confidence": 0.88,
+        "description": "A door slams offscreen; Iva collects her objects and leaves while the visitor remains in the aisle, leaving the encounter unresolved."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      }
+    ],
+    "scene_id": "scene_002",
+    "scene_number": 2,
+    "source_span": {
+      "end_line": 41,
+      "start_line": 25
+    },
+    "time_of_day": "AFTERNOON",
+    "tone_mood": "eerie and suspended",
+    "tone_shifts": [
+      "The scene opens in quiet routine but shifts to unease when the tape plays the cryptic line",
+      "The visitor's evasive response and the offscreen door slam deepen the tone from curious to unsettling"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 2,
+      "source_span": {
+        "end_line": 41,
+        "start_line": 25
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.034521,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2301,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:04:38.190232Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_002",
+      "path": "artifacts/scene/scene_002/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

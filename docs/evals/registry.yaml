@@ -63,6 +63,33 @@ evals:
       value: 1.0
       note: All consumer schemas/references, complete scenes/material entities, source-grounded relationships/continuity and no critical invention. Qualification stop leaves variants unmeasured, never failed.
     scores:
+    - model: Gemini 4 Carbon native foreground medium131072 whole workspace
+      evidence_status: complete-semantic-objects-and-blind-source-review-frozen-strict-gates-failed
+      metrics:
+        whole_source_acceptance: 0.0
+        native_terminal_completion: 1.0
+        original_consumer_load: 0.0
+      latency_ms: 764245
+      cost_usd: 1.462812
+      cost_estimated: true
+      measured: '2026-11-10'
+      git_sha: 3b44e158a74010a68bf8d2bbe7e7a92991f96a69+story237-carbon-exact-producer-freezes
+      result_file: benchmarks/results/whole-story-workspace-carbon-20261110.json
+      contract_manifest: docs/evals/evidence/story-237-carbon-20261110/manifest.json
+      note: Three complete authored semantic objects; 5 physical sends, 2 foreground deadlines recovered from original checkpoints; known candidate cost for entire panel plus USD1.414720 held. Latency is mean summed physical wall time per logical generation. Zero original consumer loads; LF-only diagnostics loaded 117/90 groups on Open Frequency/Matinee. Last Ferry has two dangling gap references. Independent source reviews favor Carbon on difficult story distinctions but all three fail full source acceptance.
+    - model: Maintained whole story pipeline — fresh three authored sources
+      evidence_status: consumer-loadable-but-blind-full-source-gates-failed
+      metrics:
+        whole_source_acceptance: 0.0
+        original_consumer_load: 1.0
+      latency_ms: 163047
+      cost_usd: 0.68503545
+      cost_estimated: true
+      measured: '2026-11-10'
+      git_sha: 3b44e158a74010a68bf8d2bbe7e7a92991f96a69+story237-carbon-exact-producer-freezes
+      result_file: benchmarks/results/whole-story-workspace-carbon-20261110.json
+      contract_manifest: docs/evals/evidence/story-237-carbon-20261110/manifest.json
+      note: Fresh unchanged mvp_ingest and world_building. 118 physical inference requests and 82/61/61 consumer groups. Contradictory final states, invented roles and references or ungrounded identity on each source.
     - model: Maintained story workspace pipeline — fresh OpenFrequency control
       evidence_status: one-source-loadable-but-full-source-gate-failed
       metrics:
@@ -77,6 +104,18 @@ evals:
       contract_manifest: docs/evals/story-237-whole-task20261109-manifest.json
       note: '45 physical calls,82 healthy consumer groups, but independent source review finds false final-scene states/invented graph actions/unresolved refs. No paired semantic ranking: Fable delivered no complete workspace.'
     attempts:
+    - id: '059'
+      story: attempts/059-carbon-whole-story-workspace.md
+      date: '2026-11-10'
+      status: measured
+      approach: Whole authored source to native strict outer envelope and full host schema with real consumer and independent complete-source gates. Fixed medium131072, up to three charged linked hops. Full fresh controls. Additional LF-only mechanical diagnosis and no semantic repairs.
+      worker_model: Codex owning-worktree runner and independent Astra source reviewers
+      subject_model: gemini-4-carbon medium131072 native foreground
+      score_before: 0.0
+      score_after: 0.0
+      cost_after: 2.14784745
+      unknown_reservations_usd: 1.41472
+      result_file: benchmarks/results/whole-story-workspace-carbon-20261110.json
     - id: 058
       story: attempts/058-fable52-whole-story-workspace.md
       date: '2026-11-09'
@@ -2162,6 +2201,39 @@ evals:
       note: "Fresh six-case frame-only results, source-backed truth review, and the 0.80 quality gate are required before any autonomous QA/default decision. A below-gate paired result may still identify a preferred headless reference model; use each row's evidence status."
 
     scores:
+      - model: "Gemini 4 Carbon / direct Google HIGH mixed 32K and 64K"
+        evidence_status: fresh-six-case-source-reviewed-capability-panel
+        metrics: {overall: 0.65620833, deterministic: 0.59908333, rubric: 0.71333333}
+        latency_ms: 201419
+        cost_usd: 0.1660063333
+        cost_estimated: true
+        measured: '2026-11-10'
+        git_sha: 3b44e158a74010a68bf8d2bbe7e7a92991f96a69+story236-carbon-producing-freeze
+        result_file: benchmarks/results/video-understanding-carbon-sol-luna-v4-20261110.json
+        contract_manifest: docs/evals/story-236-carbon-20261110-manifest.json
+        note: "Attempt060; six complete source-adjudicated v4 outputs; 0/6 full quality. Subject means use complete outputs. The result also records original Carbon002 MAX_TOKENS and its charged repair."
+      - model: "GPT-6.1 Sol / direct Responses low, Scout109 control"
+        evidence_status: fresh-six-case-source-reviewed-capability-panel
+        metrics: {overall: 0.61397500, deterministic: 0.51961667, rubric: 0.70833333}
+        latency_ms: 6569
+        cost_usd: 0.0098985000
+        cost_estimated: true
+        measured: '2026-11-10'
+        git_sha: 3b44e158a74010a68bf8d2bbe7e7a92991f96a69+story236-carbon-producing-freeze
+        result_file: benchmarks/results/video-understanding-carbon-sol-luna-v4-20261110.json
+        contract_manifest: docs/evals/story-236-carbon-20261110-manifest.json
+        note: "Attempt060; six complete source-adjudicated v4 outputs; 0/6 full quality. Subject means use complete outputs. The result also records original Carbon002 MAX_TOKENS and its charged repair."
+      - model: "GPT-6 Luna / direct Responses low, Scout109 control"
+        evidence_status: fresh-six-case-source-reviewed-capability-panel
+        metrics: {overall: 0.62193333, deterministic: 0.58053333, rubric: 0.66333333}
+        latency_ms: 5763
+        cost_usd: 0.0005212583
+        cost_estimated: true
+        measured: '2026-11-10'
+        git_sha: 3b44e158a74010a68bf8d2bbe7e7a92991f96a69+story236-carbon-producing-freeze
+        result_file: benchmarks/results/video-understanding-carbon-sol-luna-v4-20261110.json
+        contract_manifest: docs/evals/story-236-carbon-20261110-manifest.json
+        note: "Attempt060; six complete source-adjudicated v4 outputs; 0/6 full quality. Subject means use complete outputs. The result also records original Carbon002 MAX_TOKENS and its charged repair."
       - model: Fable 5.2 / direct Anthropic xhigh32768
         evidence_status: fresh-six-case-source-reviewed-capability-panel
         metrics:
@@ -2560,6 +2632,18 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: '060'
+        story: attempts/060-gemini4-carbon-ordered-frame-capability.md
+        date: '2026-11-10'
+        status: measured-below-target
+        approach: Six fresh synthetic v4 ordered-frame subjects per arm and 18 independently source-grounded blind Opus reviews. Preserve one native MAX_TOKENS as a separate physical call.
+        subject_model: gemini-4-carbon HIGH32768 and HIGH65536, GPT-6.1 Sol low4096, GPT-6 Luna low1400
+        worker_model: Codex owner agent and independent Opus 4.6 original-frame reviewer
+        score_before: null
+        score_after: 0.65620833
+        cost_after: 1.75301955
+        git_sha: 3b44e158a74010a68bf8d2bbe7e7a92991f96a69+story236-carbon-producing-freeze
+        note: "All three fresh arms 0/6 full gates; Carbon alone correctly classifies color continuity break, costly and slow. No runtime/default change."
       - id: '057'
         story: attempts/057-fable52-full-six-ordered-frame-capability.md
         date: '2026-11-09'

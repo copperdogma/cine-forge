@@ -1,0 +1,120 @@
+{
+  "date": "2026-11-10",
+  "owner": "CineForge",
+  "evaluation": "Attempt059 Gemini 4 Carbon complete story workspace",
+  "archive_directory": "/Users/cam/.codex/archives/carbon-20261110/cine-forge",
+  "directory_mode": "0700",
+  "member_mode": "0600",
+  "scope": "Five original native request bodies and response streams, plus both read-only status retrievals. Includes opaque continuation and thought signatures. No authentication headers, env files, provider credentials, control traffic, ordered-frame traffic, or added inference.",
+  "recovery": "For each member, join archive_directory with file, verify bytes and SHA-256 against this index, and inspect its indicated physical-hop receipt. Original worktree copies are retained.",
+  "members": [
+    {
+      "file": "open_frequency-hop1.request",
+      "role": "request_body",
+      "receipt": "docs/evals/evidence/story-237-carbon-20261110/subject-ledger.json",
+      "logical": "open_frequency",
+      "physical_hop": 1,
+      "sha256": "d489f0dced9eb87b557051bfc9e1a7a685e826d73cf6ae9e094a86d33d46477a",
+      "bytes": 34439
+    },
+    {
+      "file": "open_frequency-hop1.wire",
+      "role": "response_stream",
+      "receipt": "docs/evals/evidence/story-237-carbon-20261110/subject-ledger.json",
+      "logical": "open_frequency",
+      "physical_hop": 1,
+      "sha256": "e91ba47de39520e498dfe3cdc30c336cbe7b58fccd763db56c8719de3742a240",
+      "bytes": 1345577
+    },
+    {
+      "file": "open_frequency-hop1-get.json",
+      "role": "status_retrieval",
+      "receipt": "docs/evals/evidence/story-237-carbon-20261110/subject-ledger.json",
+      "logical": "open_frequency",
+      "physical_hop": 1,
+      "sha256": "ffb1f8dbe4d9358977005a759c13ed70d319004613027ea8b83512fba9d65dcf",
+      "bytes": 34779
+    },
+    {
+      "file": "open_frequency-hop2.request",
+      "role": "request_body",
+      "receipt": "docs/evals/evidence/story-237-carbon-20261110/subject-ledger.json",
+      "logical": "open_frequency",
+      "physical_hop": 2,
+      "sha256": "dc9c379b8f0b2845ef474a0807a01bd22e8805d3be8b4ac097429995a8936e95",
+      "bytes": 317560
+    },
+    {
+      "file": "open_frequency-hop2.wire",
+      "role": "response_stream",
+      "receipt": "docs/evals/evidence/story-237-carbon-20261110/subject-ledger.json",
+      "logical": "open_frequency",
+      "physical_hop": 2,
+      "sha256": "27129b2479220370391e44a5f0c2ece9e85a9ae11ec4154ad65def1af90e8958",
+      "bytes": 4410110
+    },
+    {
+      "file": "last_ferry-hop1.request",
+      "role": "request_body",
+      "receipt": "docs/evals/evidence/story-237-carbon-20261110/last_ferry-ledger.json",
+      "logical": "last_ferry",
+      "physical_hop": 1,
+      "sha256": "77bc11d133a675374b0bed757d1f7fc2d5b2034f2aa7becebf0307798dac07e9",
+      "bytes": 34084
+    },
+    {
+      "file": "last_ferry-hop1.wire",
+      "role": "response_stream",
+      "receipt": "docs/evals/evidence/story-237-carbon-20261110/last_ferry-ledger.json",
+      "logical": "last_ferry",
+      "physical_hop": 1,
+      "sha256": "d2ef94013b60ac35708719c5dd8c400f05e137f52c970c85867e00c52fbe5a5b",
+      "bytes": 915574
+    },
+    {
+      "file": "last_ferry-hop1.get.json",
+      "role": "status_retrieval",
+      "receipt": "docs/evals/evidence/story-237-carbon-20261110/last_ferry-ledger.json",
+      "logical": "last_ferry",
+      "physical_hop": 1,
+      "sha256": "aedc5944df986eb54ddc84d8e0ce3ab17e161bb41c1ba96c1b7ce2668fc24d45",
+      "bytes": 34424
+    },
+    {
+      "file": "last_ferry-hop2.request",
+      "role": "request_body",
+      "receipt": "docs/evals/evidence/story-237-carbon-20261110/last_ferry-ledger.json",
+      "logical": "last_ferry",
+      "physical_hop": 2,
+      "sha256": "17caa988fa3d4a21379bcc6b1b55d213b5262d3c39b90db2a2fbaa274ae2ec77",
+      "bytes": 260676
+    },
+    {
+      "file": "last_ferry-hop2.wire",
+      "role": "response_stream",
+      "receipt": "docs/evals/evidence/story-237-carbon-20261110/last_ferry-ledger.json",
+      "logical": "last_ferry",
+      "physical_hop": 2,
+      "sha256": "1ae72c7cd7b1ab4cc31b0d9a7528466db2ff92aa7558663f9bff843ca9eeabd3",
+      "bytes": 3896012
+    },
+    {
+      "file": "matinee_echo-hop1.request",
+      "role": "request_body",
+      "receipt": "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-ledger.json",
+      "logical": "matinee_echo",
+      "physical_hop": 1,
+      "sha256": "79a59412e652920c82959a1bd2ac8c363d675aa6b556129830d7e2011d7f6dcb",
+      "bytes": 34067
+    },
+    {
+      "file": "matinee_echo-hop1.wire",
+      "role": "response_stream",
+      "receipt": "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-ledger.json",
+      "logical": "matinee_echo",
+      "physical_hop": 1,
+      "sha256": "9a3c22bd718cc578295715cd92386b059d24f05e658d7a41148f6e817b8dbc93",
+      "bytes": 1950876
+    }
+  ]
+}

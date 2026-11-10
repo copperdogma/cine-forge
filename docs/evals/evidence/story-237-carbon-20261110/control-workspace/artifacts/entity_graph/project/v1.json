@@ -1,0 +1,2666 @@
+{
+  "data": {
+    "edge_count": 152,
+    "edges": [
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_001",
+          "Present in scene scene_004"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_001",
+          "Present in scene scene_004"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_001",
+          "Present in scene scene_004"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_001",
+          "Present in scene scene_004"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "noah",
+        "source_type": "character",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_001",
+          "Share scene scene_002",
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002",
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_001",
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_001",
+          "Share scene scene_002",
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002",
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_001",
+          "Share scene scene_003",
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003",
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_001",
+          "Share scene scene_003",
+          "Share scene scene_002",
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002",
+          "scene_001",
+          "scene_004",
+          "scene_003"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_001",
+          "Share scene scene_003",
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003",
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_002"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_002"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "water_tower_catwalk",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_002"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_002"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "water_tower_catwalk",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_002"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_002"
+        ],
+        "source_id": "noah",
+        "source_type": "character",
+        "target_id": "water_tower_catwalk",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_003"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "high_school_gym_shelter",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_003"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "high_school_gym_shelter",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_003"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "maya",
+        "source_type": "character",
+        "target_id": "high_school_gym_shelter",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_003"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "noah",
+        "source_type": "character",
+        "target_id": "high_school_gym_shelter",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_003",
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003",
+          "scene_004"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_003",
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003",
+          "scene_004"
+        ],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_003",
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003",
+          "scene_004"
+        ],
+        "source_id": "maya",
+        "source_type": "character",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_004"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "comet",
+        "source_type": "character",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Present in scene scene_004"
+        ],
+        "relationship_type": "presence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "maya",
+        "source_type": "character",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "comet",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "comet",
+        "source_type": "character",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "comet",
+        "source_type": "character",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "comet",
+        "source_type": "character",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 1.0,
+        "direction": "symmetric",
+        "evidence": [
+          "Share scene scene_004"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "comet",
+        "source_type": "character",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 with character",
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002",
+          "scene_001"
+        ],
+        "source_id": "canvas_tool_bag",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 with character",
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002",
+          "scene_001"
+        ],
+        "source_id": "canvas_tool_bag",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "canvas_tool_bag",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 with character",
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002",
+          "scene_001"
+        ],
+        "source_id": "canvas_tool_bag",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "canvas_tool_bag",
+        "source_type": "prop",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002"
+        ],
+        "source_id": "canvas_tool_bag",
+        "source_type": "prop",
+        "target_id": "water_tower_catwalk",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "hand_drawn_map",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "hand_drawn_map",
+        "source_type": "prop",
+        "target_id": "comet",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "hand_drawn_map",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "hand_drawn_map",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "hand_drawn_map",
+        "source_type": "prop",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "hand_drawn_map",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "hand_drawn_map",
+        "source_type": "prop",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002"
+        ],
+        "source_id": "handheld_receiver",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002"
+        ],
+        "source_id": "handheld_receiver",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002"
+        ],
+        "source_id": "handheld_receiver",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002"
+        ],
+        "source_id": "handheld_receiver",
+        "source_type": "prop",
+        "target_id": "water_tower_catwalk",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 with character",
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002",
+          "scene_001"
+        ],
+        "source_id": "lantern",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 with character",
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002",
+          "scene_001"
+        ],
+        "source_id": "lantern",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "lantern",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 with character",
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002",
+          "scene_001"
+        ],
+        "source_id": "lantern",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "lantern",
+        "source_type": "prop",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002"
+        ],
+        "source_id": "lantern",
+        "source_type": "prop",
+        "target_id": "water_tower_catwalk",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "microphone",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "microphone",
+        "source_type": "prop",
+        "target_id": "comet",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "microphone",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "microphone",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "microphone",
+        "source_type": "prop",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "microphone",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "microphone",
+        "source_type": "prop",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "mixer",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "mixer",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "mixer",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "mixer",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "mixer",
+        "source_type": "prop",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "notebook",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "notebook",
+        "source_type": "prop",
+        "target_id": "comet",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "notebook",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "notebook",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "notebook",
+        "source_type": "prop",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "notebook",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "notebook",
+        "source_type": "prop",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character",
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "on_air_sign",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character",
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "on_air_sign",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character",
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "on_air_sign",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character",
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "on_air_sign",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 at location",
+          "Prop present in scene scene_001 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "on_air_sign",
+        "source_type": "prop",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "on_air_sign",
+        "source_type": "prop",
+        "target_id": "comet",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "on_air_sign",
+        "source_type": "prop",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 with character",
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002",
+          "scene_001"
+        ],
+        "source_id": "portable_antenna",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 with character",
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002",
+          "scene_001"
+        ],
+        "source_id": "portable_antenna",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "portable_antenna",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 with character",
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002",
+          "scene_001"
+        ],
+        "source_id": "portable_antenna",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "portable_antenna",
+        "source_type": "prop",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_002 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_002"
+        ],
+        "source_id": "portable_antenna",
+        "source_type": "prop",
+        "target_id": "water_tower_catwalk",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character",
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "sign",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character",
+          "Prop present in scene scene_001 with character",
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003",
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "sign",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character",
+          "Prop present in scene scene_001 with character",
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003",
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "sign",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character",
+          "Prop present in scene scene_001 with character",
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003",
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "sign",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 at location",
+          "Prop present in scene scene_001 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001",
+          "scene_004"
+        ],
+        "source_id": "sign",
+        "source_type": "prop",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character",
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003",
+          "scene_004"
+        ],
+        "source_id": "sign",
+        "source_type": "prop",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "sign",
+        "source_type": "prop",
+        "target_id": "high_school_gym_shelter",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_004 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_004"
+        ],
+        "source_id": "sign",
+        "source_type": "prop",
+        "target_id": "comet",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "tabletop_radio",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "tabletop_radio",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "tabletop_radio",
+        "source_type": "prop",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "tabletop_radio",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "tabletop_radio",
+        "source_type": "prop",
+        "target_id": "high_school_gym_shelter",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "tackle_box",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "tackle_box",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "tackle_box",
+        "source_type": "prop",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "tackle_box",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "tackle_box",
+        "source_type": "prop",
+        "target_id": "high_school_gym_shelter",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "tape_reel",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "tape_reel",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "tape_reel",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "tape_reel",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "tape_reel",
+        "source_type": "prop",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "whiteboard",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character",
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003",
+          "scene_001"
+        ],
+        "source_id": "whiteboard",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character",
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003",
+          "scene_001"
+        ],
+        "source_id": "whiteboard",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character",
+          "Prop present in scene scene_001 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003",
+          "scene_001"
+        ],
+        "source_id": "whiteboard",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_001 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_001"
+        ],
+        "source_id": "whiteboard",
+        "source_type": "prop",
+        "target_id": "community_radio_studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 with character"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "whiteboard",
+        "source_type": "prop",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "symmetric",
+        "evidence": [
+          "Prop present in scene scene_003 at location"
+        ],
+        "relationship_type": "co-occurrence",
+        "scene_refs": [
+          "scene_003"
+        ],
+        "source_id": "whiteboard",
+        "source_type": "prop",
+        "target_id": "high_school_gym_shelter",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Brass Cassette Cue' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "brass_cassette_cue",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Canvas Tool Bag' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "canvas_tool_bag",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Flyer (Missing Dog)' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "flyer_missing_dog",
+        "source_type": "prop",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Foil-Wrapped Bread' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "foil_wrapped_bread",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Hand-Drawn Map' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "hand_drawn_map",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Handheld Receiver' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "handheld_receiver",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Handheld Receiver' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "handheld_receiver",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Dented Lantern' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "lantern",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Dented Lantern' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "lantern",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Microphone' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "microphone",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Battered Mixer' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "mixer",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Notebook' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "notebook",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Portable Antenna' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "portable_antenna",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Portable Antenna' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "portable_antenna",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Portable Antenna' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "portable_antenna",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Sign' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "sign",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Sign' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "sign",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Tabletop Radio' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "tabletop_radio",
+        "source_type": "prop",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Tackle Box' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "tackle_box",
+        "source_type": "prop",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Tape Reel' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "tape_reel",
+        "source_type": "prop",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "'Whiteboard' is a signature prop of this character"
+        ],
+        "relationship_type": "signature_prop_of",
+        "scene_refs": [],
+        "source_id": "whiteboard",
+        "source_type": "prop",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "Aria and Noah work together threading equipment and installing the antenna on the water tower catwalk. They exchange casual banter about weather and jobs.",
+          "Noah and Aria work together on antenna installation at the water tower and collaborate on technical setup at the radio station."
+        ],
+        "relationship_type": "Colleague/Team member",
+        "scene_refs": [],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "Aria communicates with June via radio during the antenna installation and receives direction from her. They coordinate on broadcast operations.",
+          "June and Aria work together at the radio station. Aria responds to June's radio check-in and they coordinate broadcast operations."
+        ],
+        "relationship_type": "Colleague/Team member",
+        "scene_refs": [],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.85,
+        "direction": "source_to_target",
+        "evidence": [
+          "Aria works with Kell as part of the emergency radio station team, though they have minimal direct interaction in the provided scenes."
+        ],
+        "relationship_type": "Colleague/Team member",
+        "scene_refs": [],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "Noah communicates with June via radio during the emergency broadcast and works in the same radio station team.",
+          "Noah provides field updates via radio that June records and incorporates into broadcasts. They work as part of the same emergency response team."
+        ],
+        "relationship_type": "Colleague/Team member",
+        "scene_refs": [],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "source_to_target",
+        "evidence": [
+          "Kell and June work together at the shelter and radio station during the emergency response. They interact casually and professionally."
+        ],
+        "relationship_type": "Colleague/Team member",
+        "scene_refs": [],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.85,
+        "direction": "source_to_target",
+        "evidence": [
+          "June helps Maya by agreeing to broadcast information about her missing dog Comet. June treats Maya's concern with respect and inclusion."
+        ],
+        "relationship_type": "Service provider/Community member",
+        "scene_refs": [],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "source_to_target",
+        "evidence": [
+          "Works together in the radio studio on technical equipment and signal management during the emergency broadcast."
+        ],
+        "relationship_type": "Team colleague",
+        "scene_refs": [],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "noah",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "source_to_target",
+        "evidence": [
+          "Collaborates with June on emergency logistics and shelter operations; June accepts Kell's pragmatic input on broadcast priorities."
+        ],
+        "relationship_type": "Team colleague",
+        "scene_refs": [],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.85,
+        "direction": "source_to_target",
+        "evidence": [
+          "Works alongside Aria in the radio studio during emergency broadcast operations."
+        ],
+        "relationship_type": "Team colleague",
+        "scene_refs": [],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "aria",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.75,
+        "direction": "source_to_target",
+        "evidence": [
+          "Interacts with Maya at the shelter regarding the missing dog announcement; exchanges brief dialogue about the dog's recovery."
+        ],
+        "relationship_type": "Acquaintance",
+        "scene_refs": [],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "maya",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "source_to_target",
+        "evidence": [
+          "Maya approaches June's table to request the dog announcement; June accepts the flyer and helps broadcast it."
+        ],
+        "relationship_type": "Community member seeking assistance",
+        "scene_refs": [],
+        "source_id": "maya",
+        "source_type": "character",
+        "target_id": "june",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "Maya describes Comet as family, searches for him, and carries him in her arms after recovery."
+        ],
+        "relationship_type": "Owner/caretaker",
+        "scene_refs": [],
+        "source_id": "maya",
+        "source_type": "character",
+        "target_id": "comet",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "source_to_target",
+        "evidence": [
+          "Noah and Kell work together as part of the emergency broadcast team, with Kell providing equipment that Noah uses."
+        ],
+        "relationship_type": "Colleague/Team member",
+        "scene_refs": [],
+        "source_id": "noah",
+        "source_type": "character",
+        "target_id": "kell",
+        "target_type": "character"
+      },
+      {
+        "confidence": 0.95,
+        "direction": "source_to_target",
+        "evidence": [
+          "ARIA operates broadcasting equipment",
+          "ARIA controls ON AIR SIGN and Microphone",
+          "ARIA manages Battered Mixer and Tabletop Radio"
+        ],
+        "relationship_type": "primary_operational_base",
+        "scene_refs": [
+          "radio_studio_scenes"
+        ],
+        "source_id": "aria",
+        "source_type": "character",
+        "target_id": "Community Radio Studio",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.92,
+        "direction": "source_to_target",
+        "evidence": [
+          "JUNE creates missing dog flyer",
+          "JUNE distributes flyer as urgent communication",
+          "Flyer represents JUNE's emotional investment"
+        ],
+        "relationship_type": "creator_and_distributor",
+        "scene_refs": [
+          "flyer_distribution_scenes"
+        ],
+        "source_id": "june",
+        "source_type": "character",
+        "target_id": "Flyer (Missing Dog)",
+        "target_type": "prop"
+      },
+      {
+        "confidence": 0.88,
+        "direction": "source_to_target",
+        "evidence": [
+          "KELL uses elevated location for surveillance",
+          "KELL maintains distance from community",
+          "KELL possesses Handheld Receiver and Portable Antenna at height"
+        ],
+        "relationship_type": "secret_refuge",
+        "scene_refs": [
+          "water_tower_scenes"
+        ],
+        "source_id": "kell",
+        "source_type": "character",
+        "target_id": "Water Tower Catwalk",
+        "target_type": "location"
+      },
+      {
+        "confidence": 0.9,
+        "direction": "source_to_target",
+        "evidence": [
+          "NOAH creates map for navigation",
+          "Map represents NOAH's knowledge of terrain",
+          "Map is distributed to coordinate group movement"
+        ],
+        "relationship_type": "creator_and_guide",
+        "scene_refs": [
+          "map_creation_and_distribution_scenes"
+        ],
+        "source_id": "noah",
+        "source_type": "character",
+        "target_id": "Hand-Drawn Map",
+        "target_type": "prop"
+      },
+      {
+        "confidence": 0.91,
+        "direction": "source_to_target",
+        "evidence": [
+          "MAYA organizes shelter operations",
+          "MAYA manages supplies including Foil-Wrapped Bread",
+          "MAYA coordinates community welfare at shelter"
+        ],
+        "relationship_type": "emergency_coordinator",
+        "scene_refs": [
+          "shelter_coordination_scenes"
+        ],
+        "source_id": "maya",
+        "source_type": "character",
+        "target_id": "High School Gym Shelter",
+        "target_type": "location"
+      }
+    ],
+    "entity_count": {
+      "character": 5,
+      "location": 3,
+      "prop": 17
+    },
+    "extraction_confidence": 0.85
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "final_stage_model_used": "claude-haiku-4-5-20251001",
+      "final_stage_provider_used": "anthropic"
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.0038536,
+      "input_tokens": 887,
+      "latency_seconds": 6.599714,
+      "model": "claude-haiku-4-5-20251001",
+      "output_tokens": 786,
+      "request_id": "msg_011CgujsJoPVFxhEzfA5h8hd"
+    },
+    "created_at": "2026-11-10T18:43:02.048960Z",
+    "health": "valid",
+    "intent": "Consolidate all entity relationships into a unified graph.",
+    "lineage": [
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "aria",
+        "path": "artifacts/character_bible/aria/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_aria",
+        "path": "artifacts/bibles/character_aria/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_june",
+        "path": "artifacts/bibles/character_june/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_kell",
+        "path": "artifacts/bibles/character_kell/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_maya",
+        "path": "artifacts/bibles/character_maya/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "character_noah",
+        "path": "artifacts/bibles/character_noah/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "june",
+        "path": "artifacts/character_bible/june/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "kell",
+        "path": "artifacts/character_bible/kell/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "maya",
+        "path": "artifacts/character_bible/maya/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "character_bible",
+        "entity_id": "noah",
+        "path": "artifacts/character_bible/noah/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "community_radio_studio",
+        "path": "artifacts/location_bible/community_radio_studio/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "high_school_gym_shelter",
+        "path": "artifacts/location_bible/high_school_gym_shelter/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_community_radio_studio",
+        "path": "artifacts/bibles/location_community_radio_studio/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_high_school_gym_shelter",
+        "path": "artifacts/bibles/location_high_school_gym_shelter/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "location_water_tower_catwalk",
+        "path": "artifacts/bibles/location_water_tower_catwalk/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "location_bible",
+        "entity_id": "water_tower_catwalk",
+        "path": "artifacts/location_bible/water_tower_catwalk/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "brass_cassette_cue",
+        "path": "artifacts/prop_bible/brass_cassette_cue/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "canvas_tool_bag",
+        "path": "artifacts/prop_bible/canvas_tool_bag/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "flyer_missing_dog",
+        "path": "artifacts/prop_bible/flyer_missing_dog/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "foil_wrapped_bread",
+        "path": "artifacts/prop_bible/foil_wrapped_bread/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "hand_drawn_map",
+        "path": "artifacts/prop_bible/hand_drawn_map/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "handheld_receiver",
+        "path": "artifacts/prop_bible/handheld_receiver/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "lantern",
+        "path": "artifacts/prop_bible/lantern/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "microphone",
+        "path": "artifacts/prop_bible/microphone/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "mixer",
+        "path": "artifacts/prop_bible/mixer/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "notebook",
+        "path": "artifacts/prop_bible/notebook/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "on_air_sign",
+        "path": "artifacts/prop_bible/on_air_sign/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "portable_antenna",
+        "path": "artifacts/prop_bible/portable_antenna/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_brass_cassette_cue",
+        "path": "artifacts/bibles/prop_brass_cassette_cue/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_canvas_tool_bag",
+        "path": "artifacts/bibles/prop_canvas_tool_bag/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_flyer_missing_dog",
+        "path": "artifacts/bibles/prop_flyer_missing_dog/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_foil_wrapped_bread",
+        "path": "artifacts/bibles/prop_foil_wrapped_bread/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_hand_drawn_map",
+        "path": "artifacts/bibles/prop_hand_drawn_map/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_handheld_receiver",
+        "path": "artifacts/bibles/prop_handheld_receiver/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_lantern",
+        "path": "artifacts/bibles/prop_lantern/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_microphone",
+        "path": "artifacts/bibles/prop_microphone/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_mixer",
+        "path": "artifacts/bibles/prop_mixer/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_notebook",
+        "path": "artifacts/bibles/prop_notebook/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_on_air_sign",
+        "path": "artifacts/bibles/prop_on_air_sign/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_portable_antenna",
+        "path": "artifacts/bibles/prop_portable_antenna/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_sign",
+        "path": "artifacts/bibles/prop_sign/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_tabletop_radio",
+        "path": "artifacts/bibles/prop_tabletop_radio/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_tackle_box",
+        "path": "artifacts/bibles/prop_tackle_box/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_tape_reel",
+        "path": "artifacts/bibles/prop_tape_reel/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "bible_manifest",
+        "entity_id": "prop_whiteboard",
+        "path": "artifacts/bibles/prop_whiteboard/manifest_v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "sign",
+        "path": "artifacts/prop_bible/sign/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "tabletop_radio",
+        "path": "artifacts/prop_bible/tabletop_radio/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "tackle_box",
+        "path": "artifacts/prop_bible/tackle_box/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "tape_reel",
+        "path": "artifacts/prop_bible/tape_reel/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "prop_bible",
+        "entity_id": "whiteboard",
+        "path": "artifacts/prop_bible/whiteboard/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      }
+    ],
+    "producing_module": "entity_graph_v1",
+    "producing_role": null,
+    "rationale": "Merged relationship stubs from bibles and co-occurrence data from scene index.",
+    "ref": {
+      "artifact_type": "entity_graph",
+      "entity_id": "project",
+      "path": "artifacts/entity_graph/project/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "hybrid"
+  }
+}

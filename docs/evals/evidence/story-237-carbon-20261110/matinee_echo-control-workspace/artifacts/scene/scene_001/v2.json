@@ -1,0 +1,164 @@
+{
+  "data": {
+    "characters_present": [
+      "IVA",
+      "SOL"
+    ],
+    "characters_present_ids": [
+      "iva",
+      "sol"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "SOL, a conservator, lays a cracked porcelain bird on a felt pad. Its right wing is missing. IVA, the museum's recorded-guide technician, brings a reel labelled MARA / TAKE 4. A red thread is tied around the reel's hub.",
+        "element_type": "action"
+      },
+      {
+        "content": "IVA",
+        "element_type": "character"
+      },
+      {
+        "content": "Mara recorded this twenty years ago. Before the theatre closed.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "SOL",
+        "element_type": "character"
+      },
+      {
+        "content": "Your mother?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "IVA",
+        "element_type": "character"
+      },
+      {
+        "content": "My aunt. Mum never liked microphones.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Sol places the broken wing in a shallow tin and hands it to Iva. He keeps the body on the pad.",
+        "element_type": "action"
+      },
+      {
+        "content": "SOL",
+        "element_type": "character"
+      },
+      {
+        "content": "Take this upstairs. We can test the join after your sound check.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Iva puts the tin and reel in a canvas satchel. Sol's spectacles hang from a cord. He takes them off to inspect the exposed joint. Iva leaves; Sol remains at the bench.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "Museum Conservation Room",
+    "narrative_beats": [
+      {
+        "approximate_location": "opening",
+        "beat_type": "Establishment",
+        "confidence": 0.95,
+        "description": "Sol is introduced at work repairing a broken porcelain bird with a missing wing, establishing the conservation room and its objects as central to the story."
+      },
+      {
+        "approximate_location": "early",
+        "beat_type": "Object Introduction",
+        "confidence": 0.95,
+        "description": "Iva brings a reel labelled MARA / TAKE 4 with a red thread tied around its hub, introducing the recording and the absent figure of Mara as narrative elements."
+      },
+      {
+        "approximate_location": "middle",
+        "beat_type": "Character Revelation",
+        "confidence": 0.9,
+        "description": "Iva clarifies that Mara is her aunt, not her mother, and that her mother never liked microphones \u2014 establishing family relationships and a subtle distinction between the two women."
+      },
+      {
+        "approximate_location": "late",
+        "beat_type": "Separation of Objects",
+        "confidence": 0.88,
+        "description": "Sol separates the broken wing from the bird's body, giving the wing to Iva to carry upstairs while he keeps the body \u2014 physically splitting the object and the two characters."
+      },
+      {
+        "approximate_location": "closing",
+        "beat_type": "Departure",
+        "confidence": 0.9,
+        "description": "Iva leaves with the tin and reel in her satchel; Sol remains at the bench, reinforcing the spatial and narrative division between the two characters."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      }
+    ],
+    "scene_id": "scene_001",
+    "scene_number": 1,
+    "source_span": {
+      "end_line": 24,
+      "start_line": 5
+    },
+    "time_of_day": "AFTERNOON",
+    "tone_mood": "quiet and methodical",
+    "tone_shifts": [
+      "A faint undercurrent of personal history enters when Mara is identified as Iva's aunt, briefly warming the otherwise clinical atmosphere"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 1,
+      "source_span": {
+        "end_line": 24,
+        "start_line": 5
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.034521,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2301,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:04:38.188226Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "path": "artifacts/scene/scene_001/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

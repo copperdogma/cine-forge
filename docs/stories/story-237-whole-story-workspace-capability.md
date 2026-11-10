@@ -204,3 +204,24 @@ semantics unmeasured; complete incumbent source gate FAIL. Keep current only as
 operational path with manual source checks; whole-workspace problem unsolved.
 Worktree retained uncommitted for root review, owner Scout108 CineForge campaign,
 branch/path/base above. No credentials injected, commits/push/default/deploy.
+
+2026-11-10 — Scout109 selected a fresh Gemini 4 Carbon workspace comparison in
+Attempt059. Three frozen authored screenplays in original order, first Open
+Frequency native/host qualification, unchanged complete-pipeline controls, blind
+source-first review. Medium/131072 shared visible and thinking allowance, three
+linked streaming hops maximum, one operational recovery, no semantic repair.
+The USD16 panel reserves USD7.439744 for candidates, USD5 controls, USD2 source
+reviews, USD1.560256 recovery. Only synthetic sources enter the stored foreground
+route. Four free Carbon counts and a real ArtifactStore/OperatorConsole exemplar
+check precede inference. See `docs/evals/evidence/story-237-carbon-20261110/`.
+
+2026-11-10 — Closed [Attempt059](../evals/attempts/059-carbon-whole-story-workspace.md).
+Three terminal source-derived semantic objects, stronger than the fresh
+pipelines on named role, uncertainty, continuity and custody checks. Zero of
+three original Carbon objects passes strict host admission; all dropped the
+final LF, and Last Ferry contains two invalid gap refs. Two LF-only derivatives
+loaded 117 and 90 groups. Fresh pipelines loaded 82/61/61 groups. Complete
+independent source acceptance was 0/3 on both arms. Five native sends including
+two exact original-ID checkpoint resumes and 118 incumbent physical sends.
+USD2.14784745 known plus USD1.414720 retained unknown totals USD3.56256745/16.
+No further paid request authorized for this closed identity.

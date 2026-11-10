@@ -1,0 +1,144 @@
+{
+  "data": {
+    "characters_present": [
+      "LENA",
+      "RUTH",
+      "TOM"
+    ],
+    "characters_present_ids": [
+      "lena",
+      "ruth",
+      "tom"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "EXT. FERRY PIER - DAWN",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Lena returns with the cash box, without the medicine case. The refrigerator remains behind in the boathouse. Her soiled bandage has not changed. The green locker stands open; empty envelope 17 lies inside.",
+        "element_type": "action"
+      },
+      {
+        "content": "She puts the cash box back in the locker and locks it with the brass key. Tom joins her empty-handed from the ticket office path. Lena gives him the key.",
+        "element_type": "action"
+      },
+      {
+        "content": "TOM",
+        "element_type": "character"
+      },
+      {
+        "content": "Was that Dad in the photograph?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "LENA",
+        "element_type": "character"
+      },
+      {
+        "content": "Could be. It didn't have a date or names.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "They watch Ruth steer the clinic launch away from the boathouse. Ruth waves. No one else is visible aboard.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "EXT. FERRY PIER - DAWN",
+    "inferences": [],
+    "int_ext": "EXT",
+    "location": "Ferry Pier",
+    "narrative_beats": [
+      {
+        "approximate_location": "Opening",
+        "beat_type": "Reversal / Deliberate Undoing",
+        "confidence": 0.88,
+        "description": "Lena returns the cash box to the locker and locks it again with the brass key, reversing the retrieval she performed in scene 002. This circular action suggests the cash box was never meant to leave \u2014 or that Lena has decided to relinquish it \u2014 and closes the object's journey without explanation."
+      },
+      {
+        "approximate_location": "Early Middle",
+        "beat_type": "Transfer of Responsibility",
+        "confidence": 0.85,
+        "description": "Lena gives Tom the brass key, passing the means of access \u2014 and implicitly the burden of the mystery \u2014 to her brother. This handoff marks a shift in who holds agency over the locker and its contents."
+      },
+      {
+        "approximate_location": "Middle",
+        "beat_type": "Unresolved Personal Question",
+        "confidence": 0.9,
+        "description": "Tom asks whether the photograph showed their father. Lena's answer \u2014 that it had no date or names \u2014 neither confirms nor denies the connection, leaving the photograph's significance and the family's relationship to the ferry history open and unresolved."
+      },
+      {
+        "approximate_location": "End",
+        "beat_type": "Ambiguous Resolution / Open Ending",
+        "confidence": 0.92,
+        "description": "Ruth steers the clinic launch away with no one else visible aboard. The father is not seen returning. Ruth waves but the launch departs without delivering him. The scene ends with the siblings watching, the medicine presumably aboard but its recipient absent, and all central mysteries \u2014 the courier, the cash box, the photograph \u2014 unresolved."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      }
+    ],
+    "scene_id": "scene_004",
+    "scene_number": 4,
+    "source_span": {
+      "end_line": 76,
+      "start_line": 64
+    },
+    "time_of_day": "DAWN",
+    "tone_mood": "melancholic and unresolved",
+    "tone_shifts": [
+      "The return of daylight (dawn) and Ruth's wave introduce a brief note of normalcy and farewell warmth, but the empty launch and unanswered questions about the photograph pull the scene back into quiet, lingering uncertainty"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 4,
+      "source_span": {
+        "end_line": 76,
+        "start_line": 64
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.032556,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2170,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:02:08.747196Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_004",
+      "path": "artifacts/scene/scene_004/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

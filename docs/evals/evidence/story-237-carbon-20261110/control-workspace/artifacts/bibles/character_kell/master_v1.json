@@ -1,0 +1,124 @@
+{
+  "character_id": "kell",
+  "name": "KELL",
+  "aliases": [],
+  "description": "A practical, resourceful member of the emergency radio broadcast team. Kell handles technical equipment and logistics during a crisis, demonstrating problem-solving skills and dry humor under pressure.",
+  "prominence": "secondary",
+  "explicit_evidence": [
+    {
+      "trait": "Resourceful and technical",
+      "quote": "KELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "source_span": {
+        "start_line": 7,
+        "end_line": 7
+      }
+    },
+    {
+      "trait": "Problem-solver under pressure",
+      "quote": "Bridge is closed. Cell towers are dead. The hill relay is our only shot.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "source_span": {
+        "start_line": 9,
+        "end_line": 9
+      }
+    },
+    {
+      "trait": "Dry, self-deprecating humor",
+      "quote": "It only tried to kill me once.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "source_span": {
+        "start_line": 13,
+        "end_line": 13
+      }
+    },
+    {
+      "trait": "Pragmatic, task-focused",
+      "quote": "Comet better be worth interrupting the weather report.",
+      "source_scene": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+      "source_span": {
+        "start_line": 31,
+        "end_line": 31
+      }
+    },
+    {
+      "trait": "Observant and witty",
+      "quote": "Smart dog. Dry floor, free snacks.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+      "source_span": {
+        "start_line": 50,
+        "end_line": 50
+      }
+    },
+    {
+      "trait": "Supportive team member",
+      "quote": "Kell enters with a loaf of warm bread wrapped in foil.",
+      "source_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+      "source_span": {
+        "start_line": 45,
+        "end_line": 45
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "Competence under adversity",
+      "value": "High",
+      "confidence": 0.85,
+      "rationale": "Kell arrives prepared with necessary equipment during an emergency, manages technical challenges, and maintains composure while handling critical infrastructure tasks."
+    },
+    {
+      "trait": "Collaborative attitude",
+      "value": "Positive",
+      "confidence": 0.8,
+      "rationale": "Works seamlessly with the radio team, contributes to logistics and problem-solving, and participates in group efforts without conflict or ego."
+    },
+    {
+      "trait": "Practical mindset",
+      "value": "Grounded",
+      "confidence": 0.85,
+      "rationale": "Focuses on actionable solutions, prioritizes essential tasks (weather reports over pet announcements), and handles physical logistics efficiently."
+    },
+    {
+      "trait": "Sense of humor",
+      "value": "Dry and observational",
+      "confidence": 0.8,
+      "rationale": "Uses self-deprecating and situational humor to defuse tension, commenting on equipment and animal behavior with wit rather than complaint."
+    }
+  ],
+  "scene_presence": [
+    "INT. COMMUNITY RADIO STUDIO - NIGHT",
+    "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+    "INT. COMMUNITY RADIO STUDIO - MORNING"
+  ],
+  "dialogue_summary": "Kell delivers four lines across three scenes. In the radio studio, Kell reports the bridge closure and makes a self-deprecating joke about a cursed antenna. At the shelter, Kell questions whether a missing dog announcement is worth interrupting weather reports. In the morning studio, Kell makes an observational comment about the recovered dog's survival strategy. All dialogue is functional, pragmatic, and tinged with dry humor.",
+  "narrative_role": "supporting",
+  "narrative_role_confidence": 0.85,
+  "relationships": [
+    {
+      "target_character": "NOAH",
+      "relationship_type": "Team colleague",
+      "evidence": "Works together in the radio studio on technical equipment and signal management during the emergency broadcast.",
+      "confidence": 0.9
+    },
+    {
+      "target_character": "JUNE",
+      "relationship_type": "Team colleague",
+      "evidence": "Collaborates with June on emergency logistics and shelter operations; June accepts Kell's pragmatic input on broadcast priorities.",
+      "confidence": 0.9
+    },
+    {
+      "target_character": "ARIA",
+      "relationship_type": "Team colleague",
+      "evidence": "Works alongside Aria in the radio studio during emergency broadcast operations.",
+      "confidence": 0.85
+    },
+    {
+      "target_character": "MAYA",
+      "relationship_type": "Acquaintance",
+      "evidence": "Interacts with Maya at the shelter regarding the missing dog announcement; exchanges brief dialogue about the dog's recovery.",
+      "confidence": 0.75
+    }
+  ],
+  "overall_confidence": 0.85
+}

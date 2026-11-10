@@ -1,0 +1,30 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"score\":0.72,\"reason\":\"The output correctly identifies the static camera, wide master shot, stillness, intact continuity, and the key visual elements (vertical post with circle on left, horizontal rectangle in center, figure on right). Color tags include amber and desaturated which match the reference. However, several issues reduce the score: (1) The emotion_tags include 'grief', 'hesitation', 'isolation' when the reference specifies no emotion should be tagged\u2014these are invented emotional readings not supported by the still frames. (2) The tone is tagged as 'detached' and 'mournful' rather than 'intimate' as in the reference, though tone can be ambiguous. (3) Color tags include 'navy' and 'gold' which are somewhat supported but add specificity beyond what's clearly warranted. (4) The description assigns specific identities (interpreting the left form as a 'brown vertical post' is acceptable, but the overall narrative framing with 'solitary' and 'mournful' imposes meaning not visible in the frames). (5) The summary adds interpretive emotional weight ('motionless and unchanged' is fine factually, but the overall framing suggests narrative meaning). The core visual description, continuity assessment, camera tags, and motion tags are accurate, but the invented emotional/tonal content and over-interpretation pull the score below the 0.8 threshold.\"}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011CgukzkoPupgvbLe7dvg45",
+  "model": "claude-opus-4-6",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2706,
+    "output_tokens": 314,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

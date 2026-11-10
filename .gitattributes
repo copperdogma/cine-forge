@@ -3,3 +3,5 @@ docs/evals/evidence/story-237-whole-task20261109/physical-calls/*/response.sse w
 # These exact historical producer snapshots retain original source whitespace.
 docs/evals/evidence/story-237-whole-task20261109/producing-epochs/117e3e81631341aac2ceb500514bb0aab9db760dfa72c0cb394b9a478eab0705/main.py whitespace=-blank-at-eol
 docs/evals/evidence/story-237-whole-task20261109/producing-epochs/aa32cb0a294de271f2fade3e17b528055c737a84f7baef314f9de6c4ae5e4f47/llm.py whitespace=-blank-at-eol
+# Frame SSE replay preserves protocol blank lines after the terminal event.
+docs/evals/evidence/story-236-carbon-20261110/sanitized-native/*.sse whitespace=-blank-at-eof

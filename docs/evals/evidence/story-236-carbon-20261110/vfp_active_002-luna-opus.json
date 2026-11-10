@@ -1,0 +1,19 @@
+{
+  "cost": "0.016725",
+  "model": "claude-opus-4-6",
+  "observed": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2490,
+    "output_tokens": 171,
+    "service_tier": "standard",
+    "speed": "standard"
+  },
+  "reason": "The model correctly identifies the static camera, fast lateral motion of the figure from left to right, intact continuity, the red color palette, and provides well-grounded frame evidence at indices 0, 2, and 4. However, it misses key tone descriptors (urgent, tense) instead using 'detached', adds an unsupported 'desaturated' color tag, includes 'measured' as a motion tag which is not observed, misses 'pulsing_light' motion, misses 'wide_master' camera tag, and uses 'emotion_tags':[] correctly but the tone mismatch is significant. The overall description is reasonable but tone and some motion characterizations don't match the reference.",
+  "score": 0.62
+}

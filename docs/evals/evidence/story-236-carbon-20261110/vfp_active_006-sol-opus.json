@@ -1,0 +1,19 @@
+{
+  "cost": "0.018465",
+  "model": "claude-opus-4-6",
+  "observed": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2513,
+    "output_tokens": 236,
+    "service_tier": "standard",
+    "speed": "standard"
+  },
+  "reason": "The model correctly identifies the cyan icon moving left-to-right, the broad arc, diagonal lines on a dark blue background, static camera, intact continuity, and teal/navy color tags. However, there are notable mismatches: (1) Tone is tagged as 'detached' instead of 'urgent'/'tense' \u2014 the reference tone conveys urgency from the fast lateral movement. (2) Motion is tagged as 'measured' rather than 'fast_lateral' \u2014 the icon moves noticeably across the frame in just 5 samples, suggesting rapid lateral motion. (3) The model misses 'wide_master' camera tag. (4) The description calls it a 'person-like icon' rather than recognizing it as an abstract runner, though this is a minor semantic difference. The evidence is well-grounded with 3 frame references. Audio fields are empty as required. The tone and motion mischaracterizations are significant enough to keep the score below the 0.8 passing threshold.",
+  "score": 0.62
+}

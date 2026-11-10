@@ -1,0 +1,90 @@
+[
+  {
+    "logical": "last_ferry",
+    "hop": 1,
+    "input_bound": 26000,
+    "output_bound": 65536,
+    "reserve_usd": "0.70736",
+    "accounted_usd": "0.70736",
+    "state": "unknown-held",
+    "request_sha256": "77bc11d133a675374b0bed757d1f7fc2d5b2034f2aa7becebf0307798dac07e9",
+    "wire": "output/carbon-20261110-private-wire/last_ferry-hop1.wire",
+    "producer_sha256": "83635418f9af798e07ae8e4cca673bc9c57eb0bb18d469a1b0c8b61ed47e74c7",
+    "previous_interaction_id": null,
+    "http_status": 200,
+    "stream_fault": "AssertionError",
+    "read_only_get": {
+      "path": "output/carbon-20261110-private-wire/last_ferry-hop1.get.json",
+      "sha256": "aedc5944df986eb54ddc84d8e0ce3ab17e161bb41c1ba96c1b7ce2668fc24d45",
+      "status": "failed",
+      "errors": [
+        {
+          "message": "There was a problem processing your request. You will only be charged for tokens successfully generated.",
+          "code": "DEADLINE_EXCEEDED"
+        }
+      ]
+    },
+    "interaction_id": "v1_ChdLbXJ6YXVhOUg2ZlJ6N0lQc3BxcDJRWRIXS21yemF1YTlINmZSejdJUHNwcXAyUVk",
+    "status": "failed",
+    "interim_usage": {
+      "total_tokens": 54476,
+      "total_input_tokens": 6705,
+      "input_tokens_by_modality": [
+        {
+          "modality": "text",
+          "tokens": 6705
+        }
+      ],
+      "total_cached_tokens": 0,
+      "total_output_tokens": 0,
+      "total_tool_use_tokens": 0,
+      "total_thought_tokens": 47771,
+      "initial_input_tokens": 6705
+    },
+    "checkpoint_visible_chars": 0,
+    "checkpoint_index": 5,
+    "elapsed_ms": 601758,
+    "wire_sha256": "d2ef94013b60ac35708719c5dd8c400f05e137f52c970c85867e00c52fbe5a5b"
+  },
+  {
+    "logical": "last_ferry",
+    "hop": 2,
+    "input_bound": 91536,
+    "output_bound": 65536,
+    "reserve_usd": "0.838432",
+    "accounted_usd": "0.415292",
+    "state": "settled",
+    "request_sha256": "17caa988fa3d4a21379bcc6b1b55d213b5262d3c39b90db2a2fbaa274ae2ec77",
+    "wire": "output/carbon-20261110-private-wire/last_ferry-hop2.wire",
+    "producer_sha256": "83635418f9af798e07ae8e4cca673bc9c57eb0bb18d469a1b0c8b61ed47e74c7",
+    "previous_interaction_id": "v1_ChdLbXJ6YXVhOUg2ZlJ6N0lQc3BxcDJRWRIXS21yemF1YTlINmZSejdJUHNwcXAyUVk",
+    "http_status": 200,
+    "model": "gemini-4-carbon",
+    "interaction_id": "v1_ChdLbXJ6YXVhOUg2ZlJ6N0lQc3BxcDJRWRIXaEd6emFxSHpLWUhRejdJUDlQSGo2QW8",
+    "usage": {
+      "total_tokens": 85286,
+      "total_input_tokens": 54696,
+      "input_tokens_by_modality": [
+        {
+          "modality": "text",
+          "tokens": 54696
+        }
+      ],
+      "total_cached_tokens": 0,
+      "total_output_tokens": 29880,
+      "output_tokens_by_modality": [
+        {
+          "modality": "text",
+          "tokens": 29880
+        }
+      ],
+      "total_tool_use_tokens": 0,
+      "total_thought_tokens": 710,
+      "initial_input_tokens": 6705
+    },
+    "status": "completed",
+    "visible_chars": 119301,
+    "elapsed_ms": 275835,
+    "wire_sha256": "1ae72c7cd7b1ab4cc31b0d9a7528466db2ff92aa7558663f9bff843ca9eeabd3"
+  }
+]

@@ -1,0 +1,2985 @@
+{
+  "paths": {
+    "docs/evals/evidence/story-237-carbon-20261110/CLOSED.json": {
+      "sha256": "5582dbbf27c2420cbfbd717fe25538cfa3654c7c7fdf94e8efcc326b73269885",
+      "bytes": 212
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/admit-last_ferry.json": {
+      "sha256": "7691dcb637c70ccb20214502eba5a714ccb4c03fd64e35ee5e90dcbfdbb03cb3",
+      "bytes": 39
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/admit-matinee_echo.json": {
+      "sha256": "7691dcb637c70ccb20214502eba5a714ccb4c03fd64e35ee5e90dcbfdbb03cb3",
+      "bytes": 39
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/admit-open_frequency.json": {
+      "sha256": "7691dcb637c70ccb20214502eba5a714ccb4c03fd64e35ee5e90dcbfdbb03cb3",
+      "bytes": 39
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind/open_frequency-A-review.md": {
+      "sha256": "60d00eeeffa92ebc810a89c49522a140cf6fe3443fe2f751284e374a8c266da4",
+      "bytes": 7135
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind/open_frequency-A.json": {
+      "sha256": "f4b9aa594b11e42bbe86c9050835c87d157e17a8945281f61040441820e0a69d",
+      "bytes": 206606
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/last_ferry-A-review.md": {
+      "sha256": "fcfbe67daaccc49b167bb9f93619ef1b74febe4b1f6a6359c3d6c0b68b5bbc6b",
+      "bytes": 6250
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/last_ferry-A-semantic-object.json": {
+      "sha256": "0142aaf615038e68d2f7d967cacaa28a1fd383e52e7cf253c0c3ce6246bfe48b",
+      "bytes": 148755
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/last_ferry-B-review.md": {
+      "sha256": "c60ff70ae3e62017a4ccf88377748d23ddd7ad44f1f88f5baf59fb5f73aff16a",
+      "bytes": 6614
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/last_ferry-B.json": {
+      "sha256": "22c2ed1142ce79b7393c7bff2cb11ffdccbf264bcdc781347a7f5e9a0fd18f99",
+      "bytes": 143177
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/last_ferry-checklist.md": {
+      "sha256": "7cf0d2ff8f29940077d01b7e0686c03cd9d0a096e65174890f184445dfb43f77",
+      "bytes": 4057
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/matinee_echo-A-review.md": {
+      "sha256": "d7737ad03930474dd812d11218caff1cec98c8cd6a6a6e4138ab93bb3555b206",
+      "bytes": 7276
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/matinee_echo-A.json": {
+      "sha256": "ad08cd6bdeff936bcbbdf6a9d4b7ebc4244b7d1e7ecace47c494bf9bdd4bb889",
+      "bytes": 143914
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/matinee_echo-B-review.md": {
+      "sha256": "0ed146f9522be35f5582487f8d1d7df186cae45413cd0ddeee008c8bee7c689a",
+      "bytes": 7328
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/matinee_echo-B-semantic-object.json": {
+      "sha256": "df1492f4f082e53e99f97cdab79d4c9f1fa406f817865d4c5c5dbc20562c1dd5",
+      "bytes": 139273
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/matinee_echo-checklist.md": {
+      "sha256": "7b0d7c4f739490526d7ef83a73edf975df5ee0b165322004194c6ed6c241eaad",
+      "bytes": 4979
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/open_frequency-A-review.md": {
+      "sha256": "f0e0875f19ecc82d9aeb54ca9d9f6e34559a9b1e501563b8ac7458bad7beafdb",
+      "bytes": 7893
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/open_frequency-A.json": {
+      "sha256": "c0faf8cdb8a8ad24b44bda6b17c94fb4cb96713df9ea80706c328eecf9f9b548",
+      "bytes": 206560
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/open_frequency-B-review.md": {
+      "sha256": "ba6e0269c0cbfb047ea2c763c78c0bee9838e8114e9d8854806a7638fb0ac188",
+      "bytes": 7998
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/blind-v2/open_frequency-B-semantic-object.json": {
+      "sha256": "3527ed103d6acc6a3a8e9cc204173fd6b7f3bf97aa4ca1a4275b03add56b749f",
+      "bytes": 136991
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-runs/last_ferry-mvp_ingest-e7c8/run_state.json": {
+      "sha256": "d76cd68dfa6f34142afbaeabbe7119e2fae9915bdd731f00f9ff493f6b094c4c",
+      "bytes": 5689
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-runs/last_ferry-world_building-404d/run_state.json": {
+      "sha256": "564d1628f981207de5dbcf127049f887fc6b47a1f838eccfc3fdb517a2eb310d",
+      "bytes": 18134
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-runs/matinee_echo-mvp_ingest-6964/run_state.json": {
+      "sha256": "c1389af7aef73bd8577588d451cb028cd7dc1f3ebf2b658c0c18a0aa6b21ae29",
+      "bytes": 5689
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-runs/matinee_echo-world_building-762a/run_state.json": {
+      "sha256": "a5a10af7236f712cd146298327066344f720513df8cefa9f0eaa39ee55795927",
+      "bytes": 17992
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-runs/open_frequency-mvp_ingest-5434/run_state.json": {
+      "sha256": "b2ce973f1f93a308c6a578c0b81247ba5a9dee0df1c33574ba2f691ef4874f9a",
+      "bytes": 5697
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-runs/open_frequency-world_building-023b/run_state.json": {
+      "sha256": "bdc95390e89f736d820801dc4262d8326b63e872505b219d9763677221228b9d",
+      "bytes": 22413
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/character_aria/manifest_v1.json": {
+      "sha256": "3541381b5faf9aba50909f6f543583a15bcc28920a629bcfb6b1cbdd7b76c7ab",
+      "bytes": 6018
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/character_aria/master_v1.json": {
+      "sha256": "375166388b62f92affbf82becd09409969d89efbad5c06f2b666f5734b8747ae",
+      "bytes": 4866
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/character_june/manifest_v1.json": {
+      "sha256": "17aebe266a4d5d4eeb6c9155ee7796d64f4b7865952d9aed1dc76b74836a7460",
+      "bytes": 6018
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/character_june/master_v1.json": {
+      "sha256": "81e1f3fe0f91e446f5b5ffc8a16d92f4fc9bdae0f152d1032bb58a02d11fa04b",
+      "bytes": 4751
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/character_kell/manifest_v1.json": {
+      "sha256": "725fb2653794b0b9716d06c4d7c81808415173407750fc05c04aac8edc3ec893",
+      "bytes": 6018
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/character_kell/master_v1.json": {
+      "sha256": "6de893207ea39f8b48c2fe4d70d5afac062390db3dab9706293e58a3423b95bf",
+      "bytes": 4847
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/character_maya/manifest_v1.json": {
+      "sha256": "be428f406ec6fba1660c58d08500492333041cf800434499d2d86aed82b433e9",
+      "bytes": 6018
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/character_maya/master_v1.json": {
+      "sha256": "bd9b65c69f186231eaef7c3c4fc64894b5bd594d0058eb6e56b7d3a518af056d",
+      "bytes": 3515
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/character_noah/manifest_v1.json": {
+      "sha256": "8fabc6978ce337bf1894f1f8be78c5bc1ad631a033bb82ea23e0fb818f0ebe1e",
+      "bytes": 6018
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/character_noah/master_v1.json": {
+      "sha256": "55bcc0973ab6ee00e5eb79a4873e437da3b1588a33c5779fe4a89ca875b171e6",
+      "bytes": 4364
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/location_community_radio_studio/manifest_v1.json": {
+      "sha256": "d9b57205d12d2bb6e0a9baa0b3044c3677291511f3e82e89ef38ca6f193fdac5",
+      "bytes": 2299
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/location_community_radio_studio/master_v1.json": {
+      "sha256": "1598555b40d54384ae8a18bb9a0a694456900b2e9557230d6452eca760629af1",
+      "bytes": 1845
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/location_high_school_gym_shelter/manifest_v1.json": {
+      "sha256": "e55a159c96ef7908ee8d971dd263bb25684ceaabb2a1a88a8fba3a95924a6279",
+      "bytes": 2304
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/location_high_school_gym_shelter/master_v1.json": {
+      "sha256": "f312c02440ec9bd3eac69a80fa910ea4e11b67e8e2809348c976c2b2c70b64c2",
+      "bytes": 1382
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/location_water_tower_catwalk/manifest_v1.json": {
+      "sha256": "a972c05f0d50594e71102442f10b3b785260949caa3424c0a4c23c3fa61bf426",
+      "bytes": 2284
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/location_water_tower_catwalk/master_v1.json": {
+      "sha256": "2f6b3ee35d3e7a6dc9314df9dc73997fda351e2064aadf52777a43491abab6eb",
+      "bytes": 1194
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_brass_cassette_cue/manifest_v1.json": {
+      "sha256": "3dea9b4e7ee4a2c70d6e987a76dcb1041e58d3d7698e58c8510199fb99345084",
+      "bytes": 9885
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_brass_cassette_cue/master_v1.json": {
+      "sha256": "a670dada15c4ea06129218b72d1426f11cc095caafc9359958ff4470ad9f82f0",
+      "bytes": 750
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_canvas_tool_bag/manifest_v1.json": {
+      "sha256": "919f0912b2e0d39f407f4bcae5e320d81e7befa15fc3c427cf78943b299476fb",
+      "bytes": 9870
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_canvas_tool_bag/master_v1.json": {
+      "sha256": "0ac166d15c6f0a752e2cea3cf0ac717e12d40010a4dbea0458e3492924365037",
+      "bytes": 744
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_flyer_missing_dog/manifest_v1.json": {
+      "sha256": "90ce5b20685172012420221712219cb6cacade5c9a40c2b896e82e32ab7f9677",
+      "bytes": 9884
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_flyer_missing_dog/master_v1.json": {
+      "sha256": "7f1f3214b3218a91377f36aa28c387657ecd8fb7f809bbc4ab316dcab12c11a5",
+      "bytes": 895
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_foil_wrapped_bread/manifest_v1.json": {
+      "sha256": "2e8767a1a2ec3a21bee4e62f340dd0b7e1a14d2200043eefb60d5447f6da102c",
+      "bytes": 9885
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_foil_wrapped_bread/master_v1.json": {
+      "sha256": "baa94f7bb8d5ab616cdc6742d9098528a8041d55fda3ee480a294aaaaf89e1f2",
+      "bytes": 682
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_hand_drawn_map/manifest_v1.json": {
+      "sha256": "578396d77c6990e9ec52c0597e4ab3e7901e257660aed7f2b4b9ed38e360c430",
+      "bytes": 9864
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_hand_drawn_map/master_v1.json": {
+      "sha256": "02ba824ba114cfe741edbba51188c892390e2c89b460441d29603c0776e0d80e",
+      "bytes": 666
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_handheld_receiver/manifest_v1.json": {
+      "sha256": "487b514a7e64280b0b62abf634ab50f1ce8771a40bd44845ea041a7626742c12",
+      "bytes": 9880
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_handheld_receiver/master_v1.json": {
+      "sha256": "f2b43dd5c229c6f34c01eb8c9131da96de919ba37e08921a0008c8c4deaffee8",
+      "bytes": 852
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_lantern/manifest_v1.json": {
+      "sha256": "548b64feae5ef4cebf4bb86a3e7e58da74111504039957cb9f0be46f88685552",
+      "bytes": 9830
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_lantern/master_v1.json": {
+      "sha256": "ba99d5a1d5834361db8996f9a94942e3629f09b67ea0a02f1ded2d49364639fe",
+      "bytes": 770
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_microphone/manifest_v1.json": {
+      "sha256": "df924bc887e3f3993170104dade6c0a275a653b1751daa06d0ae212bdc359b0c",
+      "bytes": 9845
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_microphone/master_v1.json": {
+      "sha256": "228254542d83febd8a95c7ad99814e0d2c0f245a086e959a536699cde01a00f9",
+      "bytes": 604
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_mixer/manifest_v1.json": {
+      "sha256": "4fa80fd23f3ff12fa7dafcf48510c3901a7a20cf8bb8437cc8b1f5acb24e754c",
+      "bytes": 9820
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_mixer/master_v1.json": {
+      "sha256": "0fb6abca4645c9c45958787cdf5726ed05e13f1b5ebf319d6cd9b9f9b8dfb913",
+      "bytes": 818
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_notebook/manifest_v1.json": {
+      "sha256": "1e57afdc749a25987d975691a2451b77cb4a53517639bcae6e8d59c70504113f",
+      "bytes": 9834
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_notebook/master_v1.json": {
+      "sha256": "edd77203a5f008344061786875ccfb6a0fba1e310c356cfdc3febb8828c2ed8c",
+      "bytes": 494
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_on_air_sign/manifest_v1.json": {
+      "sha256": "6afc2d7ee979b9251e14fbd5262ada36aa67945e23cfef28b1fba7c2f730ab41",
+      "bytes": 9850
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_on_air_sign/master_v1.json": {
+      "sha256": "61d863d8b03292bbfaf235d324e60e517e3941fba87be6f3c4b19db565200a33",
+      "bytes": 836
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_portable_antenna/manifest_v1.json": {
+      "sha256": "9c6b29b330b8f466cf410ebc97bbbe8e96b7e4d7aab561b8f0cc493db27936f1",
+      "bytes": 9875
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_portable_antenna/master_v1.json": {
+      "sha256": "5872c65bb8aae2bb767875615fdf5ceb28c83f90227e460c512af1a5d97b4b05",
+      "bytes": 1030
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_sign/manifest_v1.json": {
+      "sha256": "3468578b35e3ac82d3b98a33713edf1b04585690cd5019263cf95a6cca6317e8",
+      "bytes": 9815
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_sign/master_v1.json": {
+      "sha256": "43919cecc6c82c64cc4cb503f127429a29658ff534516316e948fc16df4d8744",
+      "bytes": 1147
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_tabletop_radio/manifest_v1.json": {
+      "sha256": "0aca71021cae5b03cb21f60c4580b811b679b4f91f68b535815949b55bc946b2",
+      "bytes": 9865
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_tabletop_radio/master_v1.json": {
+      "sha256": "a480fcdaf57f657f56173675eb00c5204639898d871b67321c005a81ae3d32cd",
+      "bytes": 779
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_tackle_box/manifest_v1.json": {
+      "sha256": "1a8cb09c7dc064a99145c440e53f6d27ac3ae5ab54f308755a98cfb76f82fc39",
+      "bytes": 9845
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_tackle_box/master_v1.json": {
+      "sha256": "e86f9e4ea4cce1a56f6e0a0901f173a2e6e708ad415781ef9aa932206b7a0827",
+      "bytes": 522
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_tape_reel/manifest_v1.json": {
+      "sha256": "830c501537626e593be118e82f8a90ea315dfcc13e64ee73163b39146b864634",
+      "bytes": 9839
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_tape_reel/master_v1.json": {
+      "sha256": "43d447fd28365090bcd4f2263d7682d8ec80b84f691a6a02b20e71f08e7fca2a",
+      "bytes": 545
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_whiteboard/manifest_v1.json": {
+      "sha256": "11bd20b107a6e1f592f5e663e613d7167ff455efac97d58b94f9834899912f99",
+      "bytes": 9845
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/bibles/prop_whiteboard/master_v1.json": {
+      "sha256": "9b6dfba08656469f96d6678185537e5efd308d7974c48bbf00deb713f6680065",
+      "bytes": 865
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/canonical_script/project/v1.json": {
+      "sha256": "9d21ddf08cc2f9dede2258b0259486a7dbd2795bb228644a67189d87d7a5691a",
+      "bytes": 5796
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/character_bible/aria/v1.json": {
+      "sha256": "8fb80340c48b8c8f50ad84c42733fd434be764fdb2e30c0d5ae40e9c1e56b6bb",
+      "bytes": 10367
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/character_bible/june/v1.json": {
+      "sha256": "82f1b9f2eca508a3696f9d582e7edafa201c4d30cb6479ca153acfb0d002876c",
+      "bytes": 10248
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/character_bible/kell/v1.json": {
+      "sha256": "6adf054694c95d1c7fe951bf8f5b9e69caf931c0b376a0bb2f3f0c774925d16a",
+      "bytes": 10360
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/character_bible/maya/v1.json": {
+      "sha256": "0ef255175f84e516981d11a23fc9a613446734c92ccf05973422367e84a9f274",
+      "bytes": 8954
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/character_bible/noah/v1.json": {
+      "sha256": "0f514f8b967a6ae05d284d41927dcd5d3325571f5f7bc1896ee069aedcbb12a9",
+      "bytes": 9855
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_index/project/v1.json": {
+      "sha256": "63d56e3590cb45f9747bbffb8e0972737abbe2a6f35166db5867545e0386192f",
+      "bytes": 13180
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_aria_scene_001/v1.json": {
+      "sha256": "87be4b35a6f849ed57572321d3cf7d0b759e3ae6d8d081258af72e6c7e9dc24f",
+      "bytes": 11117
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_aria_scene_002/v1.json": {
+      "sha256": "d88f6b0fc4373b4008f8109b294bd846f3ed0a997eb33d688254a17bc5f596ea",
+      "bytes": 11944
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_aria_scene_004/v1.json": {
+      "sha256": "9ead3c0bd10ef928911d93bc31c6d0dc1c06105c3d5db0ce73e3b033ad9375d5",
+      "bytes": 11492
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_june_scene_001/v1.json": {
+      "sha256": "ef8e478fa6b8c443148371f7893efe15b0e972f81cfb78f016f789a210239684",
+      "bytes": 11138
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_june_scene_002/v1.json": {
+      "sha256": "84836e4d635d919908e9678ac5f21e6897c55762a3c840c531047bcf14d46a14",
+      "bytes": 11134
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_june_scene_003/v1.json": {
+      "sha256": "07bb5a953284777fff282a5beb97026348913f91fd39889ba967c965ebf1813f",
+      "bytes": 11629
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_june_scene_004/v1.json": {
+      "sha256": "480cf38204b756c1aeb66f3c474064098cfd1e8b47978a5294835b1492ddc5d0",
+      "bytes": 11498
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_kell_scene_001/v1.json": {
+      "sha256": "d40ac2095a35d6e1da807eb568a3bb372867143b8aeb27147aa019d256565f71",
+      "bytes": 11161
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_kell_scene_003/v1.json": {
+      "sha256": "84a50431898e58a625e559117e1438b35d64c4c3700857acad989522d77bacb3",
+      "bytes": 11586
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_kell_scene_004/v1.json": {
+      "sha256": "4ca636101a8b6f82281ed1d7918feeec7a4195826cc9df5779b252130400ef29",
+      "bytes": 11497
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_maya_scene_003/v1.json": {
+      "sha256": "d57c91db4aa1ab0e3fd2ab0488a59c3517f48432a73577b0c3a17bf9dcee26da",
+      "bytes": 11266
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_maya_scene_004/v1.json": {
+      "sha256": "82371f414059c22a18a9e0e211e520e97020a4dfd9f49593f1e24833105c7004",
+      "bytes": 11595
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_noah_scene_001/v1.json": {
+      "sha256": "a15e1d3f9e61fe2ad172d2e624af138025707a2666ad8eb69520e85c9a07476b",
+      "bytes": 11111
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_noah_scene_002/v1.json": {
+      "sha256": "391bff38bcd4ea1608e12b10307422b50263266c5bc2619bc6e4136e558ee2cf",
+      "bytes": 11658
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_noah_scene_003/v1.json": {
+      "sha256": "622d38d56fe037b1017cb3a903898f95aac1b0c6c001354fd7fea37782a521a8",
+      "bytes": 11633
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/character_noah_scene_004/v1.json": {
+      "sha256": "1da261f659577ee0ebe37c111cd7b711065b5565168d279fc53be403a06ec2e7",
+      "bytes": 11497
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/location_community_radio_studio_scene_001/v1.json": {
+      "sha256": "c175429324cb03b92bed6fc5d4c3708b37f6fa9c7d1b5c4a0e227d196d2dc331",
+      "bytes": 11308
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/location_community_radio_studio_scene_004/v1.json": {
+      "sha256": "662df005a912cc45263e5476702349928409d2cfb7e387eb431c55275dceda29",
+      "bytes": 11639
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/location_high_school_gym_shelter_scene_003/v1.json": {
+      "sha256": "1d642c1201e60d62ef140f7bbaa0bb0faf0b125239df7e87a618f6181db3b820",
+      "bytes": 11384
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/continuity_state/location_water_tower_catwalk_scene_002/v1.json": {
+      "sha256": "d63ee281d8a271d1728406d8afd80005a168210403734f341091e3f85acc9660",
+      "bytes": 11321
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/entity_discovery_results/project/v1.json": {
+      "sha256": "46270747a111b24426f777ec553ea2f8ef78fff6841f2fda8492a7d8a084fded",
+      "bytes": 2429
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/entity_graph/project/v1.json": {
+      "sha256": "d4845f2108ef1fad3629e93ce9833bffddec56153cdde51cab2ba48589f363de",
+      "bytes": 76770
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/location_bible/community_radio_studio/v1.json": {
+      "sha256": "6cb9e6b1a29ce4355672fcebec123161d14d09acf68fbaf4f1bc35f5a0d09f41",
+      "bytes": 3412
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/location_bible/high_school_gym_shelter/v1.json": {
+      "sha256": "a3082f07ce9cb1e050bd530547295e97e8780329a761d4cee2bec3274f2e3691",
+      "bytes": 2936
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/location_bible/water_tower_catwalk/v1.json": {
+      "sha256": "f542a85e62974d018ace0592eb83d8250d33097e819e980a9ac4311c05abb991",
+      "bytes": 2734
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/project_config/project/v1.json": {
+      "sha256": "50dd551c93ea8afbd1729f7ec832aa846ee69838d6cc4bf9eabe53fe252558d9",
+      "bytes": 7834
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/project_config/project/v2.json": {
+      "sha256": "8738154684a8391c98527024c32a2b352a044382ecfa524334d9def2e2fc5803",
+      "bytes": 8024
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/brass_cassette_cue/v1.json": {
+      "sha256": "c75ba696284818caf91f0c845be651d103cff18bad202d69a16795b49ad778ce",
+      "bytes": 9894
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/canvas_tool_bag/v1.json": {
+      "sha256": "f9b25477e0f39780d69a121625dbc3ca6d41b5fd6381d4c474872f560dbb93ea",
+      "bytes": 9885
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/flyer_missing_dog/v1.json": {
+      "sha256": "3ed1ba5fdb97737611c4c6c5e395583e49d6bf85fd9fd72ce9ade75bad2e7e4b",
+      "bytes": 10038
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/foil_wrapped_bread/v1.json": {
+      "sha256": "3e9eb05c1c941d2553aeb58ded79481bee97238f76c2ae177de6c2a0649937b1",
+      "bytes": 9826
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/hand_drawn_map/v1.json": {
+      "sha256": "92dd09888887db0abf46d59ca54d3b0adb3daaa52329e9d9e0c0bc5329ef7aa0",
+      "bytes": 9801
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/handheld_receiver/v1.json": {
+      "sha256": "a39fc214437a8825fd72c2787c8c5dec9c4ed32058bc662058e34d5bfc255acd",
+      "bytes": 9999
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/lantern/v1.json": {
+      "sha256": "919882f68477a1ad97279db134184d6b481566dd5d96a3f4fd9246444461ecff",
+      "bytes": 9889
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/microphone/v1.json": {
+      "sha256": "76a8c5a9d786dee322dd68ca5a3d749bf11f537640cad5dcdf068039528e7959",
+      "bytes": 9728
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/mixer/v1.json": {
+      "sha256": "f5083ea124295ab9d82c465edf56ca55a635c27661e974a01ecd3ae88fea3532",
+      "bytes": 9927
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/notebook/v1.json": {
+      "sha256": "f9ed53a8cdecd203ae60902c2254890dfc4c812fa7c23e36172926ce6e0a9439",
+      "bytes": 9611
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/on_air_sign/v1.json": {
+      "sha256": "47f657aa8909c2341d06175d10a083ec5b4b7df0dcbe4fbd4c19894d8036d232",
+      "bytes": 9961
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/portable_antenna/v1.json": {
+      "sha256": "f12799c6bffd2614d31c4112c765474a40b9e0c141f3b3f9fcd577add100ae17",
+      "bytes": 10178
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/sign/v1.json": {
+      "sha256": "8daf42e235b1bbe351b1d54142ecdcc145fd2739d150dd3b104ccfacb2583156",
+      "bytes": 10262
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/tabletop_radio/v1.json": {
+      "sha256": "2bc48ad9ff9e0174b196f8884c2c0b16c8873fef55ed0cd267710227cfd981bd",
+      "bytes": 9915
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/tackle_box/v1.json": {
+      "sha256": "2064093dd1afde25f4750a66502db58cf8dbacbc042b306d54dead36e007ddbc",
+      "bytes": 9646
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/tape_reel/v1.json": {
+      "sha256": "da760b251769ba8b88d58d6c75f0bc7d9de0440f7375b604cdc642111969fa86",
+      "bytes": 9665
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/prop_bible/whiteboard/v1.json": {
+      "sha256": "0684fdbe2133ad21a7efb5bf7a69cd6cf6afbdb0192970ed594325f2c8cd6eca",
+      "bytes": 9991
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/raw_input/project/v1.json": {
+      "sha256": "c32e1bc51ac5b299afa6f3a92cfeec9f285c4dfab4f41574b5d131f2c89628ed",
+      "bytes": 5843
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/scene/scene_001/v1.json": {
+      "sha256": "5bf148edef7d20709ba3f5dc81606c40faa7ca99e6e2a08949ac94786da9e555",
+      "bytes": 4951
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/scene/scene_001/v2.json": {
+      "sha256": "9520a21e3d41effc1b631c9c71ffad083bc3d0b7cf07c0d881a2147937ed06e4",
+      "bytes": 6199
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/scene/scene_002/v1.json": {
+      "sha256": "5b36377d629aee8d9c51a44be1ad00ecf24dc4ba5713e3fe64073f904e03997b",
+      "bytes": 4882
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/scene/scene_002/v2.json": {
+      "sha256": "f38cdd9a181bb8be57362e9b17cb5a802bba81f29d93a5748766ba3002306b5e",
+      "bytes": 6295
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/scene/scene_003/v1.json": {
+      "sha256": "8f2fda97d673fafd10bfea76d6f8fc2e72aa84c57c71ce2c49f84950e65c30ba",
+      "bytes": 5264
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/scene/scene_003/v2.json": {
+      "sha256": "83ec6f1889ce44611a0e4581c89d4ec7022cebc11403a87b26ef76bf2527aa73",
+      "bytes": 6692
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/scene/scene_004/v1.json": {
+      "sha256": "39e5a25822ff460eb368c46b45e7bce6f1179b751f312b4783971fb63add19fb",
+      "bytes": 5175
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/scene/scene_004/v2.json": {
+      "sha256": "e280d14abe23ce06495823bd9b1702ba26ab503f8bdec50645f5106c00064441",
+      "bytes": 6675
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/scene_index/project/v1.json": {
+      "sha256": "25aeaaaf77acaf1e04ae41f1a1043c08af3a772b5323da6774f809c1c739984c",
+      "bytes": 5463
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/scene_index/project/v2.json": {
+      "sha256": "d9bdc64d9b803b86b65e829dd30d8f40d1b344d0827b5ae0b50b04078241efd8",
+      "bytes": 4846
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/artifacts/script_bible/project/v1.json": {
+      "sha256": "dd361b2dff480e257f87b728b3be6f3ef20c3d2aba71b177346e9835147a7938",
+      "bytes": 10833
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/graph/dependency_graph.json": {
+      "sha256": "6e07a1eb096d64a75fbb8458c36143b2db3a6ab5d2fc7aa0e574a706f5e9d79a",
+      "bytes": 159361
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/inputs/593076d3_open_frequency.fountain": {
+      "sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+      "bytes": 3447
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/project.json": {
+      "sha256": "5cef9a137941606064e60e3b02d13d760b8ac4c1f52fedc1ea77dcedde1fdd15",
+      "bytes": 297
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-workspace/stage_cache.json": {
+      "sha256": "e07538371c985112ec263f3e92d3bfb513f2a2a8660de0f3fc92bc1c85643d6e",
+      "bytes": 20338
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/control-wrapper-freeze.json": {
+      "sha256": "886e3f1c73406a300c653b854d0342ab99bf9ab2a1cc4db03da358ea81b9e151",
+      "bytes": 127
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/diagnostic-only-lf-restored-consumer.json": {
+      "sha256": "296083ff458a47ea66d365cd1e3a7b8320d61719dfd6b4c8b90268aa9bb263fc",
+      "bytes": 429
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/freeze.json": {
+      "sha256": "8543c16fbe42062a9d8666dd80bcc4901b3eb5cb061fd9bb19f528599dc3a108",
+      "bytes": 4867
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/independent-source-checklist.md": {
+      "sha256": "aa406a24826cf9c4c930f30481dc1a623b71808e2df73d9fee5cb58bed7b46a5",
+      "bytes": 3702
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-consumer.json": {
+      "sha256": "ec0708bd28b675bfb9ca9da73bf1317d06c8b02709668c6929759ee3bb4ed16f",
+      "bytes": 200012
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-manifest.json": {
+      "sha256": "50f70b667b74c7cfee2d8f5de77900b158f591e69f32d9d9f6a61511d271374f",
+      "bytes": 1103
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-result.json": {
+      "sha256": "ca3cf72abecada8fd1d74e518b6d5ea70120a5247c3c38295ba6f632ab422543",
+      "bytes": 49975
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/character_courier/manifest_v1.json": {
+      "sha256": "2da385371bab42fa7815eb0e28ab4def021d161b479327e3b31248d0079a6727",
+      "bytes": 5395
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/character_courier/master_v1.json": {
+      "sha256": "085412596fa1fffa6a3cd360b440324558afc0d4ad8356cfb3962b7973c9a4ea",
+      "bytes": 1965
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/character_lena/manifest_v1.json": {
+      "sha256": "6001c7d4dde0e14fe39cdf41cc1221b14cab4ff87d4579a7cec369578b091bd6",
+      "bytes": 5400
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/character_lena/master_v1.json": {
+      "sha256": "59307794af49d791ba1a0d426ec407b071c329ab793a79c095617b674d128323",
+      "bytes": 6134
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/character_old_man/manifest_v1.json": {
+      "sha256": "e65d612bc0f4bc72edeefb160b92f54aaa8bf46b29154e93337283a42b42dd9c",
+      "bytes": 5415
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/character_old_man/master_v1.json": {
+      "sha256": "3011bece0316d9e97424540cd9c7fbe4092879b0b928588e7e6bc98dfe93e0d4",
+      "bytes": 2025
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/character_ruth/manifest_v1.json": {
+      "sha256": "24254cd9a08868907f955c2404015f7688c80049e706001381850caba066fb0f",
+      "bytes": 5400
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/character_ruth/master_v1.json": {
+      "sha256": "5b2d126f5c6c37935b1ae9e99ee9603b6255a34804b662f3cf460d83ae865fa2",
+      "bytes": 3056
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/character_tom/manifest_v1.json": {
+      "sha256": "109cfc6490431d7180feb9d37ae40b8bac3fd4c89ef021fea1ec4038dfa55a11",
+      "bytes": 5395
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/character_tom/master_v1.json": {
+      "sha256": "5cdfb65a379f150fe2b6257f426c921433fa1ce658ad7ee9f83a4c84ebb057f9",
+      "bytes": 4055
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/location_ferry_pier/manifest_v1.json": {
+      "sha256": "65e8ebc20080a2a3953b0263e6ab10bc3298c0ccd0cbdd61c775fb0e0c8eb609",
+      "bytes": 2226
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/location_ferry_pier/master_v1.json": {
+      "sha256": "ff6b9664079a373455e2817a7e8406cdae100f8557be42f0653cd4b4bc11fc88",
+      "bytes": 1179
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/location_ferry_ticket_office/manifest_v1.json": {
+      "sha256": "f421ea5f93eabeda0f6722900c72c3fb7312631ad24b01488e9aa4846964f79f",
+      "bytes": 2271
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/location_ferry_ticket_office/master_v1.json": {
+      "sha256": "2ee1cb751c69035dde7f1510aea1c13130321f160afbb2dcabf00a18f7179bde",
+      "bytes": 1326
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/location_rescue_boathouse/manifest_v1.json": {
+      "sha256": "c740e9f0065f5de06ccbbe5ba5d6c290ec729cea9ce62cd80edd3a4e77ac3689",
+      "bytes": 2256
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/location_rescue_boathouse/master_v1.json": {
+      "sha256": "31dedd487f335b8e5e9597905486c27167056408e024af221b03f44f5877917c",
+      "bytes": 943
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_blue_insulated_medicine_case/manifest_v1.json": {
+      "sha256": "5b84bd36417959aeabd255cbc3034abd109fbd701cfde3fcdaeada33b643c60e",
+      "bytes": 6780
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_blue_insulated_medicine_case/master_v1.json": {
+      "sha256": "e18c44f18c5e0abc28636ca597739c10687fb66aac79aabb92d0c5e8f09098f6",
+      "bytes": 696
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_brass_locker_key/manifest_v1.json": {
+      "sha256": "4af1ba978c13650a4b1bfcc93bfddfe87d14630b6c079fc51cd14d6b507365e9",
+      "bytes": 6720
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_brass_locker_key/master_v1.json": {
+      "sha256": "7cd187b3fe109649f29c8b2316596e5b4bfb48c0fbdfc5d120eb7e87edd020d6",
+      "bytes": 643
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_green_locker/manifest_v1.json": {
+      "sha256": "f991b719fc9b501dfb7b3f28c9cf32d7acc79808a6343452676fef35fc8929ea",
+      "bytes": 6700
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_green_locker/master_v1.json": {
+      "sha256": "5b161b79208b7bd77c029af614f2155004c63349e57ca8a8be6b189d6d53f3f6",
+      "bytes": 814
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_metal_cash_box/manifest_v1.json": {
+      "sha256": "d6ee31ce1deb05bc694a8e131b8a42c18a09968bcdc31231ff6813db56cd79b9",
+      "bytes": 6710
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_metal_cash_box/master_v1.json": {
+      "sha256": "578509bbc48d40f0956b75e73629604e4257c8ce698f9bd2100c0591e37cdb3b",
+      "bytes": 756
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_orange_rain_cape/manifest_v1.json": {
+      "sha256": "7a982ed992dfadffb2b7ee993282787987955f61daa536c594077c77c095139f",
+      "bytes": 6720
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_orange_rain_cape/master_v1.json": {
+      "sha256": "5b44ca53368052553303de57d6ea7215db629ef8467c6c48d673b13c004677a2",
+      "bytes": 1020
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_paper_envelope_17/manifest_v1.json": {
+      "sha256": "a2ec3b9eae3763c1a1a2f840f82be8b0ee301841022dcc41c573ae58eea2eba3",
+      "bytes": 6725
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_paper_envelope_17/master_v1.json": {
+      "sha256": "db422e83c74914bb38ff0e8412b107454440c651d6178e8f9387457f58f8b518",
+      "bytes": 989
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_photograph/manifest_v1.json": {
+      "sha256": "648a211bf961a051f80be4fb6d96dcf961b6c19f7793b1d9805ff6cb457bf326",
+      "bytes": 6690
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_photograph/master_v1.json": {
+      "sha256": "1b3fc4dc0a409bb3e35689ab32562e361cef620960c6e298d23d8a66fcadff98",
+      "bytes": 786
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_receipt/manifest_v1.json": {
+      "sha256": "2a54bc4cd4e7d082f26e14f3fa40685f6c9a3fe6e626ddbd797f74e4d4461b22",
+      "bytes": 6675
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_receipt/master_v1.json": {
+      "sha256": "0e6f3f95437366a32ddc1abcdf62bbc97f8e7fc96edf587ba018fc1e28a0cbdf",
+      "bytes": 612
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_white_bandage/manifest_v1.json": {
+      "sha256": "518f68ee9140983f566cca148ea5f5e9b29245b07dabd299ec58849567142658",
+      "bytes": 6705
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/bibles/prop_white_bandage/master_v1.json": {
+      "sha256": "c33697baf16a0068bfd1fe7f1cb5735c54d05a548480617e60ebcdc223fc1a69",
+      "bytes": 803
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/canonical_script/project/v1.json": {
+      "sha256": "c79e34f8b61a67e7b3527eacdc0e0985e3c7673e250b388a71cf28ded0fc2d8a",
+      "bytes": 5420
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/character_bible/courier/v1.json": {
+      "sha256": "cab5c910cd24f8ad1aa2d14218e6f8e5257d5a8a42a7fe5ffaf162d7a7cab50a",
+      "bytes": 6722
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/character_bible/lena/v1.json": {
+      "sha256": "a93ff6b6b827547638849240976903eced9c87967cbc6d309c6e812918a3a5b2",
+      "bytes": 11097
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/character_bible/old_man/v1.json": {
+      "sha256": "a469d852c8183d9d1ff7802b30cffc30ffa6a11124df10bc79d64a09168b25e5",
+      "bytes": 6793
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/character_bible/ruth/v1.json": {
+      "sha256": "e3a000280e8c3ca3b9714920bb5fbab4712f4e78ab3866b23667f72913a880cb",
+      "bytes": 7865
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/character_bible/tom/v1.json": {
+      "sha256": "a8e77289f6edcc437a58e80e5ae7ba7b96a86199ff675955c5c2c4f7da97efdf",
+      "bytes": 8917
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_index/project/v1.json": {
+      "sha256": "2291d815e4edb50a283690cc756151d34893ace948881790827cc11faead6839",
+      "bytes": 9908
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/character_courier_scene_001/v1.json": {
+      "sha256": "cfbd5959e97cfe85e0adfc641feafc07d7e469aaa949e2b8a2c735acc8594cef",
+      "bytes": 8452
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/character_lena_scene_001/v1.json": {
+      "sha256": "be2d62735c3c94a47b0b42e34f807b3a08bf0be5189c03a217d1637c16faea00",
+      "bytes": 8842
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/character_lena_scene_002/v1.json": {
+      "sha256": "d47865fa8a26c924a069e367e31dc2f1618daed36669610b76fffa7555d6e05a",
+      "bytes": 8892
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/character_lena_scene_003/v1.json": {
+      "sha256": "85e47baf27c76686e5a375bca7d13655c6270e5978b9688de29b7997faaf04e0",
+      "bytes": 9116
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/character_lena_scene_004/v1.json": {
+      "sha256": "48f2a6f9f8d3130f8093da74e9c8998f3aa7aabe23e066a74401200c3e1e0bf2",
+      "bytes": 8781
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/character_old_man_scene_002/v1.json": {
+      "sha256": "4e732c38b768b56f7f50bf46301490ab8ab9789254bcea8d84bffd9f7708a0d0",
+      "bytes": 8160
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/character_ruth_scene_003/v1.json": {
+      "sha256": "621c7a9930ca9db898cb56a6d9798699ed6b7df7371738ce5e198555d5913a8c",
+      "bytes": 8043
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/character_ruth_scene_004/v1.json": {
+      "sha256": "50d11e1e8de5ef8ec80fb73ec29aa177fce4c0a3d9b9b628f144cc666e1518ce",
+      "bytes": 8587
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/character_tom_scene_001/v1.json": {
+      "sha256": "27a65efd38c3d89da008f18d33eca5041fd250f57b6ba86b6fa191d8d5236913",
+      "bytes": 8298
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/character_tom_scene_003/v1.json": {
+      "sha256": "7efb6ea1a126cddbb9866b975f2045262a5de605f8e3858df041660cfddb29e6",
+      "bytes": 8534
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/character_tom_scene_004/v1.json": {
+      "sha256": "0771627719101819640f9336c6e9f9e3f37c271250eee1d1f829e9ffc562f483",
+      "bytes": 8805
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/location_ferry_pier_scene_002/v1.json": {
+      "sha256": "daaa81b61444d68cc7e65b1fc5281d42dfe011a6813ab82c47b9f259c6df556e",
+      "bytes": 8268
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/location_ferry_pier_scene_004/v1.json": {
+      "sha256": "893757872c6710d5107c2b3af58f12f4b95c2629ec6e9e3598f319ab37f76af6",
+      "bytes": 9239
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/location_ferry_ticket_office_scene_001/v1.json": {
+      "sha256": "57b5eb10506491cfe9152b9230066ac2137c97b2999b3119f0d6412f17065b43",
+      "bytes": 8321
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/continuity_state/location_rescue_boathouse_scene_003/v1.json": {
+      "sha256": "ef71452d7cf377a4792fa83fd1935c84650945559cce0557230609ce79daa7aa",
+      "bytes": 8264
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/entity_discovery_results/project/v1.json": {
+      "sha256": "b92289688df889523360d8846bb4e286b06684dc363702a0180f822aed07d6ca",
+      "bytes": 2251
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/entity_graph/project/v1.json": {
+      "sha256": "d2eaaf325516556c49eff02621a409cbfd4d300cf268845508b867f7f72dec4b",
+      "bytes": 40488
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/location_bible/ferry_pier/v1.json": {
+      "sha256": "86db54ec3f16097ff7aeb93b8a8a6374db56255d94de2ba7a56ed7e96ec2ce76",
+      "bytes": 2694
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/location_bible/ferry_ticket_office/v1.json": {
+      "sha256": "9c196db90cfa17e0aa423f3d143a87219563668eaeb36839458cd9b75f4205a1",
+      "bytes": 2868
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/location_bible/rescue_boathouse/v1.json": {
+      "sha256": "8da2cc800ff6f26eb6734161912eb114699446cf6d28d9db153bd0cc4c917977",
+      "bytes": 2468
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/project_config/project/v1.json": {
+      "sha256": "b5fe352bfcde5e8a358902f76ce6b50d3150fc485881cdc92c1ad6cf372f477e",
+      "bytes": 7957
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/project_config/project/v2.json": {
+      "sha256": "e640735406af5870bda7916d8b8057277e7451dec92eaf58953cc88831c203e9",
+      "bytes": 8004
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/prop_bible/blue_insulated_medicine_case/v1.json": {
+      "sha256": "1368c856cf660eaa4360e84bbba31259d5e97a1147ab7561a255309676b84144",
+      "bytes": 6719
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/prop_bible/brass_locker_key/v1.json": {
+      "sha256": "8b0ebdb413ab90fc0e709e3615427f093eaa5f3d0593db593c05ba82419f7138",
+      "bytes": 6630
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/prop_bible/green_locker/v1.json": {
+      "sha256": "3c31762278f886f9ada9ddb72d4ade6ebbb1350b6618c8b11b9891aaf2b53e70",
+      "bytes": 6787
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/prop_bible/metal_cash_box/v1.json": {
+      "sha256": "e323a9ec58b96c4d152822b42794accdb7e6d44e9b0964905289cb46d656549d",
+      "bytes": 6743
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/prop_bible/orange_rain_cape/v1.json": {
+      "sha256": "7f1e60d7d1b1f0cf4ef4f8818c45d0f60d77bcfe67e37ede9ff41b528ac78445",
+      "bytes": 7005
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/prop_bible/paper_envelope_17/v1.json": {
+      "sha256": "924568fdce33177a20f335eca1cbc9803872e6f383e7da8ae06ea222d58308b4",
+      "bytes": 6979
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/prop_bible/photograph/v1.json": {
+      "sha256": "be25906fcd68357cbd8bc35c10c09b1a91082aa7c62f3c770db5834c1a8950dd",
+      "bytes": 6753
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/prop_bible/receipt/v1.json": {
+      "sha256": "42e329b25b8b001de5a8d08de9cdab643bafd457202713a7bc615a8c6a3967e4",
+      "bytes": 6568
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/prop_bible/white_bandage/v1.json": {
+      "sha256": "fad0e312a7a07394be2090788cf998a3f5373dc058be153af1020658ff334b94",
+      "bytes": 6783
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/raw_input/project/v1.json": {
+      "sha256": "2a253641d2c0972175681303187cadba96d44f3a82684a4686bf2ee20cb9bf65",
+      "bytes": 5423
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/scene/scene_001/v1.json": {
+      "sha256": "b42e79593ef605ff753a943a367e876b37f8f61ffc6382698d728828ce18986d",
+      "bytes": 4587
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/scene/scene_001/v2.json": {
+      "sha256": "fdfb40cdeb9d384e794c41fe32d17a780938348cd4b3f8ac3883dea9d0cfbcca",
+      "bytes": 5756
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/scene/scene_002/v1.json": {
+      "sha256": "0c07dc99dd8e67989b75fa34b467dce278c5adf17d09e588b3fe4cd17fa16396",
+      "bytes": 4406
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/scene/scene_002/v2.json": {
+      "sha256": "b006463863477082cbef6b6439752582bd70868937fc145c9bc75c509cf4fafe",
+      "bytes": 5565
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/scene/scene_003/v1.json": {
+      "sha256": "5374112a12b56d81d6d5c7955c417832c00fce21609bafa0ca28cea8257196ab",
+      "bytes": 4296
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/scene/scene_003/v2.json": {
+      "sha256": "4519ce349eecbcb770d78b668abea6cece178f9ae891c56452009af4df4aa58f",
+      "bytes": 5608
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/scene/scene_004/v1.json": {
+      "sha256": "fa2b655afbbf2a3ed3a18638d70a7812a1acca4aba01678c99098501365c20c7",
+      "bytes": 3868
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/scene/scene_004/v2.json": {
+      "sha256": "15e183e55aa3eabc385cc2afb79bfe8aab78502d71acfaa5a1a17e8900d227b4",
+      "bytes": 5323
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/scene_index/project/v1.json": {
+      "sha256": "9a285dd60300c73646363c2e778bb73f4727fb3dc1f3f5f93f4469564a391fb5",
+      "bytes": 4957
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/scene_index/project/v2.json": {
+      "sha256": "c04a3894498b5f5461438f5b5b960d38537cf6f0dfda10ecf671ed07e0e81d62",
+      "bytes": 4573
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/artifacts/script_bible/project/v1.json": {
+      "sha256": "8403d8a9d269971bd134d025caa898beac146f09593a065e1624ed06aecce796",
+      "bytes": 9964
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/graph/dependency_graph.json": {
+      "sha256": "32c7af3e876b95b6cd09b3caa1158d6988a1a1c3a468eecb1febf531c9fb89ca",
+      "bytes": 94920
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/inputs/0974bad9_last_ferry.fountain": {
+      "sha256": "e28a204cd4d756c91bfbd28a521473a895fd8d14984efd400658e6a65b9a7618",
+      "bytes": 3142
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/project.json": {
+      "sha256": "b97ac58f134ee345b6e7cf0754bb7d48ec8ea63f57a9519360eb2e3e0d0a68fa",
+      "bytes": 289
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control-workspace/stage_cache.json": {
+      "sha256": "d10be9bbb924ea37dae074695857ce2f45f3b4548c835887e81f246b89c87ba1",
+      "bytes": 16073
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-control.log": {
+      "sha256": "822bd7370181a1d6b70e0a694589f39c00d805c438f68295b67ea1ef01007d61",
+      "bytes": 3552
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-host-diagnostic.json": {
+      "sha256": "417d34651720d5bea031632680c9e6c2f847dce7b517df35e7ac46b27927cf34",
+      "bytes": 679
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-ledger.json": {
+      "sha256": "fc4f8bb8b79e899cec8e6ccbdb7eecf95a08dba11d74ed6b6b49b9694002f052",
+      "bytes": 3031
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-request.json": {
+      "sha256": "0e4441f3b9c3476a8c17a8fb1f52a723787999ec2045453ccf6631683981a91d",
+      "bytes": 34231
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-started.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-subject.log": {
+      "sha256": "3623fd343ba0eaa540e56b59a1f45606058d56d4bdb550d7dc2947695c34c828",
+      "bytes": 1968
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-visible.txt": {
+      "sha256": "3a40ff75271122307610e1680980c2bbef9f98f67d1873a83656fe5adc8616cf",
+      "bytes": 119317
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-consumer.json": {
+      "sha256": "63c71b1b566eefaecba149e63b1785fc3c2835b09448bae9f15a27bd235ed865",
+      "bytes": 196348
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-manifest.json": {
+      "sha256": "5d12b57044573474cdee2998b2bfcd2a42abc5a30edd539dd76f38f1f0318d05",
+      "bytes": 1109
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-result.json": {
+      "sha256": "f44a6e745efc06ebf867ec8f192c4dc3e7d98d8346395ff10fc90ebdad894b1f",
+      "bytes": 51228
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/character_child/manifest_v1.json": {
+      "sha256": "cac6bb4e0e986a5334ae4dbbc43f49a2c600ae2e0e2b824b0f03a1b075c17a64",
+      "bytes": 6416
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/character_child/master_v1.json": {
+      "sha256": "74860706d3dc16750cbc63b161d481e446a057c3629baafcdbbc9219c75e394d",
+      "bytes": 1172
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/character_elderly_visitor/manifest_v1.json": {
+      "sha256": "934e7a7b5c92e9dfd1750dc6179e048e305a342bf9fa1f048e031426c5867e29",
+      "bytes": 6465
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/character_elderly_visitor/master_v1.json": {
+      "sha256": "b9baf0d2fdbf3eeba6fd8cc73bfb62b5a704083cbb9089a9dab9bc51ca223ef2",
+      "bytes": 2029
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/character_iva/manifest_v1.json": {
+      "sha256": "ce256af74e7b73fde5f81e0bebf3e13b8d9daac1c65827cd44f187559898ab99",
+      "bytes": 6426
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/character_iva/master_v1.json": {
+      "sha256": "7e1b0117ceaadad8549215bda32d2f29302ff56ef894c5f4880bb750730c3843",
+      "bytes": 4739
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/character_mara/manifest_v1.json": {
+      "sha256": "c650ceb934820e7ab6473ecdf1dae7f0d4425c7b06989149c83f36c327e28978",
+      "bytes": 6411
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/character_mara/master_v1.json": {
+      "sha256": "0eeee9093ed6657e1df468eabe5d31ecdd4897203924c3cfe4d19a638017b92b",
+      "bytes": 1450
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/character_sol/manifest_v1.json": {
+      "sha256": "15e27591a9d4150ef0dabfe5f592f17b7522c36d6713fb59bb0a3e4d6ecaff6b",
+      "bytes": 6426
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/character_sol/master_v1.json": {
+      "sha256": "79d3696f95b273aca07446e3c55aec63bc2633e5b07234f229cc9524c641621a",
+      "bytes": 3906
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/location_museum_conservation_room/manifest_v1.json": {
+      "sha256": "a36379d23b884f8707d6bbd4e09ffbda4e94cf55aeb612b8fa6e676a9b3537bb",
+      "bytes": 2295
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/location_museum_conservation_room/master_v1.json": {
+      "sha256": "ee7bebe53b181a89dd641f3b87873d57ece8d3f89e59f7c03360ef1e29a05831",
+      "bytes": 1150
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/location_museum_theatre/manifest_v1.json": {
+      "sha256": "1bfa294ba1a947a78cc824ce016c380f2d24ec35b7abb40f03195d02937931bf",
+      "bytes": 2245
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/location_museum_theatre/master_v1.json": {
+      "sha256": "900f976bd1246d65b66ef9f5fedcb74f7470b8dd7d330241dc5b7d4b0436e011",
+      "bytes": 1332
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_canvas_satchel/manifest_v1.json": {
+      "sha256": "b6d34b9e44e373cc9a56aba69b0c5272c8f3b6f56888aeeed77cc4d332f13156",
+      "bytes": 8438
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_canvas_satchel/master_v1.json": {
+      "sha256": "6051b355182183ce4315b76b2cddcb40983aae0b9c015ffd09b54f33814feb52",
+      "bytes": 634
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_dark_scarf/manifest_v1.json": {
+      "sha256": "b93a6692cd89f8671d2b23f882fc8d5a77bd8bef723e4065a5b21ea8ddaa16df",
+      "bytes": 8419
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_dark_scarf/master_v1.json": {
+      "sha256": "70b96a20c55c552d29216c7c0a62c177c4144c9527aecb110f3e18bf330a9124",
+      "bytes": 879
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_felt_pad/manifest_v1.json": {
+      "sha256": "794e11326da896f10aad61cae98b2bb2db381fbc965edbf78b64b53f2ed478ee",
+      "bytes": 8409
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_felt_pad/master_v1.json": {
+      "sha256": "89d6431287c36e7e322e422211a6289dc6b1b6bc8ac0c424850590dd0fac438d",
+      "bytes": 644
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_paper_tape/manifest_v1.json": {
+      "sha256": "a12d57099d0d07844b04b942c699113194f8e38d333ba9e1573b6ad51c69cc70",
+      "bytes": 8419
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_paper_tape/master_v1.json": {
+      "sha256": "a1d8da1baf31f22ebe21ee43280cc65be203bb04f69a9d3b39eb1de51aaaeaa5",
+      "bytes": 762
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_porcelain_bird/manifest_v1.json": {
+      "sha256": "02eac6e700ba43f15c3f380a9809ffaba3b5c03a2fb3825c35d213eb45a79af5",
+      "bytes": 8439
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_porcelain_bird/master_v1.json": {
+      "sha256": "189287256b706bec2ea22b510ef3b84937857a17e10a37badde1acfd0a1f8902",
+      "bytes": 960
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_red_thread/manifest_v1.json": {
+      "sha256": "107f0ee8f5ce8c24043fcd57d065faeea925e635b1f92151efbcc08b883cf353",
+      "bytes": 8418
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_red_thread/master_v1.json": {
+      "sha256": "b42be8d96031d557722e524a5b47e5287df8f69faa113665609cc531f17c09e8",
+      "bytes": 546
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_shallow_tin/manifest_v1.json": {
+      "sha256": "6a61925eef877ab55824e5cbe67614bdac1b8a1bd1f4d00a2c1c1113dfad34e8",
+      "bytes": 8424
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_shallow_tin/master_v1.json": {
+      "sha256": "635ccb9f1e6e303b3a39787d37342a37409116e341087469f8ce68f410099c04",
+      "bytes": 892
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_silver_bird_brooch/manifest_v1.json": {
+      "sha256": "e27bfe26758bf70e8e5e172f2d32cce2f90ca43fd0c92847316b169dde164f5a",
+      "bytes": 8459
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_silver_bird_brooch/master_v1.json": {
+      "sha256": "185361e515254126c4fc73bd8556d9fc821d2e966f609729688762ebc7c1d3f0",
+      "bytes": 851
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_spectacles/manifest_v1.json": {
+      "sha256": "ab596d69cfbeeff098393a6cdc1f3f3a6148df61875e3a77e0ad150cede4d24b",
+      "bytes": 8419
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_spectacles/master_v1.json": {
+      "sha256": "fa37e8d17b3b040a810e0d8886583af7d0086737c6a2ba47ba31c81e8bc8683f",
+      "bytes": 706
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_tape_deck/manifest_v1.json": {
+      "sha256": "830c8846c40b88b39a29efed7ce0efd1daf02490f219dd339bf2c527e3986a5c",
+      "bytes": 8414
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_tape_deck/master_v1.json": {
+      "sha256": "503013428ad9dc82961fefb18faca90e4fbf75b6733d8f95d554a272203e1e6f",
+      "bytes": 795
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_theatre_key/manifest_v1.json": {
+      "sha256": "0eb3c8307bf6000405a1502761eabddca8f9d8893a3985cf92acb46a227956cb",
+      "bytes": 8424
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/bibles/prop_theatre_key/master_v1.json": {
+      "sha256": "0aafa0beba5102673e58dea8c8c63902dc32ee48d9548aeb4774811c39c33477",
+      "bytes": 569
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/canonical_script/project/v1.json": {
+      "sha256": "a747bad6adebc81a944ee306e88862bc620f6f98383d61dba5464185f274007b",
+      "bytes": 5403
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/character_bible/child/v1.json": {
+      "sha256": "75d2a07258069884a4c9866108b81a09003f15a989ae27c2697849573ace8e90",
+      "bytes": 6914
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/character_bible/elderly_visitor/v1.json": {
+      "sha256": "57db67c32475d90f183c98861361c13c7a31ef6dc84d5be42bd62ee9040b579f",
+      "bytes": 7840
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/character_bible/iva/v1.json": {
+      "sha256": "c6ea3bf2ac2092b0decb6a870d3ec82a7e59b8be14367bdcf39e1f4d2ffc405a",
+      "bytes": 10634
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/character_bible/mara/v1.json": {
+      "sha256": "0e793d9c636941d17fa2171b91d08f195aa233e2440fe0a5bf6d90a0f597406e",
+      "bytes": 7199
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/character_bible/sol/v1.json": {
+      "sha256": "ac8507ea1b2a4cd1a3fb8b2b6b06e428e67daab2bffda0e6e7815e4e6f5ac7e4",
+      "bytes": 9757
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_index/project/v1.json": {
+      "sha256": "dc47083f7470e12b4e29ba39dd259411bd58f4a155138d4e0881a7a32ff00115",
+      "bytes": 9912
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/character_child_scene_003/v1.json": {
+      "sha256": "0c2e7601dc15d27a057d87753f291bba699e69069b0e34772e616b228a264957",
+      "bytes": 8414
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/character_elderly_visitor_scene_002/v1.json": {
+      "sha256": "a81ff3c6d62bda5ae8d4c0ffdf4407e2c3ef684f72e688d8f661a41a16c9c695",
+      "bytes": 8486
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/character_iva_scene_001/v1.json": {
+      "sha256": "a5e330e805ee57ddee984f34c7598fde327fd0919d3a18534bbca4f8b14a8852",
+      "bytes": 8804
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/character_iva_scene_002/v1.json": {
+      "sha256": "f6c85fa1093ec05127e55b56d8b8c6b1a615721994b8deb78dc42732bddf4dd7",
+      "bytes": 8917
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/character_iva_scene_003/v1.json": {
+      "sha256": "fcf5a079204c81f318ca49772bfc3d487fde74a3f65e7eb073976cd40dabf77b",
+      "bytes": 8953
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/character_iva_scene_004/v1.json": {
+      "sha256": "f16773024e6ee0bc3c2fb9a2acbee64bb09dab2e0feb471affd1570692714a9a",
+      "bytes": 8890
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/character_mara_scene_002/v1.json": {
+      "sha256": "5e57acfd0996dbac12041df951cafcdfa2a1aa6e0a1deb0a96761f6c83305f5f",
+      "bytes": 8190
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/character_sol_scene_001/v1.json": {
+      "sha256": "a817a0b125cbc48a96a5e8f145c539ebd8ab1c71b5824fbd7162bfd8790466bb",
+      "bytes": 9146
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/character_sol_scene_003/v1.json": {
+      "sha256": "7359c8f0accb738fb67a84c607a3ba86d7cdf165ec3c0782afbd3e1bc94648fb",
+      "bytes": 9322
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/character_sol_scene_004/v1.json": {
+      "sha256": "8b3a7f5a647dbe0fdac8b73e1893a89760d15b1219e3c319f839ebcd7c5d0799",
+      "bytes": 8981
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/location_museum_conservation_room_scene_001/v1.json": {
+      "sha256": "d2b1f564841993ac3260320b96a105785b8115397f0eaebd5e22522436da9bb5",
+      "bytes": 8538
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/location_museum_theatre_scene_002/v1.json": {
+      "sha256": "9632a57fc5a37037136a9b77d7cf5555967e281d8488fd177e3ba731e80846d2",
+      "bytes": 8511
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/continuity_state/location_museum_theatre_scene_004/v1.json": {
+      "sha256": "8d367dca659927458b290eefcc81ef531fa3c2693129f77ba89e15dc7ad6c8af",
+      "bytes": 9454
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/entity_discovery_results/project/v1.json": {
+      "sha256": "2661337743ca49e787ab0f3afef1b68890924f0ed5d7fc017ee7d768e6ce995e",
+      "bytes": 2242
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/entity_graph/project/v1.json": {
+      "sha256": "8c73c04d3fd4f387c8ea8f80d1d48dffde622801fe8e30c19a5f72421a1ecb11",
+      "bytes": 47603
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/location_bible/museum_conservation_room/v1.json": {
+      "sha256": "9ee704059ae1a3a42ef567664ac33a7a3262eac8857531c0b431caebfd9d778a",
+      "bytes": 2703
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/location_bible/museum_theatre/v1.json": {
+      "sha256": "171da5c3df5c86721ef2548e308212d1e342ddb14fc844091ec603dcc7c7d66f",
+      "bytes": 2863
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/project_config/project/v1.json": {
+      "sha256": "9c0feebfbb344279e25ecc111943f64cb61aabba9b253d754a48eb864f850c46",
+      "bytes": 8159
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/project_config/project/v2.json": {
+      "sha256": "79ca748cdd99977c727a9696f47aa1d739d17a36e49c9ebd2a39bd148227eefe",
+      "bytes": 7978
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/prop_bible/canvas_satchel/v1.json": {
+      "sha256": "2f36f291948f9f8b5eb42aa198561c3b29aad4b4fbbf3d8389b47dd6aecd5aa1",
+      "bytes": 8328
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/prop_bible/dark_scarf/v1.json": {
+      "sha256": "e013cd2ad6994fd091fd0f85709ee15397bb2e9abfa58fbeb9c51d3fe4c88e3b",
+      "bytes": 8564
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/prop_bible/felt_pad/v1.json": {
+      "sha256": "2675debd050970e965d506765fcb71d172cc710594f6118ed7ea1744928fa7e8",
+      "bytes": 8323
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/prop_bible/paper_tape/v1.json": {
+      "sha256": "c1aa8de569349e6e8907c4840086d413d69fa63eba52849b30c282a387054c97",
+      "bytes": 8451
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/prop_bible/porcelain_bird/v1.json": {
+      "sha256": "65b8f347cc2c970331e5f609a0a639d14bb93a0d091d5a1b7974f6af84aebbf5",
+      "bytes": 8663
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/prop_bible/red_thread/v1.json": {
+      "sha256": "2b33e294ce9ffcafde701fe1c018dea50f849b0173596d1495c3594e1aa1d08c",
+      "bytes": 8228
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/prop_bible/shallow_tin/v1.json": {
+      "sha256": "a9e060d1758f53f318c8d0eb12b4018201194e74fe468171f68616872d14fe8f",
+      "bytes": 8584
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/prop_bible/silver_bird_brooch/v1.json": {
+      "sha256": "e63872f6b591b9f483c484e9ebe5df9b5d37da02745a9917f87b3ae799b01355",
+      "bytes": 8560
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/prop_bible/spectacles/v1.json": {
+      "sha256": "d3a40beed29b94b6b6b9e09b25d812f6b0d4816b00da7287cb0fae141166d52b",
+      "bytes": 8395
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/prop_bible/tape_deck/v1.json": {
+      "sha256": "b9dbfb4d453b6d011e340d748f6c9591fb9a8f215f7ad83fb2f8bbf783c1436e",
+      "bytes": 8481
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/prop_bible/theatre_key/v1.json": {
+      "sha256": "6aabf355f8af25ad9118432f5599d9c31e8b64c31acac85b24064a0eee73ab62",
+      "bytes": 8259
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/raw_input/project/v1.json": {
+      "sha256": "e3fad2399fb57e0354effddac61758c1d360406fd0117c31940cae1da751d2fe",
+      "bytes": 5407
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/scene/scene_001/v1.json": {
+      "sha256": "b559ebf76f04c0e2126a96e617bc86910ab02dbc42f6fbce502b3a9ff5cdd572",
+      "bytes": 4415
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/scene/scene_001/v2.json": {
+      "sha256": "0fd6e7408d5a2350512cfde97829069321ea85fe0c3f75915756e837cbeb9b4a",
+      "bytes": 5473
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/scene/scene_002/v1.json": {
+      "sha256": "3eaeaf864252dbf9b2966c4a8526a651f28ab56b99d333721872cc8718edb231",
+      "bytes": 4190
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/scene/scene_002/v2.json": {
+      "sha256": "05b49bf23da626ccd74f452139cf7d511cb90a74aae3e66d1e215234a9504cae",
+      "bytes": 5323
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/scene/scene_003/v1.json": {
+      "sha256": "e4c475d7e6644fccab9e31dbcb05a115b7204be3d1330bc1d26513e5d398f2a9",
+      "bytes": 4618
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/scene/scene_003/v2.json": {
+      "sha256": "43ee87d5c5940ec04d4734251f548974818ea62c6ff06e068a2bac7abf9a9ade",
+      "bytes": 5954
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/scene/scene_004/v1.json": {
+      "sha256": "ea70ff0f96192d735676b3bedc01a488ca6ea9e2c4eeb063eb890fe45bbf6170",
+      "bytes": 4419
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/scene/scene_004/v2.json": {
+      "sha256": "09c1f195579a329adb77c50d8099a1fb9f0735c930bd775d058605d6ea9b0eeb",
+      "bytes": 5986
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/scene_index/project/v1.json": {
+      "sha256": "b4d85f3f5b2643ec7088dff58a0368046fe36e27a74eb58a863fab54168337b4",
+      "bytes": 5364
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/scene_index/project/v2.json": {
+      "sha256": "099ffd14f831def6cdf7f9a895b1b35d1194632b7febbc2207fa8b80e0c8ef4b",
+      "bytes": 4734
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/artifacts/script_bible/project/v1.json": {
+      "sha256": "29d7db4f4738ecc739f0d005b1c25274045879ad80525064ccecef8430ad18b8",
+      "bytes": 9545
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/graph/dependency_graph.json": {
+      "sha256": "93a7f10418a153acff890ad332cb20170c3b78575fed10cd6fa03ecd3e85f667",
+      "bytes": 90162
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/inputs/61636809_matinee_echo.fountain": {
+      "sha256": "bed5976da30e2584371deabdd121966efc4276e5663a4789cf22267d655c05d2",
+      "bytes": 3121
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/project.json": {
+      "sha256": "b5338cc1c461d75c9c37eae6b50624aaa92e1201cd25dc3710672d2bb590e3d8",
+      "bytes": 293
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control-workspace/stage_cache.json": {
+      "sha256": "181ecdf72fa9b0482a7a42d4399a016b3566ffbfcfd56f60caf7b6ba3f391ee6",
+      "bytes": 15926
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-control.log": {
+      "sha256": "ee998858b113c40e2f7ac9d6d460b7ad48b3f67b07ad26f8d5fdfd29e92af9d5",
+      "bytes": 3622
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-diagnostic-lf-restored-consumer.json": {
+      "sha256": "e5c7ba7ddf0a4d637bf2b6429afc4b51ec91b2406ae3d937246f4de796b430c7",
+      "bytes": 426
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-host-diagnostic.json": {
+      "sha256": "c1bf4b6a14d7fe5926068239dc5232d2ebfd35884754b63e07398a02baaedc62",
+      "bytes": 642
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-ledger.json": {
+      "sha256": "1b4c5249bc9852a634f4a44908f7a3b46210f82eb136bb2ab5a1ccfd57c9f8cb",
+      "bytes": 1310
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-request.json": {
+      "sha256": "237385f94093ab44828c56f37d673d9e362f8de8bd268e01aabb3d935b9898d4",
+      "bytes": 34214
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-started.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-subject.log": {
+      "sha256": "3623fd343ba0eaa540e56b59a1f45606058d56d4bdb550d7dc2947695c34c828",
+      "bytes": 1968
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-visible.txt": {
+      "sha256": "d6ec10c96c5fbe528c416838f968a51e4897c26bf41675eb8305f55ff4bcbbc5",
+      "bytes": 112238
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/mechanical-consumer.json": {
+      "sha256": "6a46c0aed17082e7f0620476fb1b36cbf198483fd394ff711c7e86918360d85e",
+      "bytes": 280
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-catalog.json": {
+      "sha256": "d00ea965149d143574740678e891a8ef5d08595353c4f3be3865335d9d706e2f",
+      "bytes": 391
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-counts.json": {
+      "sha256": "38b5ec6358d11e28bec94d67431261aa8da78979d435c789c0fd7f957fdf3bc7",
+      "bytes": 636
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-wire/last_ferry-hop1-events.jsonl.gz": {
+      "sha256": "c92832dfde9b4a84df3040c763df0ff04bc868a95e38a1aaf2f1df8df36c4130",
+      "bytes": 576
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-wire/last_ferry-hop1-original-stored-get.json": {
+      "sha256": "fcb3c2965ea41c5fd62fb3059b6216bcf263af9b850d246a26c74dab958f0a1d",
+      "bytes": 34728
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-wire/last_ferry-hop1-request.json": {
+      "sha256": "0e4441f3b9c3476a8c17a8fb1f52a723787999ec2045453ccf6631683981a91d",
+      "bytes": 34231
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-wire/last_ferry-hop2-events.jsonl.gz": {
+      "sha256": "c3f06282655fcfb01c7248dc5527d549a78ed8a6783ad8d0106130ebed003bbe",
+      "bytes": 23941
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-wire/last_ferry-hop2-request.json": {
+      "sha256": "f878e31717e8a24113718935a195ed23f066feb734402b129f789144b155357b",
+      "bytes": 1179
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-wire/matinee_echo-hop1-events.jsonl.gz": {
+      "sha256": "544bb482c79bcf42dd7e283732609ddba32d7756abbae5592df68dd1ded50bce",
+      "bytes": 21701
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-wire/matinee_echo-hop1-request.json": {
+      "sha256": "237385f94093ab44828c56f37d673d9e362f8de8bd268e01aabb3d935b9898d4",
+      "bytes": 34214
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-wire/open_frequency-hop1-events.jsonl.gz": {
+      "sha256": "27d48c48d951f34fd6a18b48ca69c53a6ede1caf008dd59429e6e5592d29cc2d",
+      "bytes": 646
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-wire/open_frequency-hop1-request.json": {
+      "sha256": "89b309cea31c67b26e7d43f30ecbffbb2f1f6c5a620f3ca20195e1eb5640b8ec",
+      "bytes": 34586
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-wire/open_frequency-hop2-events.jsonl.gz": {
+      "sha256": "652d9b0d72b87567bb3d399d2b5d846a3eee63c28c81919c18d2124f01b2475c",
+      "bytes": 22076
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/native-wire/open_frequency-hop2-request.json": {
+      "sha256": "385c9874828e1682a204210666244a777737a6519d375c9da425d38e9944860d",
+      "bytes": 1179
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/offline-tests.txt": {
+      "sha256": "cfc14fd2dc11c362cccf5421245ca5ab0e9d286b54a604a80bd2dd5522f6feb9",
+      "bytes": 80
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/open_frequency-control-consumer.json": {
+      "sha256": "0640967d24bf1f9a9e8bdf12d9f7bb84cdc2bfa122c132543a21366718ca9dcb",
+      "bytes": 282404
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/open_frequency-control-manifest.json": {
+      "sha256": "1f69cc21f0f6349ecc9fe7c0f4edf46184911a7e7a7b71b46b9f3cbb9319f6e6",
+      "bytes": 1115
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/open_frequency-control-result.json": {
+      "sha256": "fb0719718b4ad1c520ca33eca6817af1182a53a6f3952fd60e0d7f8bdb3484a1",
+      "bytes": 60221
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/open_frequency-control.log": {
+      "sha256": "2e3badaeaa040922c731c4ec1823edd72632953f261e25451b4c45251743d81b",
+      "bytes": 3915
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/open_frequency-hop1-stored-get.json": {
+      "sha256": "4d934a9667bf4e7ef6aee1b195a9db484bdbc7a86c5ab57cb512fc9957f6dfe1",
+      "bytes": 35174
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/open_frequency-host-diagnostic.json": {
+      "sha256": "8e328d1ce8ffd487a387850e3ca5ce631fea66d06eaa99128c878c0a83844232",
+      "bytes": 642
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/open_frequency-request.json": {
+      "sha256": "89b309cea31c67b26e7d43f30ecbffbb2f1f6c5a620f3ca20195e1eb5640b8ec",
+      "bytes": 34586
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/open_frequency-resume.log": {
+      "sha256": "d4498d336aa5261e6547da74a3a6215682d681201369479934d456b32f5febf2",
+      "bytes": 1981
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/open_frequency-run.log": {
+      "sha256": "ce3f4c60477a0d3c7ce61997030914d1feb4b7ea9915ffffb2fe579946f2e848",
+      "bytes": 848
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/open_frequency-visible.txt": {
+      "sha256": "37599ddc604001c4669fcc75ca398083e0098f0c9295042b56e959099c270d98",
+      "bytes": 108290
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0000-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "fab59a150baa8733428014ceb5f1a80a83cedae705827b5e6658266f6bc70948",
+      "bytes": 3373
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0000-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "9344b2e0e3450675adca56e2da1aff9b95ffe12c47ba866b8943cdb86cb95505",
+      "bytes": 3385
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0000-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "7988c80b34ba1973baa0ca4121d55ee021181ba94372d818696a7d26b40a9fd0",
+      "bytes": 752
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0001-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "2f7150fbd467524293f00b6c04d5a06e927d78788e6c067f289640453b3ec30f",
+      "bytes": 3354
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0001-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "5ffc8afae8920227537909254c3243ceaac319d24e508aed60fdd7f33470956d",
+      "bytes": 3366
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0001-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "071381cad33f34337c17c95e74fd4d16f85acecf1a6a23a4504684fe21c954ac",
+      "bytes": 766
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0002-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "2e315d7193108f269eb55b4c643b12f76310a8b6aa4df9f4885bae8935bc8735",
+      "bytes": 3560
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0002-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "ad281d9ad6838b9a337e1ade332cc6b639380aa74339f7d8fb8200b0f42fa272",
+      "bytes": 3572
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0002-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "aa9fac98331ec6cd9142bc1d6a9079dce32f5318079671f60727ee02eb563081",
+      "bytes": 816
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0003-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "d1468b3ec0700cda52d62d010cdb510c73630585a173b531ae30ed5ff1a86c5d",
+      "bytes": 10793
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0003-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "684637cfe6aae0424fc0d57824fe0a9bde1827a67252fd128fa0b4e273125075",
+      "bytes": 10805
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0003-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "7e50a3b139918bbdb1f483e4ac81216352092390ea53a32c3f0394903886be0c",
+      "bytes": 10607
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0004-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "755884145813d63940f2a006be1f81eb227c633c4e80f7b2954b0d0106eec76f",
+      "bytes": 3508
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0004-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "f9336d74cce5b6c9d764accadcff97f60ba0eb6dd5abae5e1f7ee0fc5703640a",
+      "bytes": 3520
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0004-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "521bb2c637ce61d0b270ecb9bf9dcca192b85962ce1780f325d1a19823cfd1eb",
+      "bytes": 751
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0005-control-open_frequency-claude-sonnet-4-6/request-canonical.json": {
+      "sha256": "500342b159c5a0a6596f52eeed199126f84092c85594a78dd0dfe0d94562f82c",
+      "bytes": 8846
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0005-control-open_frequency-claude-sonnet-4-6/request.json": {
+      "sha256": "574580a20219694e3cb776de5cd8a00d24869480b287004263d175bd4c9d6d94",
+      "bytes": 8858
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0005-control-open_frequency-claude-sonnet-4-6/response.json": {
+      "sha256": "3b7fc0333de76861bab0aa6c92e20fec100eae487039bc96f486d24bb78e5835",
+      "bytes": 3167
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0006-control-open_frequency-gpt-4.1-mini/request-canonical.json": {
+      "sha256": "3cf2aa2f8410cf379387eb905ea2e87f79502d9876e133448d6591825a0fbf6c",
+      "bytes": 11572
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0006-control-open_frequency-gpt-4.1-mini/request.json": {
+      "sha256": "018698e788bd9dfc8cb5815a3194f6dab6d136a02c283c5d5f7c335ed8a7f114",
+      "bytes": 11666
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0006-control-open_frequency-gpt-4.1-mini/response.json": {
+      "sha256": "6eee19521e7879f026de85bc8adcd7cc0ebc584318bcb4191337835792601365",
+      "bytes": 1254
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0007-control-open_frequency-claude-sonnet-4-6/request-canonical.json": {
+      "sha256": "0ab888aea96d63015c4e94c31664d21158e883c487e4c71d0acf60310fbb24dd",
+      "bytes": 8957
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0007-control-open_frequency-claude-sonnet-4-6/request.json": {
+      "sha256": "9244bc008aea723fe3ac367ab1787ad620640c4ca2368d448c6f9273053a9db0",
+      "bytes": 8975
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0007-control-open_frequency-claude-sonnet-4-6/response.json": {
+      "sha256": "a204908942eae73af20902be37634687997e11c73ca541f17e58b5a91ab6aa3d",
+      "bytes": 10510
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0008-control-open_frequency-claude-sonnet-4-6/request-canonical.json": {
+      "sha256": "019efc2eef2ef8c81b8db94148ee1ce469a1c990e7d90df88b748eae6eade303",
+      "bytes": 8431
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0008-control-open_frequency-claude-sonnet-4-6/request.json": {
+      "sha256": "5e70c489fabd188e897aeadccdd93e703c056c183e6b6d8dd363c6b77836e109",
+      "bytes": 8443
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0008-control-open_frequency-claude-sonnet-4-6/response.json": {
+      "sha256": "3710a0e62a982aa9257802fb267a714cf77006bfd91a0a2bb2e09eca61022819",
+      "bytes": 3293
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0009-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "b07f752832d56fb1552095717613a716e7b7ed05226794975b9fe7ee7dc449cd",
+      "bytes": 5522
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0009-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "3e0291612aab5e0cfdb2ba78f2333931eba162385a0ab473eeeaa3e6d25ca750",
+      "bytes": 5534
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0009-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "c4f748ebceac122caa4c8e608a3658b895f30edf8fcde95a0fce14764030a23f",
+      "bytes": 669
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0010-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "0b91bb3fd92b408938010f531bf454001f6c72458fda0c095b916ee176b15936",
+      "bytes": 6247
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0010-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "7d923edd7fe2d175677d994e62cee10aa7ffb3bfb6bdb9dab1235d489ddf15e9",
+      "bytes": 6259
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0010-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "a150c7146a43771e0409a8a465d2eac8cfd4045cfb356bcf9fbc6fa5ae9bd0f8",
+      "bytes": 972
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0011-control-open_frequency-gpt-4.1-mini/request-canonical.json": {
+      "sha256": "392fcc424a89f09caf44d1346eb8d48b3509c83b4a31af9b860911e00d52bf4e",
+      "bytes": 11283
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0011-control-open_frequency-gpt-4.1-mini/request.json": {
+      "sha256": "8574f2502b699bb48bd5cb41a6ba2f7417dd2915162349c7033d19eb4ee02c99",
+      "bytes": 11377
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0011-control-open_frequency-gpt-4.1-mini/response.json": {
+      "sha256": "021be7000383980d305924a226dead332290a37a84a1088a16f35904fcbe5e97",
+      "bytes": 1299
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0012-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "1c98727fd7b298be570204d8f0c730d31f32883ca810aca61b2788e8157a63ec",
+      "bytes": 3175
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0012-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "4c9e734704c6b8e5109c01cac52f5e31c5bed5f9f308ee97befc94dd18943189",
+      "bytes": 3193
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0012-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "dbef4437e4d0f2db9f9d78a825efba03768f85b280d2fa93b0163bf3b9d3a4d8",
+      "bytes": 1787
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0013-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "6652b3d260ccaea6c4f01adc6c8fa2d92abf21a1f45c03c6d743ba3fe22d295b",
+      "bytes": 3319
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0013-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "d813e1d91ebc80d22163e84a4550baa3192b241b5becefe504dca3ad7824b21f",
+      "bytes": 3337
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0013-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "70679aa593e27648c0ce0fe7f51b0ecaa54c04832ed2ba04d94e9a9e11e17e51",
+      "bytes": 1981
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0014-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "bb1462b1d40eb2ff84f2c67a578857448bb08ae27a277ff777e0d5a931f56cd4",
+      "bytes": 9050
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0014-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "a83c5981233c25ef3079aba7a5e224fa01ad6dd97a4ba2e3683f4501083cc97d",
+      "bytes": 9062
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0014-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "d7b8be98902097e1ab6221bae6144c04a4d74e9f64e203c8bc147a30e3449603",
+      "bytes": 2871
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0015-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "b0caf5eedaa0913fc2df3e001e285748de7cbedd4e92d2d552bba674a3fa6be0",
+      "bytes": 10498
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0015-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "108e5b4b80014f5a2486e1945ae715d3aa782b48347fbad4e45b75c6b6303854",
+      "bytes": 10510
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0015-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "f08e67f02485e18ee1ab7919a0ea3a72a3e06405683eb2d708cdb611dbff3672",
+      "bytes": 6009
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0016-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "4871e5247ee94f8bf19490c4e4a4199ea7ad6d707e7971eb2d1ce9031a77ccfd",
+      "bytes": 4111
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0016-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "dd0be40c645ba6026272f3b40fd3f9fdd0d1d6a5daec4d2aecc2e07b15176b8e",
+      "bytes": 4129
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0016-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "12015d48f22baa6c0b4e7e3b7353ff32ecb932c5eaefcb42f718754499246b5f",
+      "bytes": 2469
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0017-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "bfeb24d3b930824d931b3cda3babdbb26004b9587032196590322f7f784e1867",
+      "bytes": 10574
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0017-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "ba3bfcdf0650115f10a129f17ed2674b8b2f42e504afe2ba99312bd0b9b88796",
+      "bytes": 10592
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0017-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "0cf73a2274684a88b9e54bba7693f29a36a2e957eff6b506150c202c13777a9a",
+      "bytes": 5644
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0018-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "060ac3ae5f1db2bac82403aa9db2f5dcf72ba795338e9ea607d5b8ddf9277754",
+      "bytes": 9760
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0018-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "45571f2b6b98392911937466ace508aa27be03d55d944aa0bf1948bee4906d2b",
+      "bytes": 9778
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0018-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "4b6d38cfc91cff2ad654543b2ec39b4bc6dd82c691b02ed06d9171300ce4651b",
+      "bytes": 5764
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0019-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "779a5577ae50829e1d64ad6c508c5fbbb9dd6ca37965e7d3f7399b858dca721b",
+      "bytes": 10574
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0019-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "2a4c97d1b60f1173525e1ff93d06dbfe1a538a5d512c959044d87641d0952415",
+      "bytes": 10592
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0019-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "ec634ca8b12a3f2d0c0f18059baa6cac7d241ae9ca3f6b34761400f18e1e9e22",
+      "bytes": 5244
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0020-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "aa07f411455df33c6c6165c913eb8c4f6a5af424437e929bb4b67d934eeb4bfc",
+      "bytes": 9628
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0020-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "67a2268938f6156ae82b3406a12aa85f588bf99098f90ecb3a692cac9b1a4d3f",
+      "bytes": 9646
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0020-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "7d07931553161d49d70f504e643739aafb1546a32f14e743226cce55be626459",
+      "bytes": 5763
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0021-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "66cbf54340262ea9c732e4a173e18ca64a85be721f2dd701354721f405857af1",
+      "bytes": 8984
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0021-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "4b2f024843cd157f6f8d4c4640946a0dfffdf50a7cc65703b404af7c1d539db8",
+      "bytes": 9002
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0021-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "0b031c017cbe007c3e02f5df4868014998ca4d8059d1bffd3066b3350c47719b",
+      "bytes": 4317
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0022-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "9dcf8425bfc0d348713aec48b4d2586e8bd66192bb9252c7ea3f18b7eadeee1d",
+      "bytes": 4256
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0022-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "48534989f8b8d3794b27696101d05798df2394d051191dedad95f32f71fce630",
+      "bytes": 4274
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0022-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "b7c5de35a197a16a3e7004b9ec9c386f081e9fc3e7bc267195fd2177be61f115",
+      "bytes": 1655
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0023-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "e16001575d08bd5800df198b1189d0f68f5e8f7710d5074fc7867dd4dec3eb11",
+      "bytes": 4238
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0023-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "aa92ae49066bde612cafd347cf0215b93a75c9f7486099258dd6bc0ae94f8623",
+      "bytes": 4256
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0023-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "53da5d87c2f073220db2b1331cf1c849c166a309bee4f7fca6e5b20ecc84897f",
+      "bytes": 1392
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0024-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "b9daf0b5c4ef9181f2a9f05d74e7733cad8ea0a39e0cac790dc6c88f1cd78b82",
+      "bytes": 4254
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0024-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "f47c04af7dffd570ea6d63f81eede8067af7c36f26375de992d12123439c6f30",
+      "bytes": 4272
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0024-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "5e6989593d30523e095ee370a581ed49ee6a8db3d7f2521c379e6a3a1c166edc",
+      "bytes": 1363
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0025-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "b986d59a201da6ab7f4156b8fd01cb5d71ad5ba5425030ecbf208f0ee29a48bf",
+      "bytes": 3428
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0025-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "2e5560c30b33f5406531fd2dbf5256486b29e13d86031dd97ed27507f9a25491",
+      "bytes": 3446
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0025-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "361513460dc937d4adb5a1079249fa2e11891793e8f80d9fb0e986c9f4b1dc22",
+      "bytes": 1137
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0026-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "c57db5d906fdbba346db7a48bf55053bdd4930be00387d7dbdebe92c7a732084",
+      "bytes": 3420
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0026-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "5a3f31bae5f5ede6bbefced20682c4947922e5f36c7721bf3d201d3933295c46",
+      "bytes": 3438
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0026-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "c67c05f0db67588b36e6373e24dc0fb14de829b75946ead459a99cd5bcb7822e",
+      "bytes": 1410
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0027-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "1003c0bc368cb801b834d599a30f41231589b3f55cf9aed10ab17a55193cd7a4",
+      "bytes": 4397
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0027-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "1f6c6bf3e6b524e45b2c5aff3e7f0cd623a4bc7886aac9af75fbff92af8bdfb3",
+      "bytes": 4415
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0027-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "1e3f479c6c504eb014b6f97d2df6abe1a6ca3e7fba27d0a4aa6412e60a18cd9c",
+      "bytes": 1456
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0028-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "b2ff92aeecf0e49a20d8184e7eff3c14b0bb88462bcdd40b5640f880cc0985fb",
+      "bytes": 3482
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0028-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "b842fb5b5c84179670e5733cf9f85c8df20986cb496f03228e0896c11cf6e611",
+      "bytes": 3500
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0028-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "93666d45dbc40de86e472b46d63e134ddd73199e590df49bf720e2874951db3d",
+      "bytes": 1441
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0029-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "5f5cf3daf3591bdc3d2080f010e1e3d3d7e3d64c26f605b6a87cd9e6fccf0978",
+      "bytes": 3600
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0029-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "84a591abcde9a9d7f0107458f81d55129db0198587d6b5ba2080b88f8c5a155d",
+      "bytes": 3618
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0029-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "06c88b0b2979cc7694bc388731f55291fce7ed10f5689120c6c24b605e0161e5",
+      "bytes": 1115
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0030-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "0c02ad01c2f8de1121a930dd97cba30a4f9c6e0fc192a81eb8cf362f369545a4",
+      "bytes": 6265
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0030-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "ff2c2f9752c07afa187c4cddd3ff5db9885d4a16e98235f9e38df28ffc383958",
+      "bytes": 6283
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0030-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "aac04a54055c7ace73d90dfaf20d1478f87151a273d9c90a7e28f400d529e9fb",
+      "bytes": 1545
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0031-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "8c611537f70fdb8a93f43c8cd77840e41e66fc48968fed09ff9237a5664fa032",
+      "bytes": 3608
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0031-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "0ce3735aaca2f32208e8224892f37d8eb87b6bb4f1276297b2d7aef11575d729",
+      "bytes": 3626
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0031-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "3e9d411d328996445be927b96c3fa224a8b3977b01a943384e26be3cd8f41ab5",
+      "bytes": 1375
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0032-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "454eaea35fe69dd5d731c798218304c0bb9a2801aa82bfc7fffe34014945d342",
+      "bytes": 4376
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0032-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "1ab029e54a9015848abbb810ca9e19c5b940a8da70cfb5734c96e8bfdc55085a",
+      "bytes": 4394
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0032-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "0848737c5989e393aa38e72d6e23d4ee651db5267ff9cfe0f2b05ad331d8c0d9",
+      "bytes": 1491
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0033-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "f6895a99f39c836842bd1687ca3ee04c3efc8dd7e0dafaef5b1a9fd03b1619f8",
+      "bytes": 3627
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0033-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "a204e74e8944e1f2718fc11bfb1cda4cb42d9ad3a17c9833d9decd2d8c3f3379",
+      "bytes": 3645
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0033-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "fd716d90cf71fc8a6566fdc99efb321766f21677cc85d4ab4c5729471fbede6d",
+      "bytes": 1260
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0034-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "8da9c56c398568d7e9e31aaf43608921e6dc3ad4cc07156e7aefaf0a4c219e5a",
+      "bytes": 3615
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0034-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "fd73a6afdf685e0f82fef1f10b88c6b17e4134d3d644d5da9a4a53ccd5ad8e5e",
+      "bytes": 3633
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0034-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "6bd6d072394a4fc41ae424d106cad8e00ab367c35875aa356d298a6b81aa67d8",
+      "bytes": 1088
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0035-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "26465a85eecfe6e6dd96730ca7e7b2206fa19358621153d18d8f01aa152522ab",
+      "bytes": 5329
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0035-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "45f1142ac41d230c7600bb6bffe861410c5f9f93d75fd26c2bfee7d2b146104d",
+      "bytes": 5347
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0035-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "01b52c89060e345c55d87303d1fc6c7b9bd9332f70e5a8328be50cf7d4d93b46",
+      "bytes": 1807
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0036-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "ac0ba2fa94bac3581f21e885e77b1efcacb1ee6df482c0c2ca6e88beb6c60db0",
+      "bytes": 6263
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0036-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "558f941808e0e49e84495bba099e10e9a3bb4869e2d6ef5a1a96dc5508b2fd59",
+      "bytes": 6281
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0036-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "dd11e407f681798556cd305eeeb54d9174e6a09a205fb9b6a28bc100f1ef8eac",
+      "bytes": 1289
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0037-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "8f3f0b06cbc2ec0fbe062f6ed8254e516d8e0dcaa93bf7592c45edc1b3787040",
+      "bytes": 3619
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0037-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "aea1c50d56b6f23e9d6c9479ffcd2a9c92fdd72c805078bddfa51d0cf769bf97",
+      "bytes": 3637
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0037-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "c55d521267013a9765f3f9129f02a43a06b7d79a4bc03dc2ad077b1e80709f3c",
+      "bytes": 1198
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0038-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "5962ef6c3fd1b46762cff4964b8b7e60bd0258587aa072812fe68c7f4ec44a58",
+      "bytes": 6263
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0038-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "7cb987c3960a53fc83efe5b13fe3ebaa3a7cddb55915dca1bdd00eb2061fce7d",
+      "bytes": 6281
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0038-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "52cd1256859dc709b154381fd17caea3e7159d00f4615c1010cfe05383d0984f",
+      "bytes": 1364
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0039-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "94490980e9f592cc738f8420bfaa70d9023fea593905c8f91d4feef346c5cdc0",
+      "bytes": 3559
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0039-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "73b33fedf2ce32e9606655f616c81fe73035144ed92fc7a96715cf76d74fa1e9",
+      "bytes": 3571
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0039-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "a0342560f8862194bc569bc66f4a1766bebc24751e0adfa36f0a6ce041c6e635",
+      "bytes": 3238
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0040-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "3db0c523eca8cf4f82a3f74a661b7f81c07ee97f7802193766bf6c407fbc7b8c",
+      "bytes": 7774
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0040-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "331069a2b6c5634e8513adb378a918f4fd6ef27053d96b62cd9c4b0eb54edeab",
+      "bytes": 7792
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0040-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "9fd447fa95dc951f8f4428bb815c7ed441149deba72ab7a228c1428aeadf7a9e",
+      "bytes": 4720
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0041-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "906091132ac9aead49e60997efc18a41f10606dbda103e91cfc24cc445037e34",
+      "bytes": 8173
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0041-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "d51e5a679e7615610343401de9ce8a443284339bf1618bc764f7e5f1fafc7264",
+      "bytes": 8191
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0041-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "3f82b622c8e5c62b5cfb25e06e3ea9f6a08135efb9bf438a566ff348ac75d58f",
+      "bytes": 5150
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0042-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "e3e443490d6c96632e917cd871ccfbb64a7fed2f0f0636fde93e84305a0474ef",
+      "bytes": 8626
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0042-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "30b310c0befbf11c8f2b032578ba7b4c943584acd83116a4a234875f1101e613",
+      "bytes": 8644
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0042-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "16759f371fd773fe9b51b0d369ba87a30d7545fe5e4c13c9a7d34e212e608565",
+      "bytes": 5722
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0043-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "9eec9b8d945801177715f08009e1eae625192bbba49e3b22a0c44c78dcacb983",
+      "bytes": 9567
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0043-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "ba7f430d0fc117b27a1b372a412e39b134af545faabb17cd093a7e6b84aa16a9",
+      "bytes": 9585
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0043-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "50f49414c406ea994daa806d5e9141a7e83de6fda8ca4ddb29ecd078ca0a83fd",
+      "bytes": 10017
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0044-control-open_frequency-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "9eec9b8d945801177715f08009e1eae625192bbba49e3b22a0c44c78dcacb983",
+      "bytes": 9567
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0044-control-open_frequency-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "ba7f430d0fc117b27a1b372a412e39b134af545faabb17cd093a7e6b84aa16a9",
+      "bytes": 9585
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0044-control-open_frequency-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "ca7284baae4b52358365f9a0ab17cb7b4b52ce2da0fb2d4868f5a69178ad3ce5",
+      "bytes": 10017
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0045-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "f79eb126337b44efe04074183b740df59471f4a431f0ca2726201d6bf9057ab8",
+      "bytes": 3222
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0045-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "3eb32fa88871f0869df2849527565fd07d9b8237b1f9596e17e6f7f7dd0dda1e",
+      "bytes": 3234
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0045-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "e0df75ed9e3b9086ee8eb0f87f755af25201724d45b9f16d59a5e5d3a69524dc",
+      "bytes": 660
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0046-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "0669aabf89be4f98da8e99a3e553d4ad145ff81e41b0ab4fa9de7e52f4221d1b",
+      "bytes": 3507
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0046-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "68e2346451bc8634419e0f1e7f8e714f0476014b618071fbdcd03ca9b125a33f",
+      "bytes": 3519
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0046-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "c60882b8aaae91a3778efb0cb5ed1649dfdd652637c689c4fb8c71fd69dd5241",
+      "bytes": 715
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0047-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "e40deabaff5b1cb1197dee26502abb3cdfa34802ca8bb8791513edefda7267c9",
+      "bytes": 10422
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0047-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "16fd1cc1ed5a225d8bb6a1d3b3c471d7a6f30323dd36244291cd78f1c5ac0707",
+      "bytes": 10434
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0047-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "646356ea3fc88576f22c2361bd795bd3f48c6efd4bcac03052cd127396a0a5a2",
+      "bytes": 9717
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0048-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "6389f128661339d25fd8d6b0acfa114d84e0b6b939cca568dc71cf061fca4fdf",
+      "bytes": 3504
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0048-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "43cde54514406f8b3203321b0065332d3c03e0382520d0e0e7a2e3f4f5406c19",
+      "bytes": 3516
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0048-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "806d6e347bd11f8ffbc8912db49d96cbee90f6c625b56f1cd050e4994f05dea9",
+      "bytes": 768
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0049-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "5f265450eade3f02ffe6e70d9c1e66fb672efdd601897f49e6638773d9cf5c5a",
+      "bytes": 3321
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0049-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "9a48b5210167f8e9b33f76a35f5c28b82e38a996050b577c95b5061b017be09f",
+      "bytes": 3333
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0049-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "a6d99183e1dabb98a32194cbf7bb94ef02cafc6701668ded1aa522f261d241f3",
+      "bytes": 684
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0050-control-last_ferry-claude-sonnet-4-6/request-canonical.json": {
+      "sha256": "69208b8fb39b92228b67baeb50d64c78cbf792faaa962d020773b428dab8cba0",
+      "bytes": 8134
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0050-control-last_ferry-claude-sonnet-4-6/request.json": {
+      "sha256": "ece51f55336e295520fedd371b66140709d94cbd63f883d82aeafea067275603",
+      "bytes": 8146
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0050-control-last_ferry-claude-sonnet-4-6/response.json": {
+      "sha256": "f5aef27f87c1981af2a4677ebe41cad4c69a15f7a03e7904392b50ccf45adf33",
+      "bytes": 3249
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0051-control-last_ferry-gpt-4.1-mini/request-canonical.json": {
+      "sha256": "edf0ba4b38bb49a06a8ebd768a7e5349df6ad885222622ca90f4d6bfb2745277",
+      "bytes": 10912
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0051-control-last_ferry-gpt-4.1-mini/request.json": {
+      "sha256": "f441f5a6b75cd37fb964c41433f196d4437099122d5bafdf0562e3ff0297779e",
+      "bytes": 11006
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0051-control-last_ferry-gpt-4.1-mini/response.json": {
+      "sha256": "2240e149943f8e5ae511360b89a43d414d8604b498760da8301cbf3d972fb655",
+      "bytes": 1233
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0052-control-last_ferry-claude-sonnet-4-6/request-canonical.json": {
+      "sha256": "139d694aaa9a034325c9eb5133d537c25419e45fbed54a12a6aa11fa72e8a3ac",
+      "bytes": 8370
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0052-control-last_ferry-claude-sonnet-4-6/request.json": {
+      "sha256": "50a20c9bb91cad22384c3cd6a521c2b195b7b8b4068d31b51dde67e1024c8a8e",
+      "bytes": 8388
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0052-control-last_ferry-claude-sonnet-4-6/response.json": {
+      "sha256": "f660d538a785ed6dab8e7e3f32efcb0a662471102f09f1a0577f2a058be7b1d8",
+      "bytes": 9765
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0053-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "bdd59d0c14113cfcca91406376b9c9a8b9dfae50d4082c130886103d849364cf",
+      "bytes": 5151
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0053-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "e70ed4a98bbde9d60490877037960a5ddae84450d287ec9fbaa78b6ffb997d7c",
+      "bytes": 5163
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0053-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "6a6ca6a5e2f13f3224e3cebe2003cf33e0309d051725dc1aa30ddb3a16e644ca",
+      "bytes": 630
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0054-control-last_ferry-claude-sonnet-4-6/request-canonical.json": {
+      "sha256": "ad497dc755ead8787d7798bc87ac540df09f63bb1f1274ae6b3e4b6e6ab8b07e",
+      "bytes": 7834
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0054-control-last_ferry-claude-sonnet-4-6/request.json": {
+      "sha256": "e23c8d15bd0a5c1b2b2187e0db36a5a6000f62fa78404005facfc8cae8cc9a58",
+      "bytes": 7846
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0054-control-last_ferry-claude-sonnet-4-6/response.json": {
+      "sha256": "eff9f467c8fda7b3d36a113a0680037fd6bf42295121405ee151f07cedca2ab9",
+      "bytes": 3455
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0055-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "1f625449e86ea95cf6de7190445eb45307f408e4d6b901d96b620f227b7caf1b",
+      "bytes": 5876
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0055-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "d60cfeedc3cd4a604afa0b97722c3be5806240402daf8b598c156fb544fe972a",
+      "bytes": 5888
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0055-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "dbb2dbd24853c30808f15ad3a0c3ca46e180e70dd7be62528634958635f94b6e",
+      "bytes": 851
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0056-control-last_ferry-gpt-4.1-mini/request-canonical.json": {
+      "sha256": "b851b78c3f214bbaa3416989a13be1ba495d743f35baa8940c26dac6c4ed3816",
+      "bytes": 10822
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0056-control-last_ferry-gpt-4.1-mini/request.json": {
+      "sha256": "3a81a1b1308a328b90dcbf5e261415a5b7519e51c9004a90d296c31c99f1997d",
+      "bytes": 10916
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0056-control-last_ferry-gpt-4.1-mini/response.json": {
+      "sha256": "64fa524b608987486363b3db62907bc758dc7a85c971b38b7577cc64a28c2f65",
+      "bytes": 1162
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0057-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "a2354b9126eff90a4f395fdba1deea3773af243af13092e49d0b3603d1b966cd",
+      "bytes": 8494
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0057-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "1c687a67996349a89b39ba79e775596c448bc81c89316c09cd0a6cb080496e19",
+      "bytes": 8506
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0057-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "a7ee8c8f100f660778e6c1f653a756af5a9a53e320a405af63ac0a55c1bc4107",
+      "bytes": 3979
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0058-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "a3c79ceb3b0c9e3faddd9be23732d527105ff39009ecee182ecd1c8f81f00528",
+      "bytes": 8320
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0058-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "cda8a2e33b51d97c216aa67099942bcfb776919e337e82980c7b61f73a5a2d3e",
+      "bytes": 8332
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0058-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "88911a818f0b39991ca65e90f0c8cdf57b3980ef4e9909a71c7b208e4b97cdf0",
+      "bytes": 2701
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0059-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "72bd334999dc7ec8cb1c93350423b727c81f8ebd0a3428bf8971f2281c84e7e9",
+      "bytes": 3071
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0059-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "687e2cfd37039d32b22ca4fe9bc7b78bc323f166f78692fd2424bdc7558bb09e",
+      "bytes": 3089
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0059-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "b0c4fd058b479bce33c6c647c4269ee6ea7cd5a697235f9cb6bd2321a61732df",
+      "bytes": 1530
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0060-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "d6df2da4893477e9e951b0fc8231917e688175d36cf56fd94fe654127d086307",
+      "bytes": 3270
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0060-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "f525264488ac64d71e9b74e3f787a92c74c5e7b6f7b4ecee7d0c6564032a9125",
+      "bytes": 3288
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0060-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "9e161a790fab60ff342c860c8cea479f5a0afb22ceaeca2614c3e75fdd6ffd71",
+      "bytes": 1925
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0061-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "8227d487f2c7722a805ac0f01fe7ca55ab56f04d8830175beda9efc2b6a166db",
+      "bytes": 3821
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0061-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "114f2e872bfb687f567c0e8ece1b4612b556985ce2b677b14a1465a55ae58ac2",
+      "bytes": 3839
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0061-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "9068da762b54c98d80914be57f407b47e5d2648a49f118637cc41c29a7caa88c",
+      "bytes": 1778
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0062-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "4fa21a0eb2ac6603a188f8f85ca8ff472430aa4f996c8b40aeb015ca4355d6ab",
+      "bytes": 8386
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0062-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "9680c38a0224750dabddcbfc88576f601441d77bffbeece7d6019554cab854d7",
+      "bytes": 8404
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0062-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "3128021f3213ad8a5f35e0037e7e9cc327968d03bb86c65ead902d0f0e3f22f8",
+      "bytes": 3835
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0063-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "590a09e9cff3f7bbb071348ac88bcdca777a65ded055829db47bdb1e29149b9b",
+      "bytes": 10188
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0063-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "b10e84d21276bf670f319b4a11c84dace13766ad5f80802e2f76b6db0c85a910",
+      "bytes": 10206
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0063-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "9b52c2958846ec8a04af5305b65b83e1538b2a0b7c4b803fc550c2c95995af20",
+      "bytes": 7148
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0064-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "71310a80dc5f9a37b1cee9fbe19a9ff700b9b442acb42a32f35f1c4d7149e0eb",
+      "bytes": 7975
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0064-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "6933fbdf801144e9071438a813b4a65e70e120d27feafc39944a792c8773282f",
+      "bytes": 7993
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0064-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "222030588507d8d57f6674ed64b3142f11b957be0f84bef619c790d11c770c31",
+      "bytes": 2727
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0065-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "91646718f91fe188c774d64ec0dd83b76b80095d1fe2e029205b9f563f533c49",
+      "bytes": 9292
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0065-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "85d3f795c07c9686b526b0110b6c9e9963ccd6db15235e6aaedb41bd11577414",
+      "bytes": 9310
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0065-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "087ddd40be88a1fcfed58b67abb90c188164665bbd2f8ecdd17524a051204696",
+      "bytes": 4925
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0066-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "d087db4fd6922bbb356e6d765c3299ca9f44bcb6c9ec09a0ffb17b87c771805e",
+      "bytes": 7791
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0066-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "a20fa7fba5e6ca835b0a1e5cb99d833f49b0af3e6c9653aeb5059234843f704a",
+      "bytes": 7809
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0066-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "cf92f78932922ed5e5c811c110a7b8b056511979b0afb67af0398d86e9cf0587",
+      "bytes": 2667
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0067-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "5796a3ba3108effd65b64e2750c459a11716cd08d28ec63f8299ff932f3582f2",
+      "bytes": 3577
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0067-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "76d4554fa0b2392b2f6c0f7b4017f43af7348d35e5be5912eac3059542b3da57",
+      "bytes": 3595
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0067-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "c9a08f8fc147bad21af7e6a5dc2eedb80784cf8f0f78ea0c7f8d2b87b67275ec",
+      "bytes": 1578
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0068-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "3259ac5d54aba82e434b3db728587722e16b1a43cc1176635a4625f5d3a1b7c9",
+      "bytes": 4288
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0068-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "85cf2d04e04f707745de7c0a06c10f1fe769a3f42bfc0de9961ccc6a75863738",
+      "bytes": 4306
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0068-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "b2bc974608f026da5225a84d175c2f4af00a4a237e0f089a0bd88448b4a2f5b9",
+      "bytes": 1419
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0069-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "1994afa67a605d568f03b8bc9bc7d9abd1bb8449db1c98b08ef44158ae0a1afb",
+      "bytes": 3599
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0069-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "d26bbf239d13a50a9547dd7f438d04b1fd9e20de27b204cc57e1799889fc8eab",
+      "bytes": 3617
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0069-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "ebf8f21ed70675744dbea7f5539a0e5fa907f791a8c16c813644e3c2da8d823a",
+      "bytes": 1285
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0070-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "4599f8734d6f08dac1d137f6176e314c24543835912630a1bb33ec0e5ec07ff7",
+      "bytes": 3575
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0070-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "040235eb9bb937b8c9137b0b589507f430cd7bff929dfbd0cefb846b147edd4e",
+      "bytes": 3593
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0070-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "e936e29e866809600cf31342fbbececde1616ebdb68b3833473135f26f3e1d58",
+      "bytes": 1232
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0071-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "78b3da29d2509670dca865ba01c190dd1956a7a66a9fcdf0550379aeb026715c",
+      "bytes": 4468
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0071-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "0cdd2086f532573607c8cec9036b4d9778b362ee033b4f70164ce53eb063345d",
+      "bytes": 4486
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0071-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "2d7256f9ee3e8123967979c9def42749e878bfcbe6904b342b42e7bece342508",
+      "bytes": 1623
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0072-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "694697d69bf243ec16de5fe3d5f895d71e893c439a8c1484fa2cc8167707bd07",
+      "bytes": 4145
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0072-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "c83b6bfb7d71b030877d2320a231e82027d61918f42ef990cc7c1419e89d0ad8",
+      "bytes": 4163
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0072-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "1f283c2913c0256da6a6311fb23bb7f51f691166bbf7e7c3ed5bb8ea0144eb59",
+      "bytes": 1407
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0073-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "e724c4f719b297c93444a3805aa013f5f8050ae4f62327ab14a12789263ebde0",
+      "bytes": 3555
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0073-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "0ea852d248fc8806c98794a1cf8ce2c0a67e2b34ac9856419cd29ed02c4560dd",
+      "bytes": 3573
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0073-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "741fa9a3ad12d918240bf98cb6c919f4b353e7edee26658922b76865da7a2976",
+      "bytes": 1333
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0074-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "8c4dd5e1d4ad908e0a5ba2c023ba0cde1c5845feaf8265b33b410de8ff549b9b",
+      "bytes": 4141
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0074-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "f216611ee0063e82b0b272a1622fcc0ed244ad6c086a85704e95f9fd3ba6dc95",
+      "bytes": 4159
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0074-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "4ef7ef4c94a86a6f213876c7cd4122cc6904f94ff5e04699aeb345a6f2d2c220",
+      "bytes": 1379
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0075-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "d4214f3d6f50a9b27eb74bf58e5bf92ea8021a44fe407b69103174995115f170",
+      "bytes": 3541
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0075-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "3ecdd4ade0da40b04232f9750eafe7bc3c6a73e577d11a983981df3d5c57c2f6",
+      "bytes": 3559
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0075-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "e46dae8066a0eac150838b59f7ebf17585f85fb22cbb2c097f883b92e8873fae",
+      "bytes": 1185
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0076-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "583343b8e15445eced074912ed7aa0e3f6081dae63fb4fde89d7aed39a089c68",
+      "bytes": 7715
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0076-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "09eaac1ede6997830e8d344da45d739506de133c00fcbd02e5d6094193021ef9",
+      "bytes": 7733
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0076-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "16a31909fc3584fc6e1baff46b69fda1301987bdb2492526e6d805dc58ec1584",
+      "bytes": 4883
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0077-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "4c244e130a8356f2c9e4efc8e5cf7a2c5218b8a7aca780b6730ae09da18e56fb",
+      "bytes": 3441
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0077-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "6b00abfc3d8d285ca13a80ddc5e77efb64b42a69745aa10b624807cd3413c961",
+      "bytes": 3453
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0077-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "a1281b165ef9526da06df50c9cdbea3b8e1cdd79b051f7d863e79eaed5d1ee87",
+      "bytes": 2954
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0078-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "e72373ac9616bbf2597d4aa573672df4c5d4ba73dbb7273cf9b2c9553009bfd3",
+      "bytes": 7623
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0078-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "d4aa6de51c00730895578f8455a62a800ef8c282d0347c593fe02402fb444a9e",
+      "bytes": 7641
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0078-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "70c05aadf6001ac9e845366cef0d9885538be71f73511718bd6f23beca7b925e",
+      "bytes": 3486
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0079-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "22007899f82baf5cc7651292bad2071e8c92b093b55998f167e89b36d05a7b4b",
+      "bytes": 7782
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0079-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "b140cbfb7e497a885dbd71e343ea6e431cec3ffed97d79efea681599bb5099c7",
+      "bytes": 7800
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0079-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "cadfd83c8d41866a26a05e138d8c1f0823a72e3f820b06772fb9ba96498b77fd",
+      "bytes": 4757
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0080-control-last_ferry-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "6201df9b6a91d06a88afc5f1a59c2173f3153acdad2e47d47fe001d96daada52",
+      "bytes": 8033
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0080-control-last_ferry-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "d293b48597c85557be976cddb5919efb7596b7c36c8b70b8a7b69cee7d28716d",
+      "bytes": 8051
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0080-control-last_ferry-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "90461cde97c741bfc1189075d8c4a94d2d6eb551da56d23c03d1007a51862a5f",
+      "bytes": 6291
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0081-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "c714d5d6824981e6644459e469dc61623d8760a318084ed9cfbd971b52cea35d",
+      "bytes": 3425
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0081-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "6632ba27d2c7b9df7a43cbc1a60cab43cae7bf51ba8ac5a49c0883137762c2f3",
+      "bytes": 3437
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0081-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "5e09e0d67d7f2542f6f3768537a25aacad565970dbc31a69e22d4d40805fa2f7",
+      "bytes": 765
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0082-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "1fc0310c95acfd3c021dee0a2311c9c04c4ebfa9b965538ace60dea93b399c20",
+      "bytes": 10403
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0082-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "58dac17a46daf08c1da16c7d3e9e1db5a6664f4e584fb4162541dcceb9573d33",
+      "bytes": 10415
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0082-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "e6b1466adf6b6905569934f450a48bca3b85672f4f580fb58a5aee3ad2f64d2b",
+      "bytes": 9311
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0083-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "24b35f43dc344722eea48fdc737c29ee54cd8bc27a39064772a3ebcccda58242",
+      "bytes": 3421
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0083-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "8c834ec685ba675988a14b478c36f20fcc10543cc47a21dc63c55dde039f31ad",
+      "bytes": 3433
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0083-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "fde10335a6e61da00d25a995ad1f71dd2e9220915ddedefa10f6a18e8fd8beaa",
+      "bytes": 758
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0084-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "6d01ceb160cf11d6c5915fefaa590335f942406d52d7281498cf01621a0ef736",
+      "bytes": 3319
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0084-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "4474bf08ada56ca26d17e270ab056e67d74917a51b2fb63bb626edda410c245f",
+      "bytes": 3331
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0084-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "15bed96da81ba50e703992a372de79576ab3d4922269a53d4f40a45fec522d34",
+      "bytes": 695
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0085-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "4ce1ba442e5a7ae79da6a4af94c0615de7d5d19a50ac955e8aa1937f2e2367aa",
+      "bytes": 3363
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0085-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "7897336c462c3a1093c99ca70c8fc599a7b33bfb772e4ca142bc07d14711e819",
+      "bytes": 3375
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0085-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "9fcbfc59acebb097d86b5780a58d630a8965c6ecc22c852cdbf873cebdcf7d43",
+      "bytes": 775
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0086-control-matinee_echo-claude-sonnet-4-6/request-canonical.json": {
+      "sha256": "782cd943fb567d0e93bedba0ea7eed5c43f703cffa0e69622f5e6c6244079ef3",
+      "bytes": 8424
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0086-control-matinee_echo-claude-sonnet-4-6/request.json": {
+      "sha256": "7f29828af468b9387435d071d18b67ffa399fc3899b846294f7bdb525a417022",
+      "bytes": 8436
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0086-control-matinee_echo-claude-sonnet-4-6/response.json": {
+      "sha256": "6775eef3bedb0709f7699ccdfd3403d38508c02e6e23c18f0d2fab3de152ebf2",
+      "bytes": 3311
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0087-control-matinee_echo-gpt-4.1-mini/request-canonical.json": {
+      "sha256": "66f46e60167a5e0ad20650997d267f29351d8851d9262c51d6598d8ab1117be2",
+      "bytes": 11325
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0087-control-matinee_echo-gpt-4.1-mini/request.json": {
+      "sha256": "4fec98db4f8bc2009f9cf6bf0f6fa2d94f3b04c6a1687b3778a07bfb2eec3cc1",
+      "bytes": 11419
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0087-control-matinee_echo-gpt-4.1-mini/response.json": {
+      "sha256": "b8fb698e13350e64f683270d517c8a042119cebfb11e077b53264b4aef148788",
+      "bytes": 1357
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0088-control-matinee_echo-claude-sonnet-4-6/request-canonical.json": {
+      "sha256": "959fd115b067044c49108f96056503acd23ababa62cef3b2cb30c11452dcce24",
+      "bytes": 8311
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0088-control-matinee_echo-claude-sonnet-4-6/request.json": {
+      "sha256": "213c21ca66bd680797fa802da9f34beb5cd72ce67f5be98b9e398d5bee3a39a0",
+      "bytes": 8329
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0088-control-matinee_echo-claude-sonnet-4-6/response.json": {
+      "sha256": "d5dce70de08c6dd29ad5c72ac7dda4b6adac32dee6daef7b3abc2cbbb55ba016",
+      "bytes": 10145
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0089-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "47d1f3df5dcf5bfcd74b3c0b4d26e63a81bd23cd72defc99b2cad3fa714fc71d",
+      "bytes": 5132
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0089-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "58743b5d736c0f514b4350cb75359cd906933e129cf4f5d1333cce27cc19a0f7",
+      "bytes": 5144
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0089-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "4deb5da174373136e30293f534daa0dd904656f02d60ba5803d510237996294e",
+      "bytes": 612
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0090-control-matinee_echo-claude-sonnet-4-6/request-canonical.json": {
+      "sha256": "f422fc52e11d6470c73abf3cb8b96cbb0b20653ef8e871aafa53b0394a656531",
+      "bytes": 7974
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0090-control-matinee_echo-claude-sonnet-4-6/request.json": {
+      "sha256": "ed106e3ddd7fb9c86a1e3a303c99c34422dcfce09e59c8cf7eb48cc8f9c0919c",
+      "bytes": 7986
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0090-control-matinee_echo-claude-sonnet-4-6/response.json": {
+      "sha256": "d4ceac9b99b672b6205ba740dcdd6b39797964758f7345e98502bd51ebf8f4ca",
+      "bytes": 3234
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0091-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "c66f6b746ea3bddf15d3f8032c62d968caab6b0869f9244ffba7cfd8777daefb",
+      "bytes": 5857
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0091-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "15edc5b07bfb82400412eb5791a62bd404ab6f0c8fbf251a064946064b989559",
+      "bytes": 5869
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0091-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "3b189f7f6dbabfaac46b26a3398c4b6b0b7eef1448adca57dc9fc0a6075c4b3c",
+      "bytes": 830
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0092-control-matinee_echo-gpt-4.1-mini/request-canonical.json": {
+      "sha256": "8c26962dc6a477f016044d0b88b19e0f99105e8f015b2c5e279f516f4c88b46a",
+      "bytes": 10806
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0092-control-matinee_echo-gpt-4.1-mini/request.json": {
+      "sha256": "d465804b321b9afbae3d2c4485d65b868876c0ffdbc76890eb6ca7304023b6e5",
+      "bytes": 10900
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0092-control-matinee_echo-gpt-4.1-mini/response.json": {
+      "sha256": "6829e2e5315f5a4a56563c116073f0ee649fd6ff57a782ed2a05d05203311f6c",
+      "bytes": 1265
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0093-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "ed1c0272c637647d53f78d6f02d48557591cc1ef8fb68f91f8869d2cdad7d979",
+      "bytes": 3935
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0093-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "25f412f2ca7345e8d27e6bc2d902dcae7dc7a9cce63c3709768e59da1337b7a5",
+      "bytes": 3953
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0093-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "795bea14c9e375761949315feeb0c84700aa23cd916da44ab90835de7916773d",
+      "bytes": 1744
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0094-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "9f1688131a801b05d3153786619d7f70734b8587b95dcc51dc27111fc57405c0",
+      "bytes": 9021
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0094-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "e0807b88314783355f142814387b98a3f7f7d8456f45808e5088f17ca723c534",
+      "bytes": 9033
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0094-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "f5f7535629d63a54d2ce8600e17bf2b643c1b1d49b1f394cd475a9f995a97ec7",
+      "bytes": 4916
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0095-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "a86967f7493f615c70173f5d0c62254312d84fde349a4547465d6fba56b4fca2",
+      "bytes": 3889
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0095-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "588d942d3dd376fc7dd02661235b72273dca2c6d11ad310b98b3dd464a646a9c",
+      "bytes": 3907
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0095-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "22a95881ee781014f54f846dec71a4c574edefc227b10796dbae68205ed4bcca",
+      "bytes": 1937
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0096-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "d8f28e25ee293b7f4975f01dc990d8945a4acee4b8a9e0a6b7d77896f7e467ca",
+      "bytes": 8547
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0096-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "907b8bcdd846a5911fe9f2b96d4ea9938439e8b310b8e0521f5edce3abe7c15e",
+      "bytes": 8559
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0096-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "436afe7b68c827c4e9978fd60e70b3d76c0d6cbe03b1a21b38fa4ae5d11d8a8a",
+      "bytes": 3131
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0097-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "c7ca8cdfc9a5df2145db04c9b444580e0f5c29c90cebb9d912d57057e268f2ed",
+      "bytes": 10172
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0097-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "3751f662828130cdf87417b91adf18007bd1d9bac8ffdfc15b1a0ad72fc78920",
+      "bytes": 10190
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0097-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "33c8c888a76c67aabfcedc4231d11324bfbe6ffd180bb683e1cc4316980c4e98",
+      "bytes": 5612
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0098-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "e379900674c77c19292dc9c07ce940aee165713c6950ee7554e65fb1b3081bfe",
+      "bytes": 9448
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0098-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "93e8f8283b6c4954114db201b2fdac6c4adbe95c4b29c7d8556f2e9fb9afc7b0",
+      "bytes": 9466
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0098-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "0f6007a0215ad9f7f13717f01c9ffb5f7b29722afdd7d3f86ebb67bbbcd775a9",
+      "bytes": 4709
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0099-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "2958f2138d33e0095d3e8d94e00ac99e5f02db567b06e279e49ed4fb52fb6b35",
+      "bytes": 7685
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0099-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "94dad36576f0398a6af688ec2791b00cf4d1e5e791a1cc9d1e8a7f7e34a60eac",
+      "bytes": 7703
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0099-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "38db67d1dd8fa3535b7913ebd1c86f718ca70af4f5f3270af1c949fe7acd93c7",
+      "bytes": 1812
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0100-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "887572c253734e7e7b65447b177a59d983f5907a52893344c4f1c8ac8fa6dec5",
+      "bytes": 7597
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0100-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "0ebce5df525bca764545985a92dc0405932cc14d479ce2893fc9ea9717a617a8",
+      "bytes": 7615
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0100-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "afda42491fb1bc17c96d2815ff99ee0b982674dea92be6d61fb7abd629814e10",
+      "bytes": 2105
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0101-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "0b565a58fac32f282b630746f0d5445a2df0014188f3c5cab09c221b536ed82b",
+      "bytes": 7630
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0101-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "bedd41d639f0b4ef3df90c7367f504e6498dfa2680dcc9d04f1e51055a59c358",
+      "bytes": 7648
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0101-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "1e1d0d28c10da845e11f636ab956fbdf87d0de3b93f2b73b68b7a87bf782f844",
+      "bytes": 2731
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0102-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "1c5afb22d792efc9b5882997b7598966a19956d0017aee84dca1b54af3cba952",
+      "bytes": 4213
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0102-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "b68e9300de470bfd815634436515b3c9cd04038b4b9e7567919b91172fe065fc",
+      "bytes": 4231
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0102-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "394d7def8ca077b0dbaf4a5d08abc8fa3dbee719400b642de4f38d90ead3edd3",
+      "bytes": 1345
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0103-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "25eea20485e429c3bb319c8696bbef4ba5b91b704c77b506ce2e71f35bbfc2bd",
+      "bytes": 3412
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0103-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "6c44f4a710e32639e2e47dafe5434d6b4d216a035e17e388ab856d575a17dc6c",
+      "bytes": 3430
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0103-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "3c40bc4ce864c678c5cd11b884e7b5cc6a9f54b83451301845fcfad7fd5af1b3",
+      "bytes": 1228
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0104-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "d18f9324d08cd1cbd47a03f25f4b45f28ddee9bee12f7eaa71fae5dd2e72774e",
+      "bytes": 4130
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0104-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "950ae759a79d9116be163d5b7099d9c58e9e28a1d856db88682b9c40a3f399b9",
+      "bytes": 4148
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0104-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "194cc0ccec66164e9b684c9b9a3c78a286aa3e146af21b5879dee02bb69ff61b",
+      "bytes": 1516
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0105-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "1825825b55b924285f2f88787ec297bfa827eb80fcdda3ca6dc68c10acc359b7",
+      "bytes": 5040
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0105-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "62d719ebc4596b74d8a3b83731708e23f9126e31279b6ff8c30e72f0bb4b7e85",
+      "bytes": 5058
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0105-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "67b8382d174d8b0ce8f3ff3783ab01758d48a3c919e37dad66e3f8e9c5f12984",
+      "bytes": 1622
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0106-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "5bb76c57959d3d9fa65dd8941e436ace4eccf7d54257d4fb479b5f25c51999b6",
+      "bytes": 3404
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0106-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "4c9af27c04cf7e87b4d69eb6794ae9bb40de7f7858b93091fb049965c82b9a84",
+      "bytes": 3422
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0106-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "c08f73e7ee193fb8a693b20e147b806f53089bb698e8f9a6c740a3a1864b75ff",
+      "bytes": 1140
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0107-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "eee1ee10164ea80304acaa435c80aa045ea7614dc3b6e0916a1775e0c00d0151",
+      "bytes": 4209
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0107-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "3f0b4d29a041200fccf859609fa99af1e3bb744aa27aaec09a9ebc3ee02396c1",
+      "bytes": 4227
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0107-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "09be5b375306be206a63d9a1f852b69e41ef4bb766df9a7b73d29e1016b34aee",
+      "bytes": 1279
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0108-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "d3cc1088bd68200802447e1370d40fab0395c46532ea37fc6041fcd33452a6c5",
+      "bytes": 4213
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0108-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "f07f54e7ac63cc703553b51350d18fbcb86876da6dc312b86d39c3dd06e521fb",
+      "bytes": 4231
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0108-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "0b7818cb4dc4d028afeec4b25b347cb1d09a5f6888b14ad5d1ae6e502b4756a4",
+      "bytes": 1459
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0109-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "68159fdabf41647b67fc141eb9cf1c898622678f808b97d6b4fea9e24de62753",
+      "bytes": 4197
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0109-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "3c7a0d5febe5af32bd589777e3bd2bdc7d2b89d5fd6f028e9447773c334c5f6a",
+      "bytes": 4215
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0109-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "fcef31f555ab9e0a950f9581be43831fa692e6b59ed53176165582a97958a53b",
+      "bytes": 1487
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0110-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "9fe96aba0b8f6c77b9afaecdbfebd6f38a27b5d3df2746148ab49c2aec33b9c8",
+      "bytes": 4282
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0110-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "64c56c9d22ed5addcd4ce6728882ceb5d57b5668164ca5ec88c397f37ebd0fa7",
+      "bytes": 4300
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0110-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "3ba78bd63cfe8a58698405479c9d7fb2722c1986ba3cf8f95dbad39ef6d1c0cd",
+      "bytes": 1389
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0111-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "dece07d8af82b47327bc516552f196cd239e2023bd3ed89037a0d1036e2b8707",
+      "bytes": 3465
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0111-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "e1d170d0ee647f596cde576056a5bdd03d16b831dbc3d6f7552df3719e0567b9",
+      "bytes": 3483
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0111-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "ab219a622b78257b109a09ce87794b04da1c8f597cbc0a501911968cb43ac16a",
+      "bytes": 1172
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0112-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "5c42f60a06d793427f0d7bd4aecd498fa4d63b5eeb1755cfc5b8013c4c581889",
+      "bytes": 4195
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0112-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "78ab342b1ecc49b77f5cbe442f1a4ad9a4d3eb362a738aaae98229cf0728b41c",
+      "bytes": 4213
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0112-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "40fb8d069a371fc715e76445cef4b70e4f9990e32867086273bf47d95deed7a8",
+      "bytes": 1407
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0113-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "c077134e92d85c390b90c2a2590f00b3bec05dd4988f4c7d5cf02d727c51d450",
+      "bytes": 7380
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0113-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "56744b689ac4b37c4a1a6b549b7e2dc747b8bd529771d9ea4becfc26fd568359",
+      "bytes": 7398
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0113-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "aff50e1ba8fc9a3f5c52a06c11cb7ed1d10b937d43c9e075c39cb719186eeff0",
+      "bytes": 4090
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0114-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "adc5dd4dd578c94750752038ca6c08d1c0ff1dfeb34ccd8ada319c3e3633c012",
+      "bytes": 3433
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0114-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "ae7fdd1cf35ce64f9eb63a1f9708dc322d90d013be43f3d1b0aac7b3a777f599",
+      "bytes": 3445
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0114-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "3a08f5d47bcd4c66636093c713c4692056dbcdfb669fe0eebaeb02ab2ca78019",
+      "bytes": 2761
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0115-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "615737261b016f707dcc39e349f1a367621f7a0c7a8a1938983d5f3b6b83beed",
+      "bytes": 7678
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0115-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "dcdc201f4ffcdf53566913a11e81cc6a74d6969fe1d0546b6e8400c5d075a031",
+      "bytes": 7696
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0115-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "dd973a3dbd73cca404ab1454ddf57760a5c12b63324e62a0532c7c26f050153b",
+      "bytes": 3714
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0116-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "0cd7f5b50314995a328c6b9a0e3a925c2c0496827007cb7098a459369da0487b",
+      "bytes": 7754
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0116-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "9d69994b0a82de21f166bba2c57f1609f7302132571cbccea6ec985dfc01483b",
+      "bytes": 7772
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0116-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "4cf5480bfb06ab324fe2ba8f7b81c09e4999641ea0663d17b4eca4d7590cac4e",
+      "bytes": 4212
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0117-control-matinee_echo-claude-haiku-4-5-20251001/request-canonical.json": {
+      "sha256": "791a9dbde91970be0ae65e0b4e2e1c8018d046928bc80d6d3c16ffad3122bd4d",
+      "bytes": 8000
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0117-control-matinee_echo-claude-haiku-4-5-20251001/request.json": {
+      "sha256": "61e82486699bd1055b6f49f75cb00ddf916512f74b8743054056845220f1877a",
+      "bytes": 8018
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/0117-control-matinee_echo-claude-haiku-4-5-20251001/response.json": {
+      "sha256": "26d386bb4a193cd70682ea749ba691fdd56a72e50a70e98ca9f0a6cdcab8556e",
+      "bytes": 4582
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/physical-calls/ledger.json": {
+      "sha256": "fe60914639e465798df16ea3fb386047f266668572fb77ddf20df0e49d73a365",
+      "bytes": 122563
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/producing-epochs/c04744e1aab6b155da77d41e3461317af52eedae034387e99bb66d81f1fbb973/run_carbon_workspace_control.py": {
+      "sha256": "c04744e1aab6b155da77d41e3461317af52eedae034387e99bb66d81f1fbb973",
+      "bytes": 1183
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/public-doc-snapshots.json": {
+      "sha256": "c37ca1b5e1845ec99d9d86b8d8e18a697307c17ca659168831c43c63c2fcc576",
+      "bytes": 600
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/registry-entry.yaml": {
+      "sha256": "28e6cda89894d89bc0d4afdc82d73a9c106f60ea237fcafb9a648e36b678c1f8",
+      "bytes": 2719
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/research-notes.md": {
+      "sha256": "b5e051a91220bd09a7d9800eb919adf827dfea9e2dfbdc6fa2723db08c3d0c7a",
+      "bytes": 6295
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/source-decisions.json": {
+      "sha256": "c2812997610142e5ec717e701abf673f59bdc7d20b510d62c006db5cd2d50c08",
+      "bytes": 1863
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/subject-ledger.json": {
+      "sha256": "464e3fe3c1e29507ebb73f82ec121a9db450eb0874e77227a91c330058ee7ba9",
+      "bytes": 2026
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/variant-admission.json": {
+      "sha256": "357dc42e68e81ac5efd6c2ce715172b4421ce9224d3568dcc042671aacfd1a0c",
+      "bytes": 915
+    },
+    "benchmarks/scripts/archive_carbon_workspace.py": {
+      "sha256": "9e2ae4dde2a005c5ab99c373f6afc75682660eb7c90e9039316a662df0fec4be",
+      "bytes": 3165
+    },
+    "benchmarks/scripts/blind_carbon_workspace_review.py": {
+      "sha256": "42c707d73238e5e8c3173fe4b91cee6d62b560f56f346effc389abfb03db1035",
+      "bytes": 1961
+    },
+    "benchmarks/scripts/preflight_carbon_workspace.py": {
+      "sha256": "fa56cde4901d008504b8dfe332e77af37f9ba806f59d86dc1465af6f61b565d9",
+      "bytes": 6112
+    },
+    "benchmarks/scripts/run_carbon_workspace.py": {
+      "sha256": "554567cabb9a63edece6d8ea0ed022f182b1d73554b4d0b3c3f1066013dcd075",
+      "bytes": 7737
+    },
+    "benchmarks/scripts/run_carbon_workspace_control.py": {
+      "sha256": "fbff0d7f924ecd27e8d896e27538d4fe79ab6f851450821422e4a2c2425f9b3b",
+      "bytes": 1371
+    },
+    "benchmarks/scripts/resume_carbon_workspace_checkpoint.py": {
+      "sha256": "f827234cd39756b5dde534d9d83229a1ac26cf8d66097953bd865372fdd7c437",
+      "bytes": 5029
+    },
+    "benchmarks/scripts/run_carbon_workspace_variants.py": {
+      "sha256": "83635418f9af798e07ae8e4cca673bc9c57eb0bb18d469a1b0c8b61ed47e74c7",
+      "bytes": 7026
+    },
+    "benchmarks/scripts/diagnose_carbon_workspace.py": {
+      "sha256": "ee2bb1d09e3c6f054a36b71234378bfc41840673fa1595d9ed10414bf109eddf",
+      "bytes": 3076
+    },
+    "benchmarks/scripts/report_carbon_workspace.py": {
+      "sha256": "5e37db12ae65b5b338ea5f7559c6c6c635a01006bb639293085c2357350f94fa",
+      "bytes": 4713
+    },
+    "benchmarks/results/whole-story-workspace-carbon-20261110.json": {
+      "sha256": "17f55ce37bdea13d432bafd1b3857cb56adf878f3449b7543c003b1ac7daef1d",
+      "bytes": 10005
+    },
+    "docs/evals/attempts/059-carbon-whole-story-workspace.md": {
+      "sha256": "536109500d804fbc0a65d257555575f47033b7b7efedf941ce8c52d31ba6795b",
+      "bytes": 10038
+    },
+    "docs/stories/story-237-whole-story-workspace-capability.md": {
+      "sha256": "782911eb120d58d00baebe94a88fefa5e76d793363d4f0d5964b3402851ba154",
+      "bytes": 13607
+    },
+    "docs/evals/evidence/story-237-carbon-20261110/protected-native-archive.json": {
+      "sha256": "7f38f80fc629be37e94a5fb9b71506409e7fc066ef35b28fcb99c4f83b2dcfe8",
+      "bytes": 4824
+    }
+  },
+  "protected_wires": "Exact original protected archive path and five physical receipts are indexed by protected-native-archive.json; token-redacted native events are retained here."
+}

@@ -1,0 +1,78 @@
+{
+  "data": {
+    "classification": {
+      "confidence": 0.898,
+      "detected_format": "screenplay",
+      "evidence": [
+        "Detected 4 scene headings (INT./EXT./EST.)",
+        "Detected 13 uppercase character cue candidates",
+        "Detected 11 long narrative-style paragraphs",
+        "File extension is .fountain, a screenplay-oriented format"
+      ]
+    },
+    "content": "Title: Last Ferry Receipt\nCredit: Synthetic evaluation fixture\nAuthor: CineForge evaluation source author\n\nINT. FERRY TICKET OFFICE - NIGHT\n\nThe last sailing has been cancelled. A shuttered ticket window faces empty benches. LENA, the clerk, numbers a paper envelope 17 and slides a brass locker key inside. Her left thumb wears a fresh white bandage. TOM, her younger brother, sets a blue insulated medicine case on the counter.\n\nTOM\nDad's doses. The clinic launch comes at six. Don't leave this in the locker.\n\nLena puts the envelope in her coat and the case beneath the counter. Through frosted glass, a COURIER in an orange rain cape knocks twice. Only a silhouette is visible.\n\nCOURIER (O.S.)\nSeventeen. North locker. Before the tide turns.\n\nLENA\nWho sent you?\n\nThe silhouette retreats without answering. Tom reaches for the case, but Lena stops him.\n\nLENA\nI'll take it to the launch myself. You lock up here.\n\nShe lifts the blue case and goes. Tom stays behind with the shutter crank.\n\nEXT. FERRY PIER - LATER\n\nFog erases the far bank. Lena sets the blue medicine case on a mooring bollard. She removes envelope 17, takes out the brass key, and unlocks a green locker marked NORTH. Inside lies a small metal cash box. She leaves the empty envelope inside the locker, pockets the key, and carries the cash box to the bollard.\n\nAn OLD MAN in an orange rain cape stands by the gangway. His face is visible; the earlier courier's was not.\n\nOLD MAN\nYou found it, then.\n\nLENA\nWere you at my window?\n\nOLD MAN\nWindows aren't much use in this fog.\n\nHe turns away. A ferry horn sounds from the river, although no vessel can be seen. Lena opens the cash box. It contains a photograph of two children beside a ferry and a folded receipt. On the receipt: STORAGE PAID THROUGH FRIDAY. She puts both back, shuts the box, and takes it and the blue case toward the boathouse.\n\nINT. RESCUE BOATHOUSE - PRE-DAWN\n\nRUTH, the launch pilot, checks a wall clock: 5:50. Lena arrives carrying both containers. Ruth notices the white bandage, now grey with grime, before taking the medicine case.\n\nRUTH\nYour father still at the clinic?\n\nLENA\nUntil the launch brings him home.\n\nRuth places the blue case in a refrigerator. Lena keeps the cash box under her arm. Tom calls from a wall telephone; his voice comes through its speaker.\n\nTOM (PHONE)\nThe office is locked. Someone left an orange cape on the bench outside.\n\nLENA\nLeave it there. We don't know whose it is.\n\nLena asks Ruth to keep the case cold until departure. Ruth agrees. The clock ticks toward six. No passenger arrives.\n\nEXT. FERRY PIER - DAWN\n\nLena returns with the cash box, without the medicine case. The refrigerator remains behind in the boathouse. Her soiled bandage has not changed. The green locker stands open; empty envelope 17 lies inside.\n\nShe puts the cash box back in the locker and locks it with the brass key. Tom joins her empty-handed from the ticket office path. Lena gives him the key.\n\nTOM\nWas that Dad in the photograph?\n\nLENA\nCould be. It didn't have a date or names.\n\nThey watch Ruth steer the clinic launch away from the boathouse. Ruth waves. No one else is visible aboard.\n",
+    "source_info": {
+      "character_count": 3142,
+      "file_format": "fountain",
+      "file_size_bytes": 3142,
+      "line_count": 77,
+      "original_filename": "0974bad9_last_ferry.fountain"
+    }
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "defer format detection to normalization",
+      "store only normalized form"
+    ],
+    "annotations": {
+      "classification_diagnostics": {
+        "line_counts": {
+          "non_empty_lines": 46,
+          "paragraph_blocks": 31,
+          "single_word_lines": 9,
+          "total_lines": 76
+        },
+        "score_breakdown": {
+          "notes": 0.123,
+          "prose": 0.0,
+          "screenplay": 0.676
+        },
+        "signals": {
+          "character_cues": 13,
+          "parentheticals": 0,
+          "prose_paragraphs": 11,
+          "scene_headings": 4,
+          "tokenized_heading_sequences": 0,
+          "transitions": 0
+        }
+      },
+      "extraction_diagnostics": {},
+      "final_stage_model_used": "code",
+      "final_stage_provider_used": "code"
+    },
+    "confidence": 0.898,
+    "cost_data": {
+      "estimated_cost_usd": 0.0,
+      "input_tokens": 0,
+      "latency_seconds": null,
+      "model": "code",
+      "output_tokens": 0,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:00:48.608071Z",
+    "health": "valid",
+    "intent": "Capture original user story input as immutable project source",
+    "lineage": [],
+    "producing_module": "story_ingest_v1",
+    "producing_role": null,
+    "rationale": "Preserve unmodified text and classify it for downstream modules",
+    "ref": {
+      "artifact_type": "raw_input",
+      "entity_id": "project",
+      "path": "artifacts/raw_input/project/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "human"
+  }
+}

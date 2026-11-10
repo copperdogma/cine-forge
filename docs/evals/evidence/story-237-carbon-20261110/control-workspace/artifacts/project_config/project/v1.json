@@ -1,0 +1,228 @@
+{
+  "data": {
+    "aspect_ratio": "16:9",
+    "budget_cap_usd": null,
+    "confirmed": true,
+    "confirmed_at": "2026-11-10T18:41:31.260932+00:00",
+    "default_model": "claude-sonnet-4-6",
+    "detection_details": {
+      "aspect_ratio": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "16:9"
+      },
+      "budget_cap_usd": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": null
+      },
+      "default_model": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "claude-sonnet-4-6"
+      },
+      "estimated_duration_minutes": {
+        "confidence": 0.85,
+        "rationale": "Scene index directly provides an estimated runtime of 4.0 minutes.",
+        "source": "auto_detected",
+        "value": 4.0
+      },
+      "format": {
+        "confidence": 0.85,
+        "rationale": "Estimated runtime of 4 minutes, only 4 scenes, and 133 lines strongly suggest a short film format.",
+        "source": "auto_detected",
+        "value": "Short Film"
+      },
+      "genre": {
+        "confidence": 0.78,
+        "rationale": "The story centers on community radio volunteers coordinating disaster relief, fitting drama and community-focused storytelling. No action, horror, or comedy genre markers dominate.",
+        "source": "auto_detected",
+        "value": [
+          "Drama",
+          "Community"
+        ]
+      },
+      "human_control_mode": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "checkpoint"
+      },
+      "location_count": {
+        "confidence": 0.99,
+        "rationale": "Scene index explicitly lists 3 unique locations: Community Radio Studio, High School Gym Shelter, and Water Tower Catwalk.",
+        "source": "auto_detected",
+        "value": 3
+      },
+      "locations_summary": {
+        "confidence": 0.97,
+        "rationale": "All three locations are clearly identified in scene headings with times of day confirmed by the scene index.",
+        "source": "auto_detected",
+        "value": [
+          "Community Radio Studio (interior, night and morning), Water Tower Catwalk (exterior, night), High School Gym Shelter (interior, pre-dawn)"
+        ]
+      },
+      "model_strategy": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": {
+          "escalate": "claude-opus-4-6",
+          "verify": "claude-sonnet-4-6",
+          "work": "claude-sonnet-4-6"
+        }
+      },
+      "primary_characters": {
+        "confidence": 0.88,
+        "rationale": "Ranked by weighted scene frequency and dialogue cue count (scene*2 + dialogue); top 3 classified as primary.",
+        "source": "auto_detected",
+        "value": [
+          "JUNE",
+          "NOAH",
+          "ARIA"
+        ]
+      },
+      "production_mode": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "ai_generated"
+      },
+      "style_packs": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": {}
+      },
+      "supporting_characters": {
+        "confidence": 0.82,
+        "rationale": "Ranked by weighted scene frequency and dialogue cue count (scene*2 + dialogue); top 3 classified as primary.",
+        "source": "auto_detected",
+        "value": [
+          "KELL",
+          "MAYA",
+          "COMET"
+        ]
+      },
+      "target_audience": {
+        "confidence": 0.3,
+        "rationale": "No explicit target audience is stated. The content is family-friendly and community-oriented but could suit general audiences or educational contexts. Insufficient information to specify confidently.",
+        "source": "auto_detected",
+        "value": null
+      },
+      "title": {
+        "confidence": 0.99,
+        "rationale": "Canonical script title and in-script title both confirm 'Open Frequency'.",
+        "source": "auto_detected",
+        "value": "Open Frequency"
+      },
+      "tone": {
+        "confidence": 0.82,
+        "rationale": "Despite a crisis setting, the script consistently resolves tension with warmth, humor, and community solidarity. The ending with music, bread, and a recovered dog reinforces an uplifting, grounded tone.",
+        "source": "auto_detected",
+        "value": [
+          "Hopeful",
+          "Warm",
+          "Grounded"
+        ]
+      }
+    },
+    "estimated_duration_minutes": 4.0,
+    "format": "Short Film",
+    "genre": [
+      "Drama",
+      "Community"
+    ],
+    "human_control_mode": "checkpoint",
+    "location_count": 3,
+    "locations_summary": [
+      "Community Radio Studio (interior, night and morning), Water Tower Catwalk (exterior, night), High School Gym Shelter (interior, pre-dawn)"
+    ],
+    "model_strategy": {
+      "escalate": "claude-opus-4-6",
+      "verify": "claude-sonnet-4-6",
+      "work": "claude-sonnet-4-6"
+    },
+    "primary_characters": [
+      "JUNE",
+      "NOAH",
+      "ARIA"
+    ],
+    "production_format": null,
+    "production_mode": "ai_generated",
+    "storyboard_style": null,
+    "style_packs": {},
+    "supporting_characters": [
+      "KELL",
+      "MAYA",
+      "COMET"
+    ],
+    "target_audience": null,
+    "title": "Open Frequency",
+    "tone": [
+      "Hopeful",
+      "Warm",
+      "Grounded"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "config as non-versioned side file",
+      "hard-coded defaults without confirmation gate"
+    ],
+    "annotations": {
+      "accept_config": true,
+      "autonomous": false,
+      "config_file": null,
+      "draft_path": "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/output/project/draft_config.yaml",
+      "final_stage_model_used": "claude-sonnet-4-6",
+      "final_stage_provider_used": "anthropic",
+      "qa_result": {
+        "confidence": 0.9,
+        "issues": [],
+        "passed": true,
+        "summary": "The output accurately reflects the script and scene evidence by correctly identifying the estimated duration, format, genre, location count and summaries, primary and supporting characters, title, and tone. Confidence scores appropriately correspond to the certainty of each field, with clear and concise rationales provided that avoid fabrication or unsupported assumptions."
+      }
+    },
+    "confidence": 0.8971,
+    "cost_data": {
+      "estimated_cost_usd": 0.019579,
+      "input_tokens": 5181,
+      "latency_seconds": null,
+      "model": "claude-sonnet-4-6",
+      "output_tokens": 801,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T18:41:31.264313Z",
+    "health": "valid",
+    "intent": "Persist canonical project settings shared by downstream modules.",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "project_config_v1",
+    "producing_role": null,
+    "rationale": "Centralize genre/tone/format/control defaults and ensure they are explicitly confirmed before downstream creative work.",
+    "ref": {
+      "artifact_type": "project_config",
+      "entity_id": "project",
+      "path": "artifacts/project_config/project/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "hybrid"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "character_id": "ruth",
+  "name": "RUTH",
+  "aliases": [],
+  "description": "The launch pilot responsible for operating the clinic's boat. She works at the rescue boathouse and manages medical supplies during pre-dawn operations.",
+  "prominence": "secondary",
+  "explicit_evidence": [
+    {
+      "trait": "Launch pilot",
+      "quote": "RUTH, the launch pilot, checks a wall clock: 5:50.",
+      "source_scene": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 2
+      }
+    },
+    {
+      "trait": "Observant",
+      "quote": "Ruth notices the white bandage, now grey with grime, before taking the medicine case.",
+      "source_scene": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+      "source_span": {
+        "start_line": 3,
+        "end_line": 4
+      }
+    },
+    {
+      "trait": "Cooperative",
+      "quote": "Lena asks Ruth to keep the case cold until departure. Ruth agrees.",
+      "source_scene": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+      "source_span": {
+        "start_line": 12,
+        "end_line": 13
+      }
+    },
+    {
+      "trait": "Operates the clinic launch",
+      "quote": "They watch Ruth steer the clinic launch away from the boathouse. Ruth waves.",
+      "source_scene": "EXT. FERRY PIER - DAWN",
+      "source_span": {
+        "start_line": 24,
+        "end_line": 25
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "Professional competence",
+      "value": "Demonstrates capability in boat operation and medical supply handling",
+      "confidence": 0.85,
+      "rationale": "Ruth is trusted with operating the clinic launch and storing temperature-sensitive medical supplies, suggesting she is reliable and competent in her role."
+    },
+    {
+      "trait": "Attentive to detail",
+      "value": "Notices physical changes in others (Lena's bandage condition)",
+      "confidence": 0.8,
+      "rationale": "Ruth observes and notes the deteriorating condition of Lena's bandage, indicating she pays attention to her surroundings and others' conditions."
+    }
+  ],
+  "scene_presence": [
+    "INT. RESCUE BOATHOUSE - PRE-DAWN",
+    "EXT. FERRY PIER - DAWN"
+  ],
+  "dialogue_summary": "Ruth has minimal dialogue. She responds affirmatively to Lena's request to keep the medicine case cold until departure. She asks Lena about her father's location at the clinic.",
+  "narrative_role": "supporting",
+  "narrative_role_confidence": 0.75,
+  "relationships": [
+    {
+      "target_character": "LENA",
+      "relationship_type": "colleague/acquaintance",
+      "evidence": "Ruth and Lena interact at the boathouse regarding medical supply storage and departure preparations. Ruth notices details about Lena's condition.",
+      "confidence": 0.8
+    },
+    {
+      "target_character": "Lena's father",
+      "relationship_type": "professional connection",
+      "evidence": "Ruth asks about Lena's father's location at the clinic, suggesting she knows of his connection to the clinic operations.",
+      "confidence": 0.7
+    }
+  ],
+  "overall_confidence": 0.78
+}

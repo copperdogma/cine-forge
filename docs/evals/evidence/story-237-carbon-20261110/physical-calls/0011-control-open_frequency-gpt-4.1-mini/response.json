@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-Eil5b6nQVp4AajRa6EKDHhOeLlLKh",
+  "object": "chat.completion",
+  "created": 1794336151,
+  "model": "gpt-4.1-mini-2025-04-14",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"passed\":true,\"confidence\":0.9,\"issues\":[],\"summary\":\"The output accurately reflects the script and scene index details, correctly identifying the estimated duration, format, genre, location count and summaries, primary and supporting characters, title, and tone with appropriate confidence levels and clear rationales. The target audience field is conservatively set to null due to lack of explicit information, demonstrating adherence to instructions to avoid fabrication.\"}",
+        "refusal": null,
+        "annotations": []
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2549,
+    "completion_tokens": 86,
+    "total_tokens": 2635,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "service_tier": "default",
+  "system_fingerprint": "fp_091009f581"
+}

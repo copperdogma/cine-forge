@@ -1,0 +1,250 @@
+{
+  "date": "2026-11-10",
+  "attempt": 59,
+  "base": "3b44e158a74010a68bf8d2bbe7e7a92991f96a69",
+  "branch": "codex/carbon-20261110-cine-forge",
+  "cases": {
+    "open_frequency": {
+      "carbon": {
+        "model": "gemini-4-carbon",
+        "request": "MEDIUM/131072 foreground stored native structured outer envelope",
+        "native_terminal_completed": true,
+        "served_model": "gemini-4-carbon",
+        "physical_sends": 2,
+        "elapsed_attempt_ms": 877364,
+        "usage_by_hop": [
+          null,
+          {
+            "total_tokens": 91566,
+            "total_input_tokens": 59773,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 59773
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 26480,
+            "output_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 26480
+              }
+            ],
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 5313,
+            "initial_input_tokens": 6781
+          }
+        ],
+        "visible_output_sha256": "37599ddc604001c4669fcc75ca398083e0098f0c9295042b56e959099c270d98",
+        "original_consumer_loaded": false,
+        "source_review": {
+          "whole_source_acceptance": false,
+          "complete_answer_evaluated": true,
+          "review": "blind-v2/open_frequency-B-review.md",
+          "decision_facts": "All seven roles, 30/30 located quotes, 24 graph edges and final states. Missing structured places/supplies, overresolved whiteboard and synopsis falsely credits Kell with accepting flyer."
+        },
+        "known_usage_usd": "0.437476",
+        "unknown_held_usd": "0.70736",
+        "accounted_usd": "1.144836",
+        "strict_host_diagnostic": {
+          "method": "Read-only all-errors traversal on original output. No workspace was written and no gate relaxed for scoring.",
+          "visible_sha256": "37599ddc604001c4669fcc75ca398083e0098f0c9295042b56e959099c270d98",
+          "source_sha256": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+          "schema_valid": true,
+          "host_failures": {
+            "selected authored Fountain canonical must preserve exact original source": 1
+          },
+          "interrupted": null,
+          "source_chars": 3447,
+          "canonical_chars": 3446,
+          "sole_canonical_difference_is_trailing_lf": true,
+          "lf_only_diagnostic": "all strict upstream host checks pass on separated copy"
+        },
+        "lf_only_counterfactual_groups": 117
+      },
+      "maintained_pipeline": {
+        "complete": true,
+        "elapsed_ms": 193831,
+        "physical_sends": 45,
+        "groups": 82,
+        "source_review": {
+          "whole_source_acceptance": false,
+          "complete_answer_evaluated": true,
+          "review": "blind-v2/open_frequency-A-review.md"
+        },
+        "known_usage_usd": "0.2694682",
+        "unknown_held_usd": "0",
+        "accounted_usd": "0.2694682"
+      }
+    },
+    "last_ferry": {
+      "carbon": {
+        "model": "gemini-4-carbon",
+        "request": "MEDIUM/131072 foreground stored native structured outer envelope",
+        "native_terminal_completed": true,
+        "served_model": "gemini-4-carbon",
+        "physical_sends": 2,
+        "elapsed_attempt_ms": 877593,
+        "usage_by_hop": [
+          null,
+          {
+            "total_tokens": 85286,
+            "total_input_tokens": 54696,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 54696
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 29880,
+            "output_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 29880
+              }
+            ],
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 710,
+            "initial_input_tokens": 6705
+          }
+        ],
+        "visible_output_sha256": "3a40ff75271122307610e1680980c2bbef9f98f67d1873a83656fe5adc8616cf",
+        "original_consumer_loaded": false,
+        "source_review": {
+          "whole_source_acceptance": false,
+          "complete_answer_evaluated": true,
+          "review": "blind-v2/last_ferry-A-review.md",
+          "decision_facts": "Correct key, returned envelope, dry cash box and refrigerated medicine; separately tracks cape observations and uncertainty. River and clinic are prose-only; certainty over sole passenger, hospitalization and visible far bank exceeds source. The father is called hospitalized and Ruth his acquaintance without evidence of admission or personal familiarity."
+        },
+        "known_usage_usd": "0.415292",
+        "unknown_held_usd": "0.70736",
+        "accounted_usd": "1.122652",
+        "strict_host_diagnostic": {
+          "method": "Read-only all-errors traversal on original output. No workspace was written and no gate relaxed for scoring.",
+          "visible_sha256": "3a40ff75271122307610e1680980c2bbef9f98f67d1873a83656fe5adc8616cf",
+          "source_sha256": "e28a204cd4d756c91bfbd28a521473a895fd8d14984efd400658e6a65b9a7618",
+          "schema_valid": true,
+          "host_failures": {
+            "selected authored Fountain canonical must preserve exact original source": 1,
+            "dangling continuity gap": 2
+          },
+          "interrupted": null,
+          "source_chars": 3142,
+          "canonical_chars": 3141,
+          "sole_canonical_difference_is_trailing_lf": true,
+          "lf_only_diagnostic": "strict separated copy also fails: dangling continuity gap"
+        }
+      },
+      "maintained_pipeline": {
+        "complete": true,
+        "elapsed_ms": 154610,
+        "physical_sends": 36,
+        "groups": 61,
+        "source_review": {
+          "whole_source_acceptance": false,
+          "complete_answer_evaluated": true,
+          "review": "blind-v2/last_ferry-B-review.md"
+        },
+        "known_usage_usd": "0.2091661",
+        "unknown_held_usd": "0",
+        "accounted_usd": "0.2091661"
+      }
+    },
+    "matinee_echo": {
+      "carbon": {
+        "model": "gemini-4-carbon",
+        "request": "MEDIUM/131072 foreground stored native structured outer envelope",
+        "native_terminal_completed": true,
+        "served_model": "gemini-4-carbon",
+        "physical_sends": 1,
+        "elapsed_attempt_ms": 537778,
+        "usage_by_hop": [
+          {
+            "total_tokens": 66470,
+            "total_input_tokens": 6832,
+            "input_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 6832
+              }
+            ],
+            "total_cached_tokens": 0,
+            "total_output_tokens": 28113,
+            "output_tokens_by_modality": [
+              {
+                "modality": "text",
+                "tokens": 28113
+              }
+            ],
+            "total_tool_use_tokens": 0,
+            "total_thought_tokens": 31525,
+            "initial_input_tokens": 6832
+          }
+        ],
+        "visible_output_sha256": "d6ec10c96c5fbe528c416838f968a51e4897c26bf41675eb8305f55ff4bcbbc5",
+        "original_consumer_loaded": false,
+        "source_review": {
+          "whole_source_acceptance": false,
+          "complete_answer_evaluated": true,
+          "review": "blind-v2/matinee_echo-B-review.md",
+          "decision_facts": "Preserves unknown final speaker, correct prop custody and 41 timeline refs. Categorical Mara nonpresence conflicts with visitor overlap; non-tape claim exceeds stopped deck, and completed actions appear in scene 4 indexes."
+        },
+        "known_usage_usd": "0.610044",
+        "unknown_held_usd": "0",
+        "accounted_usd": "0.610044",
+        "strict_host_diagnostic": {
+          "method": "Read-only all-errors traversal on original output. No workspace was written and no gate relaxed for scoring.",
+          "visible_sha256": "d6ec10c96c5fbe528c416838f968a51e4897c26bf41675eb8305f55ff4bcbbc5",
+          "source_sha256": "bed5976da30e2584371deabdd121966efc4276e5663a4789cf22267d655c05d2",
+          "schema_valid": true,
+          "host_failures": {
+            "selected authored Fountain canonical must preserve exact original source": 1
+          },
+          "interrupted": null,
+          "source_chars": 3121,
+          "canonical_chars": 3120,
+          "sole_canonical_difference_is_trailing_lf": true,
+          "lf_only_diagnostic": "all strict upstream host checks pass on separated copy"
+        },
+        "lf_only_counterfactual_groups": 90
+      },
+      "maintained_pipeline": {
+        "complete": true,
+        "elapsed_ms": 140699,
+        "physical_sends": 37,
+        "groups": 61,
+        "source_review": {
+          "whole_source_acceptance": false,
+          "complete_answer_evaluated": true,
+          "review": "blind-v2/matinee_echo-A-review.md"
+        },
+        "known_usage_usd": "0.20640115",
+        "unknown_held_usd": "0",
+        "accounted_usd": "0.20640115"
+      }
+    }
+  },
+  "candidate_totals": {
+    "known_usage_usd": "1.462812",
+    "unknown_held_usd": "1.41472",
+    "accounted_usd": "2.877532"
+  },
+  "control_totals": {
+    "known_usage_usd": "0.68503545",
+    "unknown_held_usd": "0",
+    "accounted_usd": "0.68503545"
+  },
+  "fresh_provider_sends": 123,
+  "independent_review_external_usd": 0,
+  "totals": {
+    "known_usage_usd": "2.14784745",
+    "unknown_held_usd": "1.41472",
+    "accounted_usd": "3.56256745"
+  },
+  "hard_cap_usd": 16,
+  "pricing": "Current introductory USD2/M input, USD0.10/M cached and USD10/M output incl thinking; daily published Dec 1 rates double.",
+  "scope": "Only three exposed authored synthetic screenplays; analysis, candidate recommendation and production eligibility are separate.",
+  "validation": "Exact unmodified consumer gate, source fidelity and derivative-only LF smoke reported separately."
+}

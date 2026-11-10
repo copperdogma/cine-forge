@@ -1,0 +1,91 @@
+{
+  "arm": "carbon",
+  "configuration": "high65536",
+  "parity": "Maintained harness builds identical wire and consumes identical native SSE replay",
+  "response": {
+    "cached": false,
+    "cost": 0.233178,
+    "latencyMs": 243653,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "storm_tunnel_lateral_run",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_006",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "7e2d3bafb4e26d34f3d9686e5a6ac350b42ce4e4c42bdd37f93c156996bddd81",
+        "028060a1edd4751a76856b442c1705bbbd09b707c848f36e7e43696c1a128ab7",
+        "3f14a022ba5bba3d28dbfc274ae7f8478db7a586aba782cad727a5b8a6aeb91d",
+        "a22468180d151d2db4218310b8c3044cf0969063fdedc386ad3341fa1c9691ef",
+        "2f7305c2b4d8cd92278458a60fb61145fd467ecd7582ebb4b0c897c26234f4be"
+      ],
+      "meta_sha256": "e15ba632c508194d744a7211a15aab1d5cdc201c4ae8cded233d1085923c2c13",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gemini-4-carbon",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "google",
+      "request_id": "T2rzarf4O4Csz7IPkebtyAg",
+      "requested_model": "gemini-4-carbon",
+      "returned_model": "gemini-4-carbon",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_006\",\"summary\":\"In a locked wide composition with a dark navy-to-teal palette and shifting diagonal grey and cyan streaks, a lone stylized cyan figure carrying a white-outlined rectangular parcel moves steadily from left to right beneath a large stationary cyan arch. Across all five sampled frames, the overarching arch, color palette, and subject proportions remain visually consistent with intact spatial continuity.\",\"tone_tags\":[\"detached\",\"tense\"],\"emotion_tags\":[\"isolation\",\"resolve\"],\"color_tags\":[\"navy\",\"teal\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"measured\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The stylized cyan figure and the white-outlined rectangular object on its right side maintain constant scale, color, and vertical placement while progressing evenly from left to right across frames 0 through 4.\",\"The spanning cyan semicircular arch and dark navy-to-teal background remain fixed in position and framing across all five samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A solitary light-blue stylized figure holding a white-outlined rectangular object stands near the left base of a wide cyan semicircular arch against a dark navy-to-teal gradient with crisscrossing grey and cyan diagonal lines.\"},{\"frame_index\":1,\"cue\":\"The figure advances rightward into the left-center section beneath the arch while keeping identical proportions, vertical alignment, and the white-outlined rectangle at its right side.\"},{\"frame_index\":2,\"cue\":\"Near the horizontal midpoint of the frame, the lone figure continues rightward beneath the stationary apex of the cyan arch as the background diagonal lines shift laterally.\"},{\"frame_index\":4,\"cue\":\"The figure reaches the right side beneath the unchanged cyan arch with its carried white-outlined rectangle still intact, completing a steady left-to-right traversal across the fixed wide framing.\"}],\"overall_confidence\":0.92}",
+    "raw": {
+      "finishReason": "STOP",
+      "modelVersion": "gemini-4-carbon",
+      "raw_sse_path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-carbon64.sse",
+      "raw_sse_sha256": "cc31e3fc950cdb573d426c5b169facd6a42ec945871025ba0e7744ffe3736429",
+      "responseId": "T2rzarf4O4Csz7IPkebtyAg",
+      "usageMetadata": {
+        "candidatesTokenCount": 418,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 418
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 21393,
+        "totalTokenCount": 29345
+      }
+    },
+    "tokenUsage": {
+      "completion": 418,
+      "completionDetails": {
+        "reasoning": 21393
+      },
+      "prompt": 7534,
+      "total": 29345
+    }
+  },
+  "structural": {
+    "pass": false,
+    "reason": "raw_score=0.5950 | overall=0.595 | uncertainty=0.080 | summary=0.33 | tone=0.50 | emotion=0.00 | color=1.00 | camera=1.00 | motion=0.00 | continuity=0.92 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, tunnel | tone: urgent, unexpected=detached | emotion: unexpected=isolation, unexpected=resolve | motion: fast_lateral, unexpected=measured, unexpected=slow_drift | continuity: unexpected=The stylized cyan figure and the white-outlined rectangular object on its right side maintain constant scale, color, and vertical placement while progressing evenly from left to right across frames 0 through 4.",
+    "score": 0.595
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/storm_tunnel_lateral_run",
+    "clip_id": "storm_tunnel_lateral_run",
+    "evaluation_id": "vfp_active_006",
+    "target_markdown": "file://../video_understanding_truth_v4/storm_tunnel_lateral_run/target.md",
+    "target_path": "video_understanding_truth_v4/storm_tunnel_lateral_run/target.json"
+  }
+}

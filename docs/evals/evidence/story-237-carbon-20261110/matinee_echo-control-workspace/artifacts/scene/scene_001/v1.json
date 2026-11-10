@@ -1,0 +1,160 @@
+{
+  "data": {
+    "characters_present": [
+      "IVA",
+      "SOL"
+    ],
+    "characters_present_ids": [
+      "iva",
+      "sol"
+    ],
+    "confidence": 0.898,
+    "elements": [
+      {
+        "content": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "SOL, a conservator, lays a cracked porcelain bird on a felt pad. Its right wing is missing. IVA, the museum's recorded-guide technician, brings a reel labelled MARA / TAKE 4. A red thread is tied around the reel's hub.",
+        "element_type": "action"
+      },
+      {
+        "content": "IVA",
+        "element_type": "character"
+      },
+      {
+        "content": "Mara recorded this twenty years ago. Before the theatre closed.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "SOL",
+        "element_type": "character"
+      },
+      {
+        "content": "Your mother?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "IVA",
+        "element_type": "character"
+      },
+      {
+        "content": "My aunt. Mum never liked microphones.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Sol places the broken wing in a shallow tin and hands it to Iva. He keeps the body on the pad.",
+        "element_type": "action"
+      },
+      {
+        "content": "SOL",
+        "element_type": "character"
+      },
+      {
+        "content": "Take this upstairs. We can test the join after your sound check.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Iva puts the tin and reel in a canvas satchel. Sol's spectacles hang from a cord. He takes them off to inspect the exposed joint. Iva leaves; Sol remains at the bench.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "Museum Conservation Room",
+    "narrative_beats": [],
+    "props_mentioned": [
+      "BROKEN WING",
+      "CANVAS SATCHEL",
+      "FELT PAD",
+      "PORCELAIN BIRD",
+      "RED THREAD",
+      "REEL",
+      "SHALLOW TIN",
+      "SPECTACLES"
+    ],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Extracted from first non-empty scene line",
+        "field_name": "heading",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.92,
+        "evidence": "Parsed heading prefix token",
+        "field_name": "int_ext",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.9,
+        "evidence": "Parsed heading suffix segment",
+        "field_name": "time_of_day",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.88,
+        "evidence": "Parsed heading core location segment",
+        "field_name": "location",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.84,
+        "evidence": "Collected from dialogue character cues",
+        "field_name": "characters_present",
+        "method": "rule"
+      }
+    ],
+    "scene_id": "scene_001",
+    "scene_number": 1,
+    "source_span": {
+      "end_line": 24,
+      "start_line": 5
+    },
+    "time_of_day": "AFTERNOON",
+    "tone_mood": "neutral",
+    "tone_shifts": []
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "single monolithic scene list artifact"
+    ],
+    "annotations": {
+      "ai_enrichment_used": false,
+      "boundary_reason": "",
+      "boundary_uncertain": false,
+      "discovery_tier": "structural",
+      "parser_backend": "fountain-tools",
+      "scene_number": 1,
+      "source_span": {
+        "end_line": 24,
+        "start_line": 5
+      }
+    },
+    "confidence": 0.898,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:03:25.371379Z",
+    "health": "valid",
+    "intent": "Represent one screenplay scene as structured data for downstream modules",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_breakdown_v1",
+    "producing_role": null,
+    "rationale": "Structural extraction with LLM action-line entity extraction",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "path": "artifacts/scene/scene_001/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "code"
+  }
+}

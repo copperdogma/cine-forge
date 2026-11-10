@@ -1,0 +1,15 @@
+{
+  "method": "Read-only all-errors traversal on original output. No workspace was written and no gate relaxed for scoring.",
+  "visible_sha256": "3a40ff75271122307610e1680980c2bbef9f98f67d1873a83656fe5adc8616cf",
+  "source_sha256": "e28a204cd4d756c91bfbd28a521473a895fd8d14984efd400658e6a65b9a7618",
+  "schema_valid": true,
+  "host_failures": {
+    "selected authored Fountain canonical must preserve exact original source": 1,
+    "dangling continuity gap": 2
+  },
+  "interrupted": null,
+  "source_chars": 3142,
+  "canonical_chars": 3141,
+  "sole_canonical_difference_is_trailing_lf": true,
+  "lf_only_diagnostic": "strict separated copy also fails: dangling continuity gap"
+}

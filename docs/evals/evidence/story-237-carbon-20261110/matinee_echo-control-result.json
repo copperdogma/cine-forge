@@ -1,0 +1,1450 @@
+{
+  "case_id": "matinee_echo",
+  "label": "Whole workspace matinee_echo",
+  "input_fixture": "benchmarks/fixtures/whole_story_workspace_v1/matinee_echo.fountain",
+  "input_word_count": 556,
+  "input_line_count": 78,
+  "input_bytes": 3121,
+  "notes": null,
+  "project_dir": "output/eval-full-script-throughput-matinee_echo-165cee",
+  "success": true,
+  "error": null,
+  "total_elapsed_ms": 140699,
+  "total_duration_ms": 171949,
+  "total_cost_usd": 0.1731172,
+  "total_input_tokens": 56424,
+  "total_output_tokens": 19741,
+  "output_volume": {
+    "artifact_count": 67,
+    "total_bytes": 531443,
+    "text_characters": 531443,
+    "text_lines": 14721,
+    "by_artifact_type": {
+      "raw_input": 1,
+      "canonical_script": 1,
+      "scene": 8,
+      "scene_index": 2,
+      "script_bible": 1,
+      "project_config": 2,
+      "entity_discovery_results": 1,
+      "character_bible": 5,
+      "bible_manifest": 18,
+      "location_bible": 2,
+      "prop_bible": 11,
+      "entity_graph": 1,
+      "continuity_state": 13,
+      "continuity_index": 1
+    }
+  },
+  "recipe_runs": [
+    {
+      "run_id": "matinee_echo-mvp_ingest-6964",
+      "recipe_id": "mvp_ingest",
+      "recipe_path": "configs/recipes/recipe-mvp-ingest.yaml",
+      "ui_label": "Break Down Script",
+      "elapsed_ms": 38640,
+      "success": true,
+      "error": null,
+      "stage_summaries": [
+        {
+          "stage_id": "ingest",
+          "status": "done",
+          "model_used": "code",
+          "call_count": 1,
+          "attempt_count": 1,
+          "duration_ms": 3,
+          "cost_usd": 0.0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "output_volume": {
+            "artifact_count": 1,
+            "total_bytes": 5407,
+            "text_characters": 5407,
+            "text_lines": 78,
+            "by_artifact_type": {
+              "raw_input": 1
+            }
+          }
+        },
+        {
+          "stage_id": "normalize",
+          "status": "done",
+          "model_used": "code",
+          "call_count": 1,
+          "attempt_count": 1,
+          "duration_ms": 11,
+          "cost_usd": 0.0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "output_volume": {
+            "artifact_count": 1,
+            "total_bytes": 5403,
+            "text_characters": 5403,
+            "text_lines": 72,
+            "by_artifact_type": {
+              "canonical_script": 1
+            }
+          }
+        },
+        {
+          "stage_id": "breakdown_scenes",
+          "status": "done",
+          "model_used": "claude-haiku-4-5-20251001",
+          "call_count": 4,
+          "attempt_count": 1,
+          "duration_ms": 1382,
+          "cost_usd": 0.0042048,
+          "input_tokens": 3506,
+          "output_tokens": 350,
+          "output_volume": {
+            "artifact_count": 5,
+            "total_bytes": 23006,
+            "text_characters": 23006,
+            "text_lines": 844,
+            "by_artifact_type": {
+              "scene": 4,
+              "scene_index": 1
+            }
+          }
+        },
+        {
+          "stage_id": "script_bible",
+          "status": "done",
+          "model_used": "claude-haiku-4-5-20251001",
+          "call_count": 1,
+          "attempt_count": 1,
+          "duration_ms": 21289,
+          "cost_usd": 0.010184,
+          "input_tokens": 2700,
+          "output_tokens": 2006,
+          "output_volume": {
+            "artifact_count": 1,
+            "total_bytes": 9545,
+            "text_characters": 9545,
+            "text_lines": 125,
+            "by_artifact_type": {
+              "script_bible": 1
+            }
+          }
+        },
+        {
+          "stage_id": "project_config",
+          "status": "done",
+          "model_used": "claude-sonnet-4-6",
+          "call_count": 1,
+          "attempt_count": 1,
+          "duration_ms": 17263,
+          "cost_usd": 0.0192032,
+          "input_tokens": 4974,
+          "output_tokens": 820,
+          "output_volume": {
+            "artifact_count": 1,
+            "total_bytes": 8159,
+            "text_characters": 8159,
+            "text_lines": 228,
+            "by_artifact_type": {
+              "project_config": 1
+            }
+          }
+        }
+      ],
+      "total_duration_ms": 39948,
+      "total_cost_usd": 0.033592,
+      "total_input_tokens": 11180,
+      "total_output_tokens": 3176,
+      "output_volume": {
+        "artifact_count": 9,
+        "total_bytes": 51520,
+        "text_characters": 51520,
+        "text_lines": 1347,
+        "by_artifact_type": {
+          "raw_input": 1,
+          "canonical_script": 1,
+          "scene": 4,
+          "scene_index": 1,
+          "script_bible": 1,
+          "project_config": 1
+        }
+      }
+    },
+    {
+      "run_id": "matinee_echo-world_building-762a",
+      "recipe_id": "world_building",
+      "recipe_path": "configs/recipes/recipe-world-building.yaml",
+      "ui_label": "Deep Breakdown",
+      "elapsed_ms": 102059,
+      "success": true,
+      "error": null,
+      "stage_summaries": [
+        {
+          "stage_id": "analyze_scenes",
+          "status": "done",
+          "model_used": "mixed:claude-sonnet-4-6",
+          "call_count": 1,
+          "attempt_count": 1,
+          "duration_ms": 35527,
+          "cost_usd": 0.034521,
+          "input_tokens": 2,
+          "output_tokens": 2301,
+          "output_volume": {
+            "artifact_count": 5,
+            "total_bytes": 27470,
+            "text_characters": 27470,
+            "text_lines": 841,
+            "by_artifact_type": {
+              "scene": 4,
+              "scene_index": 1
+            }
+          }
+        },
+        {
+          "stage_id": "refresh_project_config",
+          "status": "done",
+          "model_used": "claude-sonnet-4-6",
+          "call_count": 1,
+          "attempt_count": 1,
+          "duration_ms": 15264,
+          "cost_usd": 0.0187322,
+          "input_tokens": 4637,
+          "output_tokens": 817,
+          "output_volume": {
+            "artifact_count": 1,
+            "total_bytes": 7978,
+            "text_characters": 7978,
+            "text_lines": 232,
+            "by_artifact_type": {
+              "project_config": 1
+            }
+          }
+        },
+        {
+          "stage_id": "entity_discovery",
+          "status": "done",
+          "model_used": "claude-haiku-4-5-20251001",
+          "call_count": 1,
+          "attempt_count": 1,
+          "duration_ms": 2540,
+          "cost_usd": 0.0029368,
+          "input_tokens": 2836,
+          "output_tokens": 167,
+          "output_volume": {
+            "artifact_count": 1,
+            "total_bytes": 2242,
+            "text_characters": 2242,
+            "text_lines": 85,
+            "by_artifact_type": {
+              "entity_discovery_results": 1
+            }
+          }
+        },
+        {
+          "stage_id": "character_bible",
+          "status": "done",
+          "model_used": "claude-haiku-4-5-20251001",
+          "call_count": 1,
+          "attempt_count": 1,
+          "duration_ms": 19089,
+          "cost_usd": 0.0288896,
+          "input_tokens": 13357,
+          "output_tokens": 4551,
+          "output_volume": {
+            "artifact_count": 10,
+            "total_bytes": 74488,
+            "text_characters": 74488,
+            "text_lines": 1761,
+            "by_artifact_type": {
+              "character_bible": 5,
+              "bible_manifest": 5
+            }
+          }
+        },
+        {
+          "stage_id": "location_bible",
+          "status": "done",
+          "model_used": "claude-haiku-4-5-20251001",
+          "call_count": 1,
+          "attempt_count": 1,
+          "duration_ms": 4190,
+          "cost_usd": 0.004284,
+          "input_tokens": 1970,
+          "output_tokens": 677,
+          "output_volume": {
+            "artifact_count": 4,
+            "total_bytes": 10106,
+            "text_characters": 10106,
+            "text_lines": 302,
+            "by_artifact_type": {
+              "location_bible": 2,
+              "bible_manifest": 2
+            }
+          }
+        },
+        {
+          "stage_id": "prop_bible",
+          "status": "done",
+          "model_used": "claude-haiku-4-5-20251001",
+          "call_count": 1,
+          "attempt_count": 1,
+          "duration_ms": 17788,
+          "cost_usd": 0.0252312,
+          "input_tokens": 13649,
+          "output_tokens": 3578,
+          "output_volume": {
+            "artifact_count": 22,
+            "total_bytes": 185518,
+            "text_characters": 185518,
+            "text_lines": 4388,
+            "by_artifact_type": {
+              "prop_bible": 11,
+              "bible_manifest": 11
+            }
+          }
+        },
+        {
+          "stage_id": "entity_graph",
+          "status": "done",
+          "model_used": "claude-haiku-4-5-20251001",
+          "call_count": 1,
+          "attempt_count": 1,
+          "duration_ms": 5497,
+          "cost_usd": 0.003216,
+          "input_tokens": 835,
+          "output_tokens": 637,
+          "output_volume": {
+            "artifact_count": 1,
+            "total_bytes": 47603,
+            "text_characters": 47603,
+            "text_lines": 1658,
+            "by_artifact_type": {
+              "entity_graph": 1
+            }
+          }
+        },
+        {
+          "stage_id": "continuity_tracking",
+          "status": "done",
+          "model_used": "claude-haiku-4-5-20251001",
+          "call_count": 1,
+          "attempt_count": 1,
+          "duration_ms": 32106,
+          "cost_usd": 0.0217144,
+          "input_tokens": 7958,
+          "output_tokens": 3837,
+          "output_volume": {
+            "artifact_count": 14,
+            "total_bytes": 124518,
+            "text_characters": 124518,
+            "text_lines": 4107,
+            "by_artifact_type": {
+              "continuity_state": 13,
+              "continuity_index": 1
+            }
+          }
+        }
+      ],
+      "total_duration_ms": 132001,
+      "total_cost_usd": 0.1395252,
+      "total_input_tokens": 45244,
+      "total_output_tokens": 16565,
+      "output_volume": {
+        "artifact_count": 58,
+        "total_bytes": 479923,
+        "text_characters": 479923,
+        "text_lines": 13374,
+        "by_artifact_type": {
+          "scene": 4,
+          "scene_index": 1,
+          "project_config": 1,
+          "entity_discovery_results": 1,
+          "character_bible": 5,
+          "bible_manifest": 18,
+          "location_bible": 2,
+          "prop_bible": 11,
+          "entity_graph": 1,
+          "continuity_state": 13,
+          "continuity_index": 1
+        }
+      }
+    }
+  ],
+  "physical_admission_halted": false,
+  "physical_calls": [
+    {
+      "name": "0081-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 2928,
+      "output_allowance": 400,
+      "reservation_usd": "0.007856",
+      "accounted_usd": "0.001345",
+      "request_sha256": "6632ba27d2c7b9df7a43cbc1a60cab43cae7bf51ba8ac5a49c0883137762c2f3",
+      "usage": {
+        "input_tokens": 880,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 93,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumRsq1Q14SMCk6iyKzc",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 1100,
+      "response_sha256": "5e09e0d67d7f2542f6f3768537a25aacad565970dbc31a69e22d4d40805fa2f7"
+    },
+    {
+      "name": "0082-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4748,
+      "output_allowance": 64000,
+      "reservation_usd": "0.329496",
+      "accounted_usd": "0.01273",
+      "request_sha256": "58dac17a46daf08c1da16c7d3e9e1db5a6664f4e584fb4162541dcceb9573d33",
+      "usage": {
+        "input_tokens": 2700,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 2006,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumRsrEym3DwwXFruaBu",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 21078,
+      "response_sha256": "e6b1466adf6b6905569934f450a48bca3b85672f4f580fb58a5aee3ad2f64d2b"
+    },
+    {
+      "name": "0083-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 2929,
+      "output_allowance": 400,
+      "reservation_usd": "0.007858",
+      "accounted_usd": "0.001341",
+      "request_sha256": "8c834ec685ba675988a14b478c36f20fcc10543cc47a21dc63c55dde039f31ad",
+      "usage": {
+        "input_tokens": 881,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 92,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumRstyLNjEE2Dn6EvMT",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 1166,
+      "response_sha256": "fde10335a6e61da00d25a995ad1f71dd2e9220915ddedefa10f6a18e8fd8beaa"
+    },
+    {
+      "name": "0084-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 2913,
+      "output_allowance": 400,
+      "reservation_usd": "0.007826",
+      "accounted_usd": "0.00122",
+      "request_sha256": "4474bf08ada56ca26d17e270ab056e67d74917a51b2fb63bb626edda410c245f",
+      "usage": {
+        "input_tokens": 865,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 71,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumRstUn4CMQ1roVjroc",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 958,
+      "response_sha256": "15bed96da81ba50e703992a372de79576ab3d4922269a53d4f40a45fec522d34"
+    },
+    {
+      "name": "0085-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 2928,
+      "output_allowance": 400,
+      "reservation_usd": "0.007856",
+      "accounted_usd": "0.00135",
+      "request_sha256": "7897336c462c3a1093c99ca70c8fc599a7b33bfb772e4ca142bc07d14711e819",
+      "usage": {
+        "input_tokens": 880,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 94,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumRstjZEPwzHvCHc5YR",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 1094,
+      "response_sha256": "9fcbfc59acebb097d86b5780a58d630a8965c6ecc22c852cdbf873cebdcf7d43"
+    },
+    {
+      "name": "0086-control-matinee_echo-claude-sonnet-4-6",
+      "group": "control-matinee_echo",
+      "model": "claude-sonnet-4-6",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4412,
+      "output_allowance": 16384,
+      "reservation_usd": "0.272232",
+      "accounted_usd": "0.018012",
+      "request_sha256": "7f29828af468b9387435d071d18b67ffa399fc3899b846294f7bdb525a417022",
+      "usage": {
+        "input_tokens": 2364,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 728,
+        "service_tier": "standard",
+        "inference_geo": "global",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumTSbX3ywBNFHZuPRoV",
+      "served_model": "claude-sonnet-4-6",
+      "latency_ms": 14365,
+      "response_sha256": "6775eef3bedb0709f7699ccdfd3403d38508c02e6e23c18f0d2fab3de152ebf2"
+    },
+    {
+      "name": "0087-control-matinee_echo-gpt-4.1-mini",
+      "group": "control-matinee_echo",
+      "model": "gpt-4.1-mini",
+      "url": "https://api.openai.com/v1/chat/completions",
+      "state": "settled-usage-estimate",
+      "input_bound": 13467,
+      "output_allowance": 1200,
+      "reservation_usd": "0.0073068",
+      "accounted_usd": "0.0011912",
+      "request_sha256": "4fec98db4f8bc2009f9cf6bf0f6fa2d94f3b04c6a1687b3778a07bfb2eec3cc1",
+      "usage": {
+        "prompt_tokens": 2610,
+        "completion_tokens": 92,
+        "total_tokens": 2702,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "request_id": "chatcmpl-EilQP3tN4H2nMUbegLKkIaKYMMTMe",
+      "served_model": "gpt-4.1-mini-2025-04-14",
+      "latency_ms": 2744,
+      "response_sha256": "b8fb698e13350e64f683270d517c8a042119cebfb11e077b53264b4aef148788"
+    },
+    {
+      "name": "0088-control-matinee_echo-claude-sonnet-4-6",
+      "group": "control-matinee_echo",
+      "model": "claude-sonnet-4-6",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4215,
+      "output_allowance": 4096,
+      "reservation_usd": "0.08673",
+      "accounted_usd": "0.04263975",
+      "request_sha256": "213c21ca66bd680797fa802da9f34beb5cd72ce67f5be98b9e398d5bee3a39a0",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 2165,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 2165,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 2301,
+        "service_tier": "standard",
+        "inference_geo": "global",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumUichYnRzUErE29ciB",
+      "served_model": "claude-sonnet-4-6",
+      "latency_ms": 35370,
+      "response_sha256": "d5dce70de08c6dd29ad5c72ac7dda4b6adac32dee6daef7b3abc2cbbb55ba016"
+    },
+    {
+      "name": "0089-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3365,
+      "output_allowance": 16384,
+      "reservation_usd": "0.08865",
+      "accounted_usd": "0.001507",
+      "request_sha256": "58743b5d736c0f514b4350cb75359cd906933e129cf4f5d1333cce27cc19a0f7",
+      "usage": {
+        "input_tokens": 1317,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 38,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumXM3Wbwjq7ThJpVaYK",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 804,
+      "response_sha256": "4deb5da174373136e30293f534daa0dd904656f02d60ba5803d510237996294e"
+    },
+    {
+      "name": "0090-control-matinee_echo-claude-sonnet-4-6",
+      "group": "control-matinee_echo",
+      "model": "claude-sonnet-4-6",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4233,
+      "output_allowance": 16384,
+      "reservation_usd": "0.271158",
+      "accounted_usd": "0.017625",
+      "request_sha256": "ed106e3ddd7fb9c86a1e3a303c99c34422dcfce09e59c8cf7eb48cc8f9c0919c",
+      "usage": {
+        "input_tokens": 2185,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 738,
+        "service_tier": "standard",
+        "inference_geo": "global",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumXMX2c4o1ghbnUw51E",
+      "served_model": "claude-sonnet-4-6",
+      "latency_ms": 13773,
+      "response_sha256": "d4ceac9b99b672b6205ba740dcdd6b39797964758f7345e98502bd51ebf8f4ca"
+    },
+    {
+      "name": "0091-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3567,
+      "output_allowance": 16384,
+      "reservation_usd": "0.089054",
+      "accounted_usd": "0.002164",
+      "request_sha256": "15edc5b07bfb82400412eb5791a62bd404ab6f0c8fbf251a064946064b989559",
+      "usage": {
+        "input_tokens": 1519,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 129,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumXQg3QqVR5da89zfB7",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 1427,
+      "response_sha256": "3b189f7f6dbabfaac46b26a3398c4b6b0b7eef1448adca57dc9fc0a6075c4b3c"
+    },
+    {
+      "name": "0092-control-matinee_echo-gpt-4.1-mini",
+      "group": "control-matinee_echo",
+      "model": "gpt-4.1-mini",
+      "url": "https://api.openai.com/v1/chat/completions",
+      "state": "settled-usage-estimate",
+      "input_bound": 12948,
+      "output_allowance": 1200,
+      "reservation_usd": "0.0070992",
+      "accounted_usd": "0.0011072",
+      "request_sha256": "d465804b321b9afbae3d2c4485d65b868876c0ffdbc76890eb6ca7304023b6e5",
+      "usage": {
+        "prompt_tokens": 2452,
+        "completion_tokens": 79,
+        "total_tokens": 2531,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "audio_tokens": 0,
+          "accepted_prediction_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      },
+      "request_id": "chatcmpl-EilRED5xnjeDXmjXuYPP0gmX9ttZ8",
+      "served_model": "gpt-4.1-mini-2025-04-14",
+      "latency_ms": 1113,
+      "response_sha256": "6829e2e5315f5a4a56563c116073f0ee649fd6ff57a782ed2a05d05203311f6c"
+    },
+    {
+      "name": "0093-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3036,
+      "output_allowance": 4096,
+      "reservation_usd": "0.026552",
+      "accounted_usd": "0.002503",
+      "request_sha256": "25f412f2ca7345e8d27e6bc2d902dcae7dc7a9cce63c3709768e59da1337b7a5",
+      "usage": {
+        "input_tokens": 988,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 303,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumYTrJoZCf4Vh6jyETQ",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 3404,
+      "response_sha256": "795bea14c9e375761949315feeb0c84700aa23cd916da44ab90835de7916773d"
+    },
+    {
+      "name": "0094-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4536,
+      "output_allowance": 2400,
+      "reservation_usd": "0.021072",
+      "accounted_usd": "0.008308",
+      "request_sha256": "e0807b88314783355f142814387b98a3f7f7d8456f45808e5088f17ca723c534",
+      "usage": {
+        "input_tokens": 2488,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1164,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumYTuHKLjvWmXF5X1WB",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 10207,
+      "response_sha256": "f5f7535629d63a54d2ce8600e17bf2b643c1b1d49b1f394cd475a9f995a97ec7"
+    },
+    {
+      "name": "0095-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3030,
+      "output_allowance": 4096,
+      "reservation_usd": "0.02654",
+      "accounted_usd": "0.002852",
+      "request_sha256": "588d942d3dd376fc7dd02661235b72273dca2c6d11ad310b98b3dd464a646a9c",
+      "usage": {
+        "input_tokens": 982,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 374,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumYTsoDcv8xVjse7uta",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 4024,
+      "response_sha256": "22a95881ee781014f54f846dec71a4c574edefc227b10796dbae68205ed4bcca"
+    },
+    {
+      "name": "0096-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4366,
+      "output_allowance": 2400,
+      "reservation_usd": "0.020732",
+      "accounted_usd": "0.005688",
+      "request_sha256": "907b8bcdd846a5911fe9f2b96d4ea9938439e8b310b8e0521f5edce3abe7c15e",
+      "usage": {
+        "input_tokens": 2318,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 674,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumYTvXtyP7xCEaX8tR9",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 6399,
+      "response_sha256": "436afe7b68c827c4e9978fd60e70b3d76c0d6cbe03b1a21b38fa4ae5d11d8a8a"
+    },
+    {
+      "name": "0097-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4693,
+      "output_allowance": 8192,
+      "reservation_usd": "0.050346",
+      "accounted_usd": "0.00932",
+      "request_sha256": "3751f662828130cdf87417b91adf18007bd1d9bac8ffdfc15b1a0ad72fc78920",
+      "usage": {
+        "input_tokens": 2645,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1335,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumYww1Cx3Qtn7bR5PJX",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 12346,
+      "response_sha256": "33c8c888a76c67aabfcedc4231d11324bfbe6ffd180bb683e1cc4316980c4e98"
+    },
+    {
+      "name": "0098-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4488,
+      "output_allowance": 8192,
+      "reservation_usd": "0.049936",
+      "accounted_usd": "0.008015",
+      "request_sha256": "93e8f8283b6c4954114db201b2fdac6c4adbe95c4b29c7d8556f2e9fb9afc7b0",
+      "usage": {
+        "input_tokens": 2440,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1115,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumYwyEkm9erKzKUoCNG",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 10378,
+      "response_sha256": "0f6007a0215ad9f7f13717f01c9ffb5f7b29722afdd7d3f86ebb67bbbcd775a9"
+    },
+    {
+      "name": "0099-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4035,
+      "output_allowance": 4096,
+      "reservation_usd": "0.02855",
+      "accounted_usd": "0.003857",
+      "request_sha256": "94dad36576f0398a6af688ec2791b00cf4d1e5e791a1cc9d1e8a7f7e34a60eac",
+      "usage": {
+        "input_tokens": 1987,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 374,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumYx1EPShaPiehXeGW5",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 3375,
+      "response_sha256": "38db67d1dd8fa3535b7913ebd1c86f718ca70af4f5f3270af1c949fe7acd93c7"
+    },
+    {
+      "name": "0100-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4030,
+      "output_allowance": 4096,
+      "reservation_usd": "0.02854",
+      "accounted_usd": "0.004192",
+      "request_sha256": "0ebce5df525bca764545985a92dc0405932cc14d479ce2893fc9ea9717a617a8",
+      "usage": {
+        "input_tokens": 1982,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 442,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumYwwkY93EWNqp9cjN8",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 4523,
+      "response_sha256": "afda42491fb1bc17c96d2815ff99ee0b982674dea92be6d61fb7abd629814e10"
+    },
+    {
+      "name": "0101-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4033,
+      "output_allowance": 4096,
+      "reservation_usd": "0.028546",
+      "accounted_usd": "0.00504",
+      "request_sha256": "bedd41d639f0b4ef3df90c7367f504e6498dfa2680dcc9d04f1e51055a59c358",
+      "usage": {
+        "input_tokens": 1985,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 611,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZ152Gy7rRFozpqTmR",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 5573,
+      "response_sha256": "1e1d0d28c10da845e11f636ab956fbdf87d0de3b93f2b73b68b7a87bf782f844"
+    },
+    {
+      "name": "0102-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3100,
+      "output_allowance": 16384,
+      "reservation_usd": "0.08812",
+      "accounted_usd": "0.002082",
+      "request_sha256": "b68e9300de470bfd815634436515b3c9cd04038b4b9e7567919b91172fe065fc",
+      "usage": {
+        "input_tokens": 1052,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 206,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZEJFZ5G67wP5KEiZQ",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 2445,
+      "response_sha256": "394d7def8ca077b0dbaf4a5d08abc8fa3dbee719400b642de4f38d90ead3edd3"
+    },
+    {
+      "name": "0103-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 2894,
+      "output_allowance": 16384,
+      "reservation_usd": "0.087708",
+      "accounted_usd": "0.001741",
+      "request_sha256": "6c44f4a710e32639e2e47dafe5434d6b4d216a035e17e388ab856d575a17dc6c",
+      "usage": {
+        "input_tokens": 846,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 179,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZE962AnhsrpJ5YqoF",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 2102,
+      "response_sha256": "3c40bc4ce864c678c5cd11b884e7b5cc6a9f54b83451301845fcfad7fd5af1b3"
+    },
+    {
+      "name": "0104-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3094,
+      "output_allowance": 16384,
+      "reservation_usd": "0.088108",
+      "accounted_usd": "0.002281",
+      "request_sha256": "950ae759a79d9116be163d5b7099d9c58e9e28a1d856db88682b9c40a3f399b9",
+      "usage": {
+        "input_tokens": 1046,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 247,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZECK99buaFTNLypkR",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 2896,
+      "response_sha256": "194cc0ccec66164e9b684c9b9a3c78a286aa3e146af21b5879dee02bb69ff61b"
+    },
+    {
+      "name": "0105-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3323,
+      "output_allowance": 16384,
+      "reservation_usd": "0.088566",
+      "accounted_usd": "0.00267",
+      "request_sha256": "62d719ebc4596b74d8a3b83731708e23f9126e31279b6ff8c30e72f0bb4b7e85",
+      "usage": {
+        "input_tokens": 1275,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 279,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZEC43EebjrMKbo2Av",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 3358,
+      "response_sha256": "67b8382d174d8b0ce8f3ff3783ab01758d48a3c919e37dad66e3f8e9c5f12984"
+    },
+    {
+      "name": "0106-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 2888,
+      "output_allowance": 16384,
+      "reservation_usd": "0.087696",
+      "accounted_usd": "0.001675",
+      "request_sha256": "4c9af27c04cf7e87b4d69eb6794ae9bb40de7f7858b93091fb049965c82b9a84",
+      "usage": {
+        "input_tokens": 840,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 167,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZENy7m5FwYXFPdeXd",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 1852,
+      "response_sha256": "c08f73e7ee193fb8a693b20e147b806f53089bb698e8f9a6c740a3a1864b75ff"
+    },
+    {
+      "name": "0107-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3102,
+      "output_allowance": 16384,
+      "reservation_usd": "0.088124",
+      "accounted_usd": "0.002014",
+      "request_sha256": "3f0b4d29a041200fccf859609fa99af1e3bb744aa27aaec09a9ebc3ee02396c1",
+      "usage": {
+        "input_tokens": 1054,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 192,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZPC45YBctyLtaSuqz",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 2206,
+      "response_sha256": "09be5b375306be206a63d9a1f852b69e41ef4bb766df9a7b73d29e1016b34aee"
+    },
+    {
+      "name": "0108-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3101,
+      "output_allowance": 16384,
+      "reservation_usd": "0.088122",
+      "accounted_usd": "0.002298",
+      "request_sha256": "f07f54e7ac63cc703553b51350d18fbcb86876da6dc312b86d39c3dd06e521fb",
+      "usage": {
+        "input_tokens": 1053,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 249,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZPmn3cmQHu81YnHKM",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 2769,
+      "response_sha256": "0b7818cb4dc4d028afeec4b25b347cb1d09a5f6888b14ad5d1ae6e502b4756a4"
+    },
+    {
+      "name": "0109-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3099,
+      "output_allowance": 16384,
+      "reservation_usd": "0.088118",
+      "accounted_usd": "0.002301",
+      "request_sha256": "3c7a0d5febe5af32bd589777e3bd2bdc7d2b89d5fd6f028e9447773c334c5f6a",
+      "usage": {
+        "input_tokens": 1051,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 250,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZRB7Khq6rjChhwY6y",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 2742,
+      "response_sha256": "fcef31f555ab9e0a950f9581be43831fa692e6b59ed53176165582a97958a53b"
+    },
+    {
+      "name": "0110-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3105,
+      "output_allowance": 16384,
+      "reservation_usd": "0.08813",
+      "accounted_usd": "0.002182",
+      "request_sha256": "64c56c9d22ed5addcd4ce6728882ceb5d57b5668164ca5ec88c397f37ebd0fa7",
+      "usage": {
+        "input_tokens": 1057,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 225,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZTAAx5rNrMjZjGxfG",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 2499,
+      "response_sha256": "3ba78bd63cfe8a58698405479c9d7fb2722c1986ba3cf8f95dbad39ef6d1c0cd"
+    },
+    {
+      "name": "0111-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 2884,
+      "output_allowance": 16384,
+      "reservation_usd": "0.087688",
+      "accounted_usd": "0.001711",
+      "request_sha256": "e1d170d0ee647f596cde576056a5bdd03d16b831dbc3d6f7552df3719e0567b9",
+      "usage": {
+        "input_tokens": 836,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 175,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZVFfxPNRa8CmsHQqk",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 2071,
+      "response_sha256": "ab219a622b78257b109a09ce87794b04da1c8f597cbc0a501911968cb43ac16a"
+    },
+    {
+      "name": "0112-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3099,
+      "output_allowance": 16384,
+      "reservation_usd": "0.088118",
+      "accounted_usd": "0.002276",
+      "request_sha256": "78ab342b1ecc49b77f5cbe442f1a4ad9a4d3eb362a738aaae98229cf0728b41c",
+      "usage": {
+        "input_tokens": 1051,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 245,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZZB4c4qGfh7jCLRyc",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 2793,
+      "response_sha256": "40fb8d069a371fc715e76445cef4b70e4f9990e32867086273bf47d95deed7a8"
+    },
+    {
+      "name": "0113-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 3957,
+      "output_allowance": 2400,
+      "reservation_usd": "0.019914",
+      "accounted_usd": "0.006644",
+      "request_sha256": "56744b689ac4b37c4a1a6b549b7e2dc747b8bd529771d9ea4becfc26fd568359",
+      "usage": {
+        "input_tokens": 1909,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 947,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZsWPbYFowwU1GTa7z",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 7403,
+      "response_sha256": "aff50e1ba8fc9a3f5c52a06c11cb7ed1d10b937d43c9e075c39cb719186eeff0"
+    },
+    {
+      "name": "0114-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 2883,
+      "output_allowance": 16384,
+      "reservation_usd": "0.087686",
+      "accounted_usd": "0.00402",
+      "request_sha256": "ae7fdd1cf35ce64f9eb63a1f9708dc322d90d013be43f3d1b0aac7b3a777f599",
+      "usage": {
+        "input_tokens": 835,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 637,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumZsdpqwcw1i49JwfoB",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 5329,
+      "response_sha256": "3a08f5d47bcd4c66636093c713c4692056dbcdfb669fe0eebaeb02ab2ca78019"
+    },
+    {
+      "name": "0115-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4038,
+      "output_allowance": 2400,
+      "reservation_usd": "0.020076",
+      "accounted_usd": "0.0063",
+      "request_sha256": "dcdc201f4ffcdf53566913a11e81cc6a74d6969fe1d0546b6e8400c5d075a031",
+      "usage": {
+        "input_tokens": 1990,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 862,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumaVJBXAJumtB1gJ9HE",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 7841,
+      "response_sha256": "dd973a3dbd73cca404ab1454ddf57760a5c12b63324e62a0532c7c26f050153b"
+    },
+    {
+      "name": "0116-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4042,
+      "output_allowance": 2400,
+      "reservation_usd": "0.020084",
+      "accounted_usd": "0.006814",
+      "request_sha256": "9d69994b0a82de21f166bba2c57f1609f7302132571cbccea6ec985dfc01483b",
+      "usage": {
+        "input_tokens": 1994,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 964,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011Cgumb2HWL2EsZcrz25R75",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 7559,
+      "response_sha256": "4cf5480bfb06ab324fe2ba8f7b81c09e4999641ea0663d17b4eca4d7590cac4e"
+    },
+    {
+      "name": "0117-control-matinee_echo-claude-haiku-4-5-20251001",
+      "group": "control-matinee_echo",
+      "model": "claude-haiku-4-5-20251001",
+      "url": "https://api.anthropic.com/v1/messages",
+      "state": "settled-usage-estimate",
+      "input_bound": 4113,
+      "output_allowance": 2400,
+      "reservation_usd": "0.020226",
+      "accounted_usd": "0.007385",
+      "request_sha256": "61e82486699bd1055b6f49f75cb00ddf916512f74b8743054056845220f1877a",
+      "usage": {
+        "input_tokens": 2065,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 0
+        },
+        "output_tokens": 1064,
+        "service_tier": "standard",
+        "inference_geo": "not_available",
+        "speed": "standard"
+      },
+      "request_id": "msg_011CgumbbH8C6DMqsMJS6TTF",
+      "served_model": "claude-haiku-4-5-20251001",
+      "latency_ms": 8605,
+      "response_sha256": "26d386bb4a193cd70682ea749ba691fdd56a72e50a70e98ca9f0a6cdcab8556e"
+    }
+  ]
+}

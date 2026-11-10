@@ -1,0 +1,214 @@
+{
+  "budget_warning_scopes": [],
+  "cost_is_complete": true,
+  "dry_run": false,
+  "finished_at": 1794337288.406328,
+  "instrumented": false,
+  "project_cost_baseline_usd": 0.0,
+  "recipe_id": "mvp_ingest",
+  "run_id": "last_ferry-mvp_ingest-e7c8",
+  "runtime_params": {
+    "accept_config": true,
+    "default_model": "claude-sonnet-4-6",
+    "escalate_model": "claude-opus-4-6",
+    "input_file": "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/output/eval-full-script-throughput-last_ferry-e0649c/inputs/0974bad9_last_ferry.fountain",
+    "qa_model": "gpt-4.1-mini",
+    "verify_model": "gpt-4.1-mini",
+    "work_model": "claude-haiku-4-5-20251001"
+  },
+  "stage_order": [
+    "ingest",
+    "normalize",
+    "breakdown_scenes",
+    "script_bible",
+    "project_config"
+  ],
+  "stages": {
+    "breakdown_scenes": {
+      "artifact_refs": [
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_004",
+          "path": "artifacts/scene/scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_003",
+          "path": "artifacts/scene/scene_003/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_001",
+          "path": "artifacts/scene/scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_002",
+          "path": "artifacts/scene/scene_002/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "scene_index",
+          "entity_id": "project",
+          "path": "artifacts/scene_index/project/v1.json",
+          "version": 1
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 1.2458,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 4,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0039224,
+      "duration_seconds": 1.2507,
+      "final_error_class": null,
+      "input_tokens": 3483,
+      "model_used": "claude-haiku-4-5-20251001",
+      "output_tokens": 284,
+      "pause_reason": null,
+      "started_at": 1794337248.6255202,
+      "status": "done"
+    },
+    "ingest": {
+      "artifact_refs": [
+        {
+          "artifact_type": "raw_input",
+          "entity_id": "project",
+          "path": "artifacts/raw_input/project/v1.json",
+          "version": 1
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 0.0007,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0,
+      "duration_seconds": 0.0031,
+      "final_error_class": null,
+      "input_tokens": 0,
+      "model_used": "code",
+      "output_tokens": 0,
+      "pause_reason": null,
+      "started_at": 1794337248.606633,
+      "status": "done"
+    },
+    "normalize": {
+      "artifact_refs": [
+        {
+          "artifact_type": "canonical_script",
+          "entity_id": "project",
+          "path": "artifacts/canonical_script/project/v1.json",
+          "version": 1
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 0.0038,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0,
+      "duration_seconds": 0.0106,
+      "final_error_class": null,
+      "input_tokens": 0,
+      "model_used": "code",
+      "output_tokens": 0,
+      "pause_reason": null,
+      "started_at": 1794337248.611586,
+      "status": "done"
+    },
+    "project_config": {
+      "artifact_refs": [
+        {
+          "artifact_type": "project_config",
+          "entity_id": "project",
+          "path": "artifacts/project_config/project/v1.json",
+          "version": 1
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 17.3428,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0190664,
+      "duration_seconds": 17.3464,
+      "final_error_class": null,
+      "input_tokens": 4785,
+      "model_used": "claude-sonnet-4-6",
+      "output_tokens": 820,
+      "pause_reason": null,
+      "started_at": 1794337271.0593631,
+      "status": "done"
+    },
+    "script_bible": {
+      "artifact_refs": [
+        {
+          "artifact_type": "script_bible",
+          "entity_id": "project",
+          "path": "artifacts/script_bible/project/v1.json",
+          "version": 1
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 22.4334,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0103296,
+      "duration_seconds": 22.4343,
+      "final_error_class": null,
+      "input_tokens": 2672,
+      "model_used": "claude-haiku-4-5-20251001",
+      "output_tokens": 2048,
+      "pause_reason": null,
+      "started_at": 1794337248.623643,
+      "status": "done"
+    }
+  },
+  "started_at": 1794337248.595517,
+  "total_cost_usd": 0.0333184
+}

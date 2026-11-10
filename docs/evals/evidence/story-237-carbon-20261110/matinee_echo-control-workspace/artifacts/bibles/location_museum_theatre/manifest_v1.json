@@ -1,0 +1,77 @@
+{
+  "data": {
+    "created_at": "2026-11-10T13:04:57.656125",
+    "display_name": "Museum Theatre",
+    "entity_id": "museum_theatre",
+    "entity_type": "location",
+    "files": [
+      {
+        "created_at": "2026-11-10T19:04:57.651778Z",
+        "filename": "master_v1.json",
+        "provenance": "ai_extracted",
+        "purpose": "master_definition",
+        "version": 1
+      }
+    ],
+    "version": 1,
+    "visual_reference_image": null
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 2,
+        "decision_trace": [],
+        "decision_trace_count": 0,
+        "input_candidate_count": 3,
+        "rejected_candidate_count": 0,
+        "rejected_candidates": []
+      },
+      "final_stage_model_used": "claude-haiku-4-5-20251001",
+      "final_stage_provider_used": "anthropic"
+    },
+    "confidence": 0.95,
+    "cost_data": {
+      "estimated_cost_usd": 0.004284,
+      "input_tokens": 1970,
+      "latency_seconds": null,
+      "model": "claude-haiku-4-5-20251001",
+      "output_tokens": 677,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:04:57.655934Z",
+    "health": "valid",
+    "intent": "Establish master bible for location 'Museum Theatre'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "location_bible_v1",
+    "producing_role": null,
+    "rationale": "Consolidate location traits and narrative significance.",
+    "ref": {
+      "artifact_type": "bible_manifest",
+      "entity_id": "location_museum_theatre",
+      "path": "artifacts/bibles/location_museum_theatre/manifest_v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

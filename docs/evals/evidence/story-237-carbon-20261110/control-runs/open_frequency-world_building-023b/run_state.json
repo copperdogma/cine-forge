@@ -1,0 +1,715 @@
+{
+  "budget_warning_scopes": [],
+  "cost_is_complete": true,
+  "dry_run": false,
+  "finished_at": 1794336245.859184,
+  "instrumented": false,
+  "project_cost_baseline_usd": 0.0,
+  "recipe_id": "world_building",
+  "run_id": "open_frequency-world_building-023b",
+  "runtime_params": {
+    "accept_config": true,
+    "default_model": "claude-sonnet-4-6",
+    "escalate_model": "claude-opus-4-6",
+    "input_file": "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/output/eval-full-script-throughput-open_frequency-efd1ff/inputs/593076d3_open_frequency.fountain",
+    "qa_model": "gpt-4.1-mini",
+    "verify_model": "gpt-4.1-mini",
+    "work_model": "claude-haiku-4-5-20251001"
+  },
+  "stage_order": [
+    "analyze_scenes",
+    "refresh_project_config",
+    "entity_discovery",
+    "character_bible",
+    "location_bible",
+    "prop_bible",
+    "entity_graph",
+    "continuity_tracking"
+  ],
+  "stages": {
+    "analyze_scenes": {
+      "artifact_refs": [
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_001",
+          "path": "artifacts/scene/scene_001/v2.json",
+          "version": 2
+        },
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_002",
+          "path": "artifacts/scene/scene_002/v2.json",
+          "version": 2
+        },
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_003",
+          "path": "artifacts/scene/scene_003/v2.json",
+          "version": 2
+        },
+        {
+          "artifact_type": "scene",
+          "entity_id": "scene_004",
+          "path": "artifacts/scene/scene_004/v2.json",
+          "version": 2
+        },
+        {
+          "artifact_type": "scene_index",
+          "entity_id": "project",
+          "path": "artifacts/scene_index/project/v2.json",
+          "version": 2
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 43.5455,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.035016,
+      "duration_seconds": 43.5614,
+      "final_error_class": null,
+      "input_tokens": 2,
+      "model_used": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2334,
+      "pause_reason": null,
+      "started_at": 1794336091.3206139,
+      "status": "done"
+    },
+    "character_bible": {
+      "artifact_refs": [
+        {
+          "artifact_type": "character_bible",
+          "entity_id": "maya",
+          "path": "artifacts/character_bible/maya/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "character_bible",
+          "entity_id": "noah",
+          "path": "artifacts/character_bible/noah/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "character_bible",
+          "entity_id": "june",
+          "path": "artifacts/character_bible/june/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "character_bible",
+          "entity_id": "aria",
+          "path": "artifacts/character_bible/aria/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "character_bible",
+          "entity_id": "kell",
+          "path": "artifacts/character_bible/kell/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "character_aria",
+          "path": "artifacts/bibles/character_aria/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "character_june",
+          "path": "artifacts/bibles/character_june/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "character_kell",
+          "path": "artifacts/bibles/character_kell/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "character_maya",
+          "path": "artifacts/bibles/character_maya/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "character_noah",
+          "path": "artifacts/bibles/character_noah/manifest_v1.json",
+          "version": 1
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 18.3703,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0403072,
+      "duration_seconds": 18.3913,
+      "final_error_class": null,
+      "input_tokens": 15344,
+      "model_used": "claude-haiku-4-5-20251001",
+      "output_tokens": 7008,
+      "pause_reason": null,
+      "started_at": 1794336152.636024,
+      "status": "done"
+    },
+    "continuity_tracking": {
+      "artifact_refs": [
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_aria_scene_001",
+          "path": "artifacts/continuity_state/character_aria_scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_june_scene_001",
+          "path": "artifacts/continuity_state/character_june_scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_kell_scene_001",
+          "path": "artifacts/continuity_state/character_kell_scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_noah_scene_001",
+          "path": "artifacts/continuity_state/character_noah_scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "location_community_radio_studio_scene_001",
+          "path": "artifacts/continuity_state/location_community_radio_studio_scene_001/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_aria_scene_002",
+          "path": "artifacts/continuity_state/character_aria_scene_002/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_june_scene_002",
+          "path": "artifacts/continuity_state/character_june_scene_002/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_noah_scene_002",
+          "path": "artifacts/continuity_state/character_noah_scene_002/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "location_water_tower_catwalk_scene_002",
+          "path": "artifacts/continuity_state/location_water_tower_catwalk_scene_002/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_june_scene_003",
+          "path": "artifacts/continuity_state/character_june_scene_003/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_kell_scene_003",
+          "path": "artifacts/continuity_state/character_kell_scene_003/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_maya_scene_003",
+          "path": "artifacts/continuity_state/character_maya_scene_003/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_noah_scene_003",
+          "path": "artifacts/continuity_state/character_noah_scene_003/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "location_high_school_gym_shelter_scene_003",
+          "path": "artifacts/continuity_state/location_high_school_gym_shelter_scene_003/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_aria_scene_004",
+          "path": "artifacts/continuity_state/character_aria_scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_june_scene_004",
+          "path": "artifacts/continuity_state/character_june_scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_kell_scene_004",
+          "path": "artifacts/continuity_state/character_kell_scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_maya_scene_004",
+          "path": "artifacts/continuity_state/character_maya_scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "character_noah_scene_004",
+          "path": "artifacts/continuity_state/character_noah_scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_state",
+          "entity_id": "location_community_radio_studio_scene_004",
+          "path": "artifacts/continuity_state/location_community_radio_studio_scene_004/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "continuity_index",
+          "entity_id": "project",
+          "path": "artifacts/continuity_index/project/v1.json",
+          "version": 1
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 70.3998,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0195032,
+      "duration_seconds": 70.4167,
+      "final_error_class": null,
+      "input_tokens": 6344,
+      "model_used": "claude-haiku-4-5-20251001",
+      "output_tokens": 3607,
+      "pause_reason": null,
+      "started_at": 1794336175.441382,
+      "status": "done"
+    },
+    "entity_discovery": {
+      "artifact_refs": [
+        {
+          "artifact_type": "entity_discovery_results",
+          "entity_id": "project",
+          "path": "artifacts/entity_discovery_results/project/v1.json",
+          "version": 1
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 3.0761,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0034184,
+      "duration_seconds": 3.0791,
+      "final_error_class": null,
+      "input_tokens": 3068,
+      "model_used": "claude-haiku-4-5-20251001",
+      "output_tokens": 241,
+      "pause_reason": null,
+      "started_at": 1794336134.884867,
+      "status": "done"
+    },
+    "entity_graph": {
+      "artifact_refs": [
+        {
+          "artifact_type": "entity_graph",
+          "entity_id": "project",
+          "path": "artifacts/entity_graph/project/v1.json",
+          "version": 1
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 6.602,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0038536,
+      "duration_seconds": 6.6131,
+      "final_error_class": null,
+      "input_tokens": 887,
+      "model_used": "claude-haiku-4-5-20251001",
+      "output_tokens": 786,
+      "pause_reason": null,
+      "started_at": 1794336175.4404008,
+      "status": "done"
+    },
+    "location_bible": {
+      "artifact_refs": [
+        {
+          "artifact_type": "location_bible",
+          "entity_id": "water_tower_catwalk",
+          "path": "artifacts/location_bible/water_tower_catwalk/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "location_bible",
+          "entity_id": "high_school_gym_shelter",
+          "path": "artifacts/location_bible/high_school_gym_shelter/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "location_bible",
+          "entity_id": "community_radio_studio",
+          "path": "artifacts/location_bible/community_radio_studio/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "location_community_radio_studio",
+          "path": "artifacts/bibles/location_community_radio_studio/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "location_high_school_gym_shelter",
+          "path": "artifacts/bibles/location_high_school_gym_shelter/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "location_water_tower_catwalk",
+          "path": "artifacts/bibles/location_water_tower_catwalk/manifest_v1.json",
+          "version": 1
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 5.5904,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0066408,
+      "duration_seconds": 5.6028,
+      "final_error_class": null,
+      "input_tokens": 2671,
+      "model_used": "claude-haiku-4-5-20251001",
+      "output_tokens": 1126,
+      "pause_reason": null,
+      "started_at": 1794336152.63165,
+      "status": "done"
+    },
+    "prop_bible": {
+      "artifact_refs": [
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "tape_reel",
+          "path": "artifacts/prop_bible/tape_reel/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "canvas_tool_bag",
+          "path": "artifacts/prop_bible/canvas_tool_bag/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "mixer",
+          "path": "artifacts/prop_bible/mixer/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "lantern",
+          "path": "artifacts/prop_bible/lantern/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "portable_antenna",
+          "path": "artifacts/prop_bible/portable_antenna/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "tackle_box",
+          "path": "artifacts/prop_bible/tackle_box/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "on_air_sign",
+          "path": "artifacts/prop_bible/on_air_sign/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "handheld_receiver",
+          "path": "artifacts/prop_bible/handheld_receiver/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "flyer_missing_dog",
+          "path": "artifacts/prop_bible/flyer_missing_dog/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "tabletop_radio",
+          "path": "artifacts/prop_bible/tabletop_radio/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "notebook",
+          "path": "artifacts/prop_bible/notebook/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "hand_drawn_map",
+          "path": "artifacts/prop_bible/hand_drawn_map/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "whiteboard",
+          "path": "artifacts/prop_bible/whiteboard/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "foil_wrapped_bread",
+          "path": "artifacts/prop_bible/foil_wrapped_bread/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "microphone",
+          "path": "artifacts/prop_bible/microphone/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "sign",
+          "path": "artifacts/prop_bible/sign/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "prop_bible",
+          "entity_id": "brass_cassette_cue",
+          "path": "artifacts/prop_bible/brass_cassette_cue/v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_brass_cassette_cue",
+          "path": "artifacts/bibles/prop_brass_cassette_cue/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_canvas_tool_bag",
+          "path": "artifacts/bibles/prop_canvas_tool_bag/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_flyer_missing_dog",
+          "path": "artifacts/bibles/prop_flyer_missing_dog/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_foil_wrapped_bread",
+          "path": "artifacts/bibles/prop_foil_wrapped_bread/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_hand_drawn_map",
+          "path": "artifacts/bibles/prop_hand_drawn_map/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_handheld_receiver",
+          "path": "artifacts/bibles/prop_handheld_receiver/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_lantern",
+          "path": "artifacts/bibles/prop_lantern/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_microphone",
+          "path": "artifacts/bibles/prop_microphone/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_mixer",
+          "path": "artifacts/bibles/prop_mixer/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_notebook",
+          "path": "artifacts/bibles/prop_notebook/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_on_air_sign",
+          "path": "artifacts/bibles/prop_on_air_sign/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_portable_antenna",
+          "path": "artifacts/bibles/prop_portable_antenna/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_sign",
+          "path": "artifacts/bibles/prop_sign/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_tabletop_radio",
+          "path": "artifacts/bibles/prop_tabletop_radio/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_tackle_box",
+          "path": "artifacts/bibles/prop_tackle_box/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_tape_reel",
+          "path": "artifacts/bibles/prop_tape_reel/manifest_v1.json",
+          "version": 1
+        },
+        {
+          "artifact_type": "bible_manifest",
+          "entity_id": "prop_whiteboard",
+          "path": "artifacts/bibles/prop_whiteboard/manifest_v1.json",
+          "version": 1
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 22.7694,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0375456,
+      "duration_seconds": 22.8058,
+      "final_error_class": null,
+      "input_tokens": 21602,
+      "model_used": "claude-haiku-4-5-20251001",
+      "output_tokens": 5066,
+      "pause_reason": null,
+      "started_at": 1794336152.631038,
+      "status": "done"
+    },
+    "refresh_project_config": {
+      "artifact_refs": [
+        {
+          "artifact_type": "project_config",
+          "entity_id": "project",
+          "path": "artifacts/project_config/project/v2.json",
+          "version": 2
+        }
+      ],
+      "attempt_count": 1,
+      "attempts": [
+        {
+          "attempt": 1,
+          "duration_seconds": 17.737,
+          "model": "code",
+          "provider": "code",
+          "status": "success"
+        }
+      ],
+      "call_count": 1,
+      "cost_is_complete": true,
+      "cost_receipts": [],
+      "cost_usd": 0.0194752,
+      "duration_seconds": 17.7424,
+      "final_error_class": null,
+      "input_tokens": 4900,
+      "model_used": "claude-sonnet-4-6",
+      "output_tokens": 837,
+      "pause_reason": null,
+      "started_at": 1794336134.8854358,
+      "status": "done"
+    }
+  },
+  "started_at": 1794336091.3091571,
+  "total_cost_usd": 0.16576
+}

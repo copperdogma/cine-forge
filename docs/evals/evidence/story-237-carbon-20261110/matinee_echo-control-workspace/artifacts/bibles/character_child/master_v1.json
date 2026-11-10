@@ -1,0 +1,36 @@
+{
+  "character_id": "child",
+  "name": "CHILD",
+  "aliases": [],
+  "description": "A young child wearing a school jumper who appears at the museum conservation room doorway to relay a message about the theatre being locked.",
+  "prominence": "minor",
+  "explicit_evidence": [
+    {
+      "trait": "wears school uniform",
+      "quote": "A CHILD in a school jumper appears at the doorway.",
+      "source_scene": "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 1
+      }
+    },
+    {
+      "trait": "messenger/informant",
+      "quote": "The lady with the bird says the theatre's locked.",
+      "source_scene": "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 1
+      }
+    }
+  ],
+  "inferred_traits": [],
+  "scene_presence": [
+    "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON"
+  ],
+  "dialogue_summary": "Delivers a single line of dialogue relaying that the theatre is locked, as told by a lady with a bird.",
+  "narrative_role": "minor",
+  "narrative_role_confidence": 0.95,
+  "relationships": [],
+  "overall_confidence": 0.85
+}

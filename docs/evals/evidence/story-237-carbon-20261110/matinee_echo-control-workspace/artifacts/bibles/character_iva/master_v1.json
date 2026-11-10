@@ -1,0 +1,110 @@
+{
+  "character_id": "iva",
+  "name": "Iva",
+  "aliases": [],
+  "description": "A museum technician responsible for recorded-guide and sound equipment. She works in the conservation room and theatre, managing audio recordings and technical operations. She has a family connection to the museum through her aunt Mara, a recorded performer from twenty years prior.",
+  "prominence": "primary",
+  "explicit_evidence": [
+    {
+      "trait": "Museum technician - recorded-guide technician",
+      "quote": "IVA, the museum's recorded-guide technician, brings a reel labelled MARA / TAKE 4.",
+      "source_scene": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+      "source_span": {
+        "start_line": 3,
+        "end_line": 3
+      }
+    },
+    {
+      "trait": "Family connection to Mara",
+      "quote": "My aunt. Mum never liked microphones.",
+      "source_scene": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+      "source_span": {
+        "start_line": 10,
+        "end_line": 11
+      }
+    },
+    {
+      "trait": "Performs sound checks and operates tape equipment",
+      "quote": "We can test the join after your sound check.",
+      "source_scene": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+      "source_span": {
+        "start_line": 14,
+        "end_line": 14
+      }
+    },
+    {
+      "trait": "Engages with visitors and museum patrons",
+      "quote": "Did you know Mara?",
+      "source_scene": "INT. MUSEUM THEATRE - AFTERNOON",
+      "source_span": {
+        "start_line": 28,
+        "end_line": 28
+      }
+    },
+    {
+      "trait": "Has access to theatre keys and security",
+      "quote": "Iva picks up the theatre key from a hook.",
+      "source_scene": "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+      "source_span": {
+        "start_line": 50,
+        "end_line": 50
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "Observant and detail-oriented",
+      "value": "high",
+      "confidence": 0.85,
+      "rationale": "Iva notices the elderly visitor's reaction to the recording, recognizes the visitor's familiarity with Mara's performance style, and carefully manages delicate equipment and artifacts."
+    },
+    {
+      "trait": "Curious about her family history",
+      "value": "moderate",
+      "confidence": 0.8,
+      "rationale": "She engages with the elderly visitor about Mara, reflects on Mara's age ('Mara would be eighty now'), and seems invested in understanding the connection between the visitor and her aunt."
+    },
+    {
+      "trait": "Methodical and responsible",
+      "value": "high",
+      "confidence": 0.9,
+      "rationale": "She follows Sol's instructions precisely, manages equipment carefully, maintains security protocols (locking/unlocking doors), and handles fragile artifacts with care."
+    },
+    {
+      "trait": "Perceptive to unusual circumstances",
+      "value": "moderate",
+      "confidence": 0.75,
+      "rationale": "She notices the mysterious visitor's knowledge of Mara, the abandoned scarf with brooch, and the unexplained voice from behind the curtain without visible source."
+    }
+  ],
+  "scene_presence": [
+    "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+    "INT. MUSEUM THEATRE - AFTERNOON",
+    "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+    "INT. MUSEUM THEATRE - EVENING"
+  ],
+  "dialogue_summary": "Iva discusses her aunt Mara's recorded performance with Sol, engages with an elderly visitor who knew Mara, and makes observations about the mysterious circumstances surrounding the visitor and the theatre. She speaks sparingly but meaningfully, primarily in response to others' questions or to report observations.",
+  "narrative_role": "protagonist",
+  "narrative_role_confidence": 0.85,
+  "relationships": [
+    {
+      "target_character": "Sol",
+      "relationship_type": "colleague/collaborator",
+      "evidence": "They work together in the conservation room, with Sol directing Iva to transport the broken wing and later accompanying her to the theatre. Sol reaches for her sleeve at the end, suggesting protective concern.",
+      "confidence": 0.95
+    },
+    {
+      "target_character": "Mara",
+      "relationship_type": "family (aunt)",
+      "evidence": "Iva explicitly states 'My aunt' when identifying Mara. She reflects on Mara's age and seems emotionally connected to her legacy.",
+      "confidence": 1.0
+    },
+    {
+      "target_character": "Elderly Visitor",
+      "relationship_type": "unknown acquaintance",
+      "evidence": "The visitor knew Mara and is familiar with her performance style. Iva questions the visitor but receives no direct answer. The visitor's presence and the abandoned scarf suggest a mysterious connection.",
+      "confidence": 0.6
+    }
+  ],
+  "overall_confidence": 0.82
+}

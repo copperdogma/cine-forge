@@ -1,0 +1,174 @@
+{
+  "data": {
+    "entries": [
+      {
+        "characters_present": [
+          "IVA",
+          "SOL"
+        ],
+        "characters_present_ids": [],
+        "heading": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+        "location": "Museum Conservation Room",
+        "props_mentioned": [],
+        "scene_id": "scene_001",
+        "scene_number": 1,
+        "source_span": {
+          "end_line": 24,
+          "start_line": 5
+        },
+        "time_of_day": "AFTERNOON",
+        "tone_mood": "quiet and methodical"
+      },
+      {
+        "characters_present": [
+          "ELDERLY VISITOR",
+          "IVA",
+          "MARA"
+        ],
+        "characters_present_ids": [],
+        "heading": "INT. MUSEUM THEATRE - AFTERNOON",
+        "location": "Museum Theatre",
+        "props_mentioned": [],
+        "scene_id": "scene_002",
+        "scene_number": 2,
+        "source_span": {
+          "end_line": 41,
+          "start_line": 25
+        },
+        "time_of_day": "AFTERNOON",
+        "tone_mood": "eerie and suspended"
+      },
+      {
+        "characters_present": [
+          "CHILD",
+          "IVA",
+          "SOL"
+        ],
+        "characters_present_ids": [],
+        "heading": "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+        "location": "Museum Conservation Room - Late Afternoon",
+        "props_mentioned": [],
+        "scene_id": "scene_003",
+        "scene_number": 3,
+        "source_span": {
+          "end_line": 60,
+          "start_line": 42
+        },
+        "time_of_day": "LATE AFTERNOON",
+        "tone_mood": "contemplative with growing unease"
+      },
+      {
+        "characters_present": [
+          "IVA",
+          "SOL",
+          "UNSEEN SPEAKER"
+        ],
+        "characters_present_ids": [],
+        "heading": "INT. MUSEUM THEATRE - EVENING",
+        "location": "Museum Theatre",
+        "props_mentioned": [],
+        "scene_id": "scene_004",
+        "scene_number": 4,
+        "source_span": {
+          "end_line": 78,
+          "start_line": 61
+        },
+        "time_of_day": "EVENING",
+        "tone_mood": "uncanny and unresolved"
+      }
+    ],
+    "estimated_runtime_minutes": 4.0,
+    "scenes_need_review": 0,
+    "scenes_passed_qa": 4,
+    "total_scenes": 4,
+    "unique_characters": [
+      "CHILD",
+      "ELDERLY VISITOR",
+      "IVA",
+      "MARA",
+      "SOL",
+      "UNSEEN SPEAKER"
+    ],
+    "unique_locations": [
+      "Museum Conservation Room",
+      "Museum Conservation Room - Late Afternoon",
+      "Museum Theatre"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "adaptive_batching": true,
+      "configured_batch_size": 5,
+      "configured_max_batch_size": 10,
+      "configured_max_batch_words": 2500,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "largest_batch_size": 4,
+      "largest_batch_words": 543,
+      "total_batches": 1
+    },
+    "confidence": 0.9,
+    "cost_data": {
+      "estimated_cost_usd": 0.034521,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2301,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:04:38.194942Z",
+    "health": "valid",
+    "intent": "Updated scene index with narrative analysis enrichment",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_001",
+        "path": "artifacts/scene/scene_001/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_002",
+        "path": "artifacts/scene/scene_002/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_003",
+        "path": "artifacts/scene/scene_003/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "scene",
+        "entity_id": "scene_004",
+        "path": "artifacts/scene/scene_004/v2.json",
+        "version": 2
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Tier 2 enrichment adds tone_mood and gap-fills to index",
+    "ref": {
+      "artifact_type": "scene_index",
+      "entity_id": "project",
+      "path": "artifacts/scene_index/project/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

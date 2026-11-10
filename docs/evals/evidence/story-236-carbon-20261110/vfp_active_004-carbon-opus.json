@@ -1,0 +1,19 @@
+{
+  "cost": "0.01948",
+  "model": "claude-opus-4-6",
+  "observed": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2641,
+    "output_tokens": 251,
+    "service_tier": "standard",
+    "speed": "standard"
+  },
+  "reason": "The model correctly identifies the core visual content: a static wide shot of a two-tiered brown structure with a rectangular panel that changes from red (frames 0-1) to blue (frames 2-4). Camera tags (static, wide_master) and motion tag (stillness) are correct. Continuity is correctly marked as broken with accurate notes about the color change between frames 1 and 2. Color tags include navy (correct) and red (acceptable), but also 'desaturated' which is not in the reference. The tone_tags ('detached','ominous') and emotion_tags ('isolation','suspicion') are invented interpretations not supported by the reference, which lists none. Audio_tags are correctly empty, but audio_notes should also be empty (they are). The evidence entries are well-grounded with 4 entries covering frames 0,1,2,4. The summary is accurate. Main penalties: invented tone and emotion tags that the reference explicitly marks as [none], and the extra 'desaturated' color tag. These invented subjective interpretations lower the score.",
+  "score": 0.78
+}

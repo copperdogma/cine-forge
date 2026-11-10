@@ -1,0 +1,19 @@
+{
+  "location_id": "rescue_boathouse",
+  "name": "Rescue Boathouse",
+  "aliases": [],
+  "description": "An interior boathouse facility operational during pre-dawn hours. Contains a wall clock, refrigerator for storing medical supplies, and a wall telephone with speaker capability. Serves as a staging point for launch operations.",
+  "physical_traits": [
+    "Wall clock",
+    "Refrigerator",
+    "Wall telephone with speaker",
+    "Bench outside (referenced via phone communication)"
+  ],
+  "scene_presence": [
+    "Ruth (launch pilot)",
+    "Lena",
+    "Tom (via telephone)"
+  ],
+  "narrative_significance": "The Rescue Boathouse functions as a critical operational hub where medical supplies are secured and launch preparations occur. It establishes the pre-dawn timeline and reveals tensions around an expected passenger who fails to arrive, while also introducing the mystery of an abandoned orange cape.",
+  "overall_confidence": 0.85
+}

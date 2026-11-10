@@ -1,0 +1,91 @@
+{
+  "arm": "carbon",
+  "parity": "Complete native wire/envelope matched maintained call_api offline",
+  "response": {
+    "cached": false,
+    "cost": 0.230098,
+    "latencyMs": 306289,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "quiet_bedside_vigil",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_003",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d",
+        "8779cc8230d0a9a6e709ea3f7d0201d3928298b6c5cd979c2648eec3eda2da6d"
+      ],
+      "meta_sha256": "ba3438e4973166276591efea693838df99841ac34eac732f433c0c5cfcefe8fa",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gemini-4-carbon",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "google",
+      "request_id": "9WfzaqHzDNv0z7IP8-zbwAo",
+      "requested_model": "gemini-4-carbon",
+      "returned_model": "gemini-4-carbon",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_003\",\"summary\":\"A static wide shot presents a minimalist dark scene featuring a brown vertical post topped by a pale gold-amber circle on the left, a white-bordered slate-blue horizontal rectangle in the center, and a solitary pale gold-amber figure on the right. Across all five ordered samples, the camera framing, muted lighting, and subject placement remain completely motionless and unchanged.\",\"tone_tags\":[\"detached\",\"mournful\"],\"emotion_tags\":[\"grief\",\"hesitation\",\"isolation\"],\"color_tags\":[\"amber\",\"desaturated\",\"gold\",\"navy\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"Framing, background gradient, and positions of the left post, central white-bordered rectangle, and right figure remain unchanged across frames 0 through 4.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Wide straight-on framing shows a dark navy-to-taupe gradient wall above a dark floor, with a brown vertical post topped by a gold-amber circle at left, a white-outlined desaturated slate-blue horizontal block at center, and a lone gold-amber figure at right.\"},{\"frame_index\":2,\"cue\":\"At the midpoint sample, the solitary right-side figure maintains the exact narrow gap beside the right white edge of the central rectangle, with identical horizon height and outer frame margins.\"},{\"frame_index\":4,\"cue\":\"In the final sample, all geometric forms, muted navy and gold-amber colors, and spatial alignments match frame 0 without shift, confirming a fixed camera and complete visual stillness.\"}],\"overall_confidence\":0.86}",
+    "raw": {
+      "finishReason": "STOP",
+      "modelVersion": "gemini-4-carbon",
+      "raw_envelope_bytes": 96023,
+      "raw_envelope_path": "output/evals/carbon-frames-20261110/carbon/vfp_active_003-raw-envelope.json",
+      "raw_envelope_sha256": "1f1a27ca8049ef53dcbd372ec3ceacd4206a9e3926e71c7b10a8ed8fcfc81ed5",
+      "responseId": "9WfzaqHzDNv0z7IP8-zbwAo",
+      "usageMetadata": {
+        "candidatesTokenCount": 377,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 377
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 21126,
+        "totalTokenCount": 29037
+      }
+    },
+    "tokenUsage": {
+      "completion": 377,
+      "completionDetails": {
+        "reasoning": 21126
+      },
+      "prompt": 7534,
+      "total": 29037
+    }
+  },
+  "structural": {
+    "pass": true,
+    "reason": "overall=0.725 | uncertainty=0.140 | summary=1.00 | tone=0.00 | emotion=0.00 | color=0.67 | camera=1.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached, unexpected=mournful | emotion: unexpected=grief, unexpected=hesitation, unexpected=isolation | color: unexpected=gold, unexpected=navy | continuity: The gray horizontal rectangle and both round-topped forms keep the same positions in every frame., unexpected=Framing, background gradient, and positions of the left post, central white-bordered rectangle, and right figure remain unchanged across frames 0 through 4.",
+    "score": 0.725
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/quiet_bedside_vigil",
+    "clip_id": "quiet_bedside_vigil",
+    "evaluation_id": "vfp_active_003",
+    "target_markdown": "file://../video_understanding_truth_v4/quiet_bedside_vigil/target.md",
+    "target_path": "video_understanding_truth_v4/quiet_bedside_vigil/target.json"
+  }
+}

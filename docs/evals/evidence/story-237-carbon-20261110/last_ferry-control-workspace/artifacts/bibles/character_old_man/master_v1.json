@@ -1,0 +1,56 @@
+{
+  "character_id": "old_man",
+  "name": "OLD MAN",
+  "aliases": [],
+  "description": "An elderly man wearing an orange rain cape encountered at a ferry pier in fog. He appears to be connected to a covert exchange involving a cash box and envelope.",
+  "prominence": "minor",
+  "explicit_evidence": [
+    {
+      "trait": "Cryptic communicator",
+      "quote": "You found it, then.",
+      "source_scene": "EXT. FERRY PIER - LATER",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 50
+      }
+    },
+    {
+      "trait": "Evasive",
+      "quote": "Windows aren't much use in this fog.",
+      "source_scene": "EXT. FERRY PIER - LATER",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 50
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "Involvement in covert operation",
+      "value": "Likely participant in or observer of the envelope/cash box exchange",
+      "confidence": 0.75,
+      "rationale": "His presence at the pier, cryptic greeting, and knowledge of Lena's actions suggest involvement in the transaction or surveillance of it."
+    },
+    {
+      "trait": "Familiarity with the location",
+      "value": "Knows the ferry pier and its operations",
+      "confidence": 0.7,
+      "rationale": "He stands by the gangway and makes reference to fog and windows, suggesting prior knowledge of the location."
+    }
+  ],
+  "scene_presence": [
+    "EXT. FERRY PIER - LATER"
+  ],
+  "dialogue_summary": "The Old Man greets Lena with a cryptic acknowledgment that she found something, then deflects her question about being at her window with an evasive comment about fog obscuring windows.",
+  "narrative_role": "minor",
+  "narrative_role_confidence": 0.95,
+  "relationships": [
+    {
+      "target_character": "LENA",
+      "relationship_type": "Acquaintance/Contact",
+      "evidence": "Encounters Lena at the pier and exchanges dialogue about the cash box discovery; appears to know her activities.",
+      "confidence": 0.7
+    }
+  ],
+  "overall_confidence": 0.75
+}

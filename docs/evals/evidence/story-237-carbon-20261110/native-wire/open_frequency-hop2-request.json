@@ -1,0 +1,33 @@
+{
+  "model": "gemini-4-carbon",
+  "response_format": {
+    "type": "text",
+    "mime_type": "application/json",
+    "schema": {
+      "additionalProperties": false,
+      "description": "Native strict transport projection, NOT native domain-schema enforcement.\n\nSupply SubjectWorkspaceBundle.model_json_schema() in the prompt. Decode\nbundle_json and run validate_bundle() before any consumer write. The server\nguarantees one required string; local host validation guarantees its domain\nstructure. This split must be disclosed in every result.",
+      "properties": {
+        "bundle_json": {
+          "title": "Bundle Json",
+          "type": "string"
+        }
+      },
+      "required": [
+        "bundle_json"
+      ],
+      "title": "NativeWorkspaceEnvelope",
+      "type": "object"
+    }
+  },
+  "generation_config": {
+    "thinking_level": "medium",
+    "max_output_tokens": 131072
+  },
+  "stream": true,
+  "store": true,
+  "previous_interaction_id": "v1_ChctbVR6YW9fMk1yNmQ5TW9QMWVIU3NBURIXLW1UemFvXzJNcjZkOU1vUDFlSFNzQVE",
+  "continuation_token": {
+    "redacted_bytes": 316644,
+    "sha256": "045e3ce1441083932925985e42d5cfecd9f0cd98490e4d1a3b6cf3a54bf0d386"
+  }
+}

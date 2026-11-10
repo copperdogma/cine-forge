@@ -1,0 +1,164 @@
+{
+  "data": {
+    "characters_present": [
+      "COURIER",
+      "LENA",
+      "TOM"
+    ],
+    "characters_present_ids": [
+      "courier",
+      "lena",
+      "tom"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "INT. FERRY TICKET OFFICE - NIGHT",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "The last sailing has been cancelled. A shuttered ticket window faces empty benches. LENA, the clerk, numbers a paper envelope 17 and slides a brass locker key inside. Her left thumb wears a fresh white bandage. TOM, her younger brother, sets a blue insulated medicine case on the counter.",
+        "element_type": "action"
+      },
+      {
+        "content": "TOM",
+        "element_type": "character"
+      },
+      {
+        "content": "Dad's doses. The clinic launch comes at six. Don't leave this in the locker.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Lena puts the envelope in her coat and the case beneath the counter. Through frosted glass, a COURIER in an orange rain cape knocks twice. Only a silhouette is visible.",
+        "element_type": "action"
+      },
+      {
+        "content": "COURIER (O.S.)",
+        "element_type": "character"
+      },
+      {
+        "content": "Seventeen. North locker. Before the tide turns.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "LENA",
+        "element_type": "character"
+      },
+      {
+        "content": "Who sent you?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "The silhouette retreats without answering. Tom reaches for the case, but Lena stops him.",
+        "element_type": "action"
+      },
+      {
+        "content": "LENA",
+        "element_type": "character"
+      },
+      {
+        "content": "I'll take it to the launch myself. You lock up here.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "She lifts the blue case and goes. Tom stays behind with the shutter crank.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "INT. FERRY TICKET OFFICE - NIGHT",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "Ferry Ticket Office",
+    "narrative_beats": [
+      {
+        "approximate_location": "Opening",
+        "beat_type": "Establishing / Status Quo",
+        "confidence": 0.9,
+        "description": "The cancelled last sailing and shuttered ticket window establish an atmosphere of suspension and closure. Lena is introduced as a clerk performing a careful, numbered ritual with envelope 17 and a brass key, suggesting procedural habit and hidden significance."
+      },
+      {
+        "approximate_location": "Early",
+        "beat_type": "Inciting Complication",
+        "confidence": 0.92,
+        "description": "Tom delivers their father's medicine case with an urgent instruction \u2014 it must reach the clinic launch by six and must not be left in the locker \u2014 introducing a time-sensitive, high-stakes errand tied to a vulnerable family member."
+      },
+      {
+        "approximate_location": "Middle",
+        "beat_type": "Mysterious Intrusion",
+        "confidence": 0.95,
+        "description": "An unseen Courier in an orange rain cape knocks and calls out the exact number 17 and locker location before retreating without answering Lena's question. The silhouette and unanswered identity create immediate suspense and imply a covert network."
+      },
+      {
+        "approximate_location": "End",
+        "beat_type": "Decision / Agency Beat",
+        "confidence": 0.88,
+        "description": "Lena stops Tom from reclaiming the medicine case and asserts she will personally deliver it to the launch, separating herself from Tom and taking sole responsibility for both the case and the mystery of the courier."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      }
+    ],
+    "scene_id": "scene_001",
+    "scene_number": 1,
+    "source_span": {
+      "end_line": 26,
+      "start_line": 5
+    },
+    "time_of_day": "NIGHT",
+    "tone_mood": "tense and secretive",
+    "tone_shifts": [
+      "Opens with quiet procedural calm (numbering envelopes, routine closing duties), then shifts sharply to unease and suspicion with the courier's knock and unanswered retreat"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 1,
+      "source_span": {
+        "end_line": 26,
+        "start_line": 5
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.032556,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2170,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:02:08.742162Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_001",
+      "path": "artifacts/scene/scene_001/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

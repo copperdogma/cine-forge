@@ -1,0 +1,91 @@
+{
+  "arm": "carbon",
+  "configuration": "high65536",
+  "parity": "Maintained harness builds identical wire and consumes identical native SSE replay",
+  "response": {
+    "cached": false,
+    "cost": 0.156988,
+    "latencyMs": 202737,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "prop_swap_continuity_break",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_004",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "b2fb129f789cfdb05e9da94194b1beaa781cab6a20df51045ed28959339b733e",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d",
+        "d1e5be0f28883228588037c2f2c4cd3f5c2a0961e0b88e5f5967ba492dfd3d2d"
+      ],
+      "meta_sha256": "9f9b0ce2af7a7fed4782b2869ed3d12d3a35eef50950edc0f212186c19367e48",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gemini-4-carbon",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "google",
+      "request_id": "tWnzasvbO_qdz7IPvu708AY",
+      "requested_model": "gemini-4-carbon",
+      "returned_model": "gemini-4-carbon",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_004\",\"summary\":\"A static wide shot frames a motionless two-tiered brown structure on a dark ground plane against a muted dark navy background. Between frames 1 and 2, a white-outlined rectangular panel on the upper tier abruptly changes from red to blue while the surrounding geometry and framing remain unchanged.\",\"tone_tags\":[\"detached\",\"ominous\"],\"emotion_tags\":[\"isolation\",\"suspicion\"],\"color_tags\":[\"navy\",\"red\",\"desaturated\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"stillness\"],\"continuity_status\":\"broken\",\"continuity_notes\":[\"In an otherwise unchanged static shot, the white-outlined rectangular panel on the upper brown tier switches color from red in frames 0 and 1 to blue in frames 2 through 4.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Wide static framing shows a two-tiered brown rectangular structure centered on a dark charcoal ground plane beneath a dark navy gradient background, with a red white-outlined rectangular panel on the upper tier.\"},{\"frame_index\":1,\"cue\":\"The camera framing, dark navy background, stepped brown structure, and red white-outlined rectangular panel remain in identical positions with no visible motion.\"},{\"frame_index\":2,\"cue\":\"While the brown structure, horizon line, and white-outlined panel position remain unchanged, the panel fill color switches abruptly from red to blue.\"},{\"frame_index\":4,\"cue\":\"The final sample maintains the exact same static wide framing and motionless brown structure, with the white-outlined panel remaining blue.\"}],\"overall_confidence\":0.95}",
+    "raw": {
+      "finishReason": "STOP",
+      "modelVersion": "gemini-4-carbon",
+      "raw_sse_path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-carbon64.sse",
+      "raw_sse_sha256": "155089fd6c29c8873469e0e118d707d1367f61938746a7353390bb62ff56a281",
+      "responseId": "tWnzasvbO_qdz7IPvu708AY",
+      "usageMetadata": {
+        "candidatesTokenCount": 358,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 358
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 13834,
+        "totalTokenCount": 21726
+      }
+    },
+    "tokenUsage": {
+      "completion": 358,
+      "completionDetails": {
+        "reasoning": 13834
+      },
+      "prompt": 7534,
+      "total": 21726
+    }
+  },
+  "structural": {
+    "pass": false,
+    "reason": "raw_score=0.5183 | overall=0.518 | uncertainty=0.050 | summary=0.67 | tone=0.00 | emotion=0.00 | color=0.50 | camera=1.00 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: rectangle | tone: unexpected=detached, unexpected=ominous | emotion: unexpected=isolation, unexpected=suspicion | color: unexpected=desaturated, unexpected=red | motion: unexpected=stillness | continuity: The tabletop rectangle changes from red to blue between the second and third samples., unexpected=In an otherwise unchanged static shot, the white-outlined rectangular panel on the upper brown tier switches color from red in frames 0 and 1 to blue in frames 2 through 4.",
+    "score": 0.5183
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/prop_swap_continuity_break",
+    "clip_id": "prop_swap_continuity_break",
+    "evaluation_id": "vfp_active_004",
+    "target_markdown": "file://../video_understanding_truth_v4/prop_swap_continuity_break/target.md",
+    "target_path": "video_understanding_truth_v4/prop_swap_continuity_break/target.json"
+  }
+}

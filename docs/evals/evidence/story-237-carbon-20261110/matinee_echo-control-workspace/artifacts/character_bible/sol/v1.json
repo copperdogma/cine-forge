@@ -1,0 +1,218 @@
+{
+  "data": {
+    "aliases": [],
+    "character_id": "sol",
+    "description": "A conservator working at a museum, responsible for restoring damaged artifacts. Sol is methodical and precise in his work, handling delicate porcelain pieces with care. He wears spectacles on a cord and maintains a calm demeanor in ambiguous situations.",
+    "dialogue_summary": "Sol speaks sparingly but purposefully. He directs Iva to take the broken wing upstairs for testing, asks a clarifying question about Iva's family (confirming Mara is her aunt), offers rational explanations for the mysterious visitor, and makes a cryptic statement ('That isn't an answer') when Iva notes Mara's age. His dialogue reveals a practical, observant character who engages with the unfolding mystery without panic.",
+    "explicit_evidence": [
+      {
+        "quote": "SOL, a conservator, lays a cracked porcelain bird on a felt pad.",
+        "source_scene": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+        "source_span": {
+          "end_line": 2,
+          "start_line": 1
+        },
+        "trait": "Conservator profession"
+      },
+      {
+        "quote": "He aligns the fracture, then secures the repaired wing with a narrow strip of paper tape.",
+        "source_scene": "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+        "source_span": {
+          "end_line": 29,
+          "start_line": 28
+        },
+        "trait": "Methodical and careful with restoration work"
+      },
+      {
+        "quote": "Take this upstairs. We can test the join after your sound check.",
+        "source_scene": "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+        "source_span": {
+          "end_line": 14,
+          "start_line": 13
+        },
+        "trait": "Collaborative with Iva on museum tasks"
+      },
+      {
+        "quote": "Sol reaches for Iva's sleeve. Both remain facing the curtain. Neither sees who spoke.",
+        "source_scene": "INT. MUSEUM THEATRE - EVENING",
+        "source_span": {
+          "end_line": 55,
+          "start_line": 54
+        },
+        "trait": "Cautious and observant in mysterious circumstances"
+      }
+    ],
+    "inferred_traits": [
+      {
+        "confidence": 0.9,
+        "rationale": "Sol's work as a conservator requires precision; he carefully inspects joints, aligns fractures, and handles fragile artifacts with both hands to prevent damage.",
+        "trait": "Attention to detail",
+        "value": "High"
+      },
+      {
+        "confidence": 0.8,
+        "rationale": "When Iva suggests someone knew how Aunt Mara spoke, Sol offers rational explanations (a friend, someone who heard the recording) rather than entertaining supernatural possibilities.",
+        "trait": "Pragmatic and grounded",
+        "value": "Practical"
+      },
+      {
+        "confidence": 0.7,
+        "rationale": "Sol reaches for Iva's sleeve when an unseen voice speaks from behind the curtain, suggesting concern for her safety or a desire to maintain contact in an unsettling moment.",
+        "trait": "Protective instinct",
+        "value": "Present"
+      },
+      {
+        "confidence": 0.75,
+        "rationale": "Despite the mysterious circumstances in the theatre (unknown visitor, disembodied voice), Sol remains focused on his task of placing the repaired bird on stage without visible alarm.",
+        "trait": "Composed under uncertainty",
+        "value": "Calm"
+      }
+    ],
+    "name": "SOL",
+    "narrative_role": "supporting",
+    "narrative_role_confidence": 0.85,
+    "overall_confidence": 0.82,
+    "prominence": "secondary",
+    "relationships": [
+      {
+        "confidence": 0.95,
+        "evidence": "Sol and Iva work together at the museum; Sol directs her to assist with the porcelain bird restoration and they navigate the mysterious theatre incident together.",
+        "relationship_type": "Colleague/Collaborator",
+        "target_character": "IVA"
+      }
+    ],
+    "scene_presence": [
+      "INT. MUSEUM CONSERVATION ROOM - AFTERNOON",
+      "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+      "INT. MUSEUM THEATRE - EVENING"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 5,
+        "decision_trace": [
+          {
+            "candidate": "IVA",
+            "canonical_name": "Iva",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "IVA is a named protagonist who appears in 4 scenes with 5 dialogue instances. She is the museum's recorded-guide technician and a central character throughout the narrative.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "IVA",
+            "surviving_name": "IVA",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "SOL",
+            "canonical_name": "Sol",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "SOL is a named character who appears in 3 scenes with 4 dialogue instances. He is a conservator at the museum and a co-protagonist in the story.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "SOL",
+            "surviving_name": "SOL",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "CHILD",
+            "canonical_name": "Child",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.85,
+            "llm_rationale": "CHILD is a named minor character who appears in 1 scene with 1 dialogue instance. Although minimally developed, the character is explicitly identified in a school jumper and delivers dialogue, making it a valid character entity.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "CHILD",
+            "surviving_name": "CHILD",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "ELDERLY VISITOR",
+            "canonical_name": "Elderly Visitor",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.88,
+            "llm_rationale": "ELDERLY VISITOR is a named minor character who appears in 1 scene with 1 dialogue instance. The character has a distinctive visual marker (silver bird brooch, dark scarf) and speaks, qualifying as a valid character.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "ELDERLY VISITOR",
+            "surviving_name": "ELDERLY VISITOR",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "UNSEEN SPEAKER",
+            "canonical_name": null,
+            "decision_verdict": "invalid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "UNSEEN SPEAKER is a formatting/technical designation indicating off-screen dialogue rather than a named character. The speaker's identity is deliberately obscured and unidentified in the script. This is a technical cue, not a character entity.",
+            "outcome": "rejected_by_verdict",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "MARA",
+            "canonical_name": "Mara",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.92,
+            "llm_rationale": "MARA is a named character referenced throughout the script. Although she appears only as a recording and is deceased in the present timeline, she is explicitly identified as Iva's aunt and is a significant entity in the world-building. She has a distinct identity and presence via the recording.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "MARA",
+            "surviving_name": "MARA",
+            "target_entity_type": null
+          }
+        ],
+        "decision_trace_count": 6,
+        "input_candidate_count": 6,
+        "rejected_candidate_count": 1,
+        "rejected_candidates": [
+          {
+            "candidate": "UNSEEN SPEAKER",
+            "canonical_name": null,
+            "decision_verdict": "invalid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "UNSEEN SPEAKER is a formatting/technical designation indicating off-screen dialogue rather than a named character. The speaker's identity is deliberately obscured and unidentified in the script. This is a technical cue, not a character entity.",
+            "target_entity_type": null
+          }
+        ]
+      }
+    },
+    "confidence": 0.82,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:05:10.567371Z",
+    "health": "valid",
+    "intent": "Establish master definition for character 'SOL'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "character_bible_v1",
+    "producing_role": null,
+    "rationale": "Extracted from canonical script and scene co-occurrence data.",
+    "ref": {
+      "artifact_type": "character_bible",
+      "entity_id": "sol",
+      "path": "artifacts/character_bible/sol/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

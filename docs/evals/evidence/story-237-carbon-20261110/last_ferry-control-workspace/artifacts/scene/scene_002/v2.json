@@ -1,0 +1,150 @@
+{
+  "data": {
+    "characters_present": [
+      "LENA",
+      "OLD MAN"
+    ],
+    "characters_present_ids": [
+      "lena",
+      "old_man"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "EXT. FERRY PIER - LATER",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Fog erases the far bank. Lena sets the blue medicine case on a mooring bollard. She removes envelope 17, takes out the brass key, and unlocks a green locker marked NORTH. Inside lies a small metal cash box. She leaves the empty envelope inside the locker, pockets the key, and carries the cash box to the bollard.",
+        "element_type": "action"
+      },
+      {
+        "content": "An OLD MAN in an orange rain cape stands by the gangway. His face is visible; the earlier courier's was not.",
+        "element_type": "action"
+      },
+      {
+        "content": "OLD MAN",
+        "element_type": "character"
+      },
+      {
+        "content": "You found it, then.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "LENA",
+        "element_type": "character"
+      },
+      {
+        "content": "Were you at my window?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "OLD MAN",
+        "element_type": "character"
+      },
+      {
+        "content": "Windows aren't much use in this fog.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "He turns away. A ferry horn sounds from the river, although no vessel can be seen. Lena opens the cash box. It contains a photograph of two children beside a ferry and a folded receipt. On the receipt: STORAGE PAID THROUGH FRIDAY. She puts both back, shuts the box, and takes it and the blue case toward the boathouse.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "EXT. FERRY PIER - LATER",
+    "inferences": [],
+    "int_ext": "EXT",
+    "location": "Ferry Pier",
+    "narrative_beats": [
+      {
+        "approximate_location": "Opening",
+        "beat_type": "Discovery / Revelation",
+        "confidence": 0.9,
+        "description": "Lena opens the north locker and finds a cash box rather than anything related to the medicine errand, revealing that envelope 17 and the brass key were part of a separate, pre-arranged retrieval \u2014 the two errands are now entangled."
+      },
+      {
+        "approximate_location": "Middle",
+        "beat_type": "Ambiguous Encounter",
+        "confidence": 0.93,
+        "description": "The Old Man in an orange rain cape appears with a visible face, unlike the earlier silhouetted courier. His evasive answer about windows and fog refuses to confirm or deny his identity as the earlier courier, deepening the mystery of who is orchestrating events."
+      },
+      {
+        "approximate_location": "Late Middle",
+        "beat_type": "Clue / Object of Significance",
+        "confidence": 0.88,
+        "description": "The cash box contains a photograph of two children beside a ferry and a receipt noting storage paid through Friday. These objects suggest a personal or familial history connected to the ferry and a deadline, linking the covert errand to something intimate and time-bound."
+      },
+      {
+        "approximate_location": "End",
+        "beat_type": "Forward Momentum",
+        "confidence": 0.85,
+        "description": "Lena takes both the cash box and the medicine case toward the boathouse, consolidating the two objects and moving the action toward the next location and the six o'clock deadline."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      }
+    ],
+    "scene_id": "scene_002",
+    "scene_number": 2,
+    "source_span": {
+      "end_line": 43,
+      "start_line": 27
+    },
+    "time_of_day": "LATER",
+    "tone_mood": "eerie and quietly unsettling",
+    "tone_shifts": [
+      "The fog and invisible ferry horn create an otherworldly, disorienting atmosphere; the Old Man's cryptic deflection briefly heightens suspicion before Lena's methodical examination of the cash box returns the scene to a more investigative, controlled tone"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 2,
+      "source_span": {
+        "end_line": 43,
+        "start_line": 27
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.032556,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2170,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:02:08.744527Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_002",
+      "path": "artifacts/scene/scene_002/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

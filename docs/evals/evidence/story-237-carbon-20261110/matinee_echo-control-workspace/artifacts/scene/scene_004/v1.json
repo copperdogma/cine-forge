@@ -1,0 +1,158 @@
+{
+  "data": {
+    "characters_present": [
+      "IVA",
+      "SOL",
+      "UNSEEN SPEAKER"
+    ],
+    "characters_present_ids": [
+      "iva",
+      "sol",
+      "unseen_speaker"
+    ],
+    "confidence": 0.898,
+    "elements": [
+      {
+        "content": "INT. MUSEUM THEATRE - EVENING",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Iva unlocks the theatre door with the key. Sol follows with the repaired bird; the child waits in the corridor. No visitor is visible inside.",
+        "element_type": "action"
+      },
+      {
+        "content": "A dark scarf with a silver bird brooch lies across the front-row seat. Iva does not touch it. Sol sets the porcelain bird on the stage, keeping its taped wing away from the edge.",
+        "element_type": "action"
+      },
+      {
+        "content": "IVA",
+        "element_type": "character"
+      },
+      {
+        "content": "Mara would be eighty now.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "SOL",
+        "element_type": "character"
+      },
+      {
+        "content": "That isn't an answer.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Iva locks the door behind them, keeping the key. A voice sounds from behind the curtain. There is no tape deck running; the deck's reels are bare.",
+        "element_type": "action"
+      },
+      {
+        "content": "UNSEEN SPEAKER (O.S.)",
+        "element_type": "character"
+      },
+      {
+        "content": "If the bird sings twice, wait for the door.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Sol reaches for Iva's sleeve. Both remain facing the curtain. Neither sees who spoke. On the stage the repaired bird stays silent, its visible crack crossed by paper tape.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "INT. MUSEUM THEATRE - EVENING",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "Museum Theatre",
+    "narrative_beats": [],
+    "props_mentioned": [
+      "CURTAIN",
+      "KEY",
+      "PORCELAIN BIRD",
+      "REELS",
+      "SCARF",
+      "SILVER BIRD BROOCH",
+      "TAPE",
+      "TAPE DECK"
+    ],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Extracted from first non-empty scene line",
+        "field_name": "heading",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.92,
+        "evidence": "Parsed heading prefix token",
+        "field_name": "int_ext",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.9,
+        "evidence": "Parsed heading suffix segment",
+        "field_name": "time_of_day",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.88,
+        "evidence": "Parsed heading core location segment",
+        "field_name": "location",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.84,
+        "evidence": "Collected from dialogue character cues",
+        "field_name": "characters_present",
+        "method": "rule"
+      }
+    ],
+    "scene_id": "scene_004",
+    "scene_number": 4,
+    "source_span": {
+      "end_line": 78,
+      "start_line": 61
+    },
+    "time_of_day": "EVENING",
+    "tone_mood": "neutral",
+    "tone_shifts": []
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "single monolithic scene list artifact"
+    ],
+    "annotations": {
+      "ai_enrichment_used": false,
+      "boundary_reason": "",
+      "boundary_uncertain": false,
+      "discovery_tier": "structural",
+      "parser_backend": "fountain-tools",
+      "scene_number": 4,
+      "source_span": {
+        "end_line": 78,
+        "start_line": 61
+      }
+    },
+    "confidence": 0.898,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:03:25.440541Z",
+    "health": "valid",
+    "intent": "Represent one screenplay scene as structured data for downstream modules",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_breakdown_v1",
+    "producing_role": null,
+    "rationale": "Structural extraction with LLM action-line entity extraction",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_004",
+      "path": "artifacts/scene/scene_004/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "code"
+  }
+}

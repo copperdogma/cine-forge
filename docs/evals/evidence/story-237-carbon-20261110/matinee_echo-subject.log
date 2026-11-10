@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/benchmarks/scripts/run_carbon_workspace_variants.py", line 140, in <module>
+    run(parser.parse_args().case)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/benchmarks/scripts/run_carbon_workspace_variants.py", line 126, in run
+    bundle=decode_native_envelope(envelope,source_bytes=source.read_bytes(),
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                  source_filename=source.name).model_dump(mode="json")
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/benchmarks/scripts/whole_story_workspace_contract.py", line 156, in decode_native_envelope
+    full = consumer_payload(json.loads(envelope.bundle_json), source_bytes=source_bytes,
+                            source_filename=source_filename)
+  File "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/benchmarks/scripts/whole_story_workspace_contract.py", line 137, in consumer_payload
+    return validate_bundle(result, source_bytes=source_bytes).model_dump(mode="json")
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/benchmarks/scripts/whole_story_workspace_contract.py", line 218, in validate_bundle
+    _require(canonical["script_text"] == source_text,
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+             "selected authored Fountain canonical must preserve exact original source")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/benchmarks/scripts/whole_story_workspace_contract.py", line 199, in _require
+    raise ValueError(message)
+ValueError: selected authored Fountain canonical must preserve exact original source

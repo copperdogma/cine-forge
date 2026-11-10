@@ -1,0 +1,19 @@
+{
+  "cost": "0.021135",
+  "model": "claude-opus-4-6",
+  "observed": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2702,
+    "output_tokens": 305,
+    "service_tier": "standard",
+    "speed": "standard"
+  },
+  "reason": "The summary correctly identifies two figures (tan/warm on left, pale blue on right) with a cream rectangular prop on the right figure, and notes they enlarge across frames while maintaining positions \u2014 matching the reference well. Continuity is correctly marked as 'intact' with the prop noted. Color tags (navy, teal) match. Motion tag 'measured' matches. However, several issues lower the score: (1) The model claims 'slow_push_in' as a camera mechanism, which the reference explicitly says is not established \u2014 the figures enlarge but the background/prop do not scale proportionally, so a camera push-in is unsupported and this is an invented camera mechanism. (2) Tone tags 'detached' and 'tense' don't match the reference 'intimate'. (3) Emotion tags 'hesitation' and 'isolation' are listed when the reference says none are observable. (4) 'stillness' is listed as a motion tag but reference only has 'measured'. (5) The audio_tags field is correctly empty, which is good. (6) The model also includes 'desaturated' in color_tags which isn't in the reference but is arguably observable. The camera push-in claim is a notable penalty as the reference interpretation boundary explicitly states this mechanism is not established from the frames alone.",
+  "score": 0.62
+}

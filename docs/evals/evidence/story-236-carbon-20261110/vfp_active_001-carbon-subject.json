@@ -1,0 +1,91 @@
+{
+  "arm": "carbon",
+  "parity": "Complete native wire/envelope matched maintained call_api offline",
+  "response": {
+    "cached": false,
+    "cost": 0.176198,
+    "latencyMs": 224076,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gemini-4-carbon",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "google",
+      "request_id": "BWXzau-fIfDRz7IPyJyz-QU",
+      "requested_model": "gemini-4-carbon",
+      "returned_model": "gemini-4-carbon",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two minimalist silhouettes\u2014a warm tan figure on the left and a pale blue figure bearing a cream rectangular prop on the right\u2014stand motionless across a dark ground plane against a muted navy-to-teal background. Across the five ordered frames, both figures steadily increase in apparent scale while keeping consistent positions and prop placement, indicating a measured slow push-in within an intact two-shot.\",\"tone_tags\":[\"detached\",\"tense\"],\"emotion_tags\":[\"hesitation\",\"isolation\"],\"color_tags\":[\"desaturated\",\"navy\",\"teal\"],\"camera_tags\":[\"locked_two_shot\",\"slow_push_in\"],\"motion_tags\":[\"measured\",\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The tan figure on the left and the pale blue figure on the right maintain consistent horizontal placement across frames 0 through 4.\",\"The cream rectangular prop on the lower-left torso of the pale blue figure remains consistently present across all five frames.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Wide two-shot showing a tan stylized silhouette on the left and a pale blue silhouette with a cream rectangular prop on its lower-left torso on the right against a dark navy-to-teal gradient.\"},{\"frame_index\":2,\"cue\":\"Both stationary figures remain in their left and right positions with the cream prop unchanged on the blue figure, while both silhouettes appear slightly taller and wider than in frame 0.\"},{\"frame_index\":4,\"cue\":\"Both silhouettes reach their largest apparent height and width in the sequence with unchanged horizon alignment, colors, and prop placement on the right figure.\"}],\"overall_confidence\":0.92}",
+    "raw": {
+      "finishReason": "STOP",
+      "modelVersion": "gemini-4-carbon",
+      "raw_envelope_bytes": 76221,
+      "raw_envelope_path": "output/evals/carbon-frames-20261110/carbon/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "f2f637fae1d3b49c2748a77c58b08a0b92f0bc53adf5aec06612e9883cf8ee7e",
+      "responseId": "BWXzau-fIfDRz7IPyJyz-QU",
+      "usageMetadata": {
+        "candidatesTokenCount": 372,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 372
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 15741,
+        "totalTokenCount": 23647
+      }
+    },
+    "tokenUsage": {
+      "completion": 372,
+      "completionDetails": {
+        "reasoning": 15741
+      },
+      "prompt": 7534,
+      "total": 23647
+    }
+  },
+  "structural": {
+    "pass": false,
+    "reason": "raw_score=0.6155 | overall=0.616 | uncertainty=0.080 | summary=0.67 | tone=0.00 | emotion=0.00 | color=0.80 | camera=1.00 | motion=0.67 | continuity=1.00 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached, unexpected=tense | emotion: unexpected=hesitation, unexpected=isolation | color: unexpected=desaturated | motion: unexpected=stillness",
+    "score": 0.6155
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

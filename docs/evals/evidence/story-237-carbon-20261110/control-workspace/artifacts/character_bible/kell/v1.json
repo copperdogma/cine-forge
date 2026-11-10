@@ -1,0 +1,254 @@
+{
+  "data": {
+    "aliases": [],
+    "character_id": "kell",
+    "description": "A practical, resourceful member of the emergency radio broadcast team. Kell handles technical equipment and logistics during a crisis, demonstrating problem-solving skills and dry humor under pressure.",
+    "dialogue_summary": "Kell delivers four lines across three scenes. In the radio studio, Kell reports the bridge closure and makes a self-deprecating joke about a cursed antenna. At the shelter, Kell questions whether a missing dog announcement is worth interrupting weather reports. In the morning studio, Kell makes an observational comment about the recovered dog's survival strategy. All dialogue is functional, pragmatic, and tinged with dry humor.",
+    "explicit_evidence": [
+      {
+        "quote": "KELL rushes in carrying a portable antenna, a dented lantern, and a canvas tool bag.",
+        "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        "source_span": {
+          "end_line": 7,
+          "start_line": 7
+        },
+        "trait": "Resourceful and technical"
+      },
+      {
+        "quote": "Bridge is closed. Cell towers are dead. The hill relay is our only shot.",
+        "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        "source_span": {
+          "end_line": 9,
+          "start_line": 9
+        },
+        "trait": "Problem-solver under pressure"
+      },
+      {
+        "quote": "It only tried to kill me once.",
+        "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        "source_span": {
+          "end_line": 13,
+          "start_line": 13
+        },
+        "trait": "Dry, self-deprecating humor"
+      },
+      {
+        "quote": "Comet better be worth interrupting the weather report.",
+        "source_scene": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+        "source_span": {
+          "end_line": 31,
+          "start_line": 31
+        },
+        "trait": "Pragmatic, task-focused"
+      },
+      {
+        "quote": "Smart dog. Dry floor, free snacks.",
+        "source_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+        "source_span": {
+          "end_line": 50,
+          "start_line": 50
+        },
+        "trait": "Observant and witty"
+      },
+      {
+        "quote": "Kell enters with a loaf of warm bread wrapped in foil.",
+        "source_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+        "source_span": {
+          "end_line": 45,
+          "start_line": 45
+        },
+        "trait": "Supportive team member"
+      }
+    ],
+    "inferred_traits": [
+      {
+        "confidence": 0.85,
+        "rationale": "Kell arrives prepared with necessary equipment during an emergency, manages technical challenges, and maintains composure while handling critical infrastructure tasks.",
+        "trait": "Competence under adversity",
+        "value": "High"
+      },
+      {
+        "confidence": 0.8,
+        "rationale": "Works seamlessly with the radio team, contributes to logistics and problem-solving, and participates in group efforts without conflict or ego.",
+        "trait": "Collaborative attitude",
+        "value": "Positive"
+      },
+      {
+        "confidence": 0.85,
+        "rationale": "Focuses on actionable solutions, prioritizes essential tasks (weather reports over pet announcements), and handles physical logistics efficiently.",
+        "trait": "Practical mindset",
+        "value": "Grounded"
+      },
+      {
+        "confidence": 0.8,
+        "rationale": "Uses self-deprecating and situational humor to defuse tension, commenting on equipment and animal behavior with wit rather than complaint.",
+        "trait": "Sense of humor",
+        "value": "Dry and observational"
+      }
+    ],
+    "name": "KELL",
+    "narrative_role": "supporting",
+    "narrative_role_confidence": 0.85,
+    "overall_confidence": 0.85,
+    "prominence": "secondary",
+    "relationships": [
+      {
+        "confidence": 0.9,
+        "evidence": "Works together in the radio studio on technical equipment and signal management during the emergency broadcast.",
+        "relationship_type": "Team colleague",
+        "target_character": "NOAH"
+      },
+      {
+        "confidence": 0.9,
+        "evidence": "Collaborates with June on emergency logistics and shelter operations; June accepts Kell's pragmatic input on broadcast priorities.",
+        "relationship_type": "Team colleague",
+        "target_character": "JUNE"
+      },
+      {
+        "confidence": 0.85,
+        "evidence": "Works alongside Aria in the radio studio during emergency broadcast operations.",
+        "relationship_type": "Team colleague",
+        "target_character": "ARIA"
+      },
+      {
+        "confidence": 0.75,
+        "evidence": "Interacts with Maya at the shelter regarding the missing dog announcement; exchanges brief dialogue about the dog's recovery.",
+        "relationship_type": "Acquaintance",
+        "target_character": "MAYA"
+      }
+    ],
+    "scene_presence": [
+      "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+      "INT. COMMUNITY RADIO STUDIO - MORNING"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 5,
+        "decision_trace": [
+          {
+            "candidate": "JUNE",
+            "canonical_name": "June",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "June is a named character who appears in 4 scenes with 6 dialogue lines. She is a core member of the community radio station team, responsible for recording updates and managing broadcasts during the emergency.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "JUNE",
+            "surviving_name": "JUNE",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "ARIA",
+            "canonical_name": "Aria",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Aria is a named character who appears in 3 scenes with 4 dialogue lines. She is a core member of the radio station team, handling technical operations and antenna setup.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "ARIA",
+            "surviving_name": "ARIA",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "KELL",
+            "canonical_name": "Kell",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Kell is a named character who appears in 3 scenes with 4 dialogue lines. He is a core member of the radio station team, responsible for antenna work and logistics.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "KELL",
+            "surviving_name": "KELL",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "NOAH",
+            "canonical_name": "Noah",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Noah is a named character who appears in 4 scenes with 2 dialogue lines. He is a core member of the radio station team, handling mixer operations and antenna installation.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "NOAH",
+            "surviving_name": "NOAH",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "MAYA",
+            "canonical_name": "Maya",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Maya is a named character who appears in 2 scenes with 4 dialogue lines. She is a teenager in a marching-band jacket who seeks help broadcasting a missing dog announcement.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "MAYA",
+            "surviving_name": "MAYA",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "COMET",
+            "canonical_name": "Comet",
+            "decision_verdict": "retype",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Comet is a dog, not a character. While named and present in the script, it is a prop/animal object rather than a human character.",
+            "outcome": "rejected_by_verdict",
+            "target_entity_type": "prop"
+          }
+        ],
+        "decision_trace_count": 6,
+        "input_candidate_count": 6,
+        "rejected_candidate_count": 1,
+        "rejected_candidates": [
+          {
+            "candidate": "COMET",
+            "canonical_name": "Comet",
+            "decision_verdict": "retype",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Comet is a dog, not a character. While named and present in the script, it is a prop/animal object rather than a human character.",
+            "target_entity_type": "prop"
+          }
+        ]
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": null,
+    "created_at": "2026-11-10T18:42:51.015986Z",
+    "health": "valid",
+    "intent": "Establish master definition for character 'KELL'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "character_bible_v1",
+    "producing_role": null,
+    "rationale": "Extracted from canonical script and scene co-occurrence data.",
+    "ref": {
+      "artifact_type": "character_bible",
+      "entity_id": "kell",
+      "path": "artifacts/character_bible/kell/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

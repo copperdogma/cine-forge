@@ -1,0 +1,217 @@
+{
+  "data": {
+    "aliases": [],
+    "character_id": "maya",
+    "description": "A teenager wearing a soaked marching-band jacket who seeks help broadcasting a missing dog announcement during a post-disaster shelter operation. She is resourceful, emotionally connected to her pet, and present during the community radio station's early operations.",
+    "dialogue_summary": "Maya requests that the community radio station broadcast an announcement for her missing dog, Comet. She explains that Comet slept through the evacuation and stole her grilled cheese. She spells out the dog's name phonetically for the broadcast. Later, she reports finding Comet under the vending machine in the band room.",
+    "explicit_evidence": [
+      {
+        "quote": "He stole my grilled cheese and slept through the evacuation. He's family.",
+        "source_scene": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+        "source_span": {
+          "end_line": 16,
+          "start_line": 16
+        },
+        "trait": "Emotionally attached to her dog"
+      },
+      {
+        "quote": "Can the station announce this too?",
+        "source_scene": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+        "source_span": {
+          "end_line": 8,
+          "start_line": 8
+        },
+        "trait": "Resourceful and persistent"
+      },
+      {
+        "quote": "C-O-M-E-T. Like the fast kind of star.",
+        "source_scene": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+        "source_span": {
+          "end_line": 24,
+          "start_line": 24
+        },
+        "trait": "Literate and articulate"
+      },
+      {
+        "quote": "He was under the vending machine in the band room.",
+        "source_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+        "source_span": {
+          "end_line": 35,
+          "start_line": 35
+        },
+        "trait": "Successful in her mission"
+      }
+    ],
+    "inferred_traits": [
+      {
+        "confidence": 0.95,
+        "rationale": "Explicitly described as 'a teenager in a soaked marching-band jacket' and found her dog in 'the band room,' indicating active participation in school music program.",
+        "trait": "Age/Status",
+        "value": "High school student (marching band member)"
+      },
+      {
+        "confidence": 0.85,
+        "rationale": "Prioritizes finding her dog despite disaster conditions, takes initiative to use community resources, and maintains composure in crisis environment.",
+        "trait": "Personality",
+        "value": "Caring, determined, practical"
+      },
+      {
+        "confidence": 0.8,
+        "rationale": "Appears in both shelter and radio station scenes, interacts naturally with staff, and her request is treated as legitimate community business.",
+        "trait": "Relationship to community",
+        "value": "Active participant in shelter operations"
+      }
+    ],
+    "name": "MAYA",
+    "narrative_role": "supporting",
+    "narrative_role_confidence": 0.85,
+    "overall_confidence": 0.85,
+    "prominence": "secondary",
+    "relationships": [
+      {
+        "confidence": 0.9,
+        "evidence": "Maya approaches June's table to request the dog announcement; June accepts the flyer and helps broadcast it.",
+        "relationship_type": "Community member seeking assistance",
+        "target_character": "JUNE"
+      },
+      {
+        "confidence": 0.95,
+        "evidence": "Maya describes Comet as family, searches for him, and carries him in her arms after recovery.",
+        "relationship_type": "Owner/caretaker",
+        "target_character": "COMET"
+      }
+    ],
+    "scene_presence": [
+      "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+      "INT. COMMUNITY RADIO STUDIO - MORNING"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 5,
+        "decision_trace": [
+          {
+            "candidate": "JUNE",
+            "canonical_name": "June",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "June is a named character who appears in 4 scenes with 6 dialogue lines. She is a core member of the community radio station team, responsible for recording updates and managing broadcasts during the emergency.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "JUNE",
+            "surviving_name": "JUNE",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "ARIA",
+            "canonical_name": "Aria",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Aria is a named character who appears in 3 scenes with 4 dialogue lines. She is a core member of the radio station team, handling technical operations and antenna setup.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "ARIA",
+            "surviving_name": "ARIA",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "KELL",
+            "canonical_name": "Kell",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Kell is a named character who appears in 3 scenes with 4 dialogue lines. He is a core member of the radio station team, responsible for antenna work and logistics.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "KELL",
+            "surviving_name": "KELL",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "NOAH",
+            "canonical_name": "Noah",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Noah is a named character who appears in 4 scenes with 2 dialogue lines. He is a core member of the radio station team, handling mixer operations and antenna installation.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "NOAH",
+            "surviving_name": "NOAH",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "MAYA",
+            "canonical_name": "Maya",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Maya is a named character who appears in 2 scenes with 4 dialogue lines. She is a teenager in a marching-band jacket who seeks help broadcasting a missing dog announcement.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "MAYA",
+            "surviving_name": "MAYA",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "COMET",
+            "canonical_name": "Comet",
+            "decision_verdict": "retype",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Comet is a dog, not a character. While named and present in the script, it is a prop/animal object rather than a human character.",
+            "outcome": "rejected_by_verdict",
+            "target_entity_type": "prop"
+          }
+        ],
+        "decision_trace_count": 6,
+        "input_candidate_count": 6,
+        "rejected_candidate_count": 1,
+        "rejected_candidates": [
+          {
+            "candidate": "COMET",
+            "canonical_name": "Comet",
+            "decision_verdict": "retype",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Comet is a dog, not a character. While named and present in the script, it is a prop/animal object rather than a human character.",
+            "target_entity_type": "prop"
+          }
+        ]
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": null,
+    "created_at": "2026-11-10T18:42:47.965408Z",
+    "health": "valid",
+    "intent": "Establish master definition for character 'MAYA'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "character_bible_v1",
+    "producing_role": null,
+    "rationale": "Extracted from canonical script and scene co-occurrence data.",
+    "ref": {
+      "artifact_type": "character_bible",
+      "entity_id": "maya",
+      "path": "artifacts/character_bible/maya/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

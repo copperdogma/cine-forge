@@ -1,0 +1,85 @@
+{
+  "data": {
+    "characters": [
+      "CHILD",
+      "ELDERLY VISITOR",
+      "IVA",
+      "MARA",
+      "SOL",
+      "UNSEEN SPEAKER"
+    ],
+    "locations": [
+      "MUSEUM CONSERVATION ROOM",
+      "MUSEUM THEATRE"
+    ],
+    "processing_metadata": {
+      "character_source": "scene_index",
+      "chunk_count": 1,
+      "chunk_size": 12000,
+      "locations_gap_count": 0,
+      "model": "claude-haiku-4-5-20251001",
+      "props_gap_count": 0,
+      "verification_cost_usd": 0.0,
+      "verification_ran": false
+    },
+    "props": [
+      "PORCELAIN BIRD",
+      "REEL (MARA / TAKE 4)",
+      "RED THREAD",
+      "SHALLOW TIN",
+      "CANVAS SATCHEL",
+      "SPECTACLES",
+      "FELT PAD",
+      "SILVER BIRD BROOCH",
+      "DARK SCARF",
+      "PAPER TAPE",
+      "THEATRE KEY",
+      "TAPE DECK"
+    ],
+    "script_title": "61636809 Matinee Echo"
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "final_stage_model_used": "claude-haiku-4-5-20251001",
+      "final_stage_provider_used": "anthropic"
+    },
+    "confidence": 0.9,
+    "cost_data": {
+      "estimated_cost_usd": 0.0029368,
+      "input_tokens": 2836,
+      "latency_seconds": null,
+      "model": "claude-haiku-4-5-20251001",
+      "output_tokens": 167,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:04:40.738881Z",
+    "health": "valid",
+    "intent": "Discover characters (from scene_index), locations, and props.",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      }
+    ],
+    "producing_module": "entity_discovery_v1",
+    "producing_role": null,
+    "rationale": "Characters from scene_index (canonical source); locations/props via incremental AI passes.",
+    "ref": {
+      "artifact_type": "entity_discovery_results",
+      "entity_id": "project",
+      "path": "artifacts/entity_discovery_results/project/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

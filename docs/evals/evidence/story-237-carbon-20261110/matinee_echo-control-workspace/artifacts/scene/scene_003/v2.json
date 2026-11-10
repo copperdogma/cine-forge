@@ -1,0 +1,175 @@
+{
+  "data": {
+    "characters_present": [
+      "CHILD",
+      "IVA",
+      "SOL"
+    ],
+    "characters_present_ids": [
+      "child",
+      "iva",
+      "sol"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Sol is still at the bench. The bird's body rests on the felt pad. Iva returns, opens the tin, and gives him the wing. He aligns the fracture, then secures the repaired wing with a narrow strip of paper tape. The crack remains visible.",
+        "element_type": "action"
+      },
+      {
+        "content": "IVA",
+        "element_type": "character"
+      },
+      {
+        "content": "Someone upstairs knew how Aunt Mara spoke.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "SOL",
+        "element_type": "character"
+      },
+      {
+        "content": "A friend, perhaps. Or someone who heard the recording before.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "He cannot identify the visitor. Iva places the red-thread reel on a shelf. The empty tin stays on the bench beside the pad.",
+        "element_type": "action"
+      },
+      {
+        "content": "A CHILD in a school jumper appears at the doorway.",
+        "element_type": "action"
+      },
+      {
+        "content": "CHILD",
+        "element_type": "character"
+      },
+      {
+        "content": "The lady with the bird says the theatre's locked.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Iva picks up the theatre key from a hook. Sol puts his spectacles back on and carries the porcelain bird in both hands. Its paper tape is still in place.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "INT. MUSEUM CONSERVATION ROOM - LATE AFTERNOON",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "Museum Conservation Room - Late Afternoon",
+    "narrative_beats": [
+      {
+        "approximate_location": "opening",
+        "beat_type": "Reunion and Repair",
+        "confidence": 0.93,
+        "description": "Iva returns the wing to Sol, who aligns and tapes the fracture \u2014 reuniting the separated object, though the crack remains visible."
+      },
+      {
+        "approximate_location": "early-middle",
+        "beat_type": "Disclosure",
+        "confidence": 0.95,
+        "description": "Iva tells Sol that someone upstairs knew how Mara spoke, reporting the encounter with the visitor and raising the question of the visitor's identity."
+      },
+      {
+        "approximate_location": "middle",
+        "beat_type": "Inconclusive Speculation",
+        "confidence": 0.9,
+        "description": "Sol offers two possible explanations \u2014 a friend, or someone who heard the recording \u2014 but cannot identify the visitor, leaving the mystery open."
+      },
+      {
+        "approximate_location": "middle",
+        "beat_type": "Object Placement",
+        "confidence": 0.82,
+        "description": "Iva places the red-thread reel on a shelf and the empty tin stays on the bench, distributing the scene's key objects in ways that suggest their ongoing significance."
+      },
+      {
+        "approximate_location": "late",
+        "beat_type": "New Complication",
+        "confidence": 0.95,
+        "description": "A child appears at the doorway to report that 'the lady with the bird' says the theatre is locked, reintroducing the visitor and prompting action."
+      },
+      {
+        "approximate_location": "closing",
+        "beat_type": "Mobilisation",
+        "confidence": 0.9,
+        "description": "Iva takes the theatre key and Sol carries the repaired bird in both hands, setting both characters in motion toward the theatre."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.72,
+        "evidence": "Gap-filled from scene analysis context",
+        "field_name": "time_of_day",
+        "method": "ai"
+      }
+    ],
+    "scene_id": "scene_003",
+    "scene_number": 3,
+    "source_span": {
+      "end_line": 60,
+      "start_line": 42
+    },
+    "time_of_day": "LATE AFTERNOON",
+    "tone_mood": "contemplative with growing unease",
+    "tone_shifts": [
+      "The scene begins in calm restoration but shifts toward unease as the visitor's identity is discussed",
+      "The child's arrival introduces a new urgency that breaks the reflective mood"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 3,
+      "source_span": {
+        "end_line": 60,
+        "start_line": 42
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.034521,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2301,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:04:38.191885Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_003",
+      "path": "artifacts/scene/scene_003/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

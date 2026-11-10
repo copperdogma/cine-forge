@@ -1,0 +1,155 @@
+{
+  "character_id": "lena",
+  "name": "LENA",
+  "aliases": [],
+  "description": "A ferry ticket office clerk with a fresh white bandage on her left thumb. She is the younger sister of Tom and daughter of a man currently at a clinic. Lena becomes entangled in a mysterious exchange involving a numbered envelope, a brass locker key, and a cash box containing a photograph and receipt.",
+  "prominence": "primary",
+  "explicit_evidence": [
+    {
+      "trait": "Works as a ferry ticket clerk",
+      "quote": "LENA, the clerk, numbers a paper envelope 17 and slides a brass locker key inside.",
+      "source_scene": "INT. FERRY TICKET OFFICE - NIGHT",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 5
+      }
+    },
+    {
+      "trait": "Has a recent injury on her left thumb",
+      "quote": "Her left thumb wears a fresh white bandage.",
+      "source_scene": "INT. FERRY TICKET OFFICE - NIGHT",
+      "source_span": {
+        "start_line": 3,
+        "end_line": 3
+      }
+    },
+    {
+      "trait": "Has a younger brother named Tom",
+      "quote": "TOM, her younger brother, sets a blue insulated medicine case on the counter.",
+      "source_scene": "INT. FERRY TICKET OFFICE - NIGHT",
+      "source_span": {
+        "start_line": 4,
+        "end_line": 4
+      }
+    },
+    {
+      "trait": "Takes responsibility and initiative",
+      "quote": "I'll take it to the launch myself. You lock up here.",
+      "source_scene": "INT. FERRY TICKET OFFICE - NIGHT",
+      "source_span": {
+        "start_line": 18,
+        "end_line": 19
+      }
+    },
+    {
+      "trait": "Cautious and suspicious of unknown circumstances",
+      "quote": "Who sent you?",
+      "source_scene": "INT. FERRY TICKET OFFICE - NIGHT",
+      "source_span": {
+        "start_line": 14,
+        "end_line": 14
+      }
+    },
+    {
+      "trait": "Follows cryptic instructions without full understanding",
+      "quote": "She removes envelope 17, takes out the brass key, and unlocks a green locker marked NORTH. Inside lies a small metal cash box.",
+      "source_scene": "EXT. FERRY PIER - LATER",
+      "source_span": {
+        "start_line": 28,
+        "end_line": 30
+      }
+    },
+    {
+      "trait": "Concerned about her father's health",
+      "quote": "Your father still at the clinic? Until the launch brings him home.",
+      "source_scene": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+      "source_span": {
+        "start_line": 48,
+        "end_line": 50
+      }
+    },
+    {
+      "trait": "Exercises discretion and caution with unknown objects",
+      "quote": "Leave it there. We don't know whose it is.",
+      "source_scene": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+      "source_span": {
+        "start_line": 56,
+        "end_line": 56
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "Reliability",
+      "value": "High",
+      "confidence": 0.85,
+      "rationale": "Lena takes on multiple responsibilities—managing the ticket office, delivering her father's medicine, and handling the mysterious cash box exchange—without complaint or hesitation."
+    },
+    {
+      "trait": "Observant",
+      "value": "High",
+      "confidence": 0.8,
+      "rationale": "She notices details like the courier's silhouette, the old man's orange cape, and the contents of the cash box (photograph and receipt with storage information)."
+    },
+    {
+      "trait": "Protective",
+      "value": "High",
+      "confidence": 0.8,
+      "rationale": "She stops Tom from handling the medicine case, insists on delivering it herself, and keeps the cash box secure throughout the night."
+    },
+    {
+      "trait": "Pragmatic",
+      "value": "High",
+      "confidence": 0.75,
+      "rationale": "She accepts the mysterious envelope and key without demanding full explanation, follows instructions, and adapts to the fog and changing circumstances."
+    },
+    {
+      "trait": "Uncertain about the photograph's identity",
+      "value": "Ambiguous",
+      "confidence": 0.7,
+      "rationale": "When Tom asks if the photograph shows their father, Lena responds 'Could be. It didn't have a date or names,' suggesting genuine uncertainty rather than evasion."
+    }
+  ],
+  "scene_presence": [
+    "INT. FERRY TICKET OFFICE - NIGHT",
+    "EXT. FERRY PIER - LATER",
+    "INT. RESCUE BOATHOUSE - PRE-DAWN",
+    "EXT. FERRY PIER - DAWN"
+  ],
+  "dialogue_summary": "Lena speaks sparingly but purposefully. She questions the courier's origin, directs Tom to lock up the office, asks Ruth about their father's status at the clinic, instructs Tom to leave the orange cape untouched, and expresses uncertainty about the photograph's contents. Her dialogue reveals caution, responsibility, and concern for her father.",
+  "narrative_role": "protagonist",
+  "narrative_role_confidence": 0.9,
+  "relationships": [
+    {
+      "target_character": "TOM",
+      "relationship_type": "sibling",
+      "evidence": "Tom is identified as her younger brother. Lena takes charge of tasks he brings to her and directs his actions.",
+      "confidence": 0.95
+    },
+    {
+      "target_character": "FATHER",
+      "relationship_type": "family",
+      "evidence": "Lena's father is at a clinic; she ensures his medicine is delivered and asks Ruth about his status. The photograph in the cash box may depict him.",
+      "confidence": 0.85
+    },
+    {
+      "target_character": "RUTH",
+      "relationship_type": "colleague/acquaintance",
+      "evidence": "Ruth is the launch pilot. Lena entrusts her with the medicine case and coordinates the delivery.",
+      "confidence": 0.8
+    },
+    {
+      "target_character": "OLD MAN",
+      "relationship_type": "unknown/adversarial",
+      "evidence": "The old man in the orange cape appears to be connected to the mysterious envelope and cash box exchange. Lena questions him but receives evasive answers.",
+      "confidence": 0.65
+    },
+    {
+      "target_character": "COURIER",
+      "relationship_type": "unknown",
+      "evidence": "An anonymous courier delivers the envelope with the locker key. Lena does not know who sent them.",
+      "confidence": 0.6
+    }
+  ],
+  "overall_confidence": 0.85
+}

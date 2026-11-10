@@ -1,0 +1,243 @@
+{
+  "data": {
+    "aliases": [],
+    "character_id": "noah",
+    "description": "A technical operator at the community radio station who works on signal equipment and antenna installation during an emergency broadcast operation. Noah is practical, capable with mechanical systems, and maintains a dry sense of humor under pressure.",
+    "dialogue_summary": "Noah speaks sparingly but meaningfully. He makes a self-deprecating joke about the antenna's condition, expresses weariness about the emergency situation, provides field updates via radio about road conditions and bridge crew restrictions, and participates in the morning routine of the radio station.",
+    "explicit_evidence": [
+      {
+        "quote": "NOAH coaxes a signal out of a battered mixer.",
+        "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        "source_span": {
+          "end_line": 5,
+          "start_line": 3
+        },
+        "trait": "Technical competence"
+      },
+      {
+        "quote": "Please tell me that antenna is less cursed than it looks.",
+        "source_scene": "INT. COMMUNITY RADIO STUDIO - NIGHT",
+        "source_span": {
+          "end_line": 16,
+          "start_line": 16
+        },
+        "trait": "Dry humor"
+      },
+      {
+        "quote": "I miss boring weather.",
+        "source_scene": "EXT. WATER TOWER CATWALK - NIGHT",
+        "source_span": {
+          "end_line": 38,
+          "start_line": 38
+        },
+        "trait": "Preference for normalcy"
+      },
+      {
+        "quote": "Noah plugs the cable into a handheld receiver.",
+        "source_scene": "EXT. WATER TOWER CATWALK - NIGHT",
+        "source_span": {
+          "end_line": 42,
+          "start_line": 42
+        },
+        "trait": "Field operations capability"
+      },
+      {
+        "quote": "Noah's voice crackles over a tabletop radio. NOAH (RADIO): East road is open one lane. Bridge crew wants no heavy trucks till daylight.",
+        "source_scene": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+        "source_span": {
+          "end_line": 64,
+          "start_line": 62
+        },
+        "trait": "Radio communication operator"
+      },
+      {
+        "quote": "Noah labels a notebook DAY TWO.",
+        "source_scene": "INT. COMMUNITY RADIO STUDIO - MORNING",
+        "source_span": {
+          "end_line": 77,
+          "start_line": 77
+        },
+        "trait": "Administrative attention to detail"
+      }
+    ],
+    "inferred_traits": [
+      {
+        "confidence": 0.85,
+        "rationale": "Noah operates technical equipment during an emergency broadcast, maintains composure on a dangerous catwalk in high winds, and continues work through the night without complaint.",
+        "trait": "Resilience under pressure",
+        "value": "High"
+      },
+      {
+        "confidence": 0.8,
+        "rationale": "Noah works seamlessly with Aria, June, and Kell across multiple scenes, responding to requests and coordinating on technical tasks without friction.",
+        "trait": "Collaborative work style",
+        "value": "Cooperative"
+      },
+      {
+        "confidence": 0.75,
+        "rationale": "Noah's dialogue and actions focus on what needs to be done rather than emotional responses; he accepts cursed equipment and dangerous conditions as part of the job.",
+        "trait": "Pragmatic attitude",
+        "value": "Practical"
+      }
+    ],
+    "name": "NOAH",
+    "narrative_role": "supporting",
+    "narrative_role_confidence": 0.9,
+    "overall_confidence": 0.85,
+    "prominence": "secondary",
+    "relationships": [
+      {
+        "confidence": 0.95,
+        "evidence": "Noah and Aria work together on antenna installation at the water tower and collaborate on technical setup at the radio station.",
+        "relationship_type": "Colleague/Team member",
+        "target_character": "ARIA"
+      },
+      {
+        "confidence": 0.95,
+        "evidence": "Noah communicates with June via radio during the emergency broadcast and works in the same radio station team.",
+        "relationship_type": "Colleague/Team member",
+        "target_character": "JUNE"
+      },
+      {
+        "confidence": 0.9,
+        "evidence": "Noah and Kell work together as part of the emergency broadcast team, with Kell providing equipment that Noah uses.",
+        "relationship_type": "Colleague/Team member",
+        "target_character": "KELL"
+      }
+    ],
+    "scene_presence": [
+      "INT. COMMUNITY RADIO STUDIO - NIGHT",
+      "EXT. WATER TOWER CATWALK - NIGHT",
+      "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+      "INT. COMMUNITY RADIO STUDIO - MORNING"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 5,
+        "decision_trace": [
+          {
+            "candidate": "JUNE",
+            "canonical_name": "June",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "June is a named character who appears in 4 scenes with 6 dialogue lines. She is a core member of the community radio station team, responsible for recording updates and managing broadcasts during the emergency.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "JUNE",
+            "surviving_name": "JUNE",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "ARIA",
+            "canonical_name": "Aria",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Aria is a named character who appears in 3 scenes with 4 dialogue lines. She is a core member of the radio station team, handling technical operations and antenna setup.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "ARIA",
+            "surviving_name": "ARIA",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "KELL",
+            "canonical_name": "Kell",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Kell is a named character who appears in 3 scenes with 4 dialogue lines. He is a core member of the radio station team, responsible for antenna work and logistics.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "KELL",
+            "surviving_name": "KELL",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "NOAH",
+            "canonical_name": "Noah",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Noah is a named character who appears in 4 scenes with 2 dialogue lines. He is a core member of the radio station team, handling mixer operations and antenna installation.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "NOAH",
+            "surviving_name": "NOAH",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "MAYA",
+            "canonical_name": "Maya",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.99,
+            "llm_rationale": "Maya is a named character who appears in 2 scenes with 4 dialogue lines. She is a teenager in a marching-band jacket who seeks help broadcasting a missing dog announcement.",
+            "outcome": "accepted",
+            "resolution_mode": "canonical_or_candidate",
+            "resolved_name": "MAYA",
+            "surviving_name": "MAYA",
+            "target_entity_type": "character"
+          },
+          {
+            "candidate": "COMET",
+            "canonical_name": "Comet",
+            "decision_verdict": "retype",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Comet is a dog, not a character. While named and present in the script, it is a prop/animal object rather than a human character.",
+            "outcome": "rejected_by_verdict",
+            "target_entity_type": "prop"
+          }
+        ],
+        "decision_trace_count": 6,
+        "input_candidate_count": 6,
+        "rejected_candidate_count": 1,
+        "rejected_candidates": [
+          {
+            "candidate": "COMET",
+            "canonical_name": "Comet",
+            "decision_verdict": "retype",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Comet is a dog, not a character. While named and present in the script, it is a prop/animal object rather than a human character.",
+            "target_entity_type": "prop"
+          }
+        ]
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": null,
+    "created_at": "2026-11-10T18:42:49.784344Z",
+    "health": "valid",
+    "intent": "Establish master definition for character 'NOAH'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "character_bible_v1",
+    "producing_role": null,
+    "rationale": "Extracted from canonical script and scene co-occurrence data.",
+    "ref": {
+      "artifact_type": "character_bible",
+      "entity_id": "noah",
+      "path": "artifacts/character_bible/noah/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "data": {
+    "characters_present": [
+      "IVA",
+      "SOL",
+      "UNSEEN SPEAKER"
+    ],
+    "characters_present_ids": [
+      "iva",
+      "sol",
+      "unseen_speaker"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "INT. MUSEUM THEATRE - EVENING",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Iva unlocks the theatre door with the key. Sol follows with the repaired bird; the child waits in the corridor. No visitor is visible inside.",
+        "element_type": "action"
+      },
+      {
+        "content": "A dark scarf with a silver bird brooch lies across the front-row seat. Iva does not touch it. Sol sets the porcelain bird on the stage, keeping its taped wing away from the edge.",
+        "element_type": "action"
+      },
+      {
+        "content": "IVA",
+        "element_type": "character"
+      },
+      {
+        "content": "Mara would be eighty now.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "SOL",
+        "element_type": "character"
+      },
+      {
+        "content": "That isn't an answer.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Iva locks the door behind them, keeping the key. A voice sounds from behind the curtain. There is no tape deck running; the deck's reels are bare.",
+        "element_type": "action"
+      },
+      {
+        "content": "UNSEEN SPEAKER (O.S.)",
+        "element_type": "character"
+      },
+      {
+        "content": "If the bird sings twice, wait for the door.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Sol reaches for Iva's sleeve. Both remain facing the curtain. Neither sees who spoke. On the stage the repaired bird stays silent, its visible crack crossed by paper tape.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "INT. MUSEUM THEATRE - EVENING",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "Museum Theatre",
+    "narrative_beats": [
+      {
+        "approximate_location": "opening",
+        "beat_type": "Return and Absence",
+        "confidence": 0.95,
+        "description": "Iva and Sol enter the theatre but find no visitor inside \u2014 only her dark scarf with the silver bird brooch left on the front-row seat, suggesting unexplained departure or disappearance."
+      },
+      {
+        "approximate_location": "early-middle",
+        "beat_type": "Object as Threshold",
+        "confidence": 0.88,
+        "description": "Iva does not touch the scarf; Sol places the repaired porcelain bird on the stage with care \u2014 both characters treat the objects as charged or significant without explanation."
+      },
+      {
+        "approximate_location": "middle",
+        "beat_type": "Reflective Statement",
+        "confidence": 0.9,
+        "description": "Iva notes that Mara would be eighty now, implying the visitor could not have been Mara herself \u2014 or raising the question of whether she could."
+      },
+      {
+        "approximate_location": "middle",
+        "beat_type": "Deflection",
+        "confidence": 0.87,
+        "description": "Sol responds that Iva's remark is not an answer, indicating both characters are circling an unspoken question neither will name directly."
+      },
+      {
+        "approximate_location": "late",
+        "beat_type": "Supernatural or Inexplicable Intrusion",
+        "confidence": 0.97,
+        "description": "A voice from behind the curtain repeats Mara's recorded line exactly \u2014 with no tape deck running and no visible speaker \u2014 creating an unexplained recurrence of the recording's words."
+      },
+      {
+        "approximate_location": "closing",
+        "beat_type": "Suspended Confrontation",
+        "confidence": 0.95,
+        "description": "Sol reaches for Iva's sleeve; both remain facing the curtain without moving or speaking. The scene closes in stillness, unresolved, with the repaired bird silent on the stage."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      }
+    ],
+    "scene_id": "scene_004",
+    "scene_number": 4,
+    "source_span": {
+      "end_line": 78,
+      "start_line": 61
+    },
+    "time_of_day": "EVENING",
+    "tone_mood": "uncanny and unresolved",
+    "tone_shifts": [
+      "The scene opens in cautious investigation and shifts to quiet dread when the scarf is found without its owner",
+      "The final tonal shift is sharp and decisive when the disembodied voice repeats the recorded line with no mechanical source"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 4,
+      "source_span": {
+        "end_line": 78,
+        "start_line": 61
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.034521,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2301,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:04:38.193358Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_004",
+      "path": "artifacts/scene/scene_004/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

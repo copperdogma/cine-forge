@@ -1,0 +1,30 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"score\":0.75,\"reason\":\"The model correctly identifies the key visual change (red to blue between frames 1 and 2), the static camera, navy color, and provides grounded frame evidence. However, there are several issues: (1) continuity_status is 'intact' when the reference says 'broken' due to the color change \u2014 this is a significant mismatch; (2) motion_tags includes 'stillness' when the reference has none; (3) tone_tags includes 'detached' when the reference has none; (4) color_tags includes 'red' but misses that blue should also be noted (though the reference only lists 'navy'); (5) camera_tags only lists 'static' but misses 'wide_master'. The continuity_status error is the most critical mismatch \u2014 the model notes the color change in continuity_notes but contradicts itself by marking status as 'intact' rather than 'broken'. Audio fields are empty as required, which is correct.\"}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011Cgum47KFhdzuF9MwhVRMc",
+  "model": "claude-opus-4-6",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2539,
+    "output_tokens": 230,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

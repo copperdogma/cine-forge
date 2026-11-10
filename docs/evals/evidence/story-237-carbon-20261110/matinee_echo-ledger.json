@@ -1,0 +1,43 @@
+[
+  {
+    "logical": "matinee_echo",
+    "hop": 1,
+    "input_bound": 26000,
+    "output_bound": 65536,
+    "reserve_usd": "0.70736",
+    "accounted_usd": "0.610044",
+    "state": "settled",
+    "request_sha256": "79a59412e652920c82959a1bd2ac8c363d675aa6b556129830d7e2011d7f6dcb",
+    "wire": "output/carbon-20261110-private-wire/matinee_echo-hop1.wire",
+    "producer_sha256": "83635418f9af798e07ae8e4cca673bc9c57eb0bb18d469a1b0c8b61ed47e74c7",
+    "previous_interaction_id": null,
+    "http_status": 200,
+    "model": "gemini-4-carbon",
+    "interaction_id": "v1_ChdOV3J6YXZqVUhQeXN6N0lQMGNpajBBbxIXTldyemF2alVIUHlzejdJUDBjaWowQW8",
+    "usage": {
+      "total_tokens": 66470,
+      "total_input_tokens": 6832,
+      "input_tokens_by_modality": [
+        {
+          "modality": "text",
+          "tokens": 6832
+        }
+      ],
+      "total_cached_tokens": 0,
+      "total_output_tokens": 28113,
+      "output_tokens_by_modality": [
+        {
+          "modality": "text",
+          "tokens": 28113
+        }
+      ],
+      "total_tool_use_tokens": 0,
+      "total_thought_tokens": 31525,
+      "initial_input_tokens": 6832
+    },
+    "status": "completed",
+    "visible_chars": 112230,
+    "elapsed_ms": 537778,
+    "wire_sha256": "9a3c22bd718cc578295715cd92386b059d24f05e658d7a41148f6e817b8dbc93"
+  }
+]

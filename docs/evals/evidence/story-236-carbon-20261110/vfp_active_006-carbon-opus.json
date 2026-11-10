@@ -1,0 +1,19 @@
+{
+  "cost": "0.019235",
+  "model": "claude-opus-4-6",
+  "observed": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2717,
+    "output_tokens": 226,
+    "service_tier": "standard",
+    "speed": "standard"
+  },
+  "reason": "The model correctly identifies the static wide framing, the cyan figure moving left-to-right, the dark navy-to-teal color palette, the large arch, and the white-outlined rectangular object staying with the figure (continuity intact). However, the motion is described as 'measured' and 'slow_drift' rather than 'fast_lateral' as shown in the reference \u2014 the figure traverses from far left to far right across just 5 frames, indicating fast lateral movement. The tone tags 'detached' and 'tense' partially match ('tense' is correct, but 'detached' is not 'urgent'). Emotion tags 'isolation' and 'resolve' are invented \u2014 the reference specifies none. The description of the figure 'carrying a parcel' slightly over-interprets the small rectangle. Audio fields are empty, which is correct. Overall, the core visual facts are mostly right but motion speed and emotion tags are mischaracterized.",
+  "score": 0.72
+}

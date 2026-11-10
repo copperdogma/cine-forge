@@ -1,0 +1,228 @@
+{
+  "data": {
+    "aspect_ratio": "16:9",
+    "budget_cap_usd": null,
+    "confirmed": true,
+    "confirmed_at": "2026-11-10T19:02:25.724742+00:00",
+    "default_model": "claude-sonnet-4-6",
+    "detection_details": {
+      "aspect_ratio": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "16:9"
+      },
+      "budget_cap_usd": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": null
+      },
+      "default_model": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "claude-sonnet-4-6"
+      },
+      "estimated_duration_minutes": {
+        "confidence": 0.9,
+        "rationale": "The scene index explicitly states an estimated runtime of 4.0 minutes, consistent with the short scene count and line count.",
+        "source": "auto_detected",
+        "value": 4.0
+      },
+      "format": {
+        "confidence": 0.9,
+        "rationale": "With only 4 scenes, 77 lines, and an estimated runtime of 4 minutes, this is clearly a short-form screenplay.",
+        "source": "auto_detected",
+        "value": "Short Film"
+      },
+      "genre": {
+        "confidence": 0.8,
+        "rationale": "The script features an unidentified courier, a mysterious cash box with a photograph, and unresolved questions about identity and purpose \u2014 hallmarks of mystery. The family dynamics and emotional undercurrent place it in drama as well.",
+        "source": "auto_detected",
+        "value": [
+          "Mystery",
+          "Drama"
+        ]
+      },
+      "human_control_mode": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "checkpoint"
+      },
+      "location_count": {
+        "confidence": 1.0,
+        "rationale": "The scene index explicitly lists 3 unique locations: Ferry Pier, Ferry Ticket Office, and Rescue Boathouse.",
+        "source": "auto_detected",
+        "value": 3
+      },
+      "locations_summary": {
+        "confidence": 0.95,
+        "rationale": "All three locations and their time-of-day contexts are clearly documented in the scene index and confirmed by the script excerpt.",
+        "source": "auto_detected",
+        "value": [
+          "Ferry Ticket Office (interior, night), Ferry Pier (exterior, night through dawn), Rescue Boathouse (interior, pre-dawn)"
+        ]
+      },
+      "model_strategy": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": {
+          "escalate": "claude-opus-4-6",
+          "verify": "claude-sonnet-4-6",
+          "work": "claude-sonnet-4-6"
+        }
+      },
+      "primary_characters": {
+        "confidence": 0.9,
+        "rationale": "Ranked by weighted scene frequency and dialogue cue count (scene*2 + dialogue); top 3 classified as primary.",
+        "source": "auto_detected",
+        "value": [
+          "LENA",
+          "TOM",
+          "RUTH"
+        ]
+      },
+      "production_mode": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": "ai_generated"
+      },
+      "style_packs": {
+        "confidence": 1.0,
+        "rationale": "MVP default applied until user override.",
+        "source": "default",
+        "value": {}
+      },
+      "supporting_characters": {
+        "confidence": 0.85,
+        "rationale": "Ranked by weighted scene frequency and dialogue cue count (scene*2 + dialogue); top 3 classified as primary.",
+        "source": "auto_detected",
+        "value": [
+          "OLD MAN",
+          "COURIER"
+        ]
+      },
+      "target_audience": {
+        "confidence": 0.2,
+        "rationale": "No explicit target audience is indicated in the script materials. The tone and content suggest adult viewers, but this is insufficient to assert a specific audience category with confidence.",
+        "source": "auto_detected",
+        "value": null
+      },
+      "title": {
+        "confidence": 0.85,
+        "rationale": "The canonical script title is '0974Bad9 Last Ferry' and the script excerpt header reads 'Last Ferry Receipt'. 'Last Ferry' is the most likely canonical title, with slight uncertainty due to the discrepancy between the canonical title suffix and the excerpt header.",
+        "source": "auto_detected",
+        "value": "Last Ferry"
+      },
+      "tone": {
+        "confidence": 0.95,
+        "rationale": "Tone descriptors are drawn directly from the scene index: 'tense and secretive', 'eerie and quietly unsettling', 'watchful and quietly anxious', and 'melancholic and unresolved'.",
+        "source": "auto_detected",
+        "value": [
+          "tense",
+          "eerie",
+          "melancholic",
+          "unresolved"
+        ]
+      }
+    },
+    "estimated_duration_minutes": 4.0,
+    "format": "Short Film",
+    "genre": [
+      "Mystery",
+      "Drama"
+    ],
+    "human_control_mode": "checkpoint",
+    "location_count": 3,
+    "locations_summary": [
+      "Ferry Ticket Office (interior, night), Ferry Pier (exterior, night through dawn), Rescue Boathouse (interior, pre-dawn)"
+    ],
+    "model_strategy": {
+      "escalate": "claude-opus-4-6",
+      "verify": "claude-sonnet-4-6",
+      "work": "claude-sonnet-4-6"
+    },
+    "primary_characters": [
+      "LENA",
+      "TOM",
+      "RUTH"
+    ],
+    "production_format": null,
+    "production_mode": "ai_generated",
+    "storyboard_style": null,
+    "style_packs": {},
+    "supporting_characters": [
+      "OLD MAN",
+      "COURIER"
+    ],
+    "target_audience": null,
+    "title": "Last Ferry",
+    "tone": [
+      "tense",
+      "eerie",
+      "melancholic",
+      "unresolved"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "config as non-versioned side file",
+      "hard-coded defaults without confirmation gate"
+    ],
+    "annotations": {
+      "accept_config": true,
+      "autonomous": false,
+      "config_file": null,
+      "draft_path": "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/output/project/draft_config.yaml",
+      "final_stage_model_used": "claude-sonnet-4-6",
+      "final_stage_provider_used": "anthropic",
+      "qa_result": {
+        "confidence": 0.9,
+        "issues": [],
+        "passed": true,
+        "summary": "The output accurately reflects the script's estimated duration, format, genre, location count, and character roles based on the scene index and script excerpt. Confidence scores appropriately reflect certainty levels, and rationales are concise and grounded in provided source facts."
+      }
+    },
+    "confidence": 0.9,
+    "cost_data": {
+      "estimated_cost_usd": 0.0194002,
+      "input_tokens": 4621,
+      "latency_seconds": null,
+      "model": "claude-sonnet-4-6",
+      "output_tokens": 855,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:02:25.732463Z",
+    "health": "valid",
+    "intent": "Persist canonical project settings shared by downstream modules.",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      }
+    ],
+    "producing_module": "project_config_v1",
+    "producing_role": null,
+    "rationale": "Centralize genre/tone/format/control defaults and ensure they are explicitly confirmed before downstream creative work.",
+    "ref": {
+      "artifact_type": "project_config",
+      "entity_id": "project",
+      "path": "artifacts/project_config/project/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "hybrid"
+  }
+}

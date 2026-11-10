@@ -1,0 +1,168 @@
+{
+  "data": {
+    "created_at": "2026-11-10T13:02:39.248312",
+    "display_name": "Photograph",
+    "entity_id": "photograph",
+    "entity_type": "prop",
+    "files": [
+      {
+        "created_at": "2026-11-10T19:02:39.236733Z",
+        "filename": "master_v1.json",
+        "provenance": "ai_extracted",
+        "purpose": "master_definition",
+        "version": 1
+      }
+    ],
+    "version": 1,
+    "visual_reference_image": null
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 9,
+        "decision_trace": [
+          {
+            "candidate": "PAPER ENVELOPE 17",
+            "canonical_name": "Paper Envelope 17",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "A numbered envelope that serves as a container for the brass locker key. It is physically handled, numbered, and central to the plot mechanics.",
+            "outcome": "accepted",
+            "resolved_name": "Paper Envelope 17",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "BRASS LOCKER KEY",
+            "canonical_name": "Brass Locker Key",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "A physical key placed inside the envelope and used to unlock the green locker. It is handled multiple times and is essential to accessing the cash box.",
+            "outcome": "accepted",
+            "resolved_name": "Brass Locker Key",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "WHITE BANDAGE",
+            "canonical_name": "White Bandage",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.9,
+            "llm_rationale": "A bandage worn on Lena's thumb, mentioned twice in the script. It is a visible prop that becomes soiled over time and serves as a visual detail.",
+            "outcome": "accepted",
+            "resolved_name": "White Bandage",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "BLUE INSULATED MEDICINE CASE",
+            "canonical_name": "Blue Insulated Medicine Case",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "A container holding medical doses for Lena's father. It is physically moved, placed in a refrigerator, and is a key plot object.",
+            "outcome": "accepted",
+            "resolved_name": "Blue Insulated Medicine Case",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "ORANGE RAIN CAPE",
+            "canonical_name": "Orange Rain Cape",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.9,
+            "llm_rationale": "Worn by both the courier and the old man. Mentioned twice and left on a bench. It is a physical prop with narrative significance.",
+            "outcome": "accepted",
+            "resolved_name": "Orange Rain Cape",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "GREEN LOCKER (NORTH)",
+            "canonical_name": "Green Locker",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.92,
+            "llm_rationale": "A marked locker that is unlocked with the brass key and contains the metal cash box. It is a fixed prop location referenced multiple times.",
+            "outcome": "accepted",
+            "resolved_name": "Green Locker",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "METAL CASH BOX",
+            "canonical_name": "Metal Cash Box",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "A container found inside the green locker holding a photograph and receipt. It is physically handled and central to the plot's mystery.",
+            "outcome": "accepted",
+            "resolved_name": "Metal Cash Box",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "PHOTOGRAPH (two children beside ferry)",
+            "canonical_name": "Photograph",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.9,
+            "llm_rationale": "A photograph found inside the cash box depicting two children beside a ferry. It is a physical prop without date or names, relevant to the narrative.",
+            "outcome": "accepted",
+            "resolved_name": "Photograph",
+            "target_entity_type": "prop"
+          },
+          {
+            "candidate": "RECEIPT (storage paid through Friday)",
+            "canonical_name": "Receipt",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.9,
+            "llm_rationale": "A folded receipt found in the cash box indicating storage payment through Friday. It is a physical document prop with narrative meaning.",
+            "outcome": "accepted",
+            "resolved_name": "Receipt",
+            "target_entity_type": "prop"
+          }
+        ],
+        "decision_trace_count": 9,
+        "input_candidate_count": 9,
+        "rejected_candidate_count": 0,
+        "rejected_candidates": []
+      },
+      "final_stage_model_used": "claude-haiku-4-5-20251001",
+      "final_stage_provider_used": "anthropic"
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.0200752,
+      "input_tokens": 10809,
+      "latency_seconds": null,
+      "model": "claude-haiku-4-5-20251001",
+      "output_tokens": 2857,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:02:39.248143Z",
+    "health": "valid",
+    "intent": "Establish master bible for prop 'Photograph'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "prop_bible_v1",
+    "producing_role": null,
+    "rationale": "Consolidate prop traits and narrative significance.",
+    "ref": {
+      "artifact_type": "bible_manifest",
+      "entity_id": "prop_photograph",
+      "path": "artifacts/bibles/prop_photograph/manifest_v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

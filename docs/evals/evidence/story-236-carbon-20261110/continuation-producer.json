@@ -1,0 +1,10 @@
+{
+  "case002_elapsed_s": 397.95,
+  "decision": "terminal MAX_TOKENS settles against usage; no semantic re-inference, no reviewer without complete output; continue complementary cases at same settings, prices, and schema",
+  "latency_method": "elapsed wall seconds between persisted pre-POST reservation and original response capture; terminal adapter discarded in-memory stopwatch",
+  "producer": {
+    "bytes": 3094,
+    "path": "benchmarks/scripts/continue_carbon_frame_panel.py",
+    "sha256": "dafcb33a586cef0016121302a9cfefa079a8b8c07b558243340c19a8a7eac477"
+  }
+}

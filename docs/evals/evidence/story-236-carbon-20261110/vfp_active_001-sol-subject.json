@@ -1,0 +1,83 @@
+{
+  "arm": "sol",
+  "parity": "Complete native wire/envelope matched maintained call_api offline",
+  "response": {
+    "cached": false,
+    "cost": 0.0100235,
+    "latencyMs": 7366,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "dialogue_confession_push_in",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_001",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "f6a684176e3dcbbd98bab53ea2e2028aa106b6f6c77eb6188da53fe2249e1d84",
+        "9c6255a0ea90a52743030e04ef4176354818b7b763058a7791d4817594e2cde5",
+        "390f81ee5fa4010fad72320fc4cca5b34d09d66d84637ce554b61c996c79ef24",
+        "12cd1cb4d48b91ac9e06e621f54a2a892ec97d55d69c99bbe7047a77292d4576",
+        "96d44f0822096afd1fa3a0c4e9d83b5428fd41ef0303f4e95a27963875dec49c"
+      ],
+      "meta_sha256": "a25b75081a586c4dadc6a36790329a0e6119a4f9504412479fddbcf9f7d1f347",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gpt-6.1-sol",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "openai",
+      "request_id": "resp_0529b8026252d648016af365ef32b887d0a8fa64ebe03db1f7",
+      "requested_model": "gpt-6.1-sol",
+      "returned_model": "gpt-6.1-sol",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two simplified human-shaped icons, beige on the left and pale blue on the right, stand against a dark blue background above a dark horizontal band. Their silhouettes gradually grow taller and slightly wider while their lower edges and the cream inset on the right figure remain fixed.\",\"tone_tags\":[\"detached\"],\"emotion_tags\":[],\"color_tags\":[\"navy\"],\"camera_tags\":[\"static\",\"locked_two_shot\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The beige and blue figures retain their left-right positions throughout the ordered samples; their silhouettes expand gradually without a visible discontinuity.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A beige figure on the left and a pale blue figure on the right have circular heads and rounded rectangular bodies; the right body contains a cream inset with a white border.\"},{\"frame_index\":2,\"cue\":\"Both figures extend higher and slightly wider than in the first sample, while the background boundary and their bottom edges remain at the same heights.\"},{\"frame_index\":4,\"cue\":\"Both silhouettes are taller and wider again, with their heads higher in the frame; the cream inset remains near the base of the blue figure.\"}],\"overall_confidence\":0.96}",
+    "raw": {
+      "cache_write_count_known": true,
+      "id": "resp_0529b8026252d648016af365ef32b887d0a8fa64ebe03db1f7",
+      "model": "gpt-6.1-sol",
+      "raw_envelope_bytes": 8729,
+      "raw_envelope_path": "output/evals/carbon-frames-20261110/sol/vfp_active_001-raw-envelope.json",
+      "raw_envelope_sha256": "787ba1a20ddc50da21e9a58040d1fc5854af14ffc296709078dd58dd076e5eed",
+      "service_tier": "default",
+      "status": "completed",
+      "usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 280,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3170
+      }
+    },
+    "tokenUsage": {
+      "completion": 280,
+      "completionDetails": {
+        "reasoning": 0
+      },
+      "prompt": 2890,
+      "total": 3170
+    }
+  },
+  "structural": {
+    "pass": false,
+    "reason": "raw_score=0.6182 | overall=0.618 | uncertainty=0.040 | summary=0.33 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.50 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: figures, closer | tone: intimate, unexpected=detached | color: teal | continuity: The pale rectangle stays beside the right figure across all five frames., unexpected=The beige and blue figures retain their left-right positions throughout the ordered samples; their silhouettes expand gradually without a visible discontinuity.",
+    "score": 0.6182
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/dialogue_confession_push_in",
+    "clip_id": "dialogue_confession_push_in",
+    "evaluation_id": "vfp_active_001",
+    "target_markdown": "file://../video_understanding_truth_v4/dialogue_confession_push_in/target.md",
+    "target_path": "video_understanding_truth_v4/dialogue_confession_push_in/target.json"
+  }
+}

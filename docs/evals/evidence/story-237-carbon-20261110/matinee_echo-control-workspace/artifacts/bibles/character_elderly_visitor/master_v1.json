@@ -1,0 +1,56 @@
+{
+  "character_id": "elderly_visitor",
+  "name": "ELDERLY VISITOR",
+  "aliases": [],
+  "description": "An elderly woman who appears in the museum theatre. She wears a dark scarf with a silver bird brooch pinned to it. She has a connection to Mara and demonstrates familiarity with her vocal delivery.",
+  "prominence": "minor",
+  "explicit_evidence": [
+    {
+      "trait": "familiarity with Mara",
+      "quote": "She always rushed that line.",
+      "source_scene": "INT. MUSEUM THEATRE - AFTERNOON",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 20
+      }
+    },
+    {
+      "trait": "reserved demeanor",
+      "quote": "The visitor looks toward the stage instead of answering.",
+      "source_scene": "INT. MUSEUM THEATRE - AFTERNOON",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 20
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "connection to Mara",
+      "value": "knew Mara or was familiar with her work",
+      "confidence": 0.85,
+      "rationale": "The visitor's comment about Mara rushing a line and her presence in the theatre suggest prior knowledge of or relationship with Mara."
+    },
+    {
+      "trait": "evasiveness",
+      "value": "avoids direct questions",
+      "confidence": 0.75,
+      "rationale": "When asked directly if she knew Mara, the visitor looks toward the stage instead of answering, suggesting reluctance to engage."
+    }
+  ],
+  "scene_presence": [
+    "INT. MUSEUM THEATRE - AFTERNOON"
+  ],
+  "dialogue_summary": "The elderly visitor makes a single comment about Mara rushing a line, then declines to answer a direct question about knowing Mara.",
+  "narrative_role": "minor",
+  "narrative_role_confidence": 0.95,
+  "relationships": [
+    {
+      "target_character": "Mara",
+      "relationship_type": "acquaintance or observer",
+      "evidence": "The visitor demonstrates familiarity with Mara's vocal delivery and appears to have known her or known of her.",
+      "confidence": 0.8
+    }
+  ],
+  "overall_confidence": 0.8
+}

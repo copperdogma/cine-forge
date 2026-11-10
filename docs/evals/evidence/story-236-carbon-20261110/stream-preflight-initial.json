@@ -1,0 +1,42 @@
+{
+  "cap": 11,
+  "decision": "Original case002 HIGH32768 emitted zero visible characters at terminal MAX_TOKENS. Coordinator approved one HIGH65536 streaming output-allowance repair for case002 and that same prospective arm for cases003-006. Never replay valid case001. No schema, imagery, prompt, effort, quality threshold, control or judge changes.",
+  "further_output_repair": false,
+  "future_bound_with_actuals": "8.8742418499999999999",
+  "max_cases": 5,
+  "measured_inputs": "Original native count 6725 vs 7534 actual billed on both genuine cases; reserve up to 26000.",
+  "producer": {
+    "bytes": 9414,
+    "path": "benchmarks/scripts/run_carbon_frame_output_repair.py",
+    "sha256": "9b53ea4222c229515f1b69b15da457a430cc872137d62dd2de2c5e1356799f7a"
+  },
+  "raw_custody": "Complete SSE stored for native replay; settle last cumulative terminal usage once.",
+  "rendered": [
+    {
+      "case": "vfp_active_002",
+      "input_count": 6725,
+      "payload_sha256": "120b5cdeafbf7fefd8dc43c9999433d6230f9a9b0ab689d758d46e60b42812a9"
+    },
+    {
+      "case": "vfp_active_003",
+      "input_count": 6725,
+      "payload_sha256": "2c2979ec97542de2f9a4278d1f6b4cbace970554e5d3b6ecc5f2e55f5fe2c762"
+    },
+    {
+      "case": "vfp_active_004",
+      "input_count": 6725,
+      "payload_sha256": "361c48b478d55ee1645788044d54aab11640f3b2d75272e8d411991c816c425b"
+    },
+    {
+      "case": "vfp_active_005",
+      "input_count": 6725,
+      "payload_sha256": "897ca237cd3666bdb390c1b36c3fc84494f548e45ceee3673e2e1593e3318c6b"
+    },
+    {
+      "case": "vfp_active_006",
+      "input_count": 6725,
+      "payload_sha256": "584caa5b6ac18abfcd9e91bc4e433ef817ced7c40cc3255a7ec43d4a95689d93"
+    }
+  ],
+  "reserve_each": "0.70736"
+}

@@ -1,0 +1,92 @@
+{
+  "base": "3b44e158a74010a68bf8d2bbe7e7a92991f96a69",
+  "files": {
+    "benchmarks/scripts/preflight_carbon_workspace.py": "fa56cde4901d008504b8dfe332e77af37f9ba806f59d86dc1465af6f61b565d9",
+    "benchmarks/scripts/run_whole_story_workspace.py": "b9c2ee31e6a63cc9b929d7726019845f9c870613123070d7f0b28fb2b970bd0b",
+    "benchmarks/scripts/run_whole_story_workspace_control.py": "54fbda35d7cdc305316d1a41ea2f12d387a48ff53c924c055ef7985683f3a33d",
+    "benchmarks/scripts/full_script_throughput_eval.py": "3426c39315b6e0a5c711016d8bd83c1ce89f63b8e822865e810d9f6fa8510d8c",
+    "benchmarks/scripts/full_script_throughput_support.py": "bac69c883acfb021059d47031c6d78aefa93505faa68c40b5355b1f9fada3c61",
+    "benchmarks/scripts/whole_story_workspace_control_meter.py": "6b1fb7fa01e090c5b087455969a2a684aebbd54a1c5925be7e6bcd1fb47785fc",
+    "benchmarks/scripts/whole_story_workspace_meter.py": "a7f8d87f260d11e09d82f9119f32abc46956d768c3bbe9bd409e5a661546fc68",
+    "benchmarks/scripts/whole_story_workspace_contract.py": "43f7599c8fdba0ebc838922b807e45868287a67301c8ac0fad39d93ae9bc3165",
+    "configs/recipes/recipe-world-building.yaml": "db2043588fa870a5cbac762cd104d637c77a822c9e5286055a68b2c3e88320da",
+    "configs/recipes/recipe-mvp-ingest.yaml": "bb573a991ece2fd61c22bf50749e2fa863068b9be54f495b96389ebaf4696bb5",
+    "benchmarks/fixtures/whole_story_workspace_v1/freeze.json": "f669f6f5a18ab9917f18f93528595d27308b7aa55b4d9bda194e675bdddf5a8b",
+    "benchmarks/fixtures/whole_story_workspace_v1/last_ferry.fountain": "e28a204cd4d756c91bfbd28a521473a895fd8d14984efd400658e6a65b9a7618",
+    "benchmarks/fixtures/whole_story_workspace_v1/last_ferry.oracle.json": "d87c58bf40c20d4f318b1d762a792ea9fd702a996d300f7ed7970ca5e9377423",
+    "benchmarks/fixtures/whole_story_workspace_v1/matinee_echo.fountain": "bed5976da30e2584371deabdd121966efc4276e5663a4789cf22267d655c05d2",
+    "benchmarks/fixtures/whole_story_workspace_v1/matinee_echo.oracle.json": "ae71e60008142c4d2f07d62b032d11c0ce0a065763018b5d8a73aa936d035d5f",
+    "benchmarks/fixtures/whole_story_workspace_v1/open_frequency-consumer-example.json": "4c60bcd0d56545152397127b8b69ac7d3ecdaca25187357cec7f20d2265a831e",
+    "benchmarks/fixtures/whole_story_workspace_v1/open_frequency.fountain": "81508ec3a2be376efbc8f8d720dea2784eec5dba3664372df3f65123f8684d95",
+    "benchmarks/fixtures/whole_story_workspace_v1/open_frequency.oracle.json": "73061149007e05d140084cccf2e8397e1a7f780c5d31f5fa61203c78cc8624fc",
+    "benchmarks/fixtures/whole_story_workspace_v1/review.md": "70e960a3104e3db6702fb9eb2ca90da642bf99549535dad223c5e9cd8abd85ad",
+    "docs/evals/evidence/story-237-carbon-20261110/last_ferry-request.json": "0e4441f3b9c3476a8c17a8fb1f52a723787999ec2045453ccf6631683981a91d",
+    "docs/evals/evidence/story-237-carbon-20261110/matinee_echo-request.json": "237385f94093ab44828c56f37d673d9e362f8de8bd268e01aabb3d935b9898d4",
+    "docs/evals/evidence/story-237-carbon-20261110/open_frequency-request.json": "89b309cea31c67b26e7d43f30ecbffbb2f1f6c5a620f3ca20195e1eb5640b8ec",
+    "benchmarks/scripts/run_carbon_workspace.py": "554567cabb9a63edece6d8ea0ed022f182b1d73554b4d0b3c3f1066013dcd075"
+  },
+  "order": [
+    "open_frequency",
+    "last_ferry",
+    "matinee_echo"
+  ],
+  "counts": {
+    "mechanical-exemplar": {
+      "totalTokens": 19190,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 19190
+        }
+      ]
+    },
+    "open_frequency": {
+      "totalTokens": 6829,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 6829
+        }
+      ]
+    },
+    "last_ferry": {
+      "totalTokens": 6753,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 6753
+        }
+      ]
+    },
+    "matinee_echo": {
+      "totalTokens": 6744,
+      "promptTokensDetails": [
+        {
+          "modality": "TEXT",
+          "tokenCount": 6744
+        }
+      ]
+    }
+  },
+  "source_class": "owner-authored synthetic only",
+  "native_enforcement": "outer required bundle_json string, full maintained host schema after decoding",
+  "qualified_hops": "foreground streaming REST, stored only for linked continuation/retrieval, no semantic followup",
+  "subject": {
+    "max_hops": 3,
+    "max_output_tokens": 131072,
+    "thinking_level": "medium",
+    "max_logicals": 4,
+    "max_per_usd": 1.859936,
+    "pool_usd": 7.439744
+  },
+  "control": {
+    "fresh": true,
+    "changed_settings": false,
+    "pool_usd": 5,
+    "meter": "per physical request inclusive inner retries, cache writes and escalation",
+    "topology_source": "configs/recipes/recipe-mvp-ingest.yaml + recipe-world-building.yaml, runtime discovery Haiku"
+  },
+  "independent_review": "Complete original source and neutral candidate outputs, offline, capped USD2",
+  "contingency_usd": 1.560256,
+  "hard_usd": 16
+}

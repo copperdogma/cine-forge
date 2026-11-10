@@ -1,0 +1,194 @@
+{
+  "data": {
+    "associated_characters": [
+      "iva"
+    ],
+    "description": "A tape deck with reels, located in the museum theatre. Used to play recordings. In the afternoon scene, it has a red-thread reel loaded onto it. By evening, the deck's reels are bare.",
+    "name": "Tape Deck",
+    "narrative_significance": "The tape deck serves as a conduit for Mara's recorded voice and message. Iva uses it to play a recording containing the cryptic line 'If the bird sings twice, wait for the door.' The tape deck's presence and operation are central to the mystery unfolding in the theatre, and its later absence (bare reels) suggests a shift in the narrative's supernatural or temporal nature.",
+    "overall_confidence": 0.85,
+    "prop_id": "tape_deck",
+    "scene_presence": [
+      "scene_002",
+      "scene_004"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 11,
+        "decision_trace": [
+          {
+            "candidate": "PORCELAIN BIRD",
+            "canonical_name": "Porcelain Bird",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.98,
+            "llm_rationale": "A cracked porcelain bird is a central prop in the script, appearing multiple times across scenes. It is physically handled, repaired, and placed on stage as a key story element.",
+            "outcome": "accepted",
+            "resolved_name": "Porcelain Bird",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "REEL (MARA / TAKE 4)",
+            "canonical_name": null,
+            "decision_verdict": "invalid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "This is a formatting token mixing prop name with metadata (scene/take notation). The actual prop is the reel itself; the parenthetical notation is production documentation, not part of the entity name.",
+            "outcome": "rejected_by_verdict",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "RED THREAD",
+            "canonical_name": "Red Thread",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.92,
+            "llm_rationale": "A red thread tied around a reel's hub is explicitly described and referenced in the script as a physical prop.",
+            "outcome": "accepted",
+            "resolved_name": "Red Thread",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "SHALLOW TIN",
+            "canonical_name": "Shallow Tin",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.96,
+            "llm_rationale": "A shallow tin is a concrete prop used to hold the broken bird wing. It is handled, transported, and placed multiple times throughout the script.",
+            "outcome": "accepted",
+            "resolved_name": "Shallow Tin",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "CANVAS SATCHEL",
+            "canonical_name": "Canvas Satchel",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.94,
+            "llm_rationale": "A canvas satchel is used to carry the tin and reel between locations. It is a functional prop present in multiple scenes.",
+            "outcome": "accepted",
+            "resolved_name": "Canvas Satchel",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "SPECTACLES",
+            "canonical_name": "Spectacles",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Sol's spectacles are a recurring prop that he removes, uses for inspection, and puts back on. They are physically manipulated and described.",
+            "outcome": "accepted",
+            "resolved_name": "Spectacles",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "FELT PAD",
+            "canonical_name": "Felt Pad",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.96,
+            "llm_rationale": "A felt pad is used as a work surface for the porcelain bird throughout the conservation room scenes. It is a concrete, functional prop.",
+            "outcome": "accepted",
+            "resolved_name": "Felt Pad",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "SILVER BIRD BROOCH",
+            "canonical_name": "Silver Bird Brooch",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.97,
+            "llm_rationale": "A silver bird brooch pinned to a dark scarf is worn by the elderly visitor and later found on a seat. It is a distinct physical prop with symbolic significance.",
+            "outcome": "accepted",
+            "resolved_name": "Silver Bird Brooch",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "DARK SCARF",
+            "canonical_name": "Dark Scarf",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.94,
+            "llm_rationale": "A dark scarf worn by the elderly visitor and later found on a seat is a concrete prop that appears in multiple scenes.",
+            "outcome": "accepted",
+            "resolved_name": "Dark Scarf",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "PAPER TAPE",
+            "canonical_name": "Paper Tape",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.97,
+            "llm_rationale": "Paper tape is used to secure the repaired bird's wing. It is explicitly handled and remains visible on the bird throughout the script.",
+            "outcome": "accepted",
+            "resolved_name": "Paper Tape",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "THEATRE KEY",
+            "canonical_name": "Theatre Key",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.96,
+            "llm_rationale": "A theatre key is picked up from a hook and used to unlock the theatre door. It is a functional prop that drives plot action.",
+            "outcome": "accepted",
+            "resolved_name": "Theatre Key",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "TAPE DECK",
+            "canonical_name": "Tape Deck",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "A tape deck is used to play the reel recording in the theatre. It is a concrete prop with functional purpose in the scene.",
+            "outcome": "accepted",
+            "resolved_name": "Tape Deck",
+            "target_entity_type": null
+          }
+        ],
+        "decision_trace_count": 12,
+        "input_candidate_count": 12,
+        "rejected_candidate_count": 1,
+        "rejected_candidates": [
+          {
+            "candidate": "REEL (MARA / TAKE 4)",
+            "canonical_name": null,
+            "decision_verdict": "invalid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "This is a formatting token mixing prop name with metadata (scene/take notation). The actual prop is the reel itself; the parenthetical notation is production documentation, not part of the entity name.",
+            "target_entity_type": null
+          }
+        ]
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:05:11.232993Z",
+    "health": "valid",
+    "intent": "Establish master definition for prop 'Tape Deck'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "prop_bible_v1",
+    "producing_role": null,
+    "rationale": "AI-identified significant object from canonical script.",
+    "ref": {
+      "artifact_type": "prop_bible",
+      "entity_id": "tape_deck",
+      "path": "artifacts/prop_bible/tape_deck/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

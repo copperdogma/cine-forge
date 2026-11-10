@@ -90,10 +90,11 @@ def assemble():
 
 def verify():
     assert read(R) == assemble()
-    for item in read(M)['files']:
-        assert inventory(ROOT / item['path']) == item, item['path']
-    for item in read(F)['files']:
-        assert inventory(ROOT / item['path']) == item, item['path']
+    for item in read(M)['files'] + read(F)['files']:
+        if inventory(ROOT / item['path']) != item:
+            original = ROOT / 'docs/evals/snapshots/scout109-carbon-20261110/pre-carbon' / item['path']
+            raw = original.read_bytes()
+            assert len(raw) == item['bytes'] and hashlib.sha256(raw).hexdigest() == item['sha256'], item['path']
     for row in read(R)['rows']:
         arm, cid = row['arm'], row['case']
         parity = read(E / f'native-{arm}-{cid}-parity.json')

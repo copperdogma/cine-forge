@@ -1,0 +1,91 @@
+{
+  "arm": "carbon",
+  "configuration": "high65536",
+  "parity": "Maintained harness builds identical wire and consumes identical native SSE replay",
+  "response": {
+    "cached": false,
+    "cost": 0.075858,
+    "latencyMs": 88609,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "alarm_chase_whip_pan",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_002",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "c4a3ec95144f0a707b1ff3d7aa759b5074d53b4d5b260625220558cb30455f9a",
+        "a0668d4caca5ec81034bf2227a68cb0199f1f3aca4a271e22b26b218c5670039",
+        "1ff1fe270e3c7fa4c588a4e2a02505e7f6b613c2320b0bc41f6d939eab173655",
+        "ed41d514b3551135c86f878bb5ff0be45b4110ca29adf10debfedded75dbe57b",
+        "74d211ce9ff16259af7914e8094b974e0658856a214c52d6118bd3df39ef18c6"
+      ],
+      "meta_sha256": "d028854d7c23197397b7003bfcfe3fd651d418a232950e8e28851ea210e7e99a",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gemini-4-carbon",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "google",
+      "request_id": "1Wjzao-WBOTgqtsPnsn9gA8",
+      "requested_model": "gemini-4-carbon",
+      "returned_model": "gemini-4-carbon",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_002\",\"summary\":\"Across a static wide view of a dark red geometric space with shifting diagonal grey lines, a solitary orange-red stylized figure carrying a white-bordered dark red rectangle moves steadily from left to right. The figure passes in front of a stationary central red rectangular outline and converging perspective lines with intact visual continuity.\",\"tone_tags\":[\"ominous\",\"tense\",\"detached\"],\"emotion_tags\":[\"isolation\",\"resolve\"],\"color_tags\":[\"red\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"measured\",\"slow_drift\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The stylized orange-red figure and its white-bordered dark red rectangle retain consistent scale, color, and foreground layering across frames 0 through 4.\",\"The central red rectangular frame and diagonal perspective lines remain locked in position while the figure advances rightward at an even pace.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"On the left side of a dark-red gradient background crossed by slanted grey lines, an orange-red stylized figure holding a white-bordered dark red rectangle stands to the left of a central red rectangular outline.\"},{\"frame_index\":1,\"cue\":\"The orange-red figure shifts rightward so its white-bordered dark red rectangle overlaps the left vertical edge of the stationary central red frame while the slanted grey lines shift position.\"},{\"frame_index\":2,\"cue\":\"The figure moves inside the central red rectangular outline just below the apex of the two diagonal red lines while maintaining identical proportions and colors.\"},{\"frame_index\":4,\"cue\":\"The figure reaches the right side of the frame completely past the central red rectangular outline, overlapping the right diagonal red line as the background geometry stays fixed.\"}],\"overall_confidence\":0.92}",
+    "raw": {
+      "finishReason": "STOP",
+      "modelVersion": "gemini-4-carbon",
+      "raw_sse_path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-carbon64.sse",
+      "raw_sse_sha256": "8b4fbd68faa3e756b306060f6988f603841aba6245749f34a335b8508a9ab090",
+      "responseId": "1Wjzao-WBOTgqtsPnsn9gA8",
+      "usageMetadata": {
+        "candidatesTokenCount": 391,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 391
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 5688,
+        "totalTokenCount": 13613
+      }
+    },
+    "tokenUsage": {
+      "completion": 391,
+      "completionDetails": {
+        "reasoning": 5688
+      },
+      "prompt": 7534,
+      "total": 13613
+    }
+  },
+  "structural": {
+    "pass": false,
+    "reason": "raw_score=0.5597 | overall=0.560 | uncertainty=0.080 | summary=0.33 | tone=0.40 | emotion=0.00 | color=1.00 | camera=1.00 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner, pulses | tone: urgent, unexpected=detached, unexpected=ominous | emotion: unexpected=isolation, unexpected=resolve | motion: fast_lateral, pulsing_light, unexpected=measured, unexpected=slow_drift | continuity: The small red rectangle stays beside the runner throughout the packet., unexpected=The stylized orange-red figure and its white-bordered dark red rectangle retain consistent scale, color, and foreground layering across frames 0 through 4., unexpected=The central red rectangular frame and diagonal perspective lines remain locked in position while the figure advances rightward at an even pace.",
+    "score": 0.5597
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/alarm_chase_whip_pan",
+    "clip_id": "alarm_chase_whip_pan",
+    "evaluation_id": "vfp_active_002",
+    "target_markdown": "file://../video_understanding_truth_v4/alarm_chase_whip_pan/target.md",
+    "target_path": "video_understanding_truth_v4/alarm_chase_whip_pan/target.json"
+  }
+}

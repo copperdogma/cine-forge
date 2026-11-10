@@ -1,0 +1,29 @@
+{
+  "finishReason": "STOP",
+  "modelVersion": "gemini-4-carbon",
+  "raw_sse_path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-carbon64.sse",
+  "raw_sse_sha256": "8b4fbd68faa3e756b306060f6988f603841aba6245749f34a335b8508a9ab090",
+  "responseId": "1Wjzao-WBOTgqtsPnsn9gA8",
+  "usageMetadata": {
+    "candidatesTokenCount": 391,
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 391
+      }
+    ],
+    "promptTokenCount": 7534,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2034
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      }
+    ],
+    "thoughtsTokenCount": 5688,
+    "totalTokenCount": 13613
+  }
+}

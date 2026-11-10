@@ -1,0 +1,70 @@
+{
+  "data": {
+    "aliases": [],
+    "description": "An interior boathouse facility operational during pre-dawn hours. Contains a wall clock, refrigerator for storing medical supplies, and a wall telephone with speaker capability. Serves as a staging point for launch operations.",
+    "location_id": "rescue_boathouse",
+    "name": "Rescue Boathouse",
+    "narrative_significance": "The Rescue Boathouse functions as a critical operational hub where medical supplies are secured and launch preparations occur. It establishes the pre-dawn timeline and reveals tensions around an expected passenger who fails to arrive, while also introducing the mystery of an abandoned orange cape.",
+    "overall_confidence": 0.85,
+    "physical_traits": [
+      "Wall clock",
+      "Refrigerator",
+      "Wall telephone with speaker",
+      "Bench outside (referenced via phone communication)"
+    ],
+    "scene_presence": [
+      "Ruth (launch pilot)",
+      "Lena",
+      "Tom (via telephone)"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 3,
+        "decision_trace": [],
+        "decision_trace_count": 0,
+        "input_candidate_count": 3,
+        "rejected_candidate_count": 0,
+        "rejected_candidates": []
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:02:28.771908Z",
+    "health": "valid",
+    "intent": "Establish master definition for location 'Rescue Boathouse'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "location_bible_v1",
+    "producing_role": null,
+    "rationale": "Extracted from canonical script and scene headings.",
+    "ref": {
+      "artifact_type": "location_bible",
+      "entity_id": "rescue_boathouse",
+      "path": "artifacts/location_bible/rescue_boathouse/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

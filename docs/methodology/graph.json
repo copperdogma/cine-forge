@@ -17724,6 +17724,14 @@
       "retryWhen": [],
       "attempts": [
         {
+          "id": "060",
+          "date": "2026-11-10",
+          "approach": "Six fresh synthetic v4 ordered-frame subjects per arm and 18 independently source-grounded blind Opus reviews. Preserve one native MAX_TOKENS as a separate physical call.",
+          "note": "All three fresh arms 0/6 full gates; Carbon alone correctly classifies color continuity break, costly and slow. No runtime/default change.",
+          "retryStatus": "",
+          "retryWhen": []
+        },
+        {
           "id": "057",
           "date": "2026-11-09",
           "approach": "Full6 xhigh32768 native Fable capability panel with fresh Sol/Luna controls and18 blind full-source native Opus4.6 reviews; original OpenRouter402 preserved, explicitly authorized same-checkpoint direct recovery. No fulltask winner; source-grounded continuitylabel advantage on004 only. All maintained thresholds unchanged.",
@@ -17929,13 +17937,13 @@
         }
       ],
       "latestScore": {
-        "model": "Fable 5.2 / direct Anthropic xhigh32768",
-        "measured": "2026-11-09",
+        "model": "Gemini 4 Carbon / direct Google HIGH mixed 32K and 64K",
+        "measured": "2026-11-10",
         "metrics": {
-          "overall": 0.67375
+          "overall": 0.65620833
         },
         "evidenceStatus": "fresh-six-case-source-reviewed-capability-panel",
-        "note": "Attempt057 full6 fresh strict13key originalJPEG native/parity and full-source blind Opus4.6; all arms0/6completequality passes. Fable uniquely labels exact propcolor transition broken; unsupported camera/emotion inferences and rubric/taxonomy ambiguity retained. Sourcefirst review rejects specific judge rationale errors without rescoring. Native route authorized recovery after OpenRouter pre-infe…"
+        "note": "Attempt060; six complete source-adjudicated v4 outputs; 0/6 full quality. Subject means use complete outputs. The result also records original Carbon002 MAX_TOKENS and its charged repair."
       },
       "historicalEvidenceStatus": "",
       "excludedScoreCount": 14,
@@ -17975,16 +17983,16 @@
         "sourceId": "video-understanding",
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
-        "posture": "trigger-exhausted",
-        "whyNow": "Attempt057 full6 fresh strict13key originalJPEG native/parity and full-source blind Opus4.6; all arms0/6completequality passes. Fable uniquely labels exact propcolor transition broken; unsupported camera/emotion inferences and rubric/taxonomy ambiguity retained. Sourcefirst review rejects specific judge rationale errors without rescoring. Native route authorized recovery after OpenRouter pre-infe…",
-        "retryTriggerStatus": "exhausted",
+        "posture": "no-trigger-recorded",
+        "whyNow": "All three fresh arms 0/6 full gates; Carbon alone correctly classifies color continuity break, costly and slow. No runtime/default change.",
+        "retryTriggerStatus": "none",
         "retryWhen": [],
         "lastRelevantAction": {
-          "date": "2026-11-09",
+          "date": "2026-11-10",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "057",
-          "summary": "Full6 xhigh32768 native Fable capability panel with fresh Sol/Luna controls and18 blind full-source native Opus4.6 reviews; original OpenRouter402 preserved, explicitly authorized same-checkpoint direct recovery. No fulltask winner; source-grounded continuitylabel advantage on004 only. All maintained thresholds unchanged."
+          "sourceId": "060",
+          "summary": "All three fresh arms 0/6 full gates; Carbon alone correctly classifies color continuity break, costly and slow. No runtime/default change."
         }
       }
     },

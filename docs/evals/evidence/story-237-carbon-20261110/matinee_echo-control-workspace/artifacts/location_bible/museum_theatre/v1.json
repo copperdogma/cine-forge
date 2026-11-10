@@ -1,0 +1,76 @@
+{
+  "data": {
+    "aliases": [],
+    "description": "An interior theatre space within a museum setting. The theatre contains front-row seating, a stage with a curtain, and a tape deck. Dust drifts through an unlit projector beam housing. The space is accessed via a locked door and connects to a corridor beyond.",
+    "location_id": "museum_theatre",
+    "name": "Museum Theatre",
+    "narrative_significance": "The Museum Theatre serves as a liminal space where past and present converge. It is the setting for Iva's encounter with a mysterious elderly visitor who knew Mara, and later becomes the site of an uncanny repetition of a recorded line. The theatre functions as a repository of memory and mystery, where a repaired porcelain bird and a discarded scarf suggest unresolved connections to Mara's past. The space facilitates communication across time through recorded audio and unexplained vocal presences.",
+    "overall_confidence": 0.95,
+    "physical_traits": [
+      "Front-row seating",
+      "Stage with curtain",
+      "Tape deck with reels",
+      "Projector beam housing",
+      "Locked door entrance",
+      "Corridor access",
+      "Unlit projector beam"
+    ],
+    "scene_presence": [
+      "Shallow tin",
+      "Red-thread reel",
+      "Satchel",
+      "Dark scarf with silver bird brooch",
+      "Porcelain bird with taped wing",
+      "Bare tape deck reels"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 2,
+        "decision_trace": [],
+        "decision_trace_count": 0,
+        "input_candidate_count": 3,
+        "rejected_candidate_count": 0,
+        "rejected_candidates": []
+      }
+    },
+    "confidence": 0.95,
+    "cost_data": null,
+    "created_at": "2026-11-10T19:04:57.652008Z",
+    "health": "valid",
+    "intent": "Establish master definition for location 'Museum Theatre'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "location_bible_v1",
+    "producing_role": null,
+    "rationale": "Extracted from canonical script and scene headings.",
+    "ref": {
+      "artifact_type": "location_bible",
+      "entity_id": "museum_theatre",
+      "path": "artifacts/location_bible/museum_theatre/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

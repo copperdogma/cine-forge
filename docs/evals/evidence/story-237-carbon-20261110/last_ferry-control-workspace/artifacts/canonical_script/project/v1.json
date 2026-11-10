@@ -1,0 +1,72 @@
+{
+  "data": {
+    "line_count": 77,
+    "normalization": {
+      "assumptions": [],
+      "inventions": [],
+      "overall_confidence": 0.95,
+      "rationale": "Code-only normalization \u2014 input was already valid Fountain format",
+      "source_format": "screenplay",
+      "strategy": "code_passthrough"
+    },
+    "scene_count": 4,
+    "script_text": "Title: Last Ferry Receipt\nAuthor: CineForge evaluation source author\nCredit: Synthetic evaluation fixture\n\nINT. FERRY TICKET OFFICE - NIGHT\n\nThe last sailing has been cancelled. A shuttered ticket window faces empty benches. LENA, the clerk, numbers a paper envelope 17 and slides a brass locker key inside. Her left thumb wears a fresh white bandage. TOM, her younger brother, sets a blue insulated medicine case on the counter.\n\nTOM\nDad's doses. The clinic launch comes at six. Don't leave this in the locker.\n\nLena puts the envelope in her coat and the case beneath the counter. Through frosted glass, a COURIER in an orange rain cape knocks twice. Only a silhouette is visible.\n\nCOURIER (O.S.)\nSeventeen. North locker. Before the tide turns.\n\nLENA\nWho sent you?\n\nThe silhouette retreats without answering. Tom reaches for the case, but Lena stops him.\n\nLENA\nI'll take it to the launch myself. You lock up here.\n\nShe lifts the blue case and goes. Tom stays behind with the shutter crank.\n\nEXT. FERRY PIER - LATER\n\nFog erases the far bank. Lena sets the blue medicine case on a mooring bollard. She removes envelope 17, takes out the brass key, and unlocks a green locker marked NORTH. Inside lies a small metal cash box. She leaves the empty envelope inside the locker, pockets the key, and carries the cash box to the bollard.\n\nAn OLD MAN in an orange rain cape stands by the gangway. His face is visible; the earlier courier's was not.\n\nOLD MAN\nYou found it, then.\n\nLENA\nWere you at my window?\n\nOLD MAN\nWindows aren't much use in this fog.\n\nHe turns away. A ferry horn sounds from the river, although no vessel can be seen. Lena opens the cash box. It contains a photograph of two children beside a ferry and a folded receipt. On the receipt: STORAGE PAID THROUGH FRIDAY. She puts both back, shuts the box, and takes it and the blue case toward the boathouse.\n\nINT. RESCUE BOATHOUSE - PRE-DAWN\n\nRUTH, the launch pilot, checks a wall clock: 5:50. Lena arrives carrying both containers. Ruth notices the white bandage, now grey with grime, before taking the medicine case.\n\nRUTH\nYour father still at the clinic?\n\nLENA\nUntil the launch brings him home.\n\nRuth places the blue case in a refrigerator. Lena keeps the cash box under her arm. Tom calls from a wall telephone; his voice comes through its speaker.\n\nTOM (PHONE)\nThe office is locked. Someone left an orange cape on the bench outside.\n\nLENA\nLeave it there. We don't know whose it is.\n\nLena asks Ruth to keep the case cold until departure. Ruth agrees. The clock ticks toward six. No passenger arrives.\n\nEXT. FERRY PIER - DAWN\n\nLena returns with the cash box, without the medicine case. The refrigerator remains behind in the boathouse. Her soiled bandage has not changed. The green locker stands open; empty envelope 17 lies inside.\n\nShe puts the cash box back in the locker and locks it with the brass key. Tom joins her empty-handed from the ticket office path. Lena gives him the key.\n\nTOM\nWas that Dad in the photograph?\n\nLENA\nCould be. It didn't have a date or names.\n\nThey watch Ruth steer the clinic launch away from the boathouse. Ruth waves. No one else is visible aboard.\n",
+    "title": "0974Bad9 Last Ferry"
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "defer normalization to scene extraction",
+      "store prose as canonical without screenplay conversion"
+    ],
+    "annotations": {
+      "cost_ceiling_exceeded": false,
+      "cost_ceiling_usd": 2.0,
+      "deterministic_lint_issues": [],
+      "fdx_conversion_issues": [],
+      "fdx_input_detected": false,
+      "final_stage_model_used": "code",
+      "final_stage_provider_used": "code",
+      "long_doc_strategy": "code_passthrough",
+      "normalization_call_costs": [],
+      "normalization_strategy": "passthrough_cleanup",
+      "normalization_tier": 1,
+      "parser_backend": "fountain-tools",
+      "qa_call_costs": [],
+      "reroutes": 0,
+      "screenplay_parse_coverage_input": 0.539,
+      "screenplay_parseable_input": true,
+      "screenplay_path": true
+    },
+    "confidence": 0.95,
+    "cost_data": {
+      "estimated_cost_usd": 0.0,
+      "input_tokens": 0,
+      "latency_seconds": null,
+      "model": "code",
+      "output_tokens": 0,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:00:48.620994Z",
+    "health": "valid",
+    "intent": "Normalize source into canonical screenplay text for downstream parsing",
+    "lineage": [
+      {
+        "artifact_type": "raw_input",
+        "entity_id": "project",
+        "path": "artifacts/raw_input/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "script_normalize_v1",
+    "producing_role": null,
+    "rationale": "Keep a stable human-readable script while preserving assumptions and inventions",
+    "ref": {
+      "artifact_type": "canonical_script",
+      "entity_id": "project",
+      "path": "artifacts/canonical_script/project/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "code"
+  }
+}

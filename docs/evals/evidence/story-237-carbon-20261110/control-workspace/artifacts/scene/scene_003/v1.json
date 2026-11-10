@@ -1,0 +1,197 @@
+{
+  "data": {
+    "characters_present": [
+      "JUNE",
+      "KELL",
+      "MAYA",
+      "NOAH"
+    ],
+    "characters_present_ids": [
+      "june",
+      "kell",
+      "maya",
+      "noah"
+    ],
+    "confidence": 0.898,
+    "elements": [
+      {
+        "content": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "Cots line the basketball court. Handwritten signs point toward MEDICINE, MEALS, and MESSAGES.",
+        "element_type": "action"
+      },
+      {
+        "content": "June records updates at a folding table while Kell sorts flashlight batteries into a tackle box.",
+        "element_type": "action"
+      },
+      {
+        "content": "MAYA, a teenager in a soaked marching-band jacket, approaches with a flyer for a missing dog named COMET.",
+        "element_type": "action"
+      },
+      {
+        "content": "MAYA",
+        "element_type": "character"
+      },
+      {
+        "content": "Can the station announce this too?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "If we're naming roads and insulin drops, we can name dogs.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "KELL",
+        "element_type": "character"
+      },
+      {
+        "content": "Comet better be worth interrupting the weather report.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "MAYA",
+        "element_type": "character"
+      },
+      {
+        "content": "He stole my grilled cheese and slept through the evacuation. He's family.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Noah's voice crackles over a tabletop radio.",
+        "element_type": "action"
+      },
+      {
+        "content": "NOAH (RADIO)",
+        "element_type": "character"
+      },
+      {
+        "content": "East road is open one lane. Bridge crew wants no heavy trucks till daylight.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "June writes the update beneath NORTH SHELTER on the whiteboard, then takes Maya's flyer.",
+        "element_type": "action"
+      },
+      {
+        "content": "JUNE",
+        "element_type": "character"
+      },
+      {
+        "content": "Spell his name for the broadcast.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "MAYA",
+        "element_type": "character"
+      },
+      {
+        "content": "C-O-M-E-T. Like the fast kind of star.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "CUT TO:",
+        "element_type": "transition"
+      }
+    ],
+    "heading": "INT. HIGH SCHOOL GYM SHELTER - PRE-DAWN",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "High School Gym Shelter",
+    "narrative_beats": [],
+    "props_mentioned": [
+      "FLASHLIGHT BATTERIES",
+      "FLYER",
+      "TABLETOP RADIO",
+      "TACKLE BOX",
+      "WHITEBOARD"
+    ],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Extracted from first non-empty scene line",
+        "field_name": "heading",
+        "method": "parser"
+      },
+      {
+        "confidence": 0.92,
+        "evidence": "Parsed heading prefix token",
+        "field_name": "int_ext",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.9,
+        "evidence": "Parsed heading suffix segment",
+        "field_name": "time_of_day",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.88,
+        "evidence": "Parsed heading core location segment",
+        "field_name": "location",
+        "method": "rule"
+      },
+      {
+        "confidence": 0.84,
+        "evidence": "Collected from dialogue character cues",
+        "field_name": "characters_present",
+        "method": "rule"
+      }
+    ],
+    "scene_id": "scene_003",
+    "scene_number": 3,
+    "source_span": {
+      "end_line": 102,
+      "start_line": 68
+    },
+    "time_of_day": "PRE-DAWN",
+    "tone_mood": "neutral",
+    "tone_shifts": []
+  },
+  "metadata": {
+    "alternatives_considered": [
+      "single monolithic scene list artifact"
+    ],
+    "annotations": {
+      "ai_enrichment_used": false,
+      "boundary_reason": "",
+      "boundary_uncertain": false,
+      "discovery_tier": "structural",
+      "parser_backend": "fountain-tools",
+      "scene_number": 3,
+      "source_span": {
+        "end_line": 102,
+        "start_line": 68
+      }
+    },
+    "confidence": 0.898,
+    "cost_data": null,
+    "created_at": "2026-11-10T18:40:53.544589Z",
+    "health": "valid",
+    "intent": "Represent one screenplay scene as structured data for downstream modules",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_breakdown_v1",
+    "producing_role": null,
+    "rationale": "Structural extraction with LLM action-line entity extraction",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_003",
+      "path": "artifacts/scene/scene_003/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "code"
+  }
+}

@@ -1,0 +1,51 @@
+[matinee_echo-mvp_ingest-6964] Stage 'ingest' starting...
+[matinee_echo-mvp_ingest-6964] Stage 'ingest' done in 0.0032s (cost $0.0000; total $0.0000).
+[matinee_echo-mvp_ingest-6964] Stage 'normalize' starting...
+[matinee_echo-mvp_ingest-6964] Stage 'normalize' done in 0.0109s (cost $0.0000; total $0.0000).
+[matinee_echo-mvp_ingest-6964] Running 2 stages in parallel: breakdown_scenes, script_bible
+[matinee_echo-mvp_ingest-6964] Stage 'script_bible' starting...
+[matinee_echo-mvp_ingest-6964] Stage 'breakdown_scenes' starting...
+[matinee_echo-mvp_ingest-6964] Stage 'breakdown_scenes' done in 1.382s (cost $0.0042; total $0.0042).
+[matinee_echo-mvp_ingest-6964] Stage 'script_bible' done in 21.2886s (cost $0.0102; total $0.0144).
+[matinee_echo-mvp_ingest-6964] Stage 'project_config' starting...
+[matinee_echo-mvp_ingest-6964] Stage 'project_config' done in 17.263s (cost $0.0192; total $0.0336).
+[matinee_echo-mvp_ingest-6964] Run complete. Total cost $0.0336.
+[matinee_echo-world_building-762a] Stage 'analyze_scenes' starting...
+[matinee_echo-world_building-762a] Stage 'analyze_scenes' done in 35.5272s (cost $0.0345; total $0.0345).
+[matinee_echo-world_building-762a] Running 2 stages in parallel: refresh_project_config, entity_discovery
+[matinee_echo-world_building-762a] Stage 'refresh_project_config' starting...
+[matinee_echo-world_building-762a] Stage 'entity_discovery' starting...
+[entity_discovery] Characters from scene_index: 6 (from 6 raw names)
+[entity_discovery] Starting pass for locations...
+  Chunk 1/1: 2 items found so far
+[entity_discovery] Starting pass for props...
+  Chunk 1/1: 12 items found so far
+[matinee_echo-world_building-762a] Stage 'entity_discovery' done in 2.5397s (cost $0.0029; total $0.0375).
+[matinee_echo-world_building-762a] Stage 'refresh_project_config' done in 15.2636s (cost $0.0187; total $0.0562).
+[matinee_echo-world_building-762a] Running 3 stages in parallel: character_bible, location_bible, prop_bible
+[matinee_echo-world_building-762a] Stage 'location_bible' starting...
+[location_bible] Using 2 locations from discovery results.
+[location_bible] Skipping second-pass adjudication for discovery-backed candidates.
+[location_bible] Extracting 2 locations (concurrency=5).
+[matinee_echo-world_building-762a] Stage 'prop_bible' starting...
+[prop_bible] Using 12 props from discovery results.
+[matinee_echo-world_building-762a] Stage 'character_bible' starting...
+[character_bible] Using 6 characters from discovery results.
+[matinee_echo-world_building-762a] Stage 'location_bible' done in 4.1896s (cost $0.0043; total $0.0605).
+[character_bible] Extracting 2 full + 3 minor characters (concurrency=5).
+[prop_bible] Extracting 11 props (concurrency=5).
+[matinee_echo-world_building-762a] Stage 'prop_bible' done in 17.7882s (cost $0.0252; total $0.0857).
+[matinee_echo-world_building-762a] Stage 'character_bible' done in 19.0893s (cost $0.0289; total $0.1146).
+[matinee_echo-world_building-762a] Running 2 stages in parallel: entity_graph, continuity_tracking
+[matinee_echo-world_building-762a] Stage 'entity_graph' starting...
+[matinee_echo-world_building-762a] Stage 'continuity_tracking' starting...
+[matinee_echo-world_building-762a] Stage 'entity_graph' done in 5.4972s (cost $0.0032; total $0.1178).
+[matinee_echo-world_building-762a] Stage 'continuity_tracking' done in 32.1059s (cost $0.0217; total $0.1395).
+[matinee_echo-world_building-762a] Run complete. Total cost $0.1395.
+{
+  "case": "matinee_echo",
+  "complete": true,
+  "project": "output/eval-full-script-throughput-matinee_echo-165cee",
+  "physical_calls": 37,
+  "accounted_usd": "0.68503545"
+}

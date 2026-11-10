@@ -1,0 +1,56 @@
+{
+  "character_id": "courier",
+  "name": "COURIER",
+  "aliases": [],
+  "description": "An unidentified messenger in an orange rain cape who delivers cryptic instructions at the ferry ticket office. Appears only as a silhouette through frosted glass, speaking briefly and departing without revealing their identity or purpose.",
+  "prominence": "minor",
+  "explicit_evidence": [
+    {
+      "trait": "Mysterious and evasive",
+      "quote": "The silhouette retreats without answering.",
+      "source_scene": "INT. FERRY TICKET OFFICE - NIGHT",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 30
+      }
+    },
+    {
+      "trait": "Delivers specific instructions",
+      "quote": "Seventeen. North locker. Before the tide turns.",
+      "source_scene": "INT. FERRY TICKET OFFICE - NIGHT",
+      "source_span": {
+        "start_line": 1,
+        "end_line": 30
+      }
+    }
+  ],
+  "inferred_traits": [
+    {
+      "trait": "Urgency",
+      "value": "High",
+      "confidence": 0.7,
+      "rationale": "The instruction 'Before the tide turns' suggests time-sensitive delivery and implies knowledge of local tidal conditions."
+    },
+    {
+      "trait": "Intentional anonymity",
+      "value": "Deliberate",
+      "confidence": 0.8,
+      "rationale": "Refuses to answer who sent them and retreats without further engagement, suggesting deliberate concealment of identity."
+    }
+  ],
+  "scene_presence": [
+    "INT. FERRY TICKET OFFICE - NIGHT"
+  ],
+  "dialogue_summary": "Delivers a single line of instruction: 'Seventeen. North locker. Before the tide turns.' Refuses to identify who sent them.",
+  "narrative_role": "minor",
+  "narrative_role_confidence": 0.95,
+  "relationships": [
+    {
+      "target_character": "LENA",
+      "relationship_type": "Messenger to recipient",
+      "evidence": "Courier delivers instructions to Lena at the ticket office regarding locker 17.",
+      "confidence": 0.9
+    }
+  ],
+  "overall_confidence": 0.75
+}

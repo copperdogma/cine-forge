@@ -1,0 +1,19 @@
+{
+  "cost": "0.021325",
+  "model": "claude-opus-4-6",
+  "observed": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2610,
+    "output_tokens": 331,
+    "service_tier": "standard",
+    "speed": "standard"
+  },
+  "reason": "The summary correctly captures two figures (beige/left, blue/right) growing larger across frames with a pale rectangle on the right figure, matching the reference. Continuity is correctly marked as intact with appropriate notes about the rectangle staying on the right figure. Motion tag 'measured' matches. Color tag 'navy' matches (reference also includes 'teal' which is missing). Tone is 'detached' vs reference 'intimate' \u2014 a mismatch but tone is acknowledged as ambiguous. Camera tags include 'static' and 'locked_two_shot' which imply a fixed camera \u2014 while not penalizable as invented camera movement, 'static' could be seen as an unsupported claim about camera mechanism given the interpretation boundary that no camera mechanism is established. The claim that 'silhouettes gradually grow taller and slightly wider' correctly describes the observable change. The claim about 'lower edges remaining fixed' is a reasonable observation. Audio tags and notes are empty, which is correct. Evidence entries are grounded in frames 0, 2, and 4 with reasonable observations. However, the missing 'teal' color tag and tone mismatch reduce the score slightly. The overall analysis is largely accurate but falls just short of the 0.8 threshold due to: tone mismatch, missing teal color, and the 'static' camera tag potentially implying no figure growth is camera-related when the reference explicitly says the mechanism is ambiguous.",
+  "score": 0.72
+}

@@ -153,3 +153,32 @@ campaign, branch codex/fable52-video-20261109; retained for coordinator review
 and exact evidence recovery. No worktree removal/commit/push/landing authorized.
 No injected credential variable exists to clean up. Recommended next step is
 coordinator review; use /finish-and-push only if Cam explicitly requests landing.
+
+### 2026-11-10 · Scout109 Carbon ordered-frame panel
+
+Cam selected the six authored v4 narratives with all five original JPEGs. The
+direct Carbon high/32768, Sol 6.1 low/4096 and Luna 6 low/1400 arms share the
+same opaque identifier, timing, unchanged prompt, 13-key contract and structural
+scorer. Each complete answer goes to the fixed blind Opus 4.6 original-frame
+rubric. Gates are structural ≥.70, rubric and combined ≥.80, with source-grounded
+continuity and zero inventions. A 15s or $.02 miss still proceeds to complementary
+cases. The nontransferable USD11 ceiling covers six Carbon, twelve control and
+eighteen review requests and bounded operational recovery. First case doubles as
+native qualification followed by exact-wire offline replay through the owner
+adapter. The producer and original JPEG hashes, rendered native counts and review
+bounds are frozen in the [preflight](../evals/evidence/story-236-carbon-20261110/preflight.json).
+
+[Attempt 060](../evals/attempts/060-gemini4-carbon-ordered-frame-capability.md)
+completed all six sources and all 18 source-complete reviews. Carbon's exact
+red-to-blue break label beat both fresh controls on that case; all three
+models still passed 0/6 full contracts. One literal 32K allowance exhaustion
+was retained and repaired at unchanged HIGH effort with a predeclared 64K
+streaming arm. No complete valid answer was rerun. The 37 physical inferences
+settled at USD1.75301955 against this panel's independent USD11 ceiling.
+
+Offline closure re-derived all 18 structural scores, rubric values and both
+ledgers twice and verified the safe manifest. The unchanged historical Argon
+transport, adversarial v4 scorer, and full workspace contract tests passed
+(37 focused tests across the two panels). All four frame runner/report files
+and both frame provider files passed Ruff. Fresh methodology outputs passed
+their check; the checker also reported existing architecture/UI review reminders.

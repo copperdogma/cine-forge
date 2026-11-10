@@ -1,0 +1,886 @@
+{
+  "aggregate": {
+    "carbon": {
+      "affordable": 0,
+      "full_pass": 0,
+      "means": {
+        "combined": 0.6562083333333333,
+        "cost": 0.16600633333333334,
+        "rubric": 0.7133333333333334,
+        "seconds": 201.41899999999998,
+        "structural": 0.5990833333333333
+      },
+      "scoring_pass": 0,
+      "timely": 0,
+      "total_cases": 6,
+      "valid_outputs": 6
+    },
+    "luna": {
+      "affordable": 6,
+      "full_pass": 0,
+      "means": {
+        "combined": 0.6219333333333333,
+        "cost": 0.0005212583333333333,
+        "rubric": 0.6633333333333333,
+        "seconds": 5.763000000000001,
+        "structural": 0.5805333333333333
+      },
+      "scoring_pass": 0,
+      "timely": 6,
+      "total_cases": 6,
+      "valid_outputs": 6
+    },
+    "sol": {
+      "affordable": 6,
+      "full_pass": 0,
+      "means": {
+        "combined": 0.613975,
+        "cost": 0.0098985,
+        "rubric": 0.7083333333333334,
+        "seconds": 6.569333333333333,
+        "structural": 0.5196166666666667
+      },
+      "scoring_pass": 0,
+      "timely": 6,
+      "total_cases": 6,
+      "valid_outputs": 6
+    }
+  },
+  "base": "3b44e158a74010a68bf8d2bbe7e7a92991f96a69",
+  "calls": 37,
+  "cap_usd": 11,
+  "carbon_total_subject_mean_including_failed_attempts_usd": 0.223131,
+  "december_carbon_mean_usd": 0.3320126666666667,
+  "estimated_by_arm": {
+    "carbon": "1.3387860000",
+    "luna": "0.0031275500",
+    "opus": "0.3517150000",
+    "sol": "0.0593910000"
+  },
+  "exact_estimated_usd": "1.7530195500",
+  "measured": "2026-11-10",
+  "original_incomplete": {
+    "vfp_active_002-carbon-incomplete.json": {
+      "cost": "0.342748",
+      "elapsed_s": 397.95,
+      "finish_reason": "MAX_TOKENS",
+      "inference_repeat": false,
+      "model": "gemini-4-carbon",
+      "response_id": "F2bzaoeNNsalmtkP6bvnkQ4",
+      "semantics": "unmeasured; complete original schema absent; no judge on truncated answer",
+      "state": "terminal-output-allowance",
+      "text_bytes": 0,
+      "usage": {
+        "candidatesTokenCount": 3,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 3
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 32765,
+        "totalTokenCount": 40302
+      }
+    }
+  },
+  "rows": [
+    {
+      "affordable": false,
+      "arm": "carbon",
+      "case": "vfp_active_001",
+      "clip": "dialogue_confession_push_in",
+      "combined": 0.61775,
+      "configuration": "high32768",
+      "cost": 0.176198,
+      "full_pass": false,
+      "model": "gemini-4-carbon",
+      "native_usage": {
+        "candidatesTokenCount": 372,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 372
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 15741,
+        "totalTokenCount": 23647
+      },
+      "rubric": 0.62,
+      "scoring_pass": false,
+      "seconds": 224.076,
+      "source_review": {
+        "critical_errors": [
+          "Infers a slow camera push-in from two enlarging figures even though the foreground prop and background remain fixed."
+        ],
+        "observed": "Correct horizontal positions, figure growth and unchanged prop. Hesitation/isolation/tense are interpretations without source support."
+      },
+      "structural": 0.6155,
+      "timely": false,
+      "tokens": {
+        "completion": 372,
+        "completionDetails": {
+          "reasoning": 15741
+        },
+        "prompt": 7534,
+        "total": 23647
+      }
+    },
+    {
+      "affordable": false,
+      "arm": "carbon",
+      "case": "vfp_active_002",
+      "clip": "alarm_chase_whip_pan",
+      "combined": 0.63985,
+      "configuration": "high65536",
+      "cost": 0.075858,
+      "full_pass": false,
+      "model": "gemini-4-carbon",
+      "native_usage": {
+        "candidatesTokenCount": 391,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 391
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 5688,
+        "totalTokenCount": 13613
+      },
+      "rubric": 0.72,
+      "scoring_pass": false,
+      "seconds": 88.609,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Correct static wide geometry, red rectangular prop, consistent left-to-right translation and shifting diagonal lines. Omits light variation; resolve/isolation, slow pace and detached tone are interpretive."
+      },
+      "structural": 0.5597,
+      "timely": false,
+      "tokens": {
+        "completion": 391,
+        "completionDetails": {
+          "reasoning": 5688
+        },
+        "prompt": 7534,
+        "total": 13613
+      }
+    },
+    {
+      "affordable": false,
+      "arm": "carbon",
+      "case": "vfp_active_003",
+      "clip": "quiet_bedside_vigil",
+      "combined": 0.7224999999999999,
+      "configuration": "high32768",
+      "cost": 0.230098,
+      "full_pass": false,
+      "model": "gemini-4-carbon",
+      "native_usage": {
+        "candidatesTokenCount": 377,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 377
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 21126,
+        "totalTokenCount": 29037
+      },
+      "rubric": 0.72,
+      "scoring_pass": false,
+      "seconds": 306.289,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Accurate fixed post, gray middle rectangle, gold right-side form and static wide shot. Grief, hesitation and isolation are unsupported emotional readings of unchanged shapes."
+      },
+      "structural": 0.725,
+      "timely": false,
+      "tokens": {
+        "completion": 377,
+        "completionDetails": {
+          "reasoning": 21126
+        },
+        "prompt": 7534,
+        "total": 29037
+      }
+    },
+    {
+      "affordable": false,
+      "arm": "carbon",
+      "case": "vfp_active_004",
+      "clip": "prop_swap_continuity_break",
+      "combined": 0.64915,
+      "configuration": "high65536",
+      "cost": 0.156988,
+      "full_pass": false,
+      "model": "gemini-4-carbon",
+      "native_usage": {
+        "candidatesTokenCount": 358,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 358
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 13834,
+        "totalTokenCount": 21726
+      },
+      "rubric": 0.78,
+      "scoring_pass": false,
+      "seconds": 202.737,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Correctly labels exact red frames 0\u20131 to blue frames 2\u20134 change broken. Fixed composition and unchanged surrounding geometry are accurate. Suspicion, ominous and isolation are unsupported in these static frames. Native score and judge retained."
+      },
+      "structural": 0.5183,
+      "timely": false,
+      "tokens": {
+        "completion": 358,
+        "completionDetails": {
+          "reasoning": 13834
+        },
+        "prompt": 7534,
+        "total": 21726
+      }
+    },
+    {
+      "affordable": false,
+      "arm": "carbon",
+      "case": "vfp_active_005",
+      "clip": "rooftop_escape_crash_zoom",
+      "combined": 0.6505,
+      "configuration": "high65536",
+      "cost": 0.123718,
+      "full_pass": false,
+      "model": "gemini-4-carbon",
+      "native_usage": {
+        "candidatesTokenCount": 406,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 406
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 10459,
+        "totalTokenCount": 18399
+      },
+      "rubric": 0.72,
+      "scoring_pass": false,
+      "seconds": 143.15,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Correct arc and apex, constant-size gold figure and companion rectangle, roof gap and slightly different platform heights. Resolve/isolation/hopeful are unsupported interpretations. Judge assertion that displacement is minimal understates the clear vertical arc; original score retained."
+      },
+      "structural": 0.581,
+      "timely": false,
+      "tokens": {
+        "completion": 406,
+        "completionDetails": {
+          "reasoning": 10459
+        },
+        "prompt": 7534,
+        "total": 18399
+      }
+    },
+    {
+      "affordable": false,
+      "arm": "carbon",
+      "case": "vfp_active_006",
+      "clip": "storm_tunnel_lateral_run",
+      "combined": 0.6575,
+      "configuration": "high65536",
+      "cost": 0.233178,
+      "full_pass": false,
+      "model": "gemini-4-carbon",
+      "native_usage": {
+        "candidatesTokenCount": 418,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 418
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 21393,
+        "totalTokenCount": 29345
+      },
+      "rubric": 0.72,
+      "scoring_pass": false,
+      "seconds": 243.653,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Correct constant-size cyan figure, fixed arch, companion rectangle, and shifting streaks during lateral translation. Parcel is an interpretation, identity of the rectangle is unknown. Resolve/isolation are unsupported, and slow_drift misses the expected pace."
+      },
+      "structural": 0.595,
+      "timely": false,
+      "tokens": {
+        "completion": 418,
+        "completionDetails": {
+          "reasoning": 21393
+        },
+        "prompt": 7534,
+        "total": 29345
+      }
+    },
+    {
+      "affordable": true,
+      "arm": "sol",
+      "case": "vfp_active_001",
+      "clip": "dialogue_confession_push_in",
+      "combined": 0.6691,
+      "configuration": "low4096",
+      "cost": 0.0100235,
+      "full_pass": false,
+      "model": "gpt-6.1-sol",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 280,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3170
+      },
+      "rubric": 0.72,
+      "scoring_pass": false,
+      "seconds": 7.366,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Describes growing figures, fixed lower edges, fixed cream inset and unchanged horizon. Detached/navy-only coverage is interpretive or taxonomic."
+      },
+      "structural": 0.6182,
+      "timely": true,
+      "tokens": {
+        "completion": 280,
+        "completionDetails": {
+          "reasoning": 0
+        },
+        "prompt": 2890,
+        "total": 3170
+      }
+    },
+    {
+      "affordable": true,
+      "arm": "sol",
+      "case": "vfp_active_002",
+      "clip": "alarm_chase_whip_pan",
+      "combined": 0.5825,
+      "configuration": "low4096",
+      "cost": 0.0097435,
+      "full_pass": false,
+      "model": "gpt-6.1-sol",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 252,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3142
+      },
+      "rubric": 0.62,
+      "scoring_pass": false,
+      "seconds": 6.475,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Accurate lateral travel, attached red bar, fixed doorway and shifting diagonal stripes. Urgency, speed and light pulsation are underrepresented or interpretive."
+      },
+      "structural": 0.545,
+      "timely": true,
+      "tokens": {
+        "completion": 252,
+        "completionDetails": {
+          "reasoning": 0
+        },
+        "prompt": 2890,
+        "total": 3142
+      }
+    },
+    {
+      "affordable": true,
+      "arm": "sol",
+      "case": "vfp_active_003",
+      "clip": "quiet_bedside_vigil",
+      "combined": 0.77915,
+      "configuration": "low4096",
+      "cost": 0.0102735,
+      "full_pass": false,
+      "model": "gpt-6.1-sol",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 305,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3195
+      },
+      "rubric": 0.82,
+      "scoring_pass": false,
+      "seconds": 6.977,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Correct fixed geometry and stillness; wide_master omission and desaturated/amber/tone coverage are nonfactual taxonomy differences."
+      },
+      "structural": 0.7383,
+      "timely": true,
+      "tokens": {
+        "completion": 305,
+        "completionDetails": {
+          "reasoning": 0
+        },
+        "prompt": 2890,
+        "total": 3195
+      }
+    },
+    {
+      "affordable": true,
+      "arm": "sol",
+      "case": "vfp_active_004",
+      "clip": "prop_swap_continuity_break",
+      "combined": 0.60835,
+      "configuration": "low4096",
+      "cost": 0.0098735,
+      "full_pass": false,
+      "model": "gpt-6.1-sol",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 265,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3155
+      },
+      "rubric": 0.75,
+      "scoring_pass": false,
+      "seconds": 5.446,
+      "source_review": {
+        "critical_errors": [
+          "Labels continuity intact even though its own observation correctly places red at indexes 0\u20131 and blue at 2\u20134. The frozen source contract defines the color change as broken."
+        ],
+        "observed": "Accurate stationary geometric composition and exact red-to-blue change; categorical contract failure, no invented source event."
+      },
+      "structural": 0.4667,
+      "timely": true,
+      "tokens": {
+        "completion": 265,
+        "completionDetails": {
+          "reasoning": 0
+        },
+        "prompt": 2890,
+        "total": 3155
+      }
+    },
+    {
+      "affordable": true,
+      "arm": "sol",
+      "case": "vfp_active_005",
+      "clip": "rooftop_escape_crash_zoom",
+      "combined": 0.61915,
+      "configuration": "low4096",
+      "cost": 0.0098435,
+      "full_pass": false,
+      "model": "gpt-6.1-sol",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 262,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3152
+      },
+      "rubric": 0.72,
+      "scoring_pass": false,
+      "seconds": 6.852,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Accurate fixed-size arc over real gap, rightward travel, navy platform geometry and stripe detail. Describing measured speed vs fast_lateral and palette/tone categories are interpretive differences."
+      },
+      "structural": 0.5183,
+      "timely": true,
+      "tokens": {
+        "completion": 262,
+        "completionDetails": {
+          "reasoning": 0
+        },
+        "prompt": 2890,
+        "total": 3152
+      }
+    },
+    {
+      "affordable": true,
+      "arm": "sol",
+      "case": "vfp_active_006",
+      "clip": "storm_tunnel_lateral_run",
+      "combined": 0.4256,
+      "configuration": "low4096",
+      "cost": 0.0096335,
+      "full_pass": false,
+      "model": "gpt-6.1-sol",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 241,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3131
+      },
+      "rubric": 0.62,
+      "scoring_pass": false,
+      "seconds": 6.3,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Correct cyan icon, companion rectangle and left-to-right translation under arch. Fails to describe the shifting rain-like streaks; low scorer coverage does not imply an invented event."
+      },
+      "structural": 0.2312,
+      "timely": true,
+      "tokens": {
+        "completion": 241,
+        "completionDetails": {
+          "reasoning": 0
+        },
+        "prompt": 2890,
+        "total": 3131
+      }
+    },
+    {
+      "affordable": true,
+      "arm": "luna",
+      "case": "vfp_active_001",
+      "clip": "dialogue_confession_push_in",
+      "combined": 0.735,
+      "configuration": "low1400",
+      "cost": 0.0005401749999999999,
+      "full_pass": false,
+      "model": "gpt-6-luna",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 358,
+        "output_tokens_details": {
+          "reasoning_tokens": 153
+        },
+        "total_tokens": 3248
+      },
+      "rubric": 0.72,
+      "scoring_pass": false,
+      "seconds": 6.54,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Describes figure growth, unchanged separation and composition; references right figure detail but omits a continuity note. Gold/navy and detached reflect tag coverage."
+      },
+      "structural": 0.75,
+      "timely": true,
+      "tokens": {
+        "completion": 205,
+        "completionDetails": {
+          "reasoning": 153
+        },
+        "prompt": 2890,
+        "total": 3248
+      }
+    },
+    {
+      "affordable": true,
+      "arm": "luna",
+      "case": "vfp_active_002",
+      "clip": "alarm_chase_whip_pan",
+      "combined": 0.5925,
+      "configuration": "low1400",
+      "cost": 0.000469675,
+      "full_pass": false,
+      "model": "gpt-6-luna",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 217,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3107
+      },
+      "rubric": 0.62,
+      "scoring_pass": false,
+      "seconds": 3.45,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Accurate lateral movement, prop and fixed central outline. Caption says the diagonal lines remain nearly fixed, missing their shift; motion/tone tag coverage differs."
+      },
+      "structural": 0.565,
+      "timely": true,
+      "tokens": {
+        "completion": 217,
+        "completionDetails": {
+          "reasoning": 0
+        },
+        "prompt": 2890,
+        "total": 3107
+      }
+    },
+    {
+      "affordable": true,
+      "arm": "luna",
+      "case": "vfp_active_003",
+      "clip": "quiet_bedside_vigil",
+      "combined": 0.75915,
+      "configuration": "low1400",
+      "cost": 0.0005196749999999999,
+      "full_pass": false,
+      "model": "gpt-6-luna",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 317,
+        "output_tokens_details": {
+          "reasoning_tokens": 114
+        },
+        "total_tokens": 3207
+      },
+      "rubric": 0.78,
+      "scoring_pass": false,
+      "seconds": 5.448,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Both gold forms and identical gray rectangle and composition described; two abstract forms are a source-permitted interpretation."
+      },
+      "structural": 0.7383,
+      "timely": true,
+      "tokens": {
+        "completion": 203,
+        "completionDetails": {
+          "reasoning": 114
+        },
+        "prompt": 2890,
+        "total": 3207
+      }
+    },
+    {
+      "affordable": true,
+      "arm": "luna",
+      "case": "vfp_active_004",
+      "clip": "prop_swap_continuity_break",
+      "combined": 0.57665,
+      "configuration": "low1400",
+      "cost": 0.000509675,
+      "full_pass": false,
+      "model": "gpt-6-luna",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 297,
+        "output_tokens_details": {
+          "reasoning_tokens": 97
+        },
+        "total_tokens": 3187
+      },
+      "rubric": 0.62,
+      "scoring_pass": false,
+      "seconds": 6.118,
+      "source_review": {
+        "critical_errors": [
+          "Labels continuity intact even though its own observation correctly places red at indexes 0\u20131 and blue at 2\u20134. The frozen source contract defines the color change as broken."
+        ],
+        "observed": "Accurate stationary geometric composition and exact red-to-blue change; categorical contract failure, no invented source event."
+      },
+      "structural": 0.5333,
+      "timely": true,
+      "tokens": {
+        "completion": 200,
+        "completionDetails": {
+          "reasoning": 97
+        },
+        "prompt": 2890,
+        "total": 3187
+      }
+    },
+    {
+      "affordable": true,
+      "arm": "luna",
+      "case": "vfp_active_005",
+      "clip": "rooftop_escape_crash_zoom",
+      "combined": 0.51915,
+      "configuration": "low1400",
+      "cost": 0.0005571749999999999,
+      "full_pass": false,
+      "model": "gpt-6-luna",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 392,
+        "output_tokens_details": {
+          "reasoning_tokens": 198
+        },
+        "total_tokens": 3282
+      },
+      "rubric": 0.62,
+      "scoring_pass": false,
+      "seconds": 7.368,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Correct left-right crossing of opening and consistent person/prop appearance. Under-describes vertical arc, prop and descriptive cue coverage; no fabricated action."
+      },
+      "structural": 0.4183,
+      "timely": true,
+      "tokens": {
+        "completion": 194,
+        "completionDetails": {
+          "reasoning": 198
+        },
+        "prompt": 2890,
+        "total": 3282
+      }
+    },
+    {
+      "affordable": true,
+      "arm": "luna",
+      "case": "vfp_active_006",
+      "clip": "storm_tunnel_lateral_run",
+      "combined": 0.54915,
+      "configuration": "low1400",
+      "cost": 0.0005311749999999999,
+      "full_pass": false,
+      "model": "gpt-6-luna",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cached_tokens": 0
+        },
+        "output_tokens": 340,
+        "output_tokens_details": {
+          "reasoning_tokens": 133
+        },
+        "total_tokens": 3230
+      },
+      "rubric": 0.62,
+      "scoring_pass": false,
+      "seconds": 5.654,
+      "source_review": {
+        "critical_errors": [],
+        "observed": "Correct teal icon, small rectangle, rightward travel and arch. Does not sufficiently separate moving streaks from fixed arch or detail source tone/pace."
+      },
+      "structural": 0.4783,
+      "timely": true,
+      "tokens": {
+        "completion": 207,
+        "completionDetails": {
+          "reasoning": 133
+        },
+        "prompt": 2890,
+        "total": 3230
+      }
+    }
+  ],
+  "unknown_reserved_usd": "0"
+}

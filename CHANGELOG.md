@@ -1,5 +1,10 @@
 # Changelog
 
+## [2026-11-10-02] — Gemini 4 Carbon evaluation (Stories 236 and 237)
+
+- Carbon delivered all three authored screenplay bundles and preserved continuity details the pipeline lost. Both arms passed 0/3 full-source checks.
+- Carbon recognized the red-to-blue continuity break. All three frame models passed 0/6 complete quality checks. The 160 requests across both panels accounted for $3.900867 in known usage and $1.414720 held against two provider deadlines.
+
 ## [2026-11-10-01] — Whole story workspace capability (Story 237)
 
 ### Added

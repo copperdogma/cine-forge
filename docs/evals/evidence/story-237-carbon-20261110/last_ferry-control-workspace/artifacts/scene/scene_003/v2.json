@@ -1,0 +1,160 @@
+{
+  "data": {
+    "characters_present": [
+      "LENA",
+      "RUTH",
+      "TOM"
+    ],
+    "characters_present_ids": [
+      "lena",
+      "ruth",
+      "tom"
+    ],
+    "confidence": 0.85,
+    "elements": [
+      {
+        "content": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+        "element_type": "scene_heading"
+      },
+      {
+        "content": "RUTH, the launch pilot, checks a wall clock: 5:50. Lena arrives carrying both containers. Ruth notices the white bandage, now grey with grime, before taking the medicine case.",
+        "element_type": "action"
+      },
+      {
+        "content": "RUTH",
+        "element_type": "character"
+      },
+      {
+        "content": "Your father still at the clinic?",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "LENA",
+        "element_type": "character"
+      },
+      {
+        "content": "Until the launch brings him home.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Ruth places the blue case in a refrigerator. Lena keeps the cash box under her arm. Tom calls from a wall telephone; his voice comes through its speaker.",
+        "element_type": "action"
+      },
+      {
+        "content": "TOM (PHONE)",
+        "element_type": "character"
+      },
+      {
+        "content": "The office is locked. Someone left an orange cape on the bench outside.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "LENA",
+        "element_type": "character"
+      },
+      {
+        "content": "Leave it there. We don't know whose it is.",
+        "element_type": "dialogue"
+      },
+      {
+        "content": "Lena asks Ruth to keep the case cold until departure. Ruth agrees. The clock ticks toward six. No passenger arrives.",
+        "element_type": "action"
+      }
+    ],
+    "heading": "INT. RESCUE BOATHOUSE - PRE-DAWN",
+    "inferences": [],
+    "int_ext": "INT",
+    "location": "Rescue Boathouse",
+    "narrative_beats": [
+      {
+        "approximate_location": "Opening",
+        "beat_type": "Threshold / Safe Harbor",
+        "confidence": 0.87,
+        "description": "Lena arrives at the boathouse just before six, delivering the medicine case to Ruth, who refrigerates it. The ticking clock and the approaching deadline create compressed urgency even within this relatively sheltered interior space."
+      },
+      {
+        "approximate_location": "Early",
+        "beat_type": "Character Detail / Humanizing Beat",
+        "confidence": 0.82,
+        "description": "Ruth notices Lena's bandage, now grey with grime, before anything else. This small observation grounds the scene in physical reality and hints at Lena's self-neglect or preoccupation \u2014 she has not tended to herself while managing others' needs."
+      },
+      {
+        "approximate_location": "Middle",
+        "beat_type": "Offstage Complication",
+        "confidence": 0.9,
+        "description": "Tom calls to report an orange cape left on the bench outside the locked office. The cape connects to both the courier and the Old Man, suggesting one of them has been at the ticket office again, but Lena's instruction to leave it signals deliberate distance from the unknown party."
+      },
+      {
+        "approximate_location": "End",
+        "beat_type": "Suspended Expectation",
+        "confidence": 0.85,
+        "description": "The clock ticks toward six and no passenger arrives. The absence of the expected passenger is itself a beat \u2014 the launch errand is for Lena's father, but his non-appearance at the boathouse leaves his status and the errand's completion unresolved."
+      }
+    ],
+    "props_mentioned": [],
+    "provenance": [
+      {
+        "confidence": 0.95,
+        "evidence": "Preserved from structural breakdown",
+        "field_name": "heading",
+        "method": "parser"
+      }
+    ],
+    "scene_id": "scene_003",
+    "scene_number": 3,
+    "source_span": {
+      "end_line": 63,
+      "start_line": 44
+    },
+    "time_of_day": "PRE-DAWN",
+    "tone_mood": "watchful and quietly anxious",
+    "tone_shifts": [
+      "The domestic warmth of Ruth's care (refrigerating the medicine, asking after the father) briefly softens the tension, but Tom's phone call about the orange cape reintroduces unease and suspicion at the scene's close"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "ai_enrichment_used": true,
+      "discovery_tier": "llm_enriched",
+      "final_stage_model_used": "mixed:claude-sonnet-4-6",
+      "final_stage_provider_used": "code",
+      "scene_number": 3,
+      "source_span": {
+        "end_line": 63,
+        "start_line": 44
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": {
+      "estimated_cost_usd": 0.032556,
+      "input_tokens": 2,
+      "latency_seconds": null,
+      "model": "mixed:claude-sonnet-4-6",
+      "output_tokens": 2170,
+      "request_id": null
+    },
+    "created_at": "2026-11-10T19:02:08.745875Z",
+    "health": "valid",
+    "intent": "Enrich scene with narrative analysis (beats, tone, subtext)",
+    "lineage": [
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "scene_analysis_v1",
+    "producing_role": null,
+    "rationale": "Macro-analysis batch provides arc-aware narrative context",
+    "ref": {
+      "artifact_type": "scene",
+      "entity_id": "scene_003",
+      "path": "artifacts/scene/scene_003/v2.json",
+      "version": 2
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

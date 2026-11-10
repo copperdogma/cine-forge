@@ -1,0 +1,59 @@
+[
+  {
+    "logical": "open_frequency",
+    "hop": 1,
+    "input_bound": 26000,
+    "output_bound": 65536,
+    "reserve_usd": "0.70736",
+    "accounted_usd": "0.70736",
+    "state": "unknown-held",
+    "request_sha256": "d489f0dced9eb87b557051bfc9e1a7a685e826d73cf6ae9e094a86d33d46477a",
+    "wire": "output/carbon-20261110-private-wire/open_frequency-hop1.wire",
+    "http_status": 200,
+    "elapsed_ms": 601822,
+    "wire_sha256": "e91ba47de39520e498dfe3cdc30c336cbe7b58fccd763db56c8719de3742a240"
+  },
+  {
+    "logical": "open_frequency",
+    "hop": 2,
+    "input_bound": 91536,
+    "output_bound": 65536,
+    "reserve_usd": "0.838432",
+    "state": "settled",
+    "accounted_usd": "0.437476",
+    "previous_interaction_id": "v1_ChctbVR6YW9fMk1yNmQ5TW9QMWVIU3NBURIXLW1UemFvXzJNcjZkOU1vUDFlSFNzQVE",
+    "checkpoint_token_sha256": "045e3ce1441083932925985e42d5cfecd9f0cd98490e4d1a3b6cf3a54bf0d386",
+    "request_sha256": "dc9c379b8f0b2845ef474a0807a01bd22e8805d3be8b4ac097429995a8936e95",
+    "wire": "output/carbon-20261110-private-wire/open_frequency-hop2.wire",
+    "producer_sha256": "f827234cd39756b5dde534d9d83229a1ac26cf8d66097953bd865372fdd7c437",
+    "checkpoint_progress_tokens": 52789,
+    "http_status": 200,
+    "model": "gemini-4-carbon",
+    "interaction_id": "v1_ChctbVR6YW9fMk1yNmQ5TW9QMWVIU3NBURIXUDJqemFwZUVBcEN3cXRzUC05aTN1UTQ",
+    "usage": {
+      "total_tokens": 91566,
+      "total_input_tokens": 59773,
+      "input_tokens_by_modality": [
+        {
+          "modality": "text",
+          "tokens": 59773
+        }
+      ],
+      "total_cached_tokens": 0,
+      "total_output_tokens": 26480,
+      "output_tokens_by_modality": [
+        {
+          "modality": "text",
+          "tokens": 26480
+        }
+      ],
+      "total_tool_use_tokens": 0,
+      "total_thought_tokens": 5313,
+      "initial_input_tokens": 6781
+    },
+    "status": "completed",
+    "visible_chars": 108278,
+    "elapsed_ms": 275542,
+    "wire_sha256": "27129b2479220370391e44a5f0c2ece9e85a9ae11ec4154ad65def1af90e8958"
+  }
+]

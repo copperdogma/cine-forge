@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/benchmarks/scripts/run_carbon_workspace.py", line 169, in <module>
+    subject(args.case,args.operational_recovery)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/benchmarks/scripts/run_carbon_workspace.py", line 124, in subject
+    terminal, text = read_interaction(resp, path)
+                     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/Users/cam/.codex/worktrees/carbon-20261110/cine-forge/benchmarks/scripts/run_carbon_workspace.py", line 79, in read_interaction
+    assert terminal and terminal["id"] == identity and model == MODEL, "terminal or served ID missing"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: terminal or served ID missing

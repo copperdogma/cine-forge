@@ -1,0 +1,30 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"score\":0.62,\"reason\":\"The model correctly identifies the leftward-to-rightward movement of the person icon, the dark red background, the central outlined rectangle, the static camera, and intact continuity. However, several mismatches lower the score: (1) Tone is 'detached' instead of 'urgent' or 'tense' \u2014 the reference specifies urgent/tense. (2) Motion is 'measured' instead of 'fast_lateral' and 'pulsing_light' \u2014 the icon moves noticeably across frames and the red illumination pulses. (3) The model omits 'wide_master' from camera_tags. (4) The description calls the figure a 'flat orange-red person icon' rather than recognizing it as a runner, which is a minor semantic gap but acceptable. (5) Audio fields contain empty arrays, which is correct per instructions. The core visual observations are grounded and evidence entries reference specific frames, but the tone and motion tag mismatches are significant enough to prevent a passing score.\"}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011CgukavGjYJcQSyPds6wLL",
+  "model": "claude-opus-4-6",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2524,
+    "output_tokens": 237,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

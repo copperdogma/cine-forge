@@ -1,0 +1,238 @@
+{
+  "data": {
+    "associated_characters": [
+      "june",
+      "aria"
+    ],
+    "description": "Multiple signs appear throughout the narrative. In the community radio studio, an ON AIR sign flickers and eventually steadies into a solid red glow. At the high school gym shelter, handwritten signs point toward MEDICINE, MEALS, and MESSAGES on a whiteboard. June tapes a new sign over the studio door reading OPEN FREQUENCY. Additionally, Maya brings a flyer for a missing dog named Comet that functions as an informational sign.",
+    "name": "Sign",
+    "narrative_significance": "Signs serve as critical communication tools during the emergency. The ON AIR sign represents the operational status of the community radio station\u2014the lifeline for disaster information and coordination. The directional signs at the shelter organize emergency services and resources. The OPEN FREQUENCY sign signals the station's commitment to public service. Together, these signs embody the theme of communication and community coordination during crisis.",
+    "overall_confidence": 0.85,
+    "prop_id": "sign",
+    "scene_presence": [
+      "scene_001",
+      "scene_003",
+      "scene_004"
+    ]
+  },
+  "metadata": {
+    "alternatives_considered": null,
+    "annotations": {
+      "entity_adjudication": {
+        "approved_candidate_count": 17,
+        "decision_trace": [
+          {
+            "candidate": "TAPE REEL",
+            "canonical_name": "TAPE REEL",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Physical object used in radio studio operations. Aria threads a tape reel in the opening scene, establishing it as a tangible prop.",
+            "outcome": "accepted",
+            "resolved_name": "TAPE REEL",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "MIXER",
+            "canonical_name": "MIXER",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Audio equipment in the radio studio. Noah coaxes a signal out of a battered mixer, clearly a physical prop.",
+            "outcome": "accepted",
+            "resolved_name": "MIXER",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "PORTABLE ANTENNA",
+            "canonical_name": "PORTABLE ANTENNA",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Physical equipment carried by Kell and used on the water tower catwalk. Mentioned twice and actively used in the scene.",
+            "outcome": "accepted",
+            "resolved_name": "PORTABLE ANTENNA",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "LANTERN",
+            "canonical_name": "LANTERN",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Physical object carried by Kell and used on the catwalk. Aria braces it with her boot, establishing it as a tangible prop.",
+            "outcome": "accepted",
+            "resolved_name": "LANTERN",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "CANVAS TOOL BAG",
+            "canonical_name": "CANVAS TOOL BAG",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Physical bag carried by Kell containing tools. Swings in the wind on the catwalk, clearly a tangible prop.",
+            "outcome": "accepted",
+            "resolved_name": "CANVAS TOOL BAG",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "ON AIR SIGN",
+            "canonical_name": "ON AIR SIGN",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Physical sign in the radio studio that flickers and later glows red. Mentioned twice and actively used as a prop.",
+            "outcome": "accepted",
+            "resolved_name": "ON AIR SIGN",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "HANDHELD RECEIVER",
+            "canonical_name": "HANDHELD RECEIVER",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Radio equipment on the water tower catwalk. Noah plugs a cable into it, establishing it as a physical prop.",
+            "outcome": "accepted",
+            "resolved_name": "HANDHELD RECEIVER",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "TACKLE BOX",
+            "canonical_name": "TACKLE BOX",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Physical container used by Kell to sort flashlight batteries in the shelter. Tangible prop with clear function.",
+            "outcome": "accepted",
+            "resolved_name": "TACKLE BOX",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "FLYER (MISSING DOG)",
+            "canonical_name": "FLYER (MISSING DOG)",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.9,
+            "llm_rationale": "Physical flyer for a missing dog named Comet that Maya brings to June. Tangible prop used in the broadcast.",
+            "outcome": "accepted",
+            "resolved_name": "FLYER (MISSING DOG)",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "TABLETOP RADIO",
+            "canonical_name": "TABLETOP RADIO",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Radio equipment in the shelter where Noah's voice crackles through. Physical prop used for communication.",
+            "outcome": "accepted",
+            "resolved_name": "TABLETOP RADIO",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "WHITEBOARD",
+            "canonical_name": "WHITEBOARD",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Physical board in the studio where June writes road closures and updates. Mentioned twice and actively used.",
+            "outcome": "accepted",
+            "resolved_name": "WHITEBOARD",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "HAND-DRAWN MAP",
+            "canonical_name": "HAND-DRAWN MAP",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Physical map that Aria pins beside the console in the studio. Tangible prop with clear placement.",
+            "outcome": "accepted",
+            "resolved_name": "HAND-DRAWN MAP",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "NOTEBOOK (DAY TWO)",
+            "canonical_name": "Notebook",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.9,
+            "llm_rationale": "Physical notebook that Noah labels 'DAY TWO' in the studio. Tangible prop used for tracking.",
+            "outcome": "accepted",
+            "resolved_name": "Notebook",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "SIGN (OPEN FREQUENCY)",
+            "canonical_name": "Sign",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.9,
+            "llm_rationale": "Physical sign that June tapes over the door with text 'OPEN FREQUENCY'. Tangible prop in the studio.",
+            "outcome": "accepted",
+            "resolved_name": "Sign",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "FOIL-WRAPPED BREAD",
+            "canonical_name": "FOIL-WRAPPED BREAD",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.9,
+            "llm_rationale": "Physical loaf of warm bread wrapped in foil that Kell brings into the studio. Tangible prop.",
+            "outcome": "accepted",
+            "resolved_name": "FOIL-WRAPPED BREAD",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "MICROPHONE",
+            "canonical_name": "MICROPHONE",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.95,
+            "llm_rationale": "Radio equipment that June reaches for to make the broadcast. Physical prop used for communication.",
+            "outcome": "accepted",
+            "resolved_name": "MICROPHONE",
+            "target_entity_type": null
+          },
+          {
+            "candidate": "BRASS CASSETTE CUE",
+            "canonical_name": "BRASS CASSETTE CUE",
+            "decision_verdict": "valid",
+            "llm_confidence": 0.85,
+            "llm_rationale": "Audio equipment that Noah pushes up to play music. Physical prop in the studio control room.",
+            "outcome": "accepted",
+            "resolved_name": "BRASS CASSETTE CUE",
+            "target_entity_type": null
+          }
+        ],
+        "decision_trace_count": 17,
+        "input_candidate_count": 17,
+        "rejected_candidate_count": 0,
+        "rejected_candidates": []
+      }
+    },
+    "confidence": 0.85,
+    "cost_data": null,
+    "created_at": "2026-11-10T18:42:54.648724Z",
+    "health": "valid",
+    "intent": "Establish master definition for prop 'Sign'",
+    "lineage": [
+      {
+        "artifact_type": "entity_discovery_results",
+        "entity_id": "project",
+        "path": "artifacts/entity_discovery_results/project/v1.json",
+        "version": 1
+      },
+      {
+        "artifact_type": "scene_index",
+        "entity_id": "project",
+        "path": "artifacts/scene_index/project/v2.json",
+        "version": 2
+      },
+      {
+        "artifact_type": "canonical_script",
+        "entity_id": "project",
+        "path": "artifacts/canonical_script/project/v1.json",
+        "version": 1
+      }
+    ],
+    "producing_module": "prop_bible_v1",
+    "producing_role": null,
+    "rationale": "AI-identified significant object from canonical script.",
+    "ref": {
+      "artifact_type": "prop_bible",
+      "entity_id": "sign",
+      "path": "artifacts/prop_bible/sign/v1.json",
+      "version": 1
+    },
+    "schema_version": "1.0.0",
+    "source": "ai"
+  }
+}

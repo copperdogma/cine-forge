@@ -1,0 +1,700 @@
+{
+  "files": [
+    {
+      "bytes": 25121,
+      "path": "benchmarks/results/video-understanding-carbon-sol-luna-v4-20261110.json",
+      "sha256": "2f23ad6e6f717f7743d5972a91eb794013f659e9feeef440c7138e504104adcc"
+    },
+    {
+      "bytes": 3094,
+      "path": "benchmarks/scripts/continue_carbon_frame_panel.py",
+      "sha256": "dafcb33a586cef0016121302a9cfefa079a8b8c07b558243340c19a8a7eac477"
+    },
+    {
+      "bytes": 6679,
+      "path": "benchmarks/scripts/report_carbon_video_comparison.py",
+      "sha256": "9298ba9d2486d3619d8367223022bd1021ce75483068884c53c1a1e32461329b"
+    },
+    {
+      "bytes": 11240,
+      "path": "benchmarks/scripts/run_carbon_frame_output_repair.py",
+      "sha256": "f95f06e31a089344af686a791f381bcaad8e9b89591bf6cba78c6caf59ce683d"
+    },
+    {
+      "bytes": 12110,
+      "path": "benchmarks/scripts/run_carbon_video_comparison.py",
+      "sha256": "941917421cd631b83dfffbaa24f1459fdc06f7a3f7408358a43c2f6aaa001123"
+    },
+    {
+      "bytes": 277,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/.gitignore",
+      "sha256": "1377b5a9235dac4ad0832968e6e740dc39fc2e078218ef88cbd2dd470bc0d5b2"
+    },
+    {
+      "bytes": 231,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/catalog.txt",
+      "sha256": "16eb156e72b9f9cce46d9dcf8a4456ce180c6ba4054cfd42e1557a3bbab7e5f2"
+    },
+    {
+      "bytes": 570,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/continuation-producer.json",
+      "sha256": "79164c9d1989e843b3d71c4b5155e9deaddcd8fb18dc1f86c9e35c8249d45a07"
+    },
+    {
+      "bytes": 3532,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/ledger.json",
+      "sha256": "7f1495d3636cf30533343c0e34d6edb4faec93f169c3c40ea3ea7036f0180d25"
+    },
+    {
+      "bytes": 978,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/ledger64.json",
+      "sha256": "ec5cad69b5bb66d9a5efe13e4201831e0c0cde1acc651eadc3ae5206b4f50448"
+    },
+    {
+      "bytes": 1809,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/native-custody.json",
+      "sha256": "4c034f726eafec4ad022cf2a668f2eccb25a60fd8db564db1ba1a8ec87baf605"
+    },
+    {
+      "bytes": 38000,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/preflight.json",
+      "sha256": "61657c08479d8d03152d0ce210e7a76f0b91ade1a6f93484eb95d8edfe1d6ae9"
+    },
+    {
+      "bytes": 11448,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/producer/run_carbon_video_comparison.py",
+      "sha256": "83805c40b239c3a9d27dded2e2d622862b7264ca58c36d154f2f806ca3dd18e1"
+    },
+    {
+      "bytes": 15013,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/producer/video_understanding_provider.py",
+      "sha256": "a1c57fa48710cb4df12a5a29e5f40ad46cd49405fe906b8a85c2da564d70a766"
+    },
+    {
+      "bytes": 4746,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/producer/video_understanding_provider_argon.py",
+      "sha256": "d278c35b53cf758941b9531bdbc82ef04687c039544aa63b4b38515d6407cac9"
+    },
+    {
+      "bytes": 2076,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/research-notes.md",
+      "sha256": "56f0f3c6005de1673468ef95b5309eca3e34581573f1dff8c69550d2ce96a9b1"
+    },
+    {
+      "bytes": 2482,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/sanitized-native/vfp_active_001-carbon-raw.json",
+      "sha256": "959e8b260d536044c89426c33708ba3692c0c5d37179f51b627e00df40988eae"
+    },
+    {
+      "bytes": 9578,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/sanitized-native/vfp_active_002-carbon64.sse",
+      "sha256": "6395dc85935f52bcd5130b1ee5107d8c88fc7e5ea2556f8f119e405d5db6272a"
+    },
+    {
+      "bytes": 2436,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/sanitized-native/vfp_active_003-carbon-raw.json",
+      "sha256": "17747b41537f8f91f114f9e237202a29590ef6dcd2e7ee07a0b8af0bf32ea69e"
+    },
+    {
+      "bytes": 8853,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/sanitized-native/vfp_active_004-carbon64.sse",
+      "sha256": "f857949190c8805fb6299663e3e7e63a9b612cdbb61c7cd30afed7cd48b971c0"
+    },
+    {
+      "bytes": 10081,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/sanitized-native/vfp_active_005-carbon64.sse",
+      "sha256": "a3b4a66889e64c0e0e4727713202df6023d965a75355cec00495c1321b7ccb47"
+    },
+    {
+      "bytes": 10679,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/sanitized-native/vfp_active_006-carbon64.sse",
+      "sha256": "721323fbe186f72549dceecd3b09df9fda306e9755d8491c205096e4150b6c9a"
+    },
+    {
+      "bytes": 5139,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/source-review.json",
+      "sha256": "d37b5d01fe0edf3483ef12705389e123107cd43cbc4c2674913d2246a36c9b23"
+    },
+    {
+      "bytes": 1735,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/stream-preflight-initial.json",
+      "sha256": "14977201f10bd40677db68f08395356888fc4fcdab09a5a2a6d90e51af7a2e88"
+    },
+    {
+      "bytes": 1766,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/stream-preflight-single-writer.json",
+      "sha256": "e37ec5b274f0806ad4b3de5501c109ec366e414649581c78a5b7e2b85be0b6a9"
+    },
+    {
+      "bytes": 1767,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/stream-preflight.json",
+      "sha256": "1105631e0012f1fd00d3d6fea2e5a552a22a1a0c0cf162305e452a81fc16853f"
+    },
+    {
+      "bytes": 1939,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-carbon-opus-raw.json",
+      "sha256": "a0c39f73710529eb25460bfc3cbc5a29a86d5f0012179d0ba7c8b91220a668e2"
+    },
+    {
+      "bytes": 94597,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-carbon-opus-request.json",
+      "sha256": "29f644b8e52a9ada0ee34ec721f63d0d5bbea7099b430851870bbbb7dbebb4d6"
+    },
+    {
+      "bytes": 1688,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-carbon-opus.json",
+      "sha256": "e7f505fc16df6c5cee897f42ecff0089796cd314bcde0100d78352fcf2424fd9"
+    },
+    {
+      "bytes": 5062,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-carbon-subject.json",
+      "sha256": "d57fefed21d9eb87a25a540023dbdb546d86875070c35043c997d7f43b63649a"
+    },
+    {
+      "bytes": 1795,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-luna-opus-raw.json",
+      "sha256": "14a7b8525080f48be130aca4646e648481b1295a27b50a8c4e9a4066556587ae"
+    },
+    {
+      "bytes": 93800,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-luna-opus-request.json",
+      "sha256": "f315902f11f006cb9de464b070c8cba2c2ed1d42ee0a49a1b552f554bbe8f7ce"
+    },
+    {
+      "bytes": 1543,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-luna-opus.json",
+      "sha256": "2e1c47c32e6e45de44bf29db9f6c20e8022a3d4bb962b9fde8de457147f1cbd4"
+    },
+    {
+      "bytes": 11996,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-luna-raw.json",
+      "sha256": "f503fb039b2ce1dbef8d350b1c8cf90898f374a26263e7fd0401ea25078d99a7"
+    },
+    {
+      "bytes": 4089,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-luna-subject.json",
+      "sha256": "efd461212cfbd83dec6d9972810786469f3de3a8fe94ef2752af5d656855870d"
+    },
+    {
+      "bytes": 2117,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-sol-opus-raw.json",
+      "sha256": "ecf7dc894c6bcfcf8804b3232030aebfce922b62de3930b690215372cceb306a"
+    },
+    {
+      "bytes": 94203,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-sol-opus-request.json",
+      "sha256": "54af2dd99308988d27dc09ad35f0c27c87492bbcb6b28e5f8587e229e7448787"
+    },
+    {
+      "bytes": 1866,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-sol-opus.json",
+      "sha256": "a596fcc6ba68a97b69e37668bfdd6973765ed59bf9a01c2c64443b7f179e52e2"
+    },
+    {
+      "bytes": 8730,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-sol-raw.json",
+      "sha256": "d1eb17783a05b6b971087a64586694309279fa564695b438828b43b8e12f42e9"
+    },
+    {
+      "bytes": 4682,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_001-sol-subject.json",
+      "sha256": "3b5e80bca1c76d5c5c6bed924ede6bf935c441b1b6cdd9dc4ba1a26074deee72"
+    },
+    {
+      "bytes": 764,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-carbon-incomplete.json",
+      "sha256": "fcf2453d1a8aeca48ece30c2027becccb989ab0e0393cc54ea02b16e6e0456ad"
+    },
+    {
+      "bytes": 1838,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-carbon-opus-raw.json",
+      "sha256": "74e7db5fb7c3cb04c2d6342a15e8d8b9a87cbec242ef4c7db6512a95293ce878"
+    },
+    {
+      "bytes": 253364,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-carbon-opus-request.json",
+      "sha256": "90104554ad7e27ba22224d4cb2133d1431a626c2fdda0a44ece797342c69317a"
+    },
+    {
+      "bytes": 1587,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-carbon-opus.json",
+      "sha256": "c01ac4c63e5648123d40953ee2b025768bb00ff27fc690db1f8b2c6e2efd2785"
+    },
+    {
+      "bytes": 147436,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-carbon-raw.json",
+      "sha256": "63ec6626d5fe693a61a92752f94d450fd377831ce124d6751787603d359eb315"
+    },
+    {
+      "bytes": 732,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-carbon64-raw.json",
+      "sha256": "859af5ca983b8883ed74294dce3f5dfd4f753b3be0e102aef5fb7c0f916f2e8b"
+    },
+    {
+      "bytes": 5639,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-carbon64-subject.json",
+      "sha256": "eba28d64395004f9c25ed612be0ad5ee6b0c0e72a169f821715656ccc8a9d6ea"
+    },
+    {
+      "bytes": 1321,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-luna-opus-raw.json",
+      "sha256": "49249ead89af2c5d1036ec71756a2c67ffd00bdbdca4f73efa4180aef1e6da3a"
+    },
+    {
+      "bytes": 252464,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-luna-opus-request.json",
+      "sha256": "b24e9a4c4218650b7cee6f6e2ac5533627467aad9baf341f1fbbd69b574c4b63"
+    },
+    {
+      "bytes": 1070,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-luna-opus.json",
+      "sha256": "b0ef6ccd7dcfe0620a78d2c9d35d65812a6a8832315fa5065c366c07ce72b33f"
+    },
+    {
+      "bytes": 8379,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-luna-raw.json",
+      "sha256": "64e71e06d862eeb33a5e8df0e98a91836ce4fd3d5397aca05c6fbd141744db46"
+    },
+    {
+      "bytes": 4235,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-luna-subject.json",
+      "sha256": "b27ec7e34f0b0923424f612f560994cea7a191d6157ffa3c2634295b31410f08"
+    },
+    {
+      "bytes": 1617,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-sol-opus-raw.json",
+      "sha256": "73b75a74922a9d00ee583ce32c98a44e3a015fa30cfd66c846ddf42c86ce8280"
+    },
+    {
+      "bytes": 252647,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-sol-opus-request.json",
+      "sha256": "b91ea26c614d2d2d60041b66c09453c2472c03ad19ebc5cdd4d4ab8240f6baec"
+    },
+    {
+      "bytes": 1366,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-sol-opus.json",
+      "sha256": "fe9d95baa3421cb6013802457b0b9fb57863ab5d73631a2e2480b9017758494a"
+    },
+    {
+      "bytes": 8588,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-sol-raw.json",
+      "sha256": "1bc092fdc3e38ee9d95205a3d5d80164ad555667e238fee7c3b98b46943ac802"
+    },
+    {
+      "bytes": 4573,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_002-sol-subject.json",
+      "sha256": "378a3f6868e2950634ec9a092ca50b0601602ab4b90e744b6ab21c3ad197f44e"
+    },
+    {
+      "bytes": 2025,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-carbon-opus-raw.json",
+      "sha256": "88ad1327a1c4177fdfe5d92cc99828270d77ebd6bd85953f2710688aa3b556c9"
+    },
+    {
+      "bytes": 93833,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-carbon-opus-request.json",
+      "sha256": "de06a9449f2f9e60360c8240118383bc017a9283c3c3514284a367003594b01f"
+    },
+    {
+      "bytes": 1773,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-carbon-opus.json",
+      "sha256": "4835612df3ea1fc4d2690321a450a0832e276e9880f7c31701ff541aa688a58b"
+    },
+    {
+      "bytes": 5218,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-carbon-subject.json",
+      "sha256": "1849a25352157242f20384b18c412e4d909fb0a5a22b33ae3f08b22c8d1a3921"
+    },
+    {
+      "bytes": 1652,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-luna-opus-raw.json",
+      "sha256": "2b763bca04798397c12d62ae32f97d7f1e823f4333f33fb545ba371e67df8807"
+    },
+    {
+      "bytes": 93070,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-luna-opus-request.json",
+      "sha256": "f6146e65cd9a41661436018c9d88f9ce98e4f59bab55d2fd472a0179761df726"
+    },
+    {
+      "bytes": 1400,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-luna-opus.json",
+      "sha256": "79ab416c09de071acf31384d592bd459c840abfb56f997b7bdffb7f48c0c4e52"
+    },
+    {
+      "bytes": 11644,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-luna-raw.json",
+      "sha256": "7a88a0dda03d7c37d04559e3120361f6c9f3565ab1ed578424c34f7779c0345a"
+    },
+    {
+      "bytes": 4087,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-luna-subject.json",
+      "sha256": "a4a49ac9be2768a4b739dee63109ac90fd865b0f692cf1320c43ae8e9630f2a8"
+    },
+    {
+      "bytes": 1800,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-sol-opus-raw.json",
+      "sha256": "53b559b55593ae564b20b3ca7fc0b8464aa81245fc117daa7dcb0a81797e09eb"
+    },
+    {
+      "bytes": 93432,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-sol-opus-request.json",
+      "sha256": "6cf20b9086711294cbbff327ac488f11ca45a2f524627ccd00ed8324a2895c06"
+    },
+    {
+      "bytes": 1548,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-sol-opus.json",
+      "sha256": "656112ae681110e55d40a90e32c3491c918060d12cd8abd1e9da335f55eb7b75"
+    },
+    {
+      "bytes": 8677,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-sol-raw.json",
+      "sha256": "391d815bee3634a31a30e34a57c0c43f9ba574bde5affc73ac4d080ed56ad07f"
+    },
+    {
+      "bytes": 4557,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_003-sol-subject.json",
+      "sha256": "236359932cd81b5971bd172f71bf7a3c270e8f3e4adb263e9919a5e5bcfdc906"
+    },
+    {
+      "bytes": 1693,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-carbon-opus-raw.json",
+      "sha256": "a808d398a4889196dad24695c3d3d514ed1d883141ea2646c1a10fd3ef8e7595"
+    },
+    {
+      "bytes": 80295,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-carbon-opus-request.json",
+      "sha256": "06012284e79e9a64648505f68788c395c513e516bd759a5def077e8ce0b6ba5d"
+    },
+    {
+      "bytes": 1441,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-carbon-opus.json",
+      "sha256": "89c11eea76324065e7f0ba7c185dd721f5c3e64414df3e08bfc4ba43de8d4556"
+    },
+    {
+      "bytes": 733,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-carbon64-raw.json",
+      "sha256": "e10d21df0e2111b0bda1a82fec4374bf58f8f822012c436fe4b292dba3035a93"
+    },
+    {
+      "bytes": 5273,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-carbon64-subject.json",
+      "sha256": "698bb5dce23511b81146b2fae98c61295eb535c190ad8695a5d09dba14b12e82"
+    },
+    {
+      "bytes": 1547,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-luna-opus-raw.json",
+      "sha256": "1c456de95f82fb03c40387e4bd6f037cb968d46ca2dc6ce74f12979e82cf1f9a"
+    },
+    {
+      "bytes": 79519,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-luna-opus-request.json",
+      "sha256": "f4d53078f2bd1b617e36cb29dc5e74492307b31e6418f66293fd23263539a6ed"
+    },
+    {
+      "bytes": 1295,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-luna-opus.json",
+      "sha256": "14889400947edd787e2394cfca00d127483ce009984205b004163b2ca50f5c14"
+    },
+    {
+      "bytes": 11232,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-luna-raw.json",
+      "sha256": "8a06360331ba493aeb324d68bdb76d347c9688d44e00226dc38a8635337288a8"
+    },
+    {
+      "bytes": 4099,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-luna-subject.json",
+      "sha256": "0bda905977ec8f862107403051b6cfc704f14ac38fa370c614e07ff2e80e5b64"
+    },
+    {
+      "bytes": 1553,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-sol-opus-raw.json",
+      "sha256": "5c6b1cfd470f9cd38d11b4414c6dfc67f4d19f69395ef2fb5d4ca818a46b336a"
+    },
+    {
+      "bytes": 79867,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-sol-opus-request.json",
+      "sha256": "dc26082511e3034e8bcd5697164098d3d4edfdec1778ac7dcee7790eb56ace60"
+    },
+    {
+      "bytes": 1302,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-sol-opus.json",
+      "sha256": "c5e3d1a921b41175e00e806432bf5add491312526cc31a97d4e398faf3d85355"
+    },
+    {
+      "bytes": 8616,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-sol-raw.json",
+      "sha256": "cb8e27218021ca1f49619f820b787aad6938cc7b96e8868de8733de09952ff83"
+    },
+    {
+      "bytes": 4619,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_004-sol-subject.json",
+      "sha256": "e34f45e7dff0d33dfdac70b6b59edfb8a640ed00a3468b0b8fe35cf50e9cb6be"
+    },
+    {
+      "bytes": 2030,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-carbon-opus-raw.json",
+      "sha256": "ed1a3c4444ea89401cc1c0a65f60bcd2addc4f7a5c67a24654399172950222f8"
+    },
+    {
+      "bytes": 188369,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-carbon-opus-request.json",
+      "sha256": "f1b1152e2f0358138d71525d8ee0c38d461e4b2563d45732e64f212bcf154fbb"
+    },
+    {
+      "bytes": 1779,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-carbon-opus.json",
+      "sha256": "21acd5d90d479a099dbe2dc40d6b51e2d5d4fb6310aab62ccc6680586e8cc6d8"
+    },
+    {
+      "bytes": 733,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-carbon64-raw.json",
+      "sha256": "e93724233314dd38d85abc9cb2ac340620038403886457a88880fb8170e65a3f"
+    },
+    {
+      "bytes": 5698,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-carbon64-subject.json",
+      "sha256": "5a8c525d620f036383c3f6c1e2dfa284f1cca13a8c429984d76e94b05f7bcf3d"
+    },
+    {
+      "bytes": 1814,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-luna-opus-raw.json",
+      "sha256": "6ace5d063057709bb5c099786fce9d7353f9d03d37300637e2d209f565807b1e"
+    },
+    {
+      "bytes": 187288,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-luna-opus-request.json",
+      "sha256": "121b5589c1177ed11581bc59ddcc58d2484ac4bdb75a5ce95305f07bacafdc86"
+    },
+    {
+      "bytes": 1563,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-luna-opus.json",
+      "sha256": "13431bb8364a3198e9400102dfde898cfea23f6bdb145ca0186833bcd04208bd"
+    },
+    {
+      "bytes": 12566,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-luna-raw.json",
+      "sha256": "46f13af40c15895b6bbaa9b808be08b2597344c17dc7b79762f14bbe20c06d94"
+    },
+    {
+      "bytes": 4116,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-luna-subject.json",
+      "sha256": "2cdbf8ee35b06eb0cbe47252689efef8c50a0fbeeb456c27c6d746c27d9988dd"
+    },
+    {
+      "bytes": 1747,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-sol-opus-raw.json",
+      "sha256": "93a6d049e6f7880ec0fff2bdf1de86ed99a00951e23c6baf920cd91260381775"
+    },
+    {
+      "bytes": 187643,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-sol-opus-request.json",
+      "sha256": "114b34e8e394ab11422c0de2acce150c51e92f50a9f01259c22de528f8ba01e5"
+    },
+    {
+      "bytes": 1496,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-sol-opus.json",
+      "sha256": "ced78b8b4e439b44a4def9d4fd227c21e135158656190d214712fbb385b83384"
+    },
+    {
+      "bytes": 8592,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-sol-raw.json",
+      "sha256": "275a4d3b204b1d7e7a875e98039ac860e4b857308fffbb47a7ed27d550ffd9e5"
+    },
+    {
+      "bytes": 4575,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-sol-subject.json",
+      "sha256": "7a8265673f75abcfe03abc953c7e9728a9446e9fca9e281ea30ea601526c9ee4"
+    },
+    {
+      "bytes": 1576,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-carbon-opus-raw.json",
+      "sha256": "e70853c22a075f150ee6ffea27ca67f9f0ccafc715000a18f8c903df12c4fdd7"
+    },
+    {
+      "bytes": 309190,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-carbon-opus-request.json",
+      "sha256": "6bd98fb3a95a5da8d97c62b63ac1125e3705e1dbd7178715f6a532550892392e"
+    },
+    {
+      "bytes": 1325,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-carbon-opus.json",
+      "sha256": "1a29dd80ca98f1677244ba104120aa6887fca0917d1f49ddd1276f6a7da73f22"
+    },
+    {
+      "bytes": 733,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-carbon64-raw.json",
+      "sha256": "101abccab4c95cdecf7eef2423a0c59e9ff21e75a4357cebf05a4d92b46943f8"
+    },
+    {
+      "bytes": 5584,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-carbon64-subject.json",
+      "sha256": "1ea89bf6bdda71ecae0f913824fd1840198fea61a5dc95cd321eb66f0ec84299"
+    },
+    {
+      "bytes": 1685,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-luna-opus-raw.json",
+      "sha256": "ca902de9a000e860bd490b73bf2c8d38e8960495cd1334ec013c94057e8e703f"
+    },
+    {
+      "bytes": 308066,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-luna-opus-request.json",
+      "sha256": "eb2b6bde7b7cd00df18ebed4d5accbed749f16b95a839e34ce7db37abb9adcf7"
+    },
+    {
+      "bytes": 1433,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-luna-opus.json",
+      "sha256": "d751fb1eeb87be521b4e8c26403bbebd72b60f23453cdf83d83cac2a25de8990"
+    },
+    {
+      "bytes": 11937,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-luna-raw.json",
+      "sha256": "0acd78eda4d0d41155f0f90675af0fa6330a0373e6e5466ad556f1e24c9abcf7"
+    },
+    {
+      "bytes": 4157,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-luna-subject.json",
+      "sha256": "46dff791af4784c7a5a19fe3e7bebdb246cea9da2996ea175ad8ee7a78ced93a"
+    },
+    {
+      "bytes": 1595,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-sol-opus-raw.json",
+      "sha256": "53efbdee8837b64ffe3b9954574c4acb1c74bbe7061d2138782b79daf5abd305"
+    },
+    {
+      "bytes": 308221,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-sol-opus-request.json",
+      "sha256": "9f86c4406f8817ebbd5db760e1275cf6fac77e1f60c815311c8f4082db2c6a2c"
+    },
+    {
+      "bytes": 1344,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-sol-opus.json",
+      "sha256": "f0dd3271bad6488a9343dd2dfe8d42fe20eb39ff81057e87b87e7abfad936430"
+    },
+    {
+      "bytes": 8467,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-sol-raw.json",
+      "sha256": "2889fc7239eeb881e3b5f91f72044aeea3ec4ea71fe6f48e5a1c9bd2afbe31de"
+    },
+    {
+      "bytes": 4552,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_006-sol-subject.json",
+      "sha256": "9e1b2f621c6603217018ba8d16f8964efabd93b9bf558779e947ee96ab5cca27"
+    },
+    {
+      "bytes": 97905,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_001-carbon.json",
+      "sha256": "14c51a5ad2972392ce4670a14d2af5faa81d2fd30b92f095e468d98ff4567bbc"
+    },
+    {
+      "bytes": 99011,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_001-luna.json",
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517"
+    },
+    {
+      "bytes": 99012,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_001-sol.json",
+      "sha256": "35fa150d6cd6d32f95bbd36a143251e5976194aab56531fb570f60c2c0df7460"
+    },
+    {
+      "bytes": 256765,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_002-carbon.json",
+      "sha256": "a7b4ab91eaf865893de3b2d65f38fbceef16ef46f04e2ec62482d1079ac67cf2"
+    },
+    {
+      "bytes": 256779,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_002-carbon64.json",
+      "sha256": "073288bc2cb59bb29f99948657cb1b68251607c88eee7b4c2c74a45dd806c52d"
+    },
+    {
+      "bytes": 257871,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_002-luna.json",
+      "sha256": "38af3d9b985fd321794d21f878e487f7f1cba39423a7dc6e67475c41a95fff10"
+    },
+    {
+      "bytes": 257872,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_002-sol.json",
+      "sha256": "02b2178b70142464d7b23b475b576038203f240e975ca30f0c1983714125aaa9"
+    },
+    {
+      "bytes": 97185,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_003-carbon.json",
+      "sha256": "a34a008d839c11c1b703632f54a0a7897d5589766c411ac455e451ecf1cbe9c2"
+    },
+    {
+      "bytes": 97199,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_003-carbon64.json",
+      "sha256": "ca76172c8b0681723bc5b94cb85b73d777281c328bfc6e88d046a8c93c801cdf"
+    },
+    {
+      "bytes": 98291,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_003-luna.json",
+      "sha256": "309fbf758455cdbab27e9a643dfbd1a6d4effd743bc041db1676322ee3fd5dfb"
+    },
+    {
+      "bytes": 98292,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_003-sol.json",
+      "sha256": "cc5ef9126556b8d0a4af2f76d44b9069e22ca75bb44a0a1e476a099d7b3f46e4"
+    },
+    {
+      "bytes": 83965,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_004-carbon.json",
+      "sha256": "8b150251c932678fab94a8bbbd3fc882f5a684056aadf625c928e688ce5bfcb6"
+    },
+    {
+      "bytes": 83979,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_004-carbon64.json",
+      "sha256": "a4b82e43fc1dc7306f7760720ccf525c3cc1bfe34f896ec22e0a53830df7f131"
+    },
+    {
+      "bytes": 85071,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_004-luna.json",
+      "sha256": "999a219b80982ce3d3c0bc1b618c340ebb7f5ad0c9522adb662029667cad4356"
+    },
+    {
+      "bytes": 85072,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_004-sol.json",
+      "sha256": "0151fac5412db8b9f1aebb78001d98f38a3e7dc58b12cb0c452714a753f1fa05"
+    },
+    {
+      "bytes": 191601,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_005-carbon.json",
+      "sha256": "f53ac190812af8e0e4156bb5364ad238d536fc48f32f6106b33dd0038544053a"
+    },
+    {
+      "bytes": 191615,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_005-carbon64.json",
+      "sha256": "994683e477f6c19e006895828a1e787d04611a7234cf7eb1655c05bd97954f9c"
+    },
+    {
+      "bytes": 192707,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_005-luna.json",
+      "sha256": "99da93d687a682c00cf92c2db6684e5fc62529825bdc36bc45f71ca2110d5c74"
+    },
+    {
+      "bytes": 192708,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_005-sol.json",
+      "sha256": "1963f083dd7f6e1bceddc396976862dd58c87b9f1163a82fd1f6a4298e78bbbf"
+    },
+    {
+      "bytes": 312457,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_006-carbon.json",
+      "sha256": "34eb0cc0ddffc14132413bb8c9b00e3a752681d771ad82df3224b3c0f659f95a"
+    },
+    {
+      "bytes": 312471,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_006-carbon64.json",
+      "sha256": "daf91a386f055d6db76f62ac7fb1eabab99e981d8df8793532ad78239160ad75"
+    },
+    {
+      "bytes": 313563,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_006-luna.json",
+      "sha256": "01d478770d07fa488eacdc272b2a30e2eb2d80aed5c7834942257df1b20a813e"
+    },
+    {
+      "bytes": 313564,
+      "path": "docs/evals/evidence/story-236-carbon-20261110/wire/vfp_active_006-sol.json",
+      "sha256": "6a83d0876b23e774bd23b066aa47eca234c2356c2060766d32340544a18bd7a4"
+    }
+  ],
+  "replay": "PYTHONPATH=src <owner-python> benchmarks/scripts/report_carbon_video_comparison.py"
+}

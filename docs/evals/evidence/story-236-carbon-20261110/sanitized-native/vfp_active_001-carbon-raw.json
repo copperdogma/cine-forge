@@ -1,0 +1,40 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "{\"clip_id\":\"vfp_active_001\",\"summary\":\"Two minimalist silhouettes\u2014a warm tan figure on the left and a pale blue figure bearing a cream rectangular prop on the right\u2014stand motionless across a dark ground plane against a muted navy-to-teal background. Across the five ordered frames, both figures steadily increase in apparent scale while keeping consistent positions and prop placement, indicating a measured slow push-in within an intact two-shot.\",\"tone_tags\":[\"detached\",\"tense\"],\"emotion_tags\":[\"hesitation\",\"isolation\"],\"color_tags\":[\"desaturated\",\"navy\",\"teal\"],\"camera_tags\":[\"locked_two_shot\",\"slow_push_in\"],\"motion_tags\":[\"measured\",\"stillness\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The tan figure on the left and the pale blue figure on the right maintain consistent horizontal placement across frames 0 through 4.\",\"The cream rectangular prop on the lower-left torso of the pale blue figure remains consistently present across all five frames.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"Wide two-shot showing a tan stylized silhouette on the left and a pale blue silhouette with a cream rectangular prop on its lower-left torso on the right against a dark navy-to-teal gradient.\"},{\"frame_index\":2,\"cue\":\"Both stationary figures remain in their left and right positions with the cream prop unchanged on the blue figure, while both silhouettes appear slightly taller and wider than in frame 0.\"},{\"frame_index\":4,\"cue\":\"Both silhouettes reach their largest apparent height and width in the sequence with unchanged horizon alignment, colors, and prop placement on the right figure.\"}],\"overall_confidence\":0.92}"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "modelVersion": "gemini-4-carbon",
+  "responseId": "BWXzau-fIfDRz7IPyJyz-QU",
+  "usageMetadata": {
+    "candidatesTokenCount": 372,
+    "candidatesTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 372
+      }
+    ],
+    "promptTokenCount": 7534,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 2034
+      },
+      {
+        "modality": "IMAGE",
+        "tokenCount": 5500
+      }
+    ],
+    "thoughtsTokenCount": 15741,
+    "totalTokenCount": 23647
+  }
+}

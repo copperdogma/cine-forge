@@ -1,0 +1,30 @@
+{
+  "container": null,
+  "content": [
+    {
+      "text": "{\"score\":0.82,\"reason\":\"The summary accurately describes the static scene with the left element (gold circle on brown bar), central gray rectangle, and right human-like icon. The tone is 'detached' vs reference 'intimate' \u2014 both are plausible interpretations of ambiguous static graphics, minor mismatch. Emotion tags are correctly empty. Color tags include 'gold' and 'desaturated' which aligns well with reference 'amber, desaturated' \u2014 gold is close to amber. Camera tags include 'static' matching reference, but miss 'wide_master'. Motion tags correctly identify 'stillness'. Continuity is correctly 'intact' with appropriate notes. Audio tags and notes are correctly empty. Evidence includes 3 frame-grounded entries at indexes 0, 2, and 4, meeting the 2-4 requirement. No invented actions, edits, camera movement, or story meaning. The model does describe the right element as a 'human-like icon' which is a reasonable interpretation within the permitted boundary (abstract figure). Minor deductions: tone mismatch (detached vs intimate), missing 'wide_master' camera tag, and 'gold' vs 'amber' is a near-miss on color terminology.\"}",
+      "type": "text"
+    }
+  ],
+  "diagnostics": null,
+  "id": "msg_011Cgum24Y2PHjVhTzP29XdQ",
+  "model": "claude-opus-4-6",
+  "role": "assistant",
+  "stop_details": null,
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "type": "message",
+  "usage": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2648,
+    "output_tokens": 282,
+    "service_tier": "standard",
+    "speed": "standard"
+  }
+}

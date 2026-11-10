@@ -1,0 +1,19 @@
+{
+  "cost": "0.01958",
+  "model": "claude-opus-4-6",
+  "observed": {
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 0,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 2516,
+    "output_tokens": 280,
+    "service_tier": "standard",
+    "speed": "standard"
+  },
+  "reason": "The summary correctly identifies two figures standing apart against a dark background, both gradually growing larger across frames, with a rectangular detail on the right figure \u2014 all matching the reference. Motion tag 'measured' matches. Continuity 'intact' matches. Audio_tags is empty as required. However, there are notable mismatches: (1) Tone is 'detached' rather than the reference 'intimate' \u2014 a clear mismatch on an ambiguous dimension but still wrong. (2) Color tags are 'navy' and 'gold' \u2014 reference says 'navy' and 'teal'. The left figure is indeed gold/tan-colored, but 'teal' (referring to the dark blue-green background tones) is missing, while 'gold' is not in the reference. (3) The evidence entries are adequate (3 grounded entries from frames 0, 2, 4) and correctly describe the visual content. (4) The summary mentions 'composition remains fixed' and 'figures gradually grow slightly larger' which aligns well with the reference interpretation that figures enlarge at nearly fixed centers. The color tag mismatch (missing teal, adding gold) and tone mismatch prevent a passing score.",
+  "score": 0.72
+}

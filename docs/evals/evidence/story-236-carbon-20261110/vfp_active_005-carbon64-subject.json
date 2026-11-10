@@ -1,0 +1,91 @@
+{
+  "arm": "carbon",
+  "configuration": "high65536",
+  "parity": "Maintained harness builds identical wire and consumes identical native SSE replay",
+  "response": {
+    "cached": false,
+    "cost": 0.123718,
+    "latencyMs": 143150,
+    "metadata": {
+      "audio_submitted": false,
+      "candidate_variant": null,
+      "clip_id": "rooftop_escape_crash_zoom",
+      "cost_estimated": true,
+      "evaluation_id": "vfp_active_005",
+      "frame_count": 5,
+      "frame_policy": "five_evenly_spaced_jpegs_v1",
+      "frame_sha256": [
+        "2e3a39572deea2125490992118a4049c782f58934fdaf5355f82ff3e692ed61d",
+        "766fec20c6bfbf322926fa100998f4d5961fe610c8ae70d0796e4074b7793cb8",
+        "f15581a770b5f62aa342319aba0b61413e2b2c4f5ce5d1e99f4bd503f33dcebd",
+        "979b1ead4e41c85a1235f2ea0ed5a05cde84303ae689687ab50811bf658d2236",
+        "344f209da7faee5c404058942318735ac9d1fb1d17e4f75f9980c2e413f6e792"
+      ],
+      "meta_sha256": "82b8bbbdf804d1a9d8975e8952659d5455986fc2e4c3482d33f274227a715410",
+      "modality": "ordered_jpeg_frame_packet",
+      "model": "gemini-4-carbon",
+      "prompt_version": "video-understanding-frame-packet-v3",
+      "provider": "google",
+      "request_id": "tmnzavTpAaGa6dkPn4eSoA8",
+      "requested_model": "gemini-4-carbon",
+      "returned_model": "gemini-4-carbon",
+      "sample_times_seconds": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        3.875
+      ]
+    },
+    "output": "{\"clip_id\":\"vfp_active_005\",\"summary\":\"In a static wide shot against a dark navy backdrop crossed by slanted grey lines, a stylized gold figure carrying a white-outlined rectangle leaps from a lower left platform in a smooth arc over a narrow gap. Across the five ordered samples, the figure rises to an apex near the center and descends onto the slightly higher right platform with intact spatial and visual continuity.\",\"tone_tags\":[\"tense\",\"hopeful\"],\"emotion_tags\":[\"resolve\",\"isolation\"],\"color_tags\":[\"amber\",\"gold\",\"navy\"],\"camera_tags\":[\"static\",\"wide_master\"],\"motion_tags\":[\"measured\"],\"continuity_status\":\"intact\",\"continuity_notes\":[\"The stylized gold figure and its white-outlined rectangular object maintain consistent proportions and color while progressing along a smooth left-to-right parabolic arc from frame 0 to frame 4.\",\"The two dark platforms, the central-right gap, and the thin angled line spanning the opening remain fixed at identical positions across all five samples.\"],\"audio_tags\":[],\"audio_notes\":[],\"evidence\":[{\"frame_index\":0,\"cue\":\"A stylized gold figure holding a white-outlined horizontal rectangle starts above the lower left dark platform facing a gap bridged by a thin angled line against a dark navy backdrop with slanted grey lines.\"},{\"frame_index\":1,\"cue\":\"The gold figure shifts upward and rightward above the left platform while the two dark platforms, gap, and angled line remain locked in the exact same screen coordinates.\"},{\"frame_index\":2,\"cue\":\"The gold figure reaches the highest point of its jump arc near the center of the frame, with its white-outlined rectangle extending over the left side of the gap.\"},{\"frame_index\":4,\"cue\":\"The gold figure descends to platform level directly above the slightly higher right dark platform past the gap within the unchanged wide frame.\"}],\"overall_confidence\":0.92}",
+    "raw": {
+      "finishReason": "STOP",
+      "modelVersion": "gemini-4-carbon",
+      "raw_sse_path": "docs/evals/evidence/story-236-carbon-20261110/vfp_active_005-carbon64.sse",
+      "raw_sse_sha256": "833f76962c395d13d76c3ab002682166ea54e85577d84c73a838608acfc69c21",
+      "responseId": "tmnzavTpAaGa6dkPn4eSoA8",
+      "usageMetadata": {
+        "candidatesTokenCount": 406,
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 406
+          }
+        ],
+        "promptTokenCount": 7534,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 2034
+          },
+          {
+            "modality": "IMAGE",
+            "tokenCount": 5500
+          }
+        ],
+        "thoughtsTokenCount": 10459,
+        "totalTokenCount": 18399
+      }
+    },
+    "tokenUsage": {
+      "completion": 406,
+      "completionDetails": {
+        "reasoning": 10459
+      },
+      "prompt": 7534,
+      "total": 18399
+    }
+  },
+  "structural": {
+    "pass": false,
+    "reason": "raw_score=0.5810 | overall=0.581 | uncertainty=0.080 | summary=0.50 | tone=0.50 | emotion=0.00 | color=0.80 | camera=1.00 | motion=0.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: runner | tone: urgent, unexpected=hopeful | emotion: unexpected=isolation, unexpected=resolve | color: unexpected=gold | motion: fast_lateral, unexpected=measured | continuity: The small yellow rectangle stays beside the runner while crossing the rooftop gap., unexpected=The stylized gold figure and its white-outlined rectangular object maintain consistent proportions and color while progressing along a smooth left-to-right parabolic arc from frame 0 to frame 4., unexpected=The two dark platforms, the central-right gap, and the thin angled line spanning the opening remain fixed at identical positions across all five samples.",
+    "score": 0.581
+  },
+  "vars": {
+    "clip_dir": "../video_understanding/rooftop_escape_crash_zoom",
+    "clip_id": "rooftop_escape_crash_zoom",
+    "evaluation_id": "vfp_active_005",
+    "target_markdown": "file://../video_understanding_truth_v4/rooftop_escape_crash_zoom/target.md",
+    "target_path": "video_understanding_truth_v4/rooftop_escape_crash_zoom/target.json"
+  }
+}
