@@ -182,3 +182,18 @@ transport, adversarial v4 scorer, and full workspace contract tests passed
 (37 focused tests across the two panels). All four frame runner/report files
 and both frame provider files passed Ruff. Fresh methodology outputs passed
 their check; the checker also reported existing architecture/UI review reminders.
+
+### 2026-11-17 · Scout117 Sol 6.2 ordered-frame screen
+
+[Attempt 062](../evals/attempts/062-sol62-ordered-frame-screen.md) tested the
+existing v4 five-original-JPEG contract with fresh native GPT-6.2 Sol
+medium/4096, GPT-6.1 Sol low/4096 and GPT-6 Luna low/1400, plus fixed blind
+Opus 4.6 and direct source review. Access and strict-13-key adapter parity
+passed on all three. Sol 6.2 reproduced the visible change in size and fixed
+prop, missed the teal background and scored .6841 combined against Sol 6.1
+.735 and Luna .71715. All arms were below .80 combined. Sol 6.2 took 5.561s
+and cost $.0106285. The first-case stop retained Sol 6.1 and Luna as headless
+references. The other five cases were frozen and remain unmeasured. Six
+requests settled at $.081243675 against the $7 hard cap, with no unknown
+exposure. The [manifest](../evals/story-236-sol62-20261117-manifest.json)
+identifies the isolated base, call paths, receipts and reproduction commands.

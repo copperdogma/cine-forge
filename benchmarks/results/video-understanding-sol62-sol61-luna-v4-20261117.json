@@ -1,0 +1,276 @@
+{
+  "base": "accb76dd6377d1a6a1ce65c2ac04f66e1458eb3e",
+  "calls": 6,
+  "cap_usd": "7",
+  "disposition": "Retain Sol 6.1 and Luna as research references. Sol 6.2 observed the same size, position and prop facts as Sol 6.1 at comparable operational cost, omitted teal and missed all numeric quality gates. Its modest rubric edge does not establish a new source-grounded advantage. The other five frozen cases remain unmeasured.",
+  "estimated_by_arm": {
+    "luna": "0.000556675",
+    "opus": "0.060145",
+    "sol": "0.0099135",
+    "sol62": "0.0106285"
+  },
+  "evidence_status": "fresh-one-case-source-reviewed-progressive-screen",
+  "exact_estimated_usd": "0.081243675",
+  "matched_cases": [
+    "vfp_active_001"
+  ],
+  "measured": "2026-11-17",
+  "rows": [
+    {
+      "affordable": true,
+      "arm": "sol62",
+      "case": "vfp_active_001",
+      "clip": "dialogue_confession_push_in",
+      "combined": 0.6841,
+      "configuration": {
+        "effort": "medium",
+        "max_output_tokens": 4096
+      },
+      "cost": "0.0106285",
+      "judge_cost": "0.019195",
+      "judge_detail": "The summary correctly identifies two figures (cream/left, blue/right) standing apart against a dark background, with both growing larger across frames and the small rectangle staying on the blue figure. This matches the reference well. Tone is 'detached' vs reference 'intimate' \u2014 a mismatch. Emotion tags are correctly empty. Color tags include 'navy' but miss 'teal', which is visible in the gradient. Motion tag 'measured' matches. Continuity 'intact' matches with correct note about the rectangle staying on the right figure. Audio tags and notes are empty as required. Evidence entries are grounded in frames 0, 2, 4 with reasonable observations. However, the summary claims both figures grow from 'fixed bases' which is a reasonable but slightly overclaimed observation. The tone mismatch and missing 'teal' color tag reduce the score. Camera tag 'static' is excluded from scoring per instructions. Overall the analysis is mostly accurate but the tone mismatch and incomplete color coverage prevent a passing score.",
+      "judge_model": "claude-opus-4-6",
+      "latency_ms": 5561,
+      "model": "gpt-6.2-sol",
+      "native_usage": {
+        "input_tokens": 2952,
+        "input_tokens_details": {
+          "cache_write_tokens": 2949,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 2949
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 325,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3277
+      },
+      "output": {
+        "audio_notes": [],
+        "audio_tags": [],
+        "camera_tags": [
+          "static"
+        ],
+        "clip_id": "vfp_active_001",
+        "color_tags": [
+          "navy"
+        ],
+        "continuity_notes": [
+          "The cream figure remains on the left and the blue figure on the right, with both bases at the same screen height throughout.",
+          "The horizontal background boundary and the cream rectangle on the blue figure stay fixed as the two silhouettes grow."
+        ],
+        "continuity_status": "intact",
+        "emotion_tags": [],
+        "evidence": [
+          {
+            "cue": "A cream icon on the left and a pale blue icon on the right each have a circular head and a rounded rectangular body.",
+            "frame_index": 0
+          },
+          {
+            "cue": "Both heads sit higher than in the first sample, while the body bottoms and the cream rectangle remain at their original heights.",
+            "frame_index": 2
+          },
+          {
+            "cue": "Both bodies are wider than in the first sample and extend farther upward, while the horizontal boundary behind them stays at the same height.",
+            "frame_index": 4
+          }
+        ],
+        "motion_tags": [
+          "measured"
+        ],
+        "overall_confidence": 0.98,
+        "summary": "Two faceless icons, one cream and one pale blue, stand apart against a dark navy gradient. Both gradually grow taller and wider from fixed bases, while the small cream rectangle on the blue figure stays in place.",
+        "tone_tags": [
+          "detached"
+        ]
+      },
+      "parity": true,
+      "rubric": 0.75,
+      "scoring_pass": false,
+      "source_review": {
+        "ambiguous": "Detached versus intimate is scene interpretation. The bases do stay at the same vertical level, so this visible anchor is credible despite the judge's hedge. The scorer's 'closer' and continuity phrase matching omit equivalent source-grounded wording.",
+        "model-wrong": "Omitted teal in the visible navy-to-teal gradient. Detected the real gradual height and width increase, unchanged positions, prop and backdrop. Described stable framing without inventing a push-in or new event."
+      },
+      "strict_keys": 13,
+      "structural": 0.6182,
+      "structural_detail": "raw_score=0.6182 | overall=0.618 | uncertainty=0.020 | summary=0.33 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: figures, closer | tone: intimate, unexpected=detached | color: teal | continuity: The pale rectangle stays beside the right figure across all five frames., unexpected=The cream figure remains on the left and the blue figure on the right, with both bases at the same screen height throughout., unexpected=The horizontal background boundary and the cream rectangle on the blue figure stay fixed as the two silhouettes grow.",
+      "timely": true
+    },
+    {
+      "affordable": true,
+      "arm": "sol",
+      "case": "vfp_active_001",
+      "clip": "dialogue_confession_push_in",
+      "combined": 0.735,
+      "configuration": {
+        "effort": "low",
+        "max_output_tokens": 4096
+      },
+      "cost": "0.0099135",
+      "judge_cost": "0.020125",
+      "judge_detail": "The summary correctly identifies two figures (pale gold left, light blue right) that grow taller/wider across frames, with a cream rectangle on the right figure, matching the reference. Continuity is correctly marked as 'intact' with appropriate notes. Motion tag 'measured' matches. However: (1) Tone is 'detached' vs reference 'intimate' - a mismatch. (2) Color tags include 'gold' but miss 'teal' from the reference; the reference specifies 'navy, teal' while the output has 'navy, gold'. (3) The camera tag 'locked_two_shot' implies a specific camera mechanism that isn't established by the frames - the reference explicitly notes camera is ambiguous and no specific mechanism is established. The figures enlarging could be figure scaling rather than camera push-in, which the output doesn't incorrectly claim as push-in, but 'locked_two_shot' still asserts camera knowledge. (4) Evidence is well-grounded with 3 entries at frames 0, 2, 4. (5) Emotion tags empty matches reference. Overall reasonably accurate but tone mismatch and color tag issues bring the score below the 0.8 threshold.",
+      "judge_model": "claude-opus-4-6",
+      "latency_ms": 6713,
+      "model": "gpt-6.1-sol",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 2887
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 269,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 3159
+      },
+      "output": {
+        "audio_notes": [],
+        "audio_tags": [],
+        "camera_tags": [
+          "locked_two_shot"
+        ],
+        "clip_id": "vfp_active_001",
+        "color_tags": [
+          "navy",
+          "gold"
+        ],
+        "continuity_notes": [
+          "The figures retain their left-right positions, and the background boundary and cream rectangle remain fixed as the figures gradually enlarge."
+        ],
+        "continuity_status": "intact",
+        "emotion_tags": [],
+        "evidence": [
+          {
+            "cue": "A pale gold figure stands on the left and a light blue figure on the right; a cream rounded rectangle overlaps the blue figure\u2019s lower torso.",
+            "frame_index": 0
+          },
+          {
+            "cue": "Both figures extend farther upward than in the first sample, while their bottom edges remain at the same height.",
+            "frame_index": 2
+          },
+          {
+            "cue": "The figures are taller and wider than initially, with the blue head higher than the gold head; the horizontal background boundary remains unchanged.",
+            "frame_index": 4
+          }
+        ],
+        "motion_tags": [
+          "measured"
+        ],
+        "overall_confidence": 0.96,
+        "summary": "Two simplified human-shaped icons, pale gold on the left and light blue on the right, stand against a dark blue background above a charcoal lower band. Across the samples, both figures gradually grow taller and slightly wider while a cream rounded rectangle remains near the blue figure\u2019s lower torso.",
+        "tone_tags": [
+          "detached"
+        ]
+      },
+      "parity": true,
+      "rubric": 0.72,
+      "scoring_pass": false,
+      "source_review": {
+        "ambiguous": "Pale gold can describe the warm left figure even though it is not in the target palette. Locked two shot describes composition but does not establish a physical camera setup. Detached versus intimate is interpretive.",
+        "model-wrong": "Omitted teal."
+      },
+      "strict_keys": 13,
+      "structural": 0.75,
+      "structural_detail": "overall=0.750 | uncertainty=0.040 | summary=1.00 | tone=0.00 | emotion=1.00 | color=0.50 | camera=0.67 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | tone: intimate, unexpected=detached | color: teal, unexpected=gold | continuity: The pale rectangle stays beside the right figure across all five frames., unexpected=The figures retain their left-right positions, and the background boundary and cream rectangle remain fixed as the figures gradually enlarge.",
+      "timely": true
+    },
+    {
+      "affordable": true,
+      "arm": "luna",
+      "case": "vfp_active_001",
+      "clip": "dialogue_confession_push_in",
+      "combined": 0.71715,
+      "configuration": {
+        "effort": "low",
+        "max_output_tokens": 1400
+      },
+      "cost": "0.000556675",
+      "judge_cost": "0.020825",
+      "judge_detail": "The summary correctly identifies two figures that grow/extend upward across frames, and notes the pale rectangle on the right figure. However, there are several issues: (1) Tone is 'detached' instead of 'intimate' \u2014 a mismatch. (2) Color tags include 'gold' which is not in the reference (navy, teal); cream/beige figure color could be described differently but 'gold' is not well-supported. (3) The summary says 'bases remain in place' and 'extend upward,' which is close but slightly different from the reference's 'enlarge at nearly fixed centers' \u2014 the model implies only upward growth rather than general enlargement. (4) audio_tags and audio_notes are empty, which is correct. (5) Evidence entries are grounded in frames 0, 2, and 4, meeting the 2-4 requirement. (6) Continuity is correctly marked as intact with the rectangle noted. (7) The claim in evidence frame 2 that 'Both figures are taller than in frame 0' is reasonable but the reference says they appear larger (not just taller). (8) Motion tag 'measured' matches. The tone mismatch and color tag issue ('gold' is not reference-supported, and 'teal' is present but the reference has navy+teal, model has navy+gold+teal) prevent a passing score.",
+      "judge_model": "claude-opus-4-6",
+      "latency_ms": 4805,
+      "model": "gpt-6-luna",
+      "native_usage": {
+        "input_tokens": 2890,
+        "input_tokens_details": {
+          "cache_write_tokens": 2887,
+          "cache_write_tokens_details": {
+            "ttl_12h_tokens": 0,
+            "ttl_30m_tokens": 2887
+          },
+          "cached_tokens": 0
+        },
+        "output_tokens": 391,
+        "output_tokens_details": {
+          "reasoning_tokens": 173
+        },
+        "total_tokens": 3281
+      },
+      "output": {
+        "audio_notes": [],
+        "audio_tags": [],
+        "camera_tags": [
+          "static"
+        ],
+        "clip_id": "vfp_active_001",
+        "color_tags": [
+          "navy",
+          "gold",
+          "teal"
+        ],
+        "continuity_notes": [],
+        "continuity_status": "intact",
+        "emotion_tags": [],
+        "evidence": [
+          {
+            "cue": "Two simplified figures, one cream-colored and one pale blue, stand on a dark horizontal ground against a navy background.",
+            "frame_index": 0
+          },
+          {
+            "cue": "Both figures are taller than in frame 0, with their heads and upper bodies shifted upward while their bases stay at ground level.",
+            "frame_index": 2
+          },
+          {
+            "cue": "The figures have extended upward further, and the pale-blue figure still has a small outlined rectangle across its lower body.",
+            "frame_index": 4
+          }
+        ],
+        "motion_tags": [
+          "measured"
+        ],
+        "overall_confidence": 0.94,
+        "summary": "A minimalist graphic shows two simple figures standing against a dark blue background. Across the samples, both figures gradually extend upward while their bases remain in place.",
+        "tone_tags": [
+          "detached"
+        ]
+      },
+      "parity": true,
+      "rubric": 0.72,
+      "scoring_pass": false,
+      "source_review": {
+        "ambiguous": "Pale gold is a plausible description of the warm left figure even though it is not in the target palette. Detached versus intimate is interpretive.",
+        "model-wrong": "Narrowed growth to vertical extension and omitted its width component. Correctly captured growth and teal."
+      },
+      "strict_keys": 13,
+      "structural": 0.7143,
+      "structural_detail": "overall=0.714 | uncertainty=0.060 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.80 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached | color: unexpected=gold | continuity: The pale rectangle stays beside the right figure across all five frames.",
+      "timely": true
+    }
+  ],
+  "unknown_reserved_usd": "0",
+  "unmeasured_cases": [
+    "vfp_active_002",
+    "vfp_active_003",
+    "vfp_active_004",
+    "vfp_active_005",
+    "vfp_active_006"
+  ]
+}

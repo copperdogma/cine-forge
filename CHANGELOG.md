@@ -1,5 +1,12 @@
 # Changelog
 
+## [2026-11-17-01] — GPT-6.2 Sol ordered-frame screen (Story 236)
+
+- Recorded one matched v4 case with strict native Responses, three blind
+  source reviews, and verified evidence for all six requests.
+- Retained Sol 6.1 and Luna as benchmark references after Sol 6.2 scored lower
+  on combined quality. Total estimated usage was $0.081243675.
+
 ## [2026-11-10-02] — Gemini 4 Carbon evaluation (Stories 236 and 237)
 
 - Carbon delivered all three authored screenplay bundles and preserved continuity details the pipeline lost. Both arms passed 0/3 full-source checks.

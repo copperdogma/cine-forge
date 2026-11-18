@@ -2632,6 +2632,27 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "062"
+        story: attempts/062-sol62-ordered-frame-screen.md
+        date: 2026-11-17
+        status: failed
+        approach: "Scout117 reference screen stopped after one fresh matched v4 source. Exact medium/4096 Responses qualified, but Sol 6.2 missed structure, rubric and combined gates and showed no new visual advantage. All six calls settled at USD.081243675 of USD7. Five cases and other levels unmeasured."
+        worker_model: "Codex owner agent"
+        subject_model: "gpt-6.2-sol medium/4096 native Standard Responses"
+        score_before: 0.735
+        score_after: 0.6841
+        latency_before: 6713
+        latency_after: 5561
+        cost_before: 0.0099135
+        cost_after: 0.0106285
+        git_sha: accb76dd6377d1a6a1ce65c2ac04f66e1458eb3e+scout117-sol62-producer-freeze
+        result_file: benchmarks/results/video-understanding-sol62-sol61-luna-v4-20261117.json
+        contract_manifest: docs/evals/story-236-sol62-20261117-manifest.json
+        evidence_status: fresh-one-case-source-reviewed-progressive-screen
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-subject-model-or-source-backed-corpus
+            note: "The tested arm offered no source-grounded gain over the retained references on the first discriminator. Reopen only when materially new temporal/source evidence or a checkpoint gives this headless reference decision a concrete reason to change."
       - id: '060'
         story: attempts/060-gemini4-carbon-ordered-frame-capability.md
         date: '2026-11-10'

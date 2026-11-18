@@ -31,7 +31,7 @@ def call_openai_responses_strict(
 ) -> dict[str, Any]:
     """Direct foreground Responses, with raw retention before validation."""
     allowed = {"gpt-6-sol": "low", "gpt-6.1-sol": "low", "gpt-6-luna": "low",
-               "gpt-6.1-terra": "high"}
+               "gpt-6.1-terra": "high", "gpt-6.2-sol": "medium"}
     if model not in allowed or reasoning_effort != allowed[model]:
         raise RuntimeError("This bounded lane requires its declared exact model/effort")
     if len(frames) != 5:

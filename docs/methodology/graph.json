@@ -17724,6 +17724,16 @@
       "retryWhen": [],
       "attempts": [
         {
+          "id": "062",
+          "date": "2026-11-17",
+          "approach": "Scout117 reference screen stopped after one fresh matched v4 source. Exact medium/4096 Responses qualified, but Sol 6.2 missed structure, rubric and combined gates and showed no new visual advantage. All six calls settled at USD.081243675 of USD7. Five cases and other levels unmeasured.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "new-subject-model-or-source-backed-corpus"
+          ]
+        },
+        {
           "id": "060",
           "date": "2026-11-10",
           "approach": "Six fresh synthetic v4 ordered-frame subjects per arm and 18 independently source-grounded blind Opus reviews. Preserve one native MAX_TOKENS as a separate physical call.",
@@ -17983,16 +17993,18 @@
         "sourceId": "video-understanding",
         "sourcePath": "docs/evals/registry.yaml",
         "recommendedNow": false,
-        "posture": "no-trigger-recorded",
-        "whyNow": "All three fresh arms 0/6 full gates; Carbon alone correctly classifies color continuity break, costly and slow. No runtime/default change.",
-        "retryTriggerStatus": "none",
-        "retryWhen": [],
+        "posture": "trigger-exhausted",
+        "whyNow": "Attempt060; six complete source-adjudicated v4 outputs; 0/6 full quality. Subject means use complete outputs. The result also records original Carbon002 MAX_TOKENS and its charged repair.",
+        "retryTriggerStatus": "exhausted",
+        "retryWhen": [
+          "new-subject-model-or-source-backed-corpus"
+        ],
         "lastRelevantAction": {
-          "date": "2026-11-10",
+          "date": "2026-11-17",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "060",
-          "summary": "All three fresh arms 0/6 full gates; Carbon alone correctly classifies color continuity break, costly and slow. No runtime/default change."
+          "sourceId": "062",
+          "summary": "Scout117 reference screen stopped after one fresh matched v4 source. Exact medium/4096 Responses qualified, but Sol 6.2 missed structure, rubric and combined gates and showed no new visual advantage. All six calls settled at USD.081243675 of USD7. Five cases and other levels unmeasured."
         }
       }
     },
@@ -18696,7 +18708,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: methodology_tooling, ingest_and_world_building, api_service_and_operator_console +1 more",
-      "UI scout freshness due: attention needed — last run 2026-10-24 is 17 days old against a 14-day cadence; +1 more"
+      "UI scout freshness due: attention needed — last run 2026-10-24 is 25 days old against a 14-day cadence; +1 more"
     ]
   }
 }

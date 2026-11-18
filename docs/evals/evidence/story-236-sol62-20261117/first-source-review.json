@@ -1,0 +1,22 @@
+{
+  "case": "vfp_active_001",
+  "expand": false,
+  "source": "All five unchanged authored JPEGs in order; source baseline frozen before current outputs.",
+  "classification": {
+    "sol62": {
+      "model-wrong": "Omitted teal in the visible navy-to-teal gradient. Detected the real gradual height and width increase, unchanged positions, prop and backdrop. Described stable framing without inventing a push-in or new event.",
+      "ambiguous": "Detached versus intimate is scene interpretation. The bases do stay at the same vertical level, so this visible anchor is credible despite the judge's hedge. The scorer's 'closer' and continuity phrase matching omit equivalent source-grounded wording."
+    },
+    "sol": {
+      "model-wrong": "Omitted teal.",
+      "ambiguous": "Pale gold can describe the warm left figure even though it is not in the target palette. Locked two shot describes composition but does not establish a physical camera setup. Detached versus intimate is interpretive."
+    },
+    "luna": {
+      "model-wrong": "Narrowed growth to vertical extension and omitted its width component. Correctly captured growth and teal.",
+      "ambiguous": "Pale gold is a plausible description of the warm left figure even though it is not in the target palette. Detached versus intimate is interpretive."
+    }
+  },
+  "golden_wrong": null,
+  "runtime_blocking": false,
+  "decision": "Retain Sol 6.1 and Luna as research references. Sol 6.2 observed the same size, position and prop facts as Sol 6.1 at comparable operational cost, omitted teal and missed all numeric quality gates. Its modest rubric edge does not establish a new source-grounded advantage. The other five frozen cases remain unmeasured."
+}

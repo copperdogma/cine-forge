@@ -1,0 +1,357 @@
+{
+  "base": "accb76dd6377d1a6a1ce65c2ac04f66e1458eb3e",
+  "branch": "codex/gpt62-sol-20261117-cine",
+  "cap_usd": "7",
+  "credential_cleanup": {
+    "ANTHROPIC_API_KEY": "owner existing; no copy or removal",
+    "OPENAI_API_KEY": "owner existing; no copy or removal"
+  },
+  "executed_commands": [
+    "env -u OPENAI_API_KEY -u ANTHROPIC_API_KEY -u CINE_FORGE_OPENAI_API_KEY -u CINE_FORGE_ANTHROPIC_API_KEY /Users/cam/Documents/Projects/cine-forge/.venv/bin/python scripts/with_cine_forge_provider_env.py /Users/cam/Documents/Projects/cine-forge/.venv/bin/python benchmarks/scripts/run_sol62_video_comparison.py preflight",
+    "env -u OPENAI_API_KEY -u ANTHROPIC_API_KEY -u CINE_FORGE_OPENAI_API_KEY -u CINE_FORGE_ANTHROPIC_API_KEY /Users/cam/Documents/Projects/cine-forge/.venv/bin/python scripts/with_cine_forge_provider_env.py /Users/cam/Documents/Projects/cine-forge/.venv/bin/python benchmarks/scripts/run_sol62_video_comparison.py first"
+  ],
+  "frozen_plan_path_map": {
+    "docs/evals/attempts/062-sol62-ordered-frame-screen.md": "docs/evals/evidence/story-236-sol62-20261117/predeclared-plan.md"
+  },
+  "ledger": {
+    "bytes": 971,
+    "path": "docs/evals/evidence/story-236-sol62-20261117/ledger.json",
+    "sha256": "8744b5b4e57b128708c6817a15dd1db91d337400533224c6f519971539ccedba"
+  },
+  "owner": "CineForge Scout117 item 5",
+  "producer_freeze": {
+    "bytes": 45218,
+    "path": "docs/evals/evidence/story-236-sol62-20261117/preflight.json",
+    "sha256": "9385721a9f842843ad22fe14c07b12d4332330b59b366e5b036e3adceb71c6cc"
+  },
+  "protected_files": [
+    {
+      "access": "ignored owner-only",
+      "bytes": 45218,
+      "path": "output/evals/sol62-frames-20261117/preflight.json",
+      "sha256": "9385721a9f842843ad22fe14c07b12d4332330b59b366e5b036e3adceb71c6cc"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 971,
+      "path": "output/evals/sol62-frames-20261117/ledger.json",
+      "sha256": "8744b5b4e57b128708c6817a15dd1db91d337400533224c6f519971539ccedba"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1719,
+      "path": "output/evals/sol62-frames-20261117/first-source-review.json",
+      "sha256": "9e6dc0be7e9926f721cfaec8f1447a545f855cc55e034abded3538317cf533f6"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1744,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-luna-opus-raw.json",
+      "sha256": "289afab0b01c018585b1a656aa6fabea55c82ec71582c583430f3b2eb039b60e"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 93842,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-luna-opus-request.json",
+      "sha256": "1cb69ae425b1f19792bfb536bbf1ebf3de7a5bf7dfb8fe017db7f85a24d82c2e"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 5,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-luna-opus-timing.json",
+      "sha256": "91f9473345ee47a82aa1fd48354e9429e0cdea949c9565c0f7c51ffd323d0403"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1691,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-luna-opus.json",
+      "sha256": "ab5ffc5a062ac726d1a555d7f41edd2e7dafb3d1e72dde5b6e74f00fbf41747a"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 12388,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-luna-raw.json",
+      "sha256": "df750ab757af809a7e5e34feb583f2259590446f95c5e43635e113d407d042e6"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 4328,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-luna-subject.json",
+      "sha256": "da17082cdbd629523315fefa3c1b3ab174079136572f67cf2303bfedf8a06161"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 5,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-luna-timing.json",
+      "sha256": "b0edad2e3dc004b9c915071fac614512dba6f9e2e0c6b5e11b697d183744cf49"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1623,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol-opus-raw.json",
+      "sha256": "e50782133f983c7fd48eda953d11930efdc3a9e1ac3471e2be73a24c4e525ca9"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 94145,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol-opus-request.json",
+      "sha256": "f78e5e6f5866978e0ced5f7692d9af457fcfdb7d42f90d6e264f705eeefc8126"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 5,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol-opus-timing.json",
+      "sha256": "fd9c25fc621eb26eb49c16c7028d1bd90cf5f7c1aab102ffc8b7659912a8b20a"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1563,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol-opus.json",
+      "sha256": "085c3a4980981be6644f3a24e98fd20aafc9ec0b4a52d62e94bdea54108cd5d6"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 8810,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol-raw.json",
+      "sha256": "b39c491686ef2903bd7ca85fb95b1167416054716057926fbd8b5de6d61ebeb7"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 4764,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol-subject.json",
+      "sha256": "2a2b64c8038c12790a7ac254a326b7af1951209a974ea8fb8999928ba446286a"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 5,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol-timing.json",
+      "sha256": "8d665173fc1ead686c826162f8fb360f342b2c778e0dc340577cf9f06ed33d66"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1553,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol62-opus-raw.json",
+      "sha256": "cb7e08186d2e36898732505ef133df2d543da1e0f04b2b64f8d3596703ebccdf"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 94231,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol62-opus-request.json",
+      "sha256": "9fdb8863b9e2be93fc607f0e596299bf8b68ae3498438044a7068b3a955af3f9"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 5,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol62-opus-timing.json",
+      "sha256": "25857e3f2a3ffc006c799035ee0aa7b37c4b1552557abfaf9d6ddf5ccec0d520"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1498,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol62-opus.json",
+      "sha256": "41603034fa491469ad173a1916c1f5f2d8b1620f6d684ddf7716756f3395fbab"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 8898,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol62-raw.json",
+      "sha256": "48eff40215cdee8279f415e0f73753a1579d6b2ea647e015a74a921a14aa8167"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 5003,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol62-subject.json",
+      "sha256": "e53d8a431c67779cbf41aa4a60345d318a9223f98321212a5844c3fc833b3ba2"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 5,
+      "path": "output/evals/sol62-frames-20261117/vfp_active_001-sol62-timing.json",
+      "sha256": "126010732bd883e046b7011e18ba5609536e3a0d5eeb238e69e1a9b88023c71f"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 94246,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_001-judge-template.json",
+      "sha256": "6364e7594920fb3961d5405b2852dd90ff7a8d3216df02646eff8895e5369c2d"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 99011,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_001-luna.json",
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 99012,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_001-sol.json",
+      "sha256": "35fa150d6cd6d32f95bbd36a143251e5976194aab56531fb570f60c2c0df7460"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 99015,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_001-sol62.json",
+      "sha256": "bd5a5ec17d4d9173790fd8fbe8527db4650cb114927e1cbc7da07819cd31ed3e"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 252672,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_002-judge-template.json",
+      "sha256": "d9d908f459b6357ea82a30b7358470ce25d609433b34427d1aef21e141397f62"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 257871,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_002-luna.json",
+      "sha256": "38af3d9b985fd321794d21f878e487f7f1cba39423a7dc6e67475c41a95fff10"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 257872,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_002-sol.json",
+      "sha256": "02b2178b70142464d7b23b475b576038203f240e975ca30f0c1983714125aaa9"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 257875,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_002-sol62.json",
+      "sha256": "935d6ee95a86b0c838fdadea0ae0e6fc2a285cbd854bd8d92ee96a2c7ede0362"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 93314,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_003-judge-template.json",
+      "sha256": "07ad8c6bcb34f3b7f799834077926af79463564918ff53d31acd2661a979feb4"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 98291,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_003-luna.json",
+      "sha256": "309fbf758455cdbab27e9a643dfbd1a6d4effd743bc041db1676322ee3fd5dfb"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 98292,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_003-sol.json",
+      "sha256": "cc5ef9126556b8d0a4af2f76d44b9069e22ca75bb44a0a1e476a099d7b3f46e4"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 98295,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_003-sol62.json",
+      "sha256": "d694e5ede756d90c96ef7404024db9d75c0ac1bc4352b7d32b03d12146ba8e5e"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 79751,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_004-judge-template.json",
+      "sha256": "0d73c0428450e5cb4737c77da61529b28960df3fa5f1871bb0e5184e59c72538"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 85071,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_004-luna.json",
+      "sha256": "999a219b80982ce3d3c0bc1b618c340ebb7f5ad0c9522adb662029667cad4356"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 85072,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_004-sol.json",
+      "sha256": "0151fac5412db8b9f1aebb78001d98f38a3e7dc58b12cb0c452714a753f1fa05"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 85075,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_004-sol62.json",
+      "sha256": "b7a6990eac2cc260eacfdb29023514295c78061d90aa188d082830777cb5ea3d"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 187509,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_005-judge-template.json",
+      "sha256": "5487d52a72679fad6f9ec7478acbba185c671354b605a6c9d4bdfa5fd6c26c35"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 192707,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_005-luna.json",
+      "sha256": "99da93d687a682c00cf92c2db6684e5fc62529825bdc36bc45f71ca2110d5c74"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 192708,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_005-sol.json",
+      "sha256": "1963f083dd7f6e1bceddc396976862dd58c87b9f1163a82fd1f6a4298e78bbbf"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 192711,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_005-sol62.json",
+      "sha256": "3483425720ae74d693aec8b0d460fedf700062602299eae16966429cb04a3f7e"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 308202,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_006-judge-template.json",
+      "sha256": "b9af977419767e94b39365b621515a76b34c3f1e10fbdebc48f02d3a2460e0fe"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 313563,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_006-luna.json",
+      "sha256": "01d478770d07fa488eacdc272b2a30e2eb2d80aed5c7834942257df1b20a813e"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 313564,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_006-sol.json",
+      "sha256": "6a83d0876b23e774bd23b066aa47eca234c2356c2060766d32340544a18bd7a4"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 313567,
+      "path": "output/evals/sol62-frames-20261117/wire/vfp_active_006-sol62.json",
+      "sha256": "887494fd04c3aeaaa323bdd0eed5fa21226b9b50cf50d3acdf67a82d896eae0f"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 12387,
+      "path": "output/evals/sol62-frames-20261117/native/luna/vfp_active_001-luna/vfp_active_001-raw-envelope.json",
+      "sha256": "892f2486f71e6fe35c8b2ede54997876776a7f921f3ff6651ca1aa8e14f330cd"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 8809,
+      "path": "output/evals/sol62-frames-20261117/native/sol/vfp_active_001-sol/vfp_active_001-raw-envelope.json",
+      "sha256": "c6707c14beb7a1d2f2ecc133e1f3aee4df2391bc78121ca0c520dfc5341e5d08"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 8897,
+      "path": "output/evals/sol62-frames-20261117/native/sol62/vfp_active_001-sol62/vfp_active_001-raw-envelope.json",
+      "sha256": "4c4b6cf275039ea098f3ef501ac3819f0e257a3e60355f39b5bc9c3fa5282676"
+    }
+  ],
+  "protected_policy": "Retained under output/evals/sol62-frames-20261117 in the named worktree. No auth headers. Full Luna envelope includes opaque encrypted reasoning and is protected.",
+  "reproduction": "From the recorded worktree root, use the frozen producer and plan with original byte hashes. Restore predeclared-plan.md at the old plan path in a reproduction copy. Use a new run namespace and newly approved budget for fresh inference. For offline evidence validation replay each first-case raw envelope through call_api with _request_json mocked to require the archived exact wire and return saved JSON. Retained subject and judge receipts share the ledger.",
+  "result": {
+    "bytes": 14748,
+    "path": "benchmarks/results/video-understanding-sol62-sol61-luna-v4-20261117.json",
+    "sha256": "ae71371aa97666d7a010e0ea5a033c9b322015bbb9743a6397c0718d163ef488"
+  },
+  "settled_usd": "0.081243675",
+  "source_adjudication": {
+    "bytes": 1719,
+    "path": "docs/evals/evidence/story-236-sol62-20261117/first-source-review.json",
+    "sha256": "9e6dc0be7e9926f721cfaec8f1447a545f855cc55e034abded3538317cf533f6"
+  },
+  "source_baseline": {
+    "bytes": 1719,
+    "path": "docs/evals/evidence/story-236-sol62-20261117/source-baseline.json",
+    "sha256": "350b3392ac674a8414c810d8897ecd703147d5901528e27746f3214563201e30"
+  },
+  "stopped": true,
+  "unknown_usd": "0",
+  "worktree": "/Users/cam/.codex/worktrees/gpt62-sol-20261117/cine-forge",
+  "worktree_custody": "Retained for coordinator review and source/response replay."
+}
