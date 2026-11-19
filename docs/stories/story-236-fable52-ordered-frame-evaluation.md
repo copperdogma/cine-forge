@@ -197,3 +197,21 @@ references. The other five cases were frozen and remain unmeasured. Six
 requests settled at $.081243675 against the $7 hard cap, with no unknown
 exposure. The [manifest](../evals/story-236-sol62-20261117-manifest.json)
 identifies the isolated base, call paths, receipts and reproduction commands.
+
+### 2026-11-18 · Scout 119 Gemini 4 Neon ordered-frame screen
+
+[Attempt 063](../evals/attempts/063-neon-ordered-frame-screen.md) matched
+native Gemini 4 Neon MEDIUM/4096 against fresh GPT-6.1 Sol low/4096 and GPT-6
+Luna low/1400 on the first authored v4 case. Native strict schema and adapter
+parity passed. Neon scored .61095 combined compared with Sol .74575 and Luna
+.70785. Source-pixel review disproved its claim that the rectangle grew and
+approached the frame edges. Neon also missed the operational targets at
+24.142 seconds and $0.059427. Retain Sol and Luna as benchmark references.
+The other five cases and independent confirmation were unmeasured. All six
+physical calls settled for $0.128053175 of $7. The uncommitted owner worktree
+retains the protected evidence linked in the
+[manifest](../evals/story-236-neon-20261118-manifest.json).
+
+Publication validation reproduced the exact subject and judge wires, scores,
+and costs offline from tracked terminal receipts. Provider thought signatures
+and protected raw envelopes stay in the retained owner worktree.

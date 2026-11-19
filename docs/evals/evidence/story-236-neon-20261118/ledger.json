@@ -1,0 +1,50 @@
+[
+  {
+    "arm": "neon",
+    "group": "neon",
+    "name": "vfp_active_001-neon",
+    "reserved": "0.12144",
+    "state": "settled",
+    "usd": "0.059427"
+  },
+  {
+    "arm": "sol",
+    "group": "controls",
+    "name": "vfp_active_001-sol",
+    "reserved": "0.09096",
+    "state": "settled",
+    "usd": "0.0101035"
+  },
+  {
+    "arm": "luna",
+    "group": "controls",
+    "name": "vfp_active_001-luna",
+    "reserved": "0.00320",
+    "state": "settled",
+    "usd": "0.000542675"
+  },
+  {
+    "arm": "opus",
+    "group": "opus",
+    "name": "vfp_active_001-neon-opus",
+    "reserved": "0.2423",
+    "state": "settled",
+    "usd": "0.02013"
+  },
+  {
+    "arm": "opus",
+    "group": "opus",
+    "name": "vfp_active_001-sol-opus",
+    "reserved": "0.2423",
+    "state": "settled",
+    "usd": "0.019805"
+  },
+  {
+    "arm": "opus",
+    "group": "opus",
+    "name": "vfp_active_001-luna-opus",
+    "reserved": "0.2423",
+    "state": "settled",
+    "usd": "0.018045"
+  }
+]

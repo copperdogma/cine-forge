@@ -1,0 +1,97 @@
+{
+  "basis": "Inspected original ordered JPEGs before subjects and checked all original pixels after results. Integer coordinates are inclusive. Color thresholds isolate schematic actors and the bright rectangle, with no change to the benchmark scorer.",
+  "case": "vfp_active_001",
+  "classification": {
+    "luna": {
+      "ambiguous": "Detached versus intimate is interpretive.",
+      "model-wrong": "Omitted teal and did not explicitly report lateral enlargement, while correctly describing overall growth, stable composition and retained prop."
+    },
+    "neon": {
+      "ambiguous": "Detached/tense tone and isolation/hesitation are interpretive; no specific emotions are visually established. Geometry equivalent to the keyword 'closer' should not be independently scored as a definite source error.",
+      "model-wrong": "Frame 4 says the pale prop appears taller and closer to frame edges. Its box does not change. The consistent-camera-push-in assertion contradicts the frozen inference boundary and the prop/background remaining stationary. Neon correctly names the navy-teal gradient, both figures and intact appearance."
+    },
+    "sol": {
+      "ambiguous": "Locked two shot can be a compositional description. The prop's narrow edge is visibly brighter in the source, and gold plausibly describes the pale warm figure. Detached versus intimate is interpretive.",
+      "model-wrong": null
+    }
+  },
+  "decision": "Retain Sol 6.1 and Luna as benchmark references. Stop after the first fresh matched case because Neon makes incorrect source observations and misses the structural, rubric, combined, latency and cost thresholds.",
+  "expand": false,
+  "golden_wrong": null,
+  "runtime_blocking": false,
+  "source_pixel_boxes": {
+    "bright_prop_all_five_frames": [
+      430,
+      210,
+      490,
+      236
+    ],
+    "left_figure_x_min_y_min_x_max_y_max": [
+      [
+        130,
+        124,
+        210,
+        250
+      ],
+      [
+        129,
+        121,
+        211,
+        250
+      ],
+      [
+        127,
+        115,
+        213,
+        250
+      ],
+      [
+        126,
+        109,
+        214,
+        250
+      ],
+      [
+        124,
+        106,
+        216,
+        250
+      ]
+    ],
+    "left_rule": "ROI 90<=x<240, 90<=y<260. R>190, G>170, B<215.",
+    "prop_rule": "ROI 410<=x<520, 194<=y<246. Minimum RGB channel >219.",
+    "right_figure_x_min_y_min_x_max_y_max": [
+      [
+        428,
+        120,
+        512,
+        250
+      ],
+      [
+        427,
+        114,
+        513,
+        250
+      ],
+      [
+        425,
+        109,
+        515,
+        250
+      ],
+      [
+        424,
+        103,
+        516,
+        250
+      ],
+      [
+        422,
+        100,
+        518,
+        250
+      ]
+    ],
+    "right_rule": "ROI 400<=x<540, 90<=y<260. R>125, G>170, B>205, B-R>20."
+  }
+}

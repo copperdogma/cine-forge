@@ -2632,6 +2632,27 @@ evals:
         note: "Story 204 text/image reasoning probe passed only 1/6 anchor clips. Outputs parsed as JSON and latency/cost fit the pilot budget, but five misses were model-wrong director/shot-read failures: weak dialogue push-in detail, bedside emotional read, prop-continuity nuance, neon reveal/motion, and muzak tonal juxtaposition. No role-modality or generated-output-QA default change."
 
     attempts:
+      - id: "063"
+        story: attempts/063-neon-ordered-frame-screen.md
+        date: 2026-11-18
+        status: failed
+        approach: "Scout 119 first matched authored v4 case with native Gemini, fresh Sol and Luna, strict adapter replay, fixed blind Opus and original-pixel review. Neon makes an unsupported camera claim and incorrectly reports prop enlargement. It also misses both operational targets. All six physical calls settled at USD0.128053175 of USD7."
+        worker_model: "Codex owner agent"
+        subject_model: "gemini-4-neon MEDIUM/4096 native Standard GenerateContent"
+        score_before: 0.74575
+        score_after: 0.61095
+        latency_before: 8121
+        latency_after: 24142
+        cost_before: 0.0101035
+        cost_after: 0.059427
+        git_sha: dd3c5ca27193b601bbff4731932ea52f002e8e86+scout119-neon-producer-freeze
+        result_file: benchmarks/results/video-understanding-neon-sol61-luna-v4-20261118.json
+        contract_manifest: docs/evals/story-236-neon-20261118-manifest.json
+        evidence_status: fresh-one-case-source-reviewed-progressive-screen
+        retry_status: exhausted-until-new-trigger
+        retry_when:
+          - condition: new-subject-model-or-source-backed-corpus
+            note: "Reopen on eligible evidence of improved frame-scale grounding or a substantially different checkpoint. Other cases and effort levels remain unmeasured."
       - id: "062"
         story: attempts/062-sol62-ordered-frame-screen.md
         date: 2026-11-17

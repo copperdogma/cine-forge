@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from typing import Any
 
 from cine_forge.ai.token_usage import validate_gemini_token_usage
@@ -11,11 +12,15 @@ from cine_forge.ai.token_usage import validate_gemini_token_usage
 def call_gemini4(scope: dict[str, Any], request: dict[str, Any]) -> dict[str, Any]:
     config = request["config"]
     model = request["model"]
-    effort = {"gemini-4-argon": "medium", "gemini-4-carbon": "high"}[model]
+    effort, output_cap = {
+        "gemini-4-argon": ("medium", 32768),
+        "gemini-4-carbon": ("high", 32768),
+        "gemini-4-neon": ("medium", 4096),
+    }[model]
     if config.get("reasoning_effort") != effort:
         raise RuntimeError(f"{model} lane requires {effort} thinking")
-    if request["max_tokens"] != 32768 or len(request["packet"]["frames"]) != 5:
-        raise RuntimeError("Gemini 4 lane requires five JPEGs and32768 total output")
+    if request["max_tokens"] != output_cap or len(request["packet"]["frames"]) != 5:
+        raise RuntimeError(f"Gemini 4 lane requires five JPEGs and {output_cap} total output")
     raw_path = scope["_openai_raw_output_path"](request)
     payload = scope["_build_gemini_payload"](
         user_text=request["user_text"],
@@ -23,7 +28,9 @@ def call_gemini4(scope: dict[str, Any], request: dict[str, Any]) -> dict[str, An
         max_tokens=request["max_tokens"],
         response_schema=scope["_VIDEO_ANALYSIS_RESPONSE_SCHEMA"],
     )
-    payload["generationConfig"]["thinkingConfig"] = {"thinkingLevel": effort}
+    payload["generationConfig"]["thinkingConfig"] = {
+        "thinkingLevel": effort.upper() if model == "gemini-4-neon" else effort
+    }
     url = scope["GEMINI_MODELS_URL"] + f"/{model}:generateContent"
     try:
         response = scope["_request_json"](
@@ -63,11 +70,9 @@ def call_gemini4(scope: dict[str, Any], request: dict[str, Any]) -> dict[str, An
         raise RuntimeError("Gemini 4 requires one complete final text")
     output = texts[0]
     scope["VideoAnalysisPrediction"].model_validate_json(output)
-    if model == "gemini-4-carbon":
-        import json
-
+    if model in {"gemini-4-carbon", "gemini-4-neon"}:
         if set(json.loads(output)) != set(scope["_VIDEO_ANALYSIS_RESPONSE_SCHEMA"]["required"]):
-            raise RuntimeError("Carbon output does not contain the exact thirteen keys")
+            raise RuntimeError(f"{model} output does not contain the exact thirteen keys")
     usage = response["usageMetadata"]
     tokens = validate_gemini_token_usage(
         prompt_tokens=usage.get("promptTokenCount"),
@@ -80,7 +85,14 @@ def call_gemini4(scope: dict[str, Any], request: dict[str, Any]) -> dict[str, An
     cached = scope["_token_count"](usage.get("cachedContentTokenCount", 0), "cached input")
     if cached > tokens.prompt:
         raise RuntimeError("Cached input exceeds prompt")
-    cost = ((tokens.prompt - cached) * 2 + cached * 0.1 + tokens.billed_completion * 10) / 1e6
+    input_price, cached_price, output_price = (
+        (3, 0.15, 15) if model == "gemini-4-neon" else (2, 0.1, 10)
+    )
+    cost = (
+        (tokens.prompt - cached) * input_price
+        + cached * cached_price
+        + tokens.billed_completion * output_price
+    ) / 1e6
     raw_bytes = raw_path.read_bytes()
     return {
         "output": output,

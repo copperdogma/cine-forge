@@ -17724,6 +17724,16 @@
       "retryWhen": [],
       "attempts": [
         {
+          "id": "063",
+          "date": "2026-11-18",
+          "approach": "Scout 119 first matched authored v4 case with native Gemini, fresh Sol and Luna, strict adapter replay, fixed blind Opus and original-pixel review. Neon makes an unsupported camera claim and incorrectly reports prop enlargement. It also misses both operational targets. All six physical calls settled at USD0.128053175 of USD7.",
+          "note": "",
+          "retryStatus": "exhausted-until-new-trigger",
+          "retryWhen": [
+            "new-subject-model-or-source-backed-corpus"
+          ]
+        },
+        {
           "id": "062",
           "date": "2026-11-17",
           "approach": "Scout117 reference screen stopped after one fresh matched v4 source. Exact medium/4096 Responses qualified, but Sol 6.2 missed structure, rubric and combined gates and showed no new visual advantage. All six calls settled at USD.081243675 of USD7. Five cases and other levels unmeasured.",
@@ -18000,11 +18010,11 @@
           "new-subject-model-or-source-backed-corpus"
         ],
         "lastRelevantAction": {
-          "date": "2026-11-17",
+          "date": "2026-11-18",
           "sourceType": "eval-attempt",
           "source": "docs/evals/registry.yaml",
-          "sourceId": "062",
-          "summary": "Scout117 reference screen stopped after one fresh matched v4 source. Exact medium/4096 Responses qualified, but Sol 6.2 missed structure, rubric and combined gates and showed no new visual advantage. All six calls settled at USD.081243675 of USD7. Five cases and other levels unmeasured."
+          "sourceId": "063",
+          "summary": "Scout 119 first matched authored v4 case with native Gemini, fresh Sol and Luna, strict adapter replay, fixed blind Opus and original-pixel review. Neon makes an unsupported camera claim and incorrectly reports prop enlargement. It also misses both operational targets. All six physical calls settled at USD0.128053175 of USD7."
         }
       }
     },
@@ -18708,7 +18718,7 @@
     "errors": [],
     "warnings": [
       "Architecture audit domains due or carrying open findings: methodology_tooling, ingest_and_world_building, api_service_and_operator_console +1 more",
-      "UI scout freshness due: attention needed — last run 2026-10-24 is 25 days old against a 14-day cadence; +1 more"
+      "UI scout freshness due: attention needed — last run 2026-10-24 is 26 days old against a 14-day cadence; +1 more"
     ]
   }
 }

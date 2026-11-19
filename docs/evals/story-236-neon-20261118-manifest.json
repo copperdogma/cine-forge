@@ -1,0 +1,506 @@
+{
+  "base": "dd3c5ca27193b601bbff4731932ea52f002e8e86",
+  "branch": "codex/neon-20261118",
+  "cap_usd": 7,
+  "closed": true,
+  "commands": [
+    "cd /Users/cam/.codex/worktrees/neon-20261118/cine-forge",
+    "Use /Users/cam/Documents/Projects/cine-forge/.venv/bin/python to run scripts/with_cine_forge_provider_env.py with that same interpreter, then benchmarks/scripts/run_neon_video_comparison.py preflight",
+    "Repeat the wrapper with the runner's first command for the one case. The paid run is closed. Use a fresh identity and authorization for future live work."
+  ],
+  "credential_cleanup": {
+    "ANTHROPIC_API_KEY": "existing CineForge checkout; no copy or removal",
+    "GEMINI_API_KEY": "existing CineForge checkout; no copy or removal",
+    "OPENAI_API_KEY": "existing CineForge checkout; no copy or removal"
+  },
+  "ledger": {
+    "bytes": 965,
+    "path": "docs/evals/evidence/story-236-neon-20261118/ledger.json",
+    "sha256": "603a30f72c8da8238fe1da9997d4db74ec9a8a08941624814752cab94ebcaa55"
+  },
+  "offline_replay": "PYTHONPATH=src python benchmarks/scripts/replay_neon_video_comparison.py",
+  "owner": "CineForge Scout119 item 5",
+  "producer_freeze": {
+    "bytes": 45013,
+    "path": "docs/evals/evidence/story-236-neon-20261118/preflight.json",
+    "sha256": "ec8eec239323f79218e2eef77c2485a23be0d08cd32e13c90645383d884f0c3c"
+  },
+  "protected_files": [
+    {
+      "access": "ignored owner-only",
+      "bytes": 2839,
+      "path": "output/evals/neon-frames-20261118/first-source-review.json",
+      "sha256": "3dce934214d812bf15948adc64f67f66fd3211e28de96f686786c18c70bc46d4"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 965,
+      "path": "output/evals/neon-frames-20261118/ledger.json",
+      "sha256": "603a30f72c8da8238fe1da9997d4db74ec9a8a08941624814752cab94ebcaa55"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 12276,
+      "path": "output/evals/neon-frames-20261118/native/luna/vfp_active_001-luna/vfp_active_001-raw-envelope.json",
+      "sha256": "f32bd0fb1be37f00b85314fa6695b9230e3441bcd40662cd9a6feb2caa1c1cd4"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 12937,
+      "path": "output/evals/neon-frames-20261118/native/neon/vfp_active_001-neon/vfp_active_001-raw-envelope.json",
+      "sha256": "00be8a298c8df81601ea6a6aebae3dac560a4885532360295b908c57b2611607"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 8913,
+      "path": "output/evals/neon-frames-20261118/native/sol/vfp_active_001-sol/vfp_active_001-raw-envelope.json",
+      "sha256": "d2347f8f6e8774e2aaac361470adac745bebedc163e6ce4dc534b2c1af3772c8"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 44806,
+      "path": "output/evals/neon-frames-20261118/offline-preflight.json",
+      "sha256": "10e6ef9c8b0ce2fb0bb78b25f3bf489105747970a7940d15ff618051c6915124"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 94246,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_001-judge-template.json",
+      "sha256": "6364e7594920fb3961d5405b2852dd90ff7a8d3216df02646eff8895e5369c2d"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 99011,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_001-luna.json",
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 97904,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_001-neon.json",
+      "sha256": "0865e6a32db0bff4bfc4ea655e541de7b0bee94347f3157452991e65061352ac"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 99012,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_001-sol.json",
+      "sha256": "35fa150d6cd6d32f95bbd36a143251e5976194aab56531fb570f60c2c0df7460"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 252672,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_002-judge-template.json",
+      "sha256": "d9d908f459b6357ea82a30b7358470ce25d609433b34427d1aef21e141397f62"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 257871,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_002-luna.json",
+      "sha256": "38af3d9b985fd321794d21f878e487f7f1cba39423a7dc6e67475c41a95fff10"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 256764,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_002-neon.json",
+      "sha256": "16570910849d2b0035becc97661dde0e674fc6e0a44266a1e8a5daa3cfd26b6b"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 257872,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_002-sol.json",
+      "sha256": "02b2178b70142464d7b23b475b576038203f240e975ca30f0c1983714125aaa9"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 93314,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_003-judge-template.json",
+      "sha256": "07ad8c6bcb34f3b7f799834077926af79463564918ff53d31acd2661a979feb4"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 98291,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_003-luna.json",
+      "sha256": "309fbf758455cdbab27e9a643dfbd1a6d4effd743bc041db1676322ee3fd5dfb"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 97184,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_003-neon.json",
+      "sha256": "bbc934f6815728580f177286b6c5fd794fb36bf6022f97e7fc779bf04e0a8617"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 98292,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_003-sol.json",
+      "sha256": "cc5ef9126556b8d0a4af2f76d44b9069e22ca75bb44a0a1e476a099d7b3f46e4"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 79751,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_004-judge-template.json",
+      "sha256": "0d73c0428450e5cb4737c77da61529b28960df3fa5f1871bb0e5184e59c72538"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 85071,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_004-luna.json",
+      "sha256": "999a219b80982ce3d3c0bc1b618c340ebb7f5ad0c9522adb662029667cad4356"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 83964,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_004-neon.json",
+      "sha256": "aea7d0f596e6b0792c515f205f07cc5a58805fc30acfc6b45c9157de98fa004f"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 85072,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_004-sol.json",
+      "sha256": "0151fac5412db8b9f1aebb78001d98f38a3e7dc58b12cb0c452714a753f1fa05"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 187509,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_005-judge-template.json",
+      "sha256": "5487d52a72679fad6f9ec7478acbba185c671354b605a6c9d4bdfa5fd6c26c35"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 192707,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_005-luna.json",
+      "sha256": "99da93d687a682c00cf92c2db6684e5fc62529825bdc36bc45f71ca2110d5c74"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 191600,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_005-neon.json",
+      "sha256": "e952a9e284c0d6d9be409f67e2420e4c2258ad374913a4dbed30562c836c68f4"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 192708,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_005-sol.json",
+      "sha256": "1963f083dd7f6e1bceddc396976862dd58c87b9f1163a82fd1f6a4298e78bbbf"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 308202,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_006-judge-template.json",
+      "sha256": "b9af977419767e94b39365b621515a76b34c3f1e10fbdebc48f02d3a2460e0fe"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 313563,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_006-luna.json",
+      "sha256": "01d478770d07fa488eacdc272b2a30e2eb2d80aed5c7834942257df1b20a813e"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 312456,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_006-neon.json",
+      "sha256": "ac4c1e61c31242a2b0b2c5fd42cd0e0d4d40376229668067c249064b29905bbb"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 313564,
+      "path": "output/evals/neon-frames-20261118/offline-wire/vfp_active_006-sol.json",
+      "sha256": "6a83d0876b23e774bd23b066aa47eca234c2356c2060766d32340544a18bd7a4"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 45013,
+      "path": "output/evals/neon-frames-20261118/preflight.json",
+      "sha256": "ec8eec239323f79218e2eef77c2485a23be0d08cd32e13c90645383d884f0c3c"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1374,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-luna-opus-raw.json",
+      "sha256": "ae1a10ff3b09df74c10850e7fd0921a114405da6759c0837574539034563b156"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 93835,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-luna-opus-request.json",
+      "sha256": "9fc14f80b1288f1b9550338809d3a0e2237e57635a75cf4c3626a51fa6767f39"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 5,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-luna-opus-timing.json",
+      "sha256": "05e2f7f4e8644d071b6b76a879551c85fd1c203539eff4587e3e134956fb253f"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1318,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-luna-opus.json",
+      "sha256": "830d81b9eda3f435d8e906355a5ab06d22605fd54a6cf876058c2a4568e695f0"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 12277,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-luna-raw.json",
+      "sha256": "9ec61cc390c3e3eb41ea1ea580bc6d3a50db5d72c51ddbcef4f75778f7d69262"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 4329,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-luna-subject.json",
+      "sha256": "757582d14fa37fde41eb50f1643049bae8532af621a4e60a5b9bc737e8b0dffc"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 5,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-luna-timing.json",
+      "sha256": "df36a82a3ff1145ef4aca4aae7c64d14f5b50ece98898e6846026dc45530639e"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1755,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-neon-opus-raw.json",
+      "sha256": "e50f33cce85c555d0c51b462338e21c9e27e2f55067004e7636595a5e0a3ed2c"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 94366,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-neon-opus-request.json",
+      "sha256": "ecc8bbd463dc2751964fc2489dd69fb94f4d65c0118373b4774b67db3bfa82c0"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 5,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-neon-opus-timing.json",
+      "sha256": "1c9e778ee778ad10b60f25e458d95fdd37bb079a7e5799ee83c4aee6ba629302"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1698,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-neon-opus.json",
+      "sha256": "e4719c361ba4c2630e99aec934e8d466f03edf3a615603bebbb45ad8a5e2dbdf"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 12938,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-neon-raw.json",
+      "sha256": "6a27c8f0d8c37ac4bb968d4751afe591cbdf07a96fe507e41607ae3653a378c0"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 5045,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-neon-subject.json",
+      "sha256": "131fe86325d3cfd7ed08d45256f6eca4fca260b30c7f1222454468ba821f4496"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 6,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-neon-timing.json",
+      "sha256": "42d339727615be1776a94f50c7311c0b028a218d4b3f3f1abf6fbdaadb35e8cd"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1668,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-sol-opus-raw.json",
+      "sha256": "73cd82b39e1f9fb64a1315b6ad74e2f0cd65723cbe4d992e1caff180bc722f73"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 94249,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-sol-opus-request.json",
+      "sha256": "e5da9af747ff2a48f8f2f4a64582b1256d3270377149665a7d29b030276f7d19"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 6,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-sol-opus-timing.json",
+      "sha256": "c1f9398a2afab0b475da221fe5f633cab26e971fc1d4c750d9380af119aa846c"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 1617,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-sol-opus.json",
+      "sha256": "e764003645b276fd22d2573dc8ab03fb7c44fb66392fc589272a6409602d81ca"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 8914,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-sol-raw.json",
+      "sha256": "bcb54368c4eb76c94a57a57b489e718593608aeccb884ebbba6ae1d5439bd93e"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 4759,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-sol-subject.json",
+      "sha256": "535212581952cda837fba08763d11a349c8f2d4d9c6124bb081fd6f779c6384d"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 5,
+      "path": "output/evals/neon-frames-20261118/vfp_active_001-sol-timing.json",
+      "sha256": "e90aa55e1877d2dac3690379ade68790bdef518eb1d6bcfe5cfe8a7de22a7f85"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 94246,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_001-judge-template.json",
+      "sha256": "6364e7594920fb3961d5405b2852dd90ff7a8d3216df02646eff8895e5369c2d"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 99011,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_001-luna.json",
+      "sha256": "1c76ea484bb83d6bfcafe2fe0e846b36c3c056f2868a5ba69c086fc75f80b517"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 97904,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_001-neon.json",
+      "sha256": "0865e6a32db0bff4bfc4ea655e541de7b0bee94347f3157452991e65061352ac"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 99012,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_001-sol.json",
+      "sha256": "35fa150d6cd6d32f95bbd36a143251e5976194aab56531fb570f60c2c0df7460"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 252672,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_002-judge-template.json",
+      "sha256": "d9d908f459b6357ea82a30b7358470ce25d609433b34427d1aef21e141397f62"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 257871,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_002-luna.json",
+      "sha256": "38af3d9b985fd321794d21f878e487f7f1cba39423a7dc6e67475c41a95fff10"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 256764,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_002-neon.json",
+      "sha256": "16570910849d2b0035becc97661dde0e674fc6e0a44266a1e8a5daa3cfd26b6b"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 257872,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_002-sol.json",
+      "sha256": "02b2178b70142464d7b23b475b576038203f240e975ca30f0c1983714125aaa9"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 93314,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_003-judge-template.json",
+      "sha256": "07ad8c6bcb34f3b7f799834077926af79463564918ff53d31acd2661a979feb4"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 98291,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_003-luna.json",
+      "sha256": "309fbf758455cdbab27e9a643dfbd1a6d4effd743bc041db1676322ee3fd5dfb"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 97184,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_003-neon.json",
+      "sha256": "bbc934f6815728580f177286b6c5fd794fb36bf6022f97e7fc779bf04e0a8617"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 98292,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_003-sol.json",
+      "sha256": "cc5ef9126556b8d0a4af2f76d44b9069e22ca75bb44a0a1e476a099d7b3f46e4"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 79751,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_004-judge-template.json",
+      "sha256": "0d73c0428450e5cb4737c77da61529b28960df3fa5f1871bb0e5184e59c72538"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 85071,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_004-luna.json",
+      "sha256": "999a219b80982ce3d3c0bc1b618c340ebb7f5ad0c9522adb662029667cad4356"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 83964,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_004-neon.json",
+      "sha256": "aea7d0f596e6b0792c515f205f07cc5a58805fc30acfc6b45c9157de98fa004f"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 85072,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_004-sol.json",
+      "sha256": "0151fac5412db8b9f1aebb78001d98f38a3e7dc58b12cb0c452714a753f1fa05"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 187509,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_005-judge-template.json",
+      "sha256": "5487d52a72679fad6f9ec7478acbba185c671354b605a6c9d4bdfa5fd6c26c35"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 192707,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_005-luna.json",
+      "sha256": "99da93d687a682c00cf92c2db6684e5fc62529825bdc36bc45f71ca2110d5c74"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 191600,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_005-neon.json",
+      "sha256": "e952a9e284c0d6d9be409f67e2420e4c2258ad374913a4dbed30562c836c68f4"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 192708,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_005-sol.json",
+      "sha256": "1963f083dd7f6e1bceddc396976862dd58c87b9f1163a82fd1f6a4298e78bbbf"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 308202,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_006-judge-template.json",
+      "sha256": "b9af977419767e94b39365b621515a76b34c3f1e10fbdebc48f02d3a2460e0fe"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 313563,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_006-luna.json",
+      "sha256": "01d478770d07fa488eacdc272b2a30e2eb2d80aed5c7834942257df1b20a813e"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 312456,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_006-neon.json",
+      "sha256": "ac4c1e61c31242a2b0b2c5fd42cd0e0d4d40376229668067c249064b29905bbb"
+    },
+    {
+      "access": "ignored owner-only",
+      "bytes": 313564,
+      "path": "output/evals/neon-frames-20261118/wire/vfp_active_006-sol.json",
+      "sha256": "6a83d0876b23e774bd23b066aa47eca234c2356c2060766d32340544a18bd7a4"
+    }
+  ],
+  "protected_policy": "Mode 0700 owner worktree directory with complete native envelopes and exact wire packets. Luna envelope contains opaque reasoning metadata. No credentials were recorded.",
+  "result": {
+    "bytes": 12820,
+    "path": "benchmarks/results/video-understanding-neon-sol61-luna-v4-20261118.json",
+    "sha256": "7fd5bbaf3e084300d69fcdb64f7f3f0560659a7168c2492583784d0b34439488"
+  },
+  "safe_replay": {
+    "bytes": 11668,
+    "path": "docs/evals/evidence/story-236-neon-20261118/safe-replay.json",
+    "sha256": "211cc22db5ca125caf6fcddb4d69b70d0242292c653f9f1882a6225f64253d4b"
+  },
+  "settled_usd": "0.128053175",
+  "source_adjudication": {
+    "bytes": 2839,
+    "path": "docs/evals/evidence/story-236-neon-20261118/first-source-review.json",
+    "sha256": "3dce934214d812bf15948adc64f67f66fd3211e28de96f686786c18c70bc46d4"
+  },
+  "unknown_usd": "0",
+  "worktree": "/Users/cam/.codex/worktrees/neon-20261118/cine-forge",
+  "worktree_custody": "Retained uncommitted for source review and offline replay."
+}

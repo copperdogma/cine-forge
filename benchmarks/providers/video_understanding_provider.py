@@ -146,8 +146,9 @@ def _dispatch_subject_request(request: dict[str, Any]) -> dict[str, Any]:
             raw_output_path=_anthropic_raw_output_path(request),
         )
     if provider == "google":
-        if request["model"] in {"gemini-4-argon", "gemini-4-carbon"}:
+        if request["model"] in {"gemini-4-argon", "gemini-4-carbon", "gemini-4-neon"}:
             from video_understanding_provider_argon import call_gemini4
+
             return call_gemini4(globals(), request)
         return _call_gemini(**common)
     if provider == "openrouter":

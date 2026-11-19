@@ -1,0 +1,240 @@
+{
+  "base": "dd3c5ca27193b601bbff4731932ea52f002e8e86",
+  "calls": 6,
+  "cap_usd": 7,
+  "disposition": "Retain Sol 6.1 and Luna as benchmark references. Stop after the first fresh matched case because Neon makes incorrect source observations and misses the structural, rubric, combined, latency and cost thresholds.",
+  "estimated_by_arm": {
+    "luna": "0.000542675",
+    "neon": "0.059427",
+    "opus": "0.057980",
+    "sol": "0.0101035"
+  },
+  "evidence_status": "fresh-one-case-source-reviewed-progressive-screen",
+  "exact_estimated_usd": "0.128053175",
+  "matched_cases": [
+    "vfp_active_001"
+  ],
+  "measured": "2026-11-18",
+  "rows": [
+    {
+      "arm": "neon",
+      "case": "vfp_active_001",
+      "clip": "dialogue_confession_push_in",
+      "combined": 0.61095,
+      "configuration": {
+        "effort": "medium",
+        "max_output_tokens": 4096
+      },
+      "cost": "0.059427",
+      "judge_cost": "0.02013",
+      "judge_review": "The analysis correctly identifies two figures (beige/left, light blue/right), the pale rectangular object on the right figure, navy-teal color palette, 'measured' motion, and intact continuity. However, it commits a significant error by asserting a 'slow_push_in' camera mechanism, which is not established by the frames \u2014 the figures enlarge at nearly fixed centers while the background does not scale proportionally, so no specific camera mechanism can be inferred. The reference explicitly states this is ambiguous and that camera tags are excluded from scoring, but the model's summary and evidence entries repeatedly assert a push-in as fact, which constitutes an invented claim. The tone tags 'detached' and 'tense' don't match the reference 'intimate' tone. The emotion tags 'isolation' and 'hesitation' are invented \u2014 the reference states no emotion is observable. The audio_tags and audio_notes are correctly empty. The continuity assessment is correct. The evidence entries ground observations in specific frames but repeat the unsupported push-in claim. Overall, the core visual description is largely accurate but penalized for the invented camera mechanism stated as fact and fabricated emotion/tone tags.",
+      "latency_ms": 24142,
+      "operational_targets_pass": false,
+      "output": {
+        "audio_notes": [],
+        "audio_tags": [],
+        "camera_tags": [
+          "locked_two_shot",
+          "slow_push_in"
+        ],
+        "clip_id": "vfp_active_001",
+        "color_tags": [
+          "navy",
+          "teal",
+          "desaturated"
+        ],
+        "continuity_notes": [
+          "Both figures retain consistent colors, proportions, and horizontal spacing across frames 0 through 4.",
+          "The pale rectangular object on the lower torso of the right light blue figure stays in the same position throughout the sequence."
+        ],
+        "continuity_status": "intact",
+        "emotion_tags": [
+          "isolation",
+          "hesitation"
+        ],
+        "evidence": [
+          {
+            "cue": "A beige figure on the left and a light blue figure with a pale rectangular object on its lower torso on the right rest on a dark foreground against a navy-to-teal gradient background.",
+            "frame_index": 0
+          },
+          {
+            "cue": "Both figures remain motionless in the same relative two-shot alignment while appearing slightly larger than in frame 0.",
+            "frame_index": 2
+          },
+          {
+            "cue": "Both figures and the pale rectangular object appear noticeably taller and closer to the frame edges than in frame 0, indicating a steady push-in with no continuity break.",
+            "frame_index": 4
+          }
+        ],
+        "motion_tags": [
+          "measured",
+          "stillness"
+        ],
+        "overall_confidence": 0.86,
+        "summary": "Two stylized figures, one beige on the left and one light blue holding a pale rectangular object on the right, remain motionless across a dark navy-to-teal backdrop. The framing executes a smooth, gradual push-in across the five samples while maintaining complete visual continuity.",
+        "tone_tags": [
+          "detached",
+          "tense"
+        ]
+      },
+      "parity": "Exact native request and complete response replayed through call_api.",
+      "quality_floors_pass": false,
+      "requested_and_returned_model": "gemini-4-neon",
+      "rubric": 0.62,
+      "score_notes": "raw_score=0.6019 | overall=0.602 | uncertainty=0.140 | summary=0.67 | tone=0.00 | emotion=0.00 | color=0.80 | camera=1.00 | motion=0.67 | continuity=0.92 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached, unexpected=tense | emotion: unexpected=hesitation, unexpected=isolation | color: unexpected=desaturated | motion: unexpected=stillness | continuity: unexpected=Both figures retain consistent colors, proportions, and horizontal spacing across frames 0 through 4.",
+      "structural": 0.6019,
+      "usage": {
+        "completion": 333,
+        "completionDetails": {
+          "reasoning": 2122
+        },
+        "prompt": 7534,
+        "total": 9989
+      }
+    },
+    {
+      "arm": "sol",
+      "case": "vfp_active_001",
+      "clip": "dialogue_confession_push_in",
+      "combined": 0.74575,
+      "configuration": {
+        "effort": "low",
+        "max_output_tokens": 4096
+      },
+      "cost": "0.0101035",
+      "judge_cost": "0.019805",
+      "judge_review": "The summary correctly captures two figures (pale gold left, light blue right) enlarging across frames with a cream/pale rectangle on the right figure, matching the reference. Tone is 'detached' vs reference 'intimate' \u2014 a mismatch. Emotion tags are correctly empty. Color tags include 'navy' and 'teal' (correct) but also 'gold' which is not in the reference (reference only lists navy and teal). Motion tag 'measured' matches. Continuity 'intact' matches. Audio tags and notes are empty as required. Camera tag 'locked_two_shot' asserts a specific camera mechanism not established by the frames \u2014 the reference explicitly excludes camera tags from scoring but also says not to reward invented camera mechanisms. The continuity_notes and evidence entries are well-grounded in observable frame content, though the claim about 'white outline' on the cream rectangle is a minor embellishment. The interpretation boundary is mostly respected \u2014 the output describes figures becoming 'taller and wider' which aligns with the reference's 'enlarge' observation. However, the tone mismatch and the extra color tag reduce the score below 0.8.",
+      "latency_ms": 8121,
+      "operational_targets_pass": true,
+      "output": {
+        "audio_notes": [],
+        "audio_tags": [],
+        "camera_tags": [
+          "locked_two_shot"
+        ],
+        "clip_id": "vfp_active_001",
+        "color_tags": [
+          "navy",
+          "teal",
+          "gold"
+        ],
+        "continuity_notes": [
+          "The two figures retain their left-right arrangement, and the cream rectangle stays on the blue figure throughout the samples.",
+          "The background boundary remains fixed as both figures gradually increase in height and width."
+        ],
+        "continuity_status": "intact",
+        "emotion_tags": [],
+        "evidence": [
+          {
+            "cue": "A pale gold figure stands at left and a light blue figure at right; a cream rectangle with a white outline sits across the blue figure\u2019s lower torso.",
+            "frame_index": 0
+          },
+          {
+            "cue": "Both figures have higher head positions and slightly broader bodies than in the first sample, while their lower edges remain aligned.",
+            "frame_index": 2
+          },
+          {
+            "cue": "Both figures are taller and wider than initially, while the horizontal background boundary and the cream rectangle's position remain unchanged.",
+            "frame_index": 4
+          }
+        ],
+        "motion_tags": [
+          "measured"
+        ],
+        "overall_confidence": 0.94,
+        "summary": "Two simplified human-shaped icons, pale gold on the left and light blue on the right, stand against a navy-to-teal background above a dark lower band. Across the samples, both figures become slightly taller and wider while a cream rounded rectangle remains on the blue figure\u2019s lower torso.",
+        "tone_tags": [
+          "detached"
+        ]
+      },
+      "parity": "Exact native request and complete response replayed through call_api.",
+      "quality_floors_pass": false,
+      "requested_and_returned_model": "gpt-6.1-sol",
+      "rubric": 0.75,
+      "score_notes": "overall=0.742 | uncertainty=0.060 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.80 | camera=0.67 | motion=1.00 | continuity=0.92 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached | color: unexpected=gold | continuity: unexpected=The background boundary remains fixed as both figures gradually increase in height and width.",
+      "structural": 0.7415,
+      "usage": {
+        "completion": 288,
+        "completionDetails": {
+          "reasoning": 0
+        },
+        "prompt": 2890,
+        "total": 3178
+      }
+    },
+    {
+      "arm": "luna",
+      "case": "vfp_active_001",
+      "clip": "dialogue_confession_push_in",
+      "combined": 0.70785,
+      "configuration": {
+        "effort": "low",
+        "max_output_tokens": 1400
+      },
+      "cost": "0.000542675",
+      "judge_cost": "0.018045",
+      "judge_review": "The summary correctly identifies two figures, their positions, the pale rectangle on the right figure, and the slight enlargement across frames. Tone is 'detached' vs reference 'intimate' \u2014 a mismatch. Color tags include 'navy' (correct) but miss 'teal'. Motion tag 'measured' matches. Continuity 'intact' matches. Audio_tags and audio_notes are empty arrays, which is correct. Camera tag 'static' is acceptable since the reference excludes camera from scoring. Evidence entries are grounded at frames 0, 2, and 4 with reasonable observations. However, the tone mismatch ('detached' vs 'intimate') is a notable penalty, and the missing 'teal' color tag is a minor penalty. The description of figure growth as 'slightly larger' is correct. Overall the analysis is reasonable but the tone mismatch and missing color tag prevent a passing score.",
+      "latency_ms": 6086,
+      "operational_targets_pass": true,
+      "output": {
+        "audio_notes": [],
+        "audio_tags": [],
+        "camera_tags": [
+          "static"
+        ],
+        "clip_id": "vfp_active_001",
+        "color_tags": [
+          "navy"
+        ],
+        "continuity_notes": [],
+        "continuity_status": "intact",
+        "emotion_tags": [],
+        "evidence": [
+          {
+            "cue": "A beige figure stands on the left and a light-blue figure with a pale rectangular patch stands on the right.",
+            "frame_index": 0
+          },
+          {
+            "cue": "Both figures remain in the same positions against the dark blue backdrop, with their bodies slightly larger than in frame 0.",
+            "frame_index": 2
+          },
+          {
+            "cue": "The figures remain separated on the same dark ground line, with the blue figure's pale patch still visible.",
+            "frame_index": 4
+          }
+        ],
+        "motion_tags": [
+          "measured"
+        ],
+        "overall_confidence": 0.87,
+        "summary": "Two simplified human-like figures stand apart against a dark blue background, with a small pale rectangle on the blue figure. The figures appear to grow slightly across the ordered samples while the composition remains steady.",
+        "tone_tags": [
+          "detached"
+        ]
+      },
+      "parity": "Exact native request and complete response replayed through call_api.",
+      "quality_floors_pass": false,
+      "requested_and_returned_model": "gpt-6-luna",
+      "rubric": 0.72,
+      "score_notes": "raw_score=0.6957 | overall=0.696 | uncertainty=0.130 | summary=0.67 | tone=0.00 | emotion=1.00 | color=0.67 | camera=0.00 | motion=1.00 | continuity=0.75 | audio=0.00 | evidence=1.00 | hard_constraints=1.00 | summary: closer | tone: intimate, unexpected=detached | color: teal | continuity: The pale rectangle stays beside the right figure across all five frames.",
+      "structural": 0.6957,
+      "usage": {
+        "completion": 217,
+        "completionDetails": {
+          "reasoning": 146
+        },
+        "prompt": 2890,
+        "total": 3253
+      }
+    }
+  ],
+  "unknown_reserved_usd": "0",
+  "unmeasured_cases": [
+    "vfp_active_002",
+    "vfp_active_003",
+    "vfp_active_004",
+    "vfp_active_005",
+    "vfp_active_006",
+    "independent authored confirmation"
+  ]
+}
